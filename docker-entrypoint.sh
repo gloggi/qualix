@@ -7,4 +7,6 @@ if [ ! -f .env ]; then
     php artisan key:generate
 fi
 
+chmod 777 -R storage bootstrap/cache
+
 apache2-foreground
