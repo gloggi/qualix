@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    container_name: 'qualix-app'
+    ports:
+      - '80:80'
+    links:
+      - db
+    volumes:
+      - .:/var/www
+  
+  db:
+    image: mariadb:10.3
+    container_name: 'qualix-db'
+    environment:
+      - MYSQL_DATABASE=qualix
+      - MYSQL_ROOT_PASSWORD=will-be-randomized-and-output-on-the-console
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_USER=qualix
+      - MYSQL_PASSWORD=qualix
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: 'qualix-phpmyadmin'
+    ports:
+      - '8081:80'
+    links:
+      - db
