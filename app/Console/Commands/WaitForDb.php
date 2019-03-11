@@ -22,6 +22,13 @@ class WaitForDb extends Command
     protected $description = 'Wait for the database to come online';
 
     /**
+     * Number of seconds to wait between consecutive attempts to connect to the database.
+     *
+     * @var int
+     */
+    protected $interval;
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -29,6 +36,7 @@ class WaitForDb extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->interval = config('console.db.wait.interval', 5);
     }
 
     /**
@@ -47,7 +55,7 @@ class WaitForDb extends Command
                 $this->info("DB connection successful!");
             } catch (\Exception $e) {
                 $this->info("DB connection failed, still waiting for DB to come online...");
-                sleep(5);
+                sleep($this->interval);
             }
         }
     }

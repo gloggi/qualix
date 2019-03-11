@@ -40,6 +40,8 @@ class WaitForDbTest extends TestCase
         DB::shouldReceive('connection')->twice()->andThrow(new \PDOException());
         DB::shouldReceive('connection')->once()->andReturn($connectionMock);
         $connectionMock->shouldReceive('getPdo')->once()->andReturnNull();
+        // skip the waiting time to finish the test faster
+        config([ 'console.db.wait.interval' => 0 ]);
 
         // when
         $this->artisan('db:wait')
