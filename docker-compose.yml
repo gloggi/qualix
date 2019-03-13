@@ -10,7 +10,7 @@ services:
       - db
     volumes:
       - .:/var/www
-  
+
   db:
     image: mariadb:10.3
     container_name: 'qualix-db'
@@ -20,7 +20,15 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
       - MYSQL_USER=qualix
       - MYSQL_PASSWORD=qualix
-  
+
+  node:
+    image: node:11.11.0
+    container_name: 'qualix-npm'
+    working_dir: '/app'
+    volumes:
+      - .:/app
+    command: bash -c "npm install && npm run watch"
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: 'qualix-phpmyadmin'
