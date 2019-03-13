@@ -2,7 +2,7 @@ FROM php:7.2.15-apache
 
 WORKDIR /var/www
 
-RUN apt-get -y update && apt-get -y upgrade && apt-get -y install libxml2-dev curl zlib1g-dev
+RUN apt-get -y update && apt-get -y upgrade && apt-get -y install libxml2-dev curl zlib1g-dev unzip
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
