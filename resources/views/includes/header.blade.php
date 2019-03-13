@@ -33,11 +33,14 @@
                            href="{{ route('admin.kurs') }}">Kursdetails</a>
                         <a class="dropdown-item{{ Route::currentRouteName() == 'admin.equipe' ? ' active' : '' }}"
                            href="{{ route('admin.equipe') }}">Equipe</a>
-                        <a class="dropdown-item{{ Route::currentRouteName() == 'admin.tn' ? ' active' : '' }}" href="{{ route('admin.tn') }}">TN</a>
+                        <a class="dropdown-item{{ Route::currentRouteName() == 'admin.tn' ? ' active' : '' }}"
+                           href="{{ route('admin.tn') }}">TN</a>
                         <a class="dropdown-item{{ Route::currentRouteName() == 'admin.bloecke' ? ' active' : '' }}"
                            href="{{ route('admin.bloecke') }}">Blöck</a>
-                        <a class="dropdown-item{{ Route::currentRouteName() == 'admin.ma' ? ' active' : '' }}" href="{{ route('admin.ma') }}">Mindestaforderige</a>
-                        <a class="dropdown-item{{ Route::currentRouteName() == 'admin.qk' ? ' active' : '' }}" href="{{ route('admin.qk') }}">Qualikategoriä</a>
+                        <a class="dropdown-item{{ Route::currentRouteName() == 'admin.ma' ? ' active' : '' }}"
+                           href="{{ route('admin.ma') }}">Mindestaforderige</a>
+                        <a class="dropdown-item{{ Route::currentRouteName() == 'admin.qk' ? ' active' : '' }}"
+                           href="{{ route('admin.qk') }}">Qualikategoriä</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item{{ Route::currentRouteName() == 'admin.neuerkurs' ? ' active' : '' }}"
                            href="{{ route('admin.neuerkurs') }}">Neue Kurs erstelle</a>
@@ -54,14 +57,14 @@
             </ul>
         @endif
         <ul class="nav navbar-nav navbar-right ml-auto">
-            {{--@auth--}}
-            <li class="nav-item{{ Route::currentRouteName() == 'benutzer' ? ' active' : '' }}">
-                <a class="nav-link" href="#">
-                    Willkommä, @auth{{ Auth::user()->name --}}@else Link @endauth
-                    <img class="avatar-small" src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200">
-                </a>
-            </li>
-            {{--@else
+            @auth
+                <li class="nav-item{{ Route::currentRouteName() == 'benutzer' ? ' active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.neuerkurs') }}">
+                        Willkommä, Auth::user()->name --}}
+                        <img class="avatar-small" src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200">
+                    </a>
+                </li>
+            @else
                 @if (Route::has('login'))
                     <li>
                         <a class="nav-link" href="{{ route('login') }}">Login</a>
@@ -72,7 +75,7 @@
                         <a class="nav-link" href="{{ route('register') }}">Registriere</a>
                     </li>
                 @endif
-            @endif--}}
+            @endif
         </ul>
     </div>
 </nav>

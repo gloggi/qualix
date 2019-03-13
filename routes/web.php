@@ -11,17 +11,19 @@
 |
 */
 
-Route::view('/', 'pages.kitchensink')->name('home');
-Route::view('/login', 'pages.kitchensink')->name('login');
-Route::view('/register', 'pages.kitchensink')->name('register');
-Route::view('/bloecke', 'pages.kitchensink')->name('bloecke');
-Route::view('/tn', 'pages.kitchensink')->name('tn');
-Route::view('/ma', 'pages.kitchensink')->name('ma');
-Route::view('/tagesspick', 'pages.kitchensink')->name('tagesspick');
-Route::view('/admin/kurs', 'pages.kitchensink')->name('admin.kurs');
-Route::view('/admin/equipe', 'pages.kitchensink')->name('admin.equipe');
-Route::view('/admin/tn', 'pages.kitchensink')->name('admin.tn');
-Route::view('/admin/bloecke', 'pages.kitchensink')->name('admin.bloecke');
-Route::view('/admin/ma', 'pages.kitchensink')->name('admin.ma');
-Route::view('/admin/qk', 'pages.kitchensink')->name('admin.qk');
-Route::view('/admin/neuerkurs', 'pages.kitchensink')->name('admin.neuerkurs');
+Route::get('/', 'KitchenSinkController@index')->name('home');
+Route::get('/login', 'KitchenSinkController@index')->name('login');
+Route::get('/register', 'KitchenSinkController@index')->name('register');
+Route::get('/user', 'KitchenSinkController@index')->name('user');
+
+Route::get('/bloecke', 'KitchenSinkController@index')->name('bloecke');
+Route::get('/tn', 'KitchenSinkController@index')->name('tn');
+Route::get('/ma', 'KitchenSinkController@index')->name('ma');
+Route::get('/tagesspick', 'KitchenSinkController@index')->name('tagesspick');
+Route::get('/admin/kurs', 'KitchenSinkController@index')->name('admin.kurs');
+Route::get('/admin/equipe', 'KitchenSinkController@index')->name('admin.equipe');
+Route::get('/admin/tn', 'KitchenSinkController@index')->name('admin.tn');
+Route::get('/admin/bloecke', 'KitchenSinkController@index')->name('admin.bloecke');
+Route::get('/admin/ma', 'KitchenSinkController@index')->name('admin.ma');
+Route::get('/admin/qk', 'KitchenSinkController@index')->name('admin.qk');
+Route::get('/admin/neuerkurs', 'KitchenSinkController@index')->name('admin.neuerkurs');
