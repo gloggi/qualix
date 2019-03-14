@@ -61,7 +61,7 @@
                 <li class="nav-item{{ Route::currentRouteName() == 'benutzer' ? ' active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.neuerkurs') }}">
                         Willkommä, {{ Auth::user()->name }}
-                        <img class="avatar-small" src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200">
+                        <img class="avatar-small" src="{{ Auth::user()->bild_url ?: "http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200" }}">
                     </a>
                 </li>
                 <li class="nav-item">
