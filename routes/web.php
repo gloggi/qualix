@@ -12,8 +12,6 @@
 */
 
 Route::get('/', 'KitchenSinkController@index')->name('home');
-Route::get('/login', 'KitchenSinkController@index')->name('login');
-Route::get('/register', 'KitchenSinkController@index')->name('register');
 Route::get('/user', 'KitchenSinkController@index')->name('user');
 
 Route::get('/bloecke', 'KitchenSinkController@index')->name('bloecke');
@@ -27,3 +25,5 @@ Route::get('/admin/bloecke', 'KitchenSinkController@index')->name('admin.bloecke
 Route::get('/admin/ma', 'KitchenSinkController@index')->name('admin.ma');
 Route::get('/admin/qk', 'KitchenSinkController@index')->name('admin.qk');
 Route::get('/admin/neuerkurs', 'KitchenSinkController@index')->name('admin.neuerkurs');
+
+Auth::routes();
