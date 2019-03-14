@@ -11,19 +11,19 @@
 |
 */
 
-Route::get('/', 'KitchenSinkController@index')->name('home');
-Route::get('/user', 'KitchenSinkController@index')->name('user');
+Route::get('/', 'KitchenSinkController@index')->name('home')->middleware('auth');
+Route::get('/user', 'KitchenSinkController@index')->name('user')->middleware('auth');
 
-Route::get('/bloecke', 'KitchenSinkController@index')->name('bloecke');
-Route::get('/tn', 'KitchenSinkController@index')->name('tn');
-Route::get('/ma', 'KitchenSinkController@index')->name('ma');
-Route::get('/tagesspick', 'KitchenSinkController@index')->name('tagesspick');
-Route::get('/admin/kurs', 'KitchenSinkController@index')->name('admin.kurs');
-Route::get('/admin/equipe', 'KitchenSinkController@index')->name('admin.equipe');
-Route::get('/admin/tn', 'KitchenSinkController@index')->name('admin.tn');
-Route::get('/admin/bloecke', 'KitchenSinkController@index')->name('admin.bloecke');
-Route::get('/admin/ma', 'KitchenSinkController@index')->name('admin.ma');
-Route::get('/admin/qk', 'KitchenSinkController@index')->name('admin.qk');
-Route::get('/admin/neuerkurs', 'KitchenSinkController@index')->name('admin.neuerkurs');
+Route::get('/bloecke', 'KitchenSinkController@index')->name('bloecke')->middleware('auth');
+Route::get('/tn', 'KitchenSinkController@index')->name('tn')->middleware('auth');
+Route::get('/ma', 'KitchenSinkController@index')->name('ma')->middleware('auth');
+Route::get('/tagesspick', 'KitchenSinkController@index')->name('tagesspick')->middleware('auth');
+Route::get('/admin/kurs', 'KitchenSinkController@index')->name('admin.kurs')->middleware('auth');
+Route::get('/admin/equipe', 'KitchenSinkController@index')->name('admin.equipe')->middleware('auth');
+Route::get('/admin/tn', 'KitchenSinkController@index')->name('admin.tn')->middleware('auth');
+Route::get('/admin/bloecke', 'KitchenSinkController@index')->name('admin.bloecke')->middleware('auth');
+Route::get('/admin/ma', 'KitchenSinkController@index')->name('admin.ma')->middleware('auth');
+Route::get('/admin/qk', 'KitchenSinkController@index')->name('admin.qk')->middleware('auth');
+Route::get('/admin/neuerkurs', 'KitchenSinkController@index')->name('admin.neuerkurs')->middleware('auth');
 
 Auth::routes();
