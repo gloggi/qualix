@@ -74,6 +74,7 @@ class AddDefaultsAndNullableToAllTables extends Migration
         {
             $table->integer('user_id')->index('fk_login_user');
             $table->string('time', 30);
+            $table->timestamps();
         });
         Schema::table('ma_detail', function (Blueprint $table) {
             $table->integer('killer')->change();
@@ -86,6 +87,7 @@ class AddDefaultsAndNullableToAllTables extends Migration
             $table->integer('user_id')->index('fk_recovery_user');
             $table->string('time', 30);
             $table->string('key', 128);
+            $table->timestamps();
         });
         Schema::table('tn', function (Blueprint $table) {
             $table->string('abteilung')->nullable(false)->change();

@@ -26,7 +26,7 @@ class AddRememberTokenToUser extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('kurs_id');
+            $table->dropColumn('remember_token');
         });
     }
 }
