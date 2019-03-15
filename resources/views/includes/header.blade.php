@@ -56,7 +56,7 @@
                 </li>
             </ul>
         @endauth
-        <ul class="nav navbar-nav navbar-right ml-auto align-items-center">
+        <ul class="nav navbar-nav navbar-right ml-auto align-items-center-lg">
             @auth
                 <li class="nav-item{{ Route::currentRouteName() == 'benutzer' ? ' active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.neuerkurs') }}">
