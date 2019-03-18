@@ -1,6 +1,6 @@
 
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Source%20Sans%20Pro');
 
 // Variables
 @import 'variables';
@@ -8,7 +8,14 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+.avatar {
+    @extend .rounded-circle;
+    width: 96px;
+    height: 96px;
+}
+
+.avatar-small {
+    @extend .rounded-circle;
+    width: 48px;
+    height: 48px;
 }
