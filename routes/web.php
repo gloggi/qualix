@@ -11,7 +11,7 @@
 |
 */
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/', 'KitchenSinkController@index')->name('home');
     Route::get('/user', 'KitchenSinkController@index')->name('user');
@@ -30,4 +30,4 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
