@@ -5,7 +5,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        @if ($navigation)
+        @auth
             <ul class="navbar-nav">
                 <li class="nav-item{{ Route::currentRouteName() == 'home' ? ' active' : '' }}">
                     <a class="nav-link" href="{{ route('home') }}">Home</a>
@@ -55,26 +55,31 @@
                     </form>
                 </li>
             </ul>
-        @endif
-        <ul class="nav navbar-nav navbar-right ml-auto">
+        @endauth
+        <ul class="nav navbar-nav navbar-right ml-auto align-items-center-lg">
             @auth
                 <li class="nav-item{{ Route::currentRouteName() == 'benutzer' ? ' active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.neuerkurs') }}">
-                        Willkommä, Auth::user()->name --}}
-                        <img class="avatar-small" src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200">
+                        Willkommä, {{ Auth::user()->name }}
+                        <img class="avatar-small" src="{{ Auth::user()->bild_url ?: "http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200" }}">
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('logout') }}"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Uslogge
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
             @else
-                @if (Route::has('login'))
-                    <li>
-                        <a class="nav-link" href="{{ route('login') }}">Login</a>
-                    </li>
-                @endif
-                @if (Route::has('register'))
-                    <li>
-                        <a class="nav-link" href="{{ route('register') }}">Registriere</a>
-                    </li>
-                @endif
+                <li>
+                    <a class="nav-link" href="{{ route('login') }}">Login</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{{ route('register') }}">Registriere</a>
+                </li>
             @endif
         </ul>
     </div>
