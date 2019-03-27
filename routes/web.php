@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/', 'KitchenSinkController@index')->name('home');
+    Route::post('/', 'CourseController@select')->name('admin.kurs.select');
     Route::get('/user', 'KitchenSinkController@index')->name('user');
 
     Route::get('/bloecke', 'KitchenSinkController@index')->name('bloecke');

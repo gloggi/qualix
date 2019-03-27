@@ -9,13 +9,13 @@
             <ul class="navbar-nav">
                 @if(Auth::user()->kurse()->count())
                     <li>
-                        <form>
-                            <select class="custom-select">
+                        @component('components.form', ['route' => 'admin.kurs.select'])
+                            <select name="kursId" class="custom-select" onchange="this.form.submit()">
                                 @foreach(Auth::user()->kurse as $kurs)
                                     <option value="{{ $kurs->id }}"{{ Auth::user()->current_kurs->id === $kurs->id ? ' selected' : '' }}>{{ $kurs->name }}</option>
                                 @endforeach
                             </select>
-                        </form>
+                        @endcomponent
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'bloecke' ? ' active' : '' }}">
                         <a class="nav-link" href="{{ route('bloecke') }}">Blöck</a>

@@ -13,6 +13,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -73,6 +74,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getCurrentKursAttribute() {
         return $this->kurse()->first();
+    }
+
+    public function setCurrentKursAttribute($id) {
+        /** @var Kurs $kurs */
+        $this->kurse()->updateExistingPivot($id, ['last_accessed' => Carbon::now()]);
     }
 
     /**

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CourseSelectRequest;
 use App\Http\Requests\CourseStoreRequest;
 use App\Models\Kurs;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -44,6 +46,24 @@ class CourseController extends Controller
 
         $kurs->users()->attach(Auth::user()->getAuthIdentifier());
         $kurs->save();
+
+        return Redirect::route('home');
+    }
+
+    /**
+     * Select course to work with from the navigation dropdown.
+     *
+     * @param CourseSelectRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function select(CourseSelectRequest $request)
+    {
+        $validatedData = $request->validated();
+        /** @var User $user */
+        $user = Auth::user();
+
+        $user->currentKurs = $validatedData['kursId'];
+        $user->save();
 
         return Redirect::route('home');
     }
