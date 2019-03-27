@@ -84,8 +84,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @param $id
      */
     public function setCurrentKursAttribute($id) {
-        /** @var Kurs $kurs */
-        $this->kurse()->updateExistingPivot($id, ['last_accessed' => Carbon::now()]);
+        if ($this->kurse()->find($id)) {
+            $this->kurse()->updateExistingPivot($id, ['last_accessed' => Carbon::now()]);
+        }
     }
 
     /**
