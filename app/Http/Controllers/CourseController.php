@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CourseStoreRequest;
+use App\Models\Kurs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class CourseController extends Controller
 {
@@ -30,12 +33,19 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  CourseStoreRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CourseStoreRequest $request)
     {
-        var_dump($request);
+        $validatedData = $request->validated();
+        $kurs = new Kurs($validatedData);
+        $kurs->save();
+
+        $kurs->users()->attach(Auth::user()->getAuthIdentifier());
+        $kurs->save();
+
+        return Redirect::route('home');
     }
 
     /**
