@@ -12,7 +12,7 @@
                         <form>
                             <select class="custom-select">
                                 @foreach(Auth::user()->kurse as $kurs)
-                                    <option value="{{ $kurs->id }}">{{ $kurs->name }}</option>
+                                    <option value="{{ $kurs->id }}"{{ Auth::user()->current_kurs->id === $kurs->id ? ' selected' : '' }}>{{ $kurs->name }}</option>
                                 @endforeach
                             </select>
                         </form>

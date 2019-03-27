@@ -25,6 +25,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $bild_url
  * @property Beobachtung[] $beobachtungen
  * @property Kurs[] $kurse
+ * @property Kurs $currentKurs
  * @property LoginAttempt[] $loginAttempts
  * @property RecoveryAttempt[] $recoveryAttempts
  */
@@ -64,7 +65,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function kurse()
     {
-        return $this->belongsToMany('App\Models\Kurs', 'leiter', null, 'kurs_id');
+        return $this->belongsToMany('App\Models\Kurs', 'leiter', null, 'kurs_id')->withPivot('last_accessed')->orderByDesc('leiter.last_accessed');
+    }
+
+    /**
+     * @return Kurs
+     */
+    public function getCurrentKursAttribute() {
+        return $this->kurse()->first();
     }
 
     /**
