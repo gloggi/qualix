@@ -70,12 +70,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Get the currently viewed kurs of the user.
+     *
      * @return Kurs
      */
     public function getCurrentKursAttribute() {
         return $this->kurse()->first();
     }
 
+    /**
+     * Set the currently viewed kurs of the user.
+     *
+     * @param $id
+     */
     public function setCurrentKursAttribute($id) {
         /** @var Kurs $kurs */
         $this->kurse()->updateExistingPivot($id, ['last_accessed' => Carbon::now()]);
