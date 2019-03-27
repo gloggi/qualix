@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/', 'KitchenSinkController@index')->name('home');
@@ -26,7 +28,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/bloecke', 'KitchenSinkController@index')->name('admin.bloecke');
     Route::get('/admin/ma', 'KitchenSinkController@index')->name('admin.ma');
     Route::get('/admin/qk', 'KitchenSinkController@index')->name('admin.qk');
-    Route::get('/admin/neuerkurs', 'KitchenSinkController@index')->name('admin.neuerkurs');
+    Route::get('/admin/neuerkurs', 'CourseController@create')->name('admin.neuerkurs');
+    Route::post('/admin/neuerkurs', 'CourseController@store')->name('admin.neuerkurs.store');
 
 });
 
