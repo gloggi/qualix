@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExampleTest extends TestCase
 {
@@ -14,8 +13,30 @@ class ExampleTest extends TestCase
      */
     public function testHomeWithoutLogin()
     {
+        // given
+        auth()->logout();
+
+        // when
         $response = $this->get('/');
 
+        // then
         $response->assertStatus(302);
+        $response->assertRedirect('/login');
+    }
+
+    /**
+     * A basic test example with a fake user.
+     *
+     * @return void
+     */
+    public function testHomeWithLogin()
+    {
+        // given
+
+        // when
+        $response = $this->get('/');
+
+        // then
+        $response->assertStatus(200);
     }
 }
