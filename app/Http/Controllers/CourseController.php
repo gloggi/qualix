@@ -27,9 +27,7 @@ class CourseController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CourseStoreRequest $request) {
-        $validatedData = $request->validated();
-        $kurs = new Kurs($validatedData);
-        $kurs->save();
+        $kurs = Kurs::create($request->validated());
 
         $kurs->users()->attach(Auth::user()->getAuthIdentifier());
         $kurs->save();
