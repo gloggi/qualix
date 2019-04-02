@@ -24,7 +24,7 @@ class CourseSelectRequest extends FormRequest
     public function rules()
     {
         return [
-            'kursId' => '',
+            'kursId' => 'required',
         ];
     }
 }
