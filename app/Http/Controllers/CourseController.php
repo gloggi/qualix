@@ -83,6 +83,8 @@ class CourseController extends Controller {
 
         Kurs::find($validatedData['id'])->update($validatedData);
 
+        $request->session()->flash('alert-success', __('Kursdetails erfolgrich gspeicheret'));
+
         return Redirect::route('admin.kurs');
     }
 }
