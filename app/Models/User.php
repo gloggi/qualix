@@ -10,9 +10,9 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -25,6 +25,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $bild_url
  * @property Beobachtung[] $beobachtungen
  * @property Kurs[] $kurse
+ * @property Kurs $currentKurs
  * @property LoginAttempt[] $loginAttempts
  * @property RecoveryAttempt[] $recoveryAttempts
  */
@@ -64,7 +65,27 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function kurse()
     {
-        return $this->belongsToMany('App\Models\Kurs', 'leiter', null, 'kurs_id');
+        return $this->belongsToMany('App\Models\Kurs', 'leiter', null, 'kurs_id')->withPivot('last_accessed')->orderByDesc('leiter.last_accessed');
+    }
+
+    /**
+     * Get the currently viewed kurs of the user.
+     *
+     * @return Kurs
+     */
+    public function getCurrentKursAttribute() {
+        return $this->kurse()->first();
+    }
+
+    /**
+     * Set the currently viewed kurs of the user.
+     *
+     * @param $id
+     */
+    public function setCurrentKursAttribute($id) {
+        if ($this->kurse()->find($id)) {
+            $this->kurse()->updateExistingPivot($id, ['last_accessed' => Carbon::now()]);
+        }
     }
 
     /**

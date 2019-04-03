@@ -2,7 +2,9 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Facades\DB;
+use Mockery;
 use Tests\TestCase;
 
 class WaitForDbTest extends TestCase
@@ -15,7 +17,7 @@ class WaitForDbTest extends TestCase
     public function test_shouldHaltOnSuccessfulDbConnection()
     {
         // given
-        $connectionMock = \Mockery::mock('\Illuminate\Database\ConnectionInterface');
+        $connectionMock = Mockery::mock(ConnectionInterface::class);
         DB::shouldReceive('connection')->once()->andReturn($connectionMock);
         $connectionMock->shouldReceive('getPdo')->once()->andReturnNull();
 
@@ -35,7 +37,7 @@ class WaitForDbTest extends TestCase
     public function test_shouldLoopOnFailedDbConnection()
     {
         // given
-        $connectionMock = \Mockery::mock('\Illuminate\Database\ConnectionInterface');
+        $connectionMock = Mockery::mock(ConnectionInterface::class);
         // throw exception on the first two tries, then succeed
         DB::shouldReceive('connection')->twice()->andThrow(new \PDOException());
         DB::shouldReceive('connection')->once()->andReturn($connectionMock);
