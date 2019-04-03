@@ -6,6 +6,8 @@
 
         @component('components.form', ['route' => 'admin.kurs.update'])
 
+            @component('components.form.hiddenInput', ['name' => 'id', 'value' => $kurs->id])@endcomponent
+
             @component('components.form.textInput', ['name' => 'name', 'label' => 'Kursname', 'required' => true, 'value' => $kurs->name])@endcomponent
 
             @component('components.form.textInput', ['name' => 'kursnummer', 'label' => 'Kursnummer', 'value' => $kurs->kursnummer])@endcomponent

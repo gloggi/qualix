@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CourseSelectRequest;
 use App\Http\Requests\CourseStoreRequest;
+use App\Http\Requests\CourseUpdateRequest;
 use App\Models\Kurs;
+use App\Models\Leiter;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -69,11 +70,19 @@ class CourseController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param  CourseUpdateRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id) {
-        //
+    public function update(CourseUpdateRequest $request) {
+        $validatedData = $request->validated();
+
+        // Check that the user is allowed to change this kurs
+        if (!Leiter::where('kurs_id', '=', $validatedData['id'])->where('user_id', '=', Auth::user()->getAuthIdentifier())->exists()) {
+            abort(403, __('Das därfsch du nöd'));
+        }
+
+        Kurs::find($validatedData['id'])->update($validatedData);
+
+        return Redirect::route('admin.kurs');
     }
 }
