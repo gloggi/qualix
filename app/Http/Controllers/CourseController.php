@@ -58,8 +58,12 @@ class CourseController extends Controller {
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
-        //
+    public function edit() {
+        /** @var User $user */
+        $user = Auth::user();
+        $kurs = Kurs::find($user->currentKurs->id);
+
+        return view('admin.editcourse', ['kurs' => $kurs]);
     }
 
     /**

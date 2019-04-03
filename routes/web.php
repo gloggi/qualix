@@ -24,7 +24,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/tn', 'KitchenSinkController@index')->name('tn');
     Route::get('/ma', 'KitchenSinkController@index')->name('ma');
     Route::get('/tagesspick', 'KitchenSinkController@index')->name('tagesspick');
-    Route::get('/admin/kurs', 'KitchenSinkController@index')->name('admin.kurs');
+    Route::get('/admin/kurs', 'CourseController@edit')->name('admin.kurs');
+    Route::post('/admin/kurs', 'KitchenSinkController@index')->name('admin.kurs.update');
     Route::get('/admin/equipe', 'KitchenSinkController@index')->name('admin.equipe');
     Route::get('/admin/tn', 'KitchenSinkController@index')->name('admin.tn');
     Route::get('/admin/bloecke', 'KitchenSinkController@index')->name('admin.bloecke');
