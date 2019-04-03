@@ -59,7 +59,7 @@
         <ul class="nav navbar-nav navbar-right ml-auto align-items-center-lg">
             @auth
                 <li class="nav-item{{ Route::currentRouteName() == 'benutzer' ? ' active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.neuerkurs') }}">
+                    <a class="nav-link" href="{{ route('user') }}">
                         Willkommä, {{ Auth::user()->name }}
                         <img class="avatar-small" src="{{ Auth::user()->bild_url ?: "http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200" }}">
                     </a>
