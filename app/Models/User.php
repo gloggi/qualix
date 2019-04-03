@@ -74,7 +74,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @return Kurs
      */
     public function getCurrentKursAttribute() {
-        return $this->kurse()->first();
+        return $this->kurse()->firstOrFail();
     }
 
     /**
