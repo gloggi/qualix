@@ -30,7 +30,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/tn', 'KitchenSinkController@index')->name('admin.tn');
     Route::get('/admin/bloecke', 'KitchenSinkController@index')->name('admin.bloecke');
     Route::get('/admin/ma', 'KitchenSinkController@index')->name('admin.ma');
-    Route::get('/admin/qk', 'KitchenSinkController@index')->name('admin.qk');
+    Route::get('/admin/qk', 'QKController@index')->name('admin.qk');
+    Route::post('/admin/qk', 'KitchenSinkController@index')->name('admin.qk.store');
     Route::get('/admin/neuerkurs', 'CourseController@create')->name('admin.neuerkurs');
     Route::post('/admin/neuerkurs', 'CourseController@store')->name('admin.neuerkurs.store');
 

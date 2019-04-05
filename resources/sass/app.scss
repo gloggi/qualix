@@ -3,9 +3,20 @@
 
 @import 'variables';
 @import 'forms';
+@import 'responsive-table';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '~@fortawesome/fontawesome-free/scss/solid.scss';
+
+@include media-breakpoint-up(lg) {
+    .align-items-center-lg {
+        align-items: center;
+    }
+}
 
 .avatar {
     @extend .rounded-circle;
@@ -17,10 +28,4 @@
     @extend .rounded-circle;
     width: 48px;
     height: 48px;
-}
-
-@include media-breakpoint-up(lg) {
-    .align-items-center-lg {
-        align-items: center;
-    }
 }
