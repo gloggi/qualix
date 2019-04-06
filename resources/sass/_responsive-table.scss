@@ -5,8 +5,8 @@
     border-top: 0;
   }
 
-  td i.fas {
-    margin: 0 0.5em;
+  td.actions a {
+    padding: 0 0.5em;
   }
 
   th.check, td.check {
@@ -37,9 +37,12 @@
         content: attr(data-label);
         white-space: pre;
         font-weight: bold;
-        margin-right: 0.5em;
       }
 
+    }
+
+    td.actions a:first-child {
+      padding-left: 0;
     }
 
   }

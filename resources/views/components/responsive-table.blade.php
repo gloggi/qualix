@@ -8,7 +8,7 @@
             <th>{{ $fieldName }}</th>
         @endforeach
         @if(isset($actions) && count($actions))
-            <th></th>
+            <th class="actions"></th>
         @endif
     </tr>
     </thead>
@@ -32,7 +32,7 @@
                     <td data-label="{{ $fieldName }}&#xa;">{{ $fieldAccessor($row) }}</td>
                 @endforeach
                 @if(isset($actions) && count($actions))
-                    <td>
+                    <td class="actions">
                         @foreach($actions as $actionName => $action)
                             @if($actionName === 'delete')
                                 <a class="text-danger" data-toggle="modal" href="#delete-{{ $rid }}">
