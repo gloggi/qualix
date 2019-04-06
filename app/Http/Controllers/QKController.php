@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QKDeleteRequest;
 use App\Http\Requests\QKStoreRequest;
 use App\Models\Leiter;
 use App\Models\QK;
@@ -71,23 +72,13 @@ class QKController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param QKDeleteRequest $request
+     * @param QK $qk
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request, $id) {
-        DB::transaction(function () use($request, $id) {
-            // Check that the user is allowed to delete this QK
-            $qk = QK::findOrFail($id);
-            if (!Leiter::where('kurs_id', '=', $qk->kurs->id)->where('user_id', '=', Auth::user()->getAuthIdentifier())->exists()) {
-                abort(403, __('Das därfsch du nöd'));
-            }
-
-            $qk->delete();
-
-            $request->session()->flash('alert-success', __('Quali-Kategorie erfolgreich gelöscht.'));
-        });
-
+    public function destroy(QKDeleteRequest $request, QK $qk) {
+        $qk->delete();
+        $request->session()->flash('alert-success', __('Quali-Kategorie erfolgreich gelöscht.'));
         return Redirect::route('admin.qk');
     }
 }
