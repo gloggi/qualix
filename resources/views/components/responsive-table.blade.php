@@ -26,7 +26,7 @@
                     </td>
                 @endif
                 @foreach($fields as $fieldName => $fieldAccessor)
-                    <td data-label="{{ $fieldName }}">{{ $fieldAccessor($row) }}</td>
+                    <td data-label="{{ $fieldName }}&#xa;">{{ $fieldAccessor($row) }}</td>
                 @endforeach
                 @if(isset($actions) && count($actions))
                     <td>

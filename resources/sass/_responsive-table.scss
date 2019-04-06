@@ -9,4 +9,35 @@
     width: 0;
   }
 
+
+  @include media-breakpoint-down(md) {
+
+    thead, td.check, th.check {
+      display: none;
+    }
+
+    tr {
+      border: 1px solid $gray-300;
+      margin-bottom: 1em;
+      display: block;
+      padding: 0.5em 0;
+    }
+
+    th, td {
+      display: block;
+      border: none;
+      padding: 0 0.75em;
+      margin: 0.5em 0;
+
+      &:before {
+        content: attr(data-label);
+        white-space: pre;
+        font-weight: bold;
+        margin-right: 0.5em;
+      }
+
+    }
+
+  }
+
 }

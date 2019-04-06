@@ -14,21 +14,6 @@
 
         @endcomponent
 
-        <table class="table">
-            <tbody>
-                @foreach($kurs->qks as $qk)
-                    <tr>
-                        <td>{{ $qk->quali_kategorie }}</td>
-                        <td>
-                            <button type="button" class="close" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
         @component('components.responsive-table', [
             'selectable' => true,
             'data' => $kurs->qks,
