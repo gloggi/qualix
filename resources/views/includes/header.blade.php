@@ -47,7 +47,7 @@
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.ma' ? ' active' : '' }}"
                                href="{{ route('admin.ma') }}">Mindestaforderige</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.qk' ? ' active' : '' }}"
-                               href="{{ route('admin.qk') }}">Qualikategoriä</a>
+                               href="{{ route('admin.qk') }}">Qualikategorien</a>
                         </div>
                     </li>
                 @endif

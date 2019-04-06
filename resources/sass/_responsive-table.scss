@@ -1,6 +1,10 @@
 
 .table-responsive-cards {
 
+  th {
+    border-top: 0;
+  }
+
   td i.fas {
     margin: 0 0.5em;
   }

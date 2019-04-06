@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kurs;
+use App\Http\Requests\QKStoreRequest;
 use App\Models\Leiter;
 use App\Models\QK;
 use App\Models\User;
@@ -24,22 +24,17 @@ class QKController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create() {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param QKStoreRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request) {
-        //
+    public function store(QKStoreRequest $request) {
+        QK::create($request->validated());
+
+        /** @var User $user */
+        $user = Auth::user();
+        return Redirect::route('admin.qk');
     }
 
     /**
@@ -93,6 +88,6 @@ class QKController extends Controller {
             $request->session()->flash('alert-success', __('Quali-Kategorie erfolgreich gelöscht.'));
         });
 
-        return Redirect::route('admin.kurs');
+        return Redirect::route('admin.qk');
     }
 }
