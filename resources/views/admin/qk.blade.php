@@ -22,8 +22,11 @@
                 'QUALI-KATEGORIE' => function(\App\Models\QK $qk) { return strtoupper($qk->quali_kategorie); },
             ],
             'actions' => [
-                'edit' => function(\App\Models\QK $qk) { return 'href="#"'; },
-                'minus-circle' => function(\App\Models\QK $qk) { return 'href="#" class="text-danger"'; },
+                'edit' => function(\App\Models\QK $qk) { return '#'; },
+                'delete' => function(\App\Models\QK $qk) { return [
+                    'text' => __('Willst du diese Quali-Kategorie wirklich löschen? ' . count($qk->beobachtungen) . ' Beobachtung(en) ist / sind darauf zugewiesen.'),
+                    'route' => ['admin.qk.delete', ['id' => $qk->id]],
+                 ];},
             ]
         ])@endcomponent
 

@@ -1,5 +1,5 @@
-<form method="{{ $method ?? 'POST' }}" action="{{ route($route) }}">
-    @method($method ?? route_method($route))
+<form method="{{ (isset($method) && $method === 'GET') ? 'GET' : 'POST' }}" action="{{ is_array($route) ? route(...$route) : route($route) }}">
+    @method($method ?? (is_array($route) ? route_method(...$route) : route_method($route)))
     @csrf
     {{ $slot }}
 </form>

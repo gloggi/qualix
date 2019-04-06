@@ -14,14 +14,17 @@
     </thead>
     <tbody>
         @foreach($data as $rowId => $row)
+            @php
+                $rid = (isset($id) ? $id : 'responsiveTable') . '-row' . $rowId;
+            @endphp
             <tr>
                 @if(isset($selectable) && $selectable)
                     <td class="check">
                         <span class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input"
-                                   id="{{ (isset($id) ? $id : 'responsiveTable') . '-row' . $rowId }}">
+                                   id="{{ $rid }}">
                             <label class="custom-control-label text-hide"
-                                   for="{{ (isset($id) ? $id : 'responsiveTable') . '-row' . $rowId }}"></label>
+                                   for="{{ $rid }}"></label>
                         </span>
                     </td>
                 @endif
@@ -30,8 +33,15 @@
                 @endforeach
                 @if(isset($actions) && count($actions))
                     <td>
-                        @foreach($actions as $actionIcon => $actionAttrGenerator)
-                            <a {!! $actionAttrGenerator($row) !!}><i class="fas fa-{{ $actionIcon }}"></i></a>
+                        @foreach($actions as $actionName => $action)
+                            @if($actionName === 'delete')
+                                <a class="text-danger" data-toggle="modal" href="#delete-{{ $rid }}">
+                                    <i class="fas fa-minus-circle"></i>
+                                </a>
+                                @component('components.delete-modal', array_merge(['id' => 'delete-' . $rid], $action($row)))@endcomponent
+                            @else
+                                <a href="{{ $action($row) }}"><i class="fas fa-{{ $actionName }}"></i></a>
+                            @endif
                         @endforeach
                     </td>
                 @endif
