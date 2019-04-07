@@ -32,7 +32,7 @@ class CourseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('admin.newcourse');
+        return view('course-new');
     }
 
     /**
@@ -59,7 +59,7 @@ class CourseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit() {
-        return view('admin.editcourse');
+        return view('admin.course-edit');
     }
 
     /**
