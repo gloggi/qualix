@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CourseSelectRequest;
 use App\Http\Requests\CourseStoreRequest;
+use App\Http\Requests\CourseUpdateRequest;
 use App\Models\Kurs;
+use App\Models\Leiter;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class CourseController extends Controller {
@@ -27,10 +29,12 @@ class CourseController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CourseStoreRequest $request) {
-        $kurs = Kurs::create($request->validated());
+        DB::transaction(function () use ($request) {
+            $kurs = Kurs::create($request->validated());
 
-        $kurs->users()->attach(Auth::user()->getAuthIdentifier());
-        $kurs->save();
+            $kurs->users()->attach(Auth::user()->getAuthIdentifier());
+            $kurs->save();
+        });
 
         return Redirect::route('home');
     }
@@ -42,12 +46,14 @@ class CourseController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function select(CourseSelectRequest $request) {
-        $validatedData = $request->validated();
-        /** @var User $user */
-        $user = Auth::user();
+        DB::transaction(function () use ($request) {
+            $validatedData = $request->validated();
+            /** @var User $user */
+            $user = Auth::user();
 
-        $user->currentKurs = $validatedData['kursId'];
-        $user->save();
+            $user->currentKurs = $validatedData['kursId'];
+            $user->save();
+        });
 
         return Redirect::route('home');
     }
@@ -58,18 +64,34 @@ class CourseController extends Controller {
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
-        //
+    public function edit() {
+        /** @var User $user */
+        $user = Auth::user();
+        $kurs = Kurs::find($user->currentKurs->id);
+
+        return view('admin.editcourse', ['kurs' => $kurs]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param  CourseUpdateRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id) {
-        //
+    public function update(CourseUpdateRequest $request) {
+        DB::transaction(function () use ($request) {
+            $validatedData = $request->validated();
+
+            // Check that the user is allowed to change this kurs
+            if (!Leiter::where('kurs_id', '=', $validatedData['id'])->where('user_id', '=', Auth::user()->getAuthIdentifier())->exists()) {
+                abort(403, __('Das därfsch du nöd'));
+            }
+
+            Kurs::find($validatedData['id'])->update($validatedData);
+
+            $request->session()->flash('alert-success', __('Kursdetails erfolgrich gspeicheret'));
+        });
+
+        return Redirect::route('admin.kurs');
     }
 }
