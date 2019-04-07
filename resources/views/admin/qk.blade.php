@@ -25,8 +25,6 @@
 
         @component('components.form', ['route' => ['admin.qk.store', ['kurs' => $kurs->id]]])
 
-            @component('components.form.hiddenInput', ['name' => 'kurs_id', 'value' => $kurs->id])@endcomponent
-
             @component('components.form.textInput', ['name' => 'quali_kategorie', 'label' => __('Titel'), 'required' => true])@endcomponent
 
             @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent

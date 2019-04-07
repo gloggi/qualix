@@ -25,7 +25,6 @@ class QKStoreRequest extends FormRequest
     {
         return [
             'quali_kategorie' => 'required',
-            'kurs_id' => 'required'
         ];
     }
 }

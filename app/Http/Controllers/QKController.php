@@ -27,7 +27,7 @@ class QKController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(QKStoreRequest $request, Kurs $kurs) {
-        QK::create($request->validated());
+        QK::create(array_merge($request->validated(), ['kurs_id' => $kurs->id]));
         return Redirect::route('admin.qk', ['kurs' => $kurs->id]);
     }
 
