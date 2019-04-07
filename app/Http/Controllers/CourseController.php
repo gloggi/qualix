@@ -70,7 +70,7 @@ class CourseController extends Controller {
      */
     public function update(CourseUpdateRequest $request, Kurs $kurs) {
         $kurs->update($request->validated());
-        $request->session()->flash('alert-success', __('Kursdetails erfolgrich gspeicheret'));
+        $request->session()->flash('alert-success', __('Kursdetails erfolgreich gespeichert.'));
         return Redirect::route('admin.kurs', ['kurs' => $kurs->id]);
     }
 }

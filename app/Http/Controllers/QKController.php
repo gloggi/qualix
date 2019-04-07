@@ -52,7 +52,7 @@ class QKController extends Controller {
      */
     public function update(QKUpdateRequest $request, Kurs $kurs, QK $qk) {
         $qk->update($request->validated());
-        $request->session()->flash('alert-success', __('Qualikategorie erfolgrich gspeicheret'));
+        $request->session()->flash('alert-success', __('Qualikategorie erfolgreich gespeichert.'));
         return Redirect::route('admin.qk', ['kurs' => $kurs->id]);
     }
 
