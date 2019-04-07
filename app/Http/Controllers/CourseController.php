@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CourseSelectRequest;
 use App\Http\Requests\CourseStoreRequest;
 use App\Http\Requests\CourseUpdateRequest;
 use App\Models\Kurs;
@@ -18,7 +17,7 @@ class CourseController extends Controller {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function autoselect() {
+    public function noCourse() {
         /** @var User $user */
         $user = Auth::user();
         if (count($user->kurse)) {
@@ -48,25 +47,6 @@ class CourseController extends Controller {
 
             $kurs->users()->attach(Auth::user()->getAuthIdentifier());
             $kurs->save();
-        });
-
-        return Redirect::route('home');
-    }
-
-    /**
-     * Select course to work with from the navigation dropdown.
-     *
-     * @param CourseSelectRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function select(CourseSelectRequest $request) {
-        DB::transaction(function () use ($request) {
-            $validatedData = $request->validated();
-            /** @var User $user */
-            $user = Auth::user();
-
-            $user->currentKurs = $validatedData['kursId'];
-            $user->save();
         });
 
         return Redirect::route('home');

@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Leiter;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class QKStoreRequest extends FormRequest
 {
@@ -15,7 +13,7 @@ class QKStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return Leiter::where('kurs_id', '=', $this->request->get('kurs_id'))->where('user_id', '=', Auth::user()->getAuthIdentifier())->exists();
+        return true;
     }
 
     /**

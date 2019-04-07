@@ -16,11 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/', 'CourseController@autoselect')->name('home');
-    Route::get('/kurs', 'CourseController@autoselect')->name('autoselect');
+    Route::get('/', 'CourseController@noCourse')->name('home');
+    Route::get('/kurs', 'CourseController@noCourse');
     Route::get('/user', 'KitchenSinkController@index')->name('user');
     Route::get('/kurs/{kurs}', 'KitchenSinkController@index')->name('index');
-    Route::post('/kurs/{kurs}', 'CourseController@select')->name('admin.kurs.select');
 
     Route::get('/kurs/{kurs}/bloecke', 'KitchenSinkController@index')->name('bloecke');
     Route::get('/kurs/{kurs}/tn', 'KitchenSinkController@index')->name('tn');

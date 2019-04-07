@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Leiter;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class QKDeleteRequest extends FormRequest
 {
@@ -15,7 +13,7 @@ class QKDeleteRequest extends FormRequest
      */
     public function authorize()
     {
-        return Leiter::where('kurs_id', '=', $this->qk->kurs->id)->where('user_id', '=', Auth::user()->getAuthIdentifier())->exists();
+        return true;
     }
 
     /**
