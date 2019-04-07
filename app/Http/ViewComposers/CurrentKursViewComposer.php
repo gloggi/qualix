@@ -21,7 +21,7 @@ class CurrentKursViewComposer {
             /** @var User $user */
             $user = Auth::user();
             if ($user && count($user->kurse)) {
-                $kurs = $user->currentKurs;
+                $kurs = $user->lastAccessedKurs;
             }
         }
 

@@ -25,7 +25,7 @@ use Illuminate\Support\Carbon;
  * @property string $bild_url
  * @property Beobachtung[] $beobachtungen
  * @property Kurs[] $kurse
- * @property Kurs $currentKurs
+ * @property Kurs $lastAccessedKurs
  * @property LoginAttempt[] $loginAttempts
  * @property RecoveryAttempt[] $recoveryAttempts
  */
@@ -73,7 +73,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @return Kurs
      */
-    public function getCurrentKursAttribute() {
+    public function getLastAccessedKursAttribute() {
         return $this->kurse()->firstOrFail();
     }
 

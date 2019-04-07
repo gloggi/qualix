@@ -6,9 +6,7 @@ use App\Http\Requests\QKDeleteRequest;
 use App\Http\Requests\QKStoreRequest;
 use App\Models\Kurs;
 use App\Models\QK;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class QKController extends Controller {
@@ -18,9 +16,7 @@ class QKController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        /** @var User $user */
-        $user = Auth::user();
-        return view('admin.qk', ['kurs' => $user->currentKurs]);
+        return view('admin.qk');
     }
 
     /**

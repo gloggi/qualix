@@ -21,7 +21,7 @@ class CourseController extends Controller {
         /** @var User $user */
         $user = Auth::user();
         if (count($user->kurse)) {
-            return Redirect::route('index', ['kurs' => $user->currentKurs->id]);
+            return Redirect::route('index', ['kurs' => $user->lastAccessedKurs->id]);
         }
         return view('no-courses');
     }

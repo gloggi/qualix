@@ -24,7 +24,7 @@ class UpdateLeiterLastAccessed
             /** @var User $user */
             $user = Auth::user();
             Leiter::where('kurs_id', '=', $kurs->id)->where('user_id', '=', $user->getAuthIdentifier())->firstOrFail();
-            if ($kurs->id !== $user->currentKurs->id) {
+            if ($kurs->id !== $user->lastAccessedKurs->id) {
                 $user->kurse()->updateExistingPivot($kurs->id, ['last_accessed' => Carbon::now()]);
             }
         }
