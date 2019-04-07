@@ -2,26 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
+use Tests\TestCaseWithKurs;
 
-class UpdateCourseTest extends TestCase {
+class UpdateCourseTest extends TestCaseWithKurs {
 
     private $payload;
-    private $kursId;
 
     public function setUp(): void {
         parent::setUp();
 
-        // Create Kurs to test on
-        $this->post('/neuerkurs', ['name' => 'Kursname', 'kursnummer' => 'CH 123-00']);
-
-        /** @var User $user */
-        $user = Auth::user();
-        $this->kursId = $user->lastAccessedKurs->id;
         $this->payload = ['name' => 'Geänderter Kursname', 'kursnummer' => 'CH 999-99'];
     }
 
@@ -69,18 +60,6 @@ class UpdateCourseTest extends TestCase {
 
         // when
         $response = $this->post('/kurs/' . ($this->kursId+1) . '/admin', $payload);
-
-        // then
-        $response->assertStatus(404);
-    }
-
-    public function test_shouldValidateNewCourseData_noId() {
-        // given
-        $payload = $this->payload;
-        unset($payload['id']);
-
-        // when
-        $response = $this->post('/admin/kurs', $payload);
 
         // then
         $response->assertStatus(404);

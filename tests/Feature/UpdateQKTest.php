@@ -1,0 +1,76 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\User;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCaseWithKurs;
+
+class UpdateQKTest extends TestCaseWithKurs {
+
+    private $payload;
+    private $qkId;
+
+    public function setUp(): void {
+        parent::setUp();
+
+        $this->post('/kurs/' . $this->kursId . '/admin/qk', ['quali_kategorie' => 'Qualikategorie 1']);
+        /** @var User $user */
+        $user = Auth::user();
+        $this->qkId = $user->lastAccessedKurs->qks()->first()->id;
+
+        $this->payload = ['quali_kategorie' => 'Geänderter QK-Titel'];
+    }
+
+    public function test_shouldRequireLogin() {
+        // given
+        auth()->logout();
+
+        // when
+        $response = $this->post('/kurs/' . $this->kursId . '/admin/qk/' . $this->qkId, $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/login');
+    }
+
+    public function test_shouldUpdateQK() {
+        // given
+
+        // when
+        $response = $this->post('/kurs/' . $this->kursId . '/admin/qk/' . $this->qkId, $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/qk');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee($this->payload['quali_kategorie']);
+        $response->assertDontSee('Qualikategorie 1');
+    }
+
+    public function test_shouldValidateNewQKData_noName() {
+        // given
+        $payload = $this->payload;
+        unset($payload['quali_kategorie']);
+
+        // when
+        $response = $this->post('/kurs/' . $this->kursId . '/admin/qk/' . $this->qkId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
+    public function test_shouldValidateNewQKData_wrongId() {
+        // given
+        $payload = $this->payload;
+
+        // when
+        $response = $this->post('/kurs/' . $this->kursId . '/admin/qk/' . ($this->qkId + 1), $payload);
+
+        // then
+        $response->assertStatus(404);
+    }
+}
