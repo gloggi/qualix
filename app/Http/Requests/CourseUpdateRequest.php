@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Leiter;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CourseUpdateRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class CourseUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Leiter::where('kurs_id', '=', $this->kurs->id)->where('user_id', '=', Auth::user()->getAuthIdentifier())->exists();
     }
 
     /**
@@ -24,7 +26,6 @@ class CourseUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required',
             'name' => 'required',
             'kursnummer' => '',
         ];

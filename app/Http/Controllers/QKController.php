@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\QKDeleteRequest;
 use App\Http\Requests\QKStoreRequest;
+use App\Models\Kurs;
 use App\Models\Leiter;
 use App\Models\QK;
 use App\Models\User;
@@ -28,14 +29,12 @@ class QKController extends Controller {
      * Store a newly created resource in storage.
      *
      * @param QKStoreRequest $request
+     * @param Kurs $kurs
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(QKStoreRequest $request) {
+    public function store(QKStoreRequest $request, Kurs $kurs) {
         QK::create($request->validated());
-
-        /** @var User $user */
-        $user = Auth::user();
-        return Redirect::route('admin.qk');
+        return Redirect::route('admin.qk', ['kurs' => $kurs->id]);
     }
 
     /**
@@ -76,9 +75,9 @@ class QKController extends Controller {
      * @param QK $qk
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(QKDeleteRequest $request, QK $qk) {
+    public function destroy(QKDeleteRequest $request, Kurs $kurs, QK $qk) {
         $qk->delete();
         $request->session()->flash('alert-success', __('Quali-Kategorie erfolgreich gelöscht.'));
-        return Redirect::route('admin.qk');
+        return Redirect::route('admin.qk', ['kurs' => $kurs->id]);
     }
 }

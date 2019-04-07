@@ -7,27 +7,25 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         @auth
             <ul class="navbar-nav">
-                @if(Auth::user()->kurse()->count())
+                @if($kurs)
                     <li>
-                        @component('components.form', ['route' => 'admin.kurs.select'])
-                            <select name="kursId" class="custom-select" onchange="this.form.submit()">
-                                @foreach(Auth::user()->kurse as $kurs)
-                                    <option value="{{ $kurs->id }}"{{ Auth::user()->current_kurs->id === $kurs->id ? ' selected' : '' }}>{{ $kurs->name }}</option>
-                                @endforeach
-                            </select>
-                        @endcomponent
+                        <select class="custom-select" onchange="window.location = this.value">
+                            @foreach(Auth::user()->kurse as $k)
+                                <option value="{{ route('index', ['kurs' => $k->id]) }}"{{ $kurs->id === $k->id ? ' selected' : '' }}>{{ $k->name }}</option>
+                            @endforeach
+                        </select>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'bloecke' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('bloecke') }}">Blöck</a>
+                        <a class="nav-link" href="{{ route('bloecke', ['kurs' => $kurs->id]) }}">Blöck</a>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'tn' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('tn') }}">TN</a>
+                        <a class="nav-link" href="{{ route('tn', ['kurs' => $kurs->id]) }}">TN</a>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'ma' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('ma') }}">Mindestaforderige</a>
+                        <a class="nav-link" href="{{ route('ma', ['kurs' => $kurs->id]) }}">Mindestaforderige</a>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'tagesspick' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('tagesspick') }}">Tagesspick</a>
+                        <a class="nav-link" href="{{ route('tagesspick', ['kurs' => $kurs->id]) }}">Tagesspick</a>
                     </li>
                     <li class="nav-item dropdown{{ substr( Route::currentRouteName(), 0, 5 ) == 'admin' ? ' active' : '' }}">
                         <a class="nav-link dropdown-toggle" id="navbarKursadmin" role="button"
@@ -37,17 +35,17 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.kurs' ? ' active' : '' }}"
-                               href="{{ route('admin.kurs') }}">Kursdetails</a>
+                               href="{{ route('admin.kurs', ['kurs' => $kurs->id]) }}">Kursdetails</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.equipe' ? ' active' : '' }}"
-                               href="{{ route('admin.equipe') }}">Equipe</a>
+                               href="{{ route('admin.equipe', ['kurs' => $kurs->id]) }}">Equipe</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.tn' ? ' active' : '' }}"
-                               href="{{ route('admin.tn') }}">TN</a>
+                               href="{{ route('admin.tn', ['kurs' => $kurs->id]) }}">TN</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.bloecke' ? ' active' : '' }}"
-                               href="{{ route('admin.bloecke') }}">Blöck</a>
+                               href="{{ route('admin.bloecke', ['kurs' => $kurs->id]) }}">Blöck</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.ma' ? ' active' : '' }}"
-                               href="{{ route('admin.ma') }}">Mindestaforderige</a>
+                               href="{{ route('admin.ma', ['kurs' => $kurs->id]) }}">Mindestaforderige</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.qk' ? ' active' : '' }}"
-                               href="{{ route('admin.qk') }}">Qualikategorien</a>
+                               href="{{ route('admin.qk', ['kurs' => $kurs->id]) }}">Qualikategorien</a>
                         </div>
                     </li>
                 @endif

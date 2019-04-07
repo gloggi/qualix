@@ -4,9 +4,7 @@
 
     @component('components.card', ['header' => __('Kursdetails :courseName', ['courseName' => $kurs->name])])
 
-        @component('components.form', ['route' => 'admin.kurs.update'])
-
-            @component('components.form.hiddenInput', ['name' => 'id', 'value' => $kurs->id])@endcomponent
+        @component('components.form', ['route' => ['admin.kurs.update', ['kurs' => $kurs->id]]])
 
             @component('components.form.textInput', ['name' => 'name', 'label' => __('Kursname'), 'required' => true, 'value' => $kurs->name])@endcomponent
 

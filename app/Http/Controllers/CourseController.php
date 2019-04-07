@@ -6,13 +6,27 @@ use App\Http\Requests\CourseSelectRequest;
 use App\Http\Requests\CourseStoreRequest;
 use App\Http\Requests\CourseUpdateRequest;
 use App\Models\Kurs;
-use App\Models\Leiter;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class CourseController extends Controller {
+
+    /**
+     * Redirect to a course-specific URL, based on stored state from the database
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function autoselect() {
+        /** @var User $user */
+        $user = Auth::user();
+        if (count($user->kurse)) {
+            return Redirect::route('index', ['kurs' => $user->currentKurs->id]);
+        }
+        return view('no-courses');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -65,11 +79,7 @@ class CourseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit() {
-        /** @var User $user */
-        $user = Auth::user();
-        $kurs = Kurs::find($user->currentKurs->id);
-
-        return view('admin.editcourse', ['kurs' => $kurs]);
+        return view('admin.editcourse');
     }
 
     /**
@@ -78,20 +88,12 @@ class CourseController extends Controller {
      * @param  CourseUpdateRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(CourseUpdateRequest $request) {
-        DB::transaction(function () use ($request) {
-            $validatedData = $request->validated();
+    public function update(CourseUpdateRequest $request, Kurs $kurs) {
+        $validatedData = $request->validated();
+        $kurs->update($validatedData);
 
-            // Check that the user is allowed to change this kurs
-            if (!Leiter::where('kurs_id', '=', $validatedData['id'])->where('user_id', '=', Auth::user()->getAuthIdentifier())->exists()) {
-                abort(403, __('Das därfsch du nöd'));
-            }
+        $request->session()->flash('alert-success', __('Kursdetails erfolgrich gspeicheret'));
 
-            Kurs::find($validatedData['id'])->update($validatedData);
-
-            $request->session()->flash('alert-success', __('Kursdetails erfolgrich gspeicheret'));
-        });
-
-        return Redirect::route('admin.kurs');
+        return Redirect::route('admin.kurs', ['kurs' => $kurs->id]);
     }
 }

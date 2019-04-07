@@ -12,9 +12,9 @@
             ],
             'actions' => [
                 'edit' => function(\App\Models\QK $qk) { return '#'; },
-                'delete' => function(\App\Models\QK $qk) { return [
+                'delete' => function(\App\Models\QK $qk) use ($kurs) { return [
                     'text' => __('Willst du diese Quali-Kategorie wirklich löschen? ' . count($qk->beobachtungen) . ' Beobachtung(en) ist / sind darauf zugewiesen.'),
-                    'route' => ['admin.qk.delete', ['id' => $qk->id]],
+                    'route' => ['admin.qk.delete', ['kurs' => $kurs->id, 'qk' => $qk->id]],
                  ];},
             ]
         ])@endcomponent
@@ -23,7 +23,7 @@
 
     @component('components.card', ['header' => __('Neue Qualikategorie')])
 
-        @component('components.form', ['route' => 'admin.qk.store'])
+        @component('components.form', ['route' => ['admin.qk.store', ['kurs' => $kurs->id]]])
 
             @component('components.form.hiddenInput', ['name' => 'kurs_id', 'value' => $kurs->id])@endcomponent
 

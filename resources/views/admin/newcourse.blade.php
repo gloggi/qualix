@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Neuen Kurs erstellen)])
+    @component('components.card', ['header' => __('Neuen Kurs erstellen')])
 
         @component('components.form', ['route' => 'admin.neuerkurs.store'])
 
