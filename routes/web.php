@@ -33,6 +33,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/kurs/{kurs}/admin/ma', 'KitchenSinkController@index')->name('admin.ma');
     Route::get('/kurs/{kurs}/admin/qk', 'QKController@index')->name('admin.qk');
     Route::post('/kurs/{kurs}/admin/qk', 'QKController@store')->name('admin.qk.store');
+    Route::get('/kurs/{kurs}/admin/qk/{qk}', 'QKController@edit')->name('admin.qk.edit');
+    Route::post('/kurs/{kurs}/admin/qk/{qk}', 'QKController@update')->name('admin.qk.update');
     Route::delete('/kurs/{kurs}/admin/qk/{qk}', 'QKController@destroy')->name('admin.qk.delete');
     Route::get('/neuerkurs', 'CourseController@create')->name('admin.neuerkurs');
     Route::post('/neuerkurs', 'CourseController@store')->name('admin.neuerkurs.store');

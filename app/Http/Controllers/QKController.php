@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\QKDeleteRequest;
 use App\Http\Requests\QKStoreRequest;
+use App\Http\Requests\QKUpdateRequest;
 use App\Models\Kurs;
 use App\Models\QK;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class QKController extends Controller {
@@ -32,40 +32,35 @@ class QKController extends Controller {
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param Kurs $kurs
+     * @param QK $qk
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
-        //
+    public function edit(Kurs $kurs, QK $qk) {
+        return view('admin.qk-edit', ['qk' => $qk]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Kurs $kurs
+     * @param QK $qk
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id) {
-        //
+    public function update(QKUpdateRequest $request, Kurs $kurs, QK $qk) {
+        $qk->update($request->validated());
+        $request->session()->flash('alert-success', __('Qualikategorie erfolgrich gspeicheret'));
+        return Redirect::route('admin.qk', ['kurs' => $kurs->id]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param QKDeleteRequest $request
+     * @param Kurs $kurs
      * @param QK $qk
      * @return \Illuminate\Http\RedirectResponse
      */

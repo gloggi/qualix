@@ -11,7 +11,7 @@
                 __('Anzahl Beobachtungen') => function(\App\Models\QK $qk) { return count($qk->beobachtungen); },
             ],
             'actions' => [
-                'edit' => function(\App\Models\QK $qk) { return '#'; },
+                'edit' => function(\App\Models\QK $qk) use ($kurs) { return route('admin.qk.edit', ['kurs' => $kurs->id, 'qk' => $qk->id]); },
                 'delete' => function(\App\Models\QK $qk) use ($kurs) { return [
                     'text' => __('Willst du diese Quali-Kategorie wirklich löschen? ' . count($qk->beobachtungen) . ' Beobachtung(en) ist / sind darauf zugewiesen.'),
                     'route' => ['admin.qk.delete', ['kurs' => $kurs->id, 'qk' => $qk->id]],
