@@ -5,8 +5,17 @@
     border-top: 0;
   }
 
-  td.actions a {
-    padding: 0 0.5em;
+  td.actions {
+    text-align: right;
+
+    .modal {
+      text-align: initial;
+    }
+
+    a {
+      padding: 0 0.5em;
+    }
+
   }
 
   th.check, td.check {
@@ -41,8 +50,13 @@
 
     }
 
-    td.actions a:first-child {
-      padding-left: 0;
+    td.actions {
+      text-align: left;
+
+      a:first-child {
+        padding-left: 0;
+      }
+
     }
 
   }
