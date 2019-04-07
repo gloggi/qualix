@@ -69,11 +69,8 @@ class CourseController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(CourseUpdateRequest $request, Kurs $kurs) {
-        $validatedData = $request->validated();
-        $kurs->update($validatedData);
-
+        $kurs->update($request->validated());
         $request->session()->flash('alert-success', __('Kursdetails erfolgrich gspeicheret'));
-
         return Redirect::route('admin.kurs', ['kurs' => $kurs->id]);
     }
 }
