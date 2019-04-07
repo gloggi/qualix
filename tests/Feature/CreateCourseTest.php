@@ -21,7 +21,7 @@ class CreateCourseTest extends TestCase {
         auth()->logout();
 
         // when
-        $response = $this->post('/admin/neuerkurs', $this->payload);
+        $response = $this->post('/neuerkurs', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -32,14 +32,14 @@ class CreateCourseTest extends TestCase {
         // given
 
         // when
-        $response = $this->post('/admin/neuerkurs', $this->payload);
+        $response = $this->post('/neuerkurs', $this->payload);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $this->assertRegExp("%<option value=\"\d*\" selected>{$this->payload['name']}</option>%", $response->content());
+        $this->assertRegExp("%<option value=\"[^\"]*\" selected>{$this->payload['name']}</option>%", $response->content());
     }
 
     public function test_shouldValidateNewCourseData_noName() {
@@ -48,7 +48,7 @@ class CreateCourseTest extends TestCase {
         unset($payload['name']);
 
         // when
-        $response = $this->post('/admin/neuerkurs', $payload);
+        $response = $this->post('/neuerkurs', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
