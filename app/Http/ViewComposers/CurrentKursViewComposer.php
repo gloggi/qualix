@@ -18,6 +18,8 @@ class CurrentKursViewComposer {
         $kurs = request()->route('kurs');
 
         if (!$kurs) {
+            // This is accessed on routes like newcourse, which don't have a kurs id in the URL but still need the $kurs
+            // in the views for displaying navigation etc.
             /** @var User $user */
             $user = Auth::user();
             if ($user && count($user->kurse)) {
