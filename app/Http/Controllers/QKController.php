@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\QKDeleteRequest;
 use App\Http\Requests\QKStoreRequest;
 use App\Http\Requests\QKUpdateRequest;
 use App\Models\Kurs;
 use App\Models\QK;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class QKController extends Controller {
@@ -59,14 +59,14 @@ class QKController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param QKDeleteRequest $request
+     * @param Request $request
      * @param Kurs $kurs
      * @param QK $qk
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(QKDeleteRequest $request, Kurs $kurs, QK $qk) {
+    public function destroy(Request $request, Kurs $kurs, QK $qk) {
         $qk->delete();
-        $request->session()->flash('alert-success', __('Quali-Kategorie erfolgreich gelöscht.'));
+        $request->session()->flash('alert-success', __('Qualikategorie erfolgreich gelöscht.'));
         return Redirect::route('admin.qk', ['kurs' => $kurs->id]);
     }
 }
