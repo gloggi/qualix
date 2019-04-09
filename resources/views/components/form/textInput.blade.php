@@ -1,5 +1,5 @@
 <div class="form-group row{{ isset($required) && $required ? ' required' : ''}}">
-    <label for="{{ $name }}" class="col-md-4 col-form-label text-md-right">{{__($label)}}</label>
+    <label for="{{ $name }}" class="col-md-4 col-form-label text-md-right">{{ $label }}</label>
 
     <div class="col-md-6">
         <input
@@ -11,7 +11,7 @@
             {{ isset($required) && $required ? 'required' : '' }}
             {{ isset($autofocus) && $autofocus ? 'autofocus' : '' }}>
 
-        @if ($errors->has('email'))
+        @if ($errors->has($name))
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $errors->first($name) }}</strong>
             </span>
