@@ -6,7 +6,7 @@ namespace App\Models;
  * @property int $id
  * @property int $kurs_id
  * @property string $anforderung
- * @property int $killer
+ * @property bool $killer
  * @property Kurs $kurs
  * @property Beobachtung[] $beobachtungen
  * @property Block[] $bloecke
@@ -39,7 +39,7 @@ class MA extends Model
      */
     public function beobachtungen()
     {
-        return $this->belongsToMany('App\Models\Beobachtung');
+        return $this->belongsToMany('App\Models\Beobachtung', 'beobachtung_ma', 'ma_id');
     }
 
     /**

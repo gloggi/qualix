@@ -30,12 +30,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/kurs/{kurs}/admin/equipe', 'KitchenSinkController@index')->name('admin.equipe');
     Route::get('/kurs/{kurs}/admin/tn', 'KitchenSinkController@index')->name('admin.tn');
     Route::get('/kurs/{kurs}/admin/bloecke', 'KitchenSinkController@index')->name('admin.bloecke');
-    Route::get('/kurs/{kurs}/admin/ma', 'KitchenSinkController@index')->name('admin.ma');
+
+    Route::get('/kurs/{kurs}/admin/ma', 'MAController@index')->name('admin.ma');
+    Route::post('/kurs/{kurs}/admin/ma', 'MAController@store')->name('admin.ma.store');
+    Route::get('/kurs/{kurs}/admin/ma/{ma}', 'MAController@edit')->name('admin.ma.edit');
+    Route::post('/kurs/{kurs}/admin/ma/{ma}', 'MAController@update')->name('admin.ma.update');
+    Route::delete('/kurs/{kurs}/admin/ma/{ma}', 'MAController@destroy')->name('admin.ma.delete');
+
     Route::get('/kurs/{kurs}/admin/qk', 'QKController@index')->name('admin.qk');
     Route::post('/kurs/{kurs}/admin/qk', 'QKController@store')->name('admin.qk.store');
     Route::get('/kurs/{kurs}/admin/qk/{qk}', 'QKController@edit')->name('admin.qk.edit');
     Route::post('/kurs/{kurs}/admin/qk/{qk}', 'QKController@update')->name('admin.qk.update');
     Route::delete('/kurs/{kurs}/admin/qk/{qk}', 'QKController@destroy')->name('admin.qk.delete');
+
     Route::get('/neuerkurs', 'CourseController@create')->name('admin.neuerkurs');
     Route::post('/neuerkurs', 'CourseController@store')->name('admin.neuerkurs.store');
 
