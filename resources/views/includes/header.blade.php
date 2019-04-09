@@ -22,7 +22,7 @@
                         <a class="nav-link" href="{{ route('tn', ['kurs' => $kurs->id]) }}">TN</a>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'ma' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('ma', ['kurs' => $kurs->id]) }}">Mindestaforderige</a>
+                        <a class="nav-link" href="{{ route('ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'tagesspick' ? ' active' : '' }}">
                         <a class="nav-link" href="{{ route('tagesspick', ['kurs' => $kurs->id]) }}">Tagesspick</a>
@@ -43,7 +43,7 @@
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.bloecke' ? ' active' : '' }}"
                                href="{{ route('admin.bloecke', ['kurs' => $kurs->id]) }}">Blöck</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.ma' ? ' active' : '' }}"
-                               href="{{ route('admin.ma', ['kurs' => $kurs->id]) }}">Mindestaforderige</a>
+                               href="{{ route('admin.ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.qk' ? ' active' : '' }}"
                                href="{{ route('admin.qk', ['kurs' => $kurs->id]) }}">Qualikategorien</a>
                         </div>
