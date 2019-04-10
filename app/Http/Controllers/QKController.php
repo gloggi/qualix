@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\QKRequest;
 use App\Models\Kurs;
 use App\Models\QK;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
 
 class QKController extends Controller {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index() {
         return view('admin.qk');
@@ -23,7 +25,7 @@ class QKController extends Controller {
      *
      * @param QKRequest $request
      * @param Kurs $kurs
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(QKRequest $request, Kurs $kurs) {
         QK::create(array_merge($request->validated(), ['kurs_id' => $kurs->id]));
@@ -35,7 +37,7 @@ class QKController extends Controller {
      *
      * @param Kurs $kurs
      * @param QK $qk
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Kurs $kurs, QK $qk) {
         return view('admin.qk-edit', ['qk' => $qk]);
@@ -47,7 +49,7 @@ class QKController extends Controller {
      * @param QKRequest $request
      * @param Kurs $kurs
      * @param QK $qk
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(QKRequest $request, Kurs $kurs, QK $qk) {
         $qk->update($request->validated());
@@ -61,7 +63,7 @@ class QKController extends Controller {
      * @param Request $request
      * @param Kurs $kurs
      * @param QK $qk
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function destroy(Request $request, Kurs $kurs, QK $qk) {
         $qk->delete();
