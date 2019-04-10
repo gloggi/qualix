@@ -25,7 +25,7 @@ class Kurs extends Model
      */
     public function bloecke()
     {
-        return $this->hasMany('App\Models\Block', 'kurs_id');
+        return $this->hasMany('App\Models\Block', 'kurs_id')->orderBy('datum')->orderBy('tagesnummer')->orderBy('blocknummer')->orderBy('blockname')->orderBy('id');
     }
 
     /**
