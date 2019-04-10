@@ -27,6 +27,13 @@ class MA extends Model
     protected $fillable = ['kurs_id', 'anforderung', 'killer'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['killer' => 'bool'];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function kurs()
