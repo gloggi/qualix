@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\MAStoreRequest;
-use App\Http\Requests\MAUpdateRequest;
+use App\Http\Requests\MARequest;
 use App\Models\Kurs;
 use App\Models\MA;
 use Illuminate\Http\Request;
@@ -22,11 +21,11 @@ class MAController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param MAStoreRequest $request
+     * @param MARequest $request
      * @param Kurs $kurs
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(MAStoreRequest $request, Kurs $kurs) {
+    public function store(MARequest $request, Kurs $kurs) {
         MA::create(array_merge($request->validated(), ['kurs_id' => $kurs->id]));
         return Redirect::route('admin.ma', ['kurs' => $kurs->id]);
     }
@@ -45,12 +44,12 @@ class MAController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param MAUpdateRequest $request
+     * @param MARequest $request
      * @param Kurs $kurs
      * @param MA $ma
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(MAUpdateRequest $request, Kurs $kurs, MA $ma) {
+    public function update(MARequest $request, Kurs $kurs, MA $ma) {
         $ma->update($request->validated());
         $request->session()->flash('alert-success', __('Mindestanforderung erfolgreich gespeichert.'));
         return Redirect::route('admin.ma', ['kurs' => $kurs->id]);

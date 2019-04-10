@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\QKStoreRequest;
-use App\Http\Requests\QKUpdateRequest;
+use App\Http\Requests\QKRequest;
 use App\Models\Kurs;
 use App\Models\QK;
 use Illuminate\Http\Request;
@@ -22,11 +21,11 @@ class QKController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param QKStoreRequest $request
+     * @param QKRequest $request
      * @param Kurs $kurs
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(QKStoreRequest $request, Kurs $kurs) {
+    public function store(QKRequest $request, Kurs $kurs) {
         QK::create(array_merge($request->validated(), ['kurs_id' => $kurs->id]));
         return Redirect::route('admin.qk', ['kurs' => $kurs->id]);
     }
@@ -50,7 +49,7 @@ class QKController extends Controller {
      * @param QK $qk
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(QKUpdateRequest $request, Kurs $kurs, QK $qk) {
+    public function update(QKRequest $request, Kurs $kurs, QK $qk) {
         $qk->update($request->validated());
         $request->session()->flash('alert-success', __('Qualikategorie erfolgreich gespeichert.'));
         return Redirect::route('admin.qk', ['kurs' => $kurs->id]);
