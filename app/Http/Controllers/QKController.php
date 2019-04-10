@@ -44,7 +44,7 @@ class QKController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param QKRequest $request
      * @param Kurs $kurs
      * @param QK $qk
      * @return \Illuminate\Http\RedirectResponse
