@@ -25,7 +25,7 @@ use Illuminate\Support\Carbon;
  * @property string $bild_url
  * @property Beobachtung[] $beobachtungen
  * @property Kurs[] $kurse
- * @property Kurs $currentKurs
+ * @property Kurs $lastAccessedKurs
  * @property LoginAttempt[] $loginAttempts
  * @property RecoveryAttempt[] $recoveryAttempts
  */
@@ -73,19 +73,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @return Kurs
      */
-    public function getCurrentKursAttribute() {
+    public function getLastAccessedKursAttribute() {
         return $this->kurse()->firstOrFail();
-    }
-
-    /**
-     * Set the currently viewed kurs of the user.
-     *
-     * @param $id
-     */
-    public function setCurrentKursAttribute($id) {
-        if ($this->kurse()->find($id)) {
-            $this->kurse()->updateExistingPivot($id, ['last_accessed' => Carbon::now()]);
-        }
     }
 
     /**

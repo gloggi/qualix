@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Route;
+use App\Models\Kurs;
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -23,7 +26,16 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Route::bind('kurs', function($id) {
+            /** @var User $user */
+            $user = Auth::user();
+            return $user->kurse()->findOrFail($id);
+        });
+        Route::bind('qk', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Kurs $kurs */
+            $kurs = $route->parameter('kurs');
+            return $kurs->qks()->findOrFail($id);
+        });
 
         parent::boot();
     }

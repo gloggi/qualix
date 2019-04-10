@@ -4,16 +4,16 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
+use Tests\TestCaseWithKurs;
 
-class CreateCourseTest extends TestCase {
+class CreateQKTest extends TestCaseWithKurs {
 
     private $payload;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['name' => 'Kursname', 'kursnummer' => 'CH 123-00'];
+        $this->payload = ['quali_kategorie' => 'Qualikategorie 1'];
     }
 
     public function test_shouldRequireLogin() {
@@ -21,34 +21,34 @@ class CreateCourseTest extends TestCase {
         auth()->logout();
 
         // when
-        $response = $this->post('/neuerkurs', $this->payload);
+        $response = $this->post('/kurs/' . $this->kursId . '/admin/qk', $this->payload);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldCreateAndAutoselectCourse() {
+    public function test_shouldCreateAndDisplayQK() {
         // given
 
         // when
-        $response = $this->post('/neuerkurs', $this->payload);
+        $response = $this->post('/kurs/' . $this->kursId . '/admin/qk', $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/');
+        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/qk');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $this->assertRegExp("%<option value=\"[^\"]*\" selected>{$this->payload['name']}</option>%", $response->content());
+        $response->assertSee($this->payload['quali_kategorie']);
     }
 
-    public function test_shouldValidateNewCourseData_noName() {
+    public function test_shouldValidateNewQKData_noQualiKategorieName() {
         // given
         $payload = $this->payload;
-        unset($payload['name']);
+        unset($payload['quali_kategorie']);
 
         // when
-        $response = $this->post('/neuerkurs', $payload);
+        $response = $this->post('/kurs/' . $this->kursId . '/admin/qk', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);

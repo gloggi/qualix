@@ -36,6 +36,6 @@ class QK extends Model
      */
     public function beobachtungen()
     {
-        return $this->belongsToMany('App\Models\Beobachtung');
+        return $this->belongsToMany('App\Models\Beobachtung', 'beobachtung_qk', 'qk_id');
     }
 }

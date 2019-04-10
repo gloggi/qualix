@@ -2,25 +2,18 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
+use Tests\TestCaseWithKurs;
 
-class UpdateCourseTest extends TestCase {
+class UpdateCourseTest extends TestCaseWithKurs {
 
     private $payload;
 
     public function setUp(): void {
         parent::setUp();
 
-        // Create Kurs to test on
-        $this->post('/admin/neuerkurs', ['name' => 'Kursname', 'kursnummer' => 'CH 123-00']);
-        /** @var User $user */
-        $user = Auth::user();
-
-        $this->payload = ['id' => $user->currentKurs->id, 'name' => 'Geänderter Kursname', 'kursnummer' => 'CH 999-99'];
+        $this->payload = ['name' => 'Geänderter Kursname', 'kursnummer' => 'CH 999-99'];
     }
 
     public function test_shouldRequireLogin() {
@@ -28,7 +21,7 @@ class UpdateCourseTest extends TestCase {
         auth()->logout();
 
         // when
-        $response = $this->post('/admin/kurs', $this->payload);
+        $response = $this->post('/kurs/' . $this->kursId . '/admin', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -39,14 +32,14 @@ class UpdateCourseTest extends TestCase {
         // given
 
         // when
-        $response = $this->post('/admin/kurs', $this->payload);
+        $response = $this->post('/kurs/' . $this->kursId . '/admin', $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/admin/kurs');
+        $response->assertRedirect('/kurs/' . $this->kursId . '/admin');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $this->assertRegExp("%<option value=\"\d*\" selected>{$this->payload['name']}</option>%", $response->content());
+        $this->assertRegExp("%<option value=\"[^\"]*\" selected>{$this->payload['name']}</option>%", $response->content());
     }
 
     public function test_shouldValidateNewCourseData_noName() {
@@ -55,7 +48,7 @@ class UpdateCourseTest extends TestCase {
         unset($payload['name']);
 
         // when
-        $response = $this->post('/admin/kurs', $payload);
+        $response = $this->post('/kurs/' . $this->kursId . '/admin', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -64,25 +57,11 @@ class UpdateCourseTest extends TestCase {
     public function test_shouldValidateNewCourseData_wrongId() {
         // given
         $payload = $this->payload;
-        $payload['id']++;
 
         // when
-        $response = $this->post('/admin/kurs', $payload);
+        $response = $this->post('/kurs/' . ($this->kursId+1) . '/admin', $payload);
 
         // then
-        $response->assertStatus(403);
-        $response->assertSee('Das därfsch du nöd');
-    }
-
-    public function test_shouldValidateNewCourseData_noId() {
-        // given
-        $payload = $this->payload;
-        unset($payload['id']);
-
-        // when
-        $response = $this->post('/admin/kurs', $payload);
-
-        // then
-        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        $response->assertStatus(404);
     }
 }

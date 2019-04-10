@@ -2,10 +2,22 @@
 @import url('https://fonts.googleapis.com/css?family=Source%20Sans%20Pro');
 
 @import 'variables';
-@import 'forms';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '~@fortawesome/fontawesome-free/scss/solid.scss';
+
+@import 'forms';
+@import 'responsive-table';
+
+@include media-breakpoint-up(lg) {
+    .align-items-center-lg {
+        align-items: center;
+    }
+}
 
 .avatar {
     @extend .rounded-circle;
@@ -19,8 +31,6 @@
     height: 48px;
 }
 
-@include media-breakpoint-up(lg) {
-    .align-items-center-lg {
-        align-items: center;
-    }
+.card {
+    margin-bottom: 1em;
 }
