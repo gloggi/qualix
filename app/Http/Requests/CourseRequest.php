@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class QKStoreRequest extends FormRequest
+class CourseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class QKStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'quali_kategorie' => 'required',
+            'name' => 'required',
+            'kursnummer' => '',
         ];
     }
 }

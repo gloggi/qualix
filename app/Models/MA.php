@@ -6,7 +6,7 @@ namespace App\Models;
  * @property int $id
  * @property int $kurs_id
  * @property string $anforderung
- * @property int $killer
+ * @property bool $killer
  * @property Kurs $kurs
  * @property Beobachtung[] $beobachtungen
  * @property Block[] $bloecke
@@ -27,6 +27,13 @@ class MA extends Model
     protected $fillable = ['kurs_id', 'anforderung', 'killer'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['killer' => 'bool'];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function kurs()
@@ -39,7 +46,7 @@ class MA extends Model
      */
     public function beobachtungen()
     {
-        return $this->belongsToMany('App\Models\Beobachtung');
+        return $this->belongsToMany('App\Models\Beobachtung', 'beobachtung_ma', 'ma_id');
     }
 
     /**

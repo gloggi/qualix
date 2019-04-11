@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class QKUpdateRequest extends FormRequest
+class QKRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class QKUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'quali_kategorie' => 'required'
+            'quali_kategorie' => 'required',
         ];
     }
 }

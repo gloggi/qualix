@@ -1,5 +1,5 @@
 <input
-    type="hidden"
-    id="{{ $name }}"
-    name="{{ $name }}"
-    value="{{ $value }}">
+  type="hidden"
+  id="{{ $id ?? $name }}"
+  name="{{ $name }}"
+  value="{{ $value }}" />

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CourseStoreRequest;
-use App\Http\Requests\CourseUpdateRequest;
+use App\Http\Requests\CourseRequest;
 use App\Models\Kurs;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -38,10 +37,10 @@ class CourseController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CourseStoreRequest $request
+     * @param  CourseRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CourseStoreRequest $request) {
+    public function store(CourseRequest $request) {
         DB::transaction(function () use ($request) {
             $kurs = Kurs::create($request->validated());
 
@@ -65,10 +64,10 @@ class CourseController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  CourseUpdateRequest $request
+     * @param  CourseRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(CourseUpdateRequest $request, Kurs $kurs) {
+    public function update(CourseRequest $request, Kurs $kurs) {
         $kurs->update($request->validated());
         $request->session()->flash('alert-success', __('Kursdetails erfolgreich gespeichert.'));
         return Redirect::route('admin.kurs', ['kurs' => $kurs->id]);

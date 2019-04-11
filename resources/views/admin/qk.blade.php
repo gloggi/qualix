@@ -4,20 +4,28 @@
 
     @component('components.card', ['header' => __('Qualikategorien :courseName', ['courseName' => $kurs->name])])
 
-        @component('components.responsive-table', [
-            'data' => $kurs->qks,
-            'fields' => [
-                __('Titel') => function(\App\Models\QK $qk) { return $qk->quali_kategorie; },
-                __('Anzahl Beobachtungen') => function(\App\Models\QK $qk) { return count($qk->beobachtungen); },
-            ],
-            'actions' => [
-                'edit' => function(\App\Models\QK $qk) use ($kurs) { return route('admin.qk.edit', ['kurs' => $kurs->id, 'qk' => $qk->id]); },
-                'delete' => function(\App\Models\QK $qk) use ($kurs) { return [
-                    'text' => __('Willst du diese Quali-Kategorie wirklich löschen? ' . count($qk->beobachtungen) . ' Beobachtung(en) ist / sind darauf zugewiesen.'),
-                    'route' => ['admin.qk.delete', ['kurs' => $kurs->id, 'qk' => $qk->id]],
-                 ];},
-            ]
-        ])@endcomponent
+        @if (count($kurs->qks))
+
+            @component('components.responsive-table', [
+                'data' => $kurs->qks,
+                'fields' => [
+                    __('Titel') => function(\App\Models\QK $qk) { return $qk->quali_kategorie; },
+                    __('Anzahl Beobachtungen') => function(\App\Models\QK $qk) { return count($qk->beobachtungen); },
+                ],
+                'actions' => [
+                    'edit' => function(\App\Models\QK $qk) use ($kurs) { return route('admin.qk.edit', ['kurs' => $kurs->id, 'qk' => $qk->id]); },
+                    'delete' => function(\App\Models\QK $qk) use ($kurs) { return [
+                        'text' => __('Willst du diese Qualikategorie wirklich löschen? ' . count($qk->beobachtungen) . ' Beobachtung(en) ist / sind darauf zugewiesen.'),
+                        'route' => ['admin.qk.delete', ['kurs' => $kurs->id, 'qk' => $qk->id]],
+                     ];},
+                ]
+            ])@endcomponent
+
+        @else
+
+            {{__('Bisher sind keine Qualikategorien erfasst.')}}
+
+        @endif
 
     @endcomponent
 
