@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BlockRequest;
 use App\Models\Block;
 use App\Models\Kurs;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class BlockController extends Controller {
@@ -28,7 +30,13 @@ class BlockController extends Controller {
      * @return RedirectResponse
      */
     public function store(BlockRequest $request, Kurs $kurs) {
-        Block::create(array_merge($request->validated(), ['kurs_id' => $kurs->id]));
+        $data = $request->validated();
+        Block::create(array_merge($data, ['kurs_id' => $kurs->id]));
+
+        /** @var User $user */
+        $user = Auth::user();
+        $user->setLastUsedBlockDate($data['datum'], $kurs);
+
         return Redirect::route('admin.bloecke', ['kurs' => $kurs->id]);
     }
 
@@ -52,7 +60,13 @@ class BlockController extends Controller {
      * @return RedirectResponse
      */
     public function update(BlockRequest $request, Kurs $kurs, Block $block) {
-        $block->update($request->validated());
+        $data = $request->validated();
+        $block->update($data);
+
+        /** @var User $user */
+        $user = Auth::user();
+        $user->setLastUsedBlockDate($data['datum'], $kurs);
+
         $request->session()->flash('alert-success', __('Block erfolgreich gespeichert.'));
         return Redirect::route('admin.bloecke', ['kurs' => $kurs->id]);
     }

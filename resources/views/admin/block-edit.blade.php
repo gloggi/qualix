@@ -10,7 +10,7 @@
 
             @component('components.form.textInput', ['name' => 'blockname', 'label' => __('Blockname'), 'required' => true, 'value' => $block->blockname])@endcomponent
 
-            @component('components.form.dateInput', ['name' => 'datum', 'label' => __('Datum'), 'required' => true, 'value' => $block->datum->format('d.m.Y')])@endcomponent
+            @component('components.form.dateInput', ['name' => 'datum', 'label' => __('Datum'), 'required' => true, 'value' => $block->datum])@endcomponent
 
             @component('components.form.submit', ['label' => __('Speichern')])@endcomponent
 
