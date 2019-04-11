@@ -49,7 +49,7 @@
 
             @component('components.form.textInput', ['name' => 'blockname', 'label' => __('Blockname'), 'required' => true])@endcomponent
 
-            @component('components.form.textInput', ['name' => 'datum', 'label' => __('Datum'), 'required' => true])@endcomponent
+            @component('components.form.dateInput', ['name' => 'datum', 'label' => __('Datum'), 'required' => true])@endcomponent
 
             @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
 

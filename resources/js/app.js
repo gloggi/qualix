@@ -20,7 +20,22 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+var datePicker = require('vue-bootstrap-datetimepicker');
+require('pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css');
+jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
+    icons: {
+        time: 'fas fa-clock',
+        date: 'fas fa-calendar',
+        up: 'fas fa-arrow-up',
+        down: 'fas fa-arrow-down',
+        previous: 'fas fa-chevron-left',
+        next: 'fas fa-chevron-right',
+        today: 'fas fa-calendar-check',
+        clear: 'fas fa-trash-alt',
+        close: 'fas fa-times-circle'
+    }
+});
+Vue.component('date-picker', datePicker);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
