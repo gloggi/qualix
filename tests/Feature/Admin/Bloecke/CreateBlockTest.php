@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithKurs;
@@ -113,5 +114,29 @@ class CreateBlockTest extends TestCaseWithKurs {
         // then
         $response->assertStatus(200);
         $response->assertDontSee('Bisher sind keine Blöcke erfasst.');
+    }
+
+    public function test_shouldShowTodayInForm_whenNoBlockHasYetBeenCreated() {
+        // given
+
+        // when
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+
+        // then
+        $response->assertStatus(200);
+        $response->assertSee(Carbon::today()->format('d.m.Y'));
+    }
+
+    public function test_shouldShowDateFromLastCreatedBlockInForm_whenBlockHasBeenCreated() {
+        // given
+        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+
+        // when
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+
+        // then
+        $response->assertStatus(200);
+        $response->assertDontSee(Carbon::today()->format('d.m.Y'));
+        $this->assertRegExp('/<date-picker.*value="' . str_replace('.', '\.', $this->payload['datum']) . '"/s', $response->content());
     }
 }
