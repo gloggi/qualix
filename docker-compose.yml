@@ -8,8 +8,22 @@ services:
       - '80:80'
     links:
       - db
+    working_dir: /var/www
     volumes:
-      - .:/var/www
+      - .:/var/www:delegated
+      - storage-framework:/var/www/storage/framework
+      - cache:/var/www/bootstrap/cache
+      - vendor:/var/www/vendor
+
+  composer:
+    image: composer:1.8
+    container_name: 'qualix-composer'
+    restart: 'no'
+    entrypoint: bash -c "composer install --ignore-platform-reqs --no-interaction --no-plugins --no-scripts --prefer-dist --no-suggest && cp -r vendor/* /vendor-copy-to-host"
+    volumes:
+      - .:/app:delegated
+      - vendor:/app/vendor
+      - ./vendor:/vendor-copy-to-host
 
   db:
     image: mariadb:10.3
@@ -22,12 +36,15 @@ services:
       - MYSQL_PASSWORD=qualix
 
   node:
-    image: node:11.11.0
+    image: node:11.13.0
     container_name: 'qualix-npm'
     working_dir: '/app'
     volumes:
-      - .:/app
-    command: bash -c "npm install && npm run watch"
+      - .:/app:delegated
+      - node_modules:/app/node_modules
+      - ./node_modules:/node_modules-copy-to-host
+      - ./public:/app/public:delegated
+    entrypoint: /bin/sh -c "npm install && cp -r node_modules/* /node_modules-copy-to-host && npm run watch"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -36,3 +53,9 @@ services:
       - '8081:80'
     links:
       - db
+
+volumes:
+  storage-framework:
+  cache:
+  vendor:
+  node_modules:
