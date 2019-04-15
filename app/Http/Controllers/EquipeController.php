@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\InvitationRequest;
-use App\Models\Einladung;
 use App\Models\Kurs;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -12,7 +10,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Str;
 
 class EquipeController extends Controller {
     /**
@@ -22,31 +19,6 @@ class EquipeController extends Controller {
      */
     public function index() {
         return view('admin.equipe');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param InvitationRequest $request
-     * @param Kurs $kurs
-     * @return RedirectResponse
-     */
-    public function store(InvitationRequest $request, Kurs $kurs) {
-        $data = $request->validated();
-
-        if (!Einladung::where('kurs_id', '=', $kurs->id)->where('email', '=', $data['email'])->exists()) {
-
-            do {
-                $token = Str::random();
-            } while (Einladung::where('token', '=', $token)->exists());
-
-            Einladung::create(array_merge($data, ['kurs_id' => $kurs->id, 'token' => $token]));
-
-        }
-
-        // TODO mail to invitee with token
-
-        return Redirect::route('admin.equipe', ['kurs' => $kurs->id]);
     }
 
     /**

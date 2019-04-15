@@ -32,7 +32,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/kurs/{kurs}/admin/equipe/{user}', 'EquipeController@destroy')->name('admin.equipe.delete');
 
     Route::post('/kurs/{kurs}/admin/invitation', 'InvitationController@store')->name('admin.invitation.store');
-    Route::delete('/kurs/{kurs}/admin/invitation', 'InvitationController@store')->name('admin.invitation.delete');
+    Route::delete('/kurs/{kurs}/admin/invitation/{email}', 'InvitationController@destroy')->name('admin.invitation.delete');
+    Route::get('/invitation/{token}', 'InvitationController@claim')->name('invitation.claim');
 
     Route::get('/kurs/{kurs}/admin/tn', 'TNController@index')->name('admin.tn');
     Route::post('/kurs/{kurs}/admin/tn', 'TNController@store')->name('admin.tn.store');
