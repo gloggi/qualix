@@ -18,7 +18,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $kurs_id
- * @property string $username
+ * @property string $name
  * @property string $abteilung
  * @property string $password
  * @property string $email
