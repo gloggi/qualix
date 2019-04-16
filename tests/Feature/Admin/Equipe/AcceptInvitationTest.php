@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithKurs;
 
 class AcceptInvitationTest extends TestCaseWithKurs {
@@ -94,6 +95,17 @@ class AcceptInvitationTest extends TestCaseWithKurs {
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Kursname');
+    }
+
+    public function test_shouldValidateClaimedInvitation_noToken() {
+        // given
+        $this->be(factory(User::class)->create(['name' => 'Lindo']));
+
+        // when
+        $response = $this->post('/invitation/', []);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
     public function test_shouldRedirectToInvitationClaimPage_afterCompletingLogin() {
