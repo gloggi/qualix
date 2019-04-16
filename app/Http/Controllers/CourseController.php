@@ -42,10 +42,7 @@ class CourseController extends Controller {
      */
     public function store(CourseRequest $request) {
         DB::transaction(function () use ($request) {
-            $kurs = Kurs::create($request->validated());
-
-            $kurs->users()->attach(Auth::user()->getAuthIdentifier());
-            $kurs->save();
+            Kurs::create($request->validated())->users()->attach(Auth::user()->getAuthIdentifier());
         });
 
         return Redirect::route('home');
