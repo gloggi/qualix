@@ -28,6 +28,11 @@
                         </span>
                     </td>
                 @endif
+                @if(isset($bild) && $bild)
+                    @foreach($bild as $fieldName => $fieldAccessor)
+                        <td data-label="{{ $fieldName }}&#xa;">{!! $fieldAccessor($row) !!}</td>
+                    @endforeach
+                @endif
                 @foreach($fields as $fieldName => $fieldAccessor)
                     <td data-label="{{ $fieldName }}&#xa;">{{ $fieldAccessor($row) }}</td>
                 @endforeach
