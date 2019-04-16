@@ -77,7 +77,7 @@ class CreateInvitationTest extends TestCaseWithKurs {
         $response->assertSee('Momentan sind keine Einladungen offen.');
     }
 
-    public function test_shouldNotShowMessage_whenSomeQKInCourse() {
+    public function test_shouldNotShowMessage_whenSomeInvitationsInCourse() {
         // given
         $this->post('/kurs/' . $this->kursId . '/admin/invitation', $this->payload);
 

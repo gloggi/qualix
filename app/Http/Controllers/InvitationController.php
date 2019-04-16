@@ -86,9 +86,10 @@ class InvitationController extends Controller {
      * @param Kurs $kurs
      * @param $email
      * @return RedirectResponse
+     * @throws \Exception
      */
     public function destroy(Request $request, Kurs $kurs, $email) {
-        Einladung::where('kurs_id', '=', $kurs->id)->where('email', '=', $email)->delete();
+        Einladung::where('kurs_id', '=', $kurs->id)->where('email', '=', $email)->firstOrFail()->delete();
 
         return Redirect::route('admin.equipe', ['kurs' => $kurs->id]);
     }
