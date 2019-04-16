@@ -22,16 +22,6 @@ class EquipeController extends Controller {
     }
 
     /**
-     * Claim an invitation received by email.
-     *
-     * @param Request $request
-     * @param $token
-     */
-    public function claimInvitation(Request $request, $token) {
-        // TODO
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param Request $request
