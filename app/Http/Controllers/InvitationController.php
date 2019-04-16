@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvitationClaimRequest;
 use App\Http\Requests\InvitationRequest;
 use App\Mail\InvitationMail;
 use App\Models\Einladung;
 use App\Models\Kurs;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
@@ -36,13 +41,42 @@ class InvitationController extends Controller {
     }
 
     /**
-     * Claim an invitation received by email.
+     * View an invitation received by email.
      *
      * @param Request $request
      * @param $token
+     * @return Response
      */
-    public function claimInvitation(Request $request, $token) {
-        // TODO
+    public function index(Request $request, $token) {
+        $invitation = Einladung::where('token', '=', $token)->firstOrFail();
+
+        /** @var User $user */
+        $user = Auth::user();
+        if ($user->kurse()->find($invitation->kurs->id)) {
+            return view('invitation-already-in-course', ['invitation' => $invitation]);
+        }
+
+        return view('invitation', ['invitation' => $invitation]);
+    }
+
+    /**
+     * Claim an invitation by a given token.
+     *
+     * @param InvitationClaimRequest $request
+     * @return RedirectResponse
+     */
+    public function claim(InvitationClaimRequest $request) {
+        return DB::transaction(function () use ($request) {
+            $invitation = Einladung::where('token', '=', $request->validated()['token'])->firstOrFail();
+
+            $invitation->kurs->users()->attach(Auth::user()->getAuthIdentifier());
+
+            $invitation->delete();
+
+            $request->session()->flash('alert-success', __('Einladung angenommen. Du bist jetzt in der Equipe von :kursname', ['kursname' => $invitation->kurs->name]));
+
+            return Redirect::route('index', ['kurs' => $invitation->kurs->id]);
+        });
     }
 
     /**
@@ -51,7 +85,7 @@ class InvitationController extends Controller {
      * @param Request $request
      * @param Kurs $kurs
      * @param $email
-     * @return void
+     * @return RedirectResponse
      */
     public function destroy(Request $request, Kurs $kurs, $email) {
         Einladung::where('kurs_id', '=', $kurs->id)->where('email', '=', $email)->delete();

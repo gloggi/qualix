@@ -21,21 +21,29 @@
 
     @endcomponent
 
-    @component('components.card', ['header' => __('Offene Einladungen')])
+    @component('components.card', ['header' => __('Einladungen')])
 
-        @component('components.responsive-table', [
-            'id' => 'invitations',
-            'data' => $kurs->einladungen,
-            'fields' => [
-                __('E-Mail') => function(\App\Models\Einladung $einladung) { return $einladung->email; },
-            ],
-            'actions' => [
-                'delete' => function(\App\Models\Einladung $einladung) use ($kurs) { return [
-                    'text' => __('Willst du die Einladung für ' . $einladung->email . ' wirklich entfernen?'),
-                    'route' => ['admin.invitation.delete', ['kurs' => $kurs->id, 'email' => $einladung->email]],
-                 ]; },
-            ]
-        ])@endcomponent
+        @if (count($kurs->einladungen))
+
+            @component('components.responsive-table', [
+                'id' => 'invitations',
+                'data' => $kurs->einladungen,
+                'fields' => [
+                    __('E-Mail') => function(\App\Models\Einladung $einladung) { return $einladung->email; },
+                ],
+                'actions' => [
+                    'delete' => function(\App\Models\Einladung $einladung) use ($kurs) { return [
+                        'text' => __('Willst du die Einladung für ' . $einladung->email . ' wirklich entfernen?'),
+                        'route' => ['admin.invitation.delete', ['kurs' => $kurs->id, 'email' => $einladung->email]],
+                     ]; },
+                ]
+            ])@endcomponent
+
+        @else
+
+            {{__('Momentan sind keine Einladungen offen.')}}
+
+        @endif
 
     @endcomponent
 
