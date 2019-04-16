@@ -66,17 +66,31 @@ class InvitationController extends Controller {
      * @return RedirectResponse
      */
     public function claim(InvitationClaimRequest $request) {
-        return DB::transaction(function () use ($request) {
-            $invitation = Einladung::where('token', '=', $request->validated()['token'])->firstOrFail();
+        try {
+            return DB::transaction(function () use ($request) {
+                $invitation = Einladung::where('token', '=', $request->validated()['token'])->firstOrFail();
 
-            $invitation->kurs->users()->attach(Auth::user()->getAuthIdentifier());
+                /** @var User $user */
+                $user = Auth::user();
+                if ($user->kurse()->find($invitation->kurs->id)) {
+                    return Redirect::route('admin.equipe', ['kurs' => $invitation->kurs->id]);
+                }
 
-            $invitation->delete();
+                $invitation->kurs->users()->attach($user->getAuthIdentifier());
 
-            $request->session()->flash('alert-success', __('Einladung angenommen. Du bist jetzt in der Equipe von :kursname', ['kursname' => $invitation->kurs->name]));
+                $invitation->delete();
 
-            return Redirect::route('index', ['kurs' => $invitation->kurs->id]);
-        });
+                $request->session()->flash('alert-success', __('Einladung angenommen. Du bist jetzt in der Equipe von :kursname', ['kursname' => $invitation->kurs->name]));
+
+                return Redirect::route('index', ['kurs' => $invitation->kurs->id]);
+            });
+        } catch (\Exception $e) {
+
+            $request->session()->flash('alert-danger', __('Einladung konnte nicht angenommen werden.'));
+            return Redirect::route('home');
+
+        }
+
     }
 
     /**
