@@ -28,7 +28,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/kurs/{kurs}/admin', 'CourseController@edit')->name('admin.kurs');
     Route::post('/kurs/{kurs}/admin', 'CourseController@update')->name('admin.kurs.update');
     Route::get('/kurs/{kurs}/admin/equipe', 'KitchenSinkController@index')->name('admin.equipe');
-    Route::get('/kurs/{kurs}/admin/tn', 'KitchenSinkController@index')->name('admin.tn');
+
+    Route::get('/kurs/{kurs}/admin/tn', 'TNController@index')->name('admin.tn');
+    Route::post('/kurs/{kurs}/admin/tn', 'TNController@store')->name('admin.tn.store');
+    Route::get('/kurs/{kurs}/admin/tn/{tn}', 'TNController@edit')->name('admin.tn.edit');
+    Route::post('/kurs/{kurs}/admin/tn/{tn}', 'TNController@update')->name('admin.tn.update');
+    Route::delete('/kurs/{kurs}/admin/tn/{tn}', 'TNController@destroy')->name('admin.tn.delete');
+
     Route::get('/kurs/{kurs}/admin/bloecke', 'KitchenSinkController@index')->name('admin.bloecke');
 
     Route::get('/kurs/{kurs}/admin/ma', 'MAController@index')->name('admin.ma');
@@ -45,7 +51,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/neuerkurs', 'CourseController@create')->name('admin.neuerkurs');
     Route::post('/neuerkurs', 'CourseController@store')->name('admin.neuerkurs.store');
-
 });
 
 Auth::routes(['verify' => true]);
