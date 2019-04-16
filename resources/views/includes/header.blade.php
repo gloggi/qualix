@@ -16,7 +16,7 @@
                         </select>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'bloecke' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('bloecke', ['kurs' => $kurs->id]) }}">Blöck</a>
+                        <a class="nav-link" href="{{ route('bloecke', ['kurs' => $kurs->id]) }}">Blöcke</a>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'tn' ? ' active' : '' }}">
                         <a class="nav-link" href="{{ route('tn', ['kurs' => $kurs->id]) }}">TN</a>
@@ -41,7 +41,7 @@
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.tn' ? ' active' : '' }}"
                                href="{{ route('admin.tn', ['kurs' => $kurs->id]) }}">TN</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.bloecke' ? ' active' : '' }}"
-                               href="{{ route('admin.bloecke', ['kurs' => $kurs->id]) }}">Blöck</a>
+                               href="{{ route('admin.bloecke', ['kurs' => $kurs->id]) }}">Blöcke</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.ma' ? ' active' : '' }}"
                                href="{{ route('admin.ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.qk' ? ' active' : '' }}"

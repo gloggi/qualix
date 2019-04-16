@@ -22,6 +22,9 @@
     width: 0;
   }
 
+  td, th {
+    hyphens: auto;
+  }
 
   @include media-breakpoint-down(md) {
 
