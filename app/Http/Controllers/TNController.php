@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TN;
+use App\Models\Tn;
 use App\Models\Kurs;
 use App\Http\Requests\TNStoreRequest;
 use Illuminate\Http\Request;
@@ -31,7 +31,7 @@ class TNController extends Controller
     public function store(TNStoreRequest $request, Kurs $kurs)
     {
         $validatedData = $request->validated();
-        $tn = new TN($validatedData);
+        $tn = new Tn($validatedData);
         $tn->kurs_id = Auth::user()->lastAccessedKurs->id;
 
         if (isset($validatedData['bild'])) {
@@ -47,7 +47,7 @@ class TNController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TN  $tn
+     * @param  \App\Models\Tn  $tn
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
@@ -60,11 +60,12 @@ class TNController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TN  $tn
+     * @param  \App\Models\Tn  $tn
      * @return \Illuminate\Http\Response
      */
-    public function edit(Kurs $kurs, TN $tn)
+    public function edit(Kurs $kurs, Tn $tn)
     {
+        dd($tn->beobachtungen);
         return view('admin.tn.edit', ['tn' => $tn]);
     }
 
@@ -72,10 +73,10 @@ class TNController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TN  $tn
+     * @param  \App\Models\Tn  $tn
      * @return \Illuminate\Http\Response
      */
-    public function update(TNStoreRequest $request, Kurs $kurs, TN $tn)
+    public function update(TNStoreRequest $request, Kurs $kurs, Tn $tn)
     {
         $validatedData = $request->validated();
 
@@ -93,10 +94,10 @@ class TNController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TN  $tn
+     * @param  \App\Models\Tn  $tn
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Kurs $kurs, TN $tn)
+    public function destroy(Request $request, Kurs $kurs, Tn $tn)
     {
         if ($tn->bild_url) {
             Storage::delete($tn->bild_url);

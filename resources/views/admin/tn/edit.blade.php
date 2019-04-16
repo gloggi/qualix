@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('TN bearbeiten')])
+    @component('components.card', ['header' => __('TN')])
 
         @component('components.form', ['route' => ['admin.tn.update', ['kurs' => $kurs->id, 'tn' => $tn->id]], 'enctype' => 'multipart/form-data'])
 

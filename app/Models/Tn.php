@@ -11,7 +11,7 @@ namespace App\Models;
  * @property Kurs $kurs
  * @property Beobachtung[] $beobachtungen
  */
-class TN extends Model
+class Tn extends Model
 {
     /**
      * The table associated with the model.
