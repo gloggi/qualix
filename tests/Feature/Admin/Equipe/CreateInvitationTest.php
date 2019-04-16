@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Mail\InvitationMail;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithKurs;
 
@@ -40,6 +42,19 @@ class CreateInvitationTest extends TestCaseWithKurs {
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['email']);
+    }
+
+    public function test_shouldSendInvitationEmail() {
+        // given
+        Mail::fake();
+
+        // when
+        $this->post('/kurs/' . $this->kursId . '/admin/invitation', $this->payload);
+
+        // then
+        Mail::assertSent(InvitationMail::class, function (InvitationMail $mail) {
+            return $mail->hasTo($this->payload['email']);
+        });
     }
 
     public function test_shouldValidateNewInvitationData_noEmail() {
