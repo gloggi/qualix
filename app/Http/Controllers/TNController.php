@@ -52,7 +52,6 @@ class TNController extends Controller
      */
     public function show(Request $request)
     {
-        dd($request);
         $tn = $request->tn;
         return view('admin.tn.show', compact('tn'));
     }
