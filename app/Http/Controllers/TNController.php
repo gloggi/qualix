@@ -30,16 +30,7 @@ class TNController extends Controller
      */
     public function store(TNStoreRequest $request, Kurs $kurs)
     {
-        $validatedData = $request->validated();
-        $tn = new TN($validatedData);
-        $tn->kurs_id = Auth::user()->lastAccessedKurs->id;
-
-        if (isset($validatedData['bild'])) {
-            $path = $validatedData['bild']->store('public/images');
-            $tn->bild_url = $path;
-        }
-
-        $tn->save();
+        TN::create(array_merge($request->validated(), ['kurs_id' => $kurs->id]));
 
         return Redirect::route('admin.tn', ['kurs' => $kurs->id]);
     }
@@ -70,20 +61,18 @@ class TNController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TN  $tn
-     * @return \Illuminate\Http\Response
+     * @param TNStoreRequest $request
+     * @param Kurs $kurs
+     * @param TN $tn
+     * @return RedirectResponse
      */
     public function update(TNStoreRequest $request, Kurs $kurs, TN $tn)
     {
-        $validatedData = $request->validated();
-
-        if (isset($validatedData['bild'])) {
-            $path = $validatedData['bild']->store('public/images');
-            $validatedData['bild_url'] = $path;
+        if ($request->file('bild') && $tn->bild_url) {
             Storage::delete($tn->bild_url);
         }
-        $tn->update($validatedData);
+
+        $tn->update($request->validated());
 
         $request->session()->flash('alert-success', __('TN erfolgreich gespeichert.'));
         return Redirect::route('admin.tn', ['kurs' => $kurs->id]);
