@@ -26,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', CurrentKursViewComposer::class);
+
+        setlocale(LC_ALL, __('de_CH.utf8'));
     }
 }
