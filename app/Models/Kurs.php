@@ -11,7 +11,7 @@ namespace App\Models;
  * @property User[] $users
  * @property MA[] $mas
  * @property QK[] $qks
- * @property Tn[] $tns
+ * @property TN[] $tns
  */
 class Kurs extends Model
 {
@@ -65,6 +65,6 @@ class Kurs extends Model
      */
     public function tns()
     {
-        return $this->hasMany('App\Models\Tn', 'kurs_id');
+        return $this->hasMany('App\Models\TN', 'kurs_id');
     }
 }

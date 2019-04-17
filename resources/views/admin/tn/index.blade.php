@@ -9,15 +9,15 @@
             @component('components.responsive-table', [
                 'data' => $kurs->tns,
                 'bild' => [
-                    __('Bild') => function(\App\Models\Tn $tn) { return ($tn->bild_url!=null) ? view('components.img',  ['src' => asset(Storage::url($tn->bild_url)), 'classes' => ['avatar-small']]) : ''; },
+                    __('Bild') => function(\App\Models\TN $tn) { return ($tn->bild_url!=null) ? view('components.img',  ['src' => asset(Storage::url($tn->bild_url)), 'classes' => ['avatar-small']]) : ''; },
                 ],
                 'fields' => [
-                    __('Pfadiname') => function(\App\Models\Tn $tn) { return $tn->pfadiname; },
-                    __('Abteilung') => function(\App\Models\Tn $tn) { return $tn->abteilung; },
+                    __('Pfadiname') => function(\App\Models\TN $tn) { return $tn->pfadiname; },
+                    __('Abteilung') => function(\App\Models\TN $tn) { return $tn->abteilung; },
                 ],
                 'actions' => [
-                    'edit' => function(\App\Models\Tn $tn) use ($kurs) { return route('admin.tn.edit', ['kurs' => $kurs->id, 'tn' => $tn->id]); },
-                    'delete' => function(\App\Models\Tn $tn) use ($kurs) { return [
+                    'edit' => function(\App\Models\TN $tn) use ($kurs) { return route('admin.tn.edit', ['kurs' => $kurs->id, 'tn' => $tn->id]); },
+                    'delete' => function(\App\Models\TN $tn) use ($kurs) { return [
                         'text' => __('Willst du diese TN wirklich löschen? ' . count($tn->beobachtungen) . ' Beobachtung(en) ist / sind darauf zugewiesen.'),
                         'route' => ['admin.tn.delete', ['kurs' => $kurs->id, 'tn' => $tn->id]],
                      ];},
