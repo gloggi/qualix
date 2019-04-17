@@ -32,13 +32,30 @@ class TNController extends Controller
     {
         $validatedData = $request->validated();
         $tn = new Tn($validatedData);
-        $tn->kurs_id = $kurs->id;
+        $tn->kurs_id = Auth::user()->lastAccessedKurs->id;
+
+        if (isset($validatedData['bild'])) {
+            $path = $validatedData['bild']->store('public/images');
+            $tn->bild_url = $path;
+        }
 
         $tn->save();
 
         return Redirect::route('admin.tn', ['kurs' => $kurs->id]);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Tn  $tn
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Request $request)
+    {
+        dd($request);
+        $tn = $request->tn;
+        return view('admin.tn.show', compact('tn'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -62,7 +79,9 @@ class TNController extends Controller
     {
         $validatedData = $request->validated();
 
-        if (isset($validatedData['bild_url'])) {
+        if (isset($validatedData['bild'])) {
+            $path = $validatedData['bild']->store('public/images');
+            $validatedData['bild_url'] = $path;
             Storage::delete($tn->bild_url);
         }
         $tn->update($validatedData);

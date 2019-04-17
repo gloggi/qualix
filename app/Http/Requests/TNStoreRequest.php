@@ -29,16 +29,4 @@ class TNStoreRequest extends FormRequest
             'bild' => 'nullable|image|max:2000',
         ];
     }
-
-    public function validated()
-    {
-        $return =  parent::validated();
-
-        if (isset($return['bild'])) {
-            $path = $return['bild']->store('public/images');
-            $return['bild_url'] = $path;
-        }
-
-        return $return;
-    }
 }
