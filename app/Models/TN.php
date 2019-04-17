@@ -38,6 +38,6 @@ class TN extends Model
      */
     public function beobachtungen()
     {
-        return $this->hasMany('App\Models\Beobachtung');
+        return $this->hasMany('App\Models\Beobachtung', 'tn_id');
     }
 }
