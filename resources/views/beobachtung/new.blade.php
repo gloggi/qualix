@@ -36,9 +36,9 @@
                 'options' => [ '2' => 'Positiv', '1' => 'Neutral', '0' => 'Negativ']
             ])@endcomponent
 
-            @component('components.form.textInput', ['name' => 'kommentar', 'label' => __('Beobachtung'), 'required' => true])@endcomponent
+            @component('components.form.textareaInput', ['name' => 'kommentar', 'label' => __('Beobachtung'), 'required' => true])@endcomponent
 
-            @component('components.form.submit', ['label' => __('Einladen')])@endcomponent
+            @component('components.form.submit', ['label' => __('Speichern')])@endcomponent
 
         @endcomponent
 
