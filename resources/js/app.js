@@ -21,7 +21,6 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 var datePicker = require('vue-bootstrap-datetimepicker');
-require('pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css');
 jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
     icons: {
         time: 'fas fa-clock',
