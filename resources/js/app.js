@@ -36,6 +36,9 @@ jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
 });
 Vue.component('date-picker', datePicker);
 
+var multiselect = require('./Components/MultiSelect').default;
+Vue.component('multi-select', multiselect);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

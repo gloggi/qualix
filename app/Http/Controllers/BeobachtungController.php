@@ -21,7 +21,7 @@ class BeobachtungController extends Controller {
      * @return Response
      */
     public function create(Request $request) {
-        return view('beobachtung.new', ['tn_id' => $request->input('tn'), 'block' => $request->input('block')]);
+        return view('beobachtung.new', ['tn_id' => $request->input('tn'), 'block_id' => $request->input('block')]);
     }
 
     /**
