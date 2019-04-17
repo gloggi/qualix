@@ -28,7 +28,13 @@
                 'multiple' => false,
             ])@endcomponent
 
-            @component('components.form.textInput', ['name' => 'bewertung', 'label' => __('Bewertung'), 'required' => true, 'value' => '0'])@endcomponent
+            @component('components.form.radioButtonInput', [
+                'name' => 'bewertung',
+                'label' => __('Bewertung'),
+                'required' => true,
+                'value' => '1',
+                'options' => [ '2' => 'Positiv', '1' => 'Neutral', '0' => 'Negativ']
+            ])@endcomponent
 
             @component('components.form.textInput', ['name' => 'kommentar', 'label' => __('Beobachtung'), 'required' => true])@endcomponent
 
