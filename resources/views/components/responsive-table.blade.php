@@ -4,11 +4,6 @@
         @if(isset($selectable) && $selectable)
             <th class="check"></th>
         @endif
-        @if(isset($bild) && $bild)
-            @foreach($bild as $fieldName => $fieldAccessor)
-                <th>{{ $fieldName }}</th>
-            @endforeach
-        @endif
         @foreach($fields as $fieldName => $fieldAccessor)
             <th>{{ $fieldName }}</th>
         @endforeach
