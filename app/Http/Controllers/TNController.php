@@ -65,7 +65,6 @@ class TNController extends Controller
      */
     public function edit(Kurs $kurs, Tn $tn)
     {
-        dd($tn->beobachtungen);
         return view('admin.tn.edit', ['tn' => $tn]);
     }
 
