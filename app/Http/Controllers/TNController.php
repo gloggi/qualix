@@ -36,18 +36,6 @@ class TNController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TN  $tn
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request)
-    {
-        $tn = $request->tn;
-        return view('admin.tn.show', compact('tn'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\TN  $tn
