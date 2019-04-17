@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\TN;
 use App\Models\Kurs;
 use App\Http\Requests\TNStoreRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +17,7 @@ class TNController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -25,8 +27,9 @@ class TNController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param TNStoreRequest $request
+     * @param Kurs $kurs
+     * @return RedirectResponse
      */
     public function store(TNStoreRequest $request, Kurs $kurs)
     {
@@ -38,8 +41,8 @@ class TNController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TN  $tn
-     * @return \Illuminate\Http\Response
+     * @param TN $tn
+     * @return Response
      */
     public function edit(Kurs $kurs, TN $tn)
     {
@@ -69,8 +72,10 @@ class TNController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TN  $tn
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Kurs $kurs
+     * @param TN $tn
+     * @return RedirectResponse
      */
     public function destroy(Request $request, Kurs $kurs, TN $tn)
     {
