@@ -69,6 +69,7 @@ class BlockController extends Controller {
             $data = $request->validated();
             $block->update($data);
 
+            $block->mas()->detach(null);
             $block->mas()->attach(array_filter(explode(',', $data['ma_ids'])));
 
             /** @var User $user */

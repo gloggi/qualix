@@ -12,6 +12,16 @@
 
             @component('components.form.dateInput', ['name' => 'datum', 'label' => __('Datum'), 'required' => true, 'value' => $block->datum])@endcomponent
 
+            @component('components.form.multiSelectInput', [
+                'name' => 'ma_ids',
+                'label' => __('Mindestanforderungen'),
+                'value' => implode(',', array_map(function(\App\Models\MA $ma) { return $ma->id; }, $block->mas->all())),
+                'options' => $kurs->mas->all(),
+                'valueFn' => function(\App\Models\MA $ma) { return $ma->id; },
+                'displayFn' => function(\App\Models\MA $ma) { return $ma->anforderung; },
+                'multiple' => true,
+            ])@endcomponent
+
             @component('components.form.submit', ['label' => __('Speichern')])@endcomponent
 
         @endcomponent
