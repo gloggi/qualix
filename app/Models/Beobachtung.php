@@ -42,7 +42,7 @@ class Beobachtung extends Model
      */
     public function tn()
     {
-        return $this->belongsTo('App\Models\TN');
+        return $this->belongsTo('App\Models\TN', 'tn_id');
     }
 
     /**

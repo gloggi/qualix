@@ -1,0 +1,1 @@
+<img class="{{...$classes}}" src="{{$src}}" alt="{{$alt ?? ''}}">

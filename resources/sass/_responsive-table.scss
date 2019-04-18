@@ -1,6 +1,10 @@
 
 .table-responsive-cards {
 
+  th, td {
+    vertical-align: middle;
+  }
+
   th {
     border-top: 0;
   }
