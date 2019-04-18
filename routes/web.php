@@ -21,7 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/user', 'KitchenSinkController@index')->name('user');
     Route::get('/kurs/{kurs}', 'KitchenSinkController@index')->name('index');
 
-    Route::get('/kurs/{kurs}/bloecke', 'KitchenSinkController@index')->name('bloecke');
+    Route::get('/kurs/{kurs}/bloecke', 'BlockListController@index')->name('bloecke');
     Route::get('/kurs/{kurs}/tn', 'TNListController@index')->name('tn');
 
     Route::get('/kurs/{kurs}/beobachtungen/neu', 'BeobachtungController@create')->name('beobachtung.neu');

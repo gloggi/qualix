@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property int $tagesnummer
  * @property int $blocknummer
  * @property string $full_block_number
+ * @property string $blockname_and_number
  * @property CarbonInterface $datum
  * @property Kurs $kurs
  * @property Beobachtung[] $beobachtungen
@@ -115,5 +116,14 @@ class Block extends Model {
      */
     public function setFullBlockNumberAttribute($value) {
         [$this->tagesnummer, $this->blocknummer] = ($value === null ? [null, null] : explode('.', $value, 2));
+    }
+
+    /**
+     * Get the block name preceded with the full block number, if available.
+     *
+     * @return string|null
+     */
+    public function getBlocknameAndNumberAttribute() {
+        return implode(': ', array_filter([$this->full_block_number, $this->blockname]));
     }
 }
