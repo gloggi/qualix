@@ -21,12 +21,12 @@
                     <li class="nav-item{{ Route::currentRouteName() == 'tn' ? ' active' : '' }}">
                         <a class="nav-link" href="{{ route('tn', ['kurs' => $kurs->id]) }}">TN</a>
                     </li>
-                    <li class="nav-item{{ Route::currentRouteName() == 'ma' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>
-                    </li>
-                    <li class="nav-item{{ Route::currentRouteName() == 'tagesspick' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('tagesspick', ['kurs' => $kurs->id]) }}">Tagesspick</a>
-                    </li>
+{{--                    <li class="nav-item{{ Route::currentRouteName() == 'ma' ? ' active' : '' }}">--}}
+{{--                        <a class="nav-link" href="{{ route('ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>--}}
+{{--                    </li>--}}
+{{--                    <li class="nav-item{{ Route::currentRouteName() == 'tagesspick' ? ' active' : '' }}">--}}
+{{--                        <a class="nav-link" href="{{ route('tagesspick', ['kurs' => $kurs->id]) }}">Tagesspick</a>--}}
+{{--                    </li>--}}
                     <li class="nav-item dropdown{{ substr( Route::currentRouteName(), 0, 5 ) == 'admin' ? ' active' : '' }}">
                         <a class="nav-link dropdown-toggle" id="navbarKursadmin" role="button"
                            data-toggle="dropdown"

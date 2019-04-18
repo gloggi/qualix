@@ -31,8 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/kurs/{kurs}/beobachtungen/{beobachtung}', 'BeobachtungController@update')->name('beobachtung.update');
     Route::delete('/kurs/{kurs}/beobachtungen/{beobachtung}', 'BeobachtungController@destroy')->name('beobachtung.delete');
 
-    Route::get('/kurs/{kurs}/ma', 'KitchenSinkController@index')->name('ma');
-    Route::get('/kurs/{kurs}/tagesspick', 'KitchenSinkController@index')->name('tagesspick');
+//    Route::get('/kurs/{kurs}/ma', 'KitchenSinkController@index')->name('ma');
+//    Route::get('/kurs/{kurs}/tagesspick', 'KitchenSinkController@index')->name('tagesspick');
 
     Route::get('/kurs/{kurs}/admin', 'CourseController@edit')->name('admin.kurs');
     Route::post('/kurs/{kurs}/admin', 'CourseController@update')->name('admin.kurs.update');
