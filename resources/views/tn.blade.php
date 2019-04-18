@@ -6,11 +6,15 @@
 
         @if (count($kurs->tns))
 
-            @foreach($kurs->tns as $tn)
+            <div class="card-deck">
 
-                <div><a href="{{ route('beobachtung.neu', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}">{{ $tn->pfadiname }}</a></div>
+                @foreach($kurs->tns as $tn)
 
-            @endforeach
+                    @component('components.tn-card', ['name' => $tn->pfadiname, 'image' => $tn->bild_url, 'link' => route('beobachtung.neu', ['kurs' => $kurs->id, 'tn' => $tn->id])])@endcomponent
+
+                @endforeach
+
+            </div>
 
         @else
 
