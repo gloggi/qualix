@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property int $id
@@ -12,10 +13,11 @@ use Carbon\CarbonInterface;
  * @property int $tagesnummer
  * @property int $blocknummer
  * @property string $full_block_number
+ * @property string $blockname_and_number
  * @property CarbonInterface $datum
  * @property Kurs $kurs
  * @property Beobachtung[] $beobachtungen
- * @property MA[] $mas
+ * @property Collection $mas
  */
 class Block extends Model {
     /**
@@ -55,7 +57,7 @@ class Block extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function mas() {
-        return $this->belongsToMany('App\Models\MA');
+        return $this->belongsToMany('App\Models\MA', 'block_ma', 'block_id', 'ma_id');
     }
 
     /**
@@ -114,5 +116,14 @@ class Block extends Model {
      */
     public function setFullBlockNumberAttribute($value) {
         [$this->tagesnummer, $this->blocknummer] = ($value === null ? [null, null] : explode('.', $value, 2));
+    }
+
+    /**
+     * Get the block name preceded with the full block number, if available.
+     *
+     * @return string|null
+     */
+    public function getBlocknameAndNumberAttribute() {
+        return implode(': ', array_filter([$this->full_block_number, $this->blockname]));
     }
 }

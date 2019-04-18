@@ -38,14 +38,14 @@
                                href="{{ route('admin.kurs', ['kurs' => $kurs->id]) }}">Kursdetails</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.equipe' ? ' active' : '' }}"
                                href="{{ route('admin.equipe', ['kurs' => $kurs->id]) }}">Equipe</a>
-                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.tn' ? ' active' : '' }}"
-                               href="{{ route('admin.tn', ['kurs' => $kurs->id]) }}">TN</a>
-                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.bloecke' ? ' active' : '' }}"
-                               href="{{ route('admin.bloecke', ['kurs' => $kurs->id]) }}">Blöcke</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.ma' ? ' active' : '' }}"
                                href="{{ route('admin.ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.qk' ? ' active' : '' }}"
                                href="{{ route('admin.qk', ['kurs' => $kurs->id]) }}">Qualikategorien</a>
+                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.bloecke' ? ' active' : '' }}"
+                               href="{{ route('admin.bloecke', ['kurs' => $kurs->id]) }}">Blöcke</a>
+                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.tn' ? ' active' : '' }}"
+                               href="{{ route('admin.tn', ['kurs' => $kurs->id]) }}">TN</a>
                         </div>
                     </li>
                 @endif

@@ -21,10 +21,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/user', 'KitchenSinkController@index')->name('user');
     Route::get('/kurs/{kurs}', 'KitchenSinkController@index')->name('index');
 
-    Route::get('/kurs/{kurs}/bloecke', 'KitchenSinkController@index')->name('bloecke');
-    Route::get('/kurs/{kurs}/tn', 'KitchenSinkController@index')->name('tn');
+    Route::get('/kurs/{kurs}/bloecke', 'BlockListController@index')->name('bloecke');
+    Route::get('/kurs/{kurs}/tn', 'TNListController@index')->name('tn');
+    Route::get('/kurs/{kurs}/tn/{tn}', 'TNDetailController@index')->name('tn.detail');
+
+    Route::get('/kurs/{kurs}/beobachtungen/neu', 'BeobachtungController@create')->name('beobachtung.neu');
+    Route::post('/kurs/{kurs}/beobachtungen/neu', 'BeobachtungController@store')->name('beobachtung.store');
+    Route::get('/kurs/{kurs}/beobachtungen/{beobachtung}', 'BeobachtungController@edit')->name('beobachtung.edit');
+    Route::post('/kurs/{kurs}/beobachtungen/{beobachtung}', 'BeobachtungController@update')->name('beobachtung.update');
+    Route::delete('/kurs/{kurs}/beobachtungen/{beobachtung}', 'BeobachtungController@destroy')->name('beobachtung.delete');
+
     Route::get('/kurs/{kurs}/ma', 'KitchenSinkController@index')->name('ma');
     Route::get('/kurs/{kurs}/tagesspick', 'KitchenSinkController@index')->name('tagesspick');
+
     Route::get('/kurs/{kurs}/admin', 'CourseController@edit')->name('admin.kurs');
     Route::post('/kurs/{kurs}/admin', 'CourseController@update')->name('admin.kurs.update');
 

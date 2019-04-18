@@ -16,12 +16,12 @@ class UpdateBlockTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019']);
+        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null]);
         /** @var User $user */
         $user = Auth::user();
         $this->blockId = $user->lastAccessedKurs->bloecke()->first()->id;
 
-        $this->payload = ['full_block_number' => '1.2', 'blockname' => 'Geänderter Blockname', 'datum' => '22.12.2019'];
+        $this->payload = ['full_block_number' => '1.2', 'blockname' => 'Geänderter Blockname', 'datum' => '22.12.2019', 'ma_ids' => null];
     }
 
     public function test_shouldRequireLogin() {
@@ -36,7 +36,7 @@ class UpdateBlockTest extends TestCaseWithKurs {
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldUpdateQK() {
+    public function test_shouldUpdateBlock() {
         // given
 
         // when
@@ -103,7 +103,7 @@ class UpdateBlockTest extends TestCaseWithKurs {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewQKData_wrongId() {
+    public function test_shouldValidateNewBlockData_wrongId() {
         // given
         $payload = $this->payload;
 

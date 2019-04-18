@@ -1,9 +1,14 @@
 
-.form-group.required label:after {
+.form-group.required > label:after {
     content: "*";
     color: $red;
 }
 
 .form-control[type="file"] {
     height: auto;
+}
+
+.custom-control.horizontal-radio {
+    display: inline;
+    margin-right: 1em;
 }

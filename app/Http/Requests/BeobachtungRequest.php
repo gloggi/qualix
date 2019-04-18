@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BlockRequest extends FormRequest
+class BeobachtungRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,12 @@ class BlockRequest extends FormRequest
     public function rules()
     {
         return [
-            'blockname' => 'required',
-            'full_block_number' => 'regex:/^\d+\.\d+$/|nullable',
-            'datum' => 'date|required',
+            'tn_ids' => 'required|regex:/^\d+(,\d+)*$/',
+            'kommentar' => 'required',
+            'bewertung' => 'required',
+            'block_id' => 'required',
             'ma_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
+            'qk_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
         ];
     }
 }

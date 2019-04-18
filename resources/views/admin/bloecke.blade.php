@@ -51,6 +51,15 @@
 
             @component('components.form.dateInput', ['name' => 'datum', 'label' => __('Datum'), 'required' => true, 'value' => Auth::user()->getLastUsedBlockDate($kurs)])@endcomponent
 
+            @component('components.form.multiSelectInput', [
+                'name' => 'ma_ids',
+                'label' => __('Mindestanforderungen'),
+                'options' => $kurs->mas->all(),
+                'valueFn' => function(\App\Models\MA $ma) { return $ma->id; },
+                'displayFn' => function(\App\Models\MA $ma) { return $ma->anforderung; },
+                'multiple' => true,
+            ])@endcomponent
+
             @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
 
         @endcomponent

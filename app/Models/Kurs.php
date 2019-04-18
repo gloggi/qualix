@@ -65,6 +65,6 @@ class Kurs extends Model
      */
     public function tns()
     {
-        return $this->hasMany('App\Models\TN', 'kurs_id');
+        return $this->hasMany('App\Models\TN', 'kurs_id')->orderBy('pfadiname');
     }
 }
