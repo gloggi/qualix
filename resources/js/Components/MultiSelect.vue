@@ -1,6 +1,6 @@
 <template>
   <span>
-    <multiselect v-bind="$attrs" @input="(value, id) => $emit('input', value, id)" v-model="currentValue" label="label" track-by="value" :show-labels="false" :multiple="multiple" :options="options"></multiselect>
+    <multiselect v-bind="$attrs" @input="(val, id) => $emit('input', val, id)" v-model="currentValue" label="label" track-by="value" :show-labels="false" :multiple="multiple" :options="options"></multiselect>
     <input type="hidden" :name="$attrs['name']" :value="formValue">
   </span>
 </template>
@@ -45,6 +45,9 @@ export default {
     value (newValue, oldValue) {
       this.currentValue = this.initialValue()
     }
+  },
+  mounted () {
+    this.$emit('input', this.currentValue, this.$attrs['id'])
   }
 }
 </script>
