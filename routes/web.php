@@ -17,9 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/', 'CourseController@noCourse')->name('home');
+
     Route::get('/kurs', 'CourseController@noCourse');
-    Route::get('/user', 'KitchenSinkController@index')->name('user');
-    Route::get('/kurs/{kurs}', 'KitchenSinkController@index')->name('index');
+    Route::get('/user', 'HomeController@editUser')->name('user');
+    Route::post('/user', 'HomeController@updateUser')->name('user.update');
+
+    Route::get('/kurs/{kurs}', 'HomeController@index')->name('index');
 
     Route::get('/kurs/{kurs}/bloecke', 'BlockListController@index')->name('bloecke');
     Route::get('/kurs/{kurs}/tn', 'TNListController@index')->name('tn');
@@ -31,8 +34,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/kurs/{kurs}/beobachtungen/{beobachtung}', 'BeobachtungController@update')->name('beobachtung.update');
     Route::delete('/kurs/{kurs}/beobachtungen/{beobachtung}', 'BeobachtungController@destroy')->name('beobachtung.delete');
 
-    Route::get('/kurs/{kurs}/ma', 'KitchenSinkController@index')->name('ma');
-    Route::get('/kurs/{kurs}/tagesspick', 'KitchenSinkController@index')->name('tagesspick');
+//    Route::get('/kurs/{kurs}/ma', 'KitchenSinkController@index')->name('ma');
+//    Route::get('/kurs/{kurs}/tagesspick', 'KitchenSinkController@index')->name('tagesspick');
 
     Route::get('/kurs/{kurs}/admin', 'CourseController@edit')->name('admin.kurs');
     Route::post('/kurs/{kurs}/admin', 'CourseController@update')->name('admin.kurs.update');

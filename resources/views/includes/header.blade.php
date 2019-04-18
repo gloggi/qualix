@@ -21,12 +21,12 @@
                     <li class="nav-item{{ Route::currentRouteName() == 'tn' ? ' active' : '' }}">
                         <a class="nav-link" href="{{ route('tn', ['kurs' => $kurs->id]) }}">TN</a>
                     </li>
-                    <li class="nav-item{{ Route::currentRouteName() == 'ma' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>
-                    </li>
-                    <li class="nav-item{{ Route::currentRouteName() == 'tagesspick' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('tagesspick', ['kurs' => $kurs->id]) }}">Tagesspick</a>
-                    </li>
+{{--                    <li class="nav-item{{ Route::currentRouteName() == 'ma' ? ' active' : '' }}">--}}
+{{--                        <a class="nav-link" href="{{ route('ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>--}}
+{{--                    </li>--}}
+{{--                    <li class="nav-item{{ Route::currentRouteName() == 'tagesspick' ? ' active' : '' }}">--}}
+{{--                        <a class="nav-link" href="{{ route('tagesspick', ['kurs' => $kurs->id]) }}">Tagesspick</a>--}}
+{{--                    </li>--}}
                     <li class="nav-item dropdown{{ substr( Route::currentRouteName(), 0, 5 ) == 'admin' ? ' active' : '' }}">
                         <a class="nav-link dropdown-toggle" id="navbarKursadmin" role="button"
                            data-toggle="dropdown"
@@ -59,7 +59,7 @@
                 <li class="nav-item{{ Route::currentRouteName() == 'benutzer' ? ' active' : '' }}">
                     <a class="nav-link" href="{{ route('user') }}">
                         Willkommä, {{ Auth::user()->name }}
-                        <img class="avatar-small" src="{{ Auth::user()->bild_url ?: "http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200" }}">
+                        <img class="avatar-small" src="{{ Auth::user()->bild_url != null ? asset(Storage::url(Auth::user()->bild_url)) : "http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200" }}">
                     </a>
                 </li>
                 <li class="nav-item">
