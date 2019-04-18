@@ -35,9 +35,11 @@ class BeobachtungController extends Controller {
         DB::transaction(function() use ($request, $kurs) {
             $data = $request->validated();
             $tn_ids = explode(',', $data['tn_ids']);
+            $ma_ids = array_filter(explode(',', $data['ma_ids']));
 
             foreach ($tn_ids as $tn_id) {
-                Beobachtung::create(array_merge($data, ['tn_id' => $tn_id, 'kurs_id' => $kurs->id, 'user_id' => Auth::user()->getAuthIdentifier()]));
+                $beobachtung = Beobachtung::create(array_merge($data, ['tn_id' => $tn_id, 'kurs_id' => $kurs->id, 'user_id' => Auth::user()->getAuthIdentifier()]));
+                $beobachtung->mas()->attach($ma_ids);
             }
 
             if (count($tn_ids) > 1) {

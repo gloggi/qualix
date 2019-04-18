@@ -24,8 +24,9 @@ class BeobachtungRequest extends FormRequest
     public function rules()
     {
         return [
-            'tn_ids' => 'required',
+            'tn_ids' => 'required|regex:/^\d+(,\d+)*$/',
             'block_id' => 'required',
+            'ma_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
             'bewertung' => 'required',
             'kommentar' => 'required',
         ];

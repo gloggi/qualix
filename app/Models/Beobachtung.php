@@ -58,7 +58,7 @@ class Beobachtung extends Model
      */
     public function mas()
     {
-        return $this->belongsToMany('App\Models\MA');
+        return $this->belongsToMany('App\Models\MA', 'beobachtung_ma', 'beobachtung_id', 'ma_id');
     }
 
     /**
@@ -66,6 +66,6 @@ class Beobachtung extends Model
      */
     public function qks()
     {
-        return $this->belongsToMany('App\Models\QK');
+        return $this->belongsToMany('App\Models\QK', 'beobachtung_qk', 'beobachtung_id', 'qk_id');
     }
 }

@@ -17,6 +17,8 @@
                 'multiple' => true,
             ])@endcomponent
 
+            @component('components.form.textareaInput', ['name' => 'kommentar', 'label' => __('Beobachtung'), 'required' => true])@endcomponent
+
             @component('components.form.multiSelectInput', [
                 'name' => 'block_id',
                 'label' => __('Block'),
@@ -28,6 +30,15 @@
                 'multiple' => false,
             ])@endcomponent
 
+            @component('components.form.multiSelectInput', [
+                'name' => 'ma_ids',
+                'label' => __('Mindestanforderungen'),
+                'options' => $kurs->mas->all(),
+                'valueFn' => function(\App\Models\MA $ma) { return $ma->id; },
+                'displayFn' => function(\App\Models\MA $ma) { return $ma->anforderung; },
+                'multiple' => true,
+            ])@endcomponent
+
             @component('components.form.radioButtonInput', [
                 'name' => 'bewertung',
                 'label' => __('Bewertung'),
@@ -35,8 +46,6 @@
                 'value' => '1',
                 'options' => [ '2' => 'Positiv', '1' => 'Neutral', '0' => 'Negativ']
             ])@endcomponent
-
-            @component('components.form.textareaInput', ['name' => 'kommentar', 'label' => __('Beobachtung'), 'required' => true])@endcomponent
 
             @component('components.form.submit', ['label' => __('Speichern')])@endcomponent
 
