@@ -29,4 +29,18 @@ class TNStoreRequest extends FormRequest
             'bild' => 'nullable|image|max:2000',
         ];
     }
+
+    /**
+     * Get the validated data from the request.
+     *
+     * @return array
+     */
+    public function validated() {
+        $validated = parent::validated();
+        if (isset($validated['bild'])) {
+            $validated['bild_url'] = $validated['bild']->store('public/images');
+            unset($validated['bild']);
+        }
+        return $validated;
+    }
 }

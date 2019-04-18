@@ -11,7 +11,7 @@ namespace App\Models;
  * @property Kurs $kurs
  * @property Beobachtung[] $beobachtungen
  */
-class Tn extends Model
+class TN extends Model
 {
     /**
      * The table associated with the model.
@@ -38,6 +38,6 @@ class Tn extends Model
      */
     public function beobachtungen()
     {
-        return $this->hasMany('App\Models\Beobachtung');
+        return $this->hasMany('App\Models\Beobachtung', 'tn_id');
     }
 }

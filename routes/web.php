@@ -35,7 +35,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/kurs/{kurs}/admin/tn/{tn}', 'TNController@update')->name('admin.tn.update');
     Route::delete('/kurs/{kurs}/admin/tn/{tn}', 'TNController@destroy')->name('admin.tn.delete');
 
-    Route::get('/kurs/{kurs}/admin/bloecke', 'KitchenSinkController@index')->name('admin.bloecke');
+    Route::get('/kurs/{kurs}/admin/bloecke', 'BlockController@index')->name('admin.bloecke');
+    Route::post('/kurs/{kurs}/admin/bloecke', 'BlockController@store')->name('admin.block.store');
+    Route::get('/kurs/{kurs}/admin/bloecke/{block}', 'BlockController@edit')->name('admin.block.edit');
+    Route::post('/kurs/{kurs}/admin/bloecke/{block}', 'BlockController@update')->name('admin.block.update');
+    Route::delete('/kurs/{kurs}/admin/bloecke/{block}', 'BlockController@destroy')->name('admin.block.delete');
 
     Route::get('/kurs/{kurs}/admin/ma', 'MAController@index')->name('admin.ma');
     Route::post('/kurs/{kurs}/admin/ma', 'MAController@store')->name('admin.ma.store');

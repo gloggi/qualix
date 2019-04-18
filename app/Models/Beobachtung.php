@@ -10,7 +10,7 @@ namespace App\Models;
  * @property int $bewertung
  * @property string $kommentar
  * @property Block $block
- * @property Tn $tn
+ * @property TN $tn
  * @property User $user
  * @property MA[] $mas
  * @property QK[] $qks
@@ -42,7 +42,7 @@ class Beobachtung extends Model
      */
     public function tn()
     {
-        return $this->belongsTo('App\Models\Tn', 'tn_id');
+        return $this->belongsTo('App\Models\TN', 'tn_id');
     }
 
     /**

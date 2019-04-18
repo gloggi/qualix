@@ -4,7 +4,7 @@
 
     @include('includes.header', ['navigation' => true])
 
-    <div class="container">
+    <div class="container" id="app">
 
         @include('includes.alerts')
 

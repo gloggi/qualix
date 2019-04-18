@@ -1,6 +1,10 @@
 
 .table-responsive-cards {
 
+  th, td {
+    vertical-align: middle;
+  }
+
   th {
     border-top: 0;
   }
@@ -22,6 +26,9 @@
     width: 0;
   }
 
+  td, th {
+    hyphens: auto;
+  }
 
   @include media-breakpoint-down(md) {
 

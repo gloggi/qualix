@@ -10,7 +10,6 @@
     <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
 <body>
-<div id="app"></div>
 
 @yield('layout')
 
