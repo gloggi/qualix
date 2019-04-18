@@ -6,7 +6,7 @@
 
         <h1>Willkommä bim Qualix</h1>
 
-        <h2>Vill Spass bim Beobachtige notiere</h2>
+        <p>S'Qualix set geg de Papier-Chrieg helfe und eu en guete Überblick über all Beobachtige geh. Vill Spass bim Beobachtä</p>
 
     @endcomponent
 @endsection
