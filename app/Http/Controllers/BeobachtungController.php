@@ -6,6 +6,7 @@ use App\Http\Requests\BeobachtungRequest;
 use App\Models\Beobachtung;
 use App\Models\Block;
 use App\Models\Kurs;
+use App\Models\TN;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,8 +33,8 @@ class BeobachtungController extends Controller {
      * @return RedirectResponse
      */
     public function store(BeobachtungRequest $request, Kurs $kurs) {
-        DB::transaction(function() use ($request, $kurs) {
-            $data = $request->validated();
+        $data = $request->validated();
+        DB::transaction(function() use ($request, $kurs, $data) {
             $tn_ids = explode(',', $data['tn_ids']);
             $ma_ids = array_filter(explode(',', $data['ma_ids']));
             $qk_ids = array_filter(explode(',', $data['qk_ids']));
@@ -47,11 +48,12 @@ class BeobachtungController extends Controller {
             if (count($tn_ids) > 1) {
                 $request->session()->flash('alert-success', __('Beobachtungen erfasst. Mässi!'));
             } else {
-                $request->session()->flash('alert-success', __('Beobachtung erfasst. Mässi!'));
+                $tn = TN::find($tn_ids[0]);
+                $request->session()->flash('alert-success', __('Beobachtung erfasst. Mässi!') . ' <a href="' . route('tn.detail', ['kurs' => $kurs->id, 'tn' => $tn->id]) . '">' . __('Zurück zu :name', ['name' => $tn->pfadiname]) . ' <i class="fas fa-arrow-right"></i></a>');
             }
         });
 
-        return Redirect::back();
+        return Redirect::route('beobachtung.neu', ['kurs' => $kurs->id, 'tn' => $data['tn_ids'], 'block' => $data['block_id']]);
     }
 
     /**
@@ -74,11 +76,20 @@ class BeobachtungController extends Controller {
      * @return RedirectResponse
      */
     public function update(BeobachtungRequest $request, Kurs $kurs, Beobachtung $beobachtung) {
-        $beobachtung->update($request->validated());
+        DB::transaction(function () use ($request, $beobachtung) {
+            $data = $request->validated();
+            $beobachtung->update($data);
+
+            $beobachtung->mas()->detach();
+            $beobachtung->mas()->attach(array_filter(explode(',', $data['ma_ids'])));
+
+            $beobachtung->qks()->detach();
+            $beobachtung->qks()->attach(array_filter(explode(',', $data['qk_ids'])));
+        });
 
         $request->session()->flash('alert-success', __('Beobachtung aktualisiert.'));
 
-        return Redirect::back();
+        return Redirect::route('tn.detail', ['kurs' => $kurs->id, 'tn' => $beobachtung->tn->id]);
     }
 
     /**
@@ -92,6 +103,6 @@ class BeobachtungController extends Controller {
     public function destroy(Request $request, Kurs $kurs, Beobachtung $beobachtung) {
         $beobachtung->delete();
         $request->session()->flash('alert-success', __('Beobachtung gelöscht.'));
-        return Redirect::route('admin.bloecke', ['kurs' => $kurs->id]);
+        return Redirect::back();
     }
 }

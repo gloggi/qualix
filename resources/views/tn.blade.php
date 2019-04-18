@@ -11,7 +11,7 @@
                 @foreach($kurs->tns as $tn)
 
                     <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-                        <a href="#">
+                        <a href="{{ route('tn.detail', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}">
                             <div class="card">
                                 <div class="imagebox">
                                     <div class="square-container">
@@ -25,7 +25,7 @@
 
                                 </div>
 
-                                <div class="card-body"><a href="{{ route('beobachtung.neu', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}" class="btn btn-primary">{{__('Beobachtung erfassen')}}</a></div>
+                                <div class="card-body"><a href="{{ route('beobachtung.neu', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}" class="btn btn-primary"><i class="fas fa-binoculars"></i> {{__('Beobachtung erfassen')}}</a></div>
                             </div>
                         </a>
                     </div>

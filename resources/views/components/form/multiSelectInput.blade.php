@@ -21,6 +21,7 @@
                 @endforeach
             ]"
             :multiple="{{ ($multiple ?? false) ? 'true' : 'false' }}"
+            @if (isset($disabled) && $disabled):disabled="true"@endif
             :close-on-select="true"
             placeholder=""
             @if (isset($onInput) && $onInput) @input="{{ $onInput }}"@endif></multi-select>
