@@ -6,19 +6,24 @@
             id="{{ $name }}"
             name="{{ $name }}"
             class="{{ $errors->has($name) ? ' is-invalid' : '' }}"
-            value="{{ isset($value) ? $value : old($name) }}"
+            @if (isset($valueBind) && $valueBind)
+                :value="{{ $valueBind }}"
+            @else
+                value="{{ isset($value) ? $value : old($name) }}"
+            @endif
             {{ isset($required) && $required ? 'required' : '' }}
             :allow-empty="{{ isset($required) && $required ? 'false' : 'true' }}"
             {{ isset($autofocus) && $autofocus ? 'autofocus' : '' }}
 
             :options="[
                 @foreach($options as $option)
-                    { label: '{{ $displayFn($option) }}', value: '{{ $valueFn($option) }}' },
+                    { label: '{{ $displayFn($option) }}', value: '{{ $valueFn($option) }}' @if (isset($dataFn) && $dataFn), data: {{ $dataFn($option) }}@endif },
                 @endforeach
             ]"
             :multiple="{{ ($multiple ?? false) ? 'true' : 'false' }}"
             :close-on-select="true"
-            placeholder="">
+            placeholder=""
+            @if (isset($onInput) && $onInput) @input="{{ $onInput }}"@endif></multi-select>
 
         @if ($errors->has($name))
             <span class="invalid-feedback" role="alert">

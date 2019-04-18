@@ -19,25 +19,32 @@
 
             @component('components.form.textareaInput', ['name' => 'kommentar', 'label' => __('Beobachtung'), 'required' => true])@endcomponent
 
-            @component('components.form.multiSelectInput', [
-                'name' => 'block_id',
-                'label' => __('Block'),
-                'required' => true,
-                'value' => $block_id ?? '',
-                'options' => $kurs->bloecke->all(),
-                'valueFn' => function(\App\Models\Block $block) { return $block->id; },
-                'displayFn' => function(\App\Models\Block $block) { return $block->blockname; },
-                'multiple' => false,
-            ])@endcomponent
+            <block-and-ma-input-wrapper v-slot="slotProps">
 
-            @component('components.form.multiSelectInput', [
-                'name' => 'ma_ids',
-                'label' => __('Mindestanforderungen'),
-                'options' => $kurs->mas->all(),
-                'valueFn' => function(\App\Models\MA $ma) { return $ma->id; },
-                'displayFn' => function(\App\Models\MA $ma) { return $ma->anforderung; },
-                'multiple' => true,
-            ])@endcomponent
+                @component('components.form.multiSelectInput', [
+                    'name' => 'block_id',
+                    'label' => __('Block'),
+                    'required' => true,
+                    'value' => $block_id ?? '',
+                    'options' => $kurs->bloecke->all(),
+                    'valueFn' => function(\App\Models\Block $block) { return $block->id; },
+                    'displayFn' => function(\App\Models\Block $block) { return $block->blockname; },
+                    'dataFn' => function(\App\Models\Block $block) { return '\'' . implode(',', array_map(function(\App\Models\MA $ma) { return $ma->id; }, $block->mas->all())) . '\''; },
+                    'multiple' => false,
+                    'onInput' => 'slotProps.onBlockUpdate',
+                ])@endcomponent
+
+                @component('components.form.multiSelectInput', [
+                    'name' => 'ma_ids',
+                    'label' => __('Mindestanforderungen'),
+                    'valueBind' => 'slotProps.maValue',
+                    'options' => $kurs->mas->all(),
+                    'valueFn' => function(\App\Models\MA $ma) { return $ma->id; },
+                    'displayFn' => function(\App\Models\MA $ma) { return $ma->anforderung; },
+                    'multiple' => true,
+                ])@endcomponent
+
+            </block-and-ma-input-wrapper>
 
             @component('components.form.radioButtonInput', [
                 'name' => 'bewertung',

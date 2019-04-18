@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property int $id
@@ -15,7 +16,7 @@ use Carbon\CarbonInterface;
  * @property CarbonInterface $datum
  * @property Kurs $kurs
  * @property Beobachtung[] $beobachtungen
- * @property MA[] $mas
+ * @property Collection $mas
  */
 class Block extends Model {
     /**
