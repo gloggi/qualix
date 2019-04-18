@@ -25,10 +25,11 @@ class BeobachtungRequest extends FormRequest
     {
         return [
             'tn_ids' => 'required|regex:/^\d+(,\d+)*$/',
+            'kommentar' => 'required',
+            'bewertung' => 'required',
             'block_id' => 'required',
             'ma_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
-            'bewertung' => 'required',
-            'kommentar' => 'required',
+            'qk_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
         ];
     }
 }

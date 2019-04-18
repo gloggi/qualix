@@ -47,6 +47,15 @@
                 'options' => [ '2' => 'Positiv', '1' => 'Neutral', '0' => 'Negativ']
             ])@endcomponent
 
+            @component('components.form.multiSelectInput', [
+                'name' => 'qk_ids',
+                'label' => __('Qualikategorien'),
+                'options' => $kurs->qks->all(),
+                'valueFn' => function(\App\Models\QK $qk) { return $qk->id; },
+                'displayFn' => function(\App\Models\QK $qk) { return $qk->quali_kategorie; },
+                'multiple' => true,
+            ])@endcomponent
+
             @component('components.form.submit', ['label' => __('Speichern')])@endcomponent
 
         @endcomponent

@@ -36,10 +36,12 @@ class BeobachtungController extends Controller {
             $data = $request->validated();
             $tn_ids = explode(',', $data['tn_ids']);
             $ma_ids = array_filter(explode(',', $data['ma_ids']));
+            $qk_ids = array_filter(explode(',', $data['qk_ids']));
 
             foreach ($tn_ids as $tn_id) {
                 $beobachtung = Beobachtung::create(array_merge($data, ['tn_id' => $tn_id, 'kurs_id' => $kurs->id, 'user_id' => Auth::user()->getAuthIdentifier()]));
                 $beobachtung->mas()->attach($ma_ids);
+                $beobachtung->qks()->attach($qk_ids);
             }
 
             if (count($tn_ids) > 1) {
