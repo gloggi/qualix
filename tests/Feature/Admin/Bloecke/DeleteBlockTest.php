@@ -14,7 +14,7 @@ class DeleteBlockTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019']);
+        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null]);
         /** @var User $user */
         $user = Auth::user();
         $this->blockId = $user->lastAccessedKurs->bloecke()->first()->id;

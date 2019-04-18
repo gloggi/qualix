@@ -55,7 +55,7 @@ class Block extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function mas() {
-        return $this->belongsToMany('App\Models\MA');
+        return $this->belongsToMany('App\Models\MA', 'block_ma', 'block_id', 'ma_id');
     }
 
     /**

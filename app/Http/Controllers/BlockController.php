@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class BlockController extends Controller {
@@ -30,12 +31,16 @@ class BlockController extends Controller {
      * @return RedirectResponse
      */
     public function store(BlockRequest $request, Kurs $kurs) {
-        $data = $request->validated();
-        Block::create(array_merge($data, ['kurs_id' => $kurs->id]));
+        DB::transaction(function () use ($request, $kurs) {
+            $data = $request->validated();
+            $block = Block::create(array_merge($data, ['kurs_id' => $kurs->id]));
 
-        /** @var User $user */
-        $user = Auth::user();
-        $user->setLastUsedBlockDate($data['datum'], $kurs);
+            $block->mas()->attach(array_filter(explode(',', $data['ma_ids'])));
+
+            /** @var User $user */
+            $user = Auth::user();
+            $user->setLastUsedBlockDate($data['datum'], $kurs);
+        });
 
         return Redirect::route('admin.bloecke', ['kurs' => $kurs->id]);
     }
@@ -60,14 +65,18 @@ class BlockController extends Controller {
      * @return RedirectResponse
      */
     public function update(BlockRequest $request, Kurs $kurs, Block $block) {
-        $data = $request->validated();
-        $block->update($data);
+        DB::transaction(function () use ($request, $kurs, $block) {
+            $data = $request->validated();
+            $block->update($data);
 
-        /** @var User $user */
-        $user = Auth::user();
-        $user->setLastUsedBlockDate($data['datum'], $kurs);
+            $block->mas()->attach(array_filter(explode(',', $data['ma_ids'])));
 
-        $request->session()->flash('alert-success', __('Block erfolgreich gespeichert.'));
+            /** @var User $user */
+            $user = Auth::user();
+            $user->setLastUsedBlockDate($data['datum'], $kurs);
+
+            $request->session()->flash('alert-success', __('Block erfolgreich gespeichert.'));
+        });
         return Redirect::route('admin.bloecke', ['kurs' => $kurs->id]);
     }
 

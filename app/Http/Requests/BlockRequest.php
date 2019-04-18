@@ -27,6 +27,7 @@ class BlockRequest extends FormRequest
             'blockname' => 'required',
             'full_block_number' => 'regex:/^\d+\.\d+$/|nullable',
             'datum' => 'date|required',
+            'ma_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
         ];
     }
 }
