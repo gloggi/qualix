@@ -6,11 +6,23 @@
 
         @if (count($kurs->tns))
 
-            <div class="card-deck">
+            <div class="row">
 
                 @foreach($kurs->tns as $tn)
 
-                    @component('components.tn-card', ['name' => $tn->pfadiname, 'image' => $tn->bild_url, 'link' => route('beobachtung.neu', ['kurs' => $kurs->id, 'tn' => $tn->id])])@endcomponent
+                    <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                        <a href="{{ route('beobachtung.neu', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}">
+                            <div class="card">
+                                <div class="square-container">
+                                    <img class="card-img-top img img-responsive full-width" src="{{ $tn->bild_url != null ? asset(Storage::url($tn->bild_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $tn->pfadiname }}">
+                                </div>
+
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $tn->pfadiname }}</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
 
                 @endforeach
 
