@@ -54,3 +54,15 @@
         position: absolute;
     }
 }
+
+.imagebox {
+
+    position: relative;
+
+    .imagebox-label {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        margin: 0 !important;
+    }
+}
