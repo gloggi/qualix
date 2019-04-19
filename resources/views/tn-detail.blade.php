@@ -46,7 +46,7 @@
                 __('Block') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->block->blockname; },
                 __('MA') => function(\App\Models\Beobachtung $beobachtung) {
                     return implode('', array_map(function(\App\Models\MA $ma) {
-                        return '<span class="badge badge-' . ($ma->killer ? 'warning' : 'info') . '">' . $ma->anforderung . '</span>';
+                        return '<span class="badge badge-' . ($ma->killer ? 'warning' : 'info') . '" style="white-space: normal">' . $ma->anforderung . '</span>';
                     }, $beobachtung->mas->all()));
                 },
                 __('Bewertung') => function(\App\Models\Beobachtung $beobachtung) {
