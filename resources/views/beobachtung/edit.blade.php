@@ -27,7 +27,7 @@
                 'value' => $beobachtung->block->id,
                 'options' => $kurs->bloecke->all(),
                 'valueFn' => function(\App\Models\Block $block) { return $block->id; },
-                'displayFn' => function(\App\Models\Block $block) { return $block->blockname; },
+                'displayFn' => function(\App\Models\Block $block) { return $block->blockname_and_number; },
                 'dataFn' => function(\App\Models\Block $block) { return '\'' . implode(',', array_map(function(\App\Models\MA $ma) { return $ma->id; }, $block->mas->all())) . '\''; },
                 'multiple' => false,
             ])@endcomponent
