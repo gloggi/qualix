@@ -105,4 +105,15 @@ class BeobachtungController extends Controller {
         $request->session()->flash('alert-success', __('Beobachtung gelöscht.'));
         return Redirect::back();
     }
+
+    /**
+     * Show an overview table with info about which user has made how many observations about which TN.
+     *
+     * @param Request $request
+     * @param Kurs $kurs
+     * @return Response
+     */
+    public function overview(Request $request, Kurs $kurs) {
+        return view('ueberblick', ['tns' => $kurs->tns->all()]);
+    }
 }

@@ -21,6 +21,9 @@
                     <li class="nav-item{{ Route::currentRouteName() == 'tn' ? ' active' : '' }}">
                         <a class="nav-link" href="{{ route('tn', ['kurs' => $kurs->id]) }}">TN</a>
                     </li>
+                    <li class="nav-item{{ Route::currentRouteName() == 'ueberblick' ? ' active' : '' }}">
+                        <a class="nav-link" href="{{ route('ueberblick', ['kurs' => $kurs->id]) }}">Überblick</a>
+                    </li>
 {{--                    <li class="nav-item{{ Route::currentRouteName() == 'ma' ? ' active' : '' }}">--}}
 {{--                        <a class="nav-link" href="{{ route('ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>--}}
 {{--                    </li>--}}

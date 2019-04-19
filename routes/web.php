@@ -28,6 +28,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/kurs/{kurs}/tn', 'TNListController@index')->name('tn');
     Route::get('/kurs/{kurs}/tn/{tn}', 'TNDetailController@index')->name('tn.detail');
 
+    Route::get('/kurs/{kurs}/ueberblick', 'BeobachtungController@overview')->name('ueberblick');
+
     Route::get('/kurs/{kurs}/beobachtungen/neu', 'BeobachtungController@create')->name('beobachtung.neu');
     Route::post('/kurs/{kurs}/beobachtungen/neu', 'BeobachtungController@store')->name('beobachtung.store');
     Route::get('/kurs/{kurs}/beobachtungen/{beobachtung}', 'BeobachtungController@edit')->name('beobachtung.edit');
