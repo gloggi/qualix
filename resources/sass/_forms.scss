@@ -8,6 +8,16 @@
     height: auto;
 }
 
+.form-control-multiselect.is-invalid {
+    & ~ .invalid-feedback {
+        display: block;
+    }
+
+    & .multiselect__tags {
+        border-color: $red;
+    }
+}
+
 .custom-control.horizontal-radio {
     display: inline;
     margin-right: 1em;

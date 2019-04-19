@@ -5,14 +5,14 @@
         <multi-select
             id="{{ $name }}"
             name="{{ $name }}"
-            class="{{ $errors->has($name) ? ' is-invalid' : '' }}"
+            class="form-control-multiselect {{ $errors->has($name) ? ' is-invalid' : '' }}"
             @if (isset($valueBind) && $valueBind)
                 :value="{{ $valueBind }}"
             @else
                 value="{{ isset($value) ? $value : old($name) }}"
             @endif
             {{ isset($required) && $required ? 'required' : '' }}
-            :allow-empty="{{ isset($required) && $required ? 'false' : 'true' }}"
+            :allow-empty="true"
             {{ isset($autofocus) && $autofocus ? 'autofocus' : '' }}
 
             :options="[
