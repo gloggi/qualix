@@ -54,7 +54,7 @@
                 'name' => 'qk_ids',
                 'label' => __('Qualikategorien'),
                 'options' => $kurs->qks->all(),
-                'value' => implode(',', array_map(function (\App\Models\QK $qk) { return $qk->id; }, $kurs->qks->all())),
+                'value' => implode(',', array_map(function (\App\Models\QK $qk) { return $qk->id; }, $beobachtung->qks->all())),
                 'valueFn' => function(\App\Models\QK $qk) { return $qk->id; },
                 'displayFn' => function(\App\Models\QK $qk) { return $qk->quali_kategorie; },
                 'multiple' => true,
