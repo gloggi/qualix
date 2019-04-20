@@ -23,7 +23,6 @@
   }
 
   td .td-background {
-    margin: -0.75rem;
     padding: 0.75rem;
   }
 
@@ -33,6 +32,18 @@
 
   td, th {
     hyphens: auto;
+  }
+
+  .responsive-td-background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 0.75rem;
   }
 
   @include media-breakpoint-down(md) {
@@ -71,9 +82,11 @@
 
     }
 
-    td .td-background {
-      margin: 0 -0.75rem;
+    .responsive-td-background {
+      position: initial;
+      display: block;
       padding: 0 0.75rem;
+      margin: 0 -0.75rem;
     }
 
   }

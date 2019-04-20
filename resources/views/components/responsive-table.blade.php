@@ -42,7 +42,7 @@
                         @endforeach
                     @endif
                     @foreach($fields as $fieldName => $fieldAccessor)
-                        <td data-label="{{ $fieldName }}&#xa;">@if(isset($rawColumns) && $rawColumns){!! $fieldAccessor($row) !!}@else{{ $fieldAccessor($row) }}@endif</td>
+                        <td class="{{ $cellClass ?? '' }}" data-label="{{ $fieldName }}&#xa;">@if(isset($rawColumns) && $rawColumns){!! $fieldAccessor($row) !!}@else{{ $fieldAccessor($row) }}@endif</td>
                     @endforeach
                     @if(isset($actions) && count($actions))
                         <td class="actions">
