@@ -38,33 +38,41 @@
 
     @component('components.card', ['header' => __('Beobachtungen')])
 
-        @component('components.responsive-table', [
-            'data' => $tn->beobachtungen,
-            'rawColumns' => true,
-            'fields' => [
-                __('Beobachtung') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->kommentar; },
-                __('Block') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->block->blockname; },
-                __('MA') => function(\App\Models\Beobachtung $beobachtung) {
-                    return implode('', array_map(function(\App\Models\MA $ma) {
-                        return '<span class="badge badge-' . ($ma->killer ? 'warning' : 'info') . '" style="white-space: normal">' . $ma->anforderung . '</span>';
-                    }, $beobachtung->mas->all()));
-                },
-                __('Bewertung') => function(\App\Models\Beobachtung $beobachtung) {
-                    $bewertung = $beobachtung->bewertung;
-                    if ($bewertung === 0) return '<span class="badge badge-danger">negativ</span>';
-                    else if ($bewertung === 2) return '<span class="badge badge-success">positiv</span>';
-                    else return '<span class="badge badge-secondary">neutral</span>';
-                },
-                __('Beobachter') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->user->name; }
-            ],
-            'actions' => [
-                'edit' => function(\App\Models\Beobachtung $beobachtung) use ($kurs) { return route('beobachtung.edit', ['kurs' => $kurs->id, 'beobachtung' => $beobachtung->id]); },
-                'delete' => function(\App\Models\Beobachtung $beobachtung) use ($kurs) { return [
-                    'text' => __('Willst du diese Beobachtung wirklich löschen?'),
-                    'route' => ['beobachtung.delete', ['kurs' => $kurs->id, 'beobachtung' => $beobachtung->id]],
-                 ];},
-            ]
-        ])@endcomponent
+        @if (count($beobachtungen))
+
+            @component('components.responsive-table', [
+                'data' => $beobachtungen,
+                'rawColumns' => true,
+                'fields' => [
+                    __('Beobachtung') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->kommentar; },
+                    __('Block') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->block->blockname; },
+                    __('MA') => function(\App\Models\Beobachtung $beobachtung) {
+                        return implode('', array_map(function(\App\Models\MA $ma) {
+                            return '<span class="badge badge-' . ($ma->killer ? 'warning' : 'info') . '" style="white-space: normal">' . $ma->anforderung . '</span>';
+                        }, $beobachtung->mas->all()));
+                    },
+                    __('Bewertung') => function(\App\Models\Beobachtung $beobachtung) {
+                        $bewertung = $beobachtung->bewertung;
+                        if ($bewertung === 0) return '<span class="badge badge-danger">negativ</span>';
+                        else if ($bewertung === 2) return '<span class="badge badge-success">positiv</span>';
+                        else return '<span class="badge badge-secondary">neutral</span>';
+                    },
+                    __('Beobachter') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->user->name; }
+                ],
+                'actions' => [
+                    'edit' => function(\App\Models\Beobachtung $beobachtung) use ($kurs) { return route('beobachtung.edit', ['kurs' => $kurs->id, 'beobachtung' => $beobachtung->id]); },
+                    'delete' => function(\App\Models\Beobachtung $beobachtung) use ($kurs) { return [
+                        'text' => __('Willst du diese Beobachtung wirklich löschen?'),
+                        'route' => ['beobachtung.delete', ['kurs' => $kurs->id, 'beobachtung' => $beobachtung->id]],
+                     ];},
+                ]
+            ])@endcomponent
+
+        @else
+
+            {{__('Keine Beobachtungen gefunden.')}}
+
+        @endif
 
     @endcomponent
 
