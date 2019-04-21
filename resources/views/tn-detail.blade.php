@@ -63,6 +63,7 @@
                                     @foreach( $kurs->mas as $option )
                                     { label: '{{ $option->anforderung }}', value: '{{ $option->id }}' },
                                     @endforeach
+                                    { label: '{{__('-- Beobachtungen ohne Mindestanforderungen --')}}', value: '0' },
                                     ]"
                                   :multiple="false"
                                   :close-on-select="true"
@@ -89,6 +90,7 @@
                                     @foreach( $kurs->qks as $option )
                                     { label: '{{ $option->quali_kategorie }}', value: '{{ $option->id }}' },
                                     @endforeach
+                                    { label: '{{__('-- Beobachtungen ohne Qualikategorie --')}}', value: '0' },
                                     ]"
                                   :multiple="false"
                                   :close-on-select="true"

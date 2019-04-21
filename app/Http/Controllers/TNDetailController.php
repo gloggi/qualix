@@ -26,16 +26,32 @@ class TNDetailController extends Controller
 
         $ma = $request->input('ma');
         if ($ma != null) {
-            $beobachtungen = $beobachtungen->filter(function (Beobachtung $beobachtung, $key) use ($ma) {
-                return $beobachtung->mas->map(function (MA $ma) { return $ma->id; })->contains($ma);
-            });
+            if ($ma === '0') {
+                $beobachtungen = $beobachtungen->filter(function (Beobachtung $beobachtung) {
+                    return $beobachtung->mas->isEmpty();
+                });
+            } else {
+                $beobachtungen = $beobachtungen->filter(function (Beobachtung $beobachtung) use ($ma) {
+                    return $beobachtung->mas->map(function (MA $ma) {
+                        return $ma->id;
+                    })->contains($ma);
+                });
+            }
         }
 
         $qk = $request->input('qk');
         if ($qk != null) {
-            $beobachtungen = $beobachtungen->filter(function (Beobachtung $beobachtung, $key) use ($qk) {
-                return $beobachtung->qks->map(function (QK $qk) { return $qk->id; })->contains($qk);
-            });
+            if ($qk === '0') {
+                $beobachtungen = $beobachtungen->filter(function (Beobachtung $beobachtung) {
+                    return $beobachtung->qks->isEmpty();
+                });
+            } else {
+                $beobachtungen = $beobachtungen->filter(function (Beobachtung $beobachtung, $key) use ($qk) {
+                    return $beobachtung->qks->map(function (QK $qk) {
+                        return $qk->id;
+                    })->contains($qk);
+                });
+            }
         }
 
         return view('tn-detail', ['tn' => $tn, 'beobachtungen' => $beobachtungen, 'ma' => $ma, 'qk' => $qk]);
