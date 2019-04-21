@@ -518,3 +518,23 @@ fieldset[disabled] .multiselect {
     left  : 1px;
   }
 }
+
+.multiselect__clear {
+  @extend .fas;
+  @extend .fa-times;
+  position: absolute;
+  right: 41px;
+  height: 40px;
+  width: 40px;
+  display: block;
+  cursor: pointer;
+  z-index: 2;
+
+  &::before {
+    position: absolute;
+    top: 12px;
+    right: 4px;
+    transform: translate(-18px, 0);
+  }
+
+}

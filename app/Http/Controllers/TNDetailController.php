@@ -38,6 +38,6 @@ class TNDetailController extends Controller
             });
         }
 
-        return view('tn-detail', ['tn' => $tn, 'beobachtungen' => $beobachtungen]);
+        return view('tn-detail', ['tn' => $tn, 'beobachtungen' => $beobachtungen, 'ma' => $ma, 'qk' => $qk]);
     }
 }

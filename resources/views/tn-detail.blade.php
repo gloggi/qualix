@@ -16,7 +16,6 @@
                 <h3>{{ $tn->pfadiname }}</h3>
                 @if (isset($tn->abteilung))<h5>{{ $tn->abteilung }}</h5>@endif
                 <p>{{ trans_choice('{0}Keine Beobachtungen|{1}1 Beobachtung|[2,*]:count Beobachtungen', count($tn->beobachtungen), ['count' => count($tn->beobachtungen)])}}, {{ __('davon :positive positive, :neutral neutrale und :negative negative Beobachtungen.', ['positive' => $tn->positive->count(), 'neutral' => $tn->neutral->count(), 'negative' => $tn->negative->count()])}}</p>
-                </ul>
                 @php
                     $columns = [];
                     foreach ($kurs->users->all() as $user) {
@@ -37,6 +36,74 @@
     @endcomponent
 
     @component('components.card', ['header' => __('Beobachtungen')])
+
+        <div class="card">
+            <div class="card-header" id="filters-header" data-toggle="collapse" data-target="#filters-collapse" aria-expanded="true" aria-controls="filters-collapse">
+                <i class="fas fa-filter"></i> Filter
+            </div>
+
+            <div id="filters-collapse" class="collapse{{ $ma !== null || $qk !== null ? ' show' : '' }}" aria-labelledby="filters-header">
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6 col-sm-12">
+
+                            <form id="ma-form" method="GET" action="{{ route('tn.detail', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}">
+
+                                <multi-select
+                                  id="ma"
+                                  name="ma"
+                                  class="form-control-multiselect"
+                                  value="{{ $ma }}"
+                                  :allow-empty="true"
+                                  placeholder="Mindestanforderung"
+                                  :options="[
+                                    @foreach( $kurs->mas as $option )
+                                    { label: '{{ $option->anforderung }}', value: '{{ $option->id }}' },
+                                    @endforeach
+                                    ]"
+                                  :multiple="false"
+                                  :close-on-select="true"
+                                  :show-labels="false"
+                                  submit-on-input="ma-form"
+                                  :show-clear="true"></multi-select>
+
+                            </form>
+
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+
+                            <form id="qk-form" method="GET" action="{{ route('tn.detail', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}">
+
+                                <multi-select
+                                  id="qk"
+                                  name="qk"
+                                  class="form-control-multiselect"
+                                  value="{{ $qk }}"
+                                  :allow-empty="true"
+                                  placeholder="Qualikategorie"
+                                  :options="[
+                                    @foreach( $kurs->qks as $option )
+                                    { label: '{{ $option->quali_kategorie }}', value: '{{ $option->id }}' },
+                                    @endforeach
+                                    ]"
+                                  :multiple="false"
+                                  :close-on-select="true"
+                                  :show-labels="false"
+                                  submit-on-input="qk-form"
+                                  :show-clear="true"></multi-select>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
 
         @if (count($beobachtungen))
 
