@@ -38,11 +38,11 @@
     @component('components.card', ['header' => __('Beobachtungen')])
 
         <div class="card">
-            <div class="card-header" id="filters-header" data-toggle="collapse" data-target="#filters-collapse" aria-expanded="true" aria-controls="filters-collapse">
+            <div class="card-header" id="filters" data-toggle="collapse" data-target="#filters-collapse" aria-expanded="true" aria-controls="filters-collapse">
                 <i class="fas fa-filter"></i> Filter
             </div>
 
-            <div id="filters-collapse" class="collapse{{ $ma !== null || $qk !== null ? ' show' : '' }}" aria-labelledby="filters-header">
+            <div id="filters-collapse" class="collapse{{ $ma !== null || $qk !== null ? ' show' : '' }}" aria-labelledby="filters">
 
                 <div class="card-body">
 
@@ -50,7 +50,7 @@
 
                         <div class="col-md-6 col-sm-12">
 
-                            <form id="ma-form" method="GET" action="{{ route('tn.detail', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}">
+                            <form id="ma-form" method="GET" action="{{ route('tn.detail', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}#filters">
 
                                 <multi-select
                                   id="ma"
@@ -76,7 +76,7 @@
 
                         <div class="col-md-6 col-sm-12">
 
-                            <form id="qk-form" method="GET" action="{{ route('tn.detail', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}">
+                            <form id="qk-form" method="GET" action="{{ route('tn.detail', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}#filters">
 
                                 <multi-select
                                   id="qk"
