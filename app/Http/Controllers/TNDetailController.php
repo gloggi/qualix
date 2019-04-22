@@ -54,6 +54,8 @@ class TNDetailController extends Controller
             }
         }
 
+        $beobachtungen = $beobachtungen->sortBy(function (Beobachtung $beobachtung) { return $beobachtung->block->datum->timestamp . '.' . $beobachtung->block->tagesnummer . '.' . $beobachtung->block->blocknummer . '.' . $beobachtung->block->blockname . '.' . $beobachtung->block->id; });
+
         return view('tn-detail', ['tn' => $tn, 'beobachtungen' => $beobachtungen, 'ma' => $ma, 'qk' => $qk]);
     }
 }

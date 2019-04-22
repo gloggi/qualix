@@ -114,7 +114,7 @@
                 'rawColumns' => true,
                 'fields' => [
                     __('Beobachtung') => function(\App\Models\Beobachtung $beobachtung) { return nl2br($beobachtung->kommentar); },
-                    __('Block') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->block->blockname; },
+                    __('Block') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->block->blockname_and_number; },
                     __('MA') => function(\App\Models\Beobachtung $beobachtung) {
                         return implode('', array_map(function(\App\Models\MA $ma) {
                             return '<span class="badge badge-' . ($ma->killer ? 'warning' : 'info') . '" style="white-space: normal">' . $ma->anforderung . '</span>';
