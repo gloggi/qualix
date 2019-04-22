@@ -113,7 +113,7 @@
                 'data' => $beobachtungen,
                 'rawColumns' => true,
                 'fields' => [
-                    __('Beobachtung') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->kommentar; },
+                    __('Beobachtung') => function(\App\Models\Beobachtung $beobachtung) { return nl2br($beobachtung->kommentar); },
                     __('Block') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->block->blockname; },
                     __('MA') => function(\App\Models\Beobachtung $beobachtung) {
                         return implode('', array_map(function(\App\Models\MA $ma) {
