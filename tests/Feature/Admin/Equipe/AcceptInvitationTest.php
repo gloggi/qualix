@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin\Equipe;
 
 use App\Models\Einladung;
 use App\Models\User;

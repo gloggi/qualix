@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin\Equipe;
 
 use App\Mail\InvitationMail;
 use Illuminate\Foundation\Testing\TestResponse;

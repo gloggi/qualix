@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin\Course;
 
 use App\Models\Kurs;
 use App\Models\User;

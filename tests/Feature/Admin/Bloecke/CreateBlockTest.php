@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin\Bloecke;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\TestResponse;

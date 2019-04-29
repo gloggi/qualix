@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin\Bloecke;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;

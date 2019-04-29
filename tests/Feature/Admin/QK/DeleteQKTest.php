@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin\QK;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
