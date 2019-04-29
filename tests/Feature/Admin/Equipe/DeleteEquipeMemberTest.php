@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Admin\Equipe;
 
+use App\Models\Kurs;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCaseWithKurs;
@@ -73,6 +75,32 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
         $response = $response->followRedirects();
         $response->assertSee('Mindestens ein Equipenmitglied muss im Kurs bleiben.');
         $response->assertSee($me->name);
+    }
+
+    public function test_shouldNotDeleteEquipeMember_fromOtherCourseOfSameUser() {
+        // given
+        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => ''])->followRedirects();
+        $otherKursId = Kurs::where('name', '=', 'Zweiter Kurs')->firstOrFail()->id;
+
+        // when
+        $response = $this->delete('/kurs/' . $otherKursId . '/admin/equipe/' . $this->user->id);
+
+        // then
+        $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
+    }
+
+    public function test_shouldNotDeleteEquipeMember_fromOtherUser() {
+        // given
+        /** @var User $otherUser */
+        $otherUser = factory(User::class)->create();
+        $this->be($otherUser);
+        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => '']);
+
+        // when
+        $response = $this->delete('/kurs/' . $otherUser->lastAccessedKurs->id . '/admin/equipe/' . $this->user->id);
+
+        // then
+        $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
     public function test_shouldRedirectToOtherPage_whenRemovingSelf() {
