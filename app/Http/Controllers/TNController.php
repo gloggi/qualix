@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TNStoreRequest;
+use App\Http\Requests\TNRequest;
 use App\Models\Kurs;
 use App\Models\TN;
 use Illuminate\Http\RedirectResponse;
@@ -26,11 +26,11 @@ class TNController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param TNStoreRequest $request
+     * @param TNRequest $request
      * @param Kurs $kurs
      * @return RedirectResponse
      */
-    public function store(TNStoreRequest $request, Kurs $kurs)
+    public function store(TNRequest $request, Kurs $kurs)
     {
         TN::create(array_merge($request->validated(), ['kurs_id' => $kurs->id]));
 
@@ -51,12 +51,12 @@ class TNController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param TNStoreRequest $request
+     * @param TNRequest $request
      * @param Kurs $kurs
      * @param TN $tn
      * @return RedirectResponse
      */
-    public function update(TNStoreRequest $request, Kurs $kurs, TN $tn)
+    public function update(TNRequest $request, Kurs $kurs, TN $tn)
     {
         if ($request->file('bild') && $tn->bild_url) {
             Storage::delete($tn->bild_url);

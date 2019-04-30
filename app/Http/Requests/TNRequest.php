@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TNStoreRequest extends FormRequest
+class TNRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
