@@ -67,4 +67,12 @@ class Kurs extends Model
     {
         return $this->hasMany('App\Models\TN', 'kurs_id')->orderBy('pfadiname');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function beobachtungen()
+    {
+        return $this->hasManyThrough(Beobachtung::class, Block::class)->orderBy('block.datum')->orderBy('block.tagesnummer')->orderBy('block.blocknummer')->orderBy('block.blockname')->orderBy('block.id');
+    }
 }
