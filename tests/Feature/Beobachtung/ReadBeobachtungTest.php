@@ -10,8 +10,6 @@ use Tests\TestCaseWithKurs;
 
 class ReadBeobachtungTest extends TestCaseWithKurs {
 
-    private $tnId;
-    private $blockId;
     private $beobachtungId;
 
     public function setUp(): void {
@@ -21,10 +19,10 @@ class ReadBeobachtungTest extends TestCaseWithKurs {
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null]);
         /** @var User $user */
         $user = Auth::user();
-        $this->tnId = $user->lastAccessedKurs->tns()->first()->id;
-        $this->blockId = $user->lastAccessedKurs->bloecke()->first()->id;
+        $tnId = $user->lastAccessedKurs->tns()->first()->id;
+        $blockId = $user->lastAccessedKurs->bloecke()->first()->id;
 
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'text', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '']);
+        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $tnId, 'kommentar' => 'text', 'bewertung' => '1', 'block_id' => '' . $blockId, 'ma_ids' => '', 'qk_ids' => '']);
         $this->beobachtungId = $user->last_accessed_kurs->bloecke()->first()->beobachtungen()->first()->id;
     }
 
@@ -40,7 +38,7 @@ class ReadBeobachtungTest extends TestCaseWithKurs {
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldDisplayTN() {
+    public function test_shouldDisplayBeobachtung() {
         // given
 
         // when
@@ -51,7 +49,7 @@ class ReadBeobachtungTest extends TestCaseWithKurs {
         $response->assertSee('Pflock');
     }
 
-    public function test_shouldNotDisplayTN_fromOtherCourseOfSameUser() {
+    public function test_shouldNotDisplayBeobachtung_fromOtherCourseOfSameUser() {
         // given
         $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => ''])->followRedirects();
         $otherKursId = Kurs::where('name', '=', 'Zweiter Kurs')->firstOrFail()->id;
@@ -63,7 +61,7 @@ class ReadBeobachtungTest extends TestCaseWithKurs {
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
-    public function test_shouldNotDisplayTN_fromOtherUser() {
+    public function test_shouldNotDisplayBeobachtung_fromOtherUser() {
         // given
         /** @var User $otherUser */
         $otherUser = factory(User::class)->create();
