@@ -85,7 +85,7 @@ class CreateInvitationTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/equipe', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/equipe');
 
         // then
         $response->assertStatus(200);
@@ -97,7 +97,7 @@ class CreateInvitationTest extends TestCaseWithKurs {
         $this->post('/kurs/' . $this->kursId . '/admin/invitation', $this->payload);
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/equipe', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/equipe');
 
         // then
         $response->assertStatus(200);

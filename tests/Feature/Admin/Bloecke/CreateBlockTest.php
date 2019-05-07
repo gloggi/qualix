@@ -97,7 +97,7 @@ class CreateBlockTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);
@@ -109,7 +109,7 @@ class CreateBlockTest extends TestCaseWithKurs {
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);
@@ -120,7 +120,7 @@ class CreateBlockTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);
@@ -132,7 +132,7 @@ class CreateBlockTest extends TestCaseWithKurs {
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);

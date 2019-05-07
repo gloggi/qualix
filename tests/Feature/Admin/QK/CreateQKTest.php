@@ -58,7 +58,7 @@ class CreateQKTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/qk', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/qk');
 
         // then
         $response->assertStatus(200);
@@ -70,7 +70,7 @@ class CreateQKTest extends TestCaseWithKurs {
         $this->post('/kurs/' . $this->kursId . '/admin/qk', $this->payload);
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/qk', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/qk');
 
         // then
         $response->assertStatus(200);

@@ -109,7 +109,7 @@ class CreateMATest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/ma', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/ma');
 
         // then
         $response->assertStatus(200);
@@ -121,7 +121,7 @@ class CreateMATest extends TestCaseWithKurs {
         $this->post('/kurs/' . $this->kursId . '/admin/ma', $this->payload);
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/ma', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/ma');
 
         // then
         $response->assertStatus(200);

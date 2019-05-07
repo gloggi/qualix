@@ -58,7 +58,7 @@ class CreateTNTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/tn', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/tn');
 
         // then
         $response->assertStatus(200);
@@ -70,7 +70,7 @@ class CreateTNTest extends TestCaseWithKurs {
         $this->post('/kurs/' . $this->kursId . '/admin/tn', $this->payload);
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/tn', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/tn');
 
         // then
         $response->assertStatus(200);
