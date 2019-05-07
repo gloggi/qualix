@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BeobachtungRequest;
+use App\Http\Requests\BeobachtungCreateRequest;
+use App\Http\Requests\BeobachtungUpdateRequest;
 use App\Models\Beobachtung;
 use App\Models\Block;
 use App\Models\Kurs;
@@ -28,11 +29,11 @@ class BeobachtungController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param BeobachtungRequest $request
+     * @param BeobachtungCreateRequest $request
      * @param Kurs $kurs
      * @return RedirectResponse
      */
-    public function store(BeobachtungRequest $request, Kurs $kurs) {
+    public function store(BeobachtungCreateRequest $request, Kurs $kurs) {
         $data = $request->validated();
         DB::transaction(function() use ($request, $kurs, $data) {
             $tn_ids = explode(',', $data['tn_ids']);
@@ -70,12 +71,12 @@ class BeobachtungController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param BeobachtungRequest $request
+     * @param BeobachtungUpdateRequest $request
      * @param Kurs $kurs
      * @param Beobachtung $beobachtung
      * @return RedirectResponse
      */
-    public function update(BeobachtungRequest $request, Kurs $kurs, Beobachtung $beobachtung) {
+    public function update(BeobachtungUpdateRequest $request, Kurs $kurs, Beobachtung $beobachtung) {
         DB::transaction(function () use ($request, $beobachtung) {
             $data = $request->validated();
             $beobachtung->update($data);

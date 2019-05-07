@@ -7,14 +7,14 @@
         @component('components.form', ['route' => ['beobachtung.update', ['kurs' => $kurs->id, 'beobachtung' => $beobachtung->id]]])
 
             @component('components.form.multiSelectInput', [
-                'name' => 'tn_ids',
+                'name' => 'tn_id',
                 'label' => __('TN'),
                 'required' => true,
                 'value' => $beobachtung->tn->id,
                 'options' => $kurs->tns->all(),
                 'valueFn' => function(\App\Models\TN $tn) { return $tn->id; },
                 'displayFn' => function(\App\Models\TN $tn) { return $tn->pfadiname; },
-                'multiple' => true,
+                'multiple' => false,
                 'disabled' => true,
             ])@endcomponent
 
