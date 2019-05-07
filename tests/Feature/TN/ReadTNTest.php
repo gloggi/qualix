@@ -5,21 +5,9 @@ namespace Tests\Feature\TN;
 use App\Models\Kurs;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Auth;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithBasicData;
 
-class ReadTNTest extends TestCaseWithKurs {
-
-    private $tnId;
-
-    public function setUp(): void {
-        parent::setUp();
-
-        $this->post('/kurs/' . $this->kursId . '/admin/tn', ['pfadiname' => 'Pflock']);
-        /** @var User $user */
-        $user = Auth::user();
-        $this->tnId = $user->lastAccessedKurs->tns()->first()->id;
-    }
+class ReadTNTest extends TestCaseWithBasicData {
 
     public function test_shouldRequireLogin() {
         // given
@@ -68,5 +56,28 @@ class ReadTNTest extends TestCaseWithKurs {
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
+    }
+
+    public function test_shouldShowMessage_whenNoBeobachtungForTN() {
+        // given
+
+        // when
+        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+
+        // then
+        $response->assertStatus(200);
+        $response->assertSee('Keine Beobachtungen gefunden.');
+    }
+
+    public function test_shouldNotShowMessage_whenSomeBeobachtungForTN() {
+        // given
+        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '']);
+
+        // when
+        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+
+        // then
+        $response->assertStatus(200);
+        $response->assertDontSee('Keine Beobachtungen gefunden.');
     }
 }

@@ -6,23 +6,19 @@ use App\Models\Kurs;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithBasicData;
 
-class ReadBeobachtungTest extends TestCaseWithKurs {
+class ReadBeobachtungTest extends TestCaseWithBasicData {
 
     private $beobachtungId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/tn', ['pfadiname' => 'Pflock']);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null]);
         /** @var User $user */
         $user = Auth::user();
-        $tnId = $user->lastAccessedKurs->tns()->first()->id;
-        $blockId = $user->lastAccessedKurs->bloecke()->first()->id;
 
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $tnId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'block_id' => '' . $blockId, 'ma_ids' => '', 'qk_ids' => '']);
+        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '']);
         $this->beobachtungId = $user->last_accessed_kurs->bloecke()->first()->beobachtungen()->first()->id;
     }
 

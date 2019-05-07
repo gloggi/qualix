@@ -26,8 +26,8 @@ class BeobachtungRequest extends FormRequest
         return [
             'tn_ids' => 'required|regex:/^\d+(,\d+)*$/',
             'kommentar' => 'required',
-            'bewertung' => 'required',
-            'block_id' => 'required',
+            'bewertung' => 'required|in:0,1,2',
+            'block_id' => 'required|numeric',
             'ma_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
             'qk_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
         ];
