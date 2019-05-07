@@ -103,7 +103,7 @@ class BeobachtungController extends Controller {
     public function destroy(Request $request, Kurs $kurs, Beobachtung $beobachtung) {
         $beobachtung->delete();
         $request->session()->flash('alert-success', __('Beobachtung gelöscht.'));
-        return Redirect::back();
+        return Redirect::route('tn.detail', ['kurs' => $kurs->id, 'tn' => $beobachtung->tn->id]);
     }
 
     /**
