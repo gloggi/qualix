@@ -22,7 +22,7 @@ class ReadBeobachtungTest extends TestCaseWithKurs {
         $tnId = $user->lastAccessedKurs->tns()->first()->id;
         $blockId = $user->lastAccessedKurs->bloecke()->first()->id;
 
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $tnId, 'kommentar' => 'text', 'bewertung' => '1', 'block_id' => '' . $blockId, 'ma_ids' => '', 'qk_ids' => '']);
+        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $tnId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'block_id' => '' . $blockId, 'ma_ids' => '', 'qk_ids' => '']);
         $this->beobachtungId = $user->last_accessed_kurs->bloecke()->first()->beobachtungen()->first()->id;
     }
 
@@ -46,7 +46,7 @@ class ReadBeobachtungTest extends TestCaseWithKurs {
 
         // then
         $response->assertOk();
-        $response->assertSee('Pflock');
+        $response->assertSee('hat gut mitgemacht');
     }
 
     public function test_shouldNotDisplayBeobachtung_fromOtherCourseOfSameUser() {
