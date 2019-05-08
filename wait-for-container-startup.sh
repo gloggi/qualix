@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
-# Wait for frontend NPM build to finish
+echo "Waiting for frontend container to start up..."
 while [ ! -f ./public/js/app.js ]
 do
   sleep 2
 done
+echo "Frontend container is ready."
 
-# Wait for backend composer install and DB migration to finish
+echo "Waiting for backend container to start up and migrate DB..."
 while [ ! -f ./.ready ]
 do
   sleep 2
 done
+echo "Backend container is ready."
