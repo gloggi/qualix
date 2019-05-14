@@ -78,8 +78,8 @@ class UpdateMATest extends TestCaseWithKurs {
         $response->assertRedirect('/kurs/' . $this->kursId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Ja');
-        $response->assertDontSee('Nein');
+        $response->assertSee('>Ja<');
+        $response->assertDontSee('>Nein<');
     }
 
     public function test_shouldValidateNewMAData_killerFalse_shouldWork() {
@@ -95,8 +95,8 @@ class UpdateMATest extends TestCaseWithKurs {
         $response->assertRedirect('/kurs/' . $this->kursId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Nein');
-        $response->assertDontSee('Ja');
+        $response->assertSee('>Nein<');
+        $response->assertDontSee('>Ja<');
     }
 
     public function test_shouldValidateNewMAData_killerTrue_shouldWork() {
@@ -112,8 +112,8 @@ class UpdateMATest extends TestCaseWithKurs {
         $response->assertRedirect('/kurs/' . $this->kursId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Ja');
-        $response->assertDontSee('Nein');
+        $response->assertSee('>Ja<');
+        $response->assertDontSee('>Nein<');
     }
 
     public function test_shouldValidateNewMAData_wrongId() {
