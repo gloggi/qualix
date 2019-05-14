@@ -73,6 +73,18 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
+    public function test_shouldRenderNewlinesInBeobachtung() {
+        // given
+        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => "Mehrzeilige Beobachtungen\n- nützlich\n- wichtig\n- erlauben Strukturierung", 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '']);
+
+        // when
+        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee("Mehrzeilige Beobachtungen<br />\n- nützlich<br />\n- wichtig<br />\n- erlauben Strukturierung");
+    }
+
     public function test_shouldOrderBeobachtungenByBlockOrder() {
         // given
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'later date', 'datum' => '02.01.2019', 'ma_ids' => null]);
