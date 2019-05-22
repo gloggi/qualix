@@ -15,7 +15,7 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->otherUser = factory(User::class)->create(['name' => 'Lindo']);
+        $this->otherUser = $this->createUser(['name' => 'Lindo']);
         $this->otherUser->kurse()->attach($this->kursId);
 
         $this->get('/kurs/' . $this->kursId . '/admin/equipe')->assertSee($this->otherUser->name);

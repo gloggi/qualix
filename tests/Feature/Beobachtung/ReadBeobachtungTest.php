@@ -64,7 +64,7 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
         $otherTNId = TN::create(['kurs_id' => $otherKursId, 'pfadiname' => 'Pflock'])->id;
         $otherBlockId = Block::create(['kurs_id' => $otherKursId, 'full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null])->id;
-        $otherUserId = factory(User::class)->create(['name' => 'Lindo'])->id;
+        $otherUserId = $this->createUser(['name' => 'Lindo'])->id;
         $otherBeobachtungId = Beobachtung::create(['block_id' => $otherBlockId, 'tn_id' => $otherTNId, 'user_id' => $otherUserId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'ma_ids' => '', 'qk_ids' => ''])->id;
 
         // when

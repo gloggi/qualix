@@ -22,8 +22,7 @@ abstract class TestCase extends BaseTestCase {
     public function setUp(): void {
         parent::setUp();
 
-        $user = factory(User::class)->create(['name' => 'Bari']);
-        $this->be($user);
+        $this->createUser(['name' => 'Bari'], true);
 
         Session::start();
 
@@ -124,6 +123,14 @@ abstract class TestCase extends BaseTestCase {
             return User::find($user->id);
         }
         return null;
+    }
+
+    protected function createUser($attrs = [], $actAsNewUser = false) {
+        $user = factory(User::class)->create($attrs);
+        if ($actAsNewUser) {
+            $this->be($user);
+        }
+        return $user;
     }
 
     protected function createKurs($name = 'Kursname', $kursnummer = 'CH 123-00', $attachToUser = true) {

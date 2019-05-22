@@ -82,9 +82,8 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         $this->createBeobachtung($this->blockIds[1], $tnId2);
 
         // create another leader in the course
-        $user2 = factory(User::class)->create(['name' => 'Lindo']);
+        $user2 = $this->createUser(['name' => 'Lindo'], true);
         $user2->kurse()->attach($this->kursId);
-        $this->be($user2);
 
         $this->createBeobachtung($this->blockIds[0], $this->tnId);
         $this->createBeobachtung($this->blockIds[1], $this->tnId);
