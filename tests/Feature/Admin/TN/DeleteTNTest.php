@@ -12,8 +12,7 @@ class DeleteTNTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/tn', ['pfadiname' => 'Pföschtli']);
-        $this->tnId = $this->user()->lastAccessedKurs->tns()->first()->id;
+        $this->tnId = $this->createTN('Pföschtli');
     }
 
     public function test_shouldRequireLogin() {

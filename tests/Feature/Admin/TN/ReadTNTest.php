@@ -13,8 +13,7 @@ class ReadTNTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/tn', ['pfadiname' => 'Pflock']);
-        $this->tnId = $this->user()->lastAccessedKurs->tns()->first()->id;
+        $this->tnId = $this->createTN('Pflock');
     }
 
     public function test_shouldRequireLogin() {

@@ -14,8 +14,7 @@ class UpdateTNTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/tn', ['pfadiname' => 'Qualm']);
-        $this->tnId = $this->user()->lastAccessedKurs->tns()->first()->id;
+        $this->tnId = $this->createTN('Qualm');
 
         $this->payload = ['pfadiname' => 'Räuchli'];
     }

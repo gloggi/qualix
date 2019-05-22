@@ -68,8 +68,7 @@ class CreateBeobachtungTest extends TestCaseWithBasicData {
 
     public function test_shouldValidateNewBeobachtungData_multipleTNIds_shouldWork() {
         // given
-        $this->post('/kurs/' . $this->kursId . '/admin/tn', ['pfadiname' => 'Pfnörch']);
-        $tnId2 = $this->user()->lastAccessedKurs->tns()->get()[1]->id;
+        $tnId2 = $this->createTN('Pfnörch');
         $tnIds = $this->tnId . ',' . $tnId2;
         $payload = $this->payload;
         $payload['tn_ids'] = $tnIds;

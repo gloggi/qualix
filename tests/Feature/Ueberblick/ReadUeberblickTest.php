@@ -65,11 +65,10 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
 
     public function test_shouldDisplayUeberblick_observationsByMultiplePeople_andMultipleTN() {
         // given
+        $name = $this->user()->name;
 
         // Create another TN
-        $this->post('/kurs/' . $this->kursId . '/admin/tn', ['pfadiname' => 'Pfnörch']);
-        $user = $this->user();
-        $tnId2 = $user->lastAccessedKurs->tns()->get()[1]->id;
+        $tnId2 = $this->createTN('Pfnörch');
 
         $this->createBeobachtung($this->blockIds[0], $tnId2);
         $this->createBeobachtung($this->blockIds[1], $tnId2);
@@ -86,7 +85,7 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $this->assertSeeAllInOrder('table.table-responsive-cards th', [ 'TN',     'Total', $user->name, 'Lindo', '' ]);
+        $this->assertSeeAllInOrder('table.table-responsive-cards th', [ 'TN',     'Total', $name, 'Lindo', '' ]);
         $this->assertSeeAllInOrder('table.table-responsive-cards td', [ 'Pflock', '11',    '9',         '2',     '', 'Pfnörch', '2',    '2',         '0',     '' ]);
     }
 

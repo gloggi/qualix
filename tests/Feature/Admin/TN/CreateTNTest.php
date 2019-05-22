@@ -67,7 +67,7 @@ class CreateTNTest extends TestCaseWithKurs {
 
     public function test_shouldNotShowMessage_whenSomeTNInCourse() {
         // given
-        $this->post('/kurs/' . $this->kursId . '/admin/tn', $this->payload);
+        $this->createTN();
 
         // when
         $response = $this->get('/kurs/' . $this->kursId . '/admin/tn');
