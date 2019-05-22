@@ -3,9 +3,7 @@
 namespace Tests\Feature\Admin\QK;
 
 use App\Models\QK;
-use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCaseWithKurs;
 
 class ReadQKTest extends TestCaseWithKurs {
@@ -16,9 +14,7 @@ class ReadQKTest extends TestCaseWithKurs {
         parent::setUp();
 
         $this->post('/kurs/' . $this->kursId . '/admin/qk', ['quali_kategorie' => 'Qualikategorie 1']);
-        /** @var User $user */
-        $user = Auth::user();
-        $this->qkId = $user->lastAccessedKurs->qks()->first()->id;
+        $this->qkId = $this->user()->lastAccessedKurs->qks()->first()->id;
     }
 
     public function test_shouldRequireLogin() {

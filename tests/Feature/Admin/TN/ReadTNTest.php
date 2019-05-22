@@ -3,9 +3,7 @@
 namespace Tests\Feature\Admin\TN;
 
 use App\Models\TN;
-use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCaseWithKurs;
 
 class ReadTNTest extends TestCaseWithKurs {
@@ -16,9 +14,7 @@ class ReadTNTest extends TestCaseWithKurs {
         parent::setUp();
 
         $this->post('/kurs/' . $this->kursId . '/admin/tn', ['pfadiname' => 'Pflock']);
-        /** @var User $user */
-        $user = Auth::user();
-        $this->tnId = $user->lastAccessedKurs->tns()->first()->id;
+        $this->tnId = $this->user()->lastAccessedKurs->tns()->first()->id;
     }
 
     public function test_shouldRequireLogin() {

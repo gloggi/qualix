@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Admin\TN;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithKurs;
 
@@ -17,9 +15,7 @@ class UpdateTNTest extends TestCaseWithKurs {
         parent::setUp();
 
         $this->post('/kurs/' . $this->kursId . '/admin/tn', ['pfadiname' => 'Qualm']);
-        /** @var User $user */
-        $user = Auth::user();
-        $this->tnId = $user->lastAccessedKurs->tns()->first()->id;
+        $this->tnId = $this->user()->lastAccessedKurs->tns()->first()->id;
 
         $this->payload = ['pfadiname' => 'Räuchli'];
     }

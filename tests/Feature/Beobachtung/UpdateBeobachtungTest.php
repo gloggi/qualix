@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Beobachtung;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithBasicData;
 
@@ -16,20 +14,17 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
     public function setUp(): void {
         parent::setUp();
 
-        /** @var User $user */
-        $user = Auth::user();
-
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $blockId2 = $user->lastAccessedKurs->bloecke()->get()[1]->id;
+        $blockId2 = $this->user()->lastAccessedKurs->bloecke()->get()[1]->id;
 
         $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '']);
-        $this->beobachtungId = $user->last_accessed_kurs->bloecke()->first()->beobachtungen()->first()->id;
+        $this->beobachtungId = $this->user()->last_accessed_kurs->bloecke()->first()->beobachtungen()->first()->id;
 
         $this->post('/kurs/' . $this->kursId . '/admin/ma', ['anforderung' => 'Mindestanforderung 1', 'killer' => '1']);
-        $maId = $user->lastAccessedKurs->mas()->first()->id;
+        $maId = $this->user()->lastAccessedKurs->mas()->first()->id;
 
         $this->post('/kurs/' . $this->kursId . '/admin/qk', ['quali_kategorie' => 'Qualikategorie 1']);
-        $qkId = $user->lastAccessedKurs->qks()->first()->id;
+        $qkId = $this->user()->lastAccessedKurs->qks()->first()->id;
 
         $this->payload = ['tn_id' => '' . $this->tnId, 'kommentar' => 'kein Wort gesagt', 'bewertung' => '0', 'block_id' => '' . $blockId2, 'ma_ids' => '' . $maId, 'qk_ids' => '' . $qkId];
     }

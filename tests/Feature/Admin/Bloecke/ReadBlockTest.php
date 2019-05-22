@@ -3,9 +3,7 @@
 namespace Tests\Feature\Admin\Bloecke;
 
 use App\Models\Block;
-use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCaseWithKurs;
 
 class ReadBlockTest extends TestCaseWithKurs {
@@ -16,9 +14,7 @@ class ReadBlockTest extends TestCaseWithKurs {
         parent::setUp();
 
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        /** @var User $user */
-        $user = Auth::user();
-        $this->blockId = $user->lastAccessedKurs->bloecke()->first()->id;
+        $this->blockId = $this->user()->lastAccessedKurs->bloecke()->first()->id;
     }
 
     public function test_shouldRequireLogin() {

@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Admin\MA;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCaseWithKurs;
 
 class DeleteMATest extends TestCaseWithKurs {
@@ -15,9 +13,7 @@ class DeleteMATest extends TestCaseWithKurs {
         parent::setUp();
 
         $this->post('/kurs/' . $this->kursId . '/admin/ma', ['anforderung' => 'Mindestanforderung 1', 'killer' => '1']);
-        /** @var User $user */
-        $user = Auth::user();
-        $this->maId = $user->lastAccessedKurs->mas()->first()->id;
+        $this->maId = $this->user()->lastAccessedKurs->mas()->first()->id;
     }
 
     public function test_shouldRequireLogin() {

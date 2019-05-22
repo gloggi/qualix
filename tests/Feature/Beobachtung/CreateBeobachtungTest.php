@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Beobachtung;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithBasicData;
 
@@ -71,9 +69,7 @@ class CreateBeobachtungTest extends TestCaseWithBasicData {
     public function test_shouldValidateNewBeobachtungData_multipleTNIds_shouldWork() {
         // given
         $this->post('/kurs/' . $this->kursId . '/admin/tn', ['pfadiname' => 'Pfnörch']);
-        /** @var User $user */
-        $user = Auth::user();
-        $tnId2 = $user->lastAccessedKurs->tns()->get()[1]->id;
+        $tnId2 = $this->user()->lastAccessedKurs->tns()->get()[1]->id;
         $tnIds = $this->tnId . ',' . $tnId2;
         $payload = $this->payload;
         $payload['tn_ids'] = $tnIds;

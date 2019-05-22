@@ -5,10 +5,8 @@ namespace Tests\Feature\Beobachtung;
 use App\Models\Beobachtung;
 use App\Models\Block;
 use App\Models\TN;
-use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCaseWithBasicData;
 
 class ReadBeobachtungTest extends TestCaseWithBasicData {
@@ -18,11 +16,8 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
     public function setUp(): void {
         parent::setUp();
 
-        /** @var User $user */
-        $user = Auth::user();
-
         $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '']);
-        $this->beobachtungId = $user->last_accessed_kurs->bloecke()->first()->beobachtungen()->first()->id;
+        $this->beobachtungId = $this->user()->last_accessed_kurs->bloecke()->first()->beobachtungen()->first()->id;
     }
 
     public function test_shouldRequireLogin() {
@@ -96,10 +91,8 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.0', 'blockname' => 'earlier block number', 'datum' => '01.01.2019', 'ma_ids' => null]);
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 2 later block name', 'datum' => '01.01.2019', 'ma_ids' => null]);
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 0 earlier block name', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        /** @var User $user */
-        $user = Auth::user();
         /** @var Collection $blockIds */
-        $blockIds = $user->lastAccessedKurs->bloecke->map(function (Block $block) { return $block->id; });
+        $blockIds = $this->user()->lastAccessedKurs->bloecke->map(function (Block $block) { return $block->id; });
         $blockIdsToCreateBeobachtungen = $blockIds->sort();
         $blockIdsToCreateBeobachtungen->shift();
         foreach ($blockIdsToCreateBeobachtungen as $blockId) {

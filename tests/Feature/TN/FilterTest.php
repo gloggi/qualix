@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\TN;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCaseWithBasicData;
 
 class FilterTest extends TestCaseWithBasicData {
@@ -20,8 +18,7 @@ class FilterTest extends TestCaseWithBasicData {
         $this->post('/kurs/' . $this->kursId . '/admin/qk', ['quali_kategorie' => 'Qualikategorie 2']);
         $this->post('/kurs/' . $this->kursId . '/admin/ma', ['anforderung' => 'Mindestanforderung 1', 'killer' => '1']);
         $this->post('/kurs/' . $this->kursId . '/admin/ma', ['anforderung' => 'Mindestanforderung 2', 'killer' => '1']);
-        /** @var User $user */
-        $user = Auth::user();
+        $user = $this->user();
         $this->qkId = $user->lastAccessedKurs->qks()->first()->id;
         $this->qkId2 = $user->lastAccessedKurs->qks()->get()[1]->id;
         $this->maId = $user->lastAccessedKurs->mas()->first()->id;

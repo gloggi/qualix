@@ -4,10 +4,8 @@ namespace Tests\Feature\Ueberblick;
 
 use App\Models\Block;
 use App\Models\TN;
-use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Tests\TestCaseWithBasicData;
 
@@ -28,10 +26,8 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.6', 'blockname' => 'Block6', 'datum' => '01.01.2019', 'ma_ids' => null]);
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.7', 'blockname' => 'Block7', 'datum' => '01.01.2019', 'ma_ids' => null]);
         $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.8', 'blockname' => 'Block8', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        /** @var User $user */
-        $user = Auth::user();
         /** @var Collection $blockIds */
-        $this->blockIds = $user->lastAccessedKurs->bloecke->map(function (Block $block) { return $block->id; });
+        $this->blockIds = $this->user()->lastAccessedKurs->bloecke->map(function (Block $block) { return $block->id; });
 
         foreach ($this->blockIds as $blockId) {
             $this->createBeobachtung($blockId, $this->tnId);
@@ -63,9 +59,7 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        /** @var User $user */
-        $user = Auth::user();
-        $this->assertSeeAllInOrder('table.table-responsive-cards th', [ 'TN', 'Total', $user->name, '' ]);
+        $this->assertSeeAllInOrder('table.table-responsive-cards th', [ 'TN', 'Total', $this->user()->name, '' ]);
         $this->assertSeeAllInOrder('table.table-responsive-cards td', [ 'Pflock', '9', '9', '' ]);
     }
 
@@ -74,8 +68,7 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
 
         // Create another TN
         $this->post('/kurs/' . $this->kursId . '/admin/tn', ['pfadiname' => 'Pfnörch']);
-        /** @var User $user */
-        $user = Auth::user();
+        $user = $this->user();
         $tnId2 = $user->lastAccessedKurs->tns()->get()[1]->id;
 
         $this->createBeobachtung($this->blockIds[0], $tnId2);

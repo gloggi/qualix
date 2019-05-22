@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Admin\MA;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithKurs;
 
@@ -17,9 +15,7 @@ class UpdateMATest extends TestCaseWithKurs {
         parent::setUp();
 
         $this->post('/kurs/' . $this->kursId . '/admin/ma', ['anforderung' => 'Mindestanforderung 1', 'killer' => '1']);
-        /** @var User $user */
-        $user = Auth::user();
-        $this->maId = $user->lastAccessedKurs->mas()->first()->id;
+        $this->maId = $this->user()->lastAccessedKurs->mas()->first()->id;
 
         $this->payload = ['anforderung' => 'Geänderte Anforderung', 'killer' => '1'];
     }
