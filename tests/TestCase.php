@@ -7,12 +7,10 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Session;
-use Masterminds\HTML5;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\DomCrawler\Crawler;
 
-abstract class TestCase extends BaseTestCase
-{
+abstract class TestCase extends BaseTestCase {
     use CreatesApplication;
     use DatabaseTransactions;
 
@@ -97,21 +95,21 @@ abstract class TestCase extends BaseTestCase
      * @param array $contents
      * @return $this
      */
-    public function assertSeeAllInOrder($selector, Array $contents)
-    {
+    public function assertSeeAllInOrder($selector, Array $contents) {
         $matches = $this->crawler->filter($selector);
 
         if ($matches->count() !== count($contents)) {
             $this->fail('Expected to find ' . count($contents) . ' matching elements, but found ' . $matches->count());
         }
 
-        try {
-            foreach ($matches as $index => $domElement) {
-                $needle = $contents[$index];
-                $this->assertContains($needle, trim($domElement->textContent));
+        foreach ($matches as $index => $domElement) {
+            $needle = $contents[$index];
+            $haystack = trim($domElement->textContent);
+            try {
+                $this->assertContains($needle, $haystack);
+            } catch (ExpectationFailedException $e) {
+                $this->fail('Failed asserting that the element at index ' . $index . ' contains the string "' . $contents[$index] . '", was "' . $haystack . '" instead.');
             }
-        } catch (ExpectationFailedException $e) {
-            $this->fail('Failed asserting that the element at index ' . $index . ' contains the string "' . $contents[$index] . '"');
         }
 
         return $this;
