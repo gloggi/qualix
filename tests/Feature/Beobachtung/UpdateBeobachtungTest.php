@@ -14,8 +14,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $blockId2 = $this->user()->lastAccessedKurs->bloecke()->get()[1]->id;
+        $blockId2 = $this->createBlock();
 
         $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '']);
         $this->beobachtungId = $this->user()->last_accessed_kurs->bloecke()->first()->beobachtungen()->first()->id;

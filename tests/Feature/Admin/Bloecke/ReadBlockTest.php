@@ -13,8 +13,7 @@ class ReadBlockTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->blockId = $this->user()->lastAccessedKurs->bloecke()->first()->id;
+        $this->blockId = $this->createBlock('Block 1');
     }
 
     public function test_shouldRequireLogin() {
@@ -65,14 +64,14 @@ class ReadBlockTest extends TestCaseWithKurs {
 
     public function test_shouldOrderBloecke() {
         // given
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'later date', 'datum' => '02.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'earlier date', 'datum' => '31.12.2018', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '2.1', 'blockname' => 'later day number', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '0.1', 'blockname' => 'earlier day number', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.2', 'blockname' => 'later block number', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.0', 'blockname' => 'earlier block number', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 2 later block name', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 0 earlier block name', 'datum' => '01.01.2019', 'ma_ids' => null]);
+        $this->createBlock('later date', '1.1', '02.01.2019');
+        $this->createBlock('earlier date', '1.1', '31.12.2018');
+        $this->createBlock('later day number', '2.1', '01.01.2019');
+        $this->createBlock('earlier day number', '0.1', '01.01.2019');
+        $this->createBlock('later block number', '1.2', '01.01.2019');
+        $this->createBlock('earlier block number', '1.0', '01.01.2019');
+        $this->createBlock('Block 2 later block name', '1.1', '01.01.2019');
+        $this->createBlock('Block 0 earlier block name', '1.1', '01.01.2019');
 
         // when
         $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');

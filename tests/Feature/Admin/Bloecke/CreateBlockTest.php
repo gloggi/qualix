@@ -93,7 +93,7 @@ class CreateBlockTest extends TestCaseWithKurs {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldShowMessage_whenNoQKInCourse() {
+    public function test_shouldShowMessage_whenNoBloeckeInCourse() {
         // given
 
         // when
@@ -104,9 +104,9 @@ class CreateBlockTest extends TestCaseWithKurs {
         $response->assertSee('Bisher sind keine Blöcke erfasst.');
     }
 
-    public function test_shouldNotShowMessage_whenSomeQKInCourse() {
+    public function test_shouldNotShowMessage_whenSomeBlockInCourse() {
         // given
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $this->createBlock();
 
         // when
         $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');

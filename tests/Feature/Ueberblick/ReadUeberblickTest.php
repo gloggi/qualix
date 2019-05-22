@@ -18,14 +18,14 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
 
         // one block is already created in parent setup, create some more
 
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block1', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.2', 'blockname' => 'Block2', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.3', 'blockname' => 'Block3', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.4', 'blockname' => 'Block4', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.5', 'blockname' => 'Block5', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.6', 'blockname' => 'Block6', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.7', 'blockname' => 'Block7', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.8', 'blockname' => 'Block8', 'datum' => '01.01.2019', 'ma_ids' => null]);
+        $this->createBlock('later date', '1.1', '02.01.2019');
+        $this->createBlock('earlier date', '1.1', '31.12.2018');
+        $this->createBlock('later day number', '2.1', '01.01.2019');
+        $this->createBlock('earlier day number', '0.1', '01.01.2019');
+        $this->createBlock('later block number', '1.2', '01.01.2019');
+        $this->createBlock('earlier block number', '1.0', '01.01.2019');
+        $this->createBlock('Block 2 later block name', '1.1', '01.01.2019');
+        $this->createBlock('Block 0 earlier block name', '1.1', '01.01.2019');
         /** @var Collection $blockIds */
         $this->blockIds = $this->user()->lastAccessedKurs->bloecke->map(function (Block $block) { return $block->id; });
 

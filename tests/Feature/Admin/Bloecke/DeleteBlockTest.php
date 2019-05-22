@@ -12,8 +12,7 @@ class DeleteBlockTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        $this->blockId = $this->user()->lastAccessedKurs->bloecke()->first()->id;
+        $this->blockId = $this->createBlock('Block 1');
     }
 
     public function test_shouldRequireLogin() {
@@ -39,7 +38,7 @@ class DeleteBlockTest extends TestCaseWithKurs {
         $response->assertRedirect('/kurs/' . $this->kursId . '/admin/bloecke');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertDontSee('Qualikategorie 1');
+        $response->assertDontSee('Block 1');
     }
 
     public function test_shouldValidateDeletedQKUrl_wrongId() {
