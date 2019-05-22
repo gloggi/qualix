@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Tests\TestCaseWithBasicData;
 
 class ReadUeberblickTest extends TestCaseWithBasicData {
@@ -39,6 +40,7 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
 
     private function createBeobachtung($blockId, $tnId) {
         $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $tnId, 'kommentar' => Block::find($blockId)->blockname, 'bewertung' => '1', 'block_id' => '' . $blockId, 'ma_ids' => '', 'qk_ids' => '']);
+        Session::forget('alert-success');
     }
 
     public function test_shouldRequireLogin() {
@@ -94,6 +96,19 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         $response->assertOk();
         $this->assertSeeAllInOrder('table.table-responsive-cards th', [ 'TN',     'Total', $user->name, 'Lindo', '' ]);
         $this->assertSeeAllInOrder('table.table-responsive-cards td', [ 'Pflock', '11',    '9',         '2',     '', 'Pfnörch', '2',    '2',         '0',     '' ]);
+    }
+
+    public function test_shouldDisplayMessage_whenNoTNInKurs() {
+        // given
+        TN::find($this->tnId)->delete();
+
+        // when
+        $response = $this->get('/kurs/' . $this->kursId . '/ueberblick');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('Pflock');
+        $response->assertSee('Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie');
     }
 
     public function test_shouldNotDisplayUeberblick_toOtherUser() {
