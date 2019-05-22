@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\QK;
 
-use App\Models\Kurs;
+use App\Models\QK;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
@@ -46,8 +46,7 @@ class ReadQKTest extends TestCaseWithKurs {
 
     public function test_shouldNotDisplayQK_fromOtherCourseOfSameUser() {
         // given
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => ''])->followRedirects();
-        $otherKursId = Kurs::where('name', '=', 'Zweiter Kurs')->firstOrFail()->id;
+        $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/admin/qk/' . $this->qkId);
@@ -58,13 +57,11 @@ class ReadQKTest extends TestCaseWithKurs {
 
     public function test_shouldNotDisplayQK_fromOtherUser() {
         // given
-        /** @var User $otherUser */
-        $otherUser = factory(User::class)->create();
-        $this->be($otherUser);
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => '']);
+        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $otherQKId = QK::create(['kurs_id' => $otherKursId, 'quali_kategorie' => 'Qualikategorie 1'])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherUser->lastAccessedKurs->id . '/admin/qk/' . $this->qkId);
+        $response = $this->get('/kurs/' . $otherKursId . '/admin/qk/' . $otherQKId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

@@ -2,10 +2,12 @@
 
 namespace Tests;
 
+use App\Models\Kurs;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\DomCrawler\Crawler;
@@ -20,7 +22,7 @@ abstract class TestCase extends BaseTestCase {
     public function setUp(): void {
         parent::setUp();
 
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['name' => 'Bari']);
         $this->be($user);
 
         Session::start();
@@ -113,5 +115,22 @@ abstract class TestCase extends BaseTestCase {
         }
 
         return $this;
+    }
+
+    protected function user(): User {
+        /** @var User $user */
+        $user = Auth::user();
+        if ($user) {
+            return User::find($user->id);
+        }
+        return null;
+    }
+
+    protected function createKurs($name = 'Kursname', $kursnummer = 'CH 123-00', $attachToUser = true) {
+        $id = Kurs::create(['name' => $name, 'kursnummer' => $kursnummer])->id;
+        if ($attachToUser) {
+            $this->user()->kurse()->attach($id);
+        }
+        return $id;
     }
 }

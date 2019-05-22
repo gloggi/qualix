@@ -3,7 +3,7 @@
 namespace Tests\Feature\Ueberblick;
 
 use App\Models\Block;
-use App\Models\Einladung;
+use App\Models\TN;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
@@ -80,11 +80,9 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         $this->createBeobachtung($this->blockIds[1], $tnId2);
 
         // create another leader in the course
-        $email = 'test@test.com';
-        $this->post('/kurs/' . $this->kursId . '/admin/invitation', ['email' => $email]);
-        $token = Einladung::where('kurs_id', '=', $this->kursId)->where('email', '=', $email)->first()->token;
-        $this->be(factory(User::class)->create(['name' => 'Lindo']));
-        $this->post('/invitation/', ['token' => $token]);
+        $user2 = factory(User::class)->create(['name' => 'Lindo']);
+        $user2->kurse()->attach($this->kursId);
+        $this->be($user2);
 
         $this->createBeobachtung($this->blockIds[0], $this->tnId);
         $this->createBeobachtung($this->blockIds[1], $this->tnId);
@@ -100,13 +98,11 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
 
     public function test_shouldNotDisplayUeberblick_toOtherUser() {
         // given
-        /** @var User $otherUser */
-        $otherUser = factory(User::class)->create();
-        $this->be($otherUser);
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => '']);
+        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        TN::create(['kurs_id' => $otherKursId, 'pfadiname' => 'Pflock']);
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/ueberblick');
+        $response = $this->get('/kurs/' . $otherKursId . '/ueberblick');
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

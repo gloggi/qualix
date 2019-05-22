@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\Bloecke;
 
-use App\Models\Kurs;
+use App\Models\Block;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
@@ -46,8 +46,7 @@ class ReadBlockTest extends TestCaseWithKurs {
 
     public function test_shouldNotDisplayBlock_fromOtherCourseOfSameUser() {
         // given
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => ''])->followRedirects();
-        $otherKursId = Kurs::where('name', '=', 'Zweiter Kurs')->firstOrFail()->id;
+        $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/admin/bloecke/' . $this->blockId);
@@ -58,13 +57,11 @@ class ReadBlockTest extends TestCaseWithKurs {
 
     public function test_shouldNotDisplayBlock_fromOtherUser() {
         // given
-        /** @var User $otherUser */
-        $otherUser = factory(User::class)->create();
-        $this->be($otherUser);
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => '']);
+        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $otherBlockId = Block::create(['kurs_id' => $otherKursId, 'full_block_number' => '1.1', 'blockname' => 'later date', 'datum' => '02.01.2019', 'ma_ids' => null])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherUser->lastAccessedKurs->id . '/admin/bloecke/' . $this->blockId);
+        $response = $this->get('/kurs/' . $otherKursId . '/admin/bloecke/' . $otherBlockId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\Beobachtung;
 
+use App\Models\Beobachtung;
 use App\Models\Block;
-use App\Models\Kurs;
+use App\Models\TN;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
@@ -49,8 +50,7 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
 
     public function test_shouldNotDisplayBeobachtung_fromOtherCourseOfSameUser() {
         // given
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => ''])->followRedirects();
-        $otherKursId = Kurs::where('name', '=', 'Zweiter Kurs')->firstOrFail()->id;
+        $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/beobachtungen/' . $this->beobachtungId);
@@ -61,13 +61,14 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
 
     public function test_shouldNotDisplayBeobachtung_fromOtherUser() {
         // given
-        /** @var User $otherUser */
-        $otherUser = factory(User::class)->create();
-        $this->be($otherUser);
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => '']);
+        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $otherTNId = TN::create(['kurs_id' => $otherKursId, 'pfadiname' => 'Pflock'])->id;
+        $otherBlockId = Block::create(['kurs_id' => $otherKursId, 'full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null])->id;
+        $otherUserId = factory(User::class)->create(['name' => 'Lindo'])->id;
+        $otherBeobachtungId = Beobachtung::create(['block_id' => $otherBlockId, 'tn_id' => $otherTNId, 'user_id' => $otherUserId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'ma_ids' => '', 'qk_ids' => ''])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherUser->lastAccessedKurs->id . '/beobachtungen/' . $this->beobachtungId);
+        $response = $this->get('/kurs/' . $otherKursId . '/beobachtungen/' . $otherBeobachtungId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

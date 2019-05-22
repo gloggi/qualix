@@ -2,8 +2,7 @@
 
 namespace Tests\Feature\TN;
 
-use App\Models\Kurs;
-use App\Models\User;
+use App\Models\TN;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCaseWithBasicData;
 
@@ -34,8 +33,7 @@ class ReadTNTest extends TestCaseWithBasicData {
 
     public function test_shouldNotDisplayTN_fromOtherCourseOfSameUser() {
         // given
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => ''])->followRedirects();
-        $otherKursId = Kurs::where('name', '=', 'Zweiter Kurs')->firstOrFail()->id;
+        $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/tn/' . $this->tnId);
@@ -46,13 +44,11 @@ class ReadTNTest extends TestCaseWithBasicData {
 
     public function test_shouldNotDisplayTN_fromOtherUser() {
         // given
-        /** @var User $otherUser */
-        $otherUser = factory(User::class)->create();
-        $this->be($otherUser);
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => '']);
+        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $otherTNId = TN::create(['kurs_id' => $otherKursId, 'pfadiname' => 'Pflock'])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherUser->lastAccessedKurs->id . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $otherKursId . '/tn/' . $otherTNId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

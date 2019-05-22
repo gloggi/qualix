@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\MA;
 
-use App\Models\Kurs;
+use App\Models\MA;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
@@ -46,8 +46,7 @@ class ReadMATest extends TestCaseWithKurs {
 
     public function test_shouldNotDisplayMA_fromOtherCourseOfSameUser() {
         // given
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => ''])->followRedirects();
-        $otherKursId = Kurs::where('name', '=', 'Zweiter Kurs')->firstOrFail()->id;
+        $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/admin/ma/' . $this->maId);
@@ -58,13 +57,11 @@ class ReadMATest extends TestCaseWithKurs {
 
     public function test_shouldNotDisplayMA_fromOtherUser() {
         // given
-        /** @var User $otherUser */
-        $otherUser = factory(User::class)->create();
-        $this->be($otherUser);
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => '']);
+        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $otherMAId = MA::create(['kurs_id' => $otherKursId, 'anforderung' => 'Mindestanforderung 1', 'killer' => '1'])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherUser->lastAccessedKurs->id . '/admin/ma/' . $this->maId);
+        $response = $this->get('/kurs/' . $otherKursId . '/admin/ma/' . $otherMAId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
