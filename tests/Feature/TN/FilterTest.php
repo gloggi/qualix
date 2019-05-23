@@ -20,14 +20,14 @@ class FilterTest extends TestCaseWithBasicData {
         $this->maId = $this->createMA('Mindestanforderung 1', true);
         $this->maId2 = $this->createMA('Mindestanforderung 2', true);
 
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'hat QK und MA', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '' . $this->maId, 'qk_ids' => '' . $this->qkId]);
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'nur QK', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '' . $this->qkId]);
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'nur MA', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '' . $this->maId, 'qk_ids' => '']);
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'ohne QK oder MA', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '']);
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'andere QK', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '' . $this->qkId2]);
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'andere MA', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '' . $this->maId2, 'qk_ids' => '']);
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'alle QK', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '' . $this->qkId . ',' . $this->qkId2]);
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'alle MA', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '' . $this->maId . ',' . $this->maId2, 'qk_ids' => '']);
+        $this->createBeobachtung('hat QK und MA', 1, [$this->maId], [$this->qkId]);
+        $this->createBeobachtung('nur QK', 1, [], [$this->qkId]);
+        $this->createBeobachtung('nur MA', 1, [$this->maId], []);
+        $this->createBeobachtung('ohne QK oder MA', 1, [], []);
+        $this->createBeobachtung('andere QK', 1, [], [$this->qkId2]);
+        $this->createBeobachtung('andere MA', 1, [$this->maId2], []);
+        $this->createBeobachtung('alle QK', 1, [], [$this->qkId, $this->qkId2]);
+        $this->createBeobachtung('alle MA', 1, [$this->maId, $this->maId2], []);
     }
 
     public function test_shouldDisplayAllObservations_whenNoFilter() {

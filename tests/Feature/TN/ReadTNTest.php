@@ -67,7 +67,7 @@ class ReadTNTest extends TestCaseWithBasicData {
 
     public function test_shouldNotShowMessage_whenSomeBeobachtungForTN() {
         // given
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '']);
+        $this->createBeobachtung();
 
         // when
         $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId);

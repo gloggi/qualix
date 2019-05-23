@@ -6,7 +6,6 @@ use App\Models\Block;
 use App\Models\TN;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Session;
 use Tests\TestCaseWithBasicData;
 
 class ReadUeberblickTest extends TestCaseWithBasicData {
@@ -30,13 +29,8 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         $this->blockIds = $this->user()->lastAccessedKurs->bloecke->map(function (Block $block) { return $block->id; });
 
         foreach ($this->blockIds as $blockId) {
-            $this->createBeobachtung($blockId, $this->tnId);
+            $this->createBeobachtung(Block::find($blockId)->blockname, 1, [], [], $blockId);
         }
-    }
-
-    private function createBeobachtung($blockId, $tnId) {
-        $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $tnId, 'kommentar' => Block::find($blockId)->blockname, 'bewertung' => '1', 'block_id' => '' . $blockId, 'ma_ids' => '', 'qk_ids' => '']);
-        Session::forget('alert-success');
     }
 
     public function test_shouldRequireLogin() {
@@ -70,15 +64,15 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         // Create another TN
         $tnId2 = $this->createTN('Pfnörch');
 
-        $this->createBeobachtung($this->blockIds[0], $tnId2);
-        $this->createBeobachtung($this->blockIds[1], $tnId2);
+        $this->createBeobachtung(Block::find($this->blockIds[0])->blockname, 1, [], [], $this->blockIds[0], $tnId2);
+        $this->createBeobachtung(Block::find($this->blockIds[1])->blockname, 1, [], [], $this->blockIds[1], $tnId2);
 
         // create another leader in the course
-        $user2 = $this->createUser(['name' => 'Lindo'], true);
+        $user2 = $this->createUser(['name' => 'Lindo']);
         $user2->kurse()->attach($this->kursId);
 
-        $this->createBeobachtung($this->blockIds[0], $this->tnId);
-        $this->createBeobachtung($this->blockIds[1], $this->tnId);
+        $this->createBeobachtung(Block::find($this->blockIds[0])->blockname, 1, [], [], $this->blockIds[0], $this->tnId, $user2->id);
+        $this->createBeobachtung(Block::find($this->blockIds[1])->blockname, 1, [], [], $this->blockIds[1], $this->tnId, $user2->id);
 
         // when
         $response = $this->get('/kurs/' . $this->kursId . '/ueberblick');
