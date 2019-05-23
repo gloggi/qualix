@@ -14,15 +14,11 @@ class FilterTest extends TestCaseWithBasicData {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/qk', ['quali_kategorie' => 'Qualikategorie 1']);
-        $this->post('/kurs/' . $this->kursId . '/admin/qk', ['quali_kategorie' => 'Qualikategorie 2']);
-        $this->post('/kurs/' . $this->kursId . '/admin/ma', ['anforderung' => 'Mindestanforderung 1', 'killer' => '1']);
-        $this->post('/kurs/' . $this->kursId . '/admin/ma', ['anforderung' => 'Mindestanforderung 2', 'killer' => '1']);
-        $user = $this->user();
-        $this->qkId = $user->lastAccessedKurs->qks()->first()->id;
-        $this->qkId2 = $user->lastAccessedKurs->qks()->get()[1]->id;
-        $this->maId = $user->lastAccessedKurs->mas()->first()->id;
-        $this->maId2 = $user->lastAccessedKurs->mas()->get()[1]->id;
+        $this->qkId = $this->createQK('Qualikategorie 1');
+        $this->qkId2 = $this->createQK('Qualikategorie 2');
+
+        $this->maId = $this->createMA('Mindestanforderung 1', true);
+        $this->maId2 = $this->createMA('Mindestanforderung 2', true);
 
         $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'hat QK und MA', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '' . $this->maId, 'qk_ids' => '' . $this->qkId]);
         $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'nur QK', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '' . $this->qkId]);

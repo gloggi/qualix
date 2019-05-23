@@ -129,9 +129,9 @@ class CreateBlockTest extends TestCaseWithKurs {
 
     public function test_shouldShowDateFromLastCreatedBlockInForm_whenBlockHasBeenCreated() {
         // given
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
 
         // when
+        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
         $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
 
         // then

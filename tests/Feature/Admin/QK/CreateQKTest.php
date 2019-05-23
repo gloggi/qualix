@@ -67,7 +67,7 @@ class CreateQKTest extends TestCaseWithKurs {
 
     public function test_shouldNotShowMessage_whenSomeQKInCourse() {
         // given
-        $this->post('/kurs/' . $this->kursId . '/admin/qk', $this->payload);
+        $this->createQK();
 
         // when
         $response = $this->get('/kurs/' . $this->kursId . '/admin/qk');

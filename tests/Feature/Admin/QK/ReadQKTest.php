@@ -13,8 +13,7 @@ class ReadQKTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/qk', ['quali_kategorie' => 'Qualikategorie 1']);
-        $this->qkId = $this->user()->lastAccessedKurs->qks()->first()->id;
+        $this->qkId = $this->createQK('Qualikategorie 1');
     }
 
     public function test_shouldRequireLogin() {

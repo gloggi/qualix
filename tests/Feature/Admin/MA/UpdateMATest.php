@@ -14,8 +14,7 @@ class UpdateMATest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/ma', ['anforderung' => 'Mindestanforderung 1', 'killer' => '1']);
-        $this->maId = $this->user()->lastAccessedKurs->mas()->first()->id;
+        $this->maId = $this->createMA('Mindestanforderung 1', true);
 
         $this->payload = ['anforderung' => 'Geänderte Anforderung', 'killer' => '1'];
     }

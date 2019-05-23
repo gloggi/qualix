@@ -19,11 +19,8 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         $this->post('/kurs/' . $this->kursId . '/beobachtungen/neu', ['tn_ids' => '' . $this->tnId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'block_id' => '' . $this->blockId, 'ma_ids' => '', 'qk_ids' => '']);
         $this->beobachtungId = $this->user()->last_accessed_kurs->bloecke()->first()->beobachtungen()->first()->id;
 
-        $this->post('/kurs/' . $this->kursId . '/admin/ma', ['anforderung' => 'Mindestanforderung 1', 'killer' => '1']);
-        $maId = $this->user()->lastAccessedKurs->mas()->first()->id;
-
-        $this->post('/kurs/' . $this->kursId . '/admin/qk', ['quali_kategorie' => 'Qualikategorie 1']);
-        $qkId = $this->user()->lastAccessedKurs->qks()->first()->id;
+        $maId = $this->createMA('Mindestanforderung 1', true);
+        $qkId = $this->createQK('Qualikategorie 1');
 
         $this->payload = ['tn_id' => '' . $this->tnId, 'kommentar' => 'kein Wort gesagt', 'bewertung' => '0', 'block_id' => '' . $blockId2, 'ma_ids' => '' . $maId, 'qk_ids' => '' . $qkId];
     }

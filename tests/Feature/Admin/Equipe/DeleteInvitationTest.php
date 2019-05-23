@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Admin\Equipe;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCaseWithKurs;
 
 class DeleteInvitationTest extends TestCaseWithKurs {

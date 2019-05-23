@@ -118,7 +118,7 @@ class CreateMATest extends TestCaseWithKurs {
 
     public function test_shouldNotShowMessage_whenSomeMAInCourse() {
         // given
-        $this->post('/kurs/' . $this->kursId . '/admin/ma', $this->payload);
+        $this->createMA();
 
         // when
         $response = $this->get('/kurs/' . $this->kursId . '/admin/ma');
