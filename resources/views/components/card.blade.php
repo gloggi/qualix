@@ -3,7 +3,7 @@
         <div class="card-header">{{ $header }}</div>
     @endif
 
-    <div class="card-body">
+    <div class="{{ isset($bodyClass) ? $bodyClass : 'card-body' }}">
         {{ $slot }}
     </div>
 </div>

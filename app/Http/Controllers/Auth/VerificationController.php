@@ -38,4 +38,17 @@ class VerificationController extends Controller
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
+
+    /**
+     * Redirect the user back to the original referring page after email validation.
+     *
+     * @return string
+     */
+    protected function redirectTo(){
+        if(session()->get("redirect_after_email_verification")){
+            return session()->get("redirect_after_email_verification");
+        }
+
+        return $this->redirectTo;
+    }
 }

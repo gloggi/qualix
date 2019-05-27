@@ -16,17 +16,20 @@
                         </select>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'bloecke' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('bloecke', ['kurs' => $kurs->id]) }}">Blöck</a>
+                        <a class="nav-link" href="{{ route('bloecke', ['kurs' => $kurs->id]) }}">Blöcke</a>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'tn' ? ' active' : '' }}">
                         <a class="nav-link" href="{{ route('tn', ['kurs' => $kurs->id]) }}">TN</a>
                     </li>
-                    <li class="nav-item{{ Route::currentRouteName() == 'ma' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>
+                    <li class="nav-item{{ Route::currentRouteName() == 'ueberblick' ? ' active' : '' }}">
+                        <a class="nav-link" href="{{ route('ueberblick', ['kurs' => $kurs->id]) }}">Überblick</a>
                     </li>
-                    <li class="nav-item{{ Route::currentRouteName() == 'tagesspick' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('tagesspick', ['kurs' => $kurs->id]) }}">Tagesspick</a>
-                    </li>
+{{--                    <li class="nav-item{{ Route::currentRouteName() == 'ma' ? ' active' : '' }}">--}}
+{{--                        <a class="nav-link" href="{{ route('ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>--}}
+{{--                    </li>--}}
+{{--                    <li class="nav-item{{ Route::currentRouteName() == 'tagesspick' ? ' active' : '' }}">--}}
+{{--                        <a class="nav-link" href="{{ route('tagesspick', ['kurs' => $kurs->id]) }}">Tagesspick</a>--}}
+{{--                    </li>--}}
                     <li class="nav-item dropdown{{ substr( Route::currentRouteName(), 0, 5 ) == 'admin' ? ' active' : '' }}">
                         <a class="nav-link dropdown-toggle" id="navbarKursadmin" role="button"
                            data-toggle="dropdown"
@@ -38,14 +41,14 @@
                                href="{{ route('admin.kurs', ['kurs' => $kurs->id]) }}">Kursdetails</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.equipe' ? ' active' : '' }}"
                                href="{{ route('admin.equipe', ['kurs' => $kurs->id]) }}">Equipe</a>
-                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.tn' ? ' active' : '' }}"
-                               href="{{ route('admin.tn', ['kurs' => $kurs->id]) }}">TN</a>
-                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.bloecke' ? ' active' : '' }}"
-                               href="{{ route('admin.bloecke', ['kurs' => $kurs->id]) }}">Blöck</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.ma' ? ' active' : '' }}"
                                href="{{ route('admin.ma', ['kurs' => $kurs->id]) }}">Mindestanforderungen</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.qk' ? ' active' : '' }}"
                                href="{{ route('admin.qk', ['kurs' => $kurs->id]) }}">Qualikategorien</a>
+                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.bloecke' ? ' active' : '' }}"
+                               href="{{ route('admin.bloecke', ['kurs' => $kurs->id]) }}">Blöcke</a>
+                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.tn' ? ' active' : '' }}"
+                               href="{{ route('admin.tn', ['kurs' => $kurs->id]) }}">TN</a>
                         </div>
                     </li>
                 @endif
@@ -59,7 +62,7 @@
                 <li class="nav-item{{ Route::currentRouteName() == 'benutzer' ? ' active' : '' }}">
                     <a class="nav-link" href="{{ route('user') }}">
                         Willkommä, {{ Auth::user()->name }}
-                        <img class="avatar-small" src="{{ Auth::user()->bild_url ?: "http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200" }}">
+                        <img class="avatar-small" src="{{ Auth::user()->bild_url != null ? asset(Storage::url(Auth::user()->bild_url)) : "http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200" }}">
                     </a>
                 </li>
                 <li class="nav-item">

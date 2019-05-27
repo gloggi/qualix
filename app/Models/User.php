@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\ResetPasswordNotification;
+use Carbon\CarbonInterface;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -17,7 +18,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $kurs_id
- * @property string $username
+ * @property string $name
  * @property string $abteilung
  * @property string $password
  * @property string $email
@@ -25,7 +26,7 @@ use Illuminate\Support\Carbon;
  * @property string $bild_url
  * @property Beobachtung[] $beobachtungen
  * @property Kurs[] $kurse
- * @property Kurs $lastAccessedKurs
+ * @property Kurs $last_accessed_kurs
  * @property LoginAttempt[] $loginAttempts
  * @property RecoveryAttempt[] $recoveryAttempts
  */
@@ -75,6 +76,27 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getLastAccessedKursAttribute() {
         return $this->kurse()->firstOrFail();
+    }
+
+    /**
+     * Get the last date value that the user entered into a block's date field in the given Kurs, or today if not available.
+     *
+     * @param Kurs $kurs
+     * @return CarbonInterface
+     */
+    public function getLastUsedBlockDate(Kurs $kurs) {
+        $date = Carbon::parse($this->kurse()->withPivot('last_used_block_date')->findOrFail($kurs->id)->pivot->last_used_block_date);
+        $carbon = $date ?? Carbon::today();
+        return $carbon;
+    }
+
+    /**
+     * Set the last date value that the user entered into a block's date field.
+     *
+     * @param string $value
+     */
+    public function setLastUsedBlockDate($value, Kurs $kurs) {
+        $this->kurse()->updateExistingPivot($kurs->id, ['last_used_block_date' => Carbon::parse($value)]);
     }
 
     /**

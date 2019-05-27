@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Beobachtung;
 use App\Models\Kurs;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +37,36 @@ class RouteServiceProvider extends ServiceProvider
             /** @var Kurs $kurs */
             $kurs = $route->parameter('kurs');
             return $kurs->qks()->findOrFail($id);
+        });
+        Route::bind('ma', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Kurs $kurs */
+            $kurs = $route->parameter('kurs');
+            return $kurs->mas()->findOrFail($id);
+        });
+        Route::bind('block', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Kurs $kurs */
+            $kurs = $route->parameter('kurs');
+            return $kurs->bloecke()->findOrFail($id);
+        });
+        Route::bind('user', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Kurs $kurs */
+            $kurs = $route->parameter('kurs');
+            return $kurs->users()->findOrFail($id);
+        });
+        Route::bind('tn', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Kurs $kurs */
+            $kurs = $route->parameter('kurs');
+            return $kurs->tns()->findOrFail($id);
+        });
+        Route::bind('beobachtung', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Kurs $kurs */
+            $kurs = $route->parameter('kurs');
+            /** @var Beobachtung $beobachtung */
+            $beobachtung = Beobachtung::findOrFail($id);
+            if ($beobachtung->block->kurs->id !== $kurs->id) {
+                throw (new ModelNotFoundException)->setModel(Beobachtung::class, $id);
+            }
+            return $beobachtung;
         });
 
         parent::boot();

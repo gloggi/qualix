@@ -3,5 +3,7 @@
         <button type="submit" class="btn btn-primary">
             {{__($label)}}
         </button>
+
+        {{ $slot }}
     </div>
 </div>

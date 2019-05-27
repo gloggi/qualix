@@ -8,6 +8,9 @@ namespace App\Models;
  * @property string $pfadiname
  * @property string $abteilung
  * @property string $bild_url
+ * @property Beobachtung[] $positive
+ * @property Beobachtung[] $neutral
+ * @property Beobachtung[] $negative
  * @property Kurs $kurs
  * @property Beobachtung[] $beobachtungen
  */
@@ -38,6 +41,18 @@ class TN extends Model
      */
     public function beobachtungen()
     {
-        return $this->hasMany('App\Models\Beobachtung');
+        return $this->hasMany('App\Models\Beobachtung', 'tn_id');
+    }
+
+    public function getPositiveAttribute() {
+        return $this->beobachtungen()->where('bewertung', '=', '2');
+    }
+
+    public function getNeutralAttribute() {
+        return $this->beobachtungen()->where('bewertung', '=', '1');
+    }
+
+    public function getNegativeAttribute() {
+        return $this->beobachtungen()->where('bewertung', '=', '0');
     }
 }

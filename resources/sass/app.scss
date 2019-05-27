@@ -5,6 +5,8 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import '~pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+@import 'multiselect-bootstrap';
 
 // Font Awesome
 @import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
@@ -17,6 +19,11 @@
     .align-items-center-lg {
         align-items: center;
     }
+}
+
+[data-toggle~="collapse"] {
+    // required to make collapse divs work on iPad
+    cursor: pointer;
 }
 
 .avatar {
@@ -33,4 +40,42 @@
 
 .card {
     margin-bottom: 1em;
+}
+
+.square-container {
+    position: relative;
+
+    &:after {
+        padding-bottom: 100%;
+        content: '';
+        display: block;
+    }
+
+
+    & > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+    }
+}
+
+.imagebox {
+
+    position: relative;
+
+    .imagebox-label {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        margin: 0 !important;
+    }
+}
+
+.bg-success-light {
+    background-color: #d7f3e3;
+}
+
+.bg-danger-light {
+    background-color: #f9d6d5;
 }

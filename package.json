@@ -24,6 +24,8 @@
         "vue-template-compiler": "^2.6.8"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.8.1"
+        "@fortawesome/fontawesome-free": "^5.8.1",
+        "vue-bootstrap-datetimepicker": "^5.0.1",
+        "vue-multiselect": "^2.1.4"
     }
 }
