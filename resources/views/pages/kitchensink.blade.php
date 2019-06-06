@@ -21,7 +21,7 @@
             <h4>h4. Bootstrap heading</h4>
             <h5>h5. Bootstrap heading</h5>
             <h6>h6. Bootstrap heading</h6>
-            <pre><code class="html">&lt;h1&gt;h1. Bootstrap heading&lt;/h1&gt;
+            <pre v-pre><code class="html">&lt;h1&gt;h1. Bootstrap heading&lt;/h1&gt;
 &lt;h2&gt;h2. Bootstrap heading&lt;/h2&gt;
 &lt;h3&gt;h3. Bootstrap heading&lt;/h3&gt;
 &lt;h4&gt;h4. Bootstrap heading&lt;/h4&gt;
@@ -48,7 +48,7 @@
             </p>
             <p><strong>This line rendered as bold text.</strong></p>
             <p><em>This line rendered as italicized text.</em></p>
-            <pre><code class="html">&lt;p&gt;You can use the mark tag to &lt;mark&gt;highlight&lt;/mark&gt; text.&lt;/p&gt;
+            <pre v-pre><code class="html">&lt;p&gt;You can use the mark tag to &lt;mark&gt;highlight&lt;/mark&gt; text.&lt;/p&gt;
 &lt;p&gt;&lt;del&gt;This line of text is meant to be treated as deleted text.&lt;/del&gt;&lt;/p&gt;
 &lt;p&gt;&lt;s&gt;This line of text is meant to be treated as no longer accurate.&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;&lt;ins&gt;This line of text is meant to be treated as an addition to the document.&lt;/ins&gt;&lt;/p&gt;
@@ -60,16 +60,16 @@
 
             <h1>Responsive images</h1>
             <hr>
-            <img src="http://via.placeholder.com/900x200" class="img-fluid" alt="Responsive image">
-            <pre><code class="html">&lt;img src=&quot;http://via.placeholder.com/900x200&quot; class=&quot;img-fluid&quot; alt=&quot;Responsive image&quot;&gt;</code></pre>
+            <img src="{{ asset('images/was-gaffsch.svg') }}" class="img-fluid" alt="Responsive image">
+            <pre v-pre><code class="html">&lt;img src=&quot;{{ '{' . '{ asset(\'images/was-gaffsch.svg\' }' . '}' }}&quot; class=&quot;img-fluid&quot; alt=&quot;Responsive image&quot;&gt;</code></pre>
 
 
             <h1>Avatars</h1>
             <hr>
-            <img src="http://via.placeholder.com/200x200" alt="..." class="avatar">
-            <img src="http://via.placeholder.com/200x200" alt="..." class="avatar-small">
-            <pre><code class="html">&lt;img src=&quot;http://via.placeholder.com/200x200&quot; alt=&quot;...&quot; class=&quot;avatar&quot;&gt;
-&lt;img src=&quot;http://via.placeholder.com/200x200&quot; alt=&quot;...&quot; class=&quot;avatar-small&quot;&gt;</code></pre>
+            <img src="{{ asset('images/was-gaffsch.svg') }}" alt="..." class="avatar">
+            <img src="{{ asset('images/was-gaffsch.svg') }}" alt="..." class="avatar-small">
+            <pre v-pre><code class="html">&lt;img src=&quot;{{ '{' . '{ asset(\'images/was-gaffsch.svg\' }' . '}' }}&quot; alt=&quot;...&quot; class=&quot;avatar&quot;&gt;
+&lt;img src=&quot;{{ '{' . '{ asset(\'images/was-gaffsch.svg\' }' . '}' }}&quot; alt=&quot;...&quot; class=&quot;avatar-small&quot;&gt;</code></pre>
 
 
             <h1>Tables</h1>
@@ -104,7 +104,7 @@
                 </tr>
                 </tbody>
             </table>
-            <pre><code class="html">&lt;table class=&quot;table&quot;&gt;
+            <pre v-pre><code class="html">&lt;table class=&quot;table&quot;&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th scope=&quot;col&quot;&gt;#&lt;/th&gt;
@@ -199,7 +199,7 @@
                 </tr>
                 </tbody>
             </table>
-            <pre><code class="html">&lt;table class=&quot;table&quot;&gt;
+            <pre v-pre><code class="html">&lt;table class=&quot;table&quot;&gt;
   &lt;thead class=&quot;thead-dark&quot;&gt;
     &lt;tr&gt;
       &lt;th scope=&quot;col&quot;&gt;#&lt;/th&gt;
@@ -294,7 +294,7 @@
                 </tr>
                 </tbody>
             </table>
-            <pre><code class="html">&lt;table class=&quot;table table-striped&quot;&gt;
+            <pre v-pre><code class="html">&lt;table class=&quot;table table-striped&quot;&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th scope=&quot;col&quot;&gt;#&lt;/th&gt;
@@ -357,7 +357,7 @@
                 </tr>
                 </tbody>
             </table>
-            <pre><code class="html">&lt;table class=&quot;table table-bordered&quot;&gt;
+            <pre v-pre><code class="html">&lt;table class=&quot;table table-bordered&quot;&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th scope=&quot;col&quot;&gt;#&lt;/th&gt;
@@ -419,7 +419,7 @@
                 </tr>
                 </tbody>
             </table>
-            <pre><code class="html">&lt;table class=&quot;table table-borderless&quot;&gt;
+            <pre v-pre><code class="html">&lt;table class=&quot;table table-borderless&quot;&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th scope=&quot;col&quot;&gt;#&lt;/th&gt;
@@ -481,7 +481,7 @@
                 </tr>
                 </tbody>
             </table>
-            <pre><code class="html">&lt;table class=&quot;table table-hover&quot;&gt;
+            <pre v-pre><code class="html">&lt;table class=&quot;table table-hover&quot;&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th scope=&quot;col&quot;&gt;#&lt;/th&gt;
@@ -543,7 +543,7 @@
                 </tr>
                 </tbody>
             </table>
-            <pre><code class="html">&lt;table class=&quot;table table-sm&quot;&gt;
+            <pre v-pre><code class="html">&lt;table class=&quot;table table-sm&quot;&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th scope=&quot;col&quot;&gt;#&lt;/th&gt;
@@ -637,7 +637,7 @@
                 </tr>
                 </tbody>
             </table>
-            <pre><code class="html">&lt;!-- On rows --&gt;
+            <pre v-pre><code class="html">&lt;!-- On rows --&gt;
 &lt;tr class=&quot;table-active&quot;&gt;...&lt;/tr&gt;
 
 &lt;tr class=&quot;table-primary&quot;&gt;...&lt;/tr&gt;
@@ -690,7 +690,7 @@
             <div class="alert alert-dark" role="alert">
                 A simple dark alert—check it out!
             </div>
-            <pre><code class="html">&lt;div class=&quot;alert alert-primary&quot; role=&quot;alert&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;alert alert-primary&quot; role=&quot;alert&quot;&gt;
   A simple primary alert—check it out!
 &lt;/div&gt;
 &lt;div class=&quot;alert alert-secondary&quot; role=&quot;alert&quot;&gt;
@@ -750,7 +750,7 @@
                 A simple dark alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you
                 like.
             </div>
-            <pre><code class="html">&lt;div class=&quot;alert alert-primary&quot; role=&quot;alert&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;alert alert-primary&quot; role=&quot;alert&quot;&gt;
   A simple primary alert with &lt;a href=&quot;#&quot; class=&quot;alert-link&quot;&gt;an example link&lt;/a&gt;. Give it a click if you like.
 &lt;/div&gt;
 &lt;div class=&quot;alert alert-secondary&quot; role=&quot;alert&quot;&gt;
@@ -786,7 +786,7 @@
             <span class="badge badge-info">Info</span>
             <span class="badge badge-light">Light</span>
             <span class="badge badge-dark">Dark</span>
-            <pre><code class="html">&lt;span class=&quot;badge badge-primary&quot;&gt;Primary&lt;/span&gt;
+            <pre v-pre><code class="html">&lt;span class=&quot;badge badge-primary&quot;&gt;Primary&lt;/span&gt;
 &lt;span class=&quot;badge badge-secondary&quot;&gt;Secondary&lt;/span&gt;
 &lt;span class=&quot;badge badge-success&quot;&gt;Success&lt;/span&gt;
 &lt;span class=&quot;badge badge-danger&quot;&gt;Danger&lt;/span&gt;
@@ -806,7 +806,7 @@
             <span class="badge badge-pill badge-info">Info</span>
             <span class="badge badge-pill badge-light">Light</span>
             <span class="badge badge-pill badge-dark">Dark</span>
-            <pre><code class="html">&lt;span class=&quot;badge badge-pill badge-primary&quot;&gt;Primary&lt;/span&gt;
+            <pre v-pre><code class="html">&lt;span class=&quot;badge badge-pill badge-primary&quot;&gt;Primary&lt;/span&gt;
 &lt;span class=&quot;badge badge-pill badge-secondary&quot;&gt;Secondary&lt;/span&gt;
 &lt;span class=&quot;badge badge-pill badge-success&quot;&gt;Success&lt;/span&gt;
 &lt;span class=&quot;badge badge-pill badge-danger&quot;&gt;Danger&lt;/span&gt;
@@ -826,7 +826,7 @@
             <a href="#" class="badge badge-info">Info</a>
             <a href="#" class="badge badge-light">Light</a>
             <a href="#" class="badge badge-dark">Dark</a>
-            <pre><code class="html">&lt;a href=&quot;#&quot; class=&quot;badge badge-primary&quot;&gt;Primary&lt;/a&gt;
+            <pre v-pre><code class="html">&lt;a href=&quot;#&quot; class=&quot;badge badge-primary&quot;&gt;Primary&lt;/a&gt;
 &lt;a href=&quot;#&quot; class=&quot;badge badge-secondary&quot;&gt;Secondary&lt;/a&gt;
 &lt;a href=&quot;#&quot; class=&quot;badge badge-success&quot;&gt;Success&lt;/a&gt;
 &lt;a href=&quot;#&quot; class=&quot;badge badge-danger&quot;&gt;Danger&lt;/a&gt;
@@ -844,7 +844,7 @@
             <h4>Example heading <span class="badge badge-secondary">New</span></h4>
             <h5>Example heading <span class="badge badge-secondary">New</span></h5>
             <h6>Example heading <span class="badge badge-secondary">New</span></h6>
-            <pre><code class="html">&lt;h1&gt;Example heading &lt;span class=&quot;badge badge-secondary&quot;&gt;New&lt;/span&gt;&lt;/h1&gt;
+            <pre v-pre><code class="html">&lt;h1&gt;Example heading &lt;span class=&quot;badge badge-secondary&quot;&gt;New&lt;/span&gt;&lt;/h1&gt;
 &lt;h2&gt;Example heading &lt;span class=&quot;badge badge-secondary&quot;&gt;New&lt;/span&gt;&lt;/h2&gt;
 &lt;h3&gt;Example heading &lt;span class=&quot;badge badge-secondary&quot;&gt;New&lt;/span&gt;&lt;/h3&gt;
 &lt;h4&gt;Example heading &lt;span class=&quot;badge badge-secondary&quot;&gt;New&lt;/span&gt;&lt;/h4&gt;
@@ -857,7 +857,7 @@
             <button type="button" class="btn btn-primary">
                 Notifications <span class="badge badge-light">4</span>
             </button>
-            <pre><code class="html">&lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot;&gt;
+            <pre v-pre><code class="html">&lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot;&gt;
   Notifications &lt;span class=&quot;badge badge-light&quot;&gt;4&lt;/span&gt;
 &lt;/button&gt;</code></pre>
 
@@ -874,7 +874,7 @@
             <button type="button" class="btn btn-dark">Dark</button>
 
             <button type="button" class="btn btn-link">Link</button>
-            <pre><code class="html">&lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot;&gt;Primary&lt;/button&gt;
+            <pre v-pre><code class="html">&lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot;&gt;Primary&lt;/button&gt;
 &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;Secondary&lt;/button&gt;
 &lt;button type=&quot;button&quot; class=&quot;btn btn-success&quot;&gt;Success&lt;/button&gt;
 &lt;button type=&quot;button&quot; class=&quot;btn btn-danger&quot;&gt;Danger&lt;/button&gt;
@@ -896,7 +896,7 @@
             <button type="button" class="btn btn-outline-info">Info</button>
             <button type="button" class="btn btn-outline-light">Light</button>
             <button type="button" class="btn btn-outline-dark">Dark</button>
-            <pre><code class="html">&lt;button type=&quot;button&quot; class=&quot;btn btn-outline-primary&quot;&gt;Primary&lt;/button&gt;
+            <pre v-pre><code class="html">&lt;button type=&quot;button&quot; class=&quot;btn btn-outline-primary&quot;&gt;Primary&lt;/button&gt;
 &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-secondary&quot;&gt;Secondary&lt;/button&gt;
 &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-success&quot;&gt;Success&lt;/button&gt;
 &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-danger&quot;&gt;Danger&lt;/button&gt;
@@ -920,7 +920,7 @@
 
             <button type="button" class="btn btn-primary btn-lg">Large button</button>
             <button type="button" class="btn btn-secondary btn-lg">Large button</button>
-            <pre><code class="html">&lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-sm&quot;&gt;Small button&lt;/button&gt;
+            <pre v-pre><code class="html">&lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-sm&quot;&gt;Small button&lt;/button&gt;
 &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary btn-sm&quot;&gt;Small button&lt;/button&gt;
 
 &lt;br&gt;&lt;br&gt;
@@ -941,7 +941,7 @@
                 <button type="button" class="btn btn-secondary">Middle</button>
                 <button type="button" class="btn btn-secondary">Right</button>
             </div>
-            <pre><code class="html">&lt;div class=&quot;btn-group&quot; role=&quot;group&quot; aria-label=&quot;Basic example&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;btn-group&quot; role=&quot;group&quot; aria-label=&quot;Basic example&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;Left&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;Middle&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;Right&lt;/button&gt;
@@ -955,7 +955,7 @@
                 <button type="button" class="btn btn-secondary">Second</button>
                 <button type="button" class="btn btn-secondary">Third</button>
             </div>
-            <pre><code class="html">&lt;div class=&quot;btn-group-vertical&quot; role=&quot;group&quot; aria-label=&quot;Basic example&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;btn-group-vertical&quot; role=&quot;group&quot; aria-label=&quot;Basic example&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;First&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;Second&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;Third&lt;/button&gt;
@@ -980,7 +980,7 @@
                     <button type="button" class="btn btn-secondary">8</button>
                 </div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;btn-toolbar&quot; role=&quot;toolbar&quot; aria-label=&quot;Toolbar with button groups&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;btn-toolbar&quot; role=&quot;toolbar&quot; aria-label=&quot;Toolbar with button groups&quot;&gt;
   &lt;div class=&quot;btn-group mr-2&quot; role=&quot;group&quot; aria-label=&quot;First group&quot;&gt;
     &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;1&lt;/button&gt;
     &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;2&lt;/button&gt;
@@ -1021,7 +1021,7 @@
                 <button type="button" class="btn btn-secondary">Middle</button>
                 <button type="button" class="btn btn-secondary">Right</button>
             </div>
-            <pre><code class="html">&lt;div class=&quot;btn-group btn-group-sm&quot; role=&quot;group&quot; aria-label=&quot;Basic example&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;btn-group btn-group-sm&quot; role=&quot;group&quot; aria-label=&quot;Basic example&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;Left&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;Middle&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot;&gt;Right&lt;/button&gt;
@@ -1047,7 +1047,7 @@
             <h1>Cards</h1>
             <hr>
             <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="http://via.placeholder.com/286x180" alt="Card image cap">
+                <img class="card-img-top" src="{{ asset('images/was-gaffsch.svg') }}" alt="Card image cap">
 
                 <div class="card-body">
                     <h5 class="card-title">Card title</h5>
@@ -1056,8 +1056,8 @@
                     <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;card&quot; style=&quot;width: 18rem;&quot;&gt;
-  &lt;img class=&quot;card-img-top&quot; src=&quot;http://via.placeholder.com/286x180&quot; alt=&quot;Card image cap&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;card&quot; style=&quot;width: 18rem;&quot;&gt;
+  &lt;img class=&quot;card-img-top&quot; src=&quot;{{ '{' . '{ asset(\'images/was-gaffsch.svg\' }' . '}' }}&quot; alt=&quot;Card image cap&quot;&gt;
 
   &lt;div class=&quot;card-body&quot;&gt;
     &lt;h5 class=&quot;card-title&quot;&gt;Card title&lt;/h5&gt;
@@ -1079,7 +1079,7 @@
                     <a href="#" class="card-link">Another link</a>
                 </div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;card&quot; style=&quot;width: 18rem;&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;card&quot; style=&quot;width: 18rem;&quot;&gt;
   &lt;div class=&quot;card-body&quot;&gt;
     &lt;h5 class=&quot;card-title&quot;&gt;Card title&lt;/h5&gt;
     &lt;h6 class=&quot;card-subtitle mb-2 text-muted&quot;&gt;Card subtitle&lt;/h6&gt;
@@ -1156,7 +1156,7 @@
                         the card's content.</p>
                 </div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;card text-white bg-primary mb-3&quot; style=&quot;max-width: 18rem;&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;card text-white bg-primary mb-3&quot; style=&quot;max-width: 18rem;&quot;&gt;
   &lt;div class=&quot;card-header&quot;&gt;Header&lt;/div&gt;
   &lt;div class=&quot;card-body&quot;&gt;
     &lt;h5 class=&quot;card-title&quot;&gt;Primary card title&lt;/h5&gt;
@@ -1218,7 +1218,7 @@
             <hr>
             <div class="card-deck">
                 <div class="card">
-                    <img class="card-img-top" src="http://via.placeholder.com/400x200" alt="Card image cap">
+                    <img class="card-img-top" src="{{ asset('images/was-gaffsch.svg') }}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
                         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
@@ -1229,7 +1229,7 @@
                     </div>
                 </div>
                 <div class="card">
-                    <img class="card-img-top" src="http://via.placeholder.com/400x200" alt="Card image cap">
+                    <img class="card-img-top" src="{{ asset('images/was-gaffsch.svg') }}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
                         <p class="card-text">This card has supporting text below as a natural lead-in to additional
@@ -1240,7 +1240,7 @@
                     </div>
                 </div>
                 <div class="card">
-                    <img class="card-img-top" src="http://via.placeholder.com/400x200" alt="Card image cap">
+                    <img class="card-img-top" src="{{ asset('images/was-gaffsch.svg') }}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
                         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
@@ -1252,9 +1252,9 @@
                     </div>
                 </div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;card-deck&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;card-deck&quot;&gt;
   &lt;div class=&quot;card&quot;&gt;
-    &lt;img class=&quot;card-img-top&quot; src=&quot;http://via.placeholder.com/400x200&quot; alt=&quot;Card image cap&quot;&gt;
+    &lt;img class=&quot;card-img-top&quot; src=&quot;{{ '{' . '{ asset(\'images/was-gaffsch.svg\' }' . '}' }}&quot; alt=&quot;Card image cap&quot;&gt;
     &lt;div class=&quot;card-body&quot;&gt;
       &lt;h5 class=&quot;card-title&quot;&gt;Card title&lt;/h5&gt;
       &lt;p class=&quot;card-text&quot;&gt;This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.&lt;/p&gt;
@@ -1262,7 +1262,7 @@
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;div class=&quot;card&quot;&gt;
-    &lt;img class=&quot;card-img-top&quot; src=&quot;http://via.placeholder.com/400x200&quot; alt=&quot;Card image cap&quot;&gt;
+    &lt;img class=&quot;card-img-top&quot; src=&quot;{{ '{' . '{ asset(\'images/was-gaffsch.svg\' }' . '}' }}&quot; alt=&quot;Card image cap&quot;&gt;
     &lt;div class=&quot;card-body&quot;&gt;
       &lt;h5 class=&quot;card-title&quot;&gt;Card title&lt;/h5&gt;
       &lt;p class=&quot;card-text&quot;&gt;This card has supporting text below as a natural lead-in to additional content.&lt;/p&gt;
@@ -1270,7 +1270,7 @@
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;div class=&quot;card&quot;&gt;
-    &lt;img class=&quot;card-img-top&quot; src=&quot;http://via.placeholder.com/400x200&quot; alt=&quot;Card image cap&quot;&gt;
+    &lt;img class=&quot;card-img-top&quot; src=&quot;{{ '{' . '{ asset(\'images/was-gaffsch.svg\' }' . '}' }}&quot; alt=&quot;Card image cap&quot;&gt;
     &lt;div class=&quot;card-body&quot;&gt;
       &lt;h5 class=&quot;card-title&quot;&gt;Card title&lt;/h5&gt;
       &lt;p class=&quot;card-text&quot;&gt;This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.&lt;/p&gt;
@@ -1299,7 +1299,7 @@
                     proident.
                 </div>
             </div>
-            <pre><code class="html">&lt;p&gt;
+            <pre v-pre><code class="html">&lt;p&gt;
   &lt;a class=&quot;btn btn-primary&quot; data-toggle=&quot;collapse&quot; href=&quot;#collapseExample&quot; role=&quot;button&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;collapseExample&quot;&gt;
     Link with href
   &lt;/a&gt;
@@ -1348,7 +1348,7 @@
                     </div>
                 </div>
             </div>
-            <pre><code class="html">&lt;p&gt;
+            <pre v-pre><code class="html">&lt;p&gt;
   &lt;a class=&quot;btn btn-primary&quot; data-toggle=&quot;collapse&quot; href=&quot;#multiCollapseExample1&quot; role=&quot;button&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;multiCollapseExample1&quot;&gt;Toggle first element&lt;/a&gt;
   &lt;button class=&quot;btn btn-primary&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#multiCollapseExample2&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;multiCollapseExample2&quot;&gt;Toggle second element&lt;/button&gt;
   &lt;button class=&quot;btn btn-primary&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;.multi-collapse&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;multiCollapseExample1 multiCollapseExample2&quot;&gt;Toggle both elements&lt;/button&gt;
@@ -1415,7 +1415,7 @@
                     <a class="dropdown-item" href="#">Separated link</a>
                 </div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;dropdown&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;dropdown&quot;&gt;
   &lt;button class=&quot;btn btn-secondary dropdown-toggle&quot; type=&quot;button&quot; id=&quot;dropdownMenuButton&quot; data-toggle=&quot;dropdown&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
     Dropdown button
   &lt;/button&gt;
@@ -1477,7 +1477,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
-            <pre><code class="html">&lt;form&gt;
+            <pre v-pre><code class="html">&lt;form&gt;
   &lt;div class=&quot;form-group&quot;&gt;
     &lt;label for=&quot;exampleInputEmail1&quot;&gt;Email address&lt;/label&gt;
     &lt;input type=&quot;email&quot; class=&quot;form-control&quot; id=&quot;exampleInputEmail1&quot; aria-describedby=&quot;emailHelp&quot; placeholder=&quot;Enter email&quot;&gt;
@@ -1532,7 +1532,7 @@
                     <input type="file" class="form-control-file" id="exampleFormControlFile1">
                 </div>
             </form>
-            <pre><code class="html">&lt;form&gt;
+            <pre v-pre><code class="html">&lt;form&gt;
   &lt;div class=&quot;form-group&quot;&gt;
     &lt;label for=&quot;exampleFormControlInput1&quot;&gt;Email address&lt;/label&gt;
     &lt;input type=&quot;email&quot; class=&quot;form-control&quot; id=&quot;exampleFormControlInput1&quot; placeholder=&quot;name@example.com&quot;&gt;
@@ -1577,7 +1577,7 @@
                 <div class="form-group"><input class="form-control form-control-lg" type="text"
                                                placeholder=".form-control-lg"></div>
             </form>
-            <pre><code class="html">&lt;form&gt;
+            <pre v-pre><code class="html">&lt;form&gt;
     &lt;div class=&quot;form-group&quot;&gt;&lt;input class=&quot;form-control form-control-sm&quot; type=&quot;text&quot; placeholder=&quot;.form-control-sm&quot;&gt;&lt;/div&gt;
     &lt;div class=&quot;form-group&quot;&gt;&lt;input class=&quot;form-control&quot; type=&quot;text&quot; placeholder=&quot;Default input&quot;&gt;&lt;/div&gt;
     &lt;div class=&quot;form-group&quot;&gt;&lt;input class=&quot;form-control form-control-lg&quot; type=&quot;text&quot; placeholder=&quot;.form-control-lg&quot;&gt;&lt;/div&gt;
@@ -1617,7 +1617,7 @@
                 <input type="file" class="custom-file-input" id="customFile">
                 <label class="custom-file-label" for="customFile">Choose file</label>
             </div>
-            <pre><code class="html">&lt;div class=&quot;custom-control custom-checkbox&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;custom-control custom-checkbox&quot;&gt;
   &lt;input type=&quot;checkbox&quot; class=&quot;custom-control-input&quot; id=&quot;customCheck1&quot;&gt;
   &lt;label class=&quot;custom-control-label&quot; for=&quot;customCheck1&quot;&gt;Check this custom checkbox&lt;/label&gt;
 &lt;/div&gt;
@@ -1692,7 +1692,7 @@
                 </div>
                 <textarea class="form-control" aria-label="With textarea"></textarea>
             </div>
-            <pre><code class="html">&lt;div class=&quot;input-group mb-3&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;input-group mb-3&quot;&gt;
   &lt;div class=&quot;input-group-prepend&quot;&gt;
     &lt;span class=&quot;input-group-text&quot; id=&quot;basic-addon1&quot;&gt;@&lt;/span&gt;
   &lt;/div&gt;
@@ -1755,7 +1755,7 @@
                 </div>
                 <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
             </div>
-            <pre><code class="html">&lt;div class=&quot;input-group input-group-sm mb-3&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;input-group input-group-sm mb-3&quot;&gt;
   &lt;div class=&quot;input-group-prepend&quot;&gt;
     &lt;span class=&quot;input-group-text&quot; id=&quot;inputGroup-sizing-sm&quot;&gt;Small&lt;/span&gt;
   &lt;/div&gt;
@@ -1786,7 +1786,7 @@
                 <input type="text" class="form-control">
                 <input type="text" class="form-control">
             </div>
-            <pre><code class="html">&lt;div class=&quot;input-group&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;input-group&quot;&gt;
   &lt;div class=&quot;input-group-prepend&quot;&gt;
     &lt;span class=&quot;input-group-text&quot; id=&quot;&quot;&gt;First and last name&lt;/span&gt;
   &lt;/div&gt;
@@ -1812,7 +1812,7 @@
                     <span class="input-group-text">0.00</span>
                 </div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;input-group mb-3&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;input-group mb-3&quot;&gt;
   &lt;div class=&quot;input-group-prepend&quot;&gt;
     &lt;span class=&quot;input-group-text&quot;&gt;$&lt;/span&gt;
     &lt;span class=&quot;input-group-text&quot;&gt;0.00&lt;/span&gt;
@@ -1864,7 +1864,7 @@
                     <button class="btn btn-outline-secondary" type="button">Button</button>
                 </div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;input-group mb-3&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;input-group mb-3&quot;&gt;
   &lt;div class=&quot;input-group-prepend&quot;&gt;
     &lt;button class=&quot;btn btn-outline-secondary&quot; type=&quot;button&quot;&gt;Button&lt;/button&gt;
   &lt;/div&gt;
@@ -1928,7 +1928,7 @@
                     </div>
                 </div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;input-group mb-3&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;input-group mb-3&quot;&gt;
   &lt;div class=&quot;input-group-prepend&quot;&gt;
     &lt;button class=&quot;btn btn-outline-secondary dropdown-toggle&quot; type=&quot;button&quot; data-toggle=&quot;dropdown&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;Dropdown&lt;/button&gt;
     &lt;div class=&quot;dropdown-menu&quot;&gt;
@@ -1966,7 +1966,7 @@
                 <li class="list-group-item">Porta ac consectetur ac</li>
                 <li class="list-group-item">Vestibulum at eros</li>
             </ul>
-            <pre><code class="html">&lt;ul class=&quot;list-group&quot;&gt;
+            <pre v-pre><code class="html">&lt;ul class=&quot;list-group&quot;&gt;
   &lt;li class=&quot;list-group-item&quot;&gt;Cras justo odio&lt;/li&gt;
   &lt;li class=&quot;list-group-item&quot;&gt;Dapibus ac facilisis in&lt;/li&gt;
   &lt;li class=&quot;list-group-item&quot;&gt;Morbi leo risus&lt;/li&gt;
@@ -1984,7 +1984,7 @@
                 <li class="list-group-item">Porta ac consectetur ac</li>
                 <li class="list-group-item">Vestibulum at eros</li>
             </ul>
-            <pre><code class="html">&lt;ul class=&quot;list-group&quot;&gt;
+            <pre v-pre><code class="html">&lt;ul class=&quot;list-group&quot;&gt;
   &lt;li class=&quot;list-group-item active&quot;&gt;Cras justo odio&lt;/li&gt;
   &lt;li class=&quot;list-group-item&quot;&gt;Dapibus ac facilisis in&lt;/li&gt;
   &lt;li class=&quot;list-group-item&quot;&gt;Morbi leo risus&lt;/li&gt;
@@ -2002,7 +2002,7 @@
                 <li class="list-group-item">Porta ac consectetur ac</li>
                 <li class="list-group-item">Vestibulum at eros</li>
             </ul>
-            <pre><code class="html">&lt;ul class=&quot;list-group&quot;&gt;
+            <pre v-pre><code class="html">&lt;ul class=&quot;list-group&quot;&gt;
   &lt;li class=&quot;list-group-item disabled&quot;&gt;Cras justo odio&lt;/li&gt;
   &lt;li class=&quot;list-group-item&quot;&gt;Dapibus ac facilisis in&lt;/li&gt;
   &lt;li class=&quot;list-group-item&quot;&gt;Morbi leo risus&lt;/li&gt;
@@ -2020,7 +2020,7 @@
                 <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
                 <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
             </div>
-            <pre><code class="html">&lt;div class=&quot;list-group&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;list-group&quot;&gt;
   &lt;a href=&quot;#&quot; class=&quot;list-group-item list-group-item-action active&quot;&gt;Cras justo odio&lt;/a&gt;
   &lt;a href=&quot;#&quot; class=&quot;list-group-item list-group-item-action&quot;&gt;Dapibus ac facilisis in&lt;/a&gt;
   &lt;a href=&quot;#&quot; class=&quot;list-group-item list-group-item-action&quot;&gt;Morbi leo risus&lt;/a&gt;
@@ -2038,7 +2038,7 @@
                 <li class="list-group-item">Porta ac consectetur ac</li>
                 <li class="list-group-item">Vestibulum at eros</li>
             </ul>
-            <pre><code class="html">&lt;ul class=&quot;list-group list-group-flush&quot;&gt;
+            <pre v-pre><code class="html">&lt;ul class=&quot;list-group list-group-flush&quot;&gt;
   &lt;li class=&quot;list-group-item&quot;&gt;Cras justo odio&lt;/li&gt;
   &lt;li class=&quot;list-group-item&quot;&gt;Dapibus ac facilisis in&lt;/li&gt;
   &lt;li class=&quot;list-group-item&quot;&gt;Morbi leo risus&lt;/li&gt;
@@ -2060,7 +2060,7 @@
                 <li class="list-group-item list-group-item-light">A simple light list group item</li>
                 <li class="list-group-item list-group-item-dark">A simple dark list group item</li>
             </ul>
-            <pre><code class="html">&lt;ul class=&quot;list-group&quot;&gt;
+            <pre v-pre><code class="html">&lt;ul class=&quot;list-group&quot;&gt;
   &lt;li class=&quot;list-group-item&quot;&gt;Dapibus ac facilisis in&lt;/li&gt;
   &lt;li class=&quot;list-group-item list-group-item-primary&quot;&gt;A simple primary list group item&lt;/li&gt;
   &lt;li class=&quot;list-group-item list-group-item-secondary&quot;&gt;A simple secondary list group item&lt;/li&gt;
@@ -2089,7 +2089,7 @@
                     <span class="badge badge-primary badge-pill">1</span>
                 </li>
             </ul>
-            <pre><code class="html">&lt;ul class=&quot;list-group&quot;&gt;
+            <pre v-pre><code class="html">&lt;ul class=&quot;list-group&quot;&gt;
   &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
     Cras justo odio
     &lt;span class=&quot;badge badge-primary badge-pill&quot;&gt;14&lt;/span&gt;
@@ -2136,7 +2136,7 @@
                     <small class="text-muted">Donec id elit non mi porta.</small>
                 </a>
             </div>
-            <pre><code class="html">&lt;div class=&quot;list-group&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;list-group&quot;&gt;
   &lt;a href=&quot;#&quot; class=&quot;list-group-item list-group-item-action flex-column align-items-start active&quot;&gt;
     &lt;div class=&quot;d-flex w-100 justify-content-between&quot;&gt;
       &lt;h5 class=&quot;mb-1&quot;&gt;List group item heading&lt;/h5&gt;
@@ -2191,7 +2191,7 @@
                     </div>
                 </div>
             </div>
-            <pre><code class="html">&lt;!-- Button trigger modal --&gt;
+            <pre v-pre><code class="html">&lt;!-- Button trigger modal --&gt;
 &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot; data-toggle=&quot;modal&quot; data-target=&quot;#exampleModal&quot;&gt;
   Launch demo modal
 &lt;/button&gt;
@@ -2245,7 +2245,7 @@
                     </div>
                 </div>
             </div>
-            <pre><code class="html">&lt;!-- Button trigger modal --&gt;
+            <pre v-pre><code class="html">&lt;!-- Button trigger modal --&gt;
 &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot; data-toggle=&quot;modal&quot; data-target=&quot;#exampleModalCenter&quot;&gt;
   Launch demo modal
 &lt;/button&gt;
@@ -2288,7 +2288,7 @@
                     <a class="nav-link disabled" href="#">Disabled</a>
                 </li>
             </ul>
-            <pre><code class="html">&lt;ul class=&quot;nav&quot;&gt;
+            <pre v-pre><code class="html">&lt;ul class=&quot;nav&quot;&gt;
   &lt;li class=&quot;nav-item&quot;&gt;
     &lt;a class=&quot;nav-link active&quot; href=&quot;#&quot;&gt;Active&lt;/a&gt;
   &lt;/li&gt;
@@ -2320,7 +2320,7 @@
                     <a class="nav-link disabled" href="#">Disabled</a>
                 </li>
             </ul>
-            <pre><code class="html">&lt;ul class=&quot;nav flex-column&quot;&gt;
+            <pre v-pre><code class="html">&lt;ul class=&quot;nav flex-column&quot;&gt;
   &lt;li class=&quot;nav-item&quot;&gt;
     &lt;a class=&quot;nav-link active&quot; href=&quot;#&quot;&gt;Active&lt;/a&gt;
   &lt;/li&gt;
@@ -2352,7 +2352,7 @@
                     <a class="nav-link disabled" href="#">Disabled</a>
                 </li>
             </ul>
-            <pre><code class="html">&lt;ul class=&quot;nav nav-tabs&quot;&gt;
+            <pre v-pre><code class="html">&lt;ul class=&quot;nav nav-tabs&quot;&gt;
   &lt;li class=&quot;nav-item&quot;&gt;
     &lt;a class=&quot;nav-link active&quot; href=&quot;#&quot;&gt;Active&lt;/a&gt;
   &lt;/li&gt;
@@ -2384,7 +2384,7 @@
                     <a class="nav-link disabled" href="#">Disabled</a>
                 </li>
             </ul>
-            <pre><code class="html">&lt;ul class=&quot;nav nav-pills&quot;&gt;
+            <pre v-pre><code class="html">&lt;ul class=&quot;nav nav-pills&quot;&gt;
   &lt;li class=&quot;nav-item&quot;&gt;
     &lt;a class=&quot;nav-link active&quot; href=&quot;#&quot;&gt;Active&lt;/a&gt;
   &lt;/li&gt;
@@ -2416,7 +2416,7 @@
                     <a class="nav-link disabled" href="#">Disabled</a>
                 </li>
             </ul>
-            <pre><code class="html">&lt;ul class=&quot;nav nav-pills nav-fill&quot;&gt;
+            <pre v-pre><code class="html">&lt;ul class=&quot;nav nav-pills nav-fill&quot;&gt;
   &lt;li class=&quot;nav-item&quot;&gt;
     &lt;a class=&quot;nav-link active&quot; href=&quot;#&quot;&gt;Active&lt;/a&gt;
   &lt;/li&gt;
@@ -2472,7 +2472,7 @@
                     </form>
                 </div>
             </nav>
-            <pre><code class="html">&lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+            <pre v-pre><code class="html">&lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
   &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Navbar&lt;/a&gt;
   &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarSupportedContent&quot; aria-controls=&quot;navbarSupportedContent&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
     &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
@@ -2625,7 +2625,7 @@
                     </form>
                 </div>
             </nav>
-            <pre><code class="html">&lt;nav class=&quot;navbar navbar-dark bg-dark&quot;&gt;
+            <pre v-pre><code class="html">&lt;nav class=&quot;navbar navbar-dark bg-dark&quot;&gt;
   &lt;!-- Navbar content --&gt;
 &lt;/nav&gt;
 
@@ -2649,7 +2649,7 @@
                     <li class="page-item"><a class="page-link" href="#">Next</a></li>
                 </ul>
             </nav>
-            <pre><code class="html">&lt;nav aria-label=&quot;Page navigation example&quot;&gt;
+            <pre v-pre><code class="html">&lt;nav aria-label=&quot;Page navigation example&quot;&gt;
   &lt;ul class=&quot;pagination&quot;&gt;
     &lt;li class=&quot;page-item&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;Previous&lt;/a&gt;&lt;/li&gt;
     &lt;li class=&quot;page-item&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;1&lt;/a&gt;&lt;/li&gt;
@@ -2672,7 +2672,7 @@
                     <li class="page-item"><a class="page-link" href="#">Next</a></li>
                 </ul>
             </nav>
-            <pre><code class="html">&lt;nav aria-label=&quot;...&quot;&gt;
+            <pre v-pre><code class="html">&lt;nav aria-label=&quot;...&quot;&gt;
   &lt;ul class=&quot;pagination&quot;&gt;
     &lt;li class=&quot;page-item disabled&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot; tabindex=&quot;-1&quot;&gt;Previous&lt;/a&gt;&lt;/li&gt;
     &lt;li class=&quot;page-item&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;1&lt;/a&gt;&lt;/li&gt;
@@ -2705,7 +2705,7 @@
                 <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100"
                      aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;progress&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;progress&quot;&gt;
   &lt;div class=&quot;progress-bar&quot; role=&quot;progressbar&quot; aria-valuenow=&quot;0&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;progress&quot;&gt;
@@ -2729,7 +2729,7 @@
                      aria-valuemin="0" aria-valuemax="100">25%
                 </div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;progress&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;progress&quot;&gt;
   &lt;div class=&quot;progress-bar&quot; role=&quot;progressbar&quot; style=&quot;width: 25%;&quot; aria-valuenow=&quot;25&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot;&gt;25%&lt;/div&gt;
 &lt;/div&gt;</code></pre>
 
@@ -2744,7 +2744,7 @@
                 <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
                      aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;progress&quot; style=&quot;height: 1px;&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;progress&quot; style=&quot;height: 1px;&quot;&gt;
   &lt;div class=&quot;progress-bar&quot; role=&quot;progressbar&quot; style=&quot;width: 25%;&quot; aria-valuenow=&quot;25&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;progress&quot; style=&quot;height: 20px;&quot;&gt;
@@ -2770,7 +2770,7 @@
                 <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100"
                      aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;progress&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;progress&quot;&gt;
   &lt;div class=&quot;progress-bar bg-success&quot; role=&quot;progressbar&quot; style=&quot;width: 25%&quot; aria-valuenow=&quot;25&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;progress&quot;&gt;
@@ -2794,7 +2794,7 @@
                 <div class="progress-bar bg-info" role="progressbar" style="width: 20%" aria-valuenow="20"
                      aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;progress&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;progress&quot;&gt;
   &lt;div class=&quot;progress-bar&quot; role=&quot;progressbar&quot; style=&quot;width: 15%&quot; aria-valuenow=&quot;15&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot;&gt;&lt;/div&gt;
   &lt;div class=&quot;progress-bar bg-success&quot; role=&quot;progressbar&quot; style=&quot;width: 30%&quot; aria-valuenow=&quot;30&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot;&gt;&lt;/div&gt;
   &lt;div class=&quot;progress-bar bg-info&quot; role=&quot;progressbar&quot; style=&quot;width: 20%&quot; aria-valuenow=&quot;20&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot;&gt;&lt;/div&gt;
@@ -2823,7 +2823,7 @@
                 <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%"
                      aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <pre><code class="html">&lt;div class=&quot;progress&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;progress&quot;&gt;
   &lt;div class=&quot;progress-bar progress-bar-striped&quot; role=&quot;progressbar&quot; style=&quot;width: 10%&quot; aria-valuenow=&quot;10&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;progress&quot;&gt;
@@ -2847,7 +2847,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <pre><code class="html">&lt;div class=&quot;clearfix&quot;&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;clearfix&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;close&quot; aria-label=&quot;Close&quot;&gt;
     &lt;span aria-hidden=&quot;true&quot;&gt;&amp;times;&lt;/span&gt;
   &lt;/button&gt;
@@ -2869,7 +2869,7 @@
             <p class="text-white bg-dark">.text-white</p>
             <p class="text-black-50">.text-black-50</p>
             <p class="text-white-50 bg-dark">.text-white-50</p>
-            <pre><code class="html">&lt;p class=&quot;text-primary&quot;&gt;.text-primary&lt;/p&gt;
+            <pre v-pre><code class="html">&lt;p class=&quot;text-primary&quot;&gt;.text-primary&lt;/p&gt;
 &lt;p class=&quot;text-secondary&quot;&gt;.text-secondary&lt;/p&gt;
 &lt;p class=&quot;text-success&quot;&gt;.text-success&lt;/p&gt;
 &lt;p class=&quot;text-danger&quot;&gt;.text-danger&lt;/p&gt;
@@ -2892,7 +2892,7 @@
             <p><a href="#" class="text-dark">Dark link</a></p>
             <p><a href="#" class="text-muted">Muted link</a></p>
             <p><a href="#" class="text-white bg-dark">White link</a></p>
-            <pre><code class="html">&lt;p&gt;&lt;a href=&quot;#&quot; class=&quot;text-primary&quot;&gt;Primary link&lt;/a&gt;&lt;/p&gt;
+            <pre v-pre><code class="html">&lt;p&gt;&lt;a href=&quot;#&quot; class=&quot;text-primary&quot;&gt;Primary link&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;#&quot; class=&quot;text-secondary&quot;&gt;Secondary link&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;#&quot; class=&quot;text-success&quot;&gt;Success link&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;#&quot; class=&quot;text-danger&quot;&gt;Danger link&lt;/a&gt;&lt;/p&gt;
@@ -2916,7 +2916,7 @@
             <div class="p-3 mb-2 bg-dark text-white">.bg-dark</div>
             <div class="p-3 mb-2 bg-white text-dark">.bg-white</div>
             <div class="p-3 mb-2 bg-transparent text-dark">.bg-transparent</div>
-            <pre><code class="html">&lt;div class=&quot;p-3 mb-2 bg-primary text-white&quot;&gt;.bg-primary&lt;/div&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;p-3 mb-2 bg-primary text-white&quot;&gt;.bg-primary&lt;/div&gt;
 &lt;div class=&quot;p-3 mb-2 bg-secondary text-white&quot;&gt;.bg-secondary&lt;/div&gt;
 &lt;div class=&quot;p-3 mb-2 bg-success text-white&quot;&gt;.bg-success&lt;/div&gt;
 &lt;div class=&quot;p-3 mb-2 bg-danger text-white&quot;&gt;.bg-danger&lt;/div&gt;
@@ -2934,7 +2934,7 @@
             <div class="shadow-sm p-3 mb-5 bg-white rounded">Small shadow</div>
             <div class="shadow p-3 mb-5 bg-white rounded">Regular shadow</div>
             <div class="shadow-lg p-3 mb-5 bg-white rounded">Larger shadow</div>
-            <pre><code class="html">&lt;div class=&quot;shadow-none p-3 mb-5 bg-light rounded&quot;&gt;No shadow&lt;/div&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;shadow-none p-3 mb-5 bg-light rounded&quot;&gt;No shadow&lt;/div&gt;
 &lt;div class=&quot;shadow-sm p-3 mb-5 bg-white rounded&quot;&gt;Small shadow&lt;/div&gt;
 &lt;div class=&quot;shadow p-3 mb-5 bg-white rounded&quot;&gt;Regular shadow&lt;/div&gt;
 &lt;div class=&quot;shadow-lg p-3 mb-5 bg-white rounded&quot;&gt;Larger shadow&lt;/div&gt;</code></pre>
@@ -2947,7 +2947,7 @@
             <div class="w-75 p-3" style="background-color: #eee;">Width 75%</div>
             <div class="w-100 p-3" style="background-color: #eee;">Width 100%</div>
             <div class="w-auto p-3" style="background-color: #eee;">Width auto</div>
-            <pre><code class="html">&lt;div class=&quot;w-25 p-3&quot; style=&quot;background-color: #eee;&quot;&gt;Width 25%&lt;/div&gt;
+            <pre v-pre><code class="html">&lt;div class=&quot;w-25 p-3&quot; style=&quot;background-color: #eee;&quot;&gt;Width 25%&lt;/div&gt;
 &lt;div class=&quot;w-50 p-3&quot; style=&quot;background-color: #eee;&quot;&gt;Width 50%&lt;/div&gt;
 &lt;div class=&quot;w-75 p-3&quot; style=&quot;background-color: #eee;&quot;&gt;Width 75%&lt;/div&gt;
 &lt;div class=&quot;w-100 p-3&quot; style=&quot;background-color: #eee;&quot;&gt;Width 100%&lt;/div&gt;
@@ -2969,7 +2969,7 @@
                     auto
                 </div>
             </div>
-            <pre><code class="html">&lt;div style=&quot;height: 100px; background-color: rgba(255,0,0,0.1);&quot;&gt;
+            <pre v-pre><code class="html">&lt;div style=&quot;height: 100px; background-color: rgba(255,0,0,0.1);&quot;&gt;
   &lt;div class=&quot;h-25 d-inline-block&quot; style=&quot;width: 120px; background-color: rgba(0,0,255,.1)&quot;&gt;Height 25%&lt;/div&gt;
   &lt;div class=&quot;h-50 d-inline-block&quot; style=&quot;width: 120px; background-color: rgba(0,0,255,.1)&quot;&gt;Height 50%&lt;/div&gt;
   &lt;div class=&quot;h-75 d-inline-block&quot; style=&quot;width: 120px; background-color: rgba(0,0,255,.1)&quot;&gt;Height 75%&lt;/div&gt;
@@ -3047,7 +3047,7 @@
                 fermentum. Donec sed odio operae, eu vulputate felis rhoncus. Praeterea iter est quasdam res quas ex
                 communi. At nos hinc posthac, sitientis piros Afros. Petierunt uti sibi concilium totius Galliae in
                 diem certam indicere. Cras mattis iudicium purus sit amet fermentum.</p>
-            <pre><code class="html">&lt;p class=&quot;text-justify&quot;&gt;Ambitioni dedisse scripsisse iudicaretur. Cras mattis iudicium purus sit amet fermentum. Donec sed odio operae, eu vulputate felis rhoncus. Praeterea iter est quasdam res quas ex communi. At nos hinc posthac, sitientis piros Afros. Petierunt uti sibi concilium totius Galliae in diem certam indicere. Cras mattis iudicium purus sit amet fermentum.&lt;/p&gt;</code></pre>
+            <pre v-pre><code class="html">&lt;p class=&quot;text-justify&quot;&gt;Ambitioni dedisse scripsisse iudicaretur. Cras mattis iudicium purus sit amet fermentum. Donec sed odio operae, eu vulputate felis rhoncus. Praeterea iter est quasdam res quas ex communi. At nos hinc posthac, sitientis piros Afros. Petierunt uti sibi concilium totius Galliae in diem certam indicere. Cras mattis iudicium purus sit amet fermentum.&lt;/p&gt;</code></pre>
             <p class="text-left">Left aligned text on all viewport sizes.</p>
             <p class="text-center">Center aligned text on all viewport sizes.</p>
             <p class="text-right">Right aligned text on all viewport sizes.</p>
@@ -3056,7 +3056,7 @@
             <p class="text-md-left">Left aligned text on viewports sized MD (medium) or wider.</p>
             <p class="text-lg-left">Left aligned text on viewports sized LG (large) or wider.</p>
             <p class="text-xl-left">Left aligned text on viewports sized XL (extra-large) or wider.</p>
-            <pre><code class="html">&lt;p class=&quot;text-left&quot;&gt;Left aligned text on all viewport sizes.&lt;/p&gt;
+            <pre v-pre><code class="html">&lt;p class=&quot;text-left&quot;&gt;Left aligned text on all viewport sizes.&lt;/p&gt;
 &lt;p class=&quot;text-center&quot;&gt;Center aligned text on all viewport sizes.&lt;/p&gt;
 &lt;p class=&quot;text-right&quot;&gt;Right aligned text on all viewport sizes.&lt;/p&gt;
 
@@ -3078,7 +3078,7 @@
             <span class="d-inline-block text-truncate" style="max-width: 150px;">
   Praeterea iter est quasdam res quas ex communi.
 </span>
-            <pre><code class="html">&lt;!-- Block level --&gt;
+            <pre v-pre><code class="html">&lt;!-- Block level --&gt;
 &lt;div class=&quot;row&quot;&gt;
   &lt;div class=&quot;col-2 text-truncate&quot;&gt;
     Praeterea iter est quasdam res quas ex communi.
@@ -3096,7 +3096,7 @@
             <p class="text-lowercase">Lowercased text.</p>
             <p class="text-uppercase">Uppercased text.</p>
             <p class="text-capitalize">CapiTaliZed text.</p>
-            <pre><code class="html">&lt;p class=&quot;text-lowercase&quot;&gt;Lowercased text.&lt;/p&gt;
+            <pre v-pre><code class="html">&lt;p class=&quot;text-lowercase&quot;&gt;Lowercased text.&lt;/p&gt;
 &lt;p class=&quot;text-uppercase&quot;&gt;Uppercased text.&lt;/p&gt;
 &lt;p class=&quot;text-capitalize&quot;&gt;CapiTaliZed text.&lt;/p&gt;</code></pre>
 
@@ -3107,7 +3107,7 @@
             <p class="font-weight-normal">Normal weight text.</p>
             <p class="font-weight-light">Light weight text.</p>
             <p class="font-italic">Italic text.</p>
-            <pre><code class="html">&lt;p class=&quot;font-weight-bold&quot;&gt;Bold text.&lt;/p&gt;
+            <pre v-pre><code class="html">&lt;p class=&quot;font-weight-bold&quot;&gt;Bold text.&lt;/p&gt;
 &lt;p class=&quot;font-weight-normal&quot;&gt;Normal weight text.&lt;/p&gt;
 &lt;p class=&quot;font-weight-light&quot;&gt;Light weight text.&lt;/p&gt;
 &lt;p class=&quot;font-italic&quot;&gt;Italic text.&lt;/p&gt;</code></pre>
@@ -3121,7 +3121,7 @@
             <span class="align-bottom">bottom</span>
             <span class="align-text-top">text-top</span>
             <span class="align-text-bottom">text-bottom</span>
-            <pre><code class="html">&lt;span class=&quot;align-baseline&quot;&gt;baseline&lt;/span&gt;
+            <pre v-pre><code class="html">&lt;span class=&quot;align-baseline&quot;&gt;baseline&lt;/span&gt;
 &lt;span class=&quot;align-top&quot;&gt;top&lt;/span&gt;
 &lt;span class=&quot;align-middle&quot;&gt;middle&lt;/span&gt;
 &lt;span class=&quot;align-bottom&quot;&gt;bottom&lt;/span&gt;
@@ -3139,7 +3139,7 @@
                 </tr>
                 </tbody>
             </table>
-            <pre><code class="html">&lt;table style=&quot;height: 100px;&quot;&gt;
+            <pre v-pre><code class="html">&lt;table style=&quot;height: 100px;&quot;&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
       &lt;td class=&quot;align-baseline&quot;&gt;baseline&lt;/td&gt;

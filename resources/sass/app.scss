@@ -1,5 +1,11 @@
 
-@import url('https://fonts.googleapis.com/css?family=Source%20Sans%20Pro');
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('../fonts/SourceSansPro-Regular.ttf'),
+         url('../fonts/SourceSansPro-Italic.ttf'),
+         url('../fonts/SourceSansPro-Bold.ttf'),
+         url('../fonts/SourceSansPro-BoldItalic.ttf');
+}
 
 @import 'variables';
 
