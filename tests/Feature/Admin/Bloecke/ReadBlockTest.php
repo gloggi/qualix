@@ -2,10 +2,8 @@
 
 namespace Tests\Feature\Admin\Bloecke;
 
-use App\Models\Kurs;
-use App\Models\User;
+use App\Models\Block;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCaseWithKurs;
 
 class ReadBlockTest extends TestCaseWithKurs {
@@ -15,10 +13,7 @@ class ReadBlockTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null]);
-        /** @var User $user */
-        $user = Auth::user();
-        $this->blockId = $user->lastAccessedKurs->bloecke()->first()->id;
+        $this->blockId = $this->createBlock('Block 1');
     }
 
     public function test_shouldRequireLogin() {
@@ -46,8 +41,7 @@ class ReadBlockTest extends TestCaseWithKurs {
 
     public function test_shouldNotDisplayBlock_fromOtherCourseOfSameUser() {
         // given
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => ''])->followRedirects();
-        $otherKursId = Kurs::where('name', '=', 'Zweiter Kurs')->firstOrFail()->id;
+        $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/admin/bloecke/' . $this->blockId);
@@ -58,15 +52,42 @@ class ReadBlockTest extends TestCaseWithKurs {
 
     public function test_shouldNotDisplayBlock_fromOtherUser() {
         // given
-        /** @var User $otherUser */
-        $otherUser = factory(User::class)->create();
-        $this->be($otherUser);
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => '']);
+        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $otherBlockId = Block::create(['kurs_id' => $otherKursId, 'full_block_number' => '1.1', 'blockname' => 'later date', 'datum' => '02.01.2019', 'ma_ids' => null])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherUser->lastAccessedKurs->id . '/admin/bloecke/' . $this->blockId);
+        $response = $this->get('/kurs/' . $otherKursId . '/admin/bloecke/' . $otherBlockId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
+    }
+
+    public function test_shouldOrderBloecke() {
+        // given
+        $this->createBlock('later date', '1.1', '02.01.2019');
+        $this->createBlock('earlier date', '1.1', '31.12.2018');
+        $this->createBlock('later day number', '2.1', '01.01.2019');
+        $this->createBlock('earlier day number', '0.1', '01.01.2019');
+        $this->createBlock('later block number', '1.2', '01.01.2019');
+        $this->createBlock('earlier block number', '1.0', '01.01.2019');
+        $this->createBlock('Block 2 later block name', '1.1', '01.01.2019');
+        $this->createBlock('Block 0 earlier block name', '1.1', '01.01.2019');
+
+        // when
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
+
+        // then
+        $response->assertOk();
+        $this->assertSeeAllInOrder('table.table-responsive-cards td[data-label^="Blockname"]', [
+          'earlier date',
+          'earlier day number',
+          'earlier block number',
+          'Block 0 earlier block name',
+          'Block 1',
+          'Block 2 later block name',
+          'later block number',
+          'later day number',
+          'later date',
+        ]);
     }
 }

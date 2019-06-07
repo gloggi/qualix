@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BeobachtungRequest extends FormRequest
+class BeobachtungUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,9 @@ class BeobachtungRequest extends FormRequest
     public function rules()
     {
         return [
-            'tn_ids' => 'required|regex:/^\d+(,\d+)*$/',
             'kommentar' => 'required',
-            'bewertung' => 'required',
-            'block_id' => 'required',
+            'bewertung' => 'required|in:0,1,2',
+            'block_id' => 'required|numeric',
             'ma_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
             'qk_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
         ];

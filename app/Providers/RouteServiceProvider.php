@@ -2,10 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Beobachtung;
 use App\Models\Kurs;
 use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -61,12 +59,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('beobachtung', function($id, \Illuminate\Routing\Route $route) {
             /** @var Kurs $kurs */
             $kurs = $route->parameter('kurs');
-            /** @var Beobachtung $beobachtung */
-            $beobachtung = Beobachtung::findOrFail($id);
-            if ($beobachtung->block->kurs->id !== $kurs->id) {
-                throw (new ModelNotFoundException)->setModel(Beobachtung::class, $id);
-            }
-            return $beobachtung;
+            return $kurs->beobachtungen()->findOrFail($id);
         });
 
         parent::boot();

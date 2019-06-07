@@ -2,25 +2,24 @@
 
 namespace Tests\Feature\Admin\Equipe;
 
-use App\Models\Kurs;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCaseWithKurs;
 
 class DeleteEquipeMemberTest extends TestCaseWithKurs {
 
     /** @var User */
-    private $user;
+    protected $otherUser;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->user = factory(User::class)->create(['name' => 'Bari']);
-        $this->user->kurse()->attach($this->kursId);
+        $this->otherUser = $this->createUser(['name' => 'Lindo']);
+        $this->otherUser->kurse()->attach($this->kursId);
 
-        $this->get('/kurs/' . $this->kursId . '/admin/equipe')->assertSee($this->user->name);
+        $this->get('/kurs/' . $this->kursId . '/admin/equipe')->assertSee($this->otherUser->name);
+        $this->get('/kurs/' . $this->kursId . '/admin/equipe')->assertSee($this->user()->name);
     }
 
     public function test_shouldRequireLogin() {
@@ -28,7 +27,7 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->user->id);
+        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->otherUser->id);
 
         // then
         $response->assertStatus(302);
@@ -39,21 +38,21 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->user->id);
+        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->otherUser->id);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/kurs/' . $this->kursId . '/admin/equipe');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertDontSee($this->user->name);
+        $response->assertDontSee($this->otherUser->name);
     }
 
     public function test_shouldValidateDeletedEquipeMemberUrl_wrongId() {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . ($this->user->id + 1));
+        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . ($this->otherUser->id + 1));
 
         // then
         $response->assertStatus(404);
@@ -61,12 +60,10 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
 
     public function test_shouldPreventDeletingLastEquipeMember() {
         // given
-        $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->user->id);
-        /** @var User $me */
-        $me = Auth::user();
+        $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->otherUser->id);
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $me->id);
+        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->user()->id);
 
         // then
         $response->assertStatus(302);
@@ -74,16 +71,15 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Mindestens ein Equipenmitglied muss im Kurs bleiben.');
-        $response->assertSee($me->name);
+        $response->assertSee($this->user()->name);
     }
 
     public function test_shouldNotDeleteEquipeMember_fromOtherCourseOfSameUser() {
         // given
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => ''])->followRedirects();
-        $otherKursId = Kurs::where('name', '=', 'Zweiter Kurs')->firstOrFail()->id;
+        $otherKursId = $this->createKurs('Zweiter Kurs');
 
         // when
-        $response = $this->delete('/kurs/' . $otherKursId . '/admin/equipe/' . $this->user->id);
+        $response = $this->delete('/kurs/' . $otherKursId . '/admin/equipe/' . $this->otherUser->id);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -91,13 +87,11 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
 
     public function test_shouldNotDeleteEquipeMember_fromOtherUser() {
         // given
-        /** @var User $otherUser */
-        $otherUser = factory(User::class)->create();
-        $this->be($otherUser);
-        $this->post('/neuerkurs', ['name' => 'Zweiter Kurs', 'kursnummer' => '']);
+        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $this->otherUser->kurse()->attach($otherKursId);
 
         // when
-        $response = $this->delete('/kurs/' . $otherUser->lastAccessedKurs->id . '/admin/equipe/' . $this->user->id);
+        $response = $this->delete('/kurs/' . $otherKursId . '/admin/equipe/' . $this->otherUser->id);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -108,7 +102,7 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
         $this->get('/')->followRedirects()->assertSee('Kursname');
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . Auth::user()->getAuthIdentifier());
+        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->user()->id);
 
         // then
         $response->assertStatus(302);

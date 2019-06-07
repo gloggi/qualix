@@ -58,7 +58,7 @@ class CreateQKTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/qk', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/qk');
 
         // then
         $response->assertStatus(200);
@@ -67,10 +67,10 @@ class CreateQKTest extends TestCaseWithKurs {
 
     public function test_shouldNotShowMessage_whenSomeQKInCourse() {
         // given
-        $this->post('/kurs/' . $this->kursId . '/admin/qk', $this->payload);
+        $this->createQK();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/qk', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/qk');
 
         // then
         $response->assertStatus(200);

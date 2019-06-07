@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Admin\MA;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithKurs;
 
@@ -16,10 +14,7 @@ class UpdateMATest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->kursId . '/admin/ma', ['anforderung' => 'Mindestanforderung 1', 'killer' => '1']);
-        /** @var User $user */
-        $user = Auth::user();
-        $this->maId = $user->lastAccessedKurs->mas()->first()->id;
+        $this->maId = $this->createMA('Mindestanforderung 1', true);
 
         $this->payload = ['anforderung' => 'Geänderte Anforderung', 'killer' => '1'];
     }
@@ -78,8 +73,8 @@ class UpdateMATest extends TestCaseWithKurs {
         $response->assertRedirect('/kurs/' . $this->kursId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Ja');
-        $response->assertDontSee('Nein');
+        $response->assertSee('>Ja<');
+        $response->assertDontSee('>Nein<');
     }
 
     public function test_shouldValidateNewMAData_killerFalse_shouldWork() {
@@ -95,8 +90,8 @@ class UpdateMATest extends TestCaseWithKurs {
         $response->assertRedirect('/kurs/' . $this->kursId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Nein');
-        $response->assertDontSee('Ja');
+        $response->assertSee('>Nein<');
+        $response->assertDontSee('>Ja<');
     }
 
     public function test_shouldValidateNewMAData_killerTrue_shouldWork() {
@@ -112,8 +107,8 @@ class UpdateMATest extends TestCaseWithKurs {
         $response->assertRedirect('/kurs/' . $this->kursId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Ja');
-        $response->assertDontSee('Nein');
+        $response->assertSee('>Ja<');
+        $response->assertDontSee('>Nein<');
     }
 
     public function test_shouldValidateNewMAData_wrongId() {

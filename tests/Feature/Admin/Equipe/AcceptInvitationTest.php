@@ -48,7 +48,7 @@ class AcceptInvitationTest extends TestCaseWithKurs {
 
     public function test_shouldDisplayInvitationClaimForm() {
         // given
-        $this->be(factory(User::class)->create(['name' => 'Lindo']));
+        $this->createUser(['name' => 'Lindo'], true);
 
         // when
         $response = $this->get('/invitation/' . $this->token);
@@ -84,7 +84,7 @@ class AcceptInvitationTest extends TestCaseWithKurs {
 
     public function test_claimInvitation_shouldWork() {
         // given
-        $this->be(factory(User::class)->create(['name' => 'Lindo']));
+        $this->createUser(['name' => 'Lindo'], true);
 
         // when
         $response = $this->post('/invitation/', ['token' => $this->token]);
@@ -99,7 +99,7 @@ class AcceptInvitationTest extends TestCaseWithKurs {
 
     public function test_shouldValidateClaimedInvitation_noToken() {
         // given
-        $this->be(factory(User::class)->create(['name' => 'Lindo']));
+        $this->createUser(['name' => 'Lindo'], true);
 
         // when
         $response = $this->post('/invitation/', []);
@@ -110,7 +110,7 @@ class AcceptInvitationTest extends TestCaseWithKurs {
 
     public function test_shouldRedirectToInvitationClaimPage_afterCompletingLogin() {
         // given
-        $this->be(factory(User::class)->create(['name' => 'Lindo', 'password' => bcrypt('12345678'), 'email' => $this->email]));
+        $this->createUser(['name' => 'Lindo', 'password' => bcrypt('12345678'), 'email' => $this->email], true);
         auth()->logout();
         $this->get('/invitation/' . $this->token)->followRedirects();
 

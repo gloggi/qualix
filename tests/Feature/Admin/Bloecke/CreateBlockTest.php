@@ -93,23 +93,23 @@ class CreateBlockTest extends TestCaseWithKurs {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldShowMessage_whenNoQKInCourse() {
+    public function test_shouldShowMessage_whenNoBloeckeInCourse() {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);
         $response->assertSee('Bisher sind keine Blöcke erfasst.');
     }
 
-    public function test_shouldNotShowMessage_whenSomeQKInCourse() {
+    public function test_shouldNotShowMessage_whenSomeBlockInCourse() {
         // given
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $this->createBlock();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);
@@ -120,7 +120,7 @@ class CreateBlockTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);
@@ -129,10 +129,10 @@ class CreateBlockTest extends TestCaseWithKurs {
 
     public function test_shouldShowDateFromLastCreatedBlockInForm_whenBlockHasBeenCreated() {
         // given
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);

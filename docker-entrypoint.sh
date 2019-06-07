@@ -16,4 +16,6 @@ chmod 777 -R storage bootstrap/cache
 php artisan db:wait
 php artisan migrate
 
+touch .ready
+
 apache2-foreground
