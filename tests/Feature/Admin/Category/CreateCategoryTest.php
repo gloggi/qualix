@@ -13,7 +13,7 @@ class CreateCategoryTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['name' => 'Qualikategorie 1'];
+        $this->payload = ['name' => 'Kategorie 1'];
     }
 
     public function test_shouldRequireLogin() {
@@ -28,7 +28,7 @@ class CreateCategoryTest extends TestCaseWithKurs {
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldCreateAndDisplayQK() {
+    public function test_shouldCreateAndDisplayCategory() {
         // given
 
         // when
@@ -42,7 +42,7 @@ class CreateCategoryTest extends TestCaseWithKurs {
         $response->assertSee($this->payload['name']);
     }
 
-    public function test_shouldValidateNewQKData_noQualikategorieName() {
+    public function test_shouldValidateNewCategoryData_noCategoryName() {
         // given
         $payload = $this->payload;
         unset($payload['name']);
@@ -54,7 +54,7 @@ class CreateCategoryTest extends TestCaseWithKurs {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldShowMessage_whenNoQKInCourse() {
+    public function test_shouldShowMessage_whenNoCategoryInCourse() {
         // given
 
         // when
@@ -62,10 +62,10 @@ class CreateCategoryTest extends TestCaseWithKurs {
 
         // then
         $response->assertStatus(200);
-        $response->assertSee('Bisher sind keine Qualikategorien erfasst.');
+        $response->assertSee('Bisher sind keine Kategorien erfasst.');
     }
 
-    public function test_shouldNotShowMessage_whenSomeQKInCourse() {
+    public function test_shouldNotShowMessage_whenSomeCategoryInCourse() {
         // given
         $this->createCategory();
 
@@ -74,6 +74,6 @@ class CreateCategoryTest extends TestCaseWithKurs {
 
         // then
         $response->assertStatus(200);
-        $response->assertDontSee('Bisher sind keine Qualikategorien erfasst.');
+        $response->assertDontSee('Bisher sind keine Kategorien erfasst.');
     }
 }

@@ -51,12 +51,12 @@
             ])@endcomponent
 
             @component('components.form.multiSelectInput', [
-                'name' => 'qk_ids',
-                'label' => __('Qualikategorien'),
+                'name' => 'category_ids',
+                'label' => __('Kategorien'),
                 'options' => $course->categories->all(),
-                'value' => implode(',', array_map(function (\App\Models\Category $qk) { return $qk->id; }, $observation->categories->all())),
-                'valueFn' => function(\App\Models\Category $qk) { return $qk->id; },
-                'displayFn' => function(\App\Models\Category $qk) { return $qk->name; },
+                'value' => implode(',', array_map(function (\App\Models\Category $category) { return $category->id; }, $observation->categories->all())),
+                'valueFn' => function(\App\Models\Category $category) { return $category->id; },
+                'displayFn' => function(\App\Models\Category $category) { return $category->name; },
                 'multiple' => true,
             ])@endcomponent
 

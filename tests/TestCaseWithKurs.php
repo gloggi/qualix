@@ -25,7 +25,7 @@ abstract class TestCaseWithKurs extends TestCase
         return Block::create(['course_id' => ($courseId !== null ? $courseId : $this->courseId), 'full_block_number' => $fullBlockNumber, 'name' => $blockname, 'block_date' => $date, 'requirement_ids' => $ma_ids])->id;
     }
 
-    protected function createCategory($name = 'Qualikategorie 1', $courseId = null) {
+    protected function createCategory($name = 'Kategorie 1', $courseId = null) {
         return Category::create(['course_id' => ($courseId !== null ? $courseId : $this->courseId), 'name' => $name])->id;
     }
 

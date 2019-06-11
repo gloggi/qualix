@@ -42,7 +42,7 @@
                 <i class="fas fa-filter"></i> Filter
             </div>
 
-            <div id="filters-collapse" class="collapse{{ $ma !== null || $qk !== null ? ' show' : '' }}" aria-labelledby="filters">
+            <div id="filters-collapse" class="collapse{{ $requirement !== null || $category !== null ? ' show' : '' }}" aria-labelledby="filters">
 
                 <div class="card-body">
 
@@ -50,13 +50,13 @@
 
                         <div class="col-md-6 col-sm-12">
 
-                            <form id="ma-form" method="GET" action="{{ route('tn.detail', ['course' => $course->id, 'tn' => $tn->id]) }}#filters">
+                            <form id="requirement-form" method="GET" action="{{ route('tn.detail', ['course' => $course->id, 'tn' => $tn->id]) }}#filters">
 
                                 <multi-select
-                                  id="ma"
-                                  name="ma"
+                                  id="requirement"
+                                  name="requirement"
                                   class="form-control-multiselect"
-                                  value="{{ $ma }}"
+                                  value="{{ $requirement }}"
                                   :allow-empty="true"
                                   placeholder="Mindestanforderung"
                                   :options="[
@@ -68,7 +68,7 @@
                                   :multiple="false"
                                   :close-on-select="true"
                                   :show-labels="false"
-                                  submit-on-input="ma-form"
+                                  submit-on-input="requirement-form"
                                   :show-clear="true"></multi-select>
 
                             </form>
@@ -77,25 +77,25 @@
 
                         <div class="col-md-6 col-sm-12">
 
-                            <form id="qk-form" method="GET" action="{{ route('tn.detail', ['course' => $course->id, 'tn' => $tn->id]) }}#filters">
+                            <form id="category-form" method="GET" action="{{ route('tn.detail', ['course' => $course->id, 'tn' => $tn->id]) }}#filters">
 
                                 <multi-select
-                                  id="qk"
-                                  name="qk"
+                                  id="category"
+                                  name="category"
                                   class="form-control-multiselect"
-                                  value="{{ $qk }}"
+                                  value="{{ $category }}"
                                   :allow-empty="true"
-                                  placeholder="Qualikategorie"
+                                  placeholder="Kategorie"
                                   :options="[
                                     @foreach( $course->categories as $option )
                                     { label: '{{ $option->name }}', value: '{{ $option->id }}' },
                                     @endforeach
-                                    { label: '{{__('-- Beobachtungen ohne Qualikategorie --')}}', value: '0' },
+                                    { label: '{{__('-- Beobachtungen ohne Kategorie --')}}', value: '0' },
                                     ]"
                                   :multiple="false"
                                   :close-on-select="true"
                                   :show-labels="false"
-                                  submit-on-input="qk-form"
+                                  submit-on-input="category-form"
                                   :show-clear="true"></multi-select>
 
                             </form>
@@ -116,14 +116,14 @@
                     __('Beobachtung') => function(\App\Models\Observation $observation) { return nl2br($observation->content); },
                     __('Block') => function(\App\Models\Observation $observation) { return $observation->block->blockname_and_number; },
                     __('MA') => function(\App\Models\Observation $observation) {
-                        return implode('', array_map(function(\App\Models\Requirement $ma) {
-                            return '<span class="badge badge-' . ($ma->mandatory ? 'warning' : 'info') . '" style="white-space: normal">' . $ma->content . '</span>';
+                        return implode('', array_map(function(\App\Models\Requirement $requirement) {
+                            return '<span class="badge badge-' . ($requirement->mandatory ? 'warning' : 'info') . '" style="white-space: normal">' . $requirement->content . '</span>';
                         }, $observation->requirements->all()));
                     },
                     __('Eindruck') => function(\App\Models\Observation $observation) {
-                        $bewertung = $observation->impression;
-                        if ($bewertung === 0) return '<span class="badge badge-danger">negativ</span>';
-                        else if ($bewertung === 2) return '<span class="badge badge-success">positiv</span>';
+                        $impmression = $observation->impression;
+                        if ($impmression === 0) return '<span class="badge badge-danger">negativ</span>';
+                        else if ($impmression === 2) return '<span class="badge badge-success">positiv</span>';
                         else return '<span class="badge badge-secondary">neutral</span>';
                     },
                     __('Beobachter') => function(\App\Models\Observation $observation) { return $observation->user->name; }

@@ -38,7 +38,7 @@
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.requirements' ? ' active' : '' }}"
                                href="{{ route('admin.requirements', ['course' => $course->id]) }}">Mindestanforderungen</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.categories' ? ' active' : '' }}"
-                               href="{{ route('admin.categories', ['course' => $course->id]) }}">Qualikategorien</a>
+                               href="{{ route('admin.categories', ['course' => $course->id]) }}">Kategorien</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.blocks' ? ' active' : '' }}"
                                href="{{ route('admin.blocks', ['course' => $course->id]) }}">Blöcke</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.participants' ? ' active' : '' }}"

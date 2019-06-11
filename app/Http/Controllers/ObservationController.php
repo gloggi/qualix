@@ -37,13 +37,13 @@ class ObservationController extends Controller {
         $data = $request->validated();
         DB::transaction(function() use ($request, $course, $data) {
             $participant_ids = explode(',', $data['participant_ids']);
-            $ma_ids = array_filter(explode(',', $data['requirement_ids']));
-            $qk_ids = array_filter(explode(',', $data['qk_ids']));
+            $requirement_ids = array_filter(explode(',', $data['requirement_ids']));
+            $category_ids = array_filter(explode(',', $data['category_ids']));
 
             foreach ($participant_ids as $participant_id) {
                 $observation = Observation::create(array_merge($data, ['participant_id' => $participant_id, 'course_id' => $course->id, 'user_id' => Auth::user()->getAuthIdentifier()]));
-                $observation->requirements()->attach($ma_ids);
-                $observation->categories()->attach($qk_ids);
+                $observation->requirements()->attach($requirement_ids);
+                $observation->categories()->attach($category_ids);
             }
 
             if (count($participant_ids) > 1) {
@@ -85,7 +85,7 @@ class ObservationController extends Controller {
             $observation->requirements()->attach(array_filter(explode(',', $data['requirement_ids'])));
 
             $observation->categories()->detach();
-            $observation->categories()->attach(array_filter(explode(',', $data['qk_ids'])));
+            $observation->categories()->attach(array_filter(explode(',', $data['category_ids'])));
         });
 
         $request->session()->flash('alert-success', __('Beobachtung aktualisiert.'));

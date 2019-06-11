@@ -28,7 +28,7 @@ class ObservationUpdateRequest extends FormRequest
             'impression' => 'required|in:0,1,2',
             'block_id' => 'required|numeric',
             'requirement_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
-            'qk_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
+            'category_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
         ];
     }
 }

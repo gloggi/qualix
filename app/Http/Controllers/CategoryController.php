@@ -36,11 +36,11 @@ class CategoryController extends Controller {
      * Show the form for editing the specified resource.
      *
      * @param Course $course
-     * @param Category $qk
+     * @param Category $category
      * @return Response
      */
-    public function edit(Course $course, Category $qk) {
-        return view('admin.category-edit', ['qk' => $qk]);
+    public function edit(Course $course, Category $category) {
+        return view('admin.category-edit', ['category' => $category]);
     }
 
     /**
@@ -48,12 +48,12 @@ class CategoryController extends Controller {
      *
      * @param CategoryRequest $request
      * @param Course $course
-     * @param Category $qk
+     * @param Category $category
      * @return RedirectResponse
      */
-    public function update(CategoryRequest $request, Course $course, Category $qk) {
-        $qk->update($request->validated());
-        $request->session()->flash('alert-success', __('Qualikategorie erfolgreich gespeichert.'));
+    public function update(CategoryRequest $request, Course $course, Category $category) {
+        $category->update($request->validated());
+        $request->session()->flash('alert-success', __('Kategorie erfolgreich gespeichert.'));
         return Redirect::route('admin.categories', ['course' => $course->id]);
     }
 
@@ -62,12 +62,12 @@ class CategoryController extends Controller {
      *
      * @param Request $request
      * @param Course $course
-     * @param Category $qk
+     * @param Category $category
      * @return RedirectResponse
      */
-    public function destroy(Request $request, Course $course, Category $qk) {
-        $qk->delete();
-        $request->session()->flash('alert-success', __('Qualikategorie erfolgreich gelöscht.'));
+    public function destroy(Request $request, Course $course, Category $category) {
+        $category->delete();
+        $request->session()->flash('alert-success', __('Kategorie erfolgreich gelöscht.'));
         return Redirect::route('admin.categories', ['course' => $course->id]);
     }
 }

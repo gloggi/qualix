@@ -27,7 +27,7 @@ class DeleteBlockTest extends TestCaseWithKurs {
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldDeleteQK() {
+    public function test_shouldDeleteBlock() {
         // given
 
         // when
@@ -41,7 +41,7 @@ class DeleteBlockTest extends TestCaseWithKurs {
         $response->assertDontSee('Block 1');
     }
 
-    public function test_shouldValidateDeletedQKUrl_wrongId() {
+    public function test_shouldValidateDeletedBlockUrl_wrongId() {
         // given
 
         // when

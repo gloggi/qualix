@@ -24,38 +24,38 @@ class ParticipantDetailController extends Controller
     {
         $observations = $tn->observations;
 
-        $ma = $request->input('ma');
-        if ($ma != null) {
-            if ($ma === '0') {
+        $requirement = $request->input('requirement');
+        if ($requirement != null) {
+            if ($requirement === '0') {
                 $observations = $observations->filter(function (Observation $observation) {
                     return $observation->requirements->isEmpty();
                 });
             } else {
-                $observations = $observations->filter(function (Observation $observation) use ($ma) {
-                    return $observation->requirements->map(function (Requirement $ma) {
-                        return $ma->id;
-                    })->contains($ma);
+                $observations = $observations->filter(function (Observation $observation) use ($requirement) {
+                    return $observation->requirements->map(function (Requirement $observationRequirement) {
+                        return $observationRequirement->id;
+                    })->contains($requirement);
                 });
             }
         }
 
-        $qk = $request->input('qk');
-        if ($qk != null) {
-            if ($qk === '0') {
+        $category = $request->input('category');
+        if ($category != null) {
+            if ($category === '0') {
                 $observations = $observations->filter(function (Observation $observation) {
                     return $observation->categories->isEmpty();
                 });
             } else {
-                $observations = $observations->filter(function (Observation $observation, $key) use ($qk) {
-                    return $observation->categories->map(function (Category $qk) {
-                        return $qk->id;
-                    })->contains($qk);
+                $observations = $observations->filter(function (Observation $observation, $key) use ($category) {
+                    return $observation->categories->map(function (Category $observationCategory) {
+                        return $observationCategory->id;
+                    })->contains($category);
                 });
             }
         }
 
         $observations = $observations->sortBy(function (Observation $observation) { return $observation->block->block_date->timestamp . '.' . $observation->block->day_number . '.' . $observation->block->block_number . '.' . $observation->block->name . '.' . $observation->block->id; });
 
-        return view('tn-detail', ['tn' => $tn, 'observations' => $observations, 'ma' => $ma, 'qk' => $qk]);
+        return view('tn-detail', ['tn' => $tn, 'observations' => $observations, 'requirement' => $requirement, 'category' => $category]);
     }
 }

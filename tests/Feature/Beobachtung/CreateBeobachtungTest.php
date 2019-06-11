@@ -13,7 +13,7 @@ class CreateBeobachtungTest extends TestCaseWithBasicData {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['participant_ids' => '' . $this->tnId, 'content' => 'hat gut mitgemacht', 'impression' => '1', 'block_id' => '' . $this->blockId, 'requirement_ids' => '', 'qk_ids' => ''];
+        $this->payload = ['participant_ids' => '' . $this->participantId, 'content' => 'hat gut mitgemacht', 'impression' => '1', 'block_id' => '' . $this->blockId, 'requirement_ids' => '', 'category_ids' => ''];
     }
 
     public function test_shouldRequireLogin() {
@@ -36,7 +36,7 @@ class CreateBeobachtungTest extends TestCaseWithBasicData {
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/beobachtungen/neu?tn=' . $this->tnId . '&block=' . $this->blockId);
+        $response->assertRedirect('/kurs/' . $this->courseId . '/beobachtungen/neu?tn=' . $this->participantId . '&block=' . $this->blockId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Beobachtung erfasst.');
@@ -69,7 +69,7 @@ class CreateBeobachtungTest extends TestCaseWithBasicData {
     public function test_shouldValidateNewBeobachtungData_multipleTNIds_shouldWork() {
         // given
         $tnId2 = $this->createTN('Pfnörch');
-        $tnIds = $this->tnId . ',' . $tnId2;
+        $tnIds = $this->participantId . ',' . $tnId2;
         $payload = $this->payload;
         $payload['participant_ids'] = $tnIds;
 
@@ -156,10 +156,10 @@ class CreateBeobachtungTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidQKIds() {
+    public function test_shouldValidateNewBeobachtungData_invalidCategoryIds() {
         // given
         $payload = $this->payload;
-        $payload['qk_ids'] = 'xyz';
+        $payload['category_ids'] = 'xyz';
 
         // when
         $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/neu', $payload);

@@ -13,7 +13,7 @@ class ReadTNTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
 
         // then
         $response->assertStatus(302);
@@ -24,7 +24,7 @@ class ReadTNTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
 
         // then
         $response->assertOk();
@@ -36,7 +36,7 @@ class ReadTNTest extends TestCaseWithBasicData {
         $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $otherKursId . '/tn/' . $this->participantId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -58,7 +58,7 @@ class ReadTNTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
 
         // then
         $response->assertStatus(200);
@@ -70,7 +70,7 @@ class ReadTNTest extends TestCaseWithBasicData {
         $this->createBeobachtung();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
 
         // then
         $response->assertStatus(200);

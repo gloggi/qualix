@@ -14,13 +14,13 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
     public function setUp(): void {
         parent::setUp();
 
-        $this->beobachtungId = $this->createBeobachtung('hat gut mitgemacht', 1, [], [], $this->blockId);
+        $this->observationId = $this->createBeobachtung('hat gut mitgemacht', 1, [], [], $this->blockId);
 
         $blockId2 = $this->createBlock();
         $maId = $this->createMA('Mindestanforderung 1', true);
-        $qkId = $this->createCategory('Qualikategorie 1');
+        $categoryId = $this->createCategory('Kategorie 1');
 
-        $this->payload = ['participant_id' => '' . $this->tnId, 'content' => 'kein Wort gesagt', 'impression' => '0', 'block_id' => '' . $blockId2, 'requirement_ids' => '' . $maId, 'qk_ids' => '' . $qkId];
+        $this->payload = ['participant_id' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0', 'block_id' => '' . $blockId2, 'requirement_ids' => '' . $maId, 'category_ids' => '' . $categoryId];
     }
 
     public function test_shouldRequireLogin() {
@@ -28,7 +28,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -39,11 +39,11 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId, $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
+        $response->assertRedirect('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['content']);
@@ -56,7 +56,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         unset($payload['content']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -68,7 +68,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         unset($payload['impression']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -80,7 +80,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         $payload['impression'] = '3';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -92,7 +92,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         unset($payload['block_id']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -104,7 +104,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         $payload['block_id'] = '*';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -116,19 +116,19 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         $payload['requirement_ids'] = 'xyz';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidQKIds() {
+    public function test_shouldValidateNewBeobachtungData_invalidCategoryIds() {
         // given
         $payload = $this->payload;
-        $payload['qk_ids'] = 'xyz';
+        $payload['category_ids'] = 'xyz';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -139,7 +139,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         $payload = $this->payload;
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . ($this->beobachtungId + 1), $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . ($this->observationId + 1), $payload);
 
         // then
         $response->assertStatus(404);

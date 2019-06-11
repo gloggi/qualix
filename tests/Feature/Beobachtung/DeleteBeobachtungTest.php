@@ -35,7 +35,7 @@ class DeleteBeobachtungTest extends TestCaseWithBasicData {
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
+        $response->assertRedirect('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertDontSee('hat gut mitgemacht');

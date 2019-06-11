@@ -8,12 +8,12 @@ use Tests\TestCaseWithKurs;
 
 class ReadCategoryTest extends TestCaseWithKurs {
 
-    private $qkId;
+    private $categoryId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->qkId = $this->createCategory('Qualikategorie 1');
+        $this->categoryId = $this->createCategory('Kategorie 1');
     }
 
     public function test_shouldRequireLogin() {
@@ -21,42 +21,42 @@ class ReadCategoryTest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/qk/' . $this->qkId);
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/qk/' . $this->categoryId);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldDisplayQK() {
+    public function test_shouldDisplayCategory() {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/qk/' . $this->qkId);
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/qk/' . $this->categoryId);
 
         // then
         $response->assertOk();
-        $response->assertSee('Qualikategorie 1');
+        $response->assertSee('Kategorie 1');
     }
 
-    public function test_shouldNotDisplayQK_fromOtherCourseOfSameUser() {
+    public function test_shouldNotDisplayCategory_fromOtherCourseOfSameUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/admin/qk/' . $this->qkId);
+        $response = $this->get('/kurs/' . $otherKursId . '/admin/qk/' . $this->categoryId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
-    public function test_shouldNotDisplayQK_fromOtherUser() {
+    public function test_shouldNotDisplayCategory_fromOtherUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
-        $otherQKId = Category::create(['course_id' => $otherKursId, 'name' => 'Qualikategorie 1'])->id;
+        $otherCategoryId = Category::create(['course_id' => $otherKursId, 'name' => 'Kategorie 2'])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/admin/qk/' . $otherQKId);
+        $response = $this->get('/kurs/' . $otherKursId . '/admin/qk/' . $otherCategoryId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

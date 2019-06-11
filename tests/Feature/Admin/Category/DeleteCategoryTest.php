@@ -7,12 +7,12 @@ use Tests\TestCaseWithKurs;
 
 class DeleteCategoryTest extends TestCaseWithKurs {
 
-    private $qkId;
+    private $categoryId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->qkId = $this->createCategory('Qualikategorie 1');
+        $this->categoryId = $this->createCategory('Kategorie 1');
     }
 
     public function test_shouldRequireLogin() {
@@ -20,32 +20,32 @@ class DeleteCategoryTest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/qk/' . $this->qkId);
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/qk/' . $this->categoryId);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldDeleteQK() {
+    public function test_shouldDeleteCategory() {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/qk/' . $this->qkId);
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/qk/' . $this->categoryId);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/kurs/' . $this->courseId . '/admin/qk');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertDontSee('Qualikategorie 1');
+        $response->assertDontSee('Kategorie 1');
     }
 
-    public function test_shouldValidateDeletedQKUrl_wrongId() {
+    public function test_shouldValidateDeletedCategoryUrl_wrongId() {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/qk/' . ($this->qkId + 1));
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/qk/' . ($this->categoryId + 1));
 
         // then
         $response->assertStatus(404);

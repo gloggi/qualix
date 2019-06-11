@@ -59,7 +59,7 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
         $otherTNId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
         $otherBlockId = Block::create(['course_id' => $otherKursId, 'full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '01.01.2019', 'requirement_ids' => null])->id;
         $otherUserId = $this->createUser(['name' => 'Lindo'])->id;
-        $otherBeobachtungId = Observation::create(['block_id' => $otherBlockId, 'participant_id' => $otherTNId, 'user_id' => $otherUserId, 'content' => 'hat gut mitgemacht', 'impression' => '1', 'requirement_ids' => '', 'qk_ids' => ''])->id;
+        $otherBeobachtungId = Observation::create(['block_id' => $otherBlockId, 'participant_id' => $otherTNId, 'user_id' => $otherUserId, 'content' => 'hat gut mitgemacht', 'impression' => '1', 'requirement_ids' => '', 'category_ids' => ''])->id;
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/beobachtungen/' . $otherBeobachtungId);
@@ -73,7 +73,7 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
         $this->createBeobachtung("Mehrzeilige Beobachtungen\n- nützlich\n- wichtig\n- erlauben Strukturierung");
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
 
         // then
         $response->assertOk();
@@ -99,7 +99,7 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
         }
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
 
         // then
         $response->assertOk();

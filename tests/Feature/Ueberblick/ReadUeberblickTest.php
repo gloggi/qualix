@@ -71,8 +71,8 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         $user2 = $this->createUser(['name' => 'Lindo']);
         $user2->courses()->attach($this->courseId);
 
-        $this->createBeobachtung(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $this->tnId, $user2->id);
-        $this->createBeobachtung(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $this->tnId, $user2->id);
+        $this->createBeobachtung(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $this->participantId, $user2->id);
+        $this->createBeobachtung(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $this->participantId, $user2->id);
 
         // when
         $response = $this->get('/kurs/' . $this->courseId . '/ueberblick');
@@ -85,7 +85,7 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
 
     public function test_shouldDisplayMessage_whenNoTNInKurs() {
         // given
-        Participant::find($this->tnId)->delete();
+        Participant::find($this->participantId)->delete();
 
         // when
         $response = $this->get('/kurs/' . $this->courseId . '/ueberblick');
