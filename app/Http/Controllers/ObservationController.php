@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ObservationCreateRequest;
 use App\Http\Requests\ObservationUpdateRequest;
-use App\Models\Observation;
 use App\Models\Block;
 use App\Models\Course;
+use App\Models\Observation;
 use App\Models\Participant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Observation;
 
-use App\Models\Observation;
 use App\Models\Block;
+use App\Models\Observation;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;

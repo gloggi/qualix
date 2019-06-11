@@ -2,9 +2,6 @@
 
 namespace Tests\Feature\Welcome;
 
-use App\Models\Course;
-use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCaseWithBasicData;
 
 class ReadWelcomePageTest extends TestCaseWithBasicData {
