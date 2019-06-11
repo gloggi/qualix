@@ -15,7 +15,7 @@
             <div class="col">
                 <h3>{{ $tn->scout_name }}</h3>
                 @if (isset($tn->group))<h5>{{ $tn->group }}</h5>@endif
-                <p>{{ trans_choice('{0}Keine Beobachtungen|{1}1 Beobachtung|[2,*]:count Beobachtungen', count($tn->observations), ['count' => count($tn->observations)])}}, {{ __('davon :positive positive, :neutral neutrale und :negative negative Beobachtungen.', ['positive' => $tn->positive->count(), 'neutral' => $tn->neutral->count(), 'negative' => $tn->negative->count()])}}</p>
+                <p>{{ trans_choice('{0}Keine Beobachtungen|{1}1 Beobachtung|[2,*]:count Beobachtungen', count($tn->observations), ['count' => count($tn->observations)])}}, {{ __('davon :positive mit positivem, :neutral mit neutralem und :negative mit negativem Eindruck.', ['positive' => $tn->positive->count(), 'neutral' => $tn->neutral->count(), 'negative' => $tn->negative->count()])}}</p>
                 @php
                     $columns = [];
                     foreach ($course->users->all() as $user) {
@@ -120,7 +120,7 @@
                             return '<span class="badge badge-' . ($ma->mandatory ? 'warning' : 'info') . '" style="white-space: normal">' . $ma->content . '</span>';
                         }, $observation->requirements->all()));
                     },
-                    __('Bewertung') => function(\App\Models\Observation $observation) {
+                    __('Eindruck') => function(\App\Models\Observation $observation) {
                         $bewertung = $observation->impression;
                         if ($bewertung === 0) return '<span class="badge badge-danger">negativ</span>';
                         else if ($bewertung === 2) return '<span class="badge badge-success">positiv</span>';

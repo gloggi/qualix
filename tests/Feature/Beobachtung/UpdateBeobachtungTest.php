@@ -62,7 +62,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_noBewertung() {
+    public function test_shouldValidateNewBeobachtungData_noImpression() {
         // given
         $payload = $this->payload;
         unset($payload['impression']);
@@ -74,7 +74,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidBewertung() {
+    public function test_shouldValidateNewBeobachtungData_invalidImpression() {
         // given
         $payload = $this->payload;
         $payload['impression'] = '3';

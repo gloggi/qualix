@@ -44,7 +44,7 @@
 
             @component('components.form.radioButtonInput', [
                 'name' => 'impression',
-                'label' => __('Bewertung'),
+                'label' => __('Eindruck'),
                 'required' => true,
                 'value' => $observation->impression,
                 'options' => [ '2' => 'Positiv', '1' => 'Neutral', '0' => 'Negativ']
