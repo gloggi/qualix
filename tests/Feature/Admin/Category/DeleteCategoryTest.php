@@ -3,9 +3,9 @@
 namespace Tests\Feature\Admin\Category;
 
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class DeleteCategoryTest extends TestCaseWithKurs {
+class DeleteCategoryTest extends TestCaseWithCourse {
 
     private $categoryId;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Beobachtung;
+namespace Tests\Feature\Observation;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithBasicData;
 
-class CreateBeobachtungTest extends TestCaseWithBasicData {
+class CreateObservationTest extends TestCaseWithBasicData {
 
     private $payload;
 
@@ -68,7 +68,7 @@ class CreateBeobachtungTest extends TestCaseWithBasicData {
 
     public function test_shouldValidateNewBeobachtungData_multipleTNIds_shouldWork() {
         // given
-        $tnId2 = $this->createTN('Pfnörch');
+        $tnId2 = $this->createParticipant('Pfnörch');
         $tnIds = $this->participantId . ',' . $tnId2;
         $payload = $this->payload;
         $payload['participant_ids'] = $tnIds;

@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Admin\Bloecke;
+namespace Tests\Feature\Admin\Block;
 
 use App\Models\Block;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class ReadBlockTest extends TestCaseWithKurs {
+class ReadBlockTest extends TestCaseWithCourse {
 
     private $blockId;
 

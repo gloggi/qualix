@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Admin\Bloecke;
+namespace Tests\Feature\Admin\Block;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class UpdateBlockTest extends TestCaseWithKurs {
+class UpdateBlockTest extends TestCaseWithCourse {
 
     private $payload;
     private $blockId;

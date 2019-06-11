@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\TN;
+namespace Tests\Feature\Participant;
 
 use Tests\TestCaseWithBasicData;
 
@@ -17,17 +17,17 @@ class FilterTest extends TestCaseWithBasicData {
         $this->categoryId = $this->createCategory('Kategorie 1');
         $this->categoryId2 = $this->createCategory('Kategorie 2');
 
-        $this->requirementId = $this->createMA('Mindestanforderung 1', true);
-        $this->requirementId2 = $this->createMA('Mindestanforderung 2', true);
+        $this->requirementId = $this->createRequirement('Mindestanforderung 1', true);
+        $this->requirementId2 = $this->createRequirement('Mindestanforderung 2', true);
 
-        $this->createBeobachtung('hat Kategorie und MA', 1, [$this->requirementId], [$this->categoryId]);
-        $this->createBeobachtung('nur Kategorie', 1, [], [$this->categoryId]);
-        $this->createBeobachtung('nur MA', 1, [$this->requirementId], []);
-        $this->createBeobachtung('ohne Kategorie oder MA', 1, [], []);
-        $this->createBeobachtung('andere Kategorie', 1, [], [$this->categoryId2]);
-        $this->createBeobachtung('andere MA', 1, [$this->requirementId2], []);
-        $this->createBeobachtung('alle Kategorien', 1, [], [$this->categoryId, $this->categoryId2]);
-        $this->createBeobachtung('alle MA', 1, [$this->requirementId, $this->requirementId2], []);
+        $this->createObservation('hat Kategorie und MA', 1, [$this->requirementId], [$this->categoryId]);
+        $this->createObservation('nur Kategorie', 1, [], [$this->categoryId]);
+        $this->createObservation('nur MA', 1, [$this->requirementId], []);
+        $this->createObservation('ohne Kategorie oder MA', 1, [], []);
+        $this->createObservation('andere Kategorie', 1, [], [$this->categoryId2]);
+        $this->createObservation('andere MA', 1, [$this->requirementId2], []);
+        $this->createObservation('alle Kategorien', 1, [], [$this->categoryId, $this->categoryId2]);
+        $this->createObservation('alle MA', 1, [$this->requirementId, $this->requirementId2], []);
     }
 
     public function test_shouldDisplayAllObservations_whenNoFilter() {

@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\Feature\Admin\MA;
+namespace Tests\Feature\Admin\Requirement;
 
 use App\Models\Requirement;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class ReadMATest extends TestCaseWithKurs {
+class ReadRequirementTest extends TestCaseWithCourse {
 
     private $maId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->maId = $this->createMA('Mindestanforderung 1', true);
+        $this->maId = $this->createRequirement('Mindestanforderung 1', true);
     }
 
     public function test_shouldRequireLogin() {

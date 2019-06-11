@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\Feature\Admin\TN;
+namespace Tests\Feature\Admin\Participant;
 
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class ReadTNTest extends TestCaseWithKurs {
+class ReadParticipantTest extends TestCaseWithCourse {
 
     private $tnId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->tnId = $this->createTN('Pflock');
+        $this->tnId = $this->createParticipant('Pflock');
     }
 
     public function test_shouldRequireLogin() {

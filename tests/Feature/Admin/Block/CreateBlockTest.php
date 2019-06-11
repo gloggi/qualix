@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature\Admin\Bloecke;
+namespace Tests\Feature\Admin\Block;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class CreateBlockTest extends TestCaseWithKurs {
+class CreateBlockTest extends TestCaseWithCourse {
 
     private $payload;
 

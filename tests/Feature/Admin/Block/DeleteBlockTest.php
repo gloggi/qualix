@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature\Admin\Bloecke;
+namespace Tests\Feature\Admin\Block;
 
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class DeleteBlockTest extends TestCaseWithKurs {
+class DeleteBlockTest extends TestCaseWithCourse {
 
     private $blockId;
 

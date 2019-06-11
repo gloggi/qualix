@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\Feature\Admin\TN;
+namespace Tests\Feature\Admin\Participant;
 
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class DeleteTNTest extends TestCaseWithKurs {
+class DeleteParticipantTest extends TestCaseWithCourse {
 
     private $tnId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->tnId = $this->createTN('Pföschtli');
+        $this->tnId = $this->createParticipant('Pföschtli');
     }
 
     public function test_shouldRequireLogin() {

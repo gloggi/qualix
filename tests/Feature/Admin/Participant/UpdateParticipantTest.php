@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Admin\TN;
+namespace Tests\Feature\Admin\Participant;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class UpdateTNTest extends TestCaseWithKurs {
+class UpdateParticipantTest extends TestCaseWithCourse {
 
     private $payload;
     private $tnId;
@@ -14,7 +14,7 @@ class UpdateTNTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->tnId = $this->createTN('Qualm');
+        $this->tnId = $this->createParticipant('Qualm');
 
         $this->payload = ['scout_name' => 'Räuchli'];
     }

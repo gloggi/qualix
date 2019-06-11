@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Beobachtung;
+namespace Tests\Feature\Observation;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithBasicData;
 
-class UpdateBeobachtungTest extends TestCaseWithBasicData {
+class UpdateObservationTest extends TestCaseWithBasicData {
 
     private $observationId;
     private $payload;
@@ -14,10 +14,10 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
     public function setUp(): void {
         parent::setUp();
 
-        $this->observationId = $this->createBeobachtung('hat gut mitgemacht', 1, [], [], $this->blockId);
+        $this->observationId = $this->createObservation('hat gut mitgemacht', 1, [], [], $this->blockId);
 
         $blockId2 = $this->createBlock();
-        $maId = $this->createMA('Mindestanforderung 1', true);
+        $maId = $this->createRequirement('Mindestanforderung 1', true);
         $categoryId = $this->createCategory('Kategorie 1');
 
         $this->payload = ['participant_id' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0', 'block_id' => '' . $blockId2, 'requirement_ids' => '' . $maId, 'category_ids' => '' . $categoryId];

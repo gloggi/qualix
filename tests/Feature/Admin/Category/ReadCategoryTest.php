@@ -4,9 +4,9 @@ namespace Tests\Feature\Admin\Category;
 
 use App\Models\Category;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class ReadCategoryTest extends TestCaseWithKurs {
+class ReadCategoryTest extends TestCaseWithCourse {
 
     private $categoryId;
 

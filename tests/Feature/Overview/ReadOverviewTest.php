@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Ueberblick;
+namespace Tests\Feature\Overview;
 
 use App\Models\Block;
 use App\Models\Participant;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Tests\TestCaseWithBasicData;
 
-class ReadUeberblickTest extends TestCaseWithBasicData {
+class ReadOverviewTest extends TestCaseWithBasicData {
 
     protected $blockIds;
 
@@ -29,7 +29,7 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         $this->blockIds = $this->user()->lastAccessedCourse->blocks->map(function (Block $block) { return $block->id; });
 
         foreach ($this->blockIds as $blockId) {
-            $this->createBeobachtung(Block::find($blockId)->name, 1, [], [], $blockId);
+            $this->createObservation(Block::find($blockId)->name, 1, [], [], $blockId);
         }
     }
 
@@ -62,17 +62,17 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         $name = $this->user()->name;
 
         // Create another TN
-        $tnId2 = $this->createTN('Pfnörch');
+        $tnId2 = $this->createParticipant('Pfnörch');
 
-        $this->createBeobachtung(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $tnId2);
-        $this->createBeobachtung(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $tnId2);
+        $this->createObservation(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $tnId2);
+        $this->createObservation(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $tnId2);
 
         // create another leader in the course
         $user2 = $this->createUser(['name' => 'Lindo']);
         $user2->courses()->attach($this->courseId);
 
-        $this->createBeobachtung(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $this->participantId, $user2->id);
-        $this->createBeobachtung(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $this->participantId, $user2->id);
+        $this->createObservation(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $this->participantId, $user2->id);
+        $this->createObservation(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $this->participantId, $user2->id);
 
         // when
         $response = $this->get('/kurs/' . $this->courseId . '/ueberblick');

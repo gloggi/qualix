@@ -6,9 +6,9 @@ use App\Mail\InvitationMail;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class CreateInvitationTest extends TestCaseWithKurs {
+class CreateInvitationTest extends TestCaseWithCourse {
 
     private $payload;
 

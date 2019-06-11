@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\TN;
+namespace Tests\Feature\Participant;
 
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCaseWithBasicData;
 
-class ReadTNTest extends TestCaseWithBasicData {
+class ReadParticipantTest extends TestCaseWithBasicData {
 
     public function test_shouldRequireLogin() {
         // given
@@ -67,7 +67,7 @@ class ReadTNTest extends TestCaseWithBasicData {
 
     public function test_shouldNotShowMessage_whenSomeBeobachtungForTN() {
         // given
-        $this->createBeobachtung();
+        $this->createObservation();
 
         // when
         $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);

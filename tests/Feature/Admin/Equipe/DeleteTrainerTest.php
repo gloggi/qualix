@@ -5,9 +5,9 @@ namespace Tests\Feature\Admin\Equipe;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class DeleteEquipeMemberTest extends TestCaseWithKurs {
+class DeleteTrainerTest extends TestCaseWithCourse {
 
     /** @var User */
     protected $otherUser;

@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Admin\TN;
+namespace Tests\Feature\Admin\Participant;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class CreateTNTest extends TestCaseWithKurs {
+class CreateParticipantTest extends TestCaseWithCourse {
 
     private $payload;
 
@@ -67,7 +67,7 @@ class CreateTNTest extends TestCaseWithKurs {
 
     public function test_shouldNotShowMessage_whenSomeTNInCourse() {
         // given
-        $this->createTN();
+        $this->createParticipant();
 
         // when
         $response = $this->get('/kurs/' . $this->courseId . '/admin/tn');

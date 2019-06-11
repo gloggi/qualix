@@ -3,9 +3,9 @@
 namespace Tests\Feature\Admin\Equipe;
 
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class DeleteInvitationTest extends TestCaseWithKurs {
+class DeleteInvitationTest extends TestCaseWithCourse {
 
     protected $email = 'o-m-g@dahätsdi.ch';
 

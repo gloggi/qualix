@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\Feature\Beobachtung;
+namespace Tests\Feature\Observation;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCaseWithBasicData;
 
-class DeleteBeobachtungTest extends TestCaseWithBasicData {
+class DeleteObservationTest extends TestCaseWithBasicData {
 
     private $observationId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->observationId = $this->createBeobachtung('hat gut mitgemacht');
+        $this->observationId = $this->createObservation('hat gut mitgemacht');
     }
 
     public function test_shouldRequireLogin() {

@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\Feature\Admin\MA;
+namespace Tests\Feature\Admin\Requirement;
 
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class DeleteMATest extends TestCaseWithKurs {
+class DeleteRequirementTest extends TestCaseWithCourse {
 
     private $maId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->maId = $this->createMA('Mindestanforderung 1', true);
+        $this->maId = $this->createRequirement('Mindestanforderung 1', true);
     }
 
     public function test_shouldRequireLogin() {

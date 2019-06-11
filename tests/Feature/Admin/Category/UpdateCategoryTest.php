@@ -4,9 +4,9 @@ namespace Tests\Feature\Admin\Category;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class UpdateCategoryTest extends TestCaseWithKurs {
+class UpdateCategoryTest extends TestCaseWithCourse {
 
     private $payload;
     private $categoryId;

@@ -4,9 +4,9 @@ namespace Tests\Feature\Admin\Course;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class UpdateCourseTest extends TestCaseWithKurs {
+class UpdateCourseTest extends TestCaseWithCourse {
 
     private $payload;
 

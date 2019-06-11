@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Beobachtung;
+namespace Tests\Feature\Observation;
 
 use App\Models\Observation;
 use App\Models\Block;
@@ -9,14 +9,14 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Tests\TestCaseWithBasicData;
 
-class ReadBeobachtungTest extends TestCaseWithBasicData {
+class ReadObservationTest extends TestCaseWithBasicData {
 
     private $observationId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->beobachtungId = $this->createBeobachtung('hat gut mitgemacht');
+        $this->beobachtungId = $this->createObservation('hat gut mitgemacht');
     }
 
     public function test_shouldRequireLogin() {
@@ -70,7 +70,7 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
 
     public function test_shouldRenderNewlinesInBeobachtung() {
         // given
-        $this->createBeobachtung("Mehrzeilige Beobachtungen\n- nützlich\n- wichtig\n- erlauben Strukturierung");
+        $this->createObservation("Mehrzeilige Beobachtungen\n- nützlich\n- wichtig\n- erlauben Strukturierung");
 
         // when
         $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
@@ -95,7 +95,7 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
         $blockIdsToCreateBeobachtungen = $blockIds->sort();
         $blockIdsToCreateBeobachtungen->shift();
         foreach ($blockIdsToCreateBeobachtungen as $blockId) {
-            $this->createBeobachtung(Block::find($blockId)->name, 1, [], [], $blockId);
+            $this->createObservation(Block::find($blockId)->name, 1, [], [], $blockId);
         }
 
         // when

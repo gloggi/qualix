@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Bloecke;
 
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class ReadBloeckeTest extends TestCaseWithKurs {
+class ReadBloeckeTest extends TestCaseWithCourse {
 
     public function test_shouldOrderBloecke() {
         // given

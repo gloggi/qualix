@@ -1,19 +1,22 @@
 <?php
 
-namespace Tests\Feature\Admin\MA;
+namespace Tests\Feature\Admin\Requirement;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class CreateMATest extends TestCaseWithKurs {
+class UpdateRequirementTest extends TestCaseWithCourse {
 
     private $payload;
+    private $maId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['content' => 'Mindestanforderung 1', 'mandatory' => '1'];
+        $this->maId = $this->createRequirement('Mindestanforderung 1', true);
+
+        $this->payload = ['content' => 'Geänderte Anforderung', 'mandatory' => '1'];
     }
 
     public function test_shouldRequireLogin() {
@@ -21,18 +24,18 @@ class CreateMATest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $this->payload);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldCreateAndDisplayMA() {
+    public function test_shouldUpdateMA() {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -40,35 +43,38 @@ class CreateMATest extends TestCaseWithKurs {
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['content']);
+        $response->assertDontSee('Mindestanforderung 1');
+        $response->assertSee('Ja');
+        $response->assertDontSee('Nein');
     }
 
-    public function test_shouldValidateNewMAData_noAnforderungText() {
+    public function test_shouldValidateNewMAData_noName() {
         // given
         $payload = $this->payload;
         unset($payload['content']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewMAData_killerNotSet_shouldWork() {
+    public function test_shouldValidateNewMAData_killerNotSet_shouldNotChangeKiller() {
         // given
         $payload = $this->payload;
         unset($payload['mandatory']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('>Nein<');
-        $response->assertDontSee('>Ja<');
+        $response->assertSee('>Ja<');
+        $response->assertDontSee('>Nein<');
     }
 
     public function test_shouldValidateNewMAData_killerFalse_shouldWork() {
@@ -77,7 +83,7 @@ class CreateMATest extends TestCaseWithKurs {
         $payload['mandatory'] = '0';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
 
         // then
         $response->assertStatus(302);
@@ -94,7 +100,7 @@ class CreateMATest extends TestCaseWithKurs {
         $payload['mandatory'] = '1';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
 
         // then
         $response->assertStatus(302);
@@ -105,26 +111,14 @@ class CreateMATest extends TestCaseWithKurs {
         $response->assertDontSee('>Nein<');
     }
 
-    public function test_shouldShowMessage_whenNoMAInCourse() {
+    public function test_shouldValidateNewMAData_wrongId() {
         // given
+        $payload = $this->payload;
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/ma');
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . ($this->maId + 1), $payload);
 
         // then
-        $response->assertStatus(200);
-        $response->assertSee('Bisher sind keine Mindestanforderungen erfasst.');
-    }
-
-    public function test_shouldNotShowMessage_whenSomeMAInCourse() {
-        // given
-        $this->createMA();
-
-        // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/ma');
-
-        // then
-        $response->assertStatus(200);
-        $response->assertDontSee('Bisher sind keine Mindestanforderungen erfasst.');
+        $response->assertStatus(404);
     }
 }
