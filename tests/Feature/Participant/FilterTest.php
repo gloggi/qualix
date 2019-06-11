@@ -34,7 +34,7 @@ class FilterTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
 
         // then
         $response->assertStatus(200);
@@ -52,7 +52,7 @@ class FilterTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId . '?category=' . $this->categoryId);
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId . '?category=' . $this->categoryId);
 
         // then
         $response->assertStatus(200);
@@ -70,7 +70,7 @@ class FilterTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId . '?category=0');
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId . '?category=0');
 
         // then
         $response->assertStatus(200);
@@ -88,7 +88,7 @@ class FilterTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId . '?requirement=' . $this->requirementId);
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId . '?requirement=' . $this->requirementId);
 
         // then
         $response->assertStatus(200);
@@ -106,7 +106,7 @@ class FilterTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId . '?requirement=0');
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId . '?requirement=0');
 
         // then
         $response->assertStatus(200);

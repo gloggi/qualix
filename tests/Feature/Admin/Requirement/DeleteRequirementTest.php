@@ -20,7 +20,7 @@ class DeleteRequirementTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/requirement/' . $this->maId);
 
         // then
         $response->assertStatus(302);
@@ -31,11 +31,11 @@ class DeleteRequirementTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/requirement/' . $this->maId);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertDontSee('Mindestanforderung 1');
@@ -45,7 +45,7 @@ class DeleteRequirementTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/ma/' . ($this->maId + 1));
+        $response = $this->delete('/course/' . $this->courseId . '/admin/requirement/' . ($this->maId + 1));
 
         // then
         $response->assertStatus(404);

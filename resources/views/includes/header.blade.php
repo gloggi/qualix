@@ -46,8 +46,8 @@
                         </div>
                     </li>
                 @endif
-                <li class="nav-item{{ Route::currentRouteName() == 'admin.neuerkurs' ? ' active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.neuerkurs') }}">Neuen Kurs erstellen</a>
+                <li class="nav-item{{ Route::currentRouteName() == 'admin.newcourse' ? ' active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.newcourse') }}">Neuen Kurs erstellen</a>
                 </li>
             </ul>
         @endauth

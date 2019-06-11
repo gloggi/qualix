@@ -25,7 +25,7 @@ class SelectCourseTest extends TestCase {
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $course2->id);
+        $response->assertRedirect('/course/' . $course2->id);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $this->assertRegExp("%<option value=\"[^\"]*\">{$course1->name}</option>%", $response->content());
@@ -45,7 +45,7 @@ class SelectCourseTest extends TestCase {
         $course2->save();
 
         // when
-        $response = $this->get('/kurs/' . $course1->id);
+        $response = $this->get('/course/' . $course1->id);
 
         // then
         $response->assertStatus(200);
@@ -68,7 +68,7 @@ class SelectCourseTest extends TestCase {
         $course2->save();
 
         // when
-        $this->get('/kurs/' . $course2->id . '/admin');
+        $this->get('/course/' . $course2->id . '/admin');
 
         // then
         $course2FromDB = $user->courses()->withPivot('last_accessed')->first();
@@ -83,7 +83,7 @@ class SelectCourseTest extends TestCase {
         $course->save();
 
         // when
-        $response = $this->get('/kurs/' . $course->id);
+        $response = $this->get('/course/' . $course->id);
 
         // then
         $response->assertStatus(404);

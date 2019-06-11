@@ -21,7 +21,7 @@ class UpdateCourseTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -32,11 +32,11 @@ class UpdateCourseTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin', $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $this->assertRegExp("%<option value=\"[^\"]*\" selected>{$this->payload['name']}</option>%", $response->content());
@@ -48,7 +48,7 @@ class UpdateCourseTest extends TestCaseWithCourse {
         unset($payload['name']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -59,7 +59,7 @@ class UpdateCourseTest extends TestCaseWithCourse {
         $payload = $this->payload;
 
         // when
-        $response = $this->post('/kurs/' . ($this->courseId+1) . '/admin', $payload);
+        $response = $this->post('/course/' . ($this->courseId+1) . '/admin', $payload);
 
         // then
         $response->assertStatus(404);

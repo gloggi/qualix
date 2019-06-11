@@ -12,7 +12,7 @@ class DeleteInvitationTest extends TestCaseWithCourse {
     public function setUp(): void {
         parent::setUp();
 
-        $this->post('/kurs/' . $this->courseId . '/admin/invitation', ['email' => $this->email]);
+        $this->post('/course/' . $this->courseId . '/admin/invitation', ['email' => $this->email]);
     }
 
     public function test_shouldRequireLogin() {
@@ -20,7 +20,7 @@ class DeleteInvitationTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/invitation/' . $this->email);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/invitation/' . $this->email);
 
         // then
         $response->assertStatus(302);
@@ -31,11 +31,11 @@ class DeleteInvitationTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/invitation/' . $this->email);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/invitation/' . $this->email);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/equipe');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/equipe');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertDontSee($this->email);
@@ -45,7 +45,7 @@ class DeleteInvitationTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/invitation/some-wrong@email.com');
+        $response = $this->delete('/course/' . $this->courseId . '/admin/invitation/some-wrong@email.com');
 
         // then
         $response->assertStatus(404);

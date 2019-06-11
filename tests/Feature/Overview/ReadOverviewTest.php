@@ -38,7 +38,7 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/ueberblick');
+        $response = $this->get('/course/' . $this->courseId . '/overview');
 
         // then
         $response->assertStatus(302);
@@ -49,7 +49,7 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/ueberblick');
+        $response = $this->get('/course/' . $this->courseId . '/overview');
 
         // then
         $response->assertOk();
@@ -75,7 +75,7 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $this->createObservation(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $this->participantId, $user2->id);
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/ueberblick');
+        $response = $this->get('/course/' . $this->courseId . '/overview');
 
         // then
         $response->assertOk();
@@ -88,7 +88,7 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         Participant::find($this->participantId)->delete();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/ueberblick');
+        $response = $this->get('/course/' . $this->courseId . '/overview');
 
         // then
         $response->assertOk();
@@ -102,7 +102,7 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock']);
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/ueberblick');
+        $response = $this->get('/course/' . $otherKursId . '/overview');
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

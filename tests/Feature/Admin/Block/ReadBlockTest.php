@@ -21,7 +21,7 @@ class ReadBlockTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/blocks/' . $this->blockId);
 
         // then
         $response->assertStatus(302);
@@ -32,7 +32,7 @@ class ReadBlockTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/blocks/' . $this->blockId);
 
         // then
         $response->assertOk();
@@ -44,7 +44,7 @@ class ReadBlockTest extends TestCaseWithCourse {
         $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/admin/bloecke/' . $this->blockId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/blocks/' . $this->blockId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -56,7 +56,7 @@ class ReadBlockTest extends TestCaseWithCourse {
         $otherBlockId = Block::create(['course_id' => $otherKursId, 'full_block_number' => '1.1', 'name' => 'later date', 'block_date' => '02.01.2019', 'requirement_ids' => null])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/admin/bloecke/' . $otherBlockId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/blocks/' . $otherBlockId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -74,7 +74,7 @@ class ReadBlockTest extends TestCaseWithCourse {
         $this->createBlock('Block 0 earlier block name', '1.1', '01.01.2019');
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke');
+        $response = $this->get('/course/' . $this->courseId . '/admin/blocks');
 
         // then
         $response->assertOk();

@@ -24,7 +24,7 @@ class UpdateParticipantTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->tnId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -35,11 +35,11 @@ class UpdateParticipantTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->tnId, $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/tn');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/participants');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['scout_name']);
@@ -52,7 +52,7 @@ class UpdateParticipantTest extends TestCaseWithCourse {
         unset($payload['scout_name']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->tnId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -63,7 +63,7 @@ class UpdateParticipantTest extends TestCaseWithCourse {
         $payload = $this->payload;
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn/' . ($this->tnId + 1), $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . ($this->tnId + 1), $payload);
 
         // then
         $response->assertStatus(404);

@@ -11,7 +11,7 @@ class ReadWelcomePageTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId);
+        $response = $this->get('/course/' . $this->courseId);
 
         // then
         $response->assertStatus(302);
@@ -22,7 +22,7 @@ class ReadWelcomePageTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId);
+        $response = $this->get('/course/' . $this->courseId);
 
         // then
         $response->assertOk();

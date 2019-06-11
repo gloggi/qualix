@@ -21,7 +21,7 @@ class CreateCategoryTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/qk', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/category', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -32,11 +32,11 @@ class CreateCategoryTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/qk', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/category', $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/qk');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/category');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['name']);
@@ -48,7 +48,7 @@ class CreateCategoryTest extends TestCaseWithCourse {
         unset($payload['name']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/qk', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/category', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -58,7 +58,7 @@ class CreateCategoryTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/qk');
+        $response = $this->get('/course/' . $this->courseId . '/admin/category');
 
         // then
         $response->assertStatus(200);
@@ -70,7 +70,7 @@ class CreateCategoryTest extends TestCaseWithCourse {
         $this->createCategory();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/qk');
+        $response = $this->get('/course/' . $this->courseId . '/admin/category');
 
         // then
         $response->assertStatus(200);

@@ -24,7 +24,7 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement/' . $this->maId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -35,11 +35,11 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement/' . $this->maId, $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['content']);
@@ -54,7 +54,7 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         unset($payload['content']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement/' . $this->maId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -66,11 +66,11 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         unset($payload['mandatory']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement/' . $this->maId, $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('>Ja<');
@@ -83,11 +83,11 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         $payload['mandatory'] = '0';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement/' . $this->maId, $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('>Nein<');
@@ -100,11 +100,11 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         $payload['mandatory'] = '1';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement/' . $this->maId, $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('>Ja<');
@@ -116,7 +116,7 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         $payload = $this->payload;
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . ($this->maId + 1), $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement/' . ($this->maId + 1), $payload);
 
         // then
         $response->assertStatus(404);

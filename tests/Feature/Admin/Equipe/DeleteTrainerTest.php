@@ -18,8 +18,8 @@ class DeleteTrainerTest extends TestCaseWithCourse {
         $this->otherUser = $this->createUser(['name' => 'Lindo']);
         $this->otherUser->courses()->attach($this->courseId);
 
-        $this->get('/kurs/' . $this->courseId . '/admin/equipe')->assertSee($this->otherUser->name);
-        $this->get('/kurs/' . $this->courseId . '/admin/equipe')->assertSee($this->user()->name);
+        $this->get('/course/' . $this->courseId . '/admin/equipe')->assertSee($this->otherUser->name);
+        $this->get('/course/' . $this->courseId . '/admin/equipe')->assertSee($this->user()->name);
     }
 
     public function test_shouldRequireLogin() {
@@ -27,7 +27,7 @@ class DeleteTrainerTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . $this->otherUser->id);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/equipe/' . $this->otherUser->id);
 
         // then
         $response->assertStatus(302);
@@ -38,11 +38,11 @@ class DeleteTrainerTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . $this->otherUser->id);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/equipe/' . $this->otherUser->id);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/equipe');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/equipe');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertDontSee($this->otherUser->name);
@@ -52,7 +52,7 @@ class DeleteTrainerTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . ($this->otherUser->id + 1));
+        $response = $this->delete('/course/' . $this->courseId . '/admin/equipe/' . ($this->otherUser->id + 1));
 
         // then
         $response->assertStatus(404);
@@ -60,14 +60,14 @@ class DeleteTrainerTest extends TestCaseWithCourse {
 
     public function test_shouldPreventDeletingLastEquipeMember() {
         // given
-        $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . $this->otherUser->id);
+        $this->delete('/course/' . $this->courseId . '/admin/equipe/' . $this->otherUser->id);
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . $this->user()->id);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/equipe/' . $this->user()->id);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/equipe');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/equipe');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Mindestens ein Equipenmitglied muss im Kurs bleiben.');
@@ -79,7 +79,7 @@ class DeleteTrainerTest extends TestCaseWithCourse {
         $otherKursId = $this->createKurs('Zweiter Kurs');
 
         // when
-        $response = $this->delete('/kurs/' . $otherKursId . '/admin/equipe/' . $this->otherUser->id);
+        $response = $this->delete('/course/' . $otherKursId . '/admin/equipe/' . $this->otherUser->id);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -91,7 +91,7 @@ class DeleteTrainerTest extends TestCaseWithCourse {
         $this->otherUser->courses()->attach($otherKursId);
 
         // when
-        $response = $this->delete('/kurs/' . $otherKursId . '/admin/equipe/' . $this->otherUser->id);
+        $response = $this->delete('/course/' . $otherKursId . '/admin/equipe/' . $this->otherUser->id);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -102,7 +102,7 @@ class DeleteTrainerTest extends TestCaseWithCourse {
         $this->get('/')->followRedirects()->assertSee('Kursname');
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . $this->user()->id);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/equipe/' . $this->user()->id);
 
         // then
         $response->assertStatus(302);

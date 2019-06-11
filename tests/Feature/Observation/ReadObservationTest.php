@@ -24,7 +24,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId);
+        $response = $this->get('/course/' . $this->courseId . '/overview/' . $this->beobachtungId);
 
         // then
         $response->assertStatus(302);
@@ -35,7 +35,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId);
+        $response = $this->get('/course/' . $this->courseId . '/overview/' . $this->beobachtungId);
 
         // then
         $response->assertOk();
@@ -47,7 +47,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
         $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/beobachtungen/' . $this->beobachtungId);
+        $response = $this->get('/course/' . $otherKursId . '/overview/' . $this->beobachtungId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -62,7 +62,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
         $otherBeobachtungId = Observation::create(['block_id' => $otherBlockId, 'participant_id' => $otherTNId, 'user_id' => $otherUserId, 'content' => 'hat gut mitgemacht', 'impression' => '1', 'requirement_ids' => '', 'category_ids' => ''])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/beobachtungen/' . $otherBeobachtungId);
+        $response = $this->get('/course/' . $otherKursId . '/overview/' . $otherBeobachtungId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -73,7 +73,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
         $this->createObservation("Mehrzeilige Beobachtungen\n- nützlich\n- wichtig\n- erlauben Strukturierung");
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
 
         // then
         $response->assertOk();
@@ -99,7 +99,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
         }
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
 
         // then
         $response->assertOk();

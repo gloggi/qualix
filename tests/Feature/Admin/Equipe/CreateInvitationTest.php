@@ -23,7 +23,7 @@ class CreateInvitationTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/invitation', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/invitation', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -34,11 +34,11 @@ class CreateInvitationTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/invitation', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/invitation', $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/equipe');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/equipe');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['email']);
@@ -49,7 +49,7 @@ class CreateInvitationTest extends TestCaseWithCourse {
         Mail::fake();
 
         // when
-        $this->post('/kurs/' . $this->courseId . '/admin/invitation', $this->payload);
+        $this->post('/course/' . $this->courseId . '/admin/invitation', $this->payload);
 
         // then
         Mail::assertSent(InvitationMail::class, function (InvitationMail $mail) {
@@ -63,7 +63,7 @@ class CreateInvitationTest extends TestCaseWithCourse {
         unset($payload['email']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/invitation', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/invitation', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -75,7 +75,7 @@ class CreateInvitationTest extends TestCaseWithCourse {
         $payload['email'] = 'so en chabis';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/invitation', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/invitation', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -85,7 +85,7 @@ class CreateInvitationTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/equipe');
+        $response = $this->get('/course/' . $this->courseId . '/admin/equipe');
 
         // then
         $response->assertStatus(200);
@@ -94,10 +94,10 @@ class CreateInvitationTest extends TestCaseWithCourse {
 
     public function test_shouldNotShowMessage_whenSomeInvitationsInCourse() {
         // given
-        $this->post('/kurs/' . $this->courseId . '/admin/invitation', $this->payload);
+        $this->post('/course/' . $this->courseId . '/admin/invitation', $this->payload);
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/equipe');
+        $response = $this->get('/course/' . $this->courseId . '/admin/equipe');
 
         // then
         $response->assertStatus(200);

@@ -24,7 +24,7 @@ class UpdateCategoryTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/qk/' . $this->categoryId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/category/' . $this->categoryId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -35,11 +35,11 @@ class UpdateCategoryTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/qk/' . $this->categoryId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/category/' . $this->categoryId, $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/qk');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/category');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['name']);
@@ -52,7 +52,7 @@ class UpdateCategoryTest extends TestCaseWithCourse {
         unset($payload['name']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/qk/' . $this->categoryId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/category/' . $this->categoryId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -63,7 +63,7 @@ class UpdateCategoryTest extends TestCaseWithCourse {
         $payload = $this->payload;
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/qk/' . ($this->categoryId + 1), $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/category/' . ($this->categoryId + 1), $payload);
 
         // then
         $response->assertStatus(404);

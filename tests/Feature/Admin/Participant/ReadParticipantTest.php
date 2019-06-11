@@ -21,7 +21,7 @@ class ReadParticipantTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/participants/' . $this->tnId);
 
         // then
         $response->assertStatus(302);
@@ -32,7 +32,7 @@ class ReadParticipantTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/participants/' . $this->tnId);
 
         // then
         $response->assertOk();
@@ -44,7 +44,7 @@ class ReadParticipantTest extends TestCaseWithCourse {
         $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/admin/tn/' . $this->tnId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/participants/' . $this->tnId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -56,7 +56,7 @@ class ReadParticipantTest extends TestCaseWithCourse {
         $otherTNId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/admin/tn/' . $otherTNId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/participants/' . $otherTNId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

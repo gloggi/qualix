@@ -20,7 +20,7 @@ class DeleteBlockTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/blocks/' . $this->blockId);
 
         // then
         $response->assertStatus(302);
@@ -31,11 +31,11 @@ class DeleteBlockTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/blocks/' . $this->blockId);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/bloecke');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertDontSee('Block 1');
@@ -45,7 +45,7 @@ class DeleteBlockTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/bloecke/' . ($this->blockId + 1));
+        $response = $this->delete('/course/' . $this->courseId . '/admin/blocks/' . ($this->blockId + 1));
 
         // then
         $response->assertStatus(404);

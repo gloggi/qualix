@@ -19,7 +19,7 @@ class AcceptInvitationTest extends TestCaseWithCourse {
         parent::setUp();
 
         $payload = ['email' => $this->email];
-        $this->post('/kurs/' . $this->courseId . '/admin/invitation', $payload);
+        $this->post('/course/' . $this->courseId . '/admin/invitation', $payload);
         $this->token = Invitation::where('course_id', '=', $this->courseId)->where('email', '=', $payload['email'])->first()->token;
     }
 
@@ -79,7 +79,7 @@ class AcceptInvitationTest extends TestCaseWithCourse {
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/equipe');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/equipe');
     }
 
     public function test_claimInvitation_shouldWork() {
@@ -91,7 +91,7 @@ class AcceptInvitationTest extends TestCaseWithCourse {
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId);
+        $response->assertRedirect('/course/' . $this->courseId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Kursname');

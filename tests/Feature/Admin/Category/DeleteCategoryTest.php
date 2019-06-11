@@ -20,7 +20,7 @@ class DeleteCategoryTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/qk/' . $this->categoryId);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/category/' . $this->categoryId);
 
         // then
         $response->assertStatus(302);
@@ -31,11 +31,11 @@ class DeleteCategoryTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/qk/' . $this->categoryId);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/category/' . $this->categoryId);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/qk');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/category');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertDontSee('Kategorie 1');
@@ -45,7 +45,7 @@ class DeleteCategoryTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/admin/qk/' . ($this->categoryId + 1));
+        $response = $this->delete('/course/' . $this->courseId . '/admin/category/' . ($this->categoryId + 1));
 
         // then
         $response->assertStatus(404);

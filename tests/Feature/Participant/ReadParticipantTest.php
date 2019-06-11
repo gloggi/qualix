@@ -13,7 +13,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
 
         // then
         $response->assertStatus(302);
@@ -24,7 +24,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
 
         // then
         $response->assertOk();
@@ -36,7 +36,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/tn/' . $this->participantId);
+        $response = $this->get('/course/' . $otherKursId . '/participants/' . $this->participantId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -48,7 +48,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         $otherTNId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/tn/' . $otherTNId);
+        $response = $this->get('/course/' . $otherKursId . '/participants/' . $otherTNId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -58,7 +58,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
 
         // then
         $response->assertStatus(200);
@@ -70,7 +70,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         $this->createObservation();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
 
         // then
         $response->assertStatus(200);

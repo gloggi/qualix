@@ -22,7 +22,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -33,11 +33,11 @@ class CreateBlockTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/bloecke');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['full_block_number']);
@@ -51,7 +51,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         $payload['full_block_number'] = 'abc';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -63,7 +63,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         unset($payload['name']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -75,7 +75,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         unset($payload['block_date']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -87,7 +87,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         $payload['block_date'] = 'abc';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -97,7 +97,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke');
+        $response = $this->get('/course/' . $this->courseId . '/admin/blocks');
 
         // then
         $response->assertStatus(200);
@@ -109,7 +109,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         $this->createBlock();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke');
+        $response = $this->get('/course/' . $this->courseId . '/admin/blocks');
 
         // then
         $response->assertStatus(200);
@@ -120,7 +120,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke');
+        $response = $this->get('/course/' . $this->courseId . '/admin/blocks');
 
         // then
         $response->assertStatus(200);
@@ -131,8 +131,8 @@ class CreateBlockTest extends TestCaseWithCourse {
         // given
 
         // when
-        $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $this->payload);
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke');
+        $this->post('/course/' . $this->courseId . '/admin/blocks', $this->payload);
+        $response = $this->get('/course/' . $this->courseId . '/admin/blocks');
 
         // then
         $response->assertStatus(200);

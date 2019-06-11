@@ -4,7 +4,7 @@
 
     @component('components.card', ['header' => __('Neuen Kurs erstellen')])
 
-        @component('components.form', ['route' => 'admin.neuerkurs.store'])
+        @component('components.form', ['route' => 'admin.newcourse.store'])
 
             @component('components.form.textInput', ['name' => 'name', 'label' => __('Kursname'), 'required' => true])@endcomponent
 

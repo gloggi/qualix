@@ -21,7 +21,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -32,11 +32,11 @@ class CreateParticipantTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants', $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/tn');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/participants');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['scout_name']);
@@ -48,7 +48,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
         unset($payload['scout_name']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -58,7 +58,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/tn');
+        $response = $this->get('/course/' . $this->courseId . '/admin/participants');
 
         // then
         $response->assertStatus(200);
@@ -70,7 +70,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
         $this->createParticipant();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/tn');
+        $response = $this->get('/course/' . $this->courseId . '/admin/participants');
 
         // then
         $response->assertStatus(200);

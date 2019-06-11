@@ -21,7 +21,7 @@ class ReadCategoryTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/qk/' . $this->categoryId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/category/' . $this->categoryId);
 
         // then
         $response->assertStatus(302);
@@ -32,7 +32,7 @@ class ReadCategoryTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/qk/' . $this->categoryId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/category/' . $this->categoryId);
 
         // then
         $response->assertOk();
@@ -44,7 +44,7 @@ class ReadCategoryTest extends TestCaseWithCourse {
         $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/admin/qk/' . $this->categoryId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/category/' . $this->categoryId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -56,7 +56,7 @@ class ReadCategoryTest extends TestCaseWithCourse {
         $otherCategoryId = Category::create(['course_id' => $otherKursId, 'name' => 'Kategorie 2'])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/admin/qk/' . $otherCategoryId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/category/' . $otherCategoryId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

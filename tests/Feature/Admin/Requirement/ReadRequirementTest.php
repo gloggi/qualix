@@ -21,7 +21,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/requirement/' . $this->maId);
 
         // then
         $response->assertStatus(302);
@@ -32,7 +32,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/requirement/' . $this->maId);
 
         // then
         $response->assertOk();
@@ -44,7 +44,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
         $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/admin/ma/' . $this->maId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/requirement/' . $this->maId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -56,7 +56,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
         $otherMAId = Requirement::create(['course_id' => $otherKursId, 'content' => 'Mindestanforderung 1', 'mandatory' => '1'])->id;
 
         // when
-        $response = $this->get('/kurs/' . $otherKursId . '/admin/ma/' . $otherMAId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/requirement/' . $otherMAId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

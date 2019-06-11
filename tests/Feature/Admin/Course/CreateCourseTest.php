@@ -21,7 +21,7 @@ class CreateCourseTest extends TestCase {
         auth()->logout();
 
         // when
-        $response = $this->post('/neuerkurs', $this->payload);
+        $response = $this->post('/newcourse', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -32,7 +32,7 @@ class CreateCourseTest extends TestCase {
         // given
 
         // when
-        $response = $this->post('/neuerkurs', $this->payload);
+        $response = $this->post('/newcourse', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -48,7 +48,7 @@ class CreateCourseTest extends TestCase {
         unset($payload['name']);
 
         // when
-        $response = $this->post('/neuerkurs', $payload);
+        $response = $this->post('/newcourse', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);

@@ -21,7 +21,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -32,11 +32,11 @@ class CreateRequirementTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['content']);
@@ -48,7 +48,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         unset($payload['content']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -60,11 +60,11 @@ class CreateRequirementTest extends TestCaseWithCourse {
         unset($payload['mandatory']);
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('>Nein<');
@@ -77,11 +77,11 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $payload['mandatory'] = '0';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('>Nein<');
@@ -94,11 +94,11 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $payload['mandatory'] = '1';
 
         // when
-        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('>Ja<');
@@ -109,7 +109,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/ma');
+        $response = $this->get('/course/' . $this->courseId . '/admin/requirement');
 
         // then
         $response->assertStatus(200);
@@ -121,7 +121,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $this->createRequirement();
 
         // when
-        $response = $this->get('/kurs/' . $this->courseId . '/admin/ma');
+        $response = $this->get('/course/' . $this->courseId . '/admin/requirement');
 
         // then
         $response->assertStatus(200);

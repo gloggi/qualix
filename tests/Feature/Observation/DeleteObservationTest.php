@@ -20,7 +20,7 @@ class DeleteObservationTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId);
+        $response = $this->delete('/course/' . $this->courseId . '/overview/' . $this->observationId);
 
         // then
         $response->assertStatus(302);
@@ -31,11 +31,11 @@ class DeleteObservationTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId);
+        $response = $this->delete('/course/' . $this->courseId . '/overview/' . $this->observationId);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->courseId . '/tn/' . $this->participantId);
+        $response->assertRedirect('/course/' . $this->courseId . '/participants/' . $this->participantId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertDontSee('hat gut mitgemacht');
@@ -45,7 +45,7 @@ class DeleteObservationTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->courseId . '/beobachtungen/' . ($this->observationId + 1));
+        $response = $this->delete('/course/' . $this->courseId . '/overview/' . ($this->observationId + 1));
 
         // then
         $response->assertStatus(404);
