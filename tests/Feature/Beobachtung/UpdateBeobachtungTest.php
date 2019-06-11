@@ -8,7 +8,7 @@ use Tests\TestCaseWithBasicData;
 
 class UpdateBeobachtungTest extends TestCaseWithBasicData {
 
-    private $beobachtungId;
+    private $observationId;
     private $payload;
 
     public function setUp(): void {
@@ -18,9 +18,9 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
 
         $blockId2 = $this->createBlock();
         $maId = $this->createMA('Mindestanforderung 1', true);
-        $qkId = $this->createQK('Qualikategorie 1');
+        $qkId = $this->createCategory('Qualikategorie 1');
 
-        $this->payload = ['tn_id' => '' . $this->tnId, 'kommentar' => 'kein Wort gesagt', 'bewertung' => '0', 'block_id' => '' . $blockId2, 'ma_ids' => '' . $maId, 'qk_ids' => '' . $qkId];
+        $this->payload = ['participant_id' => '' . $this->tnId, 'content' => 'kein Wort gesagt', 'impression' => '0', 'block_id' => '' . $blockId2, 'requirement_ids' => '' . $maId, 'qk_ids' => '' . $qkId];
     }
 
     public function test_shouldRequireLogin() {
@@ -28,7 +28,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId, $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -39,24 +39,24 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId, $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+        $response->assertRedirect('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee($this->payload['kommentar']);
+        $response->assertSee($this->payload['content']);
         $response->assertDontSee('hat gut mitgemacht');
     }
 
     public function test_shouldValidateNewBeobachtungData_noKommentar() {
         // given
         $payload = $this->payload;
-        unset($payload['kommentar']);
+        unset($payload['content']);
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -65,10 +65,10 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
     public function test_shouldValidateNewBeobachtungData_noBewertung() {
         // given
         $payload = $this->payload;
-        unset($payload['bewertung']);
+        unset($payload['impression']);
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -77,10 +77,10 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
     public function test_shouldValidateNewBeobachtungData_invalidBewertung() {
         // given
         $payload = $this->payload;
-        $payload['bewertung'] = '3';
+        $payload['impression'] = '3';
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -92,7 +92,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         unset($payload['block_id']);
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -104,7 +104,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         $payload['block_id'] = '*';
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -113,10 +113,10 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
     public function test_shouldValidateNewBeobachtungData_invalidMAIds() {
         // given
         $payload = $this->payload;
-        $payload['ma_ids'] = 'xyz';
+        $payload['requirement_ids'] = 'xyz';
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -128,7 +128,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         $payload['qk_ids'] = 'xyz';
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -139,7 +139,7 @@ class UpdateBeobachtungTest extends TestCaseWithBasicData {
         $payload = $this->payload;
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/beobachtungen/' . ($this->beobachtungId + 1), $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/beobachtungen/' . ($this->beobachtungId + 1), $payload);
 
         // then
         $response->assertStatus(404);

@@ -16,7 +16,7 @@ class UpdateBlockTest extends TestCaseWithKurs {
 
         $this->blockId = $this->createBlock('Block 1');
 
-        $this->payload = ['full_block_number' => '1.2', 'blockname' => 'Geänderter Blockname', 'datum' => '22.12.2019', 'ma_ids' => null];
+        $this->payload = ['full_block_number' => '1.2', 'name' => 'Geänderter Blockname', 'block_date' => '22.12.2019', 'requirement_ids' => null];
     }
 
     public function test_shouldRequireLogin() {
@@ -24,7 +24,7 @@ class UpdateBlockTest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke/' . $this->blockId, $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -35,16 +35,16 @@ class UpdateBlockTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke/' . $this->blockId, $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId, $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/bloecke');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/bloecke');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['full_block_number']);
-        $response->assertSee($this->payload['blockname']);
-        $response->assertSee($this->payload['datum']);
+        $response->assertSee($this->payload['name']);
+        $response->assertSee($this->payload['block_date']);
         $response->assertDontSee('1.1');
         $response->assertDontSee('Block 1');
         $response->assertDontSee('01.01.2019');
@@ -56,7 +56,7 @@ class UpdateBlockTest extends TestCaseWithKurs {
         $payload['full_block_number'] = 'abc';
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke/' . $this->blockId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -65,10 +65,10 @@ class UpdateBlockTest extends TestCaseWithKurs {
     public function test_shouldValidateNewBlockData_noBlockname() {
         // given
         $payload = $this->payload;
-        unset($payload['blockname']);
+        unset($payload['name']);
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke/' . $this->blockId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -77,10 +77,10 @@ class UpdateBlockTest extends TestCaseWithKurs {
     public function test_shouldValidateNewBlockData_noDatum() {
         // given
         $payload = $this->payload;
-        unset($payload['datum']);
+        unset($payload['block_date']);
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke/' . $this->blockId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -89,10 +89,10 @@ class UpdateBlockTest extends TestCaseWithKurs {
     public function test_shouldValidateNewBlockData_invalidDatum() {
         // given
         $payload = $this->payload;
-        $payload['datum'] = 'abc';
+        $payload['block_date'] = 'abc';
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke/' . $this->blockId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -103,7 +103,7 @@ class UpdateBlockTest extends TestCaseWithKurs {
         $payload = $this->payload;
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke/' . ($this->blockId + 1), $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke/' . ($this->blockId + 1), $payload);
 
         // then
         $response->assertStatus(404);

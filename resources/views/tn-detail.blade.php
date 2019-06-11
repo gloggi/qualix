@@ -8,27 +8,27 @@
 
             <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                 <div class="square-container">
-                    <img class="card-img-top img img-responsive full-width" src="{{ $tn->bild_url != null ? asset(Storage::url($tn->bild_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $tn->pfadiname }}">
+                    <img class="card-img-top img img-responsive full-width" src="{{ $tn->image_url != null ? asset(Storage::url($tn->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $tn->scout_name }}">
                 </div>
             </div>
 
             <div class="col">
-                <h3>{{ $tn->pfadiname }}</h3>
-                @if (isset($tn->abteilung))<h5>{{ $tn->abteilung }}</h5>@endif
-                <p>{{ trans_choice('{0}Keine Beobachtungen|{1}1 Beobachtung|[2,*]:count Beobachtungen', count($tn->beobachtungen), ['count' => count($tn->beobachtungen)])}}, {{ __('davon :positive positive, :neutral neutrale und :negative negative Beobachtungen.', ['positive' => $tn->positive->count(), 'neutral' => $tn->neutral->count(), 'negative' => $tn->negative->count()])}}</p>
+                <h3>{{ $tn->scout_name }}</h3>
+                @if (isset($tn->group))<h5>{{ $tn->group }}</h5>@endif
+                <p>{{ trans_choice('{0}Keine Beobachtungen|{1}1 Beobachtung|[2,*]:count Beobachtungen', count($tn->observations), ['count' => count($tn->observations)])}}, {{ __('davon :positive positive, :neutral neutrale und :negative negative Beobachtungen.', ['positive' => $tn->positive->count(), 'neutral' => $tn->neutral->count(), 'negative' => $tn->negative->count()])}}</p>
                 @php
                     $columns = [];
-                    foreach ($kurs->users->all() as $user) {
-                        $columns[$user->name] = function($beobachtungen) use($user) { return count(array_filter($beobachtungen, function(\App\Models\Beobachtung $beobachtung) use($user) {
-                            return $beobachtung->user->id === $user->id;
+                    foreach ($course->users->all() as $user) {
+                        $columns[$user->name] = function($observationen) use($user) { return count(array_filter($observationen, function(\App\Models\Observation $observation) use($user) {
+                            return $observation->user->id === $user->id;
                         })); };
                     }
                 @endphp
                 @component('components.responsive-table', [
-                    'data' => [$tn->beobachtungen->all()],
+                    'data' => [$tn->observations->all()],
                     'fields' => $columns,
                 ])@endcomponent
-                <a href="{{ route('beobachtung.neu', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}" class="btn btn-primary"><i class="fas fa-binoculars"></i> {{__('Beobachtung erfassen')}}</a>
+                <a href="{{ route('observation.new', ['course' => $course->id, 'tn' => $tn->id]) }}" class="btn btn-primary"><i class="fas fa-binoculars"></i> {{__('Beobachtung erfassen')}}</a>
             </div>
 
         </div>
@@ -50,7 +50,7 @@
 
                         <div class="col-md-6 col-sm-12">
 
-                            <form id="ma-form" method="GET" action="{{ route('tn.detail', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}#filters">
+                            <form id="ma-form" method="GET" action="{{ route('tn.detail', ['course' => $course->id, 'tn' => $tn->id]) }}#filters">
 
                                 <multi-select
                                   id="ma"
@@ -60,8 +60,8 @@
                                   :allow-empty="true"
                                   placeholder="Mindestanforderung"
                                   :options="[
-                                    @foreach( $kurs->mas as $option )
-                                    { label: '{{ $option->anforderung }}', value: '{{ $option->id }}' },
+                                    @foreach( $course->requirements as $option )
+                                    { label: '{{ $option->requirement }}', value: '{{ $option->id }}' },
                                     @endforeach
                                     { label: '{{__('-- Beobachtungen ohne Mindestanforderungen --')}}', value: '0' },
                                     ]"
@@ -77,7 +77,7 @@
 
                         <div class="col-md-6 col-sm-12">
 
-                            <form id="qk-form" method="GET" action="{{ route('tn.detail', ['kurs' => $kurs->id, 'tn' => $tn->id]) }}#filters">
+                            <form id="qk-form" method="GET" action="{{ route('tn.detail', ['course' => $course->id, 'tn' => $tn->id]) }}#filters">
 
                                 <multi-select
                                   id="qk"
@@ -87,8 +87,8 @@
                                   :allow-empty="true"
                                   placeholder="Qualikategorie"
                                   :options="[
-                                    @foreach( $kurs->qks as $option )
-                                    { label: '{{ $option->quali_kategorie }}', value: '{{ $option->id }}' },
+                                    @foreach( $course->categories as $option )
+                                    { label: '{{ $option->name }}', value: '{{ $option->id }}' },
                                     @endforeach
                                     { label: '{{__('-- Beobachtungen ohne Qualikategorie --')}}', value: '0' },
                                     ]"
@@ -107,32 +107,32 @@
             </div>
         </div>
 
-        @if (count($beobachtungen))
+        @if (count($observations))
 
             @component('components.responsive-table', [
-                'data' => $beobachtungen,
+                'data' => $observations,
                 'rawColumns' => true,
                 'fields' => [
-                    __('Beobachtung') => function(\App\Models\Beobachtung $beobachtung) { return nl2br($beobachtung->kommentar); },
-                    __('Block') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->block->blockname_and_number; },
-                    __('MA') => function(\App\Models\Beobachtung $beobachtung) {
-                        return implode('', array_map(function(\App\Models\MA $ma) {
-                            return '<span class="badge badge-' . ($ma->killer ? 'warning' : 'info') . '" style="white-space: normal">' . $ma->anforderung . '</span>';
-                        }, $beobachtung->mas->all()));
+                    __('Beobachtung') => function(\App\Models\Observation $observation) { return nl2br($observation->content); },
+                    __('Block') => function(\App\Models\Observation $observation) { return $observation->block->blockname_and_number; },
+                    __('MA') => function(\App\Models\Observation $observation) {
+                        return implode('', array_map(function(\App\Models\Requirement $ma) {
+                            return '<span class="badge badge-' . ($ma->mandatory ? 'warning' : 'info') . '" style="white-space: normal">' . $ma->content . '</span>';
+                        }, $observation->requirements->all()));
                     },
-                    __('Bewertung') => function(\App\Models\Beobachtung $beobachtung) {
-                        $bewertung = $beobachtung->bewertung;
+                    __('Bewertung') => function(\App\Models\Observation $observation) {
+                        $bewertung = $observation->impression;
                         if ($bewertung === 0) return '<span class="badge badge-danger">negativ</span>';
                         else if ($bewertung === 2) return '<span class="badge badge-success">positiv</span>';
                         else return '<span class="badge badge-secondary">neutral</span>';
                     },
-                    __('Beobachter') => function(\App\Models\Beobachtung $beobachtung) { return $beobachtung->user->name; }
+                    __('Beobachter') => function(\App\Models\Observation $observation) { return $observation->user->name; }
                 ],
                 'actions' => [
-                    'edit' => function(\App\Models\Beobachtung $beobachtung) use ($kurs) { return route('beobachtung.edit', ['kurs' => $kurs->id, 'beobachtung' => $beobachtung->id]); },
-                    'delete' => function(\App\Models\Beobachtung $beobachtung) use ($kurs) { return [
+                    'edit' => function(\App\Models\Observation $observation) use ($course) { return route('observation.edit', ['course' => $course->id, 'observation' => $observation->id]); },
+                    'delete' => function(\App\Models\Observation $observation) use ($course) { return [
                         'text' => __('Willst du diese Beobachtung wirklich löschen?'),
-                        'route' => ['beobachtung.delete', ['kurs' => $kurs->id, 'beobachtung' => $beobachtung->id]],
+                        'route' => ['observation.delete', ['course' => $course->id, 'observation' => $observation->id]],
                      ];},
                 ]
             ])@endcomponent

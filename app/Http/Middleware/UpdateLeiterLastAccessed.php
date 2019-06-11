@@ -18,12 +18,12 @@ class UpdateLeiterLastAccessed
      */
     public function handle($request, Closure $next)
     {
-        $kurs = $request->route('kurs');
-        if ($kurs) {
+        $course = $request->route('course');
+        if ($course) {
             /** @var User $user */
             $user = Auth::user();
-            if ($kurs->id !== $user->lastAccessedKurs->id) {
-                $user->kurse()->updateExistingPivot($kurs->id, ['last_accessed' => Carbon::now()]);
+            if ($course->id !== $user->lastAccessedCourse->id) {
+                $user->courses()->updateExistingPivot($course->id, ['last_accessed' => Carbon::now()]);
             }
         }
 

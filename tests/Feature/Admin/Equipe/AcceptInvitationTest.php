@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\Equipe;
 
-use App\Models\Einladung;
+use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\TestResponse;
@@ -19,8 +19,8 @@ class AcceptInvitationTest extends TestCaseWithKurs {
         parent::setUp();
 
         $payload = ['email' => $this->email];
-        $this->post('/kurs/' . $this->kursId . '/admin/invitation', $payload);
-        $this->token = Einladung::where('kurs_id', '=', $this->kursId)->where('email', '=', $payload['email'])->first()->token;
+        $this->post('/kurs/' . $this->courseId . '/admin/invitation', $payload);
+        $this->token = Invitation::where('course_id', '=', $this->courseId)->where('email', '=', $payload['email'])->first()->token;
     }
 
     public function test_invitationClaimForm_shouldRequireLogin() {
@@ -79,7 +79,7 @@ class AcceptInvitationTest extends TestCaseWithKurs {
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/equipe');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/equipe');
     }
 
     public function test_claimInvitation_shouldWork() {
@@ -91,7 +91,7 @@ class AcceptInvitationTest extends TestCaseWithKurs {
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId);
+        $response->assertRedirect('/kurs/' . $this->courseId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Kursname');

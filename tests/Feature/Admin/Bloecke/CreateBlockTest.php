@@ -14,7 +14,7 @@ class CreateBlockTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null];
+        $this->payload = ['full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '01.01.2019', 'requirement_ids' => null];
     }
 
     public function test_shouldRequireLogin() {
@@ -22,7 +22,7 @@ class CreateBlockTest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -33,16 +33,16 @@ class CreateBlockTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/bloecke');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/bloecke');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['full_block_number']);
-        $response->assertSee($this->payload['blockname']);
-        $response->assertSee($this->payload['datum']);
+        $response->assertSee($this->payload['name']);
+        $response->assertSee($this->payload['block_date']);
     }
 
     public function test_shouldValidateNewBlockData_invalidFullBlockNumber() {
@@ -51,7 +51,7 @@ class CreateBlockTest extends TestCaseWithKurs {
         $payload['full_block_number'] = 'abc';
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -60,10 +60,10 @@ class CreateBlockTest extends TestCaseWithKurs {
     public function test_shouldValidateNewBlockData_noBlockname() {
         // given
         $payload = $this->payload;
-        unset($payload['blockname']);
+        unset($payload['name']);
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -72,10 +72,10 @@ class CreateBlockTest extends TestCaseWithKurs {
     public function test_shouldValidateNewBlockData_noDatum() {
         // given
         $payload = $this->payload;
-        unset($payload['datum']);
+        unset($payload['block_date']);
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -84,10 +84,10 @@ class CreateBlockTest extends TestCaseWithKurs {
     public function test_shouldValidateNewBlockData_invalidDatum() {
         // given
         $payload = $this->payload;
-        $payload['datum'] = 'abc';
+        $payload['block_date'] = 'abc';
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -97,7 +97,7 @@ class CreateBlockTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);
@@ -109,7 +109,7 @@ class CreateBlockTest extends TestCaseWithKurs {
         $this->createBlock();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);
@@ -120,7 +120,7 @@ class CreateBlockTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);
@@ -131,12 +131,12 @@ class CreateBlockTest extends TestCaseWithKurs {
         // given
 
         // when
-        $this->post('/kurs/' . $this->kursId . '/admin/bloecke', $this->payload);
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
+        $this->post('/kurs/' . $this->courseId . '/admin/bloecke', $this->payload);
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke');
 
         // then
         $response->assertStatus(200);
         $response->assertDontSee(Carbon::today()->format('d.m.Y'));
-        $this->assertRegExp('/<date-picker.*value="' . str_replace('.', '\.', $this->payload['datum']) . '"/s', $response->content());
+        $this->assertRegExp('/<date-picker.*value="' . str_replace('.', '\.', $this->payload['block_date']) . '"/s', $response->content());
     }
 }

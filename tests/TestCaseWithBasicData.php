@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use App\Models\Beobachtung;
+use App\Models\Observation;
 
 abstract class TestCaseWithBasicData extends TestCaseWithKurs
 {
@@ -17,9 +17,9 @@ abstract class TestCaseWithBasicData extends TestCaseWithKurs
     }
 
     protected function createBeobachtung($kommentar = 'hat gut mitgemacht', $bewertung = 1, $maIds = [], $qkIds = [], $blockId = null, $tnId = null, $userId = null) {
-        $beobachtung = Beobachtung::create(['user_id' => ($userId !== null ? $userId : $this->user()->id), 'tn_id' => ($tnId !== null ? $tnId : $this->tnId), 'block_id' => ($blockId !== null ? $blockId : $this->blockId), 'kommentar' => $kommentar, 'bewertung' => $bewertung]);
-        $beobachtung->mas()->attach($maIds);
-        $beobachtung->qks()->attach($qkIds);
-        return $beobachtung->id;
+        $observation = Observation::create(['user_id' => ($userId !== null ? $userId : $this->user()->id), 'participant_id' => ($tnId !== null ? $tnId : $this->tnId), 'block_id' => ($blockId !== null ? $blockId : $this->blockId), 'content' => $kommentar, 'impression' => $bewertung]);
+        $observation->requirements()->attach($maIds);
+        $observation->categories()->attach($qkIds);
+        return $observation->id;
     }
 }

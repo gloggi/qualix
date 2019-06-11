@@ -2,16 +2,16 @@
 
 namespace Tests\Feature\Beobachtung;
 
-use App\Models\Beobachtung;
+use App\Models\Observation;
 use App\Models\Block;
-use App\Models\TN;
+use App\Models\Participant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Tests\TestCaseWithBasicData;
 
 class ReadBeobachtungTest extends TestCaseWithBasicData {
 
-    private $beobachtungId;
+    private $observationId;
 
     public function setUp(): void {
         parent::setUp();
@@ -24,7 +24,7 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId);
+        $response = $this->get('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId);
 
         // then
         $response->assertStatus(302);
@@ -35,7 +35,7 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId);
+        $response = $this->get('/kurs/' . $this->courseId . '/beobachtungen/' . $this->beobachtungId);
 
         // then
         $response->assertOk();
@@ -56,10 +56,10 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
     public function test_shouldNotDisplayBeobachtung_fromOtherUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
-        $otherTNId = TN::create(['kurs_id' => $otherKursId, 'pfadiname' => 'Pflock'])->id;
-        $otherBlockId = Block::create(['kurs_id' => $otherKursId, 'full_block_number' => '1.1', 'blockname' => 'Block 1', 'datum' => '01.01.2019', 'ma_ids' => null])->id;
+        $otherTNId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
+        $otherBlockId = Block::create(['course_id' => $otherKursId, 'full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '01.01.2019', 'requirement_ids' => null])->id;
         $otherUserId = $this->createUser(['name' => 'Lindo'])->id;
-        $otherBeobachtungId = Beobachtung::create(['block_id' => $otherBlockId, 'tn_id' => $otherTNId, 'user_id' => $otherUserId, 'kommentar' => 'hat gut mitgemacht', 'bewertung' => '1', 'ma_ids' => '', 'qk_ids' => ''])->id;
+        $otherBeobachtungId = Observation::create(['block_id' => $otherBlockId, 'participant_id' => $otherTNId, 'user_id' => $otherUserId, 'content' => 'hat gut mitgemacht', 'impression' => '1', 'requirement_ids' => '', 'qk_ids' => ''])->id;
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/beobachtungen/' . $otherBeobachtungId);
@@ -73,7 +73,7 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
         $this->createBeobachtung("Mehrzeilige Beobachtungen\n- nützlich\n- wichtig\n- erlauben Strukturierung");
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
 
         // then
         $response->assertOk();
@@ -91,15 +91,15 @@ class ReadBeobachtungTest extends TestCaseWithBasicData {
         $this->createBlock('Block 2 later block name', '1.1', '01.01.2019');
         $this->createBlock('Block 0 earlier block name', '1.1', '01.01.2019');
         /** @var Collection $blockIds */
-        $blockIds = $this->user()->lastAccessedKurs->bloecke->map(function (Block $block) { return $block->id; });
+        $blockIds = $this->user()->lastAccessedCourse->blocks->map(function (Block $block) { return $block->id; });
         $blockIdsToCreateBeobachtungen = $blockIds->sort();
         $blockIdsToCreateBeobachtungen->shift();
         foreach ($blockIdsToCreateBeobachtungen as $blockId) {
-            $this->createBeobachtung(Block::find($blockId)->blockname, 1, [], [], $blockId);
+            $this->createBeobachtung(Block::find($blockId)->name, 1, [], [], $blockId);
         }
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
 
         // then
         $response->assertOk();

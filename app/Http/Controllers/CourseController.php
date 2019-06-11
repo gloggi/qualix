@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CourseRequest;
-use App\Models\Kurs;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,8 +19,8 @@ class CourseController extends Controller {
     public function noCourse() {
         /** @var User $user */
         $user = Auth::user();
-        if (count($user->kurse)) {
-            return Redirect::route('index', ['kurs' => $user->lastAccessedKurs->id]);
+        if (count($user->courses)) {
+            return Redirect::route('index', ['course' => $user->lastAccessedCourse->id]);
         }
         return view('no-courses');
     }
@@ -42,7 +42,7 @@ class CourseController extends Controller {
      */
     public function store(CourseRequest $request) {
         DB::transaction(function () use ($request) {
-            Kurs::create($request->validated())->users()->attach(Auth::user()->getAuthIdentifier());
+            Course::create($request->validated())->users()->attach(Auth::user()->getAuthIdentifier());
         });
 
         return Redirect::route('home');
@@ -64,9 +64,9 @@ class CourseController extends Controller {
      * @param  CourseRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(CourseRequest $request, Kurs $kurs) {
-        $kurs->update($request->validated());
+    public function update(CourseRequest $request, Course $course) {
+        $course->update($request->validated());
         $request->session()->flash('alert-success', __('Kursdetails erfolgreich gespeichert.'));
-        return Redirect::route('admin.kurs', ['kurs' => $kurs->id]);
+        return Redirect::route('admin.course', ['course' => $course->id]);
     }
 }

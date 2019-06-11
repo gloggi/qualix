@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kurs;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,19 +25,19 @@ class EquipeController extends Controller {
      * Remove the specified resource from storage.
      *
      * @param Request $request
-     * @param Kurs $kurs
+     * @param Course $course
      * @param User $user
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function destroy(Request $request, Kurs $kurs, User $user) {
+    public function destroy(Request $request, Course $course, User $user) {
         try {
 
-            DB::transaction(function () use ($kurs, $user) {
+            DB::transaction(function () use ($course, $user) {
 
-                Kurs::find($kurs->id)->users()->detach($user->id);
+                Course::find($course->id)->users()->detach($user->id);
 
-                if (!Kurs::find($kurs->id)->users()->exists()) {
+                if (!Course::find($course->id)->users()->exists()) {
                     throw new \LogicException('Cannot delete the last Leiter in the course');
                 }
 
@@ -53,6 +53,6 @@ class EquipeController extends Controller {
             $request->session()->flash('alert-danger', __('Mindestens ein Equipenmitglied muss im Kurs bleiben.'));
         }
 
-        return Redirect::route('admin.equipe', ['kurs' => $kurs->id]);
+        return Redirect::route('admin.equipe', ['course' => $course->id]);
     }
 }

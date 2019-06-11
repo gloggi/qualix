@@ -17,16 +17,16 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int $kurs_id
+ * @property int $course_id
  * @property string $name
- * @property string $abteilung
+ * @property string $group
  * @property string $password
  * @property string $email
  * @property string $salt
- * @property string $bild_url
- * @property Beobachtung[] $beobachtungen
- * @property Kurs[] $kurse
- * @property Kurs $last_accessed_kurs
+ * @property string $image_url
+ * @property Observation[] $observations
+ * @property Course[] $courses
+ * @property Course $last_accessed_course
  * @property LoginAttempt[] $loginAttempts
  * @property RecoveryAttempt[] $recoveryAttempts
  */
@@ -37,7 +37,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * @var array
      */
-    protected $fillable = ['name', 'abteilung', 'password', 'email', 'bild_url'];
+    protected $fillable = ['name', 'group', 'password', 'email', 'image_url'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -56,47 +56,47 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function beobachtungen()
+    public function observations()
     {
-        return $this->hasMany('App\Models\Beobachtung');
+        return $this->hasMany('App\Models\Observation');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function kurse()
+    public function courses()
     {
-        return $this->belongsToMany('App\Models\Kurs', 'leiter', null, 'kurs_id')->withPivot('last_accessed')->orderByDesc('leiter.last_accessed');
+        return $this->belongsToMany('App\Models\Course', 'trainers', null, 'course_id')->withPivot('last_accessed')->orderByDesc('trainers.last_accessed');
     }
 
     /**
-     * Get the currently viewed kurs of the user.
+     * Get the currently viewed course of the user.
      *
-     * @return Kurs
+     * @return Course
      */
-    public function getLastAccessedKursAttribute() {
-        return $this->kurse()->firstOrFail();
+    public function getLastAccessedCourseAttribute() {
+        return $this->courses()->firstOrFail();
     }
 
     /**
-     * Get the last date value that the user entered into a block's date field in the given Kurs, or today if not available.
+     * Get the last date value that the user entered into a block's block_date field in the given Kurs, or today if not available.
      *
-     * @param Kurs $kurs
+     * @param Course $course
      * @return CarbonInterface
      */
-    public function getLastUsedBlockDate(Kurs $kurs) {
-        $date = Carbon::parse($this->kurse()->withPivot('last_used_block_date')->findOrFail($kurs->id)->pivot->last_used_block_date);
+    public function getLastUsedBlockDate(Course $course) {
+        $date = Carbon::parse($this->courses()->withPivot('last_used_block_date')->findOrFail($course->id)->pivot->last_used_block_date);
         $carbon = $date ?? Carbon::today();
         return $carbon;
     }
 
     /**
-     * Set the last date value that the user entered into a block's date field.
+     * Set the last date value that the user entered into a block's block_date field.
      *
      * @param string $value
      */
-    public function setLastUsedBlockDate($value, Kurs $kurs) {
-        $this->kurse()->updateExistingPivot($kurs->id, ['last_used_block_date' => Carbon::parse($value)]);
+    public function setLastUsedBlockDate($value, Course $course) {
+        $this->courses()->updateExistingPivot($course->id, ['last_used_block_date' => Carbon::parse($value)]);
     }
 
     /**

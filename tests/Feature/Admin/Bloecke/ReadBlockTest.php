@@ -21,7 +21,7 @@ class ReadBlockTest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke/' . $this->blockId);
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId);
 
         // then
         $response->assertStatus(302);
@@ -32,7 +32,7 @@ class ReadBlockTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke/' . $this->blockId);
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke/' . $this->blockId);
 
         // then
         $response->assertOk();
@@ -53,7 +53,7 @@ class ReadBlockTest extends TestCaseWithKurs {
     public function test_shouldNotDisplayBlock_fromOtherUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
-        $otherBlockId = Block::create(['kurs_id' => $otherKursId, 'full_block_number' => '1.1', 'blockname' => 'later date', 'datum' => '02.01.2019', 'ma_ids' => null])->id;
+        $otherBlockId = Block::create(['course_id' => $otherKursId, 'full_block_number' => '1.1', 'name' => 'later date', 'block_date' => '02.01.2019', 'requirement_ids' => null])->id;
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/admin/bloecke/' . $otherBlockId);
@@ -74,7 +74,7 @@ class ReadBlockTest extends TestCaseWithKurs {
         $this->createBlock('Block 0 earlier block name', '1.1', '01.01.2019');
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/bloecke');
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/bloecke');
 
         // then
         $response->assertOk();

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\MA;
 
-use App\Models\MA;
+use App\Models\Requirement;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCaseWithKurs;
 
@@ -21,7 +21,7 @@ class ReadMATest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/ma/' . $this->maId);
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId);
 
         // then
         $response->assertStatus(302);
@@ -32,7 +32,7 @@ class ReadMATest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/ma/' . $this->maId);
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId);
 
         // then
         $response->assertOk();
@@ -53,7 +53,7 @@ class ReadMATest extends TestCaseWithKurs {
     public function test_shouldNotDisplayMA_fromOtherUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
-        $otherMAId = MA::create(['kurs_id' => $otherKursId, 'anforderung' => 'Mindestanforderung 1', 'killer' => '1'])->id;
+        $otherMAId = Requirement::create(['course_id' => $otherKursId, 'content' => 'Mindestanforderung 1', 'mandatory' => '1'])->id;
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/admin/ma/' . $otherMAId);

@@ -16,7 +16,7 @@ class UpdateMATest extends TestCaseWithKurs {
 
         $this->maId = $this->createMA('Mindestanforderung 1', true);
 
-        $this->payload = ['anforderung' => 'Geänderte Anforderung', 'killer' => '1'];
+        $this->payload = ['content' => 'Geänderte Anforderung', 'mandatory' => '1'];
     }
 
     public function test_shouldRequireLogin() {
@@ -24,7 +24,7 @@ class UpdateMATest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/ma/' . $this->maId, $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -35,14 +35,14 @@ class UpdateMATest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/ma/' . $this->maId, $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/ma');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee($this->payload['anforderung']);
+        $response->assertSee($this->payload['content']);
         $response->assertDontSee('Mindestanforderung 1');
         $response->assertSee('Ja');
         $response->assertDontSee('Nein');
@@ -51,10 +51,10 @@ class UpdateMATest extends TestCaseWithKurs {
     public function test_shouldValidateNewMAData_noName() {
         // given
         $payload = $this->payload;
-        unset($payload['anforderung']);
+        unset($payload['content']);
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/ma/' . $this->maId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -63,14 +63,14 @@ class UpdateMATest extends TestCaseWithKurs {
     public function test_shouldValidateNewMAData_killerNotSet_shouldNotChangeKiller() {
         // given
         $payload = $this->payload;
-        unset($payload['killer']);
+        unset($payload['mandatory']);
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/ma/' . $this->maId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/ma');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('>Ja<');
@@ -80,14 +80,14 @@ class UpdateMATest extends TestCaseWithKurs {
     public function test_shouldValidateNewMAData_killerFalse_shouldWork() {
         // given
         $payload = $this->payload;
-        $payload['killer'] = '0';
+        $payload['mandatory'] = '0';
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/ma/' . $this->maId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/ma');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('>Nein<');
@@ -97,14 +97,14 @@ class UpdateMATest extends TestCaseWithKurs {
     public function test_shouldValidateNewMAData_killerTrue_shouldWork() {
         // given
         $payload = $this->payload;
-        $payload['killer'] = '1';
+        $payload['mandatory'] = '1';
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/ma/' . $this->maId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId, $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/ma');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('>Ja<');
@@ -116,7 +116,7 @@ class UpdateMATest extends TestCaseWithKurs {
         $payload = $this->payload;
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/ma/' . ($this->maId + 1), $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/ma/' . ($this->maId + 1), $payload);
 
         // then
         $response->assertStatus(404);

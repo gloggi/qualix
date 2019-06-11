@@ -20,7 +20,7 @@ class DeleteMATest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/ma/' . $this->maId);
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId);
 
         // then
         $response->assertStatus(302);
@@ -31,11 +31,11 @@ class DeleteMATest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/ma/' . $this->maId);
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/ma/' . $this->maId);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/ma');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/ma');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertDontSee('Mindestanforderung 1');
@@ -45,7 +45,7 @@ class DeleteMATest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/ma/' . ($this->maId + 1));
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/ma/' . ($this->maId + 1));
 
         // then
         $response->assertStatus(404);

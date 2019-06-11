@@ -7,12 +7,12 @@ use Tests\TestCaseWithBasicData;
 
 class DeleteBeobachtungTest extends TestCaseWithBasicData {
 
-    private $beobachtungId;
+    private $observationId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->beobachtungId = $this->createBeobachtung('hat gut mitgemacht');
+        $this->observationId = $this->createBeobachtung('hat gut mitgemacht');
     }
 
     public function test_shouldRequireLogin() {
@@ -20,7 +20,7 @@ class DeleteBeobachtungTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId);
+        $response = $this->delete('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId);
 
         // then
         $response->assertStatus(302);
@@ -31,11 +31,11 @@ class DeleteBeobachtungTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/beobachtungen/' . $this->beobachtungId);
+        $response = $this->delete('/kurs/' . $this->courseId . '/beobachtungen/' . $this->observationId);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+        $response->assertRedirect('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertDontSee('hat gut mitgemacht');
@@ -45,7 +45,7 @@ class DeleteBeobachtungTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/beobachtungen/' . ($this->beobachtungId + 1));
+        $response = $this->delete('/kurs/' . $this->courseId . '/beobachtungen/' . ($this->observationId + 1));
 
         // then
         $response->assertStatus(404);

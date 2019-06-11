@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\InvitationClaimRequest;
 use App\Http\Requests\InvitationRequest;
 use App\Mail\InvitationMail;
-use App\Models\Einladung;
-use App\Models\Kurs;
+use App\Models\Invitation;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,21 +23,21 @@ class InvitationController extends Controller {
      * Store a newly created resource in storage.
      *
      * @param InvitationRequest $request
-     * @param Kurs $kurs
+     * @param Course $course
      * @return RedirectResponse
      */
-    public function store(InvitationRequest $request, Kurs $kurs) {
+    public function store(InvitationRequest $request, Course $course) {
         $data = $request->validated();
 
         do {
             $token = Str::random();
-        } while (Einladung::where('token', '=', $token)->exists());
+        } while (Invitation::where('token', '=', $token)->exists());
 
-        $einladung = Einladung::firstOrCreate(['kurs_id' => $kurs->id, 'email' => $data['email']], array_merge($data, ['kurs_id' => $kurs->id, 'token' => $token]));
+        $invitation = Invitation::firstOrCreate(['course_id' => $course->id, 'email' => $data['email']], array_merge($data, ['course_id' => $course->id, 'token' => $token]));
 
-        Mail::to($data['email'])->send(new InvitationMail($einladung));
+        Mail::to($data['email'])->send(new InvitationMail($invitation));
 
-        return Redirect::route('admin.equipe', ['kurs' => $kurs->id]);
+        return Redirect::route('admin.equipe', ['course' => $course->id]);
     }
 
     /**
@@ -48,11 +48,11 @@ class InvitationController extends Controller {
      * @return Response
      */
     public function index(Request $request, $token) {
-        $invitation = Einladung::where('token', '=', $token)->firstOrFail();
+        $invitation = Invitation::where('token', '=', $token)->firstOrFail();
 
         /** @var User $user */
         $user = Auth::user();
-        if ($user->kurse()->find($invitation->kurs->id)) {
+        if ($user->courses()->find($invitation->course->id)) {
             return view('invitation-already-in-course', ['invitation' => $invitation]);
         }
 
@@ -68,21 +68,21 @@ class InvitationController extends Controller {
     public function claim(InvitationClaimRequest $request) {
         try {
             return DB::transaction(function () use ($request) {
-                $invitation = Einladung::where('token', '=', $request->validated()['token'])->firstOrFail();
+                $invitation = Invitation::where('token', '=', $request->validated()['token'])->firstOrFail();
 
                 /** @var User $user */
                 $user = Auth::user();
-                if ($user->kurse()->find($invitation->kurs->id)) {
-                    return Redirect::route('admin.equipe', ['kurs' => $invitation->kurs->id]);
+                if ($user->courses()->find($invitation->course->id)) {
+                    return Redirect::route('admin.equipe', ['course' => $invitation->course->id]);
                 }
 
-                $invitation->kurs->users()->attach($user->getAuthIdentifier());
+                $invitation->course->users()->attach($user->getAuthIdentifier());
 
                 $invitation->delete();
 
-                $request->session()->flash('alert-success', __('Einladung angenommen. Du bist jetzt in der Equipe von :kursname', ['kursname' => $invitation->kurs->name]));
+                $request->session()->flash('alert-success', __('Einladung angenommen. Du bist jetzt in der Equipe von :coursename', ['coursename' => $invitation->course->name]));
 
-                return Redirect::route('index', ['kurs' => $invitation->kurs->id]);
+                return Redirect::route('index', ['course' => $invitation->course->id]);
             });
         } catch (\Exception $e) {
 
@@ -97,14 +97,14 @@ class InvitationController extends Controller {
      * Remove the specified resource from storage.
      *
      * @param Request $request
-     * @param Kurs $kurs
+     * @param Course $course
      * @param $email
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function destroy(Request $request, Kurs $kurs, $email) {
-        Einladung::where('kurs_id', '=', $kurs->id)->where('email', '=', $email)->firstOrFail()->delete();
+    public function destroy(Request $request, Course $course, $email) {
+        Invitation::where('course_id', '=', $course->id)->where('email', '=', $email)->firstOrFail()->delete();
 
-        return Redirect::route('admin.equipe', ['kurs' => $kurs->id]);
+        return Redirect::route('admin.equipe', ['course' => $course->id]);
     }
 }

@@ -19,7 +19,7 @@ class ReadBloeckeTest extends TestCaseWithKurs {
         $this->createBlock('Block 0 earlier block name', '1.1', '01.01.2019');
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/bloecke');
+        $response = $this->get('/kurs/' . $this->courseId . '/bloecke');
 
         // then
         $response->assertOk();

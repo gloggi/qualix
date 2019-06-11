@@ -13,7 +13,7 @@ class CreateTNTest extends TestCaseWithKurs {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['pfadiname' => 'Pflock'];
+        $this->payload = ['scout_name' => 'Pflock'];
     }
 
     public function test_shouldRequireLogin() {
@@ -21,7 +21,7 @@ class CreateTNTest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/tn', $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -32,23 +32,23 @@ class CreateTNTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/tn', $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn', $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/tn');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/tn');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee($this->payload['pfadiname']);
+        $response->assertSee($this->payload['scout_name']);
     }
 
     public function test_shouldValidateNewTNData_noPfadiname() {
         // given
         $payload = $this->payload;
-        unset($payload['pfadiname']);
+        unset($payload['scout_name']);
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/tn', $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -58,7 +58,7 @@ class CreateTNTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/tn');
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/tn');
 
         // then
         $response->assertStatus(200);
@@ -70,7 +70,7 @@ class CreateTNTest extends TestCaseWithKurs {
         $this->createTN();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/tn');
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/tn');
 
         // then
         $response->assertStatus(200);

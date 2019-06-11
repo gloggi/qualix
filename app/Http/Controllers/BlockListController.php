@@ -13,6 +13,6 @@ class BlockListController extends Controller
      */
     public function index()
     {
-        return view('bloecke');
+        return view('blocks');
     }
 }

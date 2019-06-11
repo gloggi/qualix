@@ -3,7 +3,7 @@
 namespace Tests\Feature\Ueberblick;
 
 use App\Models\Block;
-use App\Models\TN;
+use App\Models\Participant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Tests\TestCaseWithBasicData;
@@ -26,10 +26,10 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         $this->createBlock('Block 2 later block name', '1.1', '01.01.2019');
         $this->createBlock('Block 0 earlier block name', '1.1', '01.01.2019');
         /** @var Collection $blockIds */
-        $this->blockIds = $this->user()->lastAccessedKurs->bloecke->map(function (Block $block) { return $block->id; });
+        $this->blockIds = $this->user()->lastAccessedCourse->blocks->map(function (Block $block) { return $block->id; });
 
         foreach ($this->blockIds as $blockId) {
-            $this->createBeobachtung(Block::find($blockId)->blockname, 1, [], [], $blockId);
+            $this->createBeobachtung(Block::find($blockId)->name, 1, [], [], $blockId);
         }
     }
 
@@ -38,7 +38,7 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/ueberblick');
+        $response = $this->get('/kurs/' . $this->courseId . '/ueberblick');
 
         // then
         $response->assertStatus(302);
@@ -49,7 +49,7 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/ueberblick');
+        $response = $this->get('/kurs/' . $this->courseId . '/ueberblick');
 
         // then
         $response->assertOk();
@@ -64,18 +64,18 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
         // Create another TN
         $tnId2 = $this->createTN('Pfnörch');
 
-        $this->createBeobachtung(Block::find($this->blockIds[0])->blockname, 1, [], [], $this->blockIds[0], $tnId2);
-        $this->createBeobachtung(Block::find($this->blockIds[1])->blockname, 1, [], [], $this->blockIds[1], $tnId2);
+        $this->createBeobachtung(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $tnId2);
+        $this->createBeobachtung(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $tnId2);
 
         // create another leader in the course
         $user2 = $this->createUser(['name' => 'Lindo']);
-        $user2->kurse()->attach($this->kursId);
+        $user2->courses()->attach($this->courseId);
 
-        $this->createBeobachtung(Block::find($this->blockIds[0])->blockname, 1, [], [], $this->blockIds[0], $this->tnId, $user2->id);
-        $this->createBeobachtung(Block::find($this->blockIds[1])->blockname, 1, [], [], $this->blockIds[1], $this->tnId, $user2->id);
+        $this->createBeobachtung(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $this->tnId, $user2->id);
+        $this->createBeobachtung(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $this->tnId, $user2->id);
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/ueberblick');
+        $response = $this->get('/kurs/' . $this->courseId . '/ueberblick');
 
         // then
         $response->assertOk();
@@ -85,10 +85,10 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
 
     public function test_shouldDisplayMessage_whenNoTNInKurs() {
         // given
-        TN::find($this->tnId)->delete();
+        Participant::find($this->tnId)->delete();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/ueberblick');
+        $response = $this->get('/kurs/' . $this->courseId . '/ueberblick');
 
         // then
         $response->assertOk();
@@ -99,7 +99,7 @@ class ReadUeberblickTest extends TestCaseWithBasicData {
     public function test_shouldNotDisplayUeberblick_toOtherUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
-        TN::create(['kurs_id' => $otherKursId, 'pfadiname' => 'Pflock']);
+        Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock']);
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/ueberblick');

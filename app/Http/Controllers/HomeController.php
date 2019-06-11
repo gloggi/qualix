@@ -41,8 +41,8 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        if ($request->file('bild') && $user->bild_url) {
-            Storage::delete($user->bild_url);
+        if ($request->file('image') && $user->image_url) {
+            Storage::delete($user->image_url);
         }
 
         $user->update($request->validated());

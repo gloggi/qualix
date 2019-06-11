@@ -20,7 +20,7 @@ class DeleteTNTest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/tn/' . $this->tnId);
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId);
 
         // then
         $response->assertStatus(302);
@@ -31,11 +31,11 @@ class DeleteTNTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/tn/' . $this->tnId);
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/tn');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/tn');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertDontSee('Pföschtli');
@@ -45,7 +45,7 @@ class DeleteTNTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/tn/' . ($this->tnId + 1));
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/tn/' . ($this->tnId + 1));
 
         // then
         $response->assertStatus(404);

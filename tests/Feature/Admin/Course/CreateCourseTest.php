@@ -13,7 +13,7 @@ class CreateCourseTest extends TestCase {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['name' => 'Kursname', 'kursnummer' => 'CH 123-00'];
+        $this->payload = ['name' => 'Kursname', 'course_number' => 'CH 123-00'];
     }
 
     public function test_shouldRequireLogin() {

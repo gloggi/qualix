@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\TN;
 
-use App\Models\TN;
+use App\Models\Participant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCaseWithBasicData;
 
@@ -13,7 +13,7 @@ class ReadTNTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
 
         // then
         $response->assertStatus(302);
@@ -24,7 +24,7 @@ class ReadTNTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
 
         // then
         $response->assertOk();
@@ -45,7 +45,7 @@ class ReadTNTest extends TestCaseWithBasicData {
     public function test_shouldNotDisplayTN_fromOtherUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
-        $otherTNId = TN::create(['kurs_id' => $otherKursId, 'pfadiname' => 'Pflock'])->id;
+        $otherTNId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/tn/' . $otherTNId);
@@ -58,7 +58,7 @@ class ReadTNTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
 
         // then
         $response->assertStatus(200);
@@ -70,7 +70,7 @@ class ReadTNTest extends TestCaseWithBasicData {
         $this->createBeobachtung();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
 
         // then
         $response->assertStatus(200);

@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Einladung;
+use App\Models\Invitation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -11,16 +11,16 @@ class InvitationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $einladung;
+    public $invitation;
 
     /**
      * Create a new message instance.
      *
      * @param $token
      */
-    public function __construct(Einladung $einladung)
+    public function __construct(Invitation $invitation)
     {
-        $this->einladung = $einladung;
+        $this->invitation = $invitation;
     }
 
     /**

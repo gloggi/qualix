@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\TN;
 
-use App\Models\TN;
+use App\Models\Participant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCaseWithKurs;
 
@@ -21,7 +21,7 @@ class ReadTNTest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId);
 
         // then
         $response->assertStatus(302);
@@ -32,7 +32,7 @@ class ReadTNTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/admin/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId);
 
         // then
         $response->assertOk();
@@ -53,7 +53,7 @@ class ReadTNTest extends TestCaseWithKurs {
     public function test_shouldNotDisplayTN_fromOtherUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
-        $otherTNId = TN::create(['kurs_id' => $otherKursId, 'pfadiname' => 'Pflock'])->id;
+        $otherTNId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
 
         // when
         $response = $this->get('/kurs/' . $otherKursId . '/admin/tn/' . $otherTNId);

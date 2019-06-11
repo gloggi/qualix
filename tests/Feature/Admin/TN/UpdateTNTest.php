@@ -16,7 +16,7 @@ class UpdateTNTest extends TestCaseWithKurs {
 
         $this->tnId = $this->createTN('Qualm');
 
-        $this->payload = ['pfadiname' => 'Räuchli'];
+        $this->payload = ['scout_name' => 'Räuchli'];
     }
 
     public function test_shouldRequireLogin() {
@@ -24,7 +24,7 @@ class UpdateTNTest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/tn/' . $this->tnId, $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -35,24 +35,24 @@ class UpdateTNTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/tn/' . $this->tnId, $this->payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId, $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/tn');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/tn');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee($this->payload['pfadiname']);
+        $response->assertSee($this->payload['scout_name']);
         $response->assertDontSee('Qualm');
     }
 
     public function test_shouldValidateNewTNData_noName() {
         // given
         $payload = $this->payload;
-        unset($payload['pfadiname']);
+        unset($payload['scout_name']);
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/tn/' . $this->tnId, $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn/' . $this->tnId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -63,7 +63,7 @@ class UpdateTNTest extends TestCaseWithKurs {
         $payload = $this->payload;
 
         // when
-        $response = $this->post('/kurs/' . $this->kursId . '/admin/tn/' . ($this->tnId + 1), $payload);
+        $response = $this->post('/kurs/' . $this->courseId . '/admin/tn/' . ($this->tnId + 1), $payload);
 
         // then
         $response->assertStatus(404);

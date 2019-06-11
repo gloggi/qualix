@@ -2,19 +2,19 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Equipe :courseName', ['courseName' => $kurs->name])])
+    @component('components.card', ['header' => __('Equipe :courseName', ['courseName' => $course->name])])
 
         @component('components.responsive-table', [
             'id' => 'equipe',
-            'data' => $kurs->users,
+            'data' => $course->users,
             'fields' => [
                 __('Name') => function(\App\Models\User $user) { return $user->name; },
                 __('E-Mail') => function(\App\Models\User $user) { return $user->email; },
             ],
             'actions' => [
-                'delete' => function(\App\Models\User $user) use ($kurs) { return [
+                'delete' => function(\App\Models\User $user) use ($course) { return [
                     'text' => __('Willst du ' . $user->name . ' wirklich aus der Kursequipe entfernen?'),
-                    'route' => ['admin.equipe.delete', ['kurs' => $kurs->id, 'user' => $user->id]],
+                    'route' => ['admin.equipe.delete', ['course' => $course->id, 'user' => $user->id]],
                  ];},
             ]
         ])@endcomponent
@@ -23,18 +23,18 @@
 
     @component('components.card', ['header' => __('Einladungen')])
 
-        @if (count($kurs->einladungen))
+        @if (count($course->invitations))
 
             @component('components.responsive-table', [
                 'id' => 'invitations',
-                'data' => $kurs->einladungen,
+                'data' => $course->invitations,
                 'fields' => [
-                    __('E-Mail') => function(\App\Models\Einladung $einladung) { return $einladung->email; },
+                    __('E-Mail') => function(\App\Models\Invitation $invitation) { return $invitation->email; },
                 ],
                 'actions' => [
-                    'delete' => function(\App\Models\Einladung $einladung) use ($kurs) { return [
-                        'text' => __('Willst du die Einladung für ' . $einladung->email . ' wirklich entfernen?'),
-                        'route' => ['admin.invitation.delete', ['kurs' => $kurs->id, 'email' => $einladung->email]],
+                    'delete' => function(\App\Models\Invitation $invitation) use ($course) { return [
+                        'text' => __('Willst du die Einladung für ' . $invitation->email . ' wirklich entfernen?'),
+                        'route' => ['admin.invitation.delete', ['course' => $course->id, 'email' => $invitation->email]],
                      ]; },
                 ]
             ])@endcomponent
@@ -49,7 +49,7 @@
 
     @component('components.card', ['header' => __('Equipenmitglied einladen')])
 
-        @component('components.form', ['route' => ['admin.invitation.store', ['kurs' => $kurs->id]]])
+        @component('components.form', ['route' => ['admin.invitation.store', ['course' => $course->id]]])
 
             @component('components.form.textInput', ['name' => 'email', 'label' => __('E-Mail'), 'required' => true])@endcomponent
 

@@ -16,10 +16,10 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
         parent::setUp();
 
         $this->otherUser = $this->createUser(['name' => 'Lindo']);
-        $this->otherUser->kurse()->attach($this->kursId);
+        $this->otherUser->courses()->attach($this->courseId);
 
-        $this->get('/kurs/' . $this->kursId . '/admin/equipe')->assertSee($this->otherUser->name);
-        $this->get('/kurs/' . $this->kursId . '/admin/equipe')->assertSee($this->user()->name);
+        $this->get('/kurs/' . $this->courseId . '/admin/equipe')->assertSee($this->otherUser->name);
+        $this->get('/kurs/' . $this->courseId . '/admin/equipe')->assertSee($this->user()->name);
     }
 
     public function test_shouldRequireLogin() {
@@ -27,7 +27,7 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
         auth()->logout();
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->otherUser->id);
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . $this->otherUser->id);
 
         // then
         $response->assertStatus(302);
@@ -38,11 +38,11 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->otherUser->id);
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . $this->otherUser->id);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/equipe');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/equipe');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertDontSee($this->otherUser->name);
@@ -52,7 +52,7 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
         // given
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . ($this->otherUser->id + 1));
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . ($this->otherUser->id + 1));
 
         // then
         $response->assertStatus(404);
@@ -60,14 +60,14 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
 
     public function test_shouldPreventDeletingLastEquipeMember() {
         // given
-        $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->otherUser->id);
+        $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . $this->otherUser->id);
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->user()->id);
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . $this->user()->id);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/kurs/' . $this->kursId . '/admin/equipe');
+        $response->assertRedirect('/kurs/' . $this->courseId . '/admin/equipe');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Mindestens ein Equipenmitglied muss im Kurs bleiben.');
@@ -88,7 +88,7 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
     public function test_shouldNotDeleteEquipeMember_fromOtherUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
-        $this->otherUser->kurse()->attach($otherKursId);
+        $this->otherUser->courses()->attach($otherKursId);
 
         // when
         $response = $this->delete('/kurs/' . $otherKursId . '/admin/equipe/' . $this->otherUser->id);
@@ -102,7 +102,7 @@ class DeleteEquipeMemberTest extends TestCaseWithKurs {
         $this->get('/')->followRedirects()->assertSee('Kursname');
 
         // when
-        $response = $this->delete('/kurs/' . $this->kursId . '/admin/equipe/' . $this->user()->id);
+        $response = $this->delete('/kurs/' . $this->courseId . '/admin/equipe/' . $this->user()->id);
 
         // then
         $response->assertStatus(302);

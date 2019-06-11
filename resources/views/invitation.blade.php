@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Einladung in :kursname', ['kursname' => $invitation->kurs->name])])
+    @component('components.card', ['header' => __('Einladung in :coursename', ['coursename' => $invitation->course->name])])
 
         @component('components.form', ['route' => 'invitation.claim'])
 

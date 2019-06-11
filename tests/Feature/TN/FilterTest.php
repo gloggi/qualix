@@ -14,8 +14,8 @@ class FilterTest extends TestCaseWithBasicData {
     public function setUp(): void {
         parent::setUp();
 
-        $this->qkId = $this->createQK('Qualikategorie 1');
-        $this->qkId2 = $this->createQK('Qualikategorie 2');
+        $this->qkId = $this->createCategory('Qualikategorie 1');
+        $this->qkId2 = $this->createCategory('Qualikategorie 2');
 
         $this->maId = $this->createMA('Mindestanforderung 1', true);
         $this->maId2 = $this->createMA('Mindestanforderung 2', true);
@@ -34,7 +34,7 @@ class FilterTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId);
 
         // then
         $response->assertStatus(200);
@@ -52,7 +52,7 @@ class FilterTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId . '?qk=' . $this->qkId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId . '?qk=' . $this->qkId);
 
         // then
         $response->assertStatus(200);
@@ -70,7 +70,7 @@ class FilterTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId . '?qk=0');
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId . '?qk=0');
 
         // then
         $response->assertStatus(200);
@@ -88,7 +88,7 @@ class FilterTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId . '?ma=' . $this->maId);
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId . '?ma=' . $this->maId);
 
         // then
         $response->assertStatus(200);
@@ -106,7 +106,7 @@ class FilterTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/tn/' . $this->tnId . '?ma=0');
+        $response = $this->get('/kurs/' . $this->courseId . '/tn/' . $this->tnId . '?ma=0');
 
         // then
         $response->assertStatus(200);
