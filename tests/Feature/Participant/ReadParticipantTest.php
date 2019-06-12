@@ -20,7 +20,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldDisplayTN() {
+    public function test_shouldDisplayParticipant() {
         // given
 
         // when
@@ -31,7 +31,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         $response->assertSee('Pflock');
     }
 
-    public function test_shouldNotDisplayTN_fromOtherCourseOfSameUser() {
+    public function test_shouldNotDisplayParticipant_fromOtherCourseOfSameUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
@@ -42,19 +42,19 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
-    public function test_shouldNotDisplayTN_fromOtherUser() {
+    public function test_shouldNotDisplayParticipant_fromOtherUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
-        $otherTNId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
+        $otherParticipantId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
 
         // when
-        $response = $this->get('/course/' . $otherKursId . '/participants/' . $otherTNId);
+        $response = $this->get('/course/' . $otherKursId . '/participants/' . $otherParticipantId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
-    public function test_shouldShowMessage_whenNoBeobachtungForTN() {
+    public function test_shouldShowMessage_whenNoBeobachtungForParticipant() {
         // given
 
         // when
@@ -65,7 +65,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         $response->assertSee('Keine Beobachtungen gefunden.');
     }
 
-    public function test_shouldNotShowMessage_whenSomeBeobachtungForTN() {
+    public function test_shouldNotShowMessage_whenSomeBeobachtungForParticipant() {
         // given
         $this->createObservation();
 

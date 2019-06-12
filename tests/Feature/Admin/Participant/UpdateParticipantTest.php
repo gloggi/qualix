@@ -9,12 +9,12 @@ use Tests\TestCaseWithCourse;
 class UpdateParticipantTest extends TestCaseWithCourse {
 
     private $payload;
-    private $tnId;
+    private $participantId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->tnId = $this->createParticipant('Qualm');
+        $this->participantId = $this->createParticipant('Qualm');
 
         $this->payload = ['scout_name' => 'Räuchli'];
     }
@@ -24,18 +24,18 @@ class UpdateParticipantTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->tnId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->participantId, $this->payload);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldUpdateTN() {
+    public function test_shouldUpdateParticipant() {
         // given
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->tnId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->participantId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -46,24 +46,24 @@ class UpdateParticipantTest extends TestCaseWithCourse {
         $response->assertDontSee('Qualm');
     }
 
-    public function test_shouldValidateNewTNData_noName() {
+    public function test_shouldValidateNewParticipantData_noName() {
         // given
         $payload = $this->payload;
         unset($payload['scout_name']);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->tnId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->participantId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewTNData_wrongId() {
+    public function test_shouldValidateNewParticipantData_wrongId() {
         // given
         $payload = $this->payload;
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . ($this->tnId + 1), $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . ($this->participantId + 1), $payload);
 
         // then
         $response->assertStatus(404);

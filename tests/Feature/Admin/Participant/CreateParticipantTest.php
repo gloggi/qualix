@@ -28,7 +28,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldCreateAndDisplayTN() {
+    public function test_shouldCreateAndDisplayParticipant() {
         // given
 
         // when
@@ -42,7 +42,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
         $response->assertSee($this->payload['scout_name']);
     }
 
-    public function test_shouldValidateNewTNData_noPfadiname() {
+    public function test_shouldValidateNewParticipantData_noScoutName() {
         // given
         $payload = $this->payload;
         unset($payload['scout_name']);
@@ -54,7 +54,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldShowMessage_whenNoTNInCourse() {
+    public function test_shouldShowMessage_whenNoParticipantInCourse() {
         // given
 
         // when
@@ -65,7 +65,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
         $response->assertSee('Bisher sind keine Teilnehmende erfasst.');
     }
 
-    public function test_shouldNotShowMessage_whenSomeTNInCourse() {
+    public function test_shouldNotShowMessage_whenSomeParticipantInCourse() {
         // given
         $this->createParticipant();
 

@@ -9,17 +9,17 @@
             @component('components.responsive-table', [
                 'data' => $course->participants,
                 'image' => [
-                    __('Bild') => function(\App\Models\Participant $tn) { return ($tn->image_url!=null) ? view('components.img',  ['src' => asset(Storage::url($tn->image_url)), 'classes' => ['avatar-small']]) : ''; },
+                    __('Bild') => function(\App\Models\Participant $participant) { return ($participant->image_url!=null) ? view('components.img',  ['src' => asset(Storage::url($participant->image_url)), 'classes' => ['avatar-small']]) : ''; },
                 ],
                 'fields' => [
-                    __('Pfadiname') => function(\App\Models\Participant $tn) { return $tn->scout_name; },
-                    __('Abteilung') => function(\App\Models\Participant $tn) { return $tn->group; },
+                    __('Pfadiname') => function(\App\Models\Participant $participant) { return $participant->scout_name; },
+                    __('Abteilung') => function(\App\Models\Participant $participant) { return $participant->group; },
                 ],
                 'actions' => [
-                    'edit' => function(\App\Models\Participant $tn) use ($course) { return route('admin.participants.edit', ['course' => $course->id, 'tn' => $tn->id]); },
-                    'delete' => function(\App\Models\Participant $tn) use ($course) { return [
-                        'text' => __('Willst du diese TN wirklich löschen? ' . count($tn->observations) . ' Beobachtung(en) ist / sind darauf zugewiesen.'),
-                        'route' => ['admin.participants.delete', ['course' => $course->id, 'tn' => $tn->id]],
+                    'edit' => function(\App\Models\Participant $participant) use ($course) { return route('admin.participants.edit', ['course' => $course->id, 'participant' => $participant->id]); },
+                    'delete' => function(\App\Models\Participant $participant) use ($course) { return [
+                        'text' => __('Willst du diese/n TN wirklich löschen? ' . count($participant->observations) . ' Beobachtung(en) ist / sind darauf zugewiesen.'),
+                        'route' => ['admin.participants.delete', ['course' => $course->id, 'participant' => $participant->id]],
                      ];},
                 ]
             ])@endcomponent

@@ -8,12 +8,12 @@ use Tests\TestCaseWithCourse;
 
 class ReadParticipantTest extends TestCaseWithCourse {
 
-    private $tnId;
+    private $participantId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->tnId = $this->createParticipant('Pflock');
+        $this->participantId = $this->createParticipant('Pflock');
     }
 
     public function test_shouldRequireLogin() {
@@ -21,42 +21,42 @@ class ReadParticipantTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/admin/participants/' . $this->tnId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/participants/' . $this->participantId);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldDisplayTN() {
+    public function test_shouldDisplayParticipant() {
         // given
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/admin/participants/' . $this->tnId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/participants/' . $this->participantId);
 
         // then
         $response->assertOk();
         $response->assertSee('Pflock');
     }
 
-    public function test_shouldNotDisplayTN_fromOtherCourseOfSameUser() {
+    public function test_shouldNotDisplayParticipant_fromOtherCourseOfSameUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/course/' . $otherKursId . '/admin/participants/' . $this->tnId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/participants/' . $this->participantId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
-    public function test_shouldNotDisplayTN_fromOtherUser() {
+    public function test_shouldNotDisplayParticipant_fromOtherUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
-        $otherTNId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
+        $otherParticipantId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
 
         // when
-        $response = $this->get('/course/' . $otherKursId . '/admin/participants/' . $otherTNId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/participants/' . $otherParticipantId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

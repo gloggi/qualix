@@ -40,12 +40,12 @@ class ParticipantController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Participant $tn
+     * @param Participant $participant
      * @return Response
      */
-    public function edit(Course $course, Participant $tn)
+    public function edit(Course $course, Participant $participant)
     {
-        return view('admin.participants.edit', ['tn' => $tn]);
+        return view('admin.participants.edit', ['participant' => $participant]);
     }
 
     /**
@@ -53,16 +53,16 @@ class ParticipantController extends Controller
      *
      * @param ParticipantRequest $request
      * @param Course $course
-     * @param Participant $tn
+     * @param Participant $participant
      * @return RedirectResponse
      */
-    public function update(ParticipantRequest $request, Course $course, Participant $tn)
+    public function update(ParticipantRequest $request, Course $course, Participant $participant)
     {
-        if ($request->file('image') && $tn->image_url) {
-            Storage::delete($tn->image_url);
+        if ($request->file('image') && $participant->image_url) {
+            Storage::delete($participant->image_url);
         }
 
-        $tn->update($request->validated());
+        $participant->update($request->validated());
 
         $request->session()->flash('alert-success', __('TN erfolgreich gespeichert.'));
         return Redirect::route('admin.participants', ['course' => $course->id]);
@@ -73,15 +73,15 @@ class ParticipantController extends Controller
      *
      * @param Request $request
      * @param Course $course
-     * @param Participant $tn
+     * @param Participant $participant
      * @return RedirectResponse
      */
-    public function destroy(Request $request, Course $course, Participant $tn)
+    public function destroy(Request $request, Course $course, Participant $participant)
     {
-        if ($tn->image_url) {
-            Storage::delete($tn->image_url);
+        if ($participant->image_url) {
+            Storage::delete($participant->image_url);
         }
-        $tn->delete();
+        $participant->delete();
         $request->session()->flash('alert-success', __('TN erfolgreich gelöscht.'));
         return Redirect::route('admin.participants', ['course' => $course->id]);
     }

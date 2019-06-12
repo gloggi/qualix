@@ -56,10 +56,10 @@ class ReadObservationTest extends TestCaseWithBasicData {
     public function test_shouldNotDisplayBeobachtung_fromOtherUser() {
         // given
         $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
-        $otherTNId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
+        $otherParticipantId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
         $otherBlockId = Block::create(['course_id' => $otherKursId, 'full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '01.01.2019', 'requirement_ids' => null])->id;
         $otherUserId = $this->createUser(['name' => 'Lindo'])->id;
-        $otherBeobachtungId = Observation::create(['block_id' => $otherBlockId, 'participant_id' => $otherTNId, 'user_id' => $otherUserId, 'content' => 'hat gut mitgemacht', 'impression' => '1', 'requirement_ids' => '', 'category_ids' => ''])->id;
+        $otherBeobachtungId = Observation::create(['block_id' => $otherBlockId, 'participant_id' => $otherParticipantId, 'user_id' => $otherUserId, 'content' => 'hat gut mitgemacht', 'impression' => '1', 'requirement_ids' => '', 'category_ids' => ''])->id;
 
         // when
         $response = $this->get('/course/' . $otherKursId . '/overview/' . $otherBeobachtungId);

@@ -18,8 +18,8 @@
                     <li class="nav-item{{ Route::currentRouteName() == 'blocks' ? ' active' : '' }}">
                         <a class="nav-link" href="{{ route('blocks', ['course' => $course->id]) }}">Blöcke</a>
                     </li>
-                    <li class="nav-item{{ Route::currentRouteName() == 'tn' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('tn', ['course' => $course->id]) }}">TN</a>
+                    <li class="nav-item{{ Route::currentRouteName() == 'participants' ? ' active' : '' }}">
+                        <a class="nav-link" href="{{ route('participants', ['course' => $course->id]) }}">TN</a>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'overview' ? ' active' : '' }}">
                         <a class="nav-link" href="{{ route('overview', ['course' => $course->id]) }}">Überblick</a>

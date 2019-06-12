@@ -36,13 +36,13 @@ class CreateObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/overview/new?tn=' . $this->participantId . '&block=' . $this->blockId);
+        $response->assertRedirect('/course/' . $this->courseId . '/overview/new?participant=' . $this->participantId . '&block=' . $this->blockId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Beobachtung erfasst.');
     }
 
-    public function test_shouldValidateNewBeobachtungData_noTNIds() {
+    public function test_shouldValidateNewBeobachtungData_noParticipantIds() {
         // given
         $payload = $this->payload;
         unset($payload['participant_ids']);
@@ -54,7 +54,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidTNIds() {
+    public function test_shouldValidateNewBeobachtungData_invalidParticipantIds() {
         // given
         $payload = $this->payload;
         $payload['participant_ids'] = 'a';
@@ -66,19 +66,19 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_multipleTNIds_shouldWork() {
+    public function test_shouldValidateNewBeobachtungData_multipleParticipantIds_shouldWork() {
         // given
-        $tnId2 = $this->createParticipant('Pfnörch');
-        $tnIds = $this->participantId . ',' . $tnId2;
+        $participantId2 = $this->createParticipant('Pfnörch');
+        $participantIds = $this->participantId . ',' . $participantId2;
         $payload = $this->payload;
-        $payload['participant_ids'] = $tnIds;
+        $payload['participant_ids'] = $participantIds;
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/overview/new', $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/overview/new?tn=' . urlencode($tnIds) . '&block=' . $this->blockId);
+        $response->assertRedirect('/course/' . $this->courseId . '/overview/new?participant=' . urlencode($participantIds) . '&block=' . $this->blockId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Beobachtungen erfasst.');

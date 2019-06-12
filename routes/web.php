@@ -25,8 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/course/{course}', 'HomeController@index')->name('index');
 
     Route::get('/course/{course}/blocks', 'BlockListController@index')->name('blocks');
-    Route::get('/course/{course}/participants', 'ParticipantListController@index')->name('tn');
-    Route::get('/course/{course}/participants/{participant}', 'ParticipantDetailController@index')->name('tn.detail');
+    Route::get('/course/{course}/participants', 'ParticipantListController@index')->name('participants');
+    Route::get('/course/{course}/participants/{participant}', 'ParticipantDetailController@index')->name('participants.detail');
 
     Route::get('/course/{course}/overview', 'ObservationController@overview')->name('overview');
 

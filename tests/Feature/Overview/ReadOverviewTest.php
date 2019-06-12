@@ -57,15 +57,15 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $this->assertSeeAllInOrder('table.table-responsive-cards td', [ 'Pflock', '9', '9', '' ]);
     }
 
-    public function test_shouldDisplayUeberblick_observationsByMultiplePeople_andMultipleTN() {
+    public function test_shouldDisplayUeberblick_observationsByMultiplePeople_andMultipleParticipants() {
         // given
         $name = $this->user()->name;
 
-        // Create another TN
-        $tnId2 = $this->createParticipant('Pfnörch');
+        // Create another participant
+        $participantId2 = $this->createParticipant('Pfnörch');
 
-        $this->createObservation(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $tnId2);
-        $this->createObservation(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $tnId2);
+        $this->createObservation(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $participantId2);
+        $this->createObservation(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $participantId2);
 
         // create another leader in the course
         $user2 = $this->createUser(['name' => 'Lindo']);
@@ -83,7 +83,7 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $this->assertSeeAllInOrder('table.table-responsive-cards td', [ 'Pflock', '11',    '9',         '2',     '', 'Pfnörch', '2',    '2',         '0',     '' ]);
     }
 
-    public function test_shouldDisplayMessage_whenNoTNInKurs() {
+    public function test_shouldDisplayMessage_whenNoParticipantsInKurs() {
         // given
         Participant::find($this->participantId)->delete();
 

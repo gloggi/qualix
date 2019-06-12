@@ -8,14 +8,14 @@
 
             <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                 <div class="square-container">
-                    <img class="card-img-top img img-responsive full-width" src="{{ $tn->image_url != null ? asset(Storage::url($tn->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $tn->scout_name }}">
+                    <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
                 </div>
             </div>
 
             <div class="col">
-                <h3>{{ $tn->scout_name }}</h3>
-                @if (isset($tn->group))<h5>{{ $tn->group }}</h5>@endif
-                <p>{{ trans_choice('{0}Keine Beobachtungen|{1}1 Beobachtung|[2,*]:count Beobachtungen', count($tn->observations), ['count' => count($tn->observations)])}}, {{ __('davon :positive mit positivem, :neutral mit neutralem und :negative mit negativem Eindruck.', ['positive' => $tn->positive->count(), 'neutral' => $tn->neutral->count(), 'negative' => $tn->negative->count()])}}</p>
+                <h3>{{ $participant->scout_name }}</h3>
+                @if (isset($participant->group))<h5>{{ $participant->group }}</h5>@endif
+                <p>{{ trans_choice('{0}Keine Beobachtungen|{1}1 Beobachtung|[2,*]:count Beobachtungen', count($participant->observations), ['count' => count($participant->observations)])}}, {{ __('davon :positive mit positivem, :neutral mit neutralem und :negative mit negativem Eindruck.', ['positive' => $participant->positive->count(), 'neutral' => $participant->neutral->count(), 'negative' => $participant->negative->count()])}}</p>
                 @php
                     $columns = [];
                     foreach ($course->users->all() as $user) {
@@ -25,10 +25,10 @@
                     }
                 @endphp
                 @component('components.responsive-table', [
-                    'data' => [$tn->observations->all()],
+                    'data' => [$participant->observations->all()],
                     'fields' => $columns,
                 ])@endcomponent
-                <a href="{{ route('observation.new', ['course' => $course->id, 'tn' => $tn->id]) }}" class="btn btn-primary"><i class="fas fa-binoculars"></i> {{__('Beobachtung erfassen')}}</a>
+                <a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id]) }}" class="btn btn-primary"><i class="fas fa-binoculars"></i> {{__('Beobachtung erfassen')}}</a>
             </div>
 
         </div>
@@ -50,7 +50,7 @@
 
                         <div class="col-md-6 col-sm-12">
 
-                            <form id="requirement-form" method="GET" action="{{ route('tn.detail', ['course' => $course->id, 'tn' => $tn->id]) }}#filters">
+                            <form id="requirement-form" method="GET" action="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}#filters">
 
                                 <multi-select
                                   id="requirement"
@@ -77,7 +77,7 @@
 
                         <div class="col-md-6 col-sm-12">
 
-                            <form id="category-form" method="GET" action="{{ route('tn.detail', ['course' => $course->id, 'tn' => $tn->id]) }}#filters">
+                            <form id="category-form" method="GET" action="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}#filters">
 
                                 <multi-select
                                   id="category"

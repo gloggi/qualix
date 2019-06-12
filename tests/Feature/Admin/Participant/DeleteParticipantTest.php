@@ -7,12 +7,12 @@ use Tests\TestCaseWithCourse;
 
 class DeleteParticipantTest extends TestCaseWithCourse {
 
-    private $tnId;
+    private $participantId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->tnId = $this->createParticipant('Pföschtli');
+        $this->participantId = $this->createParticipant('Pföschtli');
     }
 
     public function test_shouldRequireLogin() {
@@ -20,18 +20,18 @@ class DeleteParticipantTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/admin/participants/' . $this->tnId);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/participants/' . $this->participantId);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldDeleteTN() {
+    public function test_shouldDeleteParticipant() {
         // given
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/admin/participants/' . $this->tnId);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/participants/' . $this->participantId);
 
         // then
         $response->assertStatus(302);
@@ -41,11 +41,11 @@ class DeleteParticipantTest extends TestCaseWithCourse {
         $response->assertDontSee('Pföschtli');
     }
 
-    public function test_shouldValidateDeletedTNUrl_wrongId() {
+    public function test_shouldValidateDeletedParticipantUrl_wrongId() {
         // given
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/admin/participants/' . ($this->tnId + 1));
+        $response = $this->delete('/course/' . $this->courseId . '/admin/participants/' . ($this->participantId + 1));
 
         // then
         $response->assertStatus(404);

@@ -12,8 +12,8 @@
                 'required' => true,
                 'value' => $participant_id ?? '',
                 'options' => $course->participants->all(),
-                'valueFn' => function(\App\Models\Participant $tn) { return $tn->id; },
-                'displayFn' => function(\App\Models\Participant $tn) { return $tn->scout_name; },
+                'valueFn' => function(\App\Models\Participant $participant) { return $participant->id; },
+                'displayFn' => function(\App\Models\Participant $participant) { return $participant->scout_name; },
                 'multiple' => true,
             ])@endcomponent
 

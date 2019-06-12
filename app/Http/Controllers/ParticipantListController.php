@@ -13,6 +13,6 @@ class ParticipantListController extends Controller
      */
     public function index()
     {
-        return view('tn');
+        return view('participants');
     }
 }

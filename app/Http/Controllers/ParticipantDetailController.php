@@ -17,12 +17,12 @@ class ParticipantDetailController extends Controller
      *
      * @param Request $request
      * @param Course $course
-     * @param Participant $tn
+     * @param Participant $participant
      * @return Response
      */
-    public function index(Request $request, Course $course, Participant $tn)
+    public function index(Request $request, Course $course, Participant $participant)
     {
-        $observations = $tn->observations;
+        $observations = $participant->observations;
 
         $requirement = $request->input('requirement');
         if ($requirement != null) {
@@ -56,6 +56,6 @@ class ParticipantDetailController extends Controller
 
         $observations = $observations->sortBy(function (Observation $observation) { return $observation->block->block_date->timestamp . '.' . $observation->block->day_number . '.' . $observation->block->block_number . '.' . $observation->block->name . '.' . $observation->block->id; });
 
-        return view('tn-detail', ['tn' => $tn, 'observations' => $observations, 'requirement' => $requirement, 'category' => $category]);
+        return view('participant-detail', ['participant' => $participant, 'observations' => $observations, 'requirement' => $requirement, 'category' => $category]);
     }
 }
