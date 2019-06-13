@@ -6,7 +6,7 @@
 
         @component('components.form', ['route' => ['admin.requirements.update', ['course' => $course->id, 'requirement' => $requirement->id]]])
 
-            @component('components.form.textInput', ['name' => 'content', 'label' => __('Anforderung'), 'required' => true, 'value' => $requirement->content])@endcomponent
+            @component('components.form.textInput', ['name' => 'content', 'label' => __('Anforderung'), 'required' => true, 'autofocus' => true, 'value' => $requirement->content])@endcomponent
 
             @component('components.form.checkboxInput', ['name' => 'mandatory', 'label' => __('Killer-Kriterium'), 'value' => $requirement->mandatory])@endcomponent
 
