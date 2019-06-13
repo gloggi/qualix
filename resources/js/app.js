@@ -34,7 +34,27 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
  */
 Vue.directive('focus', {
     inserted: function (el) {
-        el.focus()
+        if (el.value !== undefined) {
+            el.focus()
+            let caretPos = el.value.length;
+            if (el.createTextRange) {
+                console.log('createTextRange available')
+                var range = el.createTextRange();
+                range.move('character', caretPos);
+                range.select();
+            } else {
+                el.setSelectionRange(caretPos, caretPos);
+            }
+        } else {
+            console.log(el)
+            console.log(el.querySelector('.multiselect'))
+            // We might be in a vue-multiselect, search for the contained div.multiselect
+            let multiselect = el.querySelector('div.multiselect');
+            if (multiselect) {
+                console.log(2)
+                multiselect.focus();
+            }
+        }
     }
 });
 
