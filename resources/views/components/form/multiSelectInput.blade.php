@@ -13,7 +13,7 @@
             @endif
             {{ isset($required) && $required ? 'required' : '' }}
             :allow-empty="true"
-            {{ isset($autofocus) && $autofocus ? 'autofocus' : '' }}
+            {{ isset($autofocus) && $autofocus ? 'autofocus v-focus' : '' }}
 
             :options="[
                 @foreach($options as $option)

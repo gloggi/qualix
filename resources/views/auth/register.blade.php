@@ -13,7 +13,7 @@
 
                     <div class="col-md-6">
                         <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
-                               name="name" value="{{ old('name') }}" required autofocus>
+                               name="name" value="{{ old('name') }}" required autofocus v-focus>
 
                         @if ($errors->has('name'))
                             <span class="invalid-feedback" role="alert">

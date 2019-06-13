@@ -9,7 +9,7 @@
             class="form-control{{ $errors->has($name) ? ' is-invalid' : '' }}"
             value="{{ isset($value) ? $value->format('d.m.Y') : old($name) }}"
             {{ isset($required) && $required ? 'required' : '' }}
-            {{ isset($autofocus) && $autofocus ? 'autofocus' : '' }}
+            {{ isset($autofocus) && $autofocus ? 'autofocus v-focus' : '' }}
             :config="{ format: 'DD.MM.YYYY', useCurrent: false, locale: '{{__('de-ch')}}' }">
 
         @if ($errors->has($name))

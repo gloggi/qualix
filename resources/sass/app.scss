@@ -32,6 +32,8 @@
     cursor: pointer;
 }
 
+[v-cloak] > * { display:none }
+
 .avatar {
     @extend .rounded-circle;
     width: 96px;
