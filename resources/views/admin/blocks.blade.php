@@ -2,6 +2,31 @@
 
 @section('content')
 
+    @component('components.card', ['header' => __('Neuer Block')])
+
+        @component('components.form', ['route' => ['admin.block.store', ['course' => $course->id]]])
+
+            @component('components.form.textInput', ['name' => 'full_block_number', 'label' => __('Blocknummer')])@endcomponent
+
+            @component('components.form.textInput', ['name' => 'name', 'label' => __('Blockname'), 'required' => true, 'autofocus' => true])@endcomponent
+
+            @component('components.form.dateInput', ['name' => 'block_date', 'label' => __('Datum'), 'required' => true, 'value' => Auth::user()->getLastUsedBlockDate($course)])@endcomponent
+
+            @component('components.form.multiSelectInput', [
+                'name' => 'requirement_ids',
+                'label' => __('Mindestanforderungen'),
+                'options' => $course->requirements->all(),
+                'valueFn' => function(\App\Models\Requirement $requirement) { return $requirement->id; },
+                'displayFn' => function(\App\Models\Requirement $requirement) { return $requirement->content; },
+                'multiple' => true,
+            ])@endcomponent
+
+            @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
+
+        @endcomponent
+
+    @endcomponent
+
     @component('components.card', ['header' => __('Blöcke :courseName', ['courseName' => $course->name])])
 
         @if (count($course->blocks))
@@ -38,31 +63,6 @@
             {{__('Bisher sind keine Blöcke erfasst.')}}
 
         @endif
-
-    @endcomponent
-
-    @component('components.card', ['header' => __('Neuer Block')])
-
-        @component('components.form', ['route' => ['admin.block.store', ['course' => $course->id]]])
-
-            @component('components.form.textInput', ['name' => 'full_block_number', 'label' => __('Blocknummer')])@endcomponent
-
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('Blockname'), 'required' => true])@endcomponent
-
-            @component('components.form.dateInput', ['name' => 'block_date', 'label' => __('Datum'), 'required' => true, 'value' => Auth::user()->getLastUsedBlockDate($course)])@endcomponent
-
-            @component('components.form.multiSelectInput', [
-                'name' => 'requirement_ids',
-                'label' => __('Mindestanforderungen'),
-                'options' => $course->requirements->all(),
-                'valueFn' => function(\App\Models\Requirement $requirement) { return $requirement->id; },
-                'displayFn' => function(\App\Models\Requirement $requirement) { return $requirement->content; },
-                'multiple' => true,
-            ])@endcomponent
-
-            @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
-
-        @endcomponent
 
     @endcomponent
 

@@ -2,6 +2,22 @@
 
 @section('content')
 
+    @component('components.card', ['header' => __('Neue Teilnehmende')])
+
+        @component('components.form', ['route' => ['admin.participants.store', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
+
+            @component('components.form.textInput', ['name' => 'scout_name', 'label' => 'Pfadiname', 'required' => true, 'autofocus' => true])@endcomponent
+
+            @component('components.form.textInput', ['name' => 'group', 'label' => 'Abteilung'])@endcomponent
+
+            @component('components.form.fileInput', ['name' => 'image', 'label' => 'Bild', 'accept' => 'image/*'])@endcomponent
+
+            @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
+
+        @endcomponent
+
+    @endcomponent
+
     @component('components.card', ['header' => __('Teilnehmende :courseName', ['courseName' => $course->name])])
 
         @if (count($course->participants))
@@ -29,22 +45,6 @@
             {{__('Bisher sind keine Teilnehmende erfasst.')}}
 
         @endif
-
-    @endcomponent
-
-    @component('components.card', ['header' => __('Neue Teilnehmende')])
-
-        @component('components.form', ['route' => ['admin.participants.store', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
-
-            @component('components.form.textInput', ['name' => 'scout_name', 'label' => 'Pfadiname', 'required' => true])@endcomponent
-
-            @component('components.form.textInput', ['name' => 'group', 'label' => 'Abteilung'])@endcomponent
-
-            @component('components.form.fileInput', ['name' => 'image', 'label' => 'Bild', 'accept' => 'image/*'])@endcomponent
-
-            @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
-
-        @endcomponent
 
     @endcomponent
 
