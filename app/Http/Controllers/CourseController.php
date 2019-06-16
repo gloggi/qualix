@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CourseRequest;
 use App\Models\Course;
+use App\Models\Participant;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller {
 
@@ -51,7 +54,6 @@ class CourseController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit() {
@@ -68,5 +70,27 @@ class CourseController extends Controller {
         $course->update($request->validated());
         $request->session()->flash('alert-success', __('Kursdetails erfolgreich gespeichert.'));
         return Redirect::route('admin.course', ['course' => $course->id]);
+    }
+
+    /**
+     * Permanently delete a resource and all its related entities from storage.
+     *
+     * @param Request $request
+     * @param Course $course
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function delete(Request $request, Course $course) {
+        $participantImageUrls = $course->participants->map(function (Participant $participant) {
+            return $participant->image_url;
+        });
+        // Because of the ON DELETE CASCADE on database constraints, this will also delete all related data
+        $course->delete();
+        // Perform the image deletion after database deletion, so that a failing image doesn't prevent the whole deletion operation.
+        // This way, we risk having some stray images on the server in the worst case, which is better than preventing deletion of a course.
+        foreach ($participantImageUrls as $participantImageUrl) {
+            Storage::delete($participantImageUrl);
+        }
+        $request->session()->flash('alert-success', __('Kurs :name und alle damit verbundenen Daten wurden gelöscht.', ['name' => $course->name]));
+        return Redirect::route('home');
     }
 }

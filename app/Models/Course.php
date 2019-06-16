@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Collection;
+
 /**
  * @property int $id
  * @property string $name
@@ -11,7 +13,7 @@ namespace App\Models;
  * @property User[] $users
  * @property Requirement[] $requirements
  * @property Category[] $categories
- * @property Participant[] $participants
+ * @property Collection $participants
  */
 class Course extends Model
 {

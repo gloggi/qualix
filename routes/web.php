@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/course/{course}/admin', 'CourseController@edit')->name('admin.course');
     Route::post('/course/{course}/admin', 'CourseController@update')->name('admin.course.update');
+    Route::delete('/course/{course}/admin', 'CourseController@delete')->name('admin.course.delete');
 
     Route::get('/course/{course}/admin/equipe', 'EquipeController@index')->name('admin.equipe');
     Route::delete('/course/{course}/admin/equipe/{user}', 'EquipeController@destroy')->name('admin.equipe.delete');
