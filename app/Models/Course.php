@@ -14,13 +14,14 @@ use Illuminate\Support\Collection;
  * @property Requirement[] $requirements
  * @property Category[] $categories
  * @property Collection $participants
+ * @property boolean $archived
  */
 class Course extends Model
 {
     /**
      * @var array
      */
-    protected $fillable = ['name', 'course_number'];
+    protected $fillable = ['name', 'course_number', 'archived'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

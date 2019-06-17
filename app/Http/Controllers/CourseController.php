@@ -93,4 +93,30 @@ class CourseController extends Controller {
         $request->session()->flash('alert-success', __('Kurs :name und alle damit verbundenen Daten wurden gelöscht.', ['name' => $course->name]));
         return Redirect::route('home');
     }
+
+    /**
+     * Permanently delete all related security sensitive data and mark the course as archived,
+     * but leaves categories, requirements and trainers in the course to look it up in later courses.
+     *
+     * @param Request $request
+     * @param Course $course
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function archive(Request $request, Course $course) {
+        $participantImageUrls = $course->participants->map(function (Participant $participant) {
+            return $participant->image_url;
+        });
+        // Because of the ON DELETE CASCADE on database constraints, this will also delete all related data like observations
+        DB::transaction(function() use ($course) {
+            $course->participants()->delete();
+            $course->update(['archived' => true]);
+        });
+        // Perform the image deletion after database deletion, so that a failing image doesn't prevent the whole deletion operation.
+        // This way, we risk having some stray images on the server in the worst case, which is better than preventing deletion of a course.
+        foreach ($participantImageUrls as $participantImageUrl) {
+            Storage::delete($participantImageUrl);
+        }
+        $request->session()->flash('alert-success', __('Kurs :name wurde archiviert.', ['name' => $course->name]));
+        return Redirect::route('home');
+    }
 }
