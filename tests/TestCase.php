@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -100,7 +101,7 @@ abstract class TestCase extends BaseTestCase {
         $matches = $this->crawler->filter($selector);
 
         if ($matches->count() !== count($contents)) {
-            $this->fail('Expected to find ' . count($contents) . ' matching elements, but found ' . $matches->count());
+            $this->fail('Expected to find ' . count($contents) . ' matching elements, but found ' . $matches->count() . ' in ' . $this->crawler->html());
         }
 
         foreach ($matches as $index => $domElement) {
@@ -125,6 +126,13 @@ abstract class TestCase extends BaseTestCase {
         return null;
     }
 
+    protected function refreshUser(): User {
+        /** @var User $user */
+        $user = $this->user();
+        auth()->setUser($user);
+        return $user;
+    }
+
     protected function createUser($attrs = [], $actAsNewUser = false) {
         $user = factory(User::class)->create($attrs);
         if ($actAsNewUser) {
@@ -136,7 +144,9 @@ abstract class TestCase extends BaseTestCase {
     protected function createCourse($name = 'Kursname', $courseNumber = 'CH 123-00', $attachToUser = true) {
         $id = Course::create(['name' => $name, 'course_number' => $courseNumber])->id;
         if ($attachToUser) {
-            $this->user()->courses()->attach($id);
+            $this->user()->courses()->attach($id, ['last_accessed' => Carbon::now()]);
+            // Laravel bug: The Auth::user used in the application is cached and will not get the updated course list during the test, unless we refresh it manually
+            $this->refreshUser();
         }
         return $id;
     }

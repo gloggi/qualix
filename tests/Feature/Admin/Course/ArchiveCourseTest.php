@@ -11,12 +11,11 @@ use App\Models\Participant;
 use App\Models\Requirement;
 use App\Models\RequirementDetail;
 use App\Models\Trainer;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCaseWithBasicData;
 
-class DeleteCourseTest extends TestCaseWithBasicData {
+class ArchiveCourseTest extends TestCaseWithBasicData {
 
     public function setUp(): void {
         parent::setUp();
@@ -27,27 +26,42 @@ class DeleteCourseTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/admin');
+        $response = $this->post('/course/' . $this->courseId . '/admin/archive');
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldDeleteCourse() {
+    public function test_shouldRequireNonArchivedCourse() {
         // given
-        $courseName = 'Test deletion of course';
+        Course::find($this->courseId)->update(['archived' => true]);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/archive');
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
+    }
+
+    public function test_shouldArchiveCourse() {
+        // given
+        $courseName = '000 Test archivation of course';
         $courseId = $this->createCourse($courseName);
 
         // when
-        $response = $this->delete('/course/' . $courseId . '/admin');
+        $response = $this->post('/course/' . $courseId . '/admin/archive');
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/');
-        /** @var TestResponse $response */
-        $response->followRedirects();
-        $this->assertSeeAllInOrder('select option', ['Kursname']);
+        // Laravel bug: The Auth::user used in the application is cached and will not get the updated course list in this test, unless we refresh it manually
+        $this->refreshUser();
+        $response = $this->get('/course/' . $courseId . '/admin');
+        $this->assertSeeAllInOrder('select option', ['Kursname', $courseName]);
+        $this->assertSeeAllInOrder('select optgroup[label="Archiviert"] option', [$courseName]);
+        $response->assertDontSee('Überblick');
     }
 
     public function test_shouldDeleteRelatedData() {
@@ -64,25 +78,26 @@ class DeleteCourseTest extends TestCaseWithBasicData {
         $numObservations = Observation::all()->count();
         $numParticipants = Participant::all()->count();
         $numRequirements = Requirement::all()->count();
+        $numRequirementDetails = RequirementDetail::all()->count();
         $numTrainers = Trainer::all()->count();
         $numBlocksRequirements = DB::table('blocks_requirements')->count();
         $numObservationsCategories = DB::table('observations_categories')->count();
         $numObservationsRequirements = DB::table('observations_requirements')->count();
 
         // when
-        $this->delete('/course/' . $this->courseId . '/admin');
+        $this->post('/course/' . $this->courseId . '/admin/archive');
 
         // then
-        $this->assertEquals($numBlocks - 1, Block::all()->count(), 'All blocks of course should have been removed from DB');
-        $this->assertEquals($numCategories - 1, Category::all()->count(), 'All categories of course should have been removed from DB');
-        $this->assertEquals($numCourses - 1, Course::all()->count(), 'Course should have been removed from DB');
-        $this->assertEquals($numInvitations - 1, Invitation::all()->count(), 'All invitations of course should have been removed from DB');
+        $this->assertEquals($numBlocks, Block::all()->count(), 'All blocks should have remained in course');
+        $this->assertEquals($numCategories, Category::all()->count(), 'All categories should have remained in course');
+        $this->assertEquals($numCourses, Course::all()->count(), 'Course should have remained in DB');
+        $this->assertEquals($numInvitations, Invitation::all()->count(), 'All invitations should have remained in course');
         $this->assertEquals($numObservations - 1, Observation::all()->count(), 'All observations of course should have been removed from DB');
         $this->assertEquals($numParticipants - 1, Participant::all()->count(), 'All participants of course should have been removed from DB');
-        $this->assertEquals($numRequirements - 1, Requirement::all()->count(), 'All requirements of course should have been removed from DB');
-        $this->assertEquals(0, RequirementDetail::all()->count(), 'All requirement details of course should have been removed from DB');
-        $this->assertEquals($numTrainers - 1, Trainer::all()->count(), 'All trainers should have been removed from course in DB');
-        $this->assertEquals($numBlocksRequirements - 1, DB::table('blocks_requirements')->count(), 'All blocks_requirements entries of course should have been removed from DB');
+        $this->assertEquals($numRequirements, Requirement::all()->count(), 'All requirements should have remained in course');
+        $this->assertEquals($numRequirementDetails, RequirementDetail::all()->count(), 'All requirement details should have remained in course');
+        $this->assertEquals($numTrainers, Trainer::all()->count(), 'All trainers should have remained in course');
+        $this->assertEquals($numBlocksRequirements, DB::table('blocks_requirements')->count(), 'All blocks_requirements should have remained in course');
         $this->assertEquals($numObservationsCategories - 1, DB::table('observations_categories')->count(), 'All observations_categories entries of course should have been removed from DB');
         $this->assertEquals($numObservationsRequirements - 1, DB::table('observations_requirements')->count(), 'All observations_requirements entries of course should have been removed from DB');
     }
@@ -95,7 +110,7 @@ class DeleteCourseTest extends TestCaseWithBasicData {
         Storage::shouldReceive('delete')->with($imageUrl)->once();
 
         // when
-        $this->delete('/course/' . $this->courseId . '/admin');
+        $this->post('/course/' . $this->courseId . '/admin/archive');
 
         // then
     }

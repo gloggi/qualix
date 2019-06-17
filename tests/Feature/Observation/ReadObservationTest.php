@@ -3,6 +3,7 @@
 namespace Tests\Feature\Observation;
 
 use App\Models\Block;
+use App\Models\Course;
 use App\Models\Observation;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -16,7 +17,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
     public function setUp(): void {
         parent::setUp();
 
-        $this->beobachtungId = $this->createObservation('hat gut mitgemacht');
+        $this->observationId = $this->createObservation('hat gut mitgemacht');
     }
 
     public function test_shouldRequireLogin() {
@@ -24,18 +25,30 @@ class ReadObservationTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/observation/' . $this->beobachtungId);
+        $response = $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
+    public function test_shouldRequireNonArchivedCourse() {
+        // given
+        Course::find($this->courseId)->update(['archived' => true]);
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
+    }
+
     public function test_shouldDisplayBeobachtung() {
         // given
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/observation/' . $this->beobachtungId);
+        $response = $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId);
 
         // then
         $response->assertOk();
@@ -47,7 +60,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
         $otherKursId = $this->createCourse('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/course/' . $otherKursId . '/observation/' . $this->beobachtungId);
+        $response = $this->get('/course/' . $otherKursId . '/observation/' . $this->observationId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Observation;
 
+use App\Models\Course;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithBasicData;
@@ -26,6 +27,18 @@ class CreateObservationTest extends TestCaseWithBasicData {
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
+    }
+
+    public function test_shouldRequireNonArchivedCourse() {
+        // given
+        Course::find($this->courseId)->update(['archived' => true]);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
 
     public function test_shouldCreateAndDisplayBeobachtung() {

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Overview;
 
 use App\Models\Block;
+use App\Models\Course;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
@@ -43,6 +44,18 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
+    }
+
+    public function test_shouldRequireNonArchivedCourse() {
+        // given
+        Course::find($this->courseId)->update(['archived' => true]);
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview');
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
 
     public function test_shouldDisplayUeberblick() {

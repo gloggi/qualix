@@ -17,12 +17,14 @@ class CourseController extends Controller {
     /**
      * Redirect to a course-specific URL, based on stored state from the database
      *
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function noCourse() {
+    public function noCourse(Request $request) {
         /** @var User $user */
         $user = Auth::user();
         if (count($user->courses)) {
+            $request->session()->reflash();
             return Redirect::route('index', ['course' => $user->lastAccessedCourse->id]);
         }
         return view('no-courses');
