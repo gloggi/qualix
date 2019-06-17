@@ -41,7 +41,7 @@ class ReadCategoryTest extends TestCaseWithCourse {
 
     public function test_shouldNotDisplayCategory_fromOtherCourseOfSameUser() {
         // given
-        $otherKursId = $this->createKurs('Zweiter Kurs', '');
+        $otherKursId = $this->createCourse('Zweiter Kurs', '');
 
         // when
         $response = $this->get('/course/' . $otherKursId . '/admin/category/' . $this->categoryId);
@@ -52,7 +52,7 @@ class ReadCategoryTest extends TestCaseWithCourse {
 
     public function test_shouldNotDisplayCategory_fromOtherUser() {
         // given
-        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $otherKursId = $this->createCourse('Zweiter Kurs', '', false);
         $otherCategoryId = Category::create(['course_id' => $otherKursId, 'name' => 'Kategorie 2'])->id;
 
         // when

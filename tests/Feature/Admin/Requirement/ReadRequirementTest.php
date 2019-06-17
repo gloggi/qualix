@@ -41,7 +41,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
 
     public function test_shouldNotDisplayMA_fromOtherCourseOfSameUser() {
         // given
-        $otherKursId = $this->createKurs('Zweiter Kurs', '');
+        $otherKursId = $this->createCourse('Zweiter Kurs', '');
 
         // when
         $response = $this->get('/course/' . $otherKursId . '/admin/requirement/' . $this->maId);
@@ -52,7 +52,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
 
     public function test_shouldNotDisplayMA_fromOtherUser() {
         // given
-        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $otherKursId = $this->createCourse('Zweiter Kurs', '', false);
         $otherMAId = Requirement::create(['course_id' => $otherKursId, 'content' => 'Mindestanforderung 1', 'mandatory' => '1'])->id;
 
         // when

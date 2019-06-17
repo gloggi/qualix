@@ -41,7 +41,7 @@ class ReadParticipantTest extends TestCaseWithCourse {
 
     public function test_shouldNotDisplayParticipant_fromOtherCourseOfSameUser() {
         // given
-        $otherKursId = $this->createKurs('Zweiter Kurs', '');
+        $otherKursId = $this->createCourse('Zweiter Kurs', '');
 
         // when
         $response = $this->get('/course/' . $otherKursId . '/admin/participants/' . $this->participantId);
@@ -52,7 +52,7 @@ class ReadParticipantTest extends TestCaseWithCourse {
 
     public function test_shouldNotDisplayParticipant_fromOtherUser() {
         // given
-        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $otherKursId = $this->createCourse('Zweiter Kurs', '', false);
         $otherParticipantId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
 
         // when

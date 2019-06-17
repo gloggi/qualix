@@ -76,7 +76,7 @@ class DeleteTrainerTest extends TestCaseWithCourse {
 
     public function test_shouldNotDeleteEquipeMember_fromOtherCourseOfSameUser() {
         // given
-        $otherKursId = $this->createKurs('Zweiter Kurs');
+        $otherKursId = $this->createCourse('Zweiter Kurs');
 
         // when
         $response = $this->delete('/course/' . $otherKursId . '/admin/equipe/' . $this->otherUser->id);
@@ -87,7 +87,7 @@ class DeleteTrainerTest extends TestCaseWithCourse {
 
     public function test_shouldNotDeleteEquipeMember_fromOtherUser() {
         // given
-        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $otherKursId = $this->createCourse('Zweiter Kurs', '', false);
         $this->otherUser->courses()->attach($otherKursId);
 
         // when

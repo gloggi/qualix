@@ -133,7 +133,7 @@ abstract class TestCase extends BaseTestCase {
         return $user;
     }
 
-    protected function createKurs($name = 'Kursname', $courseNumber = 'CH 123-00', $attachToUser = true) {
+    protected function createCourse($name = 'Kursname', $courseNumber = 'CH 123-00', $attachToUser = true) {
         $id = Course::create(['name' => $name, 'course_number' => $courseNumber])->id;
         if ($attachToUser) {
             $this->user()->courses()->attach($id);

@@ -14,7 +14,7 @@ abstract class TestCaseWithCourse extends TestCase
     public function setUp(): void {
         parent::setUp();
 
-        $this->courseId = $this->createKurs();
+        $this->courseId = $this->createCourse();
     }
 
     protected function createParticipant($scoutName = 'Pflock', $courseId = null) {

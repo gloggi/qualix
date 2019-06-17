@@ -98,7 +98,7 @@ class ReadOverviewTest extends TestCaseWithBasicData {
 
     public function test_shouldNotDisplayUeberblick_toOtherUser() {
         // given
-        $otherKursId = $this->createKurs('Zweiter Kurs', '', false);
+        $otherKursId = $this->createCourse('Zweiter Kurs', '', false);
         Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock']);
 
         // when
