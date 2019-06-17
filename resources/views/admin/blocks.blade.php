@@ -41,18 +41,22 @@
                     $blocks[] = ['type' => 'header', 'text' => $day[0]->block_date->formatLocalized('%A %d.%m.%Y')];
                     $blocks = array_merge($blocks, $day);
                 }
-            @endphp
-            @component('components.responsive-table', [
-                'data' => $blocks,
-                'fields' => [
+                $fields = [
                     __('Blocknummer') => function(\App\Models\Block $block) { return $block->full_block_number; },
                     __('Blockname') => function(\App\Models\Block $block) { return $block->name; },
                     __('Anzahl Beobachtungen') => function(\App\Models\Block $block) { return count($block->observations); },
-                ],
+                ];
+                if ($course->archived) {
+                    unset($fields[__('Anzahl Beobachtungen')]);
+                }
+            @endphp
+            @component('components.responsive-table', [
+                'data' => $blocks,
+                'fields' => $fields,
                 'actions' => [
                     'edit' => function(\App\Models\Block $block) use ($course) { return route('admin.block.edit', ['course' => $course->id, 'block' => $block->id]); },
                     'delete' => function(\App\Models\Block $block) use ($course) { return [
-                        'text' => __('Willst du diesen Block wirklich löschen? ' . count($block->observations) . ' Beobachtung(en) ist / sind darauf zugewiesen.'),
+                        'text' => __('Willst du diesen Block wirklich löschen?' . ($course->archived ? '' : ' ' . count($block->observations) . ' Beobachtung(en) ist / sind darauf zugewiesen.')),
                         'route' => ['admin.block.delete', ['course' => $course->id, 'block' => $block->id]],
                      ];},
                 ]

@@ -18,16 +18,22 @@
 
         @if (count($course->categories))
 
-            @component('components.responsive-table', [
-                'data' => $course->categories,
-                'fields' => [
+            @php
+                $fields = [
                     __('Titel') => function(\App\Models\Category $category) { return $category->name; },
                     __('Anzahl Beobachtungen') => function(\App\Models\Category $category) { return count($category->observations); },
-                ],
+                ];
+                if ($course->archived) {
+                    unset($fields[__('Anzahl Beobachtungen')]);
+                }
+            @endphp
+            @component('components.responsive-table', [
+                'data' => $course->categories,
+                'fields' => $fields,
                 'actions' => [
                     'edit' => function(\App\Models\Category $category) use ($course) { return route('admin.categories.edit', ['course' => $course->id, 'category' => $category->id]); },
                     'delete' => function(\App\Models\Category $category) use ($course) { return [
-                        'text' => __('Willst du diese Kategorie wirklich löschen? ' . count($category->observations) . ' Beobachtung(en) ist / sind darauf zugewiesen.'),
+                        'text' => __('Willst du diese Kategorie wirklich löschen?' . ($course->archived ? '' : ' ' . count($category->observations) . ' Beobachtung(en) ist / sind darauf zugewiesen.')),
                         'route' => ['admin.categories.delete', ['course' => $course->id, 'category' => $category->id]],
                      ];},
                 ]

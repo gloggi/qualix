@@ -25,21 +25,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/course/{course}', 'HomeController@index')->name('index');
 
     Route::get('/course/{course}/blocks', 'BlockListController@index')->name('blocks');
-    Route::get('/course/{course}/participants', 'ParticipantListController@index')->name('participants');
-    Route::get('/course/{course}/participants/{participant}', 'ParticipantDetailController@index')->name('participants.detail');
 
-    Route::get('/course/{course}/overview', 'ObservationController@overview')->name('overview');
+    Route::middleware('courseNotArchived')->group(function () {
+        Route::get('/course/{course}/participants', 'ParticipantListController@index')->name('participants');
+        Route::get('/course/{course}/participants/{participant}', 'ParticipantDetailController@index')->name('participants.detail');
 
-    Route::get('/course/{course}/overview/new', 'ObservationController@create')->name('observation.new');
-    Route::post('/course/{course}/overview/new', 'ObservationController@store')->name('observation.store');
-    Route::get('/course/{course}/overview/{observation}', 'ObservationController@edit')->name('observation.edit');
-    Route::post('/course/{course}/overview/{observation}', 'ObservationController@update')->name('observation.update');
-    Route::delete('/course/{course}/overview/{observation}', 'ObservationController@destroy')->name('observation.delete');
+        Route::get('/course/{course}/overview', 'ObservationController@overview')->name('overview');
+
+        Route::get('/course/{course}/overview/new', 'ObservationController@create')->name('observation.new');
+        Route::post('/course/{course}/overview/new', 'ObservationController@store')->name('observation.store');
+        Route::get('/course/{course}/overview/{observation}', 'ObservationController@edit')->name('observation.edit');
+        Route::post('/course/{course}/overview/{observation}', 'ObservationController@update')->name('observation.update');
+        Route::delete('/course/{course}/overview/{observation}', 'ObservationController@destroy')->name('observation.delete');
+
+        Route::post('/course/{course}/admin/archive', 'CourseController@archive')->name('admin.course.archive');
+    });
 
     Route::get('/course/{course}/admin', 'CourseController@edit')->name('admin.course');
     Route::post('/course/{course}/admin', 'CourseController@update')->name('admin.course.update');
     Route::delete('/course/{course}/admin', 'CourseController@delete')->name('admin.course.delete');
-    Route::post('/course/{course}/admin/archive', 'CourseController@archive')->name('admin.course.archive');
 
     Route::get('/course/{course}/admin/equipe', 'EquipeController@index')->name('admin.equipe');
     Route::delete('/course/{course}/admin/equipe/{user}', 'EquipeController@destroy')->name('admin.equipe.delete');
@@ -49,11 +53,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/invitation/{token}', 'InvitationController@index')->name('invitation.view');
     Route::post('/invitation', 'InvitationController@claim')->name('invitation.claim');
 
-    Route::get('/course/{course}/admin/participants', 'ParticipantController@index')->name('admin.participants');
-    Route::post('/course/{course}/admin/participants', 'ParticipantController@store')->name('admin.participants.store');
-    Route::get('/course/{course}/admin/participants/{participant}', 'ParticipantController@edit')->name('admin.participants.edit');
-    Route::post('/course/{course}/admin/participants/{participant}', 'ParticipantController@update')->name('admin.participants.update');
-    Route::delete('/course/{course}/admin/participants/{participant}', 'ParticipantController@destroy')->name('admin.participants.delete');
+    Route::middleware('courseNotArchived')->group(function() {
+        Route::get('/course/{course}/admin/participants', 'ParticipantController@index')->name('admin.participants');
+        Route::post('/course/{course}/admin/participants', 'ParticipantController@store')->name('admin.participants.store');
+        Route::get('/course/{course}/admin/participants/{participant}', 'ParticipantController@edit')->name('admin.participants.edit');
+        Route::post('/course/{course}/admin/participants/{participant}', 'ParticipantController@update')->name('admin.participants.update');
+        Route::delete('/course/{course}/admin/participants/{participant}', 'ParticipantController@destroy')->name('admin.participants.delete');
+    });
 
     Route::get('/course/{course}/admin/blocks', 'BlockController@index')->name('admin.blocks');
     Route::post('/course/{course}/admin/blocks', 'BlockController@store')->name('admin.block.store');

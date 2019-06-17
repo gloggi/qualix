@@ -34,7 +34,7 @@
                 'actions' => [
                     'edit' => function(\App\Models\Participant $participant) use ($course) { return route('admin.participants.edit', ['course' => $course->id, 'participant' => $participant->id]); },
                     'delete' => function(\App\Models\Participant $participant) use ($course) { return [
-                        'text' => __('Willst du diese/n TN wirklich löschen? ' . count($participant->observations) . ' Beobachtung(en) ist / sind darauf zugewiesen.'),
+                        'text' => __('Willst du diese/n TN wirklich löschen?' . ($course->archived ? '' : ' ' . count($participant->observations) . ' Beobachtung(en) ist / sind darauf zugewiesen.')),
                         'route' => ['admin.participants.delete', ['course' => $course->id, 'participant' => $participant->id]],
                      ];},
                 ]

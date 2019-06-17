@@ -96,7 +96,7 @@ class CourseController extends Controller {
 
     /**
      * Permanently delete all related security sensitive data and mark the course as archived,
-     * but leaves categories, requirements and trainers in the course to look it up in later courses.
+     * but leave categories, requirements and trainers in the course to be looked up in later courses.
      *
      * @param Request $request
      * @param Course $course

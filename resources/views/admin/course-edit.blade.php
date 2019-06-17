@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Kursdetails :courseName', ['courseName' => $course->name])])
+    @component('components.card', ['header' => __('Kurseinstellungen :courseName', ['courseName' => $course->name])])
 
         @component('components.form', ['route' => ['admin.course.update', ['course' => $course->id]]])
 
