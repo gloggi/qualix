@@ -21,7 +21,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -32,11 +32,11 @@ class CreateObservationTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $this->payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/overview/new?participant=' . $this->participantId . '&block=' . $this->blockId);
+        $response->assertRedirect('/course/' . $this->courseId . '/observation/new?participant=' . $this->participantId . '&block=' . $this->blockId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Beobachtung erfasst.');
@@ -48,7 +48,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         unset($payload['participant_ids']);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -60,7 +60,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $payload['participant_ids'] = 'a';
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -74,11 +74,11 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $payload['participant_ids'] = $participantIds;
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/overview/new?participant=' . urlencode($participantIds) . '&block=' . $this->blockId);
+        $response->assertRedirect('/course/' . $this->courseId . '/observation/new?participant=' . urlencode($participantIds) . '&block=' . $this->blockId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Beobachtungen erfasst.');
@@ -90,7 +90,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         unset($payload['content']);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -102,7 +102,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         unset($payload['impression']);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -114,7 +114,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $payload['impression'] = '3';
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -126,7 +126,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         unset($payload['block_id']);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -138,7 +138,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $payload['block_id'] = '*';
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -150,7 +150,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $payload['requirement_ids'] = 'xyz';
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -162,7 +162,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $payload['category_ids'] = 'xyz';
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/new', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);

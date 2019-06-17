@@ -28,7 +28,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/' . $this->observationId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -39,7 +39,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/' . $this->observationId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -56,7 +56,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         unset($payload['content']);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/' . $this->observationId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -68,7 +68,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         unset($payload['impression']);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/' . $this->observationId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -80,7 +80,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $payload['impression'] = '3';
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/' . $this->observationId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -92,7 +92,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         unset($payload['block_id']);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/' . $this->observationId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -104,7 +104,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $payload['block_id'] = '*';
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/' . $this->observationId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -116,7 +116,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $payload['requirement_ids'] = 'xyz';
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/' . $this->observationId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -128,7 +128,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $payload['category_ids'] = 'xyz';
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/' . $this->observationId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -139,7 +139,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $payload = $this->payload;
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/overview/' . ($this->observationId + 1), $payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . ($this->observationId + 1), $payload);
 
         // then
         $response->assertStatus(404);

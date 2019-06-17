@@ -32,11 +32,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/course/{course}/overview', 'ObservationController@overview')->name('overview');
 
-        Route::get('/course/{course}/overview/new', 'ObservationController@create')->name('observation.new');
-        Route::post('/course/{course}/overview/new', 'ObservationController@store')->name('observation.store');
-        Route::get('/course/{course}/overview/{observation}', 'ObservationController@edit')->name('observation.edit');
-        Route::post('/course/{course}/overview/{observation}', 'ObservationController@update')->name('observation.update');
-        Route::delete('/course/{course}/overview/{observation}', 'ObservationController@destroy')->name('observation.delete');
+        Route::get('/course/{course}/observation/new', 'ObservationController@create')->name('observation.new');
+        Route::post('/course/{course}/observation/new', 'ObservationController@store')->name('observation.store');
+        Route::get('/course/{course}/observation/{observation}', 'ObservationController@edit')->name('observation.edit');
+        Route::post('/course/{course}/observation/{observation}', 'ObservationController@update')->name('observation.update');
+        Route::delete('/course/{course}/observation/{observation}', 'ObservationController@destroy')->name('observation.delete');
 
         Route::post('/course/{course}/admin/archive', 'CourseController@archive')->name('admin.course.archive');
     });

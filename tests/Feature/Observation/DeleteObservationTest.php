@@ -20,7 +20,7 @@ class DeleteObservationTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/overview/' . $this->observationId);
+        $response = $this->delete('/course/' . $this->courseId . '/observation/' . $this->observationId);
 
         // then
         $response->assertStatus(302);
@@ -31,7 +31,7 @@ class DeleteObservationTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/overview/' . $this->observationId);
+        $response = $this->delete('/course/' . $this->courseId . '/observation/' . $this->observationId);
 
         // then
         $response->assertStatus(302);
@@ -45,7 +45,7 @@ class DeleteObservationTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/overview/' . ($this->observationId + 1));
+        $response = $this->delete('/course/' . $this->courseId . '/observation/' . ($this->observationId + 1));
 
         // then
         $response->assertStatus(404);
