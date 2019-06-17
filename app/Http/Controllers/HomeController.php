@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
@@ -41,8 +41,8 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        if ($request->file('bild') && $user->bild_url) {
-            Storage::delete($user->bild_url);
+        if ($request->file('image') && $user->image_url) {
+            Storage::delete($user->image_url);
         }
 
         $user->update($request->validated());

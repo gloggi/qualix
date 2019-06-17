@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use App\Models\Kurs;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -133,10 +133,10 @@ abstract class TestCase extends BaseTestCase {
         return $user;
     }
 
-    protected function createKurs($name = 'Kursname', $kursnummer = 'CH 123-00', $attachToUser = true) {
-        $id = Kurs::create(['name' => $name, 'kursnummer' => $kursnummer])->id;
+    protected function createCourse($name = 'Kursname', $courseNumber = 'CH 123-00', $attachToUser = true) {
+        $id = Course::create(['name' => $name, 'course_number' => $courseNumber])->id;
         if ($attachToUser) {
-            $this->user()->kurse()->attach($id);
+            $this->user()->courses()->attach($id);
         }
         return $id;
     }

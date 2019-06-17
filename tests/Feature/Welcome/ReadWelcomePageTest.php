@@ -2,9 +2,6 @@
 
 namespace Tests\Feature\Welcome;
 
-use App\Models\Kurs;
-use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCaseWithBasicData;
 
 class ReadWelcomePageTest extends TestCaseWithBasicData {
@@ -14,7 +11,7 @@ class ReadWelcomePageTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId);
+        $response = $this->get('/course/' . $this->courseId);
 
         // then
         $response->assertStatus(302);
@@ -25,7 +22,7 @@ class ReadWelcomePageTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId);
+        $response = $this->get('/course/' . $this->courseId);
 
         // then
         $response->assertOk();

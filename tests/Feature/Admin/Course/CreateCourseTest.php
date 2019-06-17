@@ -13,7 +13,7 @@ class CreateCourseTest extends TestCase {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['name' => 'Kursname', 'kursnummer' => 'CH 123-00'];
+        $this->payload = ['name' => 'Kursname', 'course_number' => 'CH 123-00'];
     }
 
     public function test_shouldRequireLogin() {
@@ -21,7 +21,7 @@ class CreateCourseTest extends TestCase {
         auth()->logout();
 
         // when
-        $response = $this->post('/neuerkurs', $this->payload);
+        $response = $this->post('/newcourse', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -32,7 +32,7 @@ class CreateCourseTest extends TestCase {
         // given
 
         // when
-        $response = $this->post('/neuerkurs', $this->payload);
+        $response = $this->post('/newcourse', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -48,7 +48,7 @@ class CreateCourseTest extends TestCase {
         unset($payload['name']);
 
         // when
-        $response = $this->post('/neuerkurs', $payload);
+        $response = $this->post('/newcourse', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);

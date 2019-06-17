@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Kurs;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
@@ -26,40 +26,40 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Route::bind('kurs', function($id) {
+        Route::bind('course', function($id) {
             /** @var User $user */
             $user = Auth::user();
-            return $user->kurse()->findOrFail($id);
+            return $user->courses()->findOrFail($id);
         });
-        Route::bind('qk', function($id, \Illuminate\Routing\Route $route) {
-            /** @var Kurs $kurs */
-            $kurs = $route->parameter('kurs');
-            return $kurs->qks()->findOrFail($id);
+        Route::bind('category', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Course $course */
+            $course = $route->parameter('course');
+            return $course->categories()->findOrFail($id);
         });
-        Route::bind('ma', function($id, \Illuminate\Routing\Route $route) {
-            /** @var Kurs $kurs */
-            $kurs = $route->parameter('kurs');
-            return $kurs->mas()->findOrFail($id);
+        Route::bind('requirement', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Course $course */
+            $course = $route->parameter('course');
+            return $course->requirements()->findOrFail($id);
         });
         Route::bind('block', function($id, \Illuminate\Routing\Route $route) {
-            /** @var Kurs $kurs */
-            $kurs = $route->parameter('kurs');
-            return $kurs->bloecke()->findOrFail($id);
+            /** @var Course $course */
+            $course = $route->parameter('course');
+            return $course->blocks()->findOrFail($id);
         });
         Route::bind('user', function($id, \Illuminate\Routing\Route $route) {
-            /** @var Kurs $kurs */
-            $kurs = $route->parameter('kurs');
-            return $kurs->users()->findOrFail($id);
+            /** @var Course $course */
+            $course = $route->parameter('course');
+            return $course->users()->findOrFail($id);
         });
-        Route::bind('tn', function($id, \Illuminate\Routing\Route $route) {
-            /** @var Kurs $kurs */
-            $kurs = $route->parameter('kurs');
-            return $kurs->tns()->findOrFail($id);
+        Route::bind('participant', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Course $course */
+            $course = $route->parameter('course');
+            return $course->participants()->findOrFail($id);
         });
-        Route::bind('beobachtung', function($id, \Illuminate\Routing\Route $route) {
-            /** @var Kurs $kurs */
-            $kurs = $route->parameter('kurs');
-            return $kurs->beobachtungen()->findOrFail($id);
+        Route::bind('observation', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Course $course */
+            $course = $route->parameter('course');
+            return $course->observations()->findOrFail($id);
         });
 
         parent::boot();

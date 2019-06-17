@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property int $id
- * @property int $kurs_id
- * @property string $blockname
- * @property int $tagesnummer
- * @property int $blocknummer
+ * @property int $course_id
+ * @property string $name
+ * @property int $day_number
+ * @property int $block_number
  * @property string $full_block_number
  * @property string $blockname_and_number
- * @property CarbonInterface $datum
- * @property Kurs $kurs
- * @property Beobachtung[] $beobachtungen
- * @property Collection $mas
+ * @property CarbonInterface $block_date
+ * @property Course $course
+ * @property Observation[] $observations
+ * @property Collection $requirements
  */
 class Block extends Model {
     /**
@@ -25,57 +25,57 @@ class Block extends Model {
      *
      * @var string
      */
-    protected $table = 'block';
+    protected $table = 'blocks';
 
     /**
      * @var array
      */
-    protected $fillable = ['kurs_id', 'blockname', 'datum', 'full_block_number'];
+    protected $fillable = ['course_id', 'name', 'block_date', 'full_block_number'];
 
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $casts = ['datum' => 'date'];
+    protected $casts = ['block_date' => 'date'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function kurs() {
-        return $this->belongsTo('App\Models\Kurs', 'kurs_id');
+    public function course() {
+        return $this->belongsTo('App\Models\Course', 'course_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function beobachtungen() {
-        return $this->hasMany('App\Models\Beobachtung');
+    public function observations() {
+        return $this->hasMany('App\Models\Observation');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function mas() {
-        return $this->belongsToMany('App\Models\MA', 'block_ma', 'block_id', 'ma_id');
+    public function requirements() {
+        return $this->belongsToMany('App\Models\Requirement', 'blocks_requirements', 'block_id', 'requirement_id');
     }
 
     /**
-     * Set the tagesnummer attribute by string or int.
+     * Set the day_number attribute by string or int.
      *
      * @param string|int $value
      */
-    public function setTagesnummerAttribute($value) {
-        $this->attributes['tagesnummer'] = ($value === null ? null : (int)$value);
+    public function setDayNumberAttribute($value) {
+        $this->attributes['day_number'] = ($value === null ? null : (int)$value);
     }
 
     /**
-     * Set the blocknummer attribute by string or int.
+     * Set the block_number attribute by string or int.
      *
      * @param string|int $value
      */
-    public function setBlocknummerAttribute($value) {
-        $this->attributes['blocknummer'] = ($value === null ? null : (int)$value);
+    public function setBlockNumberAttribute($value) {
+        $this->attributes['block_number'] = ($value === null ? null : (int)$value);
     }
 
     /**
@@ -83,8 +83,8 @@ class Block extends Model {
      *
      * @return CarbonInterface
      */
-    public function getDatumAttribute() {
-        return Carbon::parse($this->attributes['datum']);
+    public function getBlockDateAttribute() {
+        return Carbon::parse($this->attributes['block_date']);
     }
 
     /**
@@ -92,30 +92,30 @@ class Block extends Model {
      *
      * @param string $value
      */
-    public function setDatumAttribute($value) {
-        $this->attributes['datum'] = Carbon::parse($value);
+    public function setBlockDateAttribute($value) {
+        $this->attributes['block_date'] = Carbon::parse($value);
     }
 
     /**
-     * Get the full block number, combined from the tagesnummer and blocknummer attributes, if available.
+     * Get the full block number, combined from the day_number and block_number attributes, if available.
      *
      * @return string|null
      */
     public function getFullBlockNumberAttribute() {
-        if ($this->tagesnummer == null || $this->blocknummer == null) {
+        if ($this->day_number == null || $this->block_number == null) {
             return null;
         }
-        return $this->tagesnummer . '.' . $this->blocknummer;
+        return $this->day_number . '.' . $this->block_number;
     }
 
     /**
-     * Set the full block number, consisting of the tagesnummer and blocknummer separated by a period.
+     * Set the full block number, consisting of the day_number and block_number separated by a period.
      *
      * @param string|null $value
      * @return void
      */
     public function setFullBlockNumberAttribute($value) {
-        [$this->tagesnummer, $this->blocknummer] = ($value === null ? [null, null] : explode('.', $value, 2));
+        [$this->day_number, $this->block_number] = ($value === null ? [null, null] : explode('.', $value, 2));
     }
 
     /**
@@ -124,6 +124,6 @@ class Block extends Model {
      * @return string|null
      */
     public function getBlocknameAndNumberAttribute() {
-        return implode(': ', array_filter([$this->full_block_number, $this->blockname]));
+        return implode(': ', array_filter([$this->full_block_number, $this->name]));
     }
 }

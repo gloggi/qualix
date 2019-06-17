@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Bloecke;
 
-use Tests\TestCaseWithKurs;
+use Tests\TestCaseWithCourse;
 
-class ReadBloeckeTest extends TestCaseWithKurs {
+class ReadBloeckeTest extends TestCaseWithCourse {
 
     public function test_shouldOrderBloecke() {
         // given
@@ -19,7 +19,7 @@ class ReadBloeckeTest extends TestCaseWithKurs {
         $this->createBlock('Block 0 earlier block name', '1.1', '01.01.2019');
 
         // when
-        $response = $this->get('/kurs/' . $this->kursId . '/bloecke');
+        $response = $this->get('/course/' . $this->courseId . '/blocks');
 
         // then
         $response->assertOk();

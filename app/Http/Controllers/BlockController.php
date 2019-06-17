@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BlockRequest;
 use App\Models\Block;
-use App\Models\Kurs;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,39 +20,39 @@ class BlockController extends Controller {
      * @return Response
      */
     public function index() {
-        return view('admin.bloecke');
+        return view('admin.blocks');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param BlockRequest $request
-     * @param Kurs $kurs
+     * @param Course $course
      * @return RedirectResponse
      */
-    public function store(BlockRequest $request, Kurs $kurs) {
-        DB::transaction(function () use ($request, $kurs) {
+    public function store(BlockRequest $request, Course $course) {
+        DB::transaction(function () use ($request, $course) {
             $data = $request->validated();
-            $block = Block::create(array_merge($data, ['kurs_id' => $kurs->id]));
+            $block = Block::create(array_merge($data, ['course_id' => $course->id]));
 
-            $block->mas()->attach(array_filter(explode(',', $data['ma_ids'])));
+            $block->requirements()->attach(array_filter(explode(',', $data['requirement_ids'])));
 
             /** @var User $user */
             $user = Auth::user();
-            $user->setLastUsedBlockDate($data['datum'], $kurs);
+            $user->setLastUsedBlockDate($data['block_date'], $course);
         });
 
-        return Redirect::route('admin.bloecke', ['kurs' => $kurs->id]);
+        return Redirect::route('admin.blocks', ['course' => $course->id]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Kurs $kurs
+     * @param Course $course
      * @param Block $block
      * @return Response
      */
-    public function edit(Kurs $kurs, Block $block) {
+    public function edit(Course $course, Block $block) {
         return view('admin.block-edit', ['block' => $block]);
     }
 
@@ -60,38 +60,38 @@ class BlockController extends Controller {
      * Update the specified resource in storage.
      *
      * @param BlockRequest $request
-     * @param Kurs $kurs
+     * @param Course $course
      * @param Block $block
      * @return RedirectResponse
      */
-    public function update(BlockRequest $request, Kurs $kurs, Block $block) {
-        DB::transaction(function () use ($request, $kurs, $block) {
+    public function update(BlockRequest $request, Course $course, Block $block) {
+        DB::transaction(function () use ($request, $course, $block) {
             $data = $request->validated();
             $block->update($data);
 
-            $block->mas()->detach(null);
-            $block->mas()->attach(array_filter(explode(',', $data['ma_ids'])));
+            $block->requirements()->detach(null);
+            $block->requirements()->attach(array_filter(explode(',', $data['requirement_ids'])));
 
             /** @var User $user */
             $user = Auth::user();
-            $user->setLastUsedBlockDate($data['datum'], $kurs);
+            $user->setLastUsedBlockDate($data['block_date'], $course);
 
             $request->session()->flash('alert-success', __('Block erfolgreich gespeichert.'));
         });
-        return Redirect::route('admin.bloecke', ['kurs' => $kurs->id]);
+        return Redirect::route('admin.blocks', ['course' => $course->id]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param Request $request
-     * @param Kurs $kurs
+     * @param Course $course
      * @param Block $block
      * @return RedirectResponse
      */
-    public function destroy(Request $request, Kurs $kurs, Block $block) {
+    public function destroy(Request $request, Course $course, Block $block) {
         $block->delete();
         $request->session()->flash('alert-success', __('Block erfolgreich gelöscht.'));
-        return Redirect::route('admin.bloecke', ['kurs' => $kurs->id]);
+        return Redirect::route('admin.blocks', ['course' => $course->id]);
     }
 }

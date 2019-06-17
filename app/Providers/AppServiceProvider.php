@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\ViewComposers\CurrentKursViewComposer;
+use App\Http\ViewComposers\CurrentCourseViewComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer('*', CurrentKursViewComposer::class);
+        View::composer('*', CurrentCourseViewComposer::class);
 
         setlocale(LC_ALL, __('de_CH.utf8'));
     }

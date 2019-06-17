@@ -25,8 +25,8 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'abteilung' => '',
-            'bild' => 'nullable|image|max:2000',
+            'group' => '',
+            'image' => 'nullable|image|max:2000',
         ];
     }
 
@@ -37,9 +37,9 @@ class UserRequest extends FormRequest
      */
     public function validated() {
         $validated = parent::validated();
-        if (isset($validated['bild'])) {
-            $validated['bild_url'] = $validated['bild']->store('public/images');
-            unset($validated['bild']);
+        if (isset($validated['image'])) {
+            $validated['image_url'] = $validated['image']->store('public/images');
+            unset($validated['image']);
         }
         return $validated;
     }

@@ -2,24 +2,24 @@
 
 namespace Tests;
 
-use App\Models\Beobachtung;
+use App\Models\Observation;
 
-abstract class TestCaseWithBasicData extends TestCaseWithKurs
+abstract class TestCaseWithBasicData extends TestCaseWithCourse
 {
-    protected $tnId;
+    protected $participantId;
     protected $blockId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->tnId = $this->createTN('Pflock');
+        $this->participantId = $this->createParticipant('Pflock');
         $this->blockId = $this->createBlock('Block 1', '1.1', '01.01.2019', null);
     }
 
-    protected function createBeobachtung($kommentar = 'hat gut mitgemacht', $bewertung = 1, $maIds = [], $qkIds = [], $blockId = null, $tnId = null, $userId = null) {
-        $beobachtung = Beobachtung::create(['user_id' => ($userId !== null ? $userId : $this->user()->id), 'tn_id' => ($tnId !== null ? $tnId : $this->tnId), 'block_id' => ($blockId !== null ? $blockId : $this->blockId), 'kommentar' => $kommentar, 'bewertung' => $bewertung]);
-        $beobachtung->mas()->attach($maIds);
-        $beobachtung->qks()->attach($qkIds);
-        return $beobachtung->id;
+    protected function createObservation($content = 'hat gut mitgemacht', $impression = 1, $requirementId = [], $categoryIds = [], $blockId = null, $participantId = null, $userId = null) {
+        $observation = Observation::create(['user_id' => ($userId !== null ? $userId : $this->user()->id), 'participant_id' => ($participantId !== null ? $participantId : $this->participantId), 'block_id' => ($blockId !== null ? $blockId : $this->blockId), 'content' => $content, 'impression' => $impression]);
+        $observation->requirements()->attach($requirementId);
+        $observation->categories()->attach($categoryIds);
+        return $observation->id;
     }
 }

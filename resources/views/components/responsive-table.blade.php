@@ -4,8 +4,8 @@
         @if(isset($selectable) && $selectable)
             <th class="check"></th>
         @endif
-        @if(isset($bild) && $bild)
-            @foreach($bild as $fieldName => $fieldAccessor)
+        @if(isset($image) && $image)
+            @foreach($image as $fieldName => $fieldAccessor)
                 <th>{{ $fieldName }}</th>
             @endforeach
         @endif
@@ -23,7 +23,7 @@
                 $rid = (isset($id) ? $id : 'responsiveTable') . '-row' . $rowId;
             @endphp
             @if(is_array($row) && isset($row['type']) && $row['type'] === 'header')
-                <tr><th colspan="{{ count($fields) + ((isset($selectable) && $selectable) ? 1 : 0) + ((isset($bild) && $bild) ? count($bild) : 0) + ((isset($actions) && count($actions)) ? 1 : 0) }}">{{ $row['text'] }}</th></tr>
+                <tr><th colspan="{{ count($fields) + ((isset($selectable) && $selectable) ? 1 : 0) + ((isset($image) && $image) ? count($image) : 0) + ((isset($actions) && count($actions)) ? 1 : 0) }}">{{ $row['text'] }}</th></tr>
             @else
                 <tr>
                     @if(isset($selectable) && $selectable)
@@ -36,8 +36,8 @@
                             </span>
                         </td>
                     @endif
-                    @if(isset($bild) && $bild)
-                        @foreach($bild as $fieldName => $fieldAccessor)
+                    @if(isset($image) && $image)
+                        @foreach($image as $fieldName => $fieldAccessor)
                             <td data-label="{{ $fieldName }}&#xa;">{!! $fieldAccessor($row) !!}</td>
                         @endforeach
                     @endif

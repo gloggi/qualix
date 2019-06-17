@@ -24,10 +24,10 @@ class BlockRequest extends FormRequest
     public function rules()
     {
         return [
-            'blockname' => 'required',
+            'name' => 'required',
             'full_block_number' => 'regex:/^\d+\.\d+$/|nullable',
-            'datum' => 'date|required',
-            'ma_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
+            'block_date' => 'date|required',
+            'requirement_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
         ];
     }
 }
