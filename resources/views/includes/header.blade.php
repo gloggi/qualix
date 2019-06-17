@@ -10,9 +10,16 @@
                 @if($course)
                     <li>
                         <select class="custom-select" onchange="window.location = this.value">
-                            @foreach(Auth::user()->courses as $k)
-                                <option value="{{ route('index', ['course' => $k->id]) }}"{{ $course->id === $k->id ? ' selected' : '' }}>{{ $k->name }}</option>
+                            @foreach(Auth::user()->nonArchivedCourses as $c)
+                                <option value="{{ route('index', ['course' => $c->id]) }}"{{ $course->id === $c->id ? ' selected' : '' }}>{{ $c->name }}</option>
                             @endforeach
+                            @if(Auth::user()->archivedCourses()->count())
+                                <optgroup label="{{__('Archiviert')}}">
+                                    @foreach(Auth::user()->archivedCourses as $c)
+                                        <option value="{{ route('index', ['course' => $c->id]) }}"{{ $course->id === $c->id ? ' selected' : '' }}>{{ $c->name }}</option>
+                                    @endforeach
+                                </optgroup>
+                            @endif
                         </select>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'blocks' ? ' active' : '' }}">

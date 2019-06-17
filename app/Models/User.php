@@ -26,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @property string $image_url
  * @property Observation[] $observations
  * @property Course[] $courses
+ * @property Course[] $nonArchivedCourses
+ * @property Course[] $archivedCourses
  * @property Course $last_accessed_course
  * @property LoginAttempt[] $loginAttempts
  * @property RecoveryAttempt[] $recoveryAttempts
@@ -67,6 +69,20 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function courses()
     {
         return $this->belongsToMany('App\Models\Course', 'trainers', null, 'course_id')->withPivot('last_accessed')->orderByDesc('trainers.last_accessed');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function nonArchivedCourses() {
+        return $this->courses()->where('archived', '=', false);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function archivedCourses() {
+        return $this->courses()->where('archived', '=', true);
     }
 
     /**
