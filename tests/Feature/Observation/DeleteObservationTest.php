@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Observation;
 
+use App\Models\Course;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCaseWithBasicData;
 
@@ -20,18 +21,30 @@ class DeleteObservationTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/overview/' . $this->observationId);
+        $response = $this->delete('/course/' . $this->courseId . '/observation/' . $this->observationId);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
+    public function test_shouldRequireNonArchivedCourse() {
+        // given
+        Course::find($this->courseId)->update(['archived' => true]);
+
+        // when
+        $response = $this->delete('/course/' . $this->courseId . '/observation/' . $this->observationId);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
+    }
+
     public function test_shouldDeleteBeobachtung() {
         // given
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/overview/' . $this->observationId);
+        $response = $this->delete('/course/' . $this->courseId . '/observation/' . $this->observationId);
 
         // then
         $response->assertStatus(302);
@@ -45,7 +58,7 @@ class DeleteObservationTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/overview/' . ($this->observationId + 1));
+        $response = $this->delete('/course/' . $this->courseId . '/observation/' . ($this->observationId + 1));
 
         // then
         $response->assertStatus(404);

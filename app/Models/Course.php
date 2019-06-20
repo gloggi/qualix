@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Collection;
+
 /**
  * @property int $id
  * @property string $name
@@ -11,14 +13,15 @@ namespace App\Models;
  * @property User[] $users
  * @property Requirement[] $requirements
  * @property Category[] $categories
- * @property Participant[] $participants
+ * @property Collection $participants
+ * @property boolean $archived
  */
 class Course extends Model
 {
     /**
      * @var array
      */
-    protected $fillable = ['name', 'course_number'];
+    protected $fillable = ['name', 'course_number', 'archived'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

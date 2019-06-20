@@ -10,20 +10,29 @@
                 @if($course)
                     <li>
                         <select class="custom-select" onchange="window.location = this.value">
-                            @foreach(Auth::user()->courses as $k)
-                                <option value="{{ route('index', ['course' => $k->id]) }}"{{ $course->id === $k->id ? ' selected' : '' }}>{{ $k->name }}</option>
+                            @foreach(Auth::user()->nonArchivedCourses as $c)
+                                <option value="{{ route('index', ['course' => $c->id]) }}"{{ $course->id === $c->id ? ' selected' : '' }}>{{ $c->name }}</option>
                             @endforeach
+                            @if(Auth::user()->archivedCourses()->count())
+                                <optgroup label="{{__('Archiviert')}}">
+                                    @foreach(Auth::user()->archivedCourses as $c)
+                                        <option value="{{ route('index', ['course' => $c->id]) }}"{{ $course->id === $c->id ? ' selected' : '' }}>{{ $c->name }}</option>
+                                    @endforeach
+                                </optgroup>
+                            @endif
                         </select>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'blocks' ? ' active' : '' }}">
                         <a class="nav-link" href="{{ route('blocks', ['course' => $course->id]) }}">Blöcke</a>
                     </li>
-                    <li class="nav-item{{ Route::currentRouteName() == 'participants' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('participants', ['course' => $course->id]) }}">TN</a>
-                    </li>
-                    <li class="nav-item{{ Route::currentRouteName() == 'overview' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('overview', ['course' => $course->id]) }}">Überblick</a>
-                    </li>
+                    @if(!$course->archived)
+                        <li class="nav-item{{ Route::currentRouteName() == 'participants' ? ' active' : '' }}">
+                            <a class="nav-link" href="{{ route('participants', ['course' => $course->id]) }}">TN</a>
+                        </li>
+                        <li class="nav-item{{ Route::currentRouteName() == 'overview' ? ' active' : '' }}">
+                            <a class="nav-link" href="{{ route('overview', ['course' => $course->id]) }}">Überblick</a>
+                        </li>
+                    @endif
                     <li class="nav-item dropdown{{ substr( Route::currentRouteName(), 0, 5 ) == 'admin' ? ' active' : '' }}">
                         <a class="nav-link dropdown-toggle" id="navbarCourseAdmin" role="button"
                            data-toggle="dropdown"
@@ -32,7 +41,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.course' ? ' active' : '' }}"
-                               href="{{ route('admin.course', ['course' => $course->id]) }}">Kursdetails</a>
+                               href="{{ route('admin.course', ['course' => $course->id]) }}">{{__('Kurseinstellungen')}}</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.equipe' ? ' active' : '' }}"
                                href="{{ route('admin.equipe', ['course' => $course->id]) }}">Equipe</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.requirements' ? ' active' : '' }}"
@@ -41,8 +50,10 @@
                                href="{{ route('admin.categories', ['course' => $course->id]) }}">Kategorien</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.blocks' ? ' active' : '' }}"
                                href="{{ route('admin.blocks', ['course' => $course->id]) }}">Blöcke</a>
-                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.participants' ? ' active' : '' }}"
-                               href="{{ route('admin.participants', ['course' => $course->id]) }}">TN</a>
+                            @if(!$course->archived)
+                                <a class="dropdown-item{{ Route::currentRouteName() == 'admin.participants' ? ' active' : '' }}"
+                                   href="{{ route('admin.participants', ['course' => $course->id]) }}">TN</a>
+                            @endif
                         </div>
                     </li>
                 @endif

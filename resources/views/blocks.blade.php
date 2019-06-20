@@ -22,10 +22,14 @@
                         </h5>
                     </div>
 
-                    <div id="collapse{{ $day[0]->block_date->timestamp }}" class="collapse{{ $day[0]->block_date->gt(\Carbon\Carbon::now()->subDays(2)) ? ' show' : '' }}" aria-labelledby="heading{{ $day[0]->block_date->timestamp }}">
+                    <div id="collapse{{ $day[0]->block_date->timestamp }}" class="collapse{{ ($course->archived || $day[0]->block_date->gt(\Carbon\Carbon::now()->subDays(2))) ? ' show' : '' }}" aria-labelledby="heading{{ $day[0]->block_date->timestamp }}">
                         <ul class="list-group list-group-flush">
                             @foreach ($day as $block)
-                                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{{ route('observation.new', ['course' => $course->id, 'block' => $block->id]) }}"><h5 class="mb-0">{{ $block->blockname_and_number }}</h5><span class="badge badge-primary" style="font-size: 1.125rem;">{{ count($block->observations) }} <i class="fas fa-binoculars"></i></span></a>
+                                @if($course->archived)
+                                    <h5 class="list-group-item mb-0">{{ $block->blockname_and_number }}</h5>
+                                @else
+                                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{{ route('observation.new', ['course' => $course->id, 'block' => $block->id]) }}"><h5 class="mb-0">{{ $block->blockname_and_number }}</h5><span class="badge badge-primary" style="font-size: 1.125rem;">{{ count($block->observations) }} <i class="fas fa-binoculars"></i></span></a>
+                                @endif
                             @endforeach
                         </ul>
                     </div>
