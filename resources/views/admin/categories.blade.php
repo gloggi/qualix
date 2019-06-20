@@ -2,6 +2,18 @@
 
 @section('content')
 
+    @component('components.card', ['header' => __('Neue Kategorie')])
+
+        @component('components.form', ['route' => ['admin.categories.store', ['course' => $course->id]]])
+
+            @component('components.form.textInput', ['name' => 'name', 'label' => __('Titel'), 'required' => true, 'autofocus' => true])@endcomponent
+
+            @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
+
+        @endcomponent
+
+    @endcomponent
+
     @component('components.card', ['header' => __('Kategorien :courseName', ['courseName' => $course->name])])
 
         @if (count($course->categories))
@@ -26,18 +38,6 @@
             {{__('Bisher sind keine Kategorien erfasst.')}}
 
         @endif
-
-    @endcomponent
-
-    @component('components.card', ['header' => __('Neue Kategorie')])
-
-        @component('components.form', ['route' => ['admin.categories.store', ['course' => $course->id]]])
-
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('Titel'), 'required' => true])@endcomponent
-
-            @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
-
-        @endcomponent
 
     @endcomponent
 

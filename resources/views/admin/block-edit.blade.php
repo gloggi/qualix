@@ -8,7 +8,7 @@
 
             @component('components.form.textInput', ['name' => 'full_block_number', 'label' => __('Blocknummer'), 'value' => $block->full_block_number])@endcomponent
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('Blockname'), 'required' => true, 'value' => $block->name])@endcomponent
+            @component('components.form.textInput', ['name' => 'name', 'label' => __('Blockname'), 'required' => true, 'autofocus' => true, 'value' => $block->name])@endcomponent
 
             @component('components.form.dateInput', ['name' => 'block_date', 'label' => __('Datum'), 'required' => true, 'value' => $block->block_date])@endcomponent
 

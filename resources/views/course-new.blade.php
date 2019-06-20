@@ -6,7 +6,7 @@
 
         @component('components.form', ['route' => 'admin.newcourse.store'])
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('Kursname'), 'required' => true])@endcomponent
+            @component('components.form.textInput', ['name' => 'name', 'label' => __('Kursname'), 'required' => true, 'autofocus' => true])@endcomponent
 
             @component('components.form.textInput', ['name' => 'course_number', 'label' => __('Kursnummer')])@endcomponent
 

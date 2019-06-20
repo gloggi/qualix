@@ -18,7 +18,7 @@
                 'disabled' => true,
             ])@endcomponent
 
-            @component('components.form.textareaInput', ['name' => 'content', 'label' => __('Beobachtung'), 'required' => true, 'value' => $observation->content])@endcomponent
+            @component('components.form.textareaInput', ['name' => 'content', 'label' => __('Beobachtung'), 'required' => true, 'autofocus' => true, 'value' => $observation->content])@endcomponent
 
             @component('components.form.multiSelectInput', [
                 'name' => 'block_id',

@@ -15,9 +15,10 @@
                 'valueFn' => function(\App\Models\Participant $participant) { return $participant->id; },
                 'displayFn' => function(\App\Models\Participant $participant) { return $participant->scout_name; },
                 'multiple' => true,
+                'autofocus' => ($participant_id === null)
             ])@endcomponent
 
-            @component('components.form.textareaInput', ['name' => 'content', 'label' => __('Beobachtung'), 'required' => true])@endcomponent
+            @component('components.form.textareaInput', ['name' => 'content', 'label' => __('Beobachtung'), 'required' => true, 'autofocus' => ($participant_id !== null)])@endcomponent
 
             <block-and-ma-input-wrapper v-slot="slotProps">
 

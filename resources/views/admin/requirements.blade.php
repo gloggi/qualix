@@ -2,6 +2,20 @@
 
 @section('content')
 
+    @component('components.card', ['header' => __('Neue Mindestanforderung')])
+
+        @component('components.form', ['route' => ['admin.requirements.store', ['course' => $course->id]]])
+
+            @component('components.form.textInput', ['name' => 'content', 'label' => __('Titel'), 'required' => true, 'autofocus' => true])@endcomponent
+
+            @component('components.form.checkboxInput', ['name' => 'mandatory', 'label' => __('Killer-Kriterium')])@endcomponent
+
+            @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
+
+        @endcomponent
+
+    @endcomponent
+
     @component('components.card', ['header' => __('Mindestanforderungen :courseName', ['courseName' => $course->name])])
 
         @if (count($course->requirements))
@@ -27,20 +41,6 @@
             {{__('Bisher sind keine Mindestanforderungen erfasst.')}}
 
         @endif
-
-    @endcomponent
-
-    @component('components.card', ['header' => __('Neue Mindestanforderung')])
-
-        @component('components.form', ['route' => ['admin.requirements.store', ['course' => $course->id]]])
-
-            @component('components.form.textInput', ['name' => 'content', 'label' => __('Titel'), 'required' => true])@endcomponent
-
-            @component('components.form.checkboxInput', ['name' => 'mandatory', 'label' => __('Killer-Kriterium')])@endcomponent
-
-            @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
-
-        @endcomponent
 
     @endcomponent
 

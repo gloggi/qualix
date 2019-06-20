@@ -9,7 +9,7 @@
             class="form-control{{ $errors->has($name) ? ' is-invalid' : '' }}"
             value="{{ isset($value) ? $value : old($name) }}"
             {{ isset($required) && $required ? 'required' : '' }}
-            {{ isset($autofocus) && $autofocus ? 'autofocus' : '' }}>
+            {{ isset($autofocus) && $autofocus ? 'autofocus v-focus' : '' }}>
 
         @if ($errors->has($name))
             <span class="invalid-feedback" role="alert">

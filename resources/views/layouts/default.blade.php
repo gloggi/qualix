@@ -4,7 +4,7 @@
 
     @include('includes.header', ['navigation' => true])
 
-    <div class="container" id="app">
+    <div class="container" id="app" v-cloak>
 
         @include('includes.alerts')
 
