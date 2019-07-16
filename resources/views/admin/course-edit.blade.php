@@ -70,6 +70,14 @@
             </div>
         </div>
 
+        <div class="mt-3">
+            @component('components.help-text', ['header' => __('Was ist der Unterschied?'), 'collapseId' => 'archiveVsDeleteHelp'])
+
+                {{__('Wenn du einen Kurs archivierst, werden alle personenbezogenen Daten (TN, Bilder, Beobachtungen) dauerhaft gelöscht. So kannst du Datenschutz-Problemen entgegenwirken, aber für spätere Kurse trotzdem noch deine alten Mindestanforderungen und Blöcke einsehen. Wenn du den Kurs hingegen ganz löschst wird alles was damit zu tun hat unwiderruflich entfernt.')}}
+
+            @endcomponent
+        </div>
+
     @endcomponent
 
 @endsection
