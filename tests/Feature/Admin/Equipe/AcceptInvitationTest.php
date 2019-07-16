@@ -4,7 +4,7 @@ namespace Tests\Feature\Admin\Equipe;
 
 use App\Models\Invitation;
 use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Notifications\VerifyEmailNotification;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
@@ -136,7 +136,7 @@ class AcceptInvitationTest extends TestCaseWithCourse {
         // Get action URL from verification email
         $actionUrl = '';
         $user = User::where('email', '=', $this->email)->first();
-        Notification::assertSentTo($user, VerifyEmail::class, function (VerifyEmail $notification, $channels) use(&$actionUrl, $user) {
+        Notification::assertSentTo($user, VerifyEmailNotification::class, function (VerifyEmailNotification $notification, $channels) use(&$actionUrl, $user) {
             $actionUrl = $notification->toMail($user)->actionUrl;
             return true;
         });
