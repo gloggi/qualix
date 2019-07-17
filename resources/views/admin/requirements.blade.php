@@ -56,7 +56,7 @@
 
             @component('components.help-text', ['header' => __('Muss ich Mindestanforderungen für meinen Kurs erfassen?'), 'collapseId' => 'noRequirementsHelp'])
 
-                {{__('Es ist sehr wichtig, vor dem Kurs im Kursteam Mindestanforderungen festzulegen, damit alle Teilnehmenden nach dem gleichen Schema qualifiziert werden und um Entscheide zu erleichtern. Aber wenn du diese nicht in Qualix führen willst, kannst du Beobachtungen auch ohne Mindestanforderungen erfassen.')}}
+                {{__('Es ist sehr wichtig, vor dem Kurs im Kursteam Mindestanforderungen festzulegen, damit alle Teilnehmenden nach dem gleichen Schema qualifiziert werden und damit Entscheide im Kurs einfacher gefällt werden können. Aber wenn du diese nicht in Qualix führen willst, kannst du Beobachtungen auch ohne Mindestanforderungen erfassen.')}}
 
             @endcomponent
 
