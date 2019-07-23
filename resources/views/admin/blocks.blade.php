@@ -21,7 +21,15 @@
                 'multiple' => true,
             ])@endcomponent
 
-            @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
+            @component('components.form.submit', ['label' => __('Hinzufügen')])
+
+                @component('components.help-text', ['header' => __('Was sind Blöcke?'), 'collapseId' => 'blockHelp'])
+
+                    {{__('Blöcke sind zeitliche Abschnitte im Grobprogramm. Man könnte sie auch Lektionen oder Programmeinheiten nennen. Du kannst zudem erfassen, welche Mindestanforderungen in einem Block wohl am ehesten beobachtet werden können (z.B. eine Mindestanforderung zu Sicherheitsüberlegungen in einem Block über Sicherheitskonzepte). Beim Erfassen von Beobachtungen kann das aber immer noch übersteuert werden.')}}
+
+                @endcomponent
+
+            @endcomponent
 
         @endcomponent
 
@@ -65,6 +73,12 @@
         @else
 
             {{__('Bisher sind keine Blöcke erfasst.')}}
+
+            @component('components.help-text', ['header' => __('Muss ich Blöcke für meinen Kurs erfassen?'), 'collapseId' => 'noBlocksHelp'])
+
+                {{__('Ja, jede Beobachtung gehört zu genau einem Block. Daher kannst du Qualix nur verwenden, wenn du Blöcke im Kurs erfasst hast. Falls du Beobachtungen ausserhalb der Blöcke machen willst, empfehlen wir, einen oder mehrere "Sonstiges"-Blöcke zu erfassen.')}}
+
+            @endcomponent
 
         @endif
 

@@ -10,7 +10,15 @@
 
             @component('components.form.checkboxInput', ['name' => 'mandatory', 'label' => __('Killer-Kriterium')])@endcomponent
 
-            @component('components.form.submit', ['label' => __('Hinzufügen')])@endcomponent
+            @component('components.form.submit', ['label' => __('Hinzufügen')])
+
+                @component('components.help-text', ['header' => 'Was sind Mindestanforderungen?', 'collapseId' => 'requirementHelp'])
+
+                    {{__('Mindestanforderungen sind klare Voraussetzungen und Kriterien, die alle Teilnehmenden während dem Kurs erfüllen sollen. Anhand der Mindestanforderungen wird beurteilt, wer den Kurs besteht und wer nicht. Du kannst Mindestanforderungen als Killer-Kriterien markieren wenn du willst, aber es hat momentan keine Auswirkungen in Qualix selber (bis auf eine etwas andere Farbgebung).')}}
+
+                @endcomponent
+
+            @endcomponent
 
         @endcomponent
 
@@ -45,6 +53,12 @@
         @else
 
             {{__('Bisher sind keine Mindestanforderungen erfasst.')}}
+
+            @component('components.help-text', ['header' => __('Muss ich Mindestanforderungen für meinen Kurs erfassen?'), 'collapseId' => 'noRequirementsHelp'])
+
+                {{__('Es ist sehr wichtig, vor dem Kurs im Kursteam Mindestanforderungen festzulegen, damit alle Teilnehmenden nach dem gleichen Schema qualifiziert werden und damit Entscheide im Kurs einfacher gefällt werden können. Aber wenn du diese nicht in Qualix führen willst, kannst du Beobachtungen auch ohne Mindestanforderungen erfassen.')}}
+
+            @endcomponent
 
         @endif
 
