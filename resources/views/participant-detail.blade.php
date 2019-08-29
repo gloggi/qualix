@@ -61,7 +61,7 @@
                                   placeholder="Mindestanforderung"
                                   :options="[
                                     @foreach( $course->requirements as $option )
-                                    { label: '{{ $option->requirement }}', value: '{{ $option->id }}' },
+                                    { label: '{{ $option->content }}', value: '{{ $option->id }}' },
                                     @endforeach
                                     { label: '{{__('-- Beobachtungen ohne Mindestanforderungen --')}}', value: '0' },
                                     ]"
