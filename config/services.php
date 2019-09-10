@@ -14,6 +14,13 @@ return [
     |
     */
 
+    'hitobito' => [
+        'base_url' => env('HITOBITO_BASE_URL', 'http://demo.hitobito.ch'),
+        'client_id' => env('HITOBITO_CLIENT_UID'),
+        'client_secret' => env('HITOBITO_CLIENT_SECRET'),
+        'redirect' => env('HITOBITO_CALLBACK_URI', 'https://qualix.flamberg.ch/login/hitobito/callback'),
+    ],
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

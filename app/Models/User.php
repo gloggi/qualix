@@ -15,6 +15,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Tightenco\Parental\HasChildren;
 
 /**
  * @property int $id
@@ -25,6 +26,7 @@ use Illuminate\Support\Carbon;
  * @property string $email
  * @property string $salt
  * @property string $image_url
+ * @property string $login_provider
  * @property Observation[] $observations
  * @property Course[] $courses
  * @property Course[] $nonArchivedCourses
@@ -35,12 +37,12 @@ use Illuminate\Support\Carbon;
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, MustVerifyEmailContract
 {
-    use Notifiable, Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
+    use Notifiable, Authenticatable, Authorizable, HasChildren, CanResetPassword, MustVerifyEmail;
 
     /**
      * @var array
      */
-    protected $fillable = ['name', 'group', 'password', 'email', 'image_url'];
+    protected $fillable = ['name', 'group', 'password', 'email', 'image_url', 'login_provider'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -55,6 +57,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $casts = ['email_verified_at' => 'datetime'];
+
+    /**
+     * Name of the database column holding the login provider name
+     *
+     * @var string
+     */
+    protected $childColumn = 'login_provider';
+
+    /**
+     * Mapping from database value to provider specific User class
+     *
+     * @var array
+     */
+    protected $childTypes = [
+        'hitobito' => HitobitoUser::class,
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

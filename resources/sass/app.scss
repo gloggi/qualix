@@ -1,10 +1,9 @@
-
 @font-face {
     font-family: 'Source Sans Pro';
     src: url('../fonts/SourceSansPro-Regular.ttf'),
-         url('../fonts/SourceSansPro-Italic.ttf'),
-         url('../fonts/SourceSansPro-Bold.ttf'),
-         url('../fonts/SourceSansPro-BoldItalic.ttf');
+    url('../fonts/SourceSansPro-Italic.ttf'),
+    url('../fonts/SourceSansPro-Bold.ttf'),
+    url('../fonts/SourceSansPro-BoldItalic.ttf');
 }
 
 @import 'variables';
@@ -32,7 +31,9 @@
     cursor: pointer;
 }
 
-[v-cloak] > * { display:none }
+[v-cloak] > * {
+    display: none
+}
 
 .avatar {
     @extend .rounded-circle;
@@ -86,4 +87,64 @@
 
 .bg-danger-light {
     background-color: #f9d6d5;
+}
+
+.btn-hitobito {
+    color: #fff;
+    background-color: #99bf62;
+    border-color: #00a651;
+    background-size: 1.9rem 1.9rem;
+    background-repeat: no-repeat;
+    background-position: left 0.75rem center;
+    background-image: url('../images/midata.svg');
+    padding-left: 4.15rem;
+    padding-right: 4.15rem;
+    position: relative;
+
+    &:hover {
+        color: #fff;
+        background-color: #8fb45c;
+        border-color: #008040;
+
+        &::before {
+            border-left-color: #008040;
+        }
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 3.4rem;
+        border-left: 1px solid #00a651;
+        transition: border-left-color 0.15s ease-in-out;
+    }
+}
+
+.hr-label {
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    margin: 1rem 0;
+
+    &::before, &::after {
+        content: '';
+        background-color: $card-border-color;
+        height: 1px;
+        width: 50%;
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+    }
+
+    &::before {
+        margin-left: -50%;
+        right: 0.5em;
+    }
+
+    &::after {
+        margin-right: -50%;
+        left: 0.5em;
+    }
 }
