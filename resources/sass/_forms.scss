@@ -22,3 +22,41 @@
     display: inline;
     margin-right: 1em;
 }
+
+.form-control.btn-hitobito {
+    color: #fff;
+    background-color: #99bf62;
+    border-color: #00a651;
+    background-size: 1.9rem 1.9rem;
+    background-repeat: no-repeat;
+    background-position: left 0.75rem center;
+    background-image: url('../images/midata.svg');
+    padding-left: 4.15rem;
+    padding-right: 4.15rem;
+    position: relative;
+    overflow: hidden;
+
+    &.is-invalid {
+        border-color: $red;
+    }
+
+    &:hover {
+        color: #fff;
+        background-color: #8fb45c;
+        border-color: #008040;
+
+        &::before {
+            border-left-color: #008040;
+        }
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 3.4rem;
+        border-left: 1px solid #00a651;
+        transition: border-left-color 0.15s ease-in-out;
+    }
+}
