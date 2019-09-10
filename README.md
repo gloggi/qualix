@@ -60,6 +60,11 @@ MAIL_PORT=<snip>
 MAIL_USERNAME=<snip>
 MAIL_PASSWORD=<snip>
 MAIL_ENCRYPTION=SSL
+
+HITOBITO_BASE_URL=https://db.scout.ch
+HITOBITO_CLIENT_UID=<snip>
+HITOBITO_CLIENT_SECRET=<snip>
+HITOBITO_CALLBACK_URI=https://qualix.flamberg.ch/login/hitobito/callback
 ```
 3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker-compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" app`
 4. **Frontend-Code builden**: `docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod'" node`
