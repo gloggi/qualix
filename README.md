@@ -64,7 +64,7 @@ MAIL_ENCRYPTION=SSL
 3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker-compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" app`
 4. **Frontend-Code builden**: `docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod'" node`
 5. **Optimierung (optional)**: `docker-compose run --entrypoint "composer install --optimize-autoloader --no-dev" app`
-6. **Auf den Webhost hochladen**: Z.B. mit FTP alle Ordner ausser tests hochladen
+6. **Auf den Webhost hochladen**: Z.B. mit FTP alles (Ordner und Dateien) ausser tests hochladen
 7. **Mit SSH auf den Server einloggen**, da die folgenden Befehle in der finalen Umgebung ausgeführt werden müssen
 8. **Optimierung (optional)**: `php artisan config:cache && php artisan route:cache`
 9. **Datenbank-Tabellen einrichten**: `php artisan migrate`
