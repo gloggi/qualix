@@ -89,7 +89,7 @@
     background-color: #f9d6d5;
 }
 
-.btn-hitobito {
+.form-control.btn-hitobito {
     color: #fff;
     background-color: #99bf62;
     border-color: #00a651;
@@ -100,6 +100,10 @@
     padding-left: 4.15rem;
     padding-right: 4.15rem;
     position: relative;
+
+    &.is-invalid {
+        border-color: $red;
+    }
 
     &:hover {
         color: #fff;

@@ -2,7 +2,9 @@
 
 namespace App\Auth;
 
+use App\Exceptions\InvalidLoginProviderException;
 use App\Models\HitobitoUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\ProviderInterface;
@@ -86,6 +88,11 @@ class HitobitoProvider extends AbstractProvider implements ProviderInterface
      */
     protected function mapUserToObject(array $user)
     {
-        return HitobitoUser::firstOrCreate(['email' => $user['email']], ['name' => $user['nickname']]);
+        return HitobitoUser::where('email', $user['email'])->firstOr(function() use($user) {
+            if (User::where('email', $user['email'])->exists()) {
+                throw new InvalidLoginProviderException;
+            }
+            return HitobitoUser::create(['email' => $user['email'], 'name' => $user['nickname']]);
+        });
     }
 }
