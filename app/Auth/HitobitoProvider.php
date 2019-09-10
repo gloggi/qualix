@@ -6,6 +6,7 @@ use App\Exceptions\InvalidLoginProviderException;
 use App\Models\HitobitoUser;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\ProviderInterface;
 
@@ -92,7 +93,10 @@ class HitobitoProvider extends AbstractProvider implements ProviderInterface
             if (User::where('email', $user['email'])->exists()) {
                 throw new InvalidLoginProviderException;
             }
-            return HitobitoUser::create(['email' => $user['email'], 'name' => $user['nickname']]);
+            $created = new HitobitoUser(['email' => $user['email'], 'name' => $user['nickname']]);
+            $created->email_verified_at = Carbon::now();
+            $created->save();
+            return $created;
         });
     }
 }
