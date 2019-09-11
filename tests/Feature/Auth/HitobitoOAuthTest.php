@@ -143,4 +143,19 @@ class HitobitoOAuthTest extends TestCase {
         $response->assertRedirect('/password/reset');
         $response->followRedirects()->assertSee('Wir können keinen Benutzer mit dieser E-Mail-Adresse finden. Meldest du dich vielleicht normalerweise mit MiData an?');
     }
+
+    public function test_nativeLogin_shouldFail_whenHitobitoIsDown() {
+        // given
+        // Respond with error 500
+        $hitobitoMock = new MockHandler([ new Response(500) ]);
+        config()->set('services.hitobito.guzzle.handler', $hitobitoMock);
+
+        // when
+        $state = $this->extractRedirectQueryParams($this->get('/login/hitobito'))['state'];
+        $response = $this->get('/login/hitobito/callback?code=1234&state=' . $state);
+
+        // then
+        $response->assertRedirect('/login');
+        $response->followRedirects()->assertSee('Leider klappt es momentan gerade nicht. Versuche es später wieder, oder registriere unten einen klassischen Account.');
+    }
 }
