@@ -69,7 +69,7 @@ class LoginController extends Controller
             ]);
         }
         try {
-            $user = Socialite::driver('hitobito')->setScopes(['name'])->user();
+            $user = Socialite::driver('hitobito')->setRequest($request)->setScopes(['name'])->user();
         } catch (InvalidStateException $exception) {
             // User has reused an old link or modified the redirect?
             return Redirect::route('login')->withErrors([
