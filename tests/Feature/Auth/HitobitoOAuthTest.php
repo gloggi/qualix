@@ -75,6 +75,19 @@ class HitobitoOAuthTest extends TestCase {
         $this->assertAuthenticatedAs($existingUser);
     }
 
+    public function test_registerWithMiData_shouldFail_whenStateDoesNotMatch() {
+        // given
+        $this->mockHitobitoResponses('cosinus@hitobito.com', 'Cosinus');
+
+        // when
+        $this->get('/login/hitobito');
+        $response = $this->get('/login/hitobito/callback?code=1234&state=xxxyyy');
+
+        // then
+        $response->assertRedirect('/login');
+        $response->followRedirects()->assertSee('Etwas hat nicht geklappt. Versuche es noch einmal.');
+    }
+
     public function test_registerWithMiData_shouldFail_whenHitobitoReportsAnError() {
         // given
 
