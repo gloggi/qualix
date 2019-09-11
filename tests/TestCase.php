@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\Course;
+use App\Models\NativeUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -134,7 +135,7 @@ abstract class TestCase extends BaseTestCase {
     }
 
     protected function createUser($attrs = [], $actAsNewUser = false) {
-        $user = factory(User::class)->create($attrs);
+        $user = factory(NativeUser::class)->create($attrs);
         if ($actAsNewUser) {
             $this->be($user);
         }

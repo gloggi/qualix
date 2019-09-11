@@ -6,21 +6,17 @@ use Tightenco\Parental\HasParent;
 
 /**
  * @property int $id
- * @property int $course_id
  * @property string $name
  * @property string $group
  * @property string $password
  * @property string $email
- * @property string $salt
  * @property string $image_url
- * @property string $type
+ * @property string $login_provider
  * @property Observation[] $observations
  * @property Course[] $courses
  * @property Course[] $nonArchivedCourses
  * @property Course[] $archivedCourses
  * @property Course $last_accessed_course
- * @property LoginAttempt[] $loginAttempts
- * @property RecoveryAttempt[] $recoveryAttempts
  */
 class HitobitoUser extends User {
     use HasParent;
