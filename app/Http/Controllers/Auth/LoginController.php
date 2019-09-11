@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Exceptions\InvalidLoginProviderException;
 use App\Http\Controllers\Controller;
-use App\Models\HitobitoUser;
 use Exception;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
 

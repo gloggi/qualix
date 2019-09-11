@@ -72,6 +72,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $childTypes = [
         'hitobito' => HitobitoUser::class,
+        'qualix' => NativeUser::class,
     ];
 
     /**
