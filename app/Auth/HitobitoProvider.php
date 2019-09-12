@@ -2,13 +2,11 @@
 
 namespace App\Auth;
 
-use App\Exceptions\InvalidLoginProviderException;
-use App\Models\HitobitoUser;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Arr;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\ProviderInterface;
+use Laravel\Socialite\Two\User;
 
 class HitobitoProvider extends AbstractProvider implements ProviderInterface
 {
@@ -87,32 +85,14 @@ class HitobitoProvider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    protected function mapUserToObject(array $userData)
+    protected function mapUserToObject(array $user)
     {
-        if ($userFromDB = HitobitoUser::where('hitobito_id', $userData['id'])->first()) {
-            // Login
-            return $this->mapReturningUserToObject($userFromDB, $userData);
-        } else {
-            // Register
-            return $this->mapNewUserToObject($userData);
-        }
-    }
-
-    private function mapReturningUserToObject(User $user, $userData) {
-        if ($user->email != $userData['email'] && User::where('email', $userData['email'])->doesntExist()) {
-            // Update email only if it is not occupied by someone else
-            $user->email = $userData['email'];
-            $user->save();
-        }
-        return $user;
-    }
-
-    private function mapNewUserToObject($userData) {
-        if (User::where('email', $userData['email'])->exists()) {
-            // Don't register a new user if someone else already uses the same email address
-            throw new InvalidLoginProviderException;
-        }
-        $created = HitobitoUser::create(['hitobito_id' => $userData['id'], 'email' => $userData['email'], 'name' => $userData['nickname']]);
-        return $created;
+        return (new User)->setRaw($user)->map([
+            'id' => $user['id'],
+            'nickname' => Arr::get($user, 'nickname'),
+            'name' => Arr::get($user, 'first_name'),
+            'email' => Arr::get($user, 'email'),
+            'avatar' => Arr::get($user, 'picture'),
+        ]);
     }
 }

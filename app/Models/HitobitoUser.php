@@ -33,34 +33,4 @@ class HitobitoUser extends User {
             $instance->email_verified_at = Carbon::now();
         });
     }
-
-    /**
-     * Method stub to satisfy Socialite.
-     *
-     * @param string $token
-     * @return $this
-     */
-    public function setToken($token) {
-        return $this;
-    }
-
-    /**
-     * Method stub to satisfy Socialite.
-     *
-     * @param string $refreshToken
-     * @return $this
-     */
-    public function setRefreshToken($refreshToken) {
-        return $this;
-    }
-
-    /**
-     * Method stub to satisfy Socialite.
-     *
-     * @param int $expiresIn
-     * @return $this
-     */
-    public function setExpiresIn($expiresIn) {
-        return $this;
-    }
 }
