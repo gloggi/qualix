@@ -11,6 +11,7 @@ yarn-error.log
 /.idea
 /public/*
 !/public/.htaccess
+!/public/.htaccess.docker
 !/public/favicon.png
 !/public/index.php
 !/public/robots.txt

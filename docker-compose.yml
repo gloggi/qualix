@@ -10,6 +10,7 @@ services:
       - db
     volumes:
       - .:/var/www
+      - ./public/.htaccess.docker:/var/www/public/.htaccess
 
   db:
     image: mariadb:10.3
