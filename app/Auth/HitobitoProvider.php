@@ -87,16 +87,32 @@ class HitobitoProvider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    protected function mapUserToObject(array $user)
+    protected function mapUserToObject(array $userData)
     {
-        return HitobitoUser::where('email', $user['email'])->firstOr(function() use($user) {
-            if (User::where('email', $user['email'])->exists()) {
-                throw new InvalidLoginProviderException;
-            }
-            $created = new HitobitoUser(['email' => $user['email'], 'name' => $user['nickname']]);
-            $created->email_verified_at = Carbon::now();
-            $created->save();
-            return $created;
-        });
+        if ($userFromDB = HitobitoUser::where('hitobito_id', $userData['id'])->first()) {
+            // Login
+            return $this->mapReturningUserToObject($userFromDB, $userData);
+        } else {
+            // Register
+            return $this->mapNewUserToObject($userData);
+        }
+    }
+
+    private function mapReturningUserToObject(User $user, $userData) {
+        if ($user->email != $userData['email'] && User::where('email', $userData['email'])->doesntExist()) {
+            // Update email only if it is not occupied by someone else
+            $user->email = $userData['email'];
+            $user->save();
+        }
+        return $user;
+    }
+
+    private function mapNewUserToObject($userData) {
+        if (User::where('email', $userData['email'])->exists()) {
+            // Don't register a new user if someone else already uses the same email address
+            throw new InvalidLoginProviderException;
+        }
+        $created = HitobitoUser::create(['hitobito_id' => $userData['id'], 'email' => $userData['email'], 'name' => $userData['nickname']]);
+        return $created;
     }
 }

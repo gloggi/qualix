@@ -35,19 +35,22 @@ class HitobitoOAuthTest extends TestCase {
         return $result;
     }
 
-    protected function mockHitobitoResponses($email, $nickname) {
+    protected function mockHitobitoResponses($hitobitoId, $email, $nickname) {
         $hitobitoMock = new MockHandler([
             // Respond to the authorization_token request
             new Response(200, [], '{"access_token": "abcd"}'),
             // Respond to the profile request
-            new Response(200, [], '{"email": "' . $email . '", "nickname": "' . $nickname . '"}'),
+            new Response(200, [], '{"id": ' . $hitobitoId . ', "email": "' . $email . '", "nickname": "' . $nickname . '"}'),
         ]);
         config()->set('services.hitobito.guzzle.handler', $hitobitoMock);
     }
 
     public function test_registerWithMiData_shouldWork() {
         // given
-        $this->mockHitobitoResponses('test@hitobito.com', 'Test');
+        $hitobitoId = 123;
+        $email = 'test@hitobito.com';
+        $name = 'Lindo';
+        $this->mockHitobitoResponses($hitobitoId, $email, $name);
         $this->withSession(['url.intended' => '/some/redirect']);
 
         // when
@@ -56,14 +59,20 @@ class HitobitoOAuthTest extends TestCase {
 
         // then
         $response->assertRedirect('/some/redirect');
-        $this->assertAuthenticatedAs(HitobitoUser::first());
+        $registeredUser = HitobitoUser::first();
+        $this->assertAuthenticatedAs($registeredUser);
+        $this->assertEquals($hitobitoId, $registeredUser->hitobito_id);
+        $this->assertEquals($email, $registeredUser->email);
+        $this->assertEquals($name, $registeredUser->name);
     }
 
     public function test_loginWithMiData_shouldWork() {
         // given
         $email = 'cosinus@hitobito.com';
-        $existingUser = factory(HitobitoUser::class)->create(['name' => 'Cosinus', 'email' => $email]);
-        $this->mockHitobitoResponses($email, 'Cosinuss');
+        $hitobitoId = 123;
+        $name = 'Cosinus';
+        $existingUser = factory(HitobitoUser::class)->create(['hitobito_id' => $hitobitoId, 'name' => $name, 'email' => $email]);
+        $this->mockHitobitoResponses($hitobitoId, $email, 'Cosinuss');
         $this->withSession(['url.intended' => '/some/redirect']);
 
         // when
@@ -73,11 +82,59 @@ class HitobitoOAuthTest extends TestCase {
         // then
         $response->assertRedirect('/some/redirect');
         $this->assertAuthenticatedAs($existingUser);
+        $registeredUser = HitobitoUser::findOrFail($existingUser->id);
+        $this->assertEquals($hitobitoId, $registeredUser->hitobito_id);
+        $this->assertEquals($email, $registeredUser->email);
+        $this->assertEquals($name, $registeredUser->name);
     }
 
-    public function test_registerWithMiData_shouldFail_whenStateDoesNotMatch() {
+    public function test_loginWithMiData_shouldUpdateEmail_whenUserHasChangedItInMiData() {
         // given
-        $this->mockHitobitoResponses('cosinus@hitobito.com', 'Cosinus');
+        $email = 'cosinus@hitobito.com';
+        $newEmail = 'changed@hitobito.com';
+        $hitobitoId = 123;
+        $existingUser = factory(HitobitoUser::class)->create(['hitobito_id' => $hitobitoId, 'name' => 'Cosinus', 'email' => $email]);
+        $this->mockHitobitoResponses($hitobitoId, $newEmail, 'Cosinuss');
+        $this->withSession(['url.intended' => '/some/redirect']);
+
+        // when
+        $state = $this->extractRedirectQueryParams($this->get('/login/hitobito'))['state'];
+        $response = $this->get('/login/hitobito/callback?code=1234&state=' . $state);
+
+        // then
+        $response->assertRedirect('/some/redirect');
+        $existingUser = HitobitoUser::findOrFail($existingUser->id);
+        $this->assertAuthenticatedAs($existingUser);
+        $this->assertEquals($newEmail, $existingUser->email);
+        $this->assertEquals($hitobitoId, $existingUser->hitobito_id);
+    }
+
+    public function test_loginWithMiData_shouldKeepOldEmail_whenChangedEmailBelongsToOtherUser() {
+        // given
+        $oldEmail = 'cosinus@hitobito.com';
+        $newEmail = 'changed@hitobito.com';
+        $hitobitoId = 123;
+        $existingUser = factory(HitobitoUser::class)->create(['hitobito_id' => $hitobitoId, 'name' => 'Cosinus', 'email' => $oldEmail]);
+        $otherUser = factory(NativeUser::class)->create(['email' => $newEmail, 'name' => 'Bari']);
+        $this->mockHitobitoResponses($hitobitoId, $newEmail, 'Cosinuss');
+        $this->withSession(['url.intended' => '/some/redirect']);
+
+        // when
+        $state = $this->extractRedirectQueryParams($this->get('/login/hitobito'))['state'];
+        $response = $this->get('/login/hitobito/callback?code=1234&state=' . $state);
+
+        // then
+        $response->assertRedirect('/some/redirect');
+        $existingUser = HitobitoUser::findOrFail($existingUser->id);
+        $this->assertAuthenticatedAs($existingUser);
+        $this->assertEquals($oldEmail, $existingUser->email);
+        $this->assertEquals($hitobitoId, $existingUser->hitobito_id);
+        $this->assertNotEquals($otherUser->id, $existingUser->id);
+    }
+
+    public function test_registerOrLoginWithMiData_shouldFail_whenStateDoesNotMatch() {
+        // given
+        $this->mockHitobitoResponses(123, 'cosinus@hitobito.com', 'Cosinus');
 
         // when
         $this->get('/login/hitobito');
@@ -88,7 +145,7 @@ class HitobitoOAuthTest extends TestCase {
         $response->followRedirects()->assertSee('Etwas hat nicht geklappt. Versuche es noch einmal.');
     }
 
-    public function test_registerWithMiData_shouldFail_whenHitobitoReportsAnError() {
+    public function test_registerOrLoginWithMiData_shouldFail_whenHitobitoReportsAnError() {
         // given
 
         // when
@@ -104,7 +161,7 @@ class HitobitoOAuthTest extends TestCase {
         // given
         $email = 'cosinus@qualix.flamberg.ch';
         factory(NativeUser::class)->create(['name' => 'Cosinus', 'email' => $email]);
-        $this->mockHitobitoResponses($email, 'Cosinus');
+        $this->mockHitobitoResponses(123, $email, 'Cosinus');
         $this->withSession(['url.intended' => '/some/redirect']);
 
         // when
@@ -144,7 +201,7 @@ class HitobitoOAuthTest extends TestCase {
         $response->followRedirects()->assertSee('Wir können keinen Benutzer mit dieser E-Mail-Adresse finden. Meldest du dich vielleicht normalerweise mit MiData an?');
     }
 
-    public function test_nativeLogin_shouldFail_whenHitobitoIsDown() {
+    public function test_registerOrLoginWithMiData_shouldFail_whenHitobitoIsDown() {
         // given
         // Respond with error 500
         $hitobitoMock = new MockHandler([ new Response(500) ]);

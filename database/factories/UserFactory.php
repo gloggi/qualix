@@ -32,5 +32,6 @@ $factory->define(HitobitoUser::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => null,
+        'hitobito_id' => $faker->randomNumber(),
     ];
 });
