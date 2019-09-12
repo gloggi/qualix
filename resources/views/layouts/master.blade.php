@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Qualix</title>
     <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
 </head>
 <body>
 
