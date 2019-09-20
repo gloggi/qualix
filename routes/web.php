@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/', 'CourseController@noCourse')->name('home');
-    #Route::get('/kitchensink', 'KitchenSinkController@index')->name('pages.kitchensink');
     Route::get('/course', 'CourseController@noCourse');
     Route::get('/user', 'HomeController@editUser')->name('user');
     Route::post('/user', 'HomeController@updateUser')->name('user.update');
