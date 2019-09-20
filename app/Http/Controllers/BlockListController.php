@@ -15,4 +15,8 @@ class BlockListController extends Controller
     {
         return view('blocks');
     }
+    public function crib()
+    {
+        return view('crib');
+    }
 }
