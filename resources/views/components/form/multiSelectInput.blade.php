@@ -17,7 +17,7 @@
 
             :options="[
                 @foreach($options as $option)
-                    { label: '{{ $displayFn($option) }}', value: '{{ $valueFn($option) }}' @if (isset($dataFn) && $dataFn), data: {{ $dataFn($option) }}@endif },
+                { label: '{{ addslashes($displayFn($option)) }}', value: '{{ addslashes($valueFn($option)) }}' @if (isset($dataFn) && $dataFn), data: {{ $dataFn($option) }}@endif },
                 @endforeach
             ]"
             :multiple="{{ ($multiple ?? false) ? 'true' : 'false' }}"

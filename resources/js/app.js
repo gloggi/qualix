@@ -38,7 +38,6 @@ Vue.directive('focus', {
             el.focus()
             let caretPos = el.value.length;
             if (el.createTextRange) {
-                console.log('createTextRange available')
                 var range = el.createTextRange();
                 range.move('character', caretPos);
                 range.select();
@@ -46,12 +45,9 @@ Vue.directive('focus', {
                 el.setSelectionRange(caretPos, caretPos);
             }
         } else {
-            console.log(el)
-            console.log(el.querySelector('.multiselect'))
             // We might be in a vue-multiselect, search for the contained div.multiselect
             let multiselect = el.querySelector('div.multiselect');
             if (multiselect) {
-                console.log(2)
                 multiselect.focus();
             }
         }
