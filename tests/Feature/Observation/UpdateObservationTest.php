@@ -18,10 +18,10 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->observationId = $this->createObservation('hat gut mitgemacht', 1, [], [], $this->blockId);
 
         $blockId2 = $this->createBlock();
-        $maId = $this->createRequirement('Mindestanforderung 1', true);
+        $requirementId = $this->createRequirement('Mindestanforderung 1', true);
         $categoryId = $this->createCategory('Kategorie 1');
 
-        $this->payload = ['participant_id' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0', 'block_id' => '' . $blockId2, 'requirement_ids' => '' . $maId, 'category_ids' => '' . $categoryId];
+        $this->payload = ['participant_id' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0', 'block_id' => '' . $blockId2, 'requirement_ids' => '' . $requirementId, 'category_ids' => '' . $categoryId];
     }
 
     public function test_shouldRequireLogin() {

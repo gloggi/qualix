@@ -1,21 +1,21 @@
 <template>
   <div>
-    <slot :maValue="maValue" :onBlockUpdate="onBlockUpdate"></slot>
+    <slot :requirementsValue="requirementsValue" :onBlockUpdate="onBlockUpdate"></slot>
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'BlockAndMaInputWrapper',
+  name: 'BlockAndRequirementsInputWrapper',
   data: function () {
     return {
-      maValue: ''
+      requirementsValue: ''
     }
   },
   methods: {
     onBlockUpdate (blockObject) {
-      this.maValue = blockObject.data
+      this.requirementsValue = blockObject.data
     }
   }
 }

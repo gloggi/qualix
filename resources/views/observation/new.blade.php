@@ -20,7 +20,7 @@
 
             @component('components.form.textareaInput', ['name' => 'content', 'label' => __('Beobachtung'), 'required' => true, 'autofocus' => ($participant_id !== null)])@endcomponent
 
-            <block-and-ma-input-wrapper v-slot="slotProps">
+            <block-and-requirements-input-wrapper v-slot="slotProps">
 
                 @component('components.form.multiSelectInput', [
                     'name' => 'block_id',
@@ -38,14 +38,14 @@
                 @component('components.form.multiSelectInput', [
                     'name' => 'requirement_ids',
                     'label' => __('Mindestanforderungen'),
-                    'valueBind' => 'slotProps.maValue',
+                    'valueBind' => 'slotProps.requirementsValue',
                     'options' => $course->requirements->all(),
                     'valueFn' => function(\App\Models\Requirement $requirement) { return $requirement->id; },
                     'displayFn' => function(\App\Models\Requirement $requirement) { return $requirement->content; },
                     'multiple' => true,
                 ])@endcomponent
 
-            </block-and-ma-input-wrapper>
+            </block-and-requirements-input-wrapper>
 
             @component('components.form.radioButtonInput', [
                 'name' => 'impression',
