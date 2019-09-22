@@ -15,11 +15,14 @@
             :allow-empty="true"
             {{ isset($autofocus) && $autofocus ? 'autofocus v-focus' : '' }}
 
-            :options="[
-                @foreach($options as $option)
-                { label: '{{ addslashes($displayFn($option)) }}', value: '{{ addslashes($valueFn($option)) }}' @if (isset($dataFn) && $dataFn), data: {{ $dataFn($option) }}@endif },
-                @endforeach
-            ]"
+            @php
+                $dataFn = $dataFn ?? function($option) { return null; };
+                $jsonOptions = array_map(function($option) use($displayFn, $valueFn, $dataFn) {
+                    return ['label' => (string)$displayFn($option), 'value' => (string)$valueFn($option), 'data' => $dataFn($option)];
+                }, $options);
+            @endphp
+            :options="{{ json_encode($jsonOptions) }}"
+
             :multiple="{{ ($multiple ?? false) ? 'true' : 'false' }}"
             @if (isset($disabled) && $disabled):disabled="true"@endif
             :close-on-select="true"

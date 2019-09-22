@@ -28,7 +28,7 @@
                 'options' => $course->blocks->all(),
                 'valueFn' => function(\App\Models\Block $block) { return $block->id; },
                 'displayFn' => function(\App\Models\Block $block) { return $block->blockname_and_number; },
-                'dataFn' => function(\App\Models\Block $block) { return '\'' . implode(',', array_map(function(\App\Models\Requirement $requirement) { return $requirement->id; }, $block->requirements->all())) . '\''; },
+                'dataFn' => function(\App\Models\Block $block) { return implode(',', array_map(function(\App\Models\Requirement $requirement) { return $requirement->id; }, $block->requirements->all())); },
                 'multiple' => false,
             ])@endcomponent
 
