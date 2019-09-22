@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/', 'CourseController@noCourse')->name('home');
-
     Route::get('/course', 'CourseController@noCourse');
     Route::get('/user', 'HomeController@editUser')->name('user');
     Route::post('/user', 'HomeController@updateUser')->name('user.update');
@@ -25,6 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/course/{course}', 'HomeController@index')->name('index');
 
     Route::get('/course/{course}/blocks', 'BlockListController@index')->name('blocks');
+    Route::get('/course/{course}/crib', 'BlockListController@crib')->name('crib');
 
     Route::middleware('courseNotArchived')->group(function () {
         Route::get('/course/{course}/participants', 'ParticipantListController@index')->name('participants');

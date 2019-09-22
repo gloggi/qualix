@@ -25,6 +25,7 @@
                     <li class="nav-item{{ Route::currentRouteName() == 'blocks' ? ' active' : '' }}">
                         <a class="nav-link" href="{{ route('blocks', ['course' => $course->id]) }}">Blöcke</a>
                     </li>
+
                     @if(!$course->archived)
                         <li class="nav-item{{ Route::currentRouteName() == 'participants' ? ' active' : '' }}">
                             <a class="nav-link" href="{{ route('participants', ['course' => $course->id]) }}">TN</a>
@@ -33,6 +34,9 @@
                             <a class="nav-link" href="{{ route('overview', ['course' => $course->id]) }}">Überblick</a>
                         </li>
                     @endif
+                    <li class="nav-item{{ Route::currentRouteName() == 'crib' ? ' active' : '' }}">
+                        <a class="nav-link" href="{{ route('crib', ['course' => $course->id]) }}">Spick</a>
+                    </li>
                     <li class="nav-item dropdown{{ substr( Route::currentRouteName(), 0, 5 ) == 'admin' ? ' active' : '' }}">
                         <a class="nav-link dropdown-toggle" id="navbarCourseAdmin" role="button"
                            data-toggle="dropdown"
