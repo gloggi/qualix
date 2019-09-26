@@ -114,4 +114,17 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
 
         // then
     }
+
+    public function test_shouldShowEscapedNotice_afterArchivingCourse() {
+        // given
+        $courseName = '<b>Course name</b> with \'some" formatting';
+        $courseId = $this->createCourse($courseName);
+
+        // when
+        $response = $this->post('/course/' . $courseId . '/admin/archive')->followRedirects();
+
+        // then
+        $response->assertDontSee($courseName);
+        $response->assertSee(htmlspecialchars($courseName, ENT_QUOTES));
+    }
 }

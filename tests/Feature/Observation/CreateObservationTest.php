@@ -180,4 +180,18 @@ class CreateObservationTest extends TestCaseWithBasicData {
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
+
+    public function test_shouldShowEscapedNotice_afterCreatingObservation() {
+        // given
+        $participantName = '<b>Participant name</b> with \'some" formatting';
+        $payload = $this->payload;
+        $payload['participant_ids'] = $this->createParticipant($participantName);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload)->followRedirects();
+
+        // then
+        $response->assertDontSee($participantName);
+        $response->assertSee(htmlspecialchars($participantName, ENT_QUOTES));
+    }
 }

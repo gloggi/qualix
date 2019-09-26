@@ -8,6 +8,7 @@ use App\Models\Block;
 use App\Models\Course;
 use App\Models\Observation;
 use App\Models\Participant;
+use App\Util\HtmlString;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -50,7 +51,13 @@ class ObservationController extends Controller {
                 $request->session()->flash('alert-success', __('Beobachtungen erfasst. Mässi!'));
             } else {
                 $participant = Participant::find($participant_ids[0]);
-                $request->session()->flash('alert-success', __('Beobachtung erfasst. Mässi!') . ' <a href="' . route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) . '">' . __('Zurück zu :name', ['name' => $participant->scout_name]) . ' <i class="fas fa-arrow-right"></i></a>');
+                $route = route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]);
+                $flash = (new HtmlString)
+                    ->__('Beobachtung erfasst. Mässi!')
+                    ->s(" <a href=\"{$route}\">")
+                    ->__('Zurück zu :name', ['name' => $participant->scout_name])
+                    ->s(' <i class="fas fa-arrow-right"></i></a>');
+                $request->session()->flash('alert-success', $flash);
             }
         });
 
