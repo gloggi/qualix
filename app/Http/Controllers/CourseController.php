@@ -6,7 +6,6 @@ use App\Http\Requests\CourseRequest;
 use App\Models\Course;
 use App\Models\Participant;
 use App\Models\User;
-use App\Util\HtmlString;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -93,8 +92,7 @@ class CourseController extends Controller {
         foreach ($participantImageUrls as $participantImageUrl) {
             Storage::delete($participantImageUrl);
         }
-        $flash = (new HtmlString)->__('Kurs :name und alle damit verbundenen Daten wurden gelöscht.', ['name' => $course->name]);
-        $request->session()->flash('alert-success', $flash);
+        $request->session()->flash('alert-success', __('Kurs :name und alle damit verbundenen Daten wurden gelöscht.', ['name' => $course->name]));
         return Redirect::route('home');
     }
 
@@ -120,8 +118,7 @@ class CourseController extends Controller {
         foreach ($participantImageUrls as $participantImageUrl) {
             Storage::delete($participantImageUrl);
         }
-        $flash = (new HtmlString)->__e('Kurs :name wurde archiviert.', ['name' => $course->name]);
-        $request->session()->flash('alert-success', $flash);
+        $request->session()->flash('alert-success', __('Kurs :name wurde archiviert.', ['name' => $course->name]));
         return Redirect::route('home');
     }
 }

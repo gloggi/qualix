@@ -80,7 +80,7 @@ class InvitationController extends Controller {
 
                 $invitation->delete();
 
-                $request->session()->flash('alert-success', __('Einladung angenommen. Du bist jetzt in der Equipe von :coursename', ['coursename' => htmlentities($invitation->course->name)]));
+                $request->session()->flash('alert-success', __('Einladung angenommen. Du bist jetzt in der Equipe von :coursename', ['coursename' => $invitation->course->name]));
 
                 return Redirect::route('index', ['course' => $invitation->course->id]);
             });
