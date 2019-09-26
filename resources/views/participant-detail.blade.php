@@ -19,7 +19,7 @@
                 @php
                     $columns = [];
                     foreach ($course->users->all() as $user) {
-                        $columns[$user->name] = function($observationen) use($user) { return count(array_filter($observationen, function(\App\Models\Observation $observation) use($user) {
+                        $columns[$user->name] = function($observations) use($user) { return count(array_filter($observations, function(\App\Models\Observation $observation) use($user) {
                             return $observation->user->id === $user->id;
                         })); };
                     }
