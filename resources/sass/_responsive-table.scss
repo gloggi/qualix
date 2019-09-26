@@ -64,13 +64,12 @@
       border: none;
       padding: 0 0.75em;
       margin: 0.5em 0;
+    }
 
-      &:before {
-        content: attr(data-label);
-        white-space: pre;
-        font-weight: bold;
-      }
-
+    td:before {
+      content: attr(data-label) "\A";
+      white-space: pre;
+      font-weight: bold;
     }
 
     td.actions {
