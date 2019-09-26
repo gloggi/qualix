@@ -120,4 +120,22 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
+
+    public function test_shouldEscapeHTML_whenDisplayingOverview() {
+        // given
+        $participantName = '<b>Bar</b>i\'"';
+        $this->createParticipant($participantName);
+        $userName = 'Co<i>si</i>nus\'"';
+        $this->createUser(['name' => $userName])->courses()->attach($this->courseId);
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee($participantName);
+        $response->assertSee(htmlspecialchars($participantName, ENT_QUOTES));
+        $response->assertDontSee($userName);
+        $response->assertSee(htmlspecialchars($userName, ENT_QUOTES));
+    }
 }
