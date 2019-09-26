@@ -59,12 +59,13 @@
                                   value="{{ $requirement }}"
                                   :allow-empty="true"
                                   placeholder="Mindestanforderung"
-                                  :options="[
-                                    @foreach( $course->requirements as $option )
-                                    { label: '{{ $option->content }}', value: '{{ $option->id }}' },
-                                    @endforeach
-                                    { label: '{{__('-- Beobachtungen ohne Mindestanforderungen --')}}', value: '0' },
-                                    ]"
+                                  @php
+                                    $jsonOptions = $course->requirements->map(function (App\Models\Requirement $requirement) {
+                                        return [ 'label' => (string)$requirement->content, 'value' => (string)$requirement->id ];
+                                    });
+                                    $jsonOptions[] = [ 'label' => __('-- Beobachtungen ohne Mindestanforderungen --'), 'value' => '0' ];
+                                  @endphp
+                                  :options="{{ json_encode($jsonOptions) }}"
                                   :multiple="false"
                                   :close-on-select="true"
                                   :show-labels="false"
@@ -86,12 +87,13 @@
                                   value="{{ $category }}"
                                   :allow-empty="true"
                                   placeholder="Kategorie"
-                                  :options="[
-                                    @foreach( $course->categories as $option )
-                                    { label: '{{ $option->name }}', value: '{{ $option->id }}' },
-                                    @endforeach
-                                    { label: '{{__('-- Beobachtungen ohne Kategorie --')}}', value: '0' },
-                                    ]"
+                                  @php
+                                      $jsonOptions = $course->categories->map(function (App\Models\Category $category) {
+                                          return [ 'label' => (string)$category->name, 'value' => (string)$category->id ];
+                                      });
+                                      $jsonOptions[] = [ 'label' => __('-- Beobachtungen ohne Kategorie --'), 'value' => '0' ];
+                                  @endphp
+                                  :options="{{ json_encode($jsonOptions) }}"
                                   :multiple="false"
                                   :close-on-select="true"
                                   :show-labels="false"
