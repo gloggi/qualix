@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'nativeUsers',
     ],
 
     /*
@@ -71,10 +71,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'nativeUsers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\NativeUser::class,
+        ],
     ],
 
     /*
@@ -93,8 +93,8 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'nativeUsers' => [
+            'provider' => 'nativeUsers',
             'table' => 'password_resets',
             'expire' => 60,
         ],

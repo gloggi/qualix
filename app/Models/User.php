@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Notifications\ResetPasswordNotification;
-use App\Notifications\VerifyEmailNotification;
 use Carbon\CarbonInterface;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
@@ -15,32 +13,30 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Tightenco\Parental\HasChildren;
 
 /**
  * @property int $id
- * @property int $course_id
  * @property string $name
  * @property string $group
  * @property string $password
  * @property string $email
- * @property string $salt
  * @property string $image_url
+ * @property string $login_provider
  * @property Observation[] $observations
  * @property Course[] $courses
  * @property Course[] $nonArchivedCourses
  * @property Course[] $archivedCourses
  * @property Course $last_accessed_course
- * @property LoginAttempt[] $loginAttempts
- * @property RecoveryAttempt[] $recoveryAttempts
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, MustVerifyEmailContract
 {
-    use Notifiable, Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
+    use Notifiable, Authenticatable, Authorizable, HasChildren, CanResetPassword, MustVerifyEmail;
 
     /**
      * @var array
      */
-    protected $fillable = ['name', 'group', 'password', 'email', 'image_url'];
+    protected $fillable = ['name', 'group', 'password', 'email', 'image_url', 'login_provider'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -50,11 +46,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = ['password', 'remember_token'];
 
     /**
-     * The attributes that should be cast to native types.
+     * Name of the database column holding the login provider name
+     *
+     * @var string
+     */
+    protected $childColumn = 'login_provider';
+
+    /**
+     * Mapping from database value to provider specific User class
      *
      * @var array
      */
-    protected $casts = ['email_verified_at' => 'datetime'];
+    protected $childTypes = [
+        'hitobito' => HitobitoUser::class,
+        'qualix' => NativeUser::class,
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -114,41 +120,5 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function setLastUsedBlockDate($value, Course $course) {
         $this->courses()->updateExistingPivot($course->id, ['last_used_block_date' => Carbon::parse($value)]);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function loginAttempts()
-    {
-        return $this->hasMany('App\Models\LoginAttempt');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function recoveryAttempts()
-    {
-        return $this->hasMany('App\Models\RecoveryAttempt');
-    }
-
-    /**
-     * Send the password reset notification.
-     *
-     * @param  string  $token
-     * @return void
-     */
-    public function sendPasswordResetNotification($token)
-    {
-        $this->notify(new ResetPasswordNotification($token));
-    }
-
-    /**
-     * Send the email verification notification.
-     *
-     * @return void
-     */
-    public function sendEmailVerificationNotification() {
-        $this->notify(new VerifyEmailNotification());
     }
 }

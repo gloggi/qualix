@@ -1,5 +1,5 @@
 <div class="form-group row{{ isset($required) && $required ? ' required' : ''}}">
-    <label for="{{ $name }}" class="col-md-4 col-form-label text-md-right">{{ $label }}</label>
+    <label for="{{ $name }}" class="col-md-3 col-form-label text-md-right">{{ $label }}</label>
     @component('components.form.hiddenInput', ['name' => $name, 'id' => $name . '-hidden-reset', 'value' => '0'])@endcomponent
     <div class="col-md-6 d-flex">
         <div class="my-auto">

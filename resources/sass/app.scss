@@ -1,10 +1,9 @@
-
 @font-face {
     font-family: 'Source Sans Pro';
     src: url('../fonts/SourceSansPro-Regular.ttf'),
-         url('../fonts/SourceSansPro-Italic.ttf'),
-         url('../fonts/SourceSansPro-Bold.ttf'),
-         url('../fonts/SourceSansPro-BoldItalic.ttf');
+    url('../fonts/SourceSansPro-Italic.ttf'),
+    url('../fonts/SourceSansPro-Bold.ttf'),
+    url('../fonts/SourceSansPro-BoldItalic.ttf');
 }
 
 @import 'variables';
@@ -32,7 +31,9 @@
     cursor: pointer;
 }
 
-[v-cloak] > * { display:none }
+[v-cloak] > * {
+    display: none
+}
 
 .avatar {
     @extend .rounded-circle;
@@ -86,4 +87,31 @@
 
 .bg-danger-light {
     background-color: #f9d6d5;
+}
+
+.hr-label {
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    margin: 1rem 0;
+
+    &::before, &::after {
+        content: '';
+        background-color: $card-border-color;
+        height: 1px;
+        width: 50%;
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+    }
+
+    &::before {
+        margin-left: -50%;
+        right: 0.5em;
+    }
+
+    &::after {
+        margin-right: -50%;
+        left: 0.5em;
+    }
 }
