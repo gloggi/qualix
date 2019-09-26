@@ -25,7 +25,7 @@
             @component('components.responsive-table', [
                 'data' => $course->participants,
                 'image' => [
-                    __('Bild') => function(\App\Models\Participant $participant) { return ($participant->image_url!=null) ? view('components.img',  ['src' => asset(Storage::url($participant->image_url)), 'classes' => ['avatar-small']]) : ''; },
+                    __('Bild') => function(\App\Models\Participant $participant) { return ($participant->image_url!=null) ? (new App\Util\HtmlString)->s(view('components.img',  ['src' => asset(Storage::url($participant->image_url)), 'classes' => ['avatar-small']])) : ''; },
                 ],
                 'fields' => [
                     __('Pfadiname') => function(\App\Models\Participant $participant) { return $participant->scout_name; },

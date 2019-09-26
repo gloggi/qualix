@@ -97,4 +97,16 @@ class HtmlString extends LaravelHtmlString implements Htmlable
     public function __(...$arguments) {
         return $this->appendEscaping(__(...$arguments));
     }
+
+    /**
+     * Append an unsafe string (possibly containing user input) to the HTML, converting new lines to <br> tags.
+     * The translated string will be escaped using htmlspecialchars (except for the added <br> tags).
+     *
+     * @param $escapable
+     * @param bool $doubleEncode
+     * @return $this
+     */
+    public function nl2br_e($escapable, $doubleEncode = false) {
+        return $this->append(nl2br((new HtmlString)->appendEscaping($escapable, $doubleEncode)->toHtml()));
+    }
 }

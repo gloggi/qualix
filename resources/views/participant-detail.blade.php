@@ -60,7 +60,7 @@
                                   :allow-empty="true"
                                   placeholder="Mindestanforderung"
                                   @php
-                                    $jsonOptions = $course->requirements->map(function (App\Models\Requirement $requirement) {
+                                    $jsonOptions = $course->requirements->map(function (\App\Models\Requirement $requirement) {
                                         return [ 'label' => (string)$requirement->content, 'value' => (string)$requirement->id ];
                                     });
                                     $jsonOptions[] = [ 'label' => __('-- Beobachtungen ohne Mindestanforderungen --'), 'value' => '0' ];
@@ -115,18 +115,18 @@
                 'data' => $observations,
                 'rawColumns' => true,
                 'fields' => [
-                    __('Beobachtung') => function(\App\Models\Observation $observation) { return nl2br($observation->content); },
+                    __('Beobachtung') => function(\App\Models\Observation $observation) { return (new App\Util\HtmlString)->nl2br_e($observation->content); },
                     __('Block') => function(\App\Models\Observation $observation) { return $observation->block->blockname_and_number; },
                     __('MA') => function(\App\Models\Observation $observation) {
-                        return implode('', array_map(function(\App\Models\Requirement $requirement) {
-                            return '<span class="badge badge-' . ($requirement->mandatory ? 'warning' : 'info') . '" style="white-space: normal">' . $requirement->content . '</span>';
-                        }, $observation->requirements->all()));
+                        return (new App\Util\HtmlString)->s(implode('', array_map(function(\App\Models\Requirement $requirement) {
+                            return (new App\Util\HtmlString)->s('<span class="badge badge-' . ($requirement->mandatory ? 'warning' : 'info') . '" style="white-space: normal">')->e($requirement->content)->s('</span>');
+                        }, $observation->requirements->all())));
                     },
                     __('Eindruck') => function(\App\Models\Observation $observation) {
                         $impmression = $observation->impression;
-                        if ($impmression === 0) return '<span class="badge badge-danger">negativ</span>';
-                        else if ($impmression === 2) return '<span class="badge badge-success">positiv</span>';
-                        else return '<span class="badge badge-secondary">neutral</span>';
+                        if ($impmression === 0) return (new App\Util\HtmlString)->s('<span class="badge badge-danger">negativ</span>');
+                        else if ($impmression === 2) return (new App\Util\HtmlString)->s('<span class="badge badge-success">positiv</span>');
+                        else return (new App\Util\HtmlString)->s('<span class="badge badge-secondary">neutral</span>');
                     },
                     __('Beobachter') => function(\App\Models\Observation $observation) { return $observation->user->name; }
                 ],
