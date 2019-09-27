@@ -4,8 +4,6 @@
 
     @component('components.card', ['header' => __('Welche Mindestanforderungen können in den jeweiligen Blöcken beobachtet werden:')])
 
-
-
         @if (count($course->blocks))
 
             @php
@@ -60,7 +58,7 @@
                 @endforeach
             </div>
             @component('components.help-text', ['header' => __('Siehst du nur leere Blöcke ohne Mindestanforderungen?'), 'collapseId' => 'no-linked-MA'])
-                {{__('Dann sind bisher sind Blöcke mit Mindesanforderungen verbunden. Bitte verbinde die Blöcke ')}} <a href="{{ route('admin.blocks', ['course' => $course->id]) }}">{{__('hier')}}</a>  {{__(' mit Mindestanforderungen')}}.
+                {{__('Dann sind bisher keine Blöcke mit Mindesanforderungen verbunden. Bitte verbinde die Blöcke ')}} <a href="{{ route('admin.blocks', ['course' => $course->id]) }}">{{__('hier')}}</a>  {{__(' mit Mindestanforderungen')}}.
 
             @endcomponent
 

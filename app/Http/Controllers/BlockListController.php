@@ -15,6 +15,12 @@ class BlockListController extends Controller
     {
         return view('blocks');
     }
+
+    /**
+     * Display the crib page which visualizes connections between blocks and requirements.
+     *
+     * @return Response
+     */
     public function crib()
     {
         return view('crib');
