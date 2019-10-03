@@ -8,12 +8,12 @@ use Tests\TestCaseWithCourse;
 
 class ReadRequirementTest extends TestCaseWithCourse {
 
-    private $maId;
+    private $requirementId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->maId = $this->createRequirement('Mindestanforderung 1', true);
+        $this->requirementId = $this->createRequirement('Mindestanforderung 1', true);
     }
 
     public function test_shouldRequireLogin() {
@@ -21,7 +21,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/admin/requirement/' . $this->maId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/requirement/' . $this->requirementId);
 
         // then
         $response->assertStatus(302);
@@ -32,7 +32,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/admin/requirement/' . $this->maId);
+        $response = $this->get('/course/' . $this->courseId . '/admin/requirement/' . $this->requirementId);
 
         // then
         $response->assertOk();
@@ -44,7 +44,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
         $otherKursId = $this->createCourse('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/course/' . $otherKursId . '/admin/requirement/' . $this->maId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/requirement/' . $this->requirementId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
@@ -53,10 +53,10 @@ class ReadRequirementTest extends TestCaseWithCourse {
     public function test_shouldNotDisplayMA_fromOtherUser() {
         // given
         $otherKursId = $this->createCourse('Zweiter Kurs', '', false);
-        $otherMAId = Requirement::create(['course_id' => $otherKursId, 'content' => 'Mindestanforderung 1', 'mandatory' => '1'])->id;
+        $otherRequirementId = Requirement::create(['course_id' => $otherKursId, 'content' => 'Mindestanforderung 1', 'mandatory' => '1'])->id;
 
         // when
-        $response = $this->get('/course/' . $otherKursId . '/admin/requirement/' . $otherMAId);
+        $response = $this->get('/course/' . $otherKursId . '/admin/requirement/' . $otherRequirementId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

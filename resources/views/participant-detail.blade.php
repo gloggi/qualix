@@ -19,7 +19,7 @@
                 @php
                     $columns = [];
                     foreach ($course->users->all() as $user) {
-                        $columns[$user->name] = function($observationen) use($user) { return count(array_filter($observationen, function(\App\Models\Observation $observation) use($user) {
+                        $columns[$user->name] = function($observations) use($user) { return count(array_filter($observations, function(\App\Models\Observation $observation) use($user) {
                             return $observation->user->id === $user->id;
                         })); };
                     }
@@ -59,12 +59,13 @@
                                   value="{{ $requirement }}"
                                   :allow-empty="true"
                                   placeholder="Mindestanforderung"
-                                  :options="[
-                                    @foreach( $course->requirements as $option )
-                                    { label: '{{ $option->content }}', value: '{{ $option->id }}' },
-                                    @endforeach
-                                    { label: '{{__('-- Beobachtungen ohne Mindestanforderungen --')}}', value: '0' },
-                                    ]"
+                                  @php
+                                    $jsonOptions = $course->requirements->map(function (\App\Models\Requirement $requirement) {
+                                        return [ 'label' => (string)$requirement->content, 'value' => (string)$requirement->id ];
+                                    });
+                                    $jsonOptions[] = [ 'label' => __('-- Beobachtungen ohne Mindestanforderungen --'), 'value' => '0' ];
+                                  @endphp
+                                  :options="{{ json_encode($jsonOptions) }}"
                                   :multiple="false"
                                   :close-on-select="true"
                                   :show-labels="false"
@@ -86,12 +87,13 @@
                                   value="{{ $category }}"
                                   :allow-empty="true"
                                   placeholder="Kategorie"
-                                  :options="[
-                                    @foreach( $course->categories as $option )
-                                    { label: '{{ $option->name }}', value: '{{ $option->id }}' },
-                                    @endforeach
-                                    { label: '{{__('-- Beobachtungen ohne Kategorie --')}}', value: '0' },
-                                    ]"
+                                  @php
+                                      $jsonOptions = $course->categories->map(function (App\Models\Category $category) {
+                                          return [ 'label' => (string)$category->name, 'value' => (string)$category->id ];
+                                      });
+                                      $jsonOptions[] = [ 'label' => __('-- Beobachtungen ohne Kategorie --'), 'value' => '0' ];
+                                  @endphp
+                                  :options="{{ json_encode($jsonOptions) }}"
                                   :multiple="false"
                                   :close-on-select="true"
                                   :show-labels="false"
@@ -113,18 +115,18 @@
                 'data' => $observations,
                 'rawColumns' => true,
                 'fields' => [
-                    __('Beobachtung') => function(\App\Models\Observation $observation) { return nl2br($observation->content); },
+                    __('Beobachtung') => function(\App\Models\Observation $observation) { return (new App\Util\HtmlString)->nl2br_e($observation->content); },
                     __('Block') => function(\App\Models\Observation $observation) { return $observation->block->blockname_and_number; },
                     __('MA') => function(\App\Models\Observation $observation) {
-                        return implode('', array_map(function(\App\Models\Requirement $requirement) {
-                            return '<span class="badge badge-' . ($requirement->mandatory ? 'warning' : 'info') . '" style="white-space: normal">' . $requirement->content . '</span>';
-                        }, $observation->requirements->all()));
+                        return (new App\Util\HtmlString)->s(implode('', array_map(function(\App\Models\Requirement $requirement) {
+                            return (new App\Util\HtmlString)->s('<span class="badge badge-' . ($requirement->mandatory ? 'warning' : 'info') . '" style="white-space: normal">')->e($requirement->content)->s('</span>');
+                        }, $observation->requirements->all())));
                     },
                     __('Eindruck') => function(\App\Models\Observation $observation) {
                         $impmression = $observation->impression;
-                        if ($impmression === 0) return '<span class="badge badge-danger">negativ</span>';
-                        else if ($impmression === 2) return '<span class="badge badge-success">positiv</span>';
-                        else return '<span class="badge badge-secondary">neutral</span>';
+                        if ($impmression === 0) return (new App\Util\HtmlString)->s('<span class="badge badge-danger">negativ</span>');
+                        else if ($impmression === 2) return (new App\Util\HtmlString)->s('<span class="badge badge-success">positiv</span>');
+                        else return (new App\Util\HtmlString)->s('<span class="badge badge-secondary">neutral</span>');
                     },
                     __('Beobachter') => function(\App\Models\Observation $observation) { return $observation->user->name; }
                 ],

@@ -7,12 +7,12 @@ use Tests\TestCaseWithCourse;
 
 class DeleteRequirementTest extends TestCaseWithCourse {
 
-    private $maId;
+    private $requirementId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->maId = $this->createRequirement('Mindestanforderung 1', true);
+        $this->requirementId = $this->createRequirement('Mindestanforderung 1', true);
     }
 
     public function test_shouldRequireLogin() {
@@ -20,7 +20,7 @@ class DeleteRequirementTest extends TestCaseWithCourse {
         auth()->logout();
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/admin/requirement/' . $this->maId);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/requirement/' . $this->requirementId);
 
         // then
         $response->assertStatus(302);
@@ -31,7 +31,7 @@ class DeleteRequirementTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/admin/requirement/' . $this->maId);
+        $response = $this->delete('/course/' . $this->courseId . '/admin/requirement/' . $this->requirementId);
 
         // then
         $response->assertStatus(302);
@@ -45,7 +45,7 @@ class DeleteRequirementTest extends TestCaseWithCourse {
         // given
 
         // when
-        $response = $this->delete('/course/' . $this->courseId . '/admin/requirement/' . ($this->maId + 1));
+        $response = $this->delete('/course/' . $this->courseId . '/admin/requirement/' . ($this->requirementId + 1));
 
         // then
         $response->assertStatus(404);

@@ -116,7 +116,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $this->assertSeeAllInOrder('table.table-responsive-cards td[data-label^="Beobachtung"]', [
+        $this->assertSeeAllInOrder('table.table-responsive-cards td[data-label="Beobachtung"]', [
           'earlier date',
           'earlier day number',
           'earlier block number',

@@ -99,4 +99,17 @@ class DeleteCourseTest extends TestCaseWithBasicData {
 
         // then
     }
+
+    public function test_shouldShowEscapedNotice_afterDeletingCourse() {
+        // given
+        $courseName = '<b>Course name</b> with \'some" formatting';
+        $courseId = $this->createCourse($courseName);
+
+        // when
+        $response = $this->delete('/course/' . $courseId . '/admin')->followRedirects();
+
+        // then
+        $response->assertDontSee($courseName);
+        $response->assertSee(htmlspecialchars($courseName, ENT_QUOTES));
+    }
 }

@@ -8,7 +8,7 @@
 
             @php
                 $columns = [
-                    __('TN') => function(\App\Models\Participant $participant) use ($course) { return '<a href="' . route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) . '">' . (($participant->image_url!=null) ? view('components.img',  ['src' => asset(Storage::url($participant->image_url)), 'classes' => ['avatar-small']]) : '') . $participant->scout_name . '</a>'; },
+                    __('TN') => function(\App\Models\Participant $participant) use ($course) { return (new App\Util\HtmlString)->s('<a href="' . route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) . '">' . (($participant->image_url!=null) ? view('components.img',  ['src' => asset(Storage::url($participant->image_url)), 'classes' => ['avatar-small']]) : '') . ' ')->e($participant->scout_name)->s('</a>'); },
                     'Total' => function(\App\Models\Participant $participant) { return count($participant->observations->all()); },
                 ];
                 foreach ($course->users->all() as $user) {
@@ -16,7 +16,7 @@
                         $count=count(array_filter($participant->observations->all(), function(\App\Models\Observation $observation) use($user) {
                             return $observation->user->id === $user->id;
                         }));
-                        return '<div class="responsive-td-background ' . ($count >= 10 ? 'bg-success-light' : ($count < 5 ? 'bg-danger-light' : '')) . '">' . $count . '</div>';
+                        return (new App\Util\HtmlString)->s('<div class="responsive-td-background ' . ($count >= 10 ? 'bg-success-light' : ($count < 5 ? 'bg-danger-light' : '')) . '">' . $count . '</div>');
                     };
                 }
             @endphp

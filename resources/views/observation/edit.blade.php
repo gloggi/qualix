@@ -28,17 +28,17 @@
                 'options' => $course->blocks->all(),
                 'valueFn' => function(\App\Models\Block $block) { return $block->id; },
                 'displayFn' => function(\App\Models\Block $block) { return $block->blockname_and_number; },
-                'dataFn' => function(\App\Models\Block $block) { return '\'' . implode(',', array_map(function(\App\Models\Requirement $ma) { return $ma->id; }, $block->requirements->all())) . '\''; },
+                'dataFn' => function(\App\Models\Block $block) { return implode(',', array_map(function(\App\Models\Requirement $requirement) { return $requirement->id; }, $block->requirements->all())); },
                 'multiple' => false,
             ])@endcomponent
 
             @component('components.form.multiSelectInput', [
                 'name' => 'requirement_ids',
                 'label' => __('Mindestanforderungen'),
-                'value' => implode(',', array_map(function (\App\Models\Requirement $ma) { return $ma->id; }, $observation->requirements->all())),
+                'value' => implode(',', array_map(function (\App\Models\Requirement $requirement) { return $requirement->id; }, $observation->requirements->all())),
                 'options' => $course->requirements->all(),
-                'valueFn' => function(\App\Models\Requirement $ma) { return $ma->id; },
-                'displayFn' => function(\App\Models\Requirement $ma) { return $ma->content; },
+                'valueFn' => function(\App\Models\Requirement $requirement) { return $requirement->id; },
+                'displayFn' => function(\App\Models\Requirement $requirement) { return $requirement->content; },
                 'multiple' => true,
             ])@endcomponent
 

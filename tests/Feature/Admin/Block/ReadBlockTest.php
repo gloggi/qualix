@@ -78,7 +78,7 @@ class ReadBlockTest extends TestCaseWithCourse {
 
         // then
         $response->assertOk();
-        $this->assertSeeAllInOrder('table.table-responsive-cards td[data-label^="Blockname"]', [
+        $this->assertSeeAllInOrder('table.table-responsive-cards td[data-label="Blockname"]', [
           'earlier date',
           'earlier day number',
           'earlier block number',
