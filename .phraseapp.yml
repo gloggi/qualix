@@ -3,11 +3,11 @@ phraseapp:
   project_id: cbb16e012c455b7caf0b0bf893a816c7
   push:
     sources:
-    - file: ./resources/lang/<locale_code>/messages.php
+    - file: ./resources/lang/<locale_code>/translations.php
       params:
         file_format: laravel
   pull:
     targets:
-    - file: ./resources/lang/<locale_code>/messages.php
+    - file: ./resources/lang/<locale_code>/translations.php
       params:
         file_format: laravel
