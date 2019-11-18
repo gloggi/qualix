@@ -67,6 +67,13 @@
             </ul>
         @endauth
         <ul class="nav navbar-nav navbar-right ml-auto align-items-center-lg">
+            <li class=""nav-item">
+                <select class="custom-select" onchange="window.location = this.value">
+                    @foreach(Config::get('app.supported_locales') as $l)
+                        <option value="{{ route('locale.select', ['locale' => $l]) }}"{{ App::getLocale() === $l ? ' selected' : '' }}>{{ $l }}</option>
+                    @endforeach
+                </select>
+            </li>
             @auth
                 <li class="nav-item{{ Route::currentRouteName() == 'benutzer' ? ' active' : '' }}">
                     <a class="nav-link" href="{{ route('user') }}">
