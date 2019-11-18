@@ -36,11 +36,11 @@
   "Server Error": "Erreur serveur",
   "Service Unavailable": "Service indisponible",
   "Sorry, the page you are looking for could not be found.": "Désolé, la page que tu recherches est introuvable.",
+  "Sorry, we are doing some maintenance. Please check back soon.": "Désolé, nous sommes en maintenance. Reviens plus tard s.v.p.",
   "Sorry, you are forbidden from accessing this page.": "Désolé, tu ne peux pas accéder à cette page.",
   "Sorry, you are making too many requests to our servers.": "Désolé, tu fais trop de requêtes vers nos serveurs.",
   "Sorry, you are not authorized to access this page.": "Désolé, tu n'est pas autorisé à accéder à cette page.",
   "Sorry, your session has expired. Please refresh and try again.": "Désolé, ton session a expiré. Actualise la page et réessaye s.v.p.",
-  "Sorry, we are doing some maintenance. Please check back soon.": "Désolé, nous sommes en maintenance. Reviens plus tard s.v.p.",
   "This action is unauthorized.": "Cette action n'est pas autorisée.",
   "This password reset link will expire in :count minutes.": "Ce lien de réinitialisation du mot de passe expirera dans :count minutes.",
   "Toggle navigation": "Basculer la navigation",
@@ -49,8 +49,8 @@
   "Unauthorized": "Non autorisé",
   "Verify Email Address": "Vérification de l'adresse email",
   "Verify Your Email Address": "Vérifie ta adresse email",
-  "You are receiving this email because we received a password reset request for your account.": "Tu reçois cet email car nous avons reçu une demande de réinitialisation de mot de passe pour ton compte.",
-  "Your email address is not verified.": "Ta adresse email n'a pas été vérifiée.",
   "Whoops!": "Oups!",
-  "Whoops, something went wrong on our servers.": "Oups, quelque chose s'est mal passé sur nos serveurs."
+  "Whoops, something went wrong on our servers.": "Oups, quelque chose s'est mal passé sur nos serveurs.",
+  "You are receiving this email because we received a password reset request for your account.": "Tu reçois cet email car nous avons reçu une demande de réinitialisation de mot de passe pour ton compte.",
+  "Your email address is not verified.": "Ta adresse email n'a pas été vérifiée."
 }
