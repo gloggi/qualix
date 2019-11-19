@@ -9,7 +9,7 @@
             <ul class="navbar-nav">
                 @if($course)
                     <li>
-                        <select class="custom-select" onchange="window.location = this.value">
+                        <select id="globalCourseSelect" class="custom-select" onchange="window.location = this.value">
                             @foreach(Auth::user()->nonArchivedCourses as $c)
                                 <option value="{{ route('index', ['course' => $c->id]) }}"{{ $course->id === $c->id ? ' selected' : '' }}>{{ $c->name }}</option>
                             @endforeach
@@ -67,8 +67,8 @@
             </ul>
         @endauth
         <ul class="nav navbar-nav navbar-right ml-auto align-items-center-lg">
-            <li class=""nav-item">
-                <select class="custom-select" onchange="window.location = this.value">
+            <li class="nav-item">
+                <select class="custom-select" onchange="window.location = this.value" title="@lang('t.header.language_switch')">
                     @foreach(Config::get('app.supported_locales') as $l)
                         <option value="{{ route('locale.select', ['locale' => $l]) }}"{{ App::getLocale() === $l ? ' selected' : '' }}>{{ $l }}</option>
                     @endforeach

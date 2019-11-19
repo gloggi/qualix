@@ -59,8 +59,8 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         // Laravel bug: The Auth::user used in the application is cached and will not get the updated course list in this test, unless we refresh it manually
         $this->refreshUser();
         $response = $this->get('/course/' . $courseId . '/admin');
-        $this->assertSeeAllInOrder('select option', ['Kursname', $courseName]);
-        $this->assertSeeAllInOrder('select optgroup[label="Archiviert"] option', [$courseName]);
+        $this->assertSeeAllInOrder('select#globalCourseSelect option', ['Kursname', $courseName]);
+        $this->assertSeeAllInOrder('select#globalCourseSelect optgroup[label="Archiviert"] option', [$courseName]);
         $response->assertDontSee('Überblick');
     }
 
