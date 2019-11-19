@@ -4,7 +4,6 @@ namespace Tests\Feature\App;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Lang;
 use Tests\TestCase;
 
 class SelectLocaleWhenLoggedOutTest extends TestCase {
@@ -107,7 +106,7 @@ class SelectLocaleWhenLoggedOutTest extends TestCase {
         $this->assertSeeAllInOrder('a#navbarLocaleSelect', [$expected]);
         $this->assertSeeAllInOrder('a#navbarLocaleSelect + div.dropdown-menu a.dropdown-item', $unselected);
         $response->assertSessionHas('locale', $expected);
-        $this->assertThat(Lang::getLocale(), $this->equalTo($expected));
+        $this->assertThat(App::getLocale(), $this->equalTo($expected));
         $response->assertHeader('Content-Language', $expected);
     }
 }

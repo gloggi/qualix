@@ -2,10 +2,8 @@
 
 namespace Tests\Feature\App;
 
-use App\Models\Course;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
 class SelectLocaleWhenLoggedInTest extends TestCase {
