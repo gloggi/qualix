@@ -4,9 +4,9 @@
 # {{ $greeting }}
 @else
 @if ($level === 'error')
-# @lang('Whoops!')
+# {{__('Whoops!')}}
 @else
-# @lang('Hello!')
+# {{__('Hello!')}}
 @endif
 @endif
 
@@ -43,7 +43,7 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Regards')
+{{__('Regards')}}
 @endif
 
 {{-- Subcopy --}}
