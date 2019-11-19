@@ -17,11 +17,15 @@ class Localization {
      * @return mixed
      */
     public function handle(Request $request, Closure $next) {
-        if (!Session::has('locale')) {
-            Session::put('locale', $request->getPreferredLanguage(config('app.supported_locales')));
+        $supportedLocales = config('app.supported_locales');
+        if (!Session::has('locale') || !in_array(Session::get('locale'), $supportedLocales)) {
+            Session::put('locale', $request->getPreferredLanguage($supportedLocales));
         }
         App::setLocale(Session::get('locale'));
-        return $next($request);
+
+        $response = $next($request);
+
+        return $response->header('Content-Language', App::getLocale());
     }
 
 }
