@@ -39,11 +39,10 @@
                     </li>
                     <li class="nav-item dropdown{{ substr( Route::currentRouteName(), 0, 5 ) == 'admin' ? ' active' : '' }}">
                         <a class="nav-link dropdown-toggle" id="navbarCourseAdmin" role="button"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Kursadmin
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu" aria-labelledby="navbarCourseAdmin">
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.course' ? ' active' : '' }}"
                                href="{{ route('admin.course', ['course' => $course->id]) }}">{{__('Kurseinstellungen')}}</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.equipe' ? ' active' : '' }}"
@@ -67,12 +66,17 @@
             </ul>
         @endauth
         <ul class="nav navbar-nav navbar-right ml-auto align-items-center-lg">
-            <li class="nav-item">
-                <select class="custom-select" onchange="window.location = this.value" title="@lang('t.header.language_switch')">
-                    @foreach(Config::get('app.supported_locales') as $l)
-                        <option value="{{ route('locale.select', ['locale' => $l]) }}"{{ App::getLocale() === $l ? ' selected' : '' }}>{{ $l }}</option>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarLocaleSelect" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ App::getLocale() }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarLocaleSelect">
+                    @foreach(array_diff(Config::get('app.supported_locales'), [App::getLocale()]) as $l)
+                        <a class="dropdown-item"
+                           href="{{ route('locale.select', ['locale' => $l]) }}">{{ $l }}</a>
                     @endforeach
-                </select>
+                </div>
             </li>
             @auth
                 <li class="nav-item{{ Route::currentRouteName() == 'benutzer' ? ' active' : '' }}">

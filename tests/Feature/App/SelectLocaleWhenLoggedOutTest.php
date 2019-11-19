@@ -104,10 +104,8 @@ class SelectLocaleWhenLoggedOutTest extends TestCase {
 
         // then
         $response->assertStatus(200);
-        $this->assertRegExp("%<option value=\"[^\"]*\" selected>{$expected}</option>%", $response->content());
-        foreach ($unselected as $u) {
-            $this->assertRegExp("%<option value=\"[^\"]*\">{$u}</option>%", $response->content());
-        }
+        $this->assertSeeAllInOrder('a#navbarLocaleSelect', [$expected]);
+        $this->assertSeeAllInOrder('a#navbarLocaleSelect + div.dropdown-menu a.dropdown-item', $unselected);
         $response->assertSessionHas('locale', $expected);
         $this->assertThat(Lang::getLocale(), $this->equalTo($expected));
         $response->assertHeader('Content-Language', $expected);

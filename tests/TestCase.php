@@ -108,7 +108,7 @@ abstract class TestCase extends BaseTestCase {
         }
 
         foreach ($matches as $index => $domElement) {
-            $needle = $contents[$index];
+            $needle = array_values($contents)[$index];
             $haystack = trim($domElement->textContent);
             try {
                 $this->assertContains($needle, $haystack);
