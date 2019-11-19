@@ -59,7 +59,7 @@ class HitobitoOAuthTest extends TestCase {
 
         // then
         $response->assertRedirect('/some/redirect');
-        $registeredUser = HitobitoUser::first();
+        $registeredUser = HitobitoUser::latest()->first();
         $this->assertAuthenticatedAs($registeredUser);
         $this->assertEquals($hitobitoId, $registeredUser->hitobito_id);
         $this->assertEquals($email, $registeredUser->email);

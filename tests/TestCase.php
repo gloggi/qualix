@@ -22,6 +22,8 @@ abstract class TestCase extends BaseTestCase {
     protected $crawler;
 
     public function setUp(): void {
+        putenv('APP_ENV=testing');
+
         parent::setUp();
 
         $this->createUser(['name' => 'Bari'], true);
