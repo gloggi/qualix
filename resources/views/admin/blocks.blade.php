@@ -2,30 +2,30 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Neuer Block')])
+    @component('components.card', ['header' => __('t.views.admin.blocks.new')])
 
         @component('components.form', ['route' => ['admin.block.store', ['course' => $course->id]]])
 
-            @component('components.form.textInput', ['name' => 'full_block_number', 'label' => __('Blocknummer')])@endcomponent
+            @component('components.form.textInput', ['name' => 'full_block_number', 'label' => __('t.models.block.full_block_number')])@endcomponent
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('Blockname'), 'required' => true, 'autofocus' => true])@endcomponent
+            @component('components.form.textInput', ['name' => 'name', 'label' => __('t.models.block.name'), 'required' => true, 'autofocus' => true])@endcomponent
 
-            @component('components.form.dateInput', ['name' => 'block_date', 'label' => __('Datum'), 'required' => true, 'value' => Auth::user()->getLastUsedBlockDate($course)])@endcomponent
+            @component('components.form.dateInput', ['name' => 'block_date', 'label' => __('t.models.block.block_date'), 'required' => true, 'value' => Auth::user()->getLastUsedBlockDate($course)])@endcomponent
 
             @component('components.form.multiSelectInput', [
                 'name' => 'requirement_ids',
-                'label' => __('Mindestanforderungen'),
+                'label' => __('t.models.block.requirements'),
                 'options' => $course->requirements->all(),
                 'valueFn' => function(\App\Models\Requirement $requirement) { return $requirement->id; },
                 'displayFn' => function(\App\Models\Requirement $requirement) { return $requirement->content; },
                 'multiple' => true,
             ])@endcomponent
 
-            @component('components.form.submit', ['label' => __('Hinzufügen')])
+            @component('components.form.submit', ['label' => __('t.global.add')])
 
-                @component('components.help-text', ['header' => __('Was sind Blöcke?'), 'collapseId' => 'blockHelp'])
+                @component('components.help-text', ['header' => __('t.views.admin.blocks.what_are_blocks.question'), 'collapseId' => 'blockHelp'])
 
-                    {{__('Blöcke sind zeitliche Abschnitte im Grobprogramm. Man könnte sie auch Lektionen oder Programmeinheiten nennen. Du kannst zudem erfassen, welche Mindestanforderungen in einem Block wohl am ehesten beobachtet werden können (z.B. eine Mindestanforderung zu Sicherheitsüberlegungen in einem Block über Sicherheitskonzepte). Beim Erfassen von Beobachtungen kann das aber immer noch übersteuert werden.')}}
+                    {{__('t.views.admin.blocks.what_are_blocks.answer')}}
 
                 @endcomponent
 
@@ -35,7 +35,7 @@
 
     @endcomponent
 
-    @component('components.card', ['header' => __('Blöcke :courseName', ['courseName' => $course->name])])
+    @component('components.card', ['header' => __('t.views.admin.blocks.existing', ['courseName' => $course->name])])
 
         @if (count($course->blocks))
 
@@ -50,12 +50,12 @@
                     $blocks = array_merge($blocks, $day);
                 }
                 $fields = [
-                    __('Blocknummer') => function(\App\Models\Block $block) { return $block->full_block_number; },
-                    __('Blockname') => function(\App\Models\Block $block) { return $block->name; },
-                    __('Anzahl Beobachtungen') => function(\App\Models\Block $block) { return count($block->observations); },
+                    __('t.models.block.full_block_number') => function(\App\Models\Block $block) { return $block->full_block_number; },
+                    __('t.models.block.name') => function(\App\Models\Block $block) { return $block->name; },
+                    __('t.models.block.num_observations') => function(\App\Models\Block $block) { return count($block->observations); },
                 ];
                 if ($course->archived) {
-                    unset($fields[__('Anzahl Beobachtungen')]);
+                    unset($fields[__('t.models.block.num_observations')]);
                 }
             @endphp
             @component('components.responsive-table', [
@@ -64,7 +64,7 @@
                 'actions' => [
                     'edit' => function(\App\Models\Block $block) use ($course) { return route('admin.block.edit', ['course' => $course->id, 'block' => $block->id]); },
                     'delete' => function(\App\Models\Block $block) use ($course) { return [
-                        'text' => __('Willst du diesen Block wirklich löschen?' . ($course->archived ? '' : ' ' . count($block->observations) . ' Beobachtung(en) ist / sind darauf zugewiesen.')),
+                        'text' => __('t.views.admin.blocks.really_delete', ['name' => $block->name]) . ($course->archived ? '' : ' ' . trans_choice('t.views.admin.blocks.observations_on_block', $block->observations)),
                         'route' => ['admin.block.delete', ['course' => $course->id, 'block' => $block->id]],
                      ];},
                 ]
@@ -72,11 +72,11 @@
 
         @else
 
-            {{__('Bisher sind keine Blöcke erfasst.')}}
+            {{__('t.views.admin.blocks.no_blocks')}}
 
-            @component('components.help-text', ['header' => __('Muss ich Blöcke für meinen Kurs erfassen?'), 'collapseId' => 'noBlocksHelp'])
+            @component('components.help-text', ['header' => __('t.views.admin.blocks.are_blocks_required.question'), 'collapseId' => 'noBlocksHelp'])
 
-                {{__('Ja, jede Beobachtung gehört zu genau einem Block. Daher kannst du Qualix nur verwenden, wenn du Blöcke im Kurs erfasst hast. Falls du Beobachtungen ausserhalb der Blöcke machen willst, empfehlen wir, einen oder mehrere "Sonstiges"-Blöcke zu erfassen.')}}
+                {{__('t.views.admin.blocks.are_blocks_required.answer')}}
 
             @endcomponent
 
