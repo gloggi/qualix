@@ -31,10 +31,17 @@ return array(
             'course_number' => 'Kursnummer',
             'name' => 'Kursname',
         ),
+        'invitation' => array(
+            'email' => 'E-Mail',
+        ),
         'participant' => array(
             'scout_name' => 'Pfadiname',
             'group' => 'Abteilung',
             'image' => 'Bild',
+        ),
+        'user' => array(
+            'name' => 'Name',
+            'email' => 'E-Mail',
         ),
     ),
     'views' => array(
@@ -92,6 +99,13 @@ return array(
                 'title' => 'Kurseinstellungen',
             ),
             'equipe' => array(
+                'existing' => 'Equipe :courseName',
+                'existing_invitations' => 'Einladungen',
+                'invite' => 'Einladen',
+                'new_invitation' => 'Equipenmitglied einladen',
+                'no_invitations' => 'Momentan sind keine Einladungen offen.',
+                'really_delete' => 'Willst du :name wirklich aus der Kursequipe entfernen?',
+                'really_delete_invitation' => 'Willst du die Einladung für :email wirklich entfernen?',
                 'title' => 'Equipe',
             ),
             'new_course' => array(
