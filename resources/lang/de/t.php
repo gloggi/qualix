@@ -5,8 +5,10 @@ return array(
     ),
     'global' => array(
         'add' => 'Hinzufügen',
+        'no' => 'Nein',
         'save' => 'Speichern',
         'close' => 'Schliessen',
+        'yes' => 'Ja',
     ),
     'header' => array(
         'archived' => 'Archiviert',
@@ -38,6 +40,11 @@ return array(
             'scout_name' => 'Pfadiname',
             'group' => 'Abteilung',
             'image' => 'Bild',
+        ),
+        'requirement' => array(
+            'content' => 'Anforderung',
+            'mandatory' => 'Killer',
+            'num_observations' => 'Anzahl Beobachtungen',
         ),
         'user' => array(
             'name' => 'Name',
@@ -125,6 +132,12 @@ return array(
                     'question' => 'Muss ich Mindestanforderungen für meinen Kurs erfassen?',
                     'answer' => 'Es ist sehr wichtig, vor dem Kurs im Kursteam Mindestanforderungen festzulegen, damit alle Teilnehmenden nach dem gleichen Schema qualifiziert werden und damit Entscheide im Kurs einfacher gefällt werden können. Aber wenn du diese nicht in Qualix führen willst, kannst du Beobachtungen auch ohne Mindestanforderungen erfassen.',
                 ),
+                'edit' => 'Mindestanforderung bearbeiten',
+                'existing' => 'Mindestanforderungen :courseName',
+                'new' => 'Neue Mindestanforderung',
+                'no_requirements' => 'Bisher sind keine Mindestanforderungen erfasst.',
+                'observations_on_requirement' => '{0}Es ist keine Beobachtung zugeordnet.|{1} Es ist eine Beobachtung zugeordnet.|[2,*]Es sind :count Beobachtungen zugeordnet.',
+                'really_delete' => 'Willst du diese Mindestanforderung wirklich löschen?',
                 'title' => 'Mindestanforderungen',
                 'what_are_requirements' => array(
                     'question' => 'Was sind Mindestanforderungen?',
