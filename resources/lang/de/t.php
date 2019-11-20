@@ -29,18 +29,6 @@ return array(
     ),
     'views' => array(
         'admin' => array(
-            'course_settings' => array(
-                'title' => 'Kurseinstellungen',
-            ),
-            'equipe' => array(
-                'title' => 'Equipe',
-            ),
-            'requirements' => array(
-                'title' => 'Mindestanforderungen',
-            ),
-            'categories' => array(
-                'title' => 'Kategorien',
-            ),
             'blocks' => array(
                 'are_blocks_required' => array(
                     'question' => 'Muss ich Blöcke für meinen Kurs erfassen?',
@@ -58,6 +46,30 @@ return array(
                     'answer' => 'Blöcke sind zeitliche Abschnitte im Grobprogramm. Man könnte sie auch Lektionen oder Programmeinheiten nennen. Du kannst zudem erfassen, welche Mindestanforderungen in einem Block wohl am ehesten beobachtet werden können (z.B. eine Mindestanforderung zu Sicherheitsüberlegungen in einem Block über Sicherheitskonzepte). Beim Erfassen von Beobachtungen kann das aber immer noch übersteuert werden.',
                 )
             ),
+            'categories' => array(
+                'are_categories_required' => array(
+                    'question' => 'Muss ich Kategorien für meinen Kurs erfassen?',
+                    'answer' => 'Nein, Kategorien sind komplett optional, falls ihr in eurem Kursteam keine Verwendung dafür habt.',
+                ),
+                'title' => 'Kategorien',
+                'what_are_categories' => array(
+                    'question' => 'Was sind Kategorien?',
+                    'answer' => 'Kategorien können auf verschiedene Art eingesetzt werden. Jeder Beobachtung kann eine, mehrere oder keine Kategorie zugewiesen werden. Das kann man zum Beispiel zur Einordnung in verschiedene Abschnitte eines Quali-Formulars verwenden (wenn die Abschnitte nicht sowieso den Mindestanforderungen entsprechen). Oder um zu markieren, ob eine Beobachtung schon im Zwischenquali angesprochen wurde. Oder noch ganz andere Anwendungen, die dir einfallen. Danach kannst du die Beobachtungs-Liste eines Teilnehmenden nach Kategorien filtern.',
+                ),
+            ),
+            'course_settings' => array(
+                'archive_vs_delete' => array(
+                    'question' => 'Was ist der Unterschied?',
+                    'answer' => 'Wenn du einen Kurs archivierst, werden alle personenbezogenen Daten (TN, Bilder, Beobachtungen) dauerhaft gelöscht. So kannst du Datenschutz-Problemen entgegenwirken, aber für spätere Kurse trotzdem noch deine alten Mindestanforderungen und Blöcke einsehen. Wenn du den Kurs hingegen ganz löschst wird alles was damit zu tun hat unwiderruflich entfernt.',
+                ),
+                'title' => 'Kurseinstellungen',
+            ),
+            'equipe' => array(
+                'title' => 'Equipe',
+            ),
+            'new_course' => array(
+                'title' => 'Neuen Kurs erstellen',
+            ),
             'participants' => array(
                 'edit' => 'TN ändern',
                 'existing' => 'Teilnehmende :courseName',
@@ -67,21 +79,34 @@ return array(
                 'really_remove' => 'Willst du :name wirklich aus deinem Kurs entfernen?',
                 'title' => 'TN',
             ),
-            'new_course' => array(
-                'title' => 'Neuen Kurs erstellen',
+            'requirements' => array(
+                'are_requirements_required' => array(
+                    'question' => 'Muss ich Mindestanforderungen für meinen Kurs erfassen?',
+                    'answer' => 'Es ist sehr wichtig, vor dem Kurs im Kursteam Mindestanforderungen festzulegen, damit alle Teilnehmenden nach dem gleichen Schema qualifiziert werden und damit Entscheide im Kurs einfacher gefällt werden können. Aber wenn du diese nicht in Qualix führen willst, kannst du Beobachtungen auch ohne Mindestanforderungen erfassen.',
+                ),
+                'title' => 'Mindestanforderungen',
+                'what_are_requirements' => array(
+                    'question' => 'Was sind Mindestanforderungen?',
+                    'answer' => 'Mindestanforderungen sind klare Voraussetzungen und Kriterien, die alle Teilnehmenden während dem Kurs erfüllen sollen. Anhand der Mindestanforderungen wird beurteilt, wer den Kurs besteht und wer nicht. Du kannst Mindestanforderungen als Killer-Kriterien markieren wenn du willst, aber es hat momentan keine Auswirkungen in Qualix selber (bis auf eine etwas andere Farbgebung).',
+                ),
             ),
         ),
         'blocks' => array(
             'title' => 'Blöcke',
         ),
-        'participants' => array(
-            'title' => 'TN',
+        'crib' => array(
+            'here' => 'hier',
+            'title' => 'Spick',
+            'see_only_empty_blocks' => array(
+                'question' => 'Siehst du nur leere Blöcke ohne Mindestanforderungen?',
+                'answer' => 'Dann sind bisher keine Blöcke mit Mindesanforderungen verbunden. Bitte verbinde die Blöcke :here mit Mindestanforderungen.',
+            ),
         ),
         'overview' => array(
             'title' => 'Überblick',
         ),
-        'crib' => array(
-            'title' => 'Spick',
+        'participants' => array(
+            'title' => 'TN',
         ),
     ),
 );

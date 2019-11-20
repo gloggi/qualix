@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Util\HtmlString;
 use Illuminate\Http\Response;
 
 class BlockListController extends Controller
@@ -21,8 +23,15 @@ class BlockListController extends Controller
      *
      * @return Response
      */
-    public function crib()
+    public function crib(Course $course)
     {
-        return view('crib');
+        return view('crib', ['blockManagementLink' => $this->blockManagementLink($course)]);
+    }
+
+    private function blockManagementLink(Course $course) {
+        return (new HtmlString())
+            ->s('<a href="' . route('admin.blocks', ['course' => $course->id]) . '">')
+            ->e(__('t.views.crib.here'))
+            ->s('</a>');
     }
 }

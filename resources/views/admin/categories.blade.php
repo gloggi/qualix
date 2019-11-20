@@ -10,11 +10,7 @@
 
             @component('components.form.submit', ['label' => __('Hinzufügen')])
 
-                @component('components.help-text', ['header' => 'Was sind Kategorien?', 'collapseId' => 'categoryHelp'])
-
-                    {{__('Kategorien können auf verschiedene Art eingesetzt werden. Jeder Beobachtung kann eine, mehrere oder keine Kategorie zugewiesen werden. Das kann man zum Beispiel zur Einordnung in verschiedene Abschnitte eines Quali-Formulars verwenden (wenn die Abschnitte nicht sowieso den Mindestanforderungen entsprechen). Oder um zu markieren, ob eine Beobachtung schon im Zwischenquali angesprochen wurde. Oder noch ganz andere Anwendungen, die dir einfallen. Danach kannst du die Beobachtungs-Liste eines Teilnehmenden nach Kategorien filtern.')}}
-
-                @endcomponent
+                @component('components.help-text', ['id' => 'categoryHelp', 'key' => 't.views.admin.categories.what_are_categories'])@endcomponent
 
             @endcomponent
 
@@ -51,11 +47,7 @@
 
             {{__('Bisher sind keine Kategorien erfasst.')}}
 
-            @component('components.help-text', ['header' => __('Muss ich Kategorien für meinen Kurs erfassen?'), 'collapseId' => 'noCategoriesHelp'])
-
-                {{__('Nein, Kategorien sind komplett optional, falls ihr in eurem Kursteam keine Verwendung dafür habt.')}}
-
-            @endcomponent
+            @component('components.help-text', ['id' => 'noCategoriesHelp', 'key' => 't.views.admin.categories.are_categories_required'])@endcomponent
 
         @endif
 

@@ -71,11 +71,7 @@
         </div>
 
         <div class="mt-3">
-            @component('components.help-text', ['header' => __('Was ist der Unterschied?'), 'collapseId' => 'archiveVsDeleteHelp'])
-
-                {{__('Wenn du einen Kurs archivierst, werden alle personenbezogenen Daten (TN, Bilder, Beobachtungen) dauerhaft gelöscht. So kannst du Datenschutz-Problemen entgegenwirken, aber für spätere Kurse trotzdem noch deine alten Mindestanforderungen und Blöcke einsehen. Wenn du den Kurs hingegen ganz löschst wird alles was damit zu tun hat unwiderruflich entfernt.')}}
-
-            @endcomponent
+            @component('components.help-text', ['id' => 'archiveVsDeleteHelp', 'key' => 't.views.admin.course_settings.archive_vs_delete'])@endcomponent
         </div>
 
     @endcomponent

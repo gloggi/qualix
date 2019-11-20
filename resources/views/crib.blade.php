@@ -57,10 +57,7 @@
                 </div>
                 @endforeach
             </div>
-            @component('components.help-text', ['header' => __('Siehst du nur leere Blöcke ohne Mindestanforderungen?'), 'collapseId' => 'no-linked-MA'])
-                {{__('Dann sind bisher keine Blöcke mit Mindesanforderungen verbunden. Bitte verbinde die Blöcke ')}} <a href="{{ route('admin.blocks', ['course' => $course->id]) }}">{{__('hier')}}</a>  {{__(' mit Mindestanforderungen')}}.
-
-            @endcomponent
+            @component('components.help-text', ['id' => 'noLinkedRequirementsHelp', 'key' => 't.views.crib.see_only_empty_blocks', 'params' => ['here' => $blockManagementLink]])@endcomponent
 
         @else
 

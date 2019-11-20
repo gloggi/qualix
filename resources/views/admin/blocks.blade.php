@@ -23,11 +23,7 @@
 
             @component('components.form.submit', ['label' => __('t.global.add')])
 
-                @component('components.help-text', ['header' => __('t.views.admin.blocks.what_are_blocks.question'), 'collapseId' => 'blockHelp'])
-
-                    {{__('t.views.admin.blocks.what_are_blocks.answer')}}
-
-                @endcomponent
+                @component('components.help-text', ['key' => 't.views.admin.blocks.what_are_blocks', 'id' => 'blockHelp'])@endcomponent
 
             @endcomponent
 
@@ -74,11 +70,7 @@
 
             {{__('t.views.admin.blocks.no_blocks')}}
 
-            @component('components.help-text', ['header' => __('t.views.admin.blocks.are_blocks_required.question'), 'collapseId' => 'noBlocksHelp'])
-
-                {{__('t.views.admin.blocks.are_blocks_required.answer')}}
-
-            @endcomponent
+            @component('components.help-text', ['key' => 't.views.admin.blocks.are_blocks_required', 'id' => 'noBlocksHelp'])@endcomponent
 
         @endif
 
