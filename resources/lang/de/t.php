@@ -6,8 +6,10 @@ return array(
     'global' => array(
         'add' => 'Hinzufügen',
         'save' => 'Speichern',
+        'close' => 'Schliessen',
     ),
     'header' => array(
+        'archived' => 'Archiviert',
         'course_admin' => 'Kursadmin',
         'language_switch' => 'Sprache wechseln. Übersetzungen via Phrase.com',
         'qualix' => 'Qualix',
@@ -24,6 +26,10 @@ return array(
         'category' => array(
             'name' => 'Titel',
             'num_observations' => 'Anzahl Beobachtungen',
+        ),
+        'course' => array(
+            'course_number' => 'Kursnummer',
+            'name' => 'Kursname',
         ),
         'participant' => array(
             'scout_name' => 'Pfadiname',
@@ -68,10 +74,21 @@ return array(
                 ),
             ),
             'course_settings' => array(
+                'archive' => 'Kurs archivieren…',
+                'archive_confirm' => 'Definitiv archivieren',
+                'archive_description' => 'Dies wird alle TN und Beobachtungen im Kurs komplett und dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden. Blöcke, Mindestanforderungen, Kategorien und Equipenmitglieder bleiben zur späteren Einsicht bestehen.',
+                'archive_or_delete' => 'Kurs archivieren oder löschen',
                 'archive_vs_delete' => array(
                     'question' => 'Was ist der Unterschied?',
                     'answer' => 'Wenn du einen Kurs archivierst, werden alle personenbezogenen Daten (TN, Bilder, Beobachtungen) dauerhaft gelöscht. So kannst du Datenschutz-Problemen entgegenwirken, aber für spätere Kurse trotzdem noch deine alten Mindestanforderungen und Blöcke einsehen. Wenn du den Kurs hingegen ganz löschst wird alles was damit zu tun hat unwiderruflich entfernt.',
                 ),
+                'delete' => 'Kurs komplett löschen…',
+                'delete_confirm' => 'Definitiv löschen',
+                'delete_description' => 'Dies wird den Kurs komplett und dauerhaft löschen, inklusive alle Blöcke, TN, Mindestanforderungen, Kategorien, Teilnehmer und Beobachtungen darin. Diese Aktion kann nicht rückgängig gemacht werden.',
+                'edit' => 'Kurseinstellungen :name',
+                'is_archived' => ':name ist archiviert, das heisst alle personenbezogenen Daten der Teilnehmenden wurden gelöscht.',
+                'really_archive' => 'Kurs ":name" wirklich archivieren?',
+                'really_delete' => 'Kurs ":name" wirklich löschen?',
                 'title' => 'Kurseinstellungen',
             ),
             'equipe' => array(

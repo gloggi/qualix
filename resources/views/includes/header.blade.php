@@ -14,7 +14,7 @@
                                 <option value="{{ route('index', ['course' => $c->id]) }}"{{ $course->id === $c->id ? ' selected' : '' }}>{{ $c->name }}</option>
                             @endforeach
                             @if(Auth::user()->archivedCourses()->count())
-                                <optgroup label="{{__('t.header.course.archived')}}">
+                                <optgroup label="{{__('t.header.archived')}}">
                                     @foreach(Auth::user()->archivedCourses as $c)
                                         <option value="{{ route('index', ['course' => $c->id]) }}"{{ $course->id === $c->id ? ' selected' : '' }}>{{ $c->name }}</option>
                                     @endforeach
