@@ -66,7 +66,7 @@
             </ul>
         @endauth
         <ul class="nav navbar-nav navbar-right ml-auto align-items-center-lg">
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" title="{{__('t.header.language_switch')}}">
                 <a class="nav-link dropdown-toggle" id="navbarLocaleSelect" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{ App::getLocale() }}
