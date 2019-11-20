@@ -28,7 +28,8 @@
             :close-on-select="true"
             :show-labels="false"
             placeholder=""
-            @if (isset($onInput) && $onInput) @input="{{ $onInput }}"@endif></multi-select>
+            no-options="{{__('t.global.no_options')}}"
+            @if (isset($onInput) && $onInput) @input="{{ $onInput }}" @endif></multi-select>
 
         @if ($errors->has($name))
             <span class="invalid-feedback" role="alert">

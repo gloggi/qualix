@@ -6,7 +6,6 @@
             id="{{ $name }}"
             name="{{ $name }}"
             class="form-control{{ $errors->has($name) ? ' is-invalid' : '' }}"
-            value=""
             {{ isset($required) && $required ? 'required' : '' }}
             {{ isset($autofocus) && $autofocus ? 'autofocus v-focus' : '' }}>{{ isset($value) ? $value : old($name) }}</textarea>
 

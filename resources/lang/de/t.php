@@ -5,10 +5,14 @@ return array(
     ),
     'global' => array(
         'add' => 'Hinzufügen',
-        'no' => 'Nein',
-        'or' => 'oder',
-        'save' => 'Speichern',
         'close' => 'Schliessen',
+        'delete' => 'Löschen',
+        'edit' => 'Bearbeiten',
+        'no' => 'Nein',
+        'no_options' => 'Keine Einträge gefunden',
+        'or' => 'oder',
+        'really_delete' => 'Wirklich löschen?',
+        'save' => 'Speichern',
         'yes' => 'Ja',
     ),
     'header' => array(
