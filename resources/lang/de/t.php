@@ -6,6 +6,7 @@ return array(
     'global' => array(
         'add' => 'Hinzufügen',
         'no' => 'Nein',
+        'or' => 'oder',
         'save' => 'Speichern',
         'close' => 'Schliessen',
         'yes' => 'Ja',
@@ -155,6 +156,12 @@ return array(
                 'question' => 'Siehst du nur leere Blöcke ohne Mindestanforderungen?',
                 'answer' => 'Dann sind bisher keine Blöcke mit Mindesanforderungen verbunden. Bitte verbinde die Blöcke :here mit Mindestanforderungen.',
             ),
+        ),
+        'login' => array(
+            'via_midata' => 'Via PBS MiData einloggen',
+        ),
+        'register' => array(
+            'via_midata' => 'Via PBS MiData registrieren',
         ),
         'overview' => array(
             'title' => 'Überblick',

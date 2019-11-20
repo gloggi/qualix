@@ -131,7 +131,7 @@ class AcceptInvitationTest extends TestCaseWithCourse {
         $this->get('/invitation/' . $this->token)->followRedirects();
         $this->get('/register')->followRedirects();
         $response = $this->post('/register', ['name' => 'Lindo', 'email' => $this->email, 'password' => '12345678', 'password_confirmation' => '12345678'])->followRedirects();
-        $response->assertSee('Du kannst den Link in deinen E-Mails zur Verifizierung verwenden.');
+        $response->assertSee('Du kannst den Link in deinen E-Mails unter ' . $this->email . ' zur Verifizierung verwenden.');
 
         // Get action URL from verification email
         $actionUrl = '';
