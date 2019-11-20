@@ -21,6 +21,10 @@ return array(
             'num_observations' => 'Anzahl Beobachtungen',
             'requirements' => 'Mindestanforderungen',
         ),
+        'category' => array(
+            'name' => 'Titel',
+            'num_observations' => 'Anzahl Beobachtungen',
+        ),
         'participant' => array(
             'scout_name' => 'Pfadiname',
             'group' => 'Abteilung',
@@ -51,6 +55,12 @@ return array(
                     'question' => 'Muss ich Kategorien für meinen Kurs erfassen?',
                     'answer' => 'Nein, Kategorien sind komplett optional, falls ihr in eurem Kursteam keine Verwendung dafür habt.',
                 ),
+                'edit' => 'Kategorie bearbeiten',
+                'existing' => 'Kategorien :courseName',
+                'new' => 'Neue Kategorie',
+                'no_categories' => 'Bisher sind keine Kategorien erfasst.',
+                'observations_on_category' => '{0}Es ist keine Beobachtung dazu erfasst.|{1}Es ist eine Beobachtung dazu erfasst.|[2,*] Es sind :count Beobachtungen dazu erfasst.',
+                'really_delete' => 'Willst du die Kategorie ":name" wirklich löschen?',
                 'title' => 'Kategorien',
                 'what_are_categories' => array(
                     'question' => 'Was sind Kategorien?',
