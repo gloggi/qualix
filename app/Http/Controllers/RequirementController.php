@@ -29,6 +29,7 @@ class RequirementController extends Controller {
      */
     public function store(RequirementRequest $request, Course $course) {
         Requirement::create(array_merge($request->validated(), ['course_id' => $course->id]));
+        $request->session()->flash('alert-success', __('t.views.admin.new_course.create_success'));
         return Redirect::route('admin.requirements', ['course' => $course->id]);
     }
 
@@ -53,7 +54,7 @@ class RequirementController extends Controller {
      */
     public function update(RequirementRequest $request, Course $course, Requirement $requirement) {
         $requirement->update($request->validated());
-        $request->session()->flash('alert-success', __('Mindestanforderung erfolgreich gespeichert.'));
+        $request->session()->flash('alert-success', __('t.views.admin.requirements.edit_success'));
         return Redirect::route('admin.requirements', ['course' => $course->id]);
     }
 
@@ -67,7 +68,7 @@ class RequirementController extends Controller {
      */
     public function destroy(Request $request, Course $course, Requirement $requirement) {
         $requirement->delete();
-        $request->session()->flash('alert-success', __('Mindestanforderung erfolgreich gelöscht.'));
+        $request->session()->flash('alert-success', __('t.views.admin.requirements.delete_success'));
         return Redirect::route('admin.requirements', ['course' => $course->id]);
     }
 }

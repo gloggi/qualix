@@ -100,6 +100,28 @@ class HtmlString extends LaravelHtmlString implements Htmlable
     }
 
     /**
+     * Append an internationalized pluralized unsafe string (possibly containing user input) to the HTML.
+     * The translated string will be escaped using htmlspecialchars.
+     *
+     * @param array $arguments
+     * @return $this
+     */
+    public function trans_choice_e(...$arguments) {
+        return $this->appendEscaping(trans_choice(...$arguments));
+    }
+
+    /**
+     * Append an internationalized pluralized unsafe string (possibly containing user input) to the HTML.
+     * The translated string will be escaped using htmlspecialchars.
+     *
+     * @param array $arguments
+     * @return $this
+     */
+    public function trans_choice(...$arguments) {
+        return $this->appendEscaping(trans_choice(...$arguments));
+    }
+
+    /**
      * Append an unsafe string (possibly containing user input) to the HTML, converting new lines to <br> tags.
      * The translated string will be escaped using htmlspecialchars (except for the added <br> tags).
      *

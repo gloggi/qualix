@@ -47,18 +47,15 @@ class ObservationController extends Controller {
                 $observation->categories()->attach($category_ids);
             }
 
-            if (count($participant_ids) > 1) {
-                $request->session()->flash('alert-success', __('Beobachtungen erfasst. Mässi!'));
-            } else {
+            $flash = (new HtmlString)->trans_choice('t.views.observations.add_success', $participant_ids);
+            if (count($participant_ids) == 1) {
                 $participant = Participant::find($participant_ids[0]);
                 $route = route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]);
-                $flash = (new HtmlString)
-                    ->__('Beobachtung erfasst. Mässi!')
-                    ->s(" <a href=\"{$route}\">")
-                    ->__('Zurück zu :name', ['name' => $participant->scout_name])
-                    ->s(' <i class="fas fa-arrow-right"></i></a>');
-                $request->session()->flash('alert-success', $flash);
+                $flash->s(" <a href=\"{$route}\">")
+                      ->__('t.views.observations.back_to_participant', ['name' => $participant->scout_name])
+                      ->s(' <i class="fas fa-arrow-right"></i></a>');
             }
+            $request->session()->flash('alert-success', $flash);
         });
 
         return Redirect::route('observation.new', ['course' => $course->id, 'participant' => $data['participant_ids'], 'block' => $data['block_id']]);
@@ -95,7 +92,7 @@ class ObservationController extends Controller {
             $observation->categories()->attach(array_filter(explode(',', $data['category_ids'])));
         });
 
-        $request->session()->flash('alert-success', __('Beobachtung aktualisiert.'));
+        $request->session()->flash('alert-success', __('t.views.observations.edit_success'));
 
         return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $observation->participant->id]);
     }
@@ -110,7 +107,7 @@ class ObservationController extends Controller {
      */
     public function destroy(Request $request, Course $course, Observation $observation) {
         $observation->delete();
-        $request->session()->flash('alert-success', __('Beobachtung gelöscht.'));
+        $request->session()->flash('alert-success', __('t.views.participant_details.delete_observation_success'));
         return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $observation->participant->id]);
     }
 
@@ -135,7 +132,7 @@ class ObservationController extends Controller {
     protected function participantManagementLink(Course $course, $translationKey) {
         return (new HtmlString)
             ->s('<a href="' . route('admin.participants', ['course' => $course->id]) . '">')
-            ->e(__($translationKey))
+            ->__($translationKey)
             ->s('</a>');
     }
 }

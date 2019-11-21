@@ -5,7 +5,7 @@
 @php
 $invitationLink = new App\Util\HtmlString;
 $invitationLink->s('<a href="' . route('invitation.view', ['token' => $invitation->token]) . '">');
-$invitationLink->e(__('t.mails.invitation.here'));
+$invitationLink->__('t.mails.invitation.here');
 $invitationLink->s('</a>');
 @endphp
 <p>{{__('t.mails.invitation.accept', ['here' => $invitationLink])}}</p>

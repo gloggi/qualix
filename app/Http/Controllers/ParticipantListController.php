@@ -29,7 +29,7 @@ class ParticipantListController extends Controller
     protected function participantManagementLink(Course $course, $translationKey) {
         return (new HtmlString)
             ->s('<a href="' . route('admin.participants', ['course' => $course->id]) . '">')
-            ->e(__($translationKey))
+            ->__($translationKey)
             ->s('</a>');
     }
 }

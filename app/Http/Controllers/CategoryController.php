@@ -28,7 +28,8 @@ class CategoryController extends Controller {
      * @return RedirectResponse
      */
     public function store(CategoryRequest $request, Course $course) {
-        Category::create(array_merge($request->validated(), ['course_id' => $course->id]));
+        $category = Category::create(array_merge($request->validated(), ['course_id' => $course->id]));
+        $request->session()->flash('alert-success', __('t.views.admin.categories.create_success', ['name' => $category->name]));
         return Redirect::route('admin.categories', ['course' => $course->id]);
     }
 
@@ -53,7 +54,7 @@ class CategoryController extends Controller {
      */
     public function update(CategoryRequest $request, Course $course, Category $category) {
         $category->update($request->validated());
-        $request->session()->flash('alert-success', __('Kategorie erfolgreich gespeichert.'));
+        $request->session()->flash('alert-success', __('t.views.admin.categories.edit_success', ['name' => $category->name]));
         return Redirect::route('admin.categories', ['course' => $course->id]);
     }
 
@@ -67,7 +68,7 @@ class CategoryController extends Controller {
      */
     public function destroy(Request $request, Course $course, Category $category) {
         $category->delete();
-        $request->session()->flash('alert-success', __('Kategorie erfolgreich gelöscht.'));
+        $request->session()->flash('alert-success', __('t.views.admin.categories.delete_success', ['name' => $category->name]));
         return Redirect::route('admin.categories', ['course' => $course->id]);
     }
 }

@@ -124,9 +124,9 @@
                     },
                     __('t.models.observation.impression') => function(\App\Models\Observation $observation) {
                         $impmression = $observation->impression;
-                        if ($impmression === 0) return (new App\Util\HtmlString)->s('<span class="badge badge-danger">')->e(__('t.global.negative'))->s('</span>');
-                        else if ($impmression === 2) return (new App\Util\HtmlString)->s('<span class="badge badge-success">')->e(__('t.global.positive'))->s('</span>');
-                        else return (new App\Util\HtmlString)->s('<span class="badge badge-secondary">')->e(__('t.global.neutral'))->s('</span>');
+                        if ($impmression === 0) return (new App\Util\HtmlString)->s('<span class="badge badge-danger">')->__('t.global.negative')->s('</span>');
+                        else if ($impmression === 2) return (new App\Util\HtmlString)->s('<span class="badge badge-success">')->__('t.global.positive')->s('</span>');
+                        else return (new App\Util\HtmlString)->s('<span class="badge badge-secondary">')->__('t.global.neutral')->s('</span>');
                     },
                     __('t.models.observation.user') => function(\App\Models\Observation $observation) { return $observation->user->name; }
                 ],

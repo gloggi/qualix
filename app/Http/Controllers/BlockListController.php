@@ -40,7 +40,7 @@ class BlockListController extends Controller
     private function blockManagementLink(Course $course, string $translationKey) {
         return (new HtmlString)
             ->s('<a href="' . route('admin.blocks', ['course' => $course->id]) . '">')
-            ->e(__($translationKey))
+            ->__($translationKey)
             ->s('</a>');
     }
 }
