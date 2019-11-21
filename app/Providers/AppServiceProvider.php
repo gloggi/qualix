@@ -28,8 +28,6 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('*', CurrentCourseViewComposer::class);
 
-        setlocale(LC_ALL, __('de_CH.utf8'));
-
         app()->extend('translator', function($laravelTranslator) {
             return new Translator($laravelTranslator);
         });
