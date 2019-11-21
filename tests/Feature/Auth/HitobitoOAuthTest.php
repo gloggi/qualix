@@ -213,6 +213,6 @@ class HitobitoOAuthTest extends TestCase {
 
         // then
         $response->assertRedirect('/login');
-        $response->followRedirects()->assertSee('Leider klappt es momentan gerade nicht. Versuche es später wieder, oder registriere unten einen klassischen Account.');
+        $response->followRedirects()->assertSee('Leider klappt es momentan gerade nicht. Versuche es später wieder, oder registriere dich mit einem klassischen Account.');
     }
 }

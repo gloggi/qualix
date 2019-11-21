@@ -36,9 +36,8 @@ class DeleteBlockTest extends TestCaseWithCourse {
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks');
-        /** @var TestResponse $response */
-        $response = $response->followRedirects();
-        $response->assertDontSee('Block 1');
+        $response->followRedirects();
+        $this->assertSeeNone('td', 'Block 1');
     }
 
     public function test_shouldValidateDeletedBlockUrl_wrongId() {

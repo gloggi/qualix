@@ -49,9 +49,8 @@ class DeleteParticipantTest extends TestCaseWithCourse {
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/admin/participants');
-        /** @var TestResponse $response */
-        $response = $response->followRedirects();
-        $response->assertDontSee('Pföschtli');
+        $response->followRedirects();
+        $this->assertSeeNone('td', 'Pföschtli');
     }
 
     public function test_shouldValidateDeletedParticipantUrl_wrongId() {
