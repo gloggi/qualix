@@ -23,19 +23,19 @@
                         </select>
                     </li>
                     <li class="nav-item{{ Route::currentRouteName() == 'blocks' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('blocks', ['course' => $course->id]) }}">{{__('t.views.blocks.title')}}</a>
+                        <a class="nav-link" href="{{ route('blocks', ['course' => $course->id]) }}">{{__('t.views.blocks.menu_name')}}</a>
                     </li>
 
                     @if(!$course->archived)
                         <li class="nav-item{{ Route::currentRouteName() == 'participants' ? ' active' : '' }}">
-                            <a class="nav-link" href="{{ route('participants', ['course' => $course->id]) }}">{{__('t.views.participants.title')}}</a>
+                            <a class="nav-link" href="{{ route('participants', ['course' => $course->id]) }}">{{__('t.views.participants.menu_name')}}</a>
                         </li>
                         <li class="nav-item{{ Route::currentRouteName() == 'overview' ? ' active' : '' }}">
-                            <a class="nav-link" href="{{ route('overview', ['course' => $course->id]) }}">{{__('t.views.overview.title')}}</a>
+                            <a class="nav-link" href="{{ route('overview', ['course' => $course->id]) }}">{{__('t.views.overview.menu_name')}}</a>
                         </li>
                     @endif
                     <li class="nav-item{{ Route::currentRouteName() == 'crib' ? ' active' : '' }}">
-                        <a class="nav-link" href="{{ route('crib', ['course' => $course->id]) }}">{{__('t.views.crib.title')}}</a>
+                        <a class="nav-link" href="{{ route('crib', ['course' => $course->id]) }}">{{__('t.views.crib.menu_name')}}</a>
                     </li>
                     <li class="nav-item dropdown{{ substr( Route::currentRouteName(), 0, 5 ) == 'admin' ? ' active' : '' }}">
                         <a class="nav-link dropdown-toggle" id="navbarCourseAdmin" role="button"
@@ -44,24 +44,24 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarCourseAdmin">
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.course' ? ' active' : '' }}"
-                               href="{{ route('admin.course', ['course' => $course->id]) }}">{{__('t.views.admin.course_settings.title')}}</a>
+                               href="{{ route('admin.course', ['course' => $course->id]) }}">{{__('t.views.admin.course_settings.menu_name')}}</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.equipe' ? ' active' : '' }}"
-                               href="{{ route('admin.equipe', ['course' => $course->id]) }}">{{__('t.views.admin.equipe.title')}}</a>
+                               href="{{ route('admin.equipe', ['course' => $course->id]) }}">{{__('t.views.admin.equipe.menu_name')}}</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.requirements' ? ' active' : '' }}"
-                               href="{{ route('admin.requirements', ['course' => $course->id]) }}">{{__('t.views.admin.requirements.title')}}</a>
+                               href="{{ route('admin.requirements', ['course' => $course->id]) }}">{{__('t.views.admin.requirements.menu_name')}}</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.categories' ? ' active' : '' }}"
-                               href="{{ route('admin.categories', ['course' => $course->id]) }}">{{__('t.views.admin.categories.title')}}</a>
+                               href="{{ route('admin.categories', ['course' => $course->id]) }}">{{__('t.views.admin.categories.menu_name')}}</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.blocks' ? ' active' : '' }}"
-                               href="{{ route('admin.blocks', ['course' => $course->id]) }}">{{__('t.views.admin.blocks.title')}}</a>
+                               href="{{ route('admin.blocks', ['course' => $course->id]) }}">{{__('t.views.admin.blocks.menu_name')}}</a>
                             @if(!$course->archived)
                                 <a class="dropdown-item{{ Route::currentRouteName() == 'admin.participants' ? ' active' : '' }}"
-                                   href="{{ route('admin.participants', ['course' => $course->id]) }}">{{__('t.views.admin.participants.title')}}</a>
+                                   href="{{ route('admin.participants', ['course' => $course->id]) }}">{{__('t.views.admin.participants.menu_name')}}</a>
                             @endif
                         </div>
                     </li>
                 @endif
                 <li class="nav-item{{ Route::currentRouteName() == 'admin.newcourse' ? ' active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.newcourse') }}">{{__('t.views.admin.new_course.title')}}</a>
+                    <a class="nav-link" href="{{ route('admin.newcourse') }}">{{__('t.views.admin.new_course.menu_name')}}</a>
                 </li>
             </ul>
         @endauth

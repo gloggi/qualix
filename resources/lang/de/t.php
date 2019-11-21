@@ -66,10 +66,10 @@ return array(
                 'edit' => 'Block bearbeiten',
                 'existing' => 'Blöcke :courseName',
                 'new' => 'Neuer Block',
+                'menu_name' => 'Blöcke',
                 'no_blocks' => 'Bisher sind keine Blöcke erfasst.',
                 'observations_on_block' => '{0}Es ist keine Beobachtung dazu erfasst.|{1}Es ist eine Beobachtung dazu erfasst.|[2,*] Es sind :count Beobachtungen dazu erfasst.',
                 'really_delete' => 'Willst du den Block ":name" wirklich löschen?',
-                'title' => 'Blöcke',
                 'what_are_blocks' => array(
                     'question' => 'Was sind Blöcke?',
                     'answer' => 'Blöcke sind zeitliche Abschnitte im Grobprogramm. Man könnte sie auch Lektionen oder Programmeinheiten nennen. Du kannst zudem erfassen, welche Mindestanforderungen in einem Block wohl am ehesten beobachtet werden können (z.B. eine Mindestanforderung zu Sicherheitsüberlegungen in einem Block über Sicherheitskonzepte). Beim Erfassen von Beobachtungen kann das aber immer noch übersteuert werden.',
@@ -82,11 +82,11 @@ return array(
                 ),
                 'edit' => 'Kategorie bearbeiten',
                 'existing' => 'Kategorien :courseName',
+                'menu_name' => 'Kategorien',
                 'new' => 'Neue Kategorie',
                 'no_categories' => 'Bisher sind keine Kategorien erfasst.',
                 'observations_on_category' => '{0}Es ist keine Beobachtung dazu erfasst.|{1}Es ist eine Beobachtung dazu erfasst.|[2,*] Es sind :count Beobachtungen dazu erfasst.',
                 'really_delete' => 'Willst du die Kategorie ":name" wirklich löschen?',
-                'title' => 'Kategorien',
                 'what_are_categories' => array(
                     'question' => 'Was sind Kategorien?',
                     'answer' => 'Kategorien können auf verschiedene Art eingesetzt werden. Jeder Beobachtung kann eine, mehrere oder keine Kategorie zugewiesen werden. Das kann man zum Beispiel zur Einordnung in verschiedene Abschnitte eines Quali-Formulars verwenden (wenn die Abschnitte nicht sowieso den Mindestanforderungen entsprechen). Oder um zu markieren, ob eine Beobachtung schon im Zwischenquali angesprochen wurde. Oder noch ganz andere Anwendungen, die dir einfallen. Danach kannst du die Beobachtungs-Liste eines Teilnehmenden nach Kategorien filtern.',
@@ -106,31 +106,31 @@ return array(
                 'delete_description' => 'Dies wird den Kurs komplett und dauerhaft löschen, inklusive alle Blöcke, TN, Mindestanforderungen, Kategorien, Teilnehmer und Beobachtungen darin. Diese Aktion kann nicht rückgängig gemacht werden.',
                 'edit' => 'Kurseinstellungen :name',
                 'is_archived' => ':name ist archiviert, das heisst alle personenbezogenen Daten der Teilnehmenden wurden gelöscht.',
+                'menu_name' => 'Kurseinstellungen',
                 'really_archive' => 'Kurs ":name" wirklich archivieren?',
                 'really_delete' => 'Kurs ":name" wirklich löschen?',
-                'title' => 'Kurseinstellungen',
             ),
             'equipe' => array(
                 'existing' => 'Equipe :courseName',
                 'existing_invitations' => 'Einladungen',
                 'invite' => 'Einladen',
+                'menu_name' => 'Equipe',
                 'new_invitation' => 'Equipenmitglied einladen',
                 'no_invitations' => 'Momentan sind keine Einladungen offen.',
                 'really_delete' => 'Willst du :name wirklich aus der Kursequipe entfernen?',
                 'really_delete_invitation' => 'Willst du die Einladung für :email wirklich entfernen?',
-                'title' => 'Equipe',
             ),
             'new_course' => array(
-                'title' => 'Neuen Kurs erstellen',
+                'menu_name' => 'Neuen Kurs erstellen',
             ),
             'participants' => array(
                 'edit' => 'TN ändern',
                 'existing' => 'Teilnehmende :courseName',
+                'menu_name' => 'TN',
                 'new' => 'Neue Teilnehmende',
                 'no_participants' => 'Bisher sind keine Teilnehmende erfasst.',
                 'observations_on_participant' => '{0}Es ist keine Beobachtung zugeordnet.|{1} Es ist eine Beobachtung zugeordnet.|[2,*]Es sind :count Beobachtungen zugeordnet.',
                 'really_remove' => 'Willst du :name wirklich aus deinem Kurs entfernen?',
-                'title' => 'TN',
             ),
             'requirements' => array(
                 'are_requirements_required' => array(
@@ -139,11 +139,11 @@ return array(
                 ),
                 'edit' => 'Mindestanforderung bearbeiten',
                 'existing' => 'Mindestanforderungen :courseName',
+                'menu_name' => 'Mindestanforderungen',
                 'new' => 'Neue Mindestanforderung',
                 'no_requirements' => 'Bisher sind keine Mindestanforderungen erfasst.',
                 'observations_on_requirement' => '{0}Es ist keine Beobachtung zugeordnet.|{1} Es ist eine Beobachtung zugeordnet.|[2,*]Es sind :count Beobachtungen zugeordnet.',
                 'really_delete' => 'Willst du diese Mindestanforderung wirklich löschen?',
-                'title' => 'Mindestanforderungen',
                 'what_are_requirements' => array(
                     'question' => 'Was sind Mindestanforderungen?',
                     'answer' => 'Mindestanforderungen sind klare Voraussetzungen und Kriterien, die alle Teilnehmenden während dem Kurs erfüllen sollen. Anhand der Mindestanforderungen wird beurteilt, wer den Kurs besteht und wer nicht. Du kannst Mindestanforderungen als Killer-Kriterien markieren wenn du willst, aber es hat momentan keine Auswirkungen in Qualix selber (bis auf eine etwas andere Farbgebung).',
@@ -151,11 +151,11 @@ return array(
             ),
         ),
         'blocks' => array(
-            'title' => 'Blöcke',
+            'menu_name' => 'Blöcke',
         ),
         'crib' => array(
             'here' => 'hier',
-            'title' => 'Spick',
+            'menu_name' => 'Spick',
             'see_only_empty_blocks' => array(
                 'question' => 'Siehst du nur leere Blöcke ohne Mindestanforderungen?',
                 'answer' => 'Dann sind bisher keine Blöcke mit Mindesanforderungen verbunden. Bitte verbinde die Blöcke :here mit Mindestanforderungen.',
@@ -168,10 +168,10 @@ return array(
             'via_midata' => 'Via PBS MiData registrieren',
         ),
         'overview' => array(
-            'title' => 'Überblick',
+            'menu_name' => 'Überblick',
         ),
         'participants' => array(
-            'title' => 'TN',
+            'menu_name' => 'TN',
         ),
     ),
 );
