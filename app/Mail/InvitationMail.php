@@ -21,6 +21,7 @@ class InvitationMail extends Mailable
     public function __construct(Invitation $invitation)
     {
         $this->invitation = $invitation;
+        $this->subject = __('t.mails.invitation.subject', ['courseName' => $invitation->course->name]);
     }
 
     /**

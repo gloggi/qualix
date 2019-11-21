@@ -2,9 +2,9 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Einladung in :coursename', ['coursename' => $invitation->course->name])])
+    @component('components.card', ['header' => __('t.views.invitation.title', ['courseName' => $invitation->course->name])])
 
-        {{__('Du bist schon in der Equipe von :coursename. Du kannst diese Einladung nicht annehmen.', ['coursename' => $invitation->course->name])}}
+        {{__('t.views.invitation.already_in_equipe', ['courseName' => $invitation->course->name])}}
 
     @endcomponent
 

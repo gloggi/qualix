@@ -30,7 +30,7 @@ class Translator extends LaravelTranslator
 
         $replace = $this->sortReplacements($replace);
 
-        $line = (new HtmlString())->e($line);
+        $line = (new HtmlString)->e($line);
 
         foreach ($replace as $key => $value) {
             if ($value instanceof \Illuminate\Support\HtmlString) {

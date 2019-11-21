@@ -2,15 +2,15 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Neuen Kurs erstellen')])
+    @component('components.card', ['header' => __('t.views.admin.new_course.title')])
 
         @component('components.form', ['route' => 'admin.newcourse.store'])
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('Kursname'), 'required' => true, 'autofocus' => true])@endcomponent
+            @component('components.form.textInput', ['name' => 'name', 'label' => __('t.models.course.name'), 'required' => true, 'autofocus' => true])@endcomponent
 
-            @component('components.form.textInput', ['name' => 'course_number', 'label' => __('Kursnummer')])@endcomponent
+            @component('components.form.textInput', ['name' => 'course_number', 'label' => __('t.models.course.course_number')])@endcomponent
 
-            @component('components.form.submit', ['label' => __('Kurs eröffnen')])@endcomponent
+            @component('components.form.submit', ['label' => __('t.views.admin.new_course.create')])@endcomponent
 
         @endcomponent
 

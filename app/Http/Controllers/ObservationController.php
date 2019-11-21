@@ -122,6 +122,20 @@ class ObservationController extends Controller {
      * @return Response
      */
     public function overview(Request $request, Course $course) {
-        return view('overview', ['participants' => $course->participants->all()]);
+        return view('overview', ['participants' => $course->participants->all(), 'participantManagementLink' => $this->participantManagementLink($course, 't.views.overview.here')]);
+    }
+
+    /**
+     * Creates a link to the participants management page with the text given through a translation key.
+     *
+     * @param Course $course
+     * @param $translationKey
+     * @return HtmlString
+     */
+    protected function participantManagementLink(Course $course, $translationKey) {
+        return (new HtmlString)
+            ->s('<a href="' . route('admin.participants', ['course' => $course->id]) . '">')
+            ->e(__($translationKey))
+            ->s('</a>');
     }
 }

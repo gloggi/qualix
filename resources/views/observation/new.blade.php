@@ -2,13 +2,13 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Beobachtung erfassen')])
+    @component('components.card', ['header' => __('t.views.observations.new')])
 
         @component('components.form', ['route' => ['observation.store', ['course' => $course->id]]])
 
             @component('components.form.multiSelectInput', [
                 'name' => 'participant_ids',
-                'label' => __('TN'),
+                'label' => __('t.models.observation.participant'),
                 'required' => true,
                 'value' => $participant_id ?? '',
                 'options' => $course->participants->all(),
@@ -18,13 +18,13 @@
                 'autofocus' => ($participant_id === null)
             ])@endcomponent
 
-            @component('components.form.textareaInput', ['name' => 'content', 'label' => __('Beobachtung'), 'required' => true, 'autofocus' => ($participant_id !== null)])@endcomponent
+            @component('components.form.textareaInput', ['name' => 'content', 'label' => __('t.models.observation.content'), 'required' => true, 'autofocus' => ($participant_id !== null)])@endcomponent
 
             <block-and-requirements-input-wrapper v-slot="slotProps">
 
                 @component('components.form.multiSelectInput', [
                     'name' => 'block_id',
-                    'label' => __('Block'),
+                    'label' => __('t.models.observation.block'),
                     'required' => true,
                     'value' => $block_id ?? '',
                     'options' => $course->blocks->all(),
@@ -37,7 +37,7 @@
 
                 @component('components.form.multiSelectInput', [
                     'name' => 'requirement_ids',
-                    'label' => __('Mindestanforderungen'),
+                    'label' => __('t.models.observation.requirements'),
                     'valueBind' => 'slotProps.requirementsValue',
                     'options' => $course->requirements->all(),
                     'valueFn' => function(\App\Models\Requirement $requirement) { return $requirement->id; },
@@ -49,22 +49,22 @@
 
             @component('components.form.radioButtonInput', [
                 'name' => 'impression',
-                'label' => __('Eindruck'),
+                'label' => __('t.models.observation.impression'),
                 'required' => true,
                 'value' => '1',
-                'options' => [ '2' => 'Positiv', '1' => 'Neutral', '0' => 'Negativ']
+                'options' => [ '2' => __('t.global.positive'), '1' => __('t.global.neutral'), '0' => __('t.global.negative')]
             ])@endcomponent
 
             @component('components.form.multiSelectInput', [
                 'name' => 'category_ids',
-                'label' => __('Kategorien'),
+                'label' => __('t.models.observation.categories'),
                 'options' => $course->categories->all(),
                 'valueFn' => function(\App\Models\Category $category) { return $category->id; },
                 'displayFn' => function(\App\Models\Category $category) { return $category->name; },
                 'multiple' => true,
             ])@endcomponent
 
-            @component('components.form.submit', ['label' => __('Speichern')])@endcomponent
+            @component('components.form.submit', ['label' => __('t.global.save')])@endcomponent
 
         @endcomponent
 

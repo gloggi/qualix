@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Beobachtung in Block erfassen')])
+    @component('components.card', ['header' => __('t.views.blocks.title')])
 
         @if (count($course->blocks))
 
@@ -28,7 +28,10 @@
                                 @if($course->archived)
                                     <h5 class="list-group-item mb-0">{{ $block->blockname_and_number }}</h5>
                                 @else
-                                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{{ route('observation.new', ['course' => $course->id, 'block' => $block->id]) }}"><h5 class="mb-0">{{ $block->blockname_and_number }}</h5><span class="badge badge-primary" style="font-size: 1.125rem;">{{ count($block->observations) }} <i class="fas fa-binoculars"></i></span></a>
+                                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{{ route('observation.new', ['course' => $course->id, 'block' => $block->id]) }}">
+                                        <h5 class="mb-0">{{ $block->blockname_and_number }}</h5>
+                                        <span class="badge badge-primary" style="font-size: 1.125rem;">{{ count($block->observations) }} <i class="fas fa-binoculars"></i></span>
+                                    </a>
                                 @endif
                             @endforeach
                         </ul>
@@ -39,7 +42,7 @@
 
         @else
 
-            {{__('Bisher sind keine Blöcke erfasst. Bitte erfasse sie')}} <a href="{{ route('admin.blocks', ['course' => $course->id]) }}">{{__('hier')}}</a>.
+            {{__('t.views.blocks.no_blocks', ['here' => $blockManagementLink])}}
 
         @endif
 

@@ -5,14 +5,20 @@ return array(
     ),
     'global' => array(
         'add' => 'Hinzufügen',
+        'add_observation' => 'Beobachtung erfassen',
         'close' => 'Schliessen',
         'delete' => 'Löschen',
         'edit' => 'Bearbeiten',
+        'negative' => 'Negativ',
+        'neutral' => 'Neutral',
         'no' => 'Nein',
         'no_options' => 'Keine Einträge gefunden',
         'or' => 'oder',
+        'page_title' => 'Qualix',
+        'positive' => 'Positiv',
         'really_delete' => 'Wirklich löschen?',
         'save' => 'Speichern',
+        'total' => 'Total',
         'yes' => 'Ja',
     ),
     'header' => array(
@@ -21,6 +27,15 @@ return array(
         'language_switch' => 'Sprache wechseln. Übersetzungen via Phrase.com',
         'qualix' => 'Qualix',
         'welcome' => 'Willkommen, :user',
+    ),
+    'mails' => array(
+        'invitation' => array(
+            'accept' => 'Klicke :here um die Einladung anzunehmen.',
+            'greeting' => 'Liebe Grüsse, dein Qualix-Team',
+            'here' => 'hier',
+            'subject' => 'Qualix: Einladung in ":courseName"',
+            'you_have_been_invited' => ':inviterName hat dich auf Qualix in den Kurs ":courseName" eingeladen.',
+        ),
     ),
     'models' => array(
         'block' => array(
@@ -41,6 +56,15 @@ return array(
         'invitation' => array(
             'email' => 'E-Mail',
         ),
+        'observation' => array(
+            'block' => 'Block',
+            'categories' => 'Kategorien',
+            'content' => 'Beobachtung',
+            'impression' => 'Eindruck',
+            'participant' => 'TN',
+            'requirements' => 'Mindestanforderungen',
+            'user' => 'Beobachter',
+        ),
         'participant' => array(
             'scout_name' => 'Pfadiname',
             'group' => 'Abteilung',
@@ -52,8 +76,10 @@ return array(
             'num_observations' => 'Anzahl Beobachtungen',
         ),
         'user' => array(
-            'name' => 'Name',
             'email' => 'E-Mail',
+            'group' => 'Abteilung',
+            'image' => 'Bild',
+            'name' => 'Name',
         ),
     ),
     'views' => array(
@@ -121,7 +147,9 @@ return array(
                 'really_delete_invitation' => 'Willst du die Einladung für :email wirklich entfernen?',
             ),
             'new_course' => array(
+                'create' => 'Kurs eröffnen',
                 'menu_name' => 'Neuen Kurs erstellen',
+                'title' => 'Neuen Kurs erstellen',
             ),
             'participants' => array(
                 'edit' => 'TN ändern',
@@ -151,15 +179,29 @@ return array(
             ),
         ),
         'blocks' => array(
+            'here' => 'hier',
             'menu_name' => 'Blöcke',
+            'no_blocks' => 'Bisher sind keine Blöcke erfasst. Bitte erfasse sie :here.',
+            'title' => 'Beobachtung in Block erfassen',
         ),
         'crib' => array(
             'here' => 'hier',
+            'mandatory_requirements' => 'Killer',
             'menu_name' => 'Spick',
+            'no_blocks' => 'Bisher sind keine Blöcke erfasst. Bitte erfasse und verbinde sie :here mit Mindestanforderungen.',
+            'non_mandatory_requirements' => 'Nicht-Killer',
             'see_only_empty_blocks' => array(
                 'question' => 'Siehst du nur leere Blöcke ohne Mindestanforderungen?',
                 'answer' => 'Dann sind bisher keine Blöcke mit Mindesanforderungen verbunden. Bitte verbinde die Blöcke :here mit Mindestanforderungen.',
             ),
+            'title' => 'Welche Mindestanforderungen können in welchen Blöcken beobachtet werden',
+        ),
+        'invitation' => array(
+            'accept_invitation' => 'Ja, Einladung annehmen',
+            'already_in_equipe' => 'Du bist schon in der Equipe von :courseName. Du kannst diese Einladung nicht annehmen.',
+            'decline_invitation' => 'Nein, diese Einladung ist nicht für mich',
+            'is_email_yours' => 'Gehört dir die Mailadresse :email?',
+            'title' => 'Einladung in :courseName',
         ),
         'login' => array(
             'via_midata' => 'Via PBS MiData einloggen',
@@ -167,11 +209,43 @@ return array(
         'register' => array(
             'via_midata' => 'Via PBS MiData registrieren',
         ),
+        'observations' => array(
+            'edit' => 'Beobachtung bearbeiten',
+            'new' => 'Beobachtung erfassen',
+        ),
         'overview' => array(
+            'here' => 'hier',
             'menu_name' => 'Überblick',
+            'no_participants' => 'Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie :here.',
+            'title' => 'Beobachtungs-Übersicht',
+        ),
+        'participant_details' => array(
+            'add_observation' => 'Beobachtung erfassen',
+            'existing_observations' => 'Beobachtungen',
+            'filter' => 'Filter',
+            'filter_by_category' => 'Kategorie',
+            'filter_by_requirement' => 'Mindestanforderung',
+            'no_observations' => 'Keine Beobachtungen gefunden.',
+            'num_observations' => '{0}Bisher keine Beobachtungen.|{1}Erst eine Beobachtung. Da geht noch mehr!|[2,*]:count Beobachtungen, davon :positive mit positivem, :neutral mit neutralem und :negative mit negativem Eindruck.',
+            'observations_without_category' => 'Beobachtungen ohne Kategorie',
+            'observations_without_requirement' => 'Beobachtungen ohne Mindestanforderung',
+            'really_delete_observation' => 'Willst du diese Beobachtung wirklich löschen?',
+            'title' => 'TN Details',
         ),
         'participants' => array(
+            'add_observation' => 'Beobachtung erfassen',
+            'here' => 'hier',
             'menu_name' => 'TN',
+            'no_participants' => 'Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie :here.',
+            'title' => 'Beobachtung für TN erfassen',
+        ),
+        'user_settings' => array(
+            'edit' => 'Mein Profil bearbeiten',
+        ),
+        'welcome' => array(
+            'no_courses' => 'Du bist momentan noch in keinem Kurs eingetragen. Lass dich in einen Kurs einladen oder erstelle selber einen neuen.',
+            'text' => 'Qualix soll gegen den Papier-Krieg helfen und euch dabei unterstützen, den Überblick über alle Beobachtungen zu behalten. Viel Spass beim Beobachten!',
+            'title' => 'Willkommä bim Qualix',
         ),
     ),
 );

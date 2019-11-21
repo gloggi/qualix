@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Welche Mindestanforderungen können in den jeweiligen Blöcken beobachtet werden:')])
+    @component('components.card', ['header' => __('t.views.crib.title')])
 
         @if (count($course->blocks))
 
@@ -26,28 +26,19 @@
                         <ul class="list-group list-group-flush">
                             @foreach ($day as $block)
                                 <h5 class="list-group-item mb-0">{{ $block->blockname_and_number }}
-                                    @php $count_requirement= 0 @endphp
-                                    @if(count($block->requirements))
-                                        @foreach($block->requirements as $requirement)
-                                            @if($requirement->mandatory)
-                                                @if(!$count_requirement)
-                                                    <br>
-                                                    {{__('Killer: ')}}
-                                                @endif
-                                                <span class="badge badge-warning" style="white-space: normal"> {{$requirement->content}} </span>
-                                                @php $count_requirement=$count_requirement+1  @endphp
-                                            @endif
+                                    @if(count($block->mandatory_requirements))
+                                        <br>
+                                        {{__('t.views.crib.mandatory_requirements')}}:
+                                        @foreach($block->mandatory_requirements as $requirement)
+                                            <span class="badge badge-warning" style="white-space: normal"> {{$requirement->content}} </span>
                                         @endforeach
-                                        @if(!(count($block->requirements)==$count_requirement))
-                                            <br>
-                                            {{__('Nicht-Killer: ')}}
-                                            @foreach($block->requirements as $requirement)
-                                                @if(!$requirement->mandatory)
-                                                    <span class="badge badge-info" style="white-space: normal"> {{$requirement->content}} </span>
-                                                    @php $count_requirement=$count_requirement+1 @endphp
-                                                @endif
-                                            @endforeach
-                                        @endif
+                                    @endif
+                                    @if(count($block->non_mandatory_requirements))
+                                        <br>
+                                        {{__('t.views.crib.non_mandatory_requirements')}}:
+                                        @foreach($block->non_mandatory_requirements as $requirement)
+                                            <span class="badge badge-info" style="white-space: normal"> {{$requirement->content}} </span>
+                                        @endforeach
                                     @endif
                                 </h5>
 
@@ -61,7 +52,7 @@
 
         @else
 
-            {{__('Bisher sind keine Blöcke erfasst. Bitte erfasse und verbinde sie')}} <a href="{{ route('admin.blocks', ['course' => $course->id]) }}">{{__('hier')}}</a>  {{__(' mit Mindestanforderungen')}}.
+            {{__('t.views.crib.no_blocks', ['here' => $blockManagementLink])}}
 
         @endif
 

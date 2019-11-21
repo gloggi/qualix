@@ -10,7 +10,7 @@
             value="{{ isset($value) ? $value->format('d.m.Y') : old($name) }}"
             {{ isset($required) && $required ? 'required' : '' }}
             {{ isset($autofocus) && $autofocus ? 'autofocus v-focus' : '' }}
-            :config="{ format: 'DD.MM.YYYY', useCurrent: false, locale: '{{App::getLocale()}}' }">
+            :config="{ format: 'DD.MM.YYYY', useCurrent: false, locale: '{{App::getLocale()}}' }"></date-picker>
 
         @if ($errors->has($name))
             <span class="invalid-feedback" role="alert">

@@ -4,9 +4,9 @@
 
     @component('components.card')
 
-        <h1>Willkommä bim Qualix</h1>
+        <h1>{{__('t.views.welcome.title')}}</h1>
 
-        <p>S'Qualix set geg de Papier-Chrieg helfe und eu en guete Überblick über all Beobachtige geh. Vill Spass bim Beobachtä</p>
+        <p>{{__('t.views.welcome.text')}}</p>
 
     @endcomponent
 @endsection

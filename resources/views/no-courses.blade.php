@@ -2,9 +2,9 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Willkommen bei Qualix!')])
+    @component('components.card', ['header' => __('t.views.welcome.title')])
 
-        {{ __('Du bist momentan noch in keinem Kurs eingetragen. Lass dich in einen Kurs einladen oder erstelle selber einen neuen.') }}
+        {{ __('t.views.welcome.no_courses') }}
 
     @endcomponent
 
