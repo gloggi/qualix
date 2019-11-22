@@ -40,7 +40,7 @@
                 'actions' => [
                     'edit' => function(\App\Models\Requirement $requirement) use ($course) { return route('admin.requirements.edit', ['course' => $course->id, 'requirement' => $requirement->id]); },
                     'delete' => function(\App\Models\Requirement $requirement) use ($course) { return [
-                        'text' => __('' . ($course->archived ? '' : ' ' . trans_choice('t.views.admin.requirements.observations_on_requirement', $requirement->observations))),
+                        'text' => __('t.views.admin.requirements.really_delete') . ($course->archived ? '' : ' ' . trans_choice('t.views.admin.requirements.observations_on_requirement', $requirement->observations)),
                         'route' => ['admin.requirements.delete', ['course' => $course->id, 'requirement' => $requirement->id]],
                      ];},
                 ]

@@ -175,7 +175,7 @@ return array(
                 'no_participants' => 'Bisher sind keine Teilnehmende erfasst.',
                 'observations_on_participant' => '{0}Es ist keine Beobachtung damit verbunden.|{1}Damit verbunden ist eine Beobachtung, die mitgelöscht wird.|[2,*]Damit verbunden sind :count Beobachtungen, die mitgelöscht werden.',
                 'really_remove' => 'Willst du :name wirklich aus deinem Kurs entfernen?',
-                'remove_success' => 'TN ":name" erfolgreich aus dem Kurs entfernt.'
+                'remove_success' => 'TN ":name" erfolgreich aus dem Kurs entfernt.',
             ),
             'requirements' => array(
                 'are_requirements_required' => array(
@@ -190,7 +190,7 @@ return array(
                 'menu_name' => 'Mindestanforderungen',
                 'new' => 'Neue Mindestanforderung',
                 'no_requirements' => 'Bisher sind keine Mindestanforderungen erfasst.',
-                'observations_on_requirement' => '{0}Es sind keine Beobachtung damit verbunden.|{1} Damit verbunden ist eine Beobachtung, diese wird aber nicht gelöscht.|[2,*]Damit verbunden sind :count Beobachtungen, diese werden aber nicht gelöscht.',
+                'observations_on_requirement' => '{0}Es ist keine Beobachtung damit verbunden.|{1} Damit verbunden ist eine Beobachtung, diese wird aber nicht gelöscht.|[2,*]Damit verbunden sind :count Beobachtungen, diese werden aber nicht gelöscht.',
                 'really_delete' => 'Willst du diese Mindestanforderung wirklich löschen?',
                 'what_are_requirements' => array(
                     'question' => 'Was sind Mindestanforderungen?',
@@ -248,10 +248,9 @@ return array(
             'here' => 'hier',
             'menu_name' => 'Überblick',
             'no_participants' => 'Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie :here.',
-            'title' => 'Beobachtungs-Übersicht',
+            'title' => 'Beobachtungs-Überblick',
         ),
         'participant_details' => array(
-            'add_observation' => 'Beobachtung erfassen',
             'delete_observation_success' => 'Beobachtung gelöscht.',
             'existing_observations' => 'Beobachtungen',
             'filter' => 'Filter',
@@ -265,7 +264,6 @@ return array(
             'title' => 'TN Details',
         ),
         'participants' => array(
-            'add_observation' => 'Beobachtung erfassen',
             'here' => 'hier',
             'menu_name' => 'TN',
             'no_participants' => 'Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie :here.',
@@ -273,7 +271,7 @@ return array(
         ),
         'user_settings' => array(
             'edit' => 'Mein Profil bearbeiten',
-            'edit_success' => 'Die persönlichen Details wurden erfolgreich gespeichert.'
+            'edit_success' => 'Die persönlichen Details wurden erfolgreich gespeichert.',
         ),
         'welcome' => array(
             'no_courses' => 'Du bist momentan noch in keinem Kurs eingetragen. Lass dich in einen Kurs einladen oder erstelle selber einen neuen.',

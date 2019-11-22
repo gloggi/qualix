@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('observation.edit')])
+    @component('components.card', ['header' => __('t.views.observations.edit')])
 
         @component('components.form', ['route' => ['observation.update', ['course' => $course->id, 'observation' => $observation->id]]])
 

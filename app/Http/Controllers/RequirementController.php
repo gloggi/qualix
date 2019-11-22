@@ -29,7 +29,7 @@ class RequirementController extends Controller {
      */
     public function store(RequirementRequest $request, Course $course) {
         Requirement::create(array_merge($request->validated(), ['course_id' => $course->id]));
-        $request->session()->flash('alert-success', __('t.views.admin.new_course.create_success'));
+        $request->session()->flash('alert-success', __('t.views.admin.requirements.create_success'));
         return Redirect::route('admin.requirements', ['course' => $course->id]);
     }
 
