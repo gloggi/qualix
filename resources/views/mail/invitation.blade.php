@@ -1,4 +1,4 @@
-<p>{{__('Hallo')}}</p>
+<p>{{__('Hello!')}}</p>
 
 <p>{{__('t.mails.invitation.you_have_been_invited', ['courseName' => $invitation->course->name, 'inviterName' => auth()->user()->name])}}</p>
 
