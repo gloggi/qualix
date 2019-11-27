@@ -20,6 +20,8 @@ docker-compose up
 
 Wenn sich der Output beruhigt hat (wenn im Output mehrere Zeilen mit `qualix-npm` und `[emitted]` stehen), kannst du dein lokales Qualix unter <http://localhost> und das Datenbank-Tool phpMyAdmin unter <http://localhost:8081> aufrufen.
 
+Wenn du E-Mails in deiner Qualix-Kopie auslöst (zum Beispiel beim Passwort-Reset oder wenn du jemanden in einen Kurs einlädst), werden diese nicht wirklich abgesendet, sondern sie landen im Mailcatcher. Du kannst diese Mails unter <http://localhost:1080> ansehen.
+
 ### Composer, artisan, etc. im Container
 
 Da alles was mit Qualix zu tun hat, inklusive PHP, Composer, artisan, etc. nur im Container läuft, musst du entsprechende Befehle auch in den Container hinein absetzen. Hier ein Paar Beispiele:
