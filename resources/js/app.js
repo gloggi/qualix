@@ -35,13 +35,18 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 Vue.directive('focus', {
     inserted: function (el) {
         if (el.value !== undefined) {
-            el.focus()
+            el.focus();
             let caretPos = el.value.length;
             if (el.createTextRange) {
+                // <textarea>
                 var range = el.createTextRange();
                 range.move('character', caretPos);
                 range.select();
-            } else {
+            } else if (['text', 'search', 'url', 'tel', 'password'].includes(el.type)) {
+                // <input type="...">
+                // setSelectionRange is only supported for the mentioned input types.
+                // It doesn't work for email and number inputs:
+                // https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setSelectionRange
                 el.setSelectionRange(caretPos, caretPos);
             }
         } else {
