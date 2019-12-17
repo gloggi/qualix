@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 
@@ -14,8 +15,8 @@ class Localization {
      * @var array maps app locales (like we use them) to PHP locales (for setlocale).
      */
     protected $localeMap = [
-        'de' => 'de_CH.utf8',
-        'fr' => 'fr_CH.utf8',
+        'de' => 'de_CH.UTF-8',
+        'fr' => 'fr_CH.UTF-8',
     ];
 
     /**
@@ -46,7 +47,7 @@ class Localization {
      */
     protected function setAppLocale($locale) {
         App::setLocale($locale);
-        $phpLocale = array_has($this->localeMap, $locale) ? $this->localeMap[$locale] : $locale;
+        $phpLocale = Arr::has($this->localeMap, $locale) ? $this->localeMap[$locale] : $locale;
         setlocale(LC_ALL, $phpLocale);
     }
 
