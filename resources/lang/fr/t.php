@@ -23,7 +23,7 @@ return array(
 	),
 	"header" => array(
 		"archived" => "Archivé",
-		"course_admin" => "Administration de cours",
+		"course_admin" => "Administration",
 		"language_switch" => "Changer de langue. Traductions via phrase.com",
 		"qualix" => "Qualix",
 		"welcome" => "Bienvenue, :user",
@@ -68,7 +68,7 @@ return array(
 		"participant" => array(
 			"group" => "Groupe",
 			"image" => "Image",
-			"scout_name" => "Totem",
+			"scout_name" => "Nom",
 		),
 		"requirement" => array(
 			"content" => "Exigence",
@@ -162,7 +162,7 @@ return array(
 			"new_course" => array(
 				"create" => "Ouvrir le cours",
 				"create_success" => "Le cours \":name\" a été créé avec succès.",
-				"menu_name" => "Créer un nouveau cours",
+				"menu_name" => "Nouveau cours",
 				"title" => "Créer un nouveau cours",
 			),
 			"participants" => array(
@@ -170,7 +170,7 @@ return array(
 				"edit" => "Modifier participant-e-s",
 				"edit_success" => "Participant-e \":name\" a été saisi-e avec succès.",
 				"existing" => "Participant-e-s :courseName",
-				"menu_name" => "Participant-e-s",
+				"menu_name" => "Participants",
 				"new" => "Nouveaux/nouvelles participant-e-s",
 				"no_participants" => "Pour l'instant, aucun-e participant-e saisi-e",
 				"observations_on_participant" => "{0}Aucune observation n'est liée.|{1}Une observation qui sera également supprimée est liée.|[2,*]:count observations qui seront également supprimées sont liées.",
@@ -200,14 +200,14 @@ return array(
 		),
 		"blocks" => array(
 			"here" => "ici",
-			"menu_name" => "Points de cours",
+			"menu_name" => "P.d.c.",
 			"no_blocks" => "Actuellement, aucun point de cours n'est créé. Merci de les créer :here.",
 			"title" => "Créer une observation dans le point de cours",
 		),
 		"crib" => array(
 			"here" => "ici",
 			"mandatory_requirements" => "Éliminatoire",
-			"menu_name" => "Spick",
+			"menu_name" => "Rappel",
 			"non_mandatory_requirements" => "Non-éliminatoire",
 			"no_blocks" => "Actuellement, aucun point de cours n'est créé. Merci d'en créer un et de le lier :here à des exigences minimales.",
 			"see_only_empty_blocks" => array(
@@ -249,7 +249,7 @@ return array(
 		),
 		"participants" => array(
 			"here" => "ici",
-			"menu_name" => "Participant-e-s",
+			"menu_name" => "Participants",
 			"no_participants" => "Actuellement, aucun-e participant-e saisi-e. Merci de les saisir :here.",
 			"title" => "Saisir des observations pour des participant-e-s",
 		),
@@ -260,7 +260,7 @@ return array(
 			"filter_by_category" => "Catégorie",
 			"filter_by_requirement" => "Exigence minimale",
 			"no_observations" => "Aucune observation trouvée.",
-			"num_observations" => "{0}Actuellement aucune observation|{1}Une observation! Il y en a plus!|[2,*]:count observations, dont :positive avec une impression positive, :neutral avec une impression neutre et :negative avec une impression négative.",
+			"num_observations" => "{0}Actuellement aucune observation|{1}Seulement une observation. Il y en a plus!|[2,*]:count observations, dont :positive avec une impression positive, :neutral avec une impression neutre et :negative avec une impression négative.",
 			"observations_without_category" => "Observations sans catégorie",
 			"observations_without_requirement" => "Observations sans exigence minimale",
 			"really_delete_observation" => "Souhaites-tu réellement supprimer ces observations?",
