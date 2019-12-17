@@ -1,5 +1,13 @@
-<p>{{__('Hallo')}}</p>
+<p>{{__('Hello!')}}</p>
 
-<p>{{__('Du wurdest in den Kurs ":coursename" eingeladen.', ['coursename' => $invitation->course->name])}}</p>
+<p>{{__('t.mails.invitation.you_have_been_invited', ['courseName' => $invitation->course->name, 'inviterName' => auth()->user()->name])}}</p>
 
-<a href="{{ route('invitation.view', ['token' => $invitation->token]) }}">{{__('Klicke hier')}}</a> {{__('um die Einladung anzunehmen.')}}
+@php
+$invitationLink = new App\Util\HtmlString;
+$invitationLink->s('<a href="' . route('invitation.view', ['token' => $invitation->token]) . '">');
+$invitationLink->__('t.mails.invitation.here');
+$invitationLink->s('</a>');
+@endphp
+<p>{{__('t.mails.invitation.accept', ['here' => $invitationLink])}}</p>
+
+<p>{{__('t.mails.invitation.greeting')}}</p>

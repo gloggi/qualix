@@ -8,7 +8,7 @@
                     class="btn btn-hitobito form-control{{ $errors->has('hitobito') ? ' is-invalid' : '' }}"
                     style="width: 100%"
                     href="{{ route('login.hitobito') }}">
-                    {{ __('Via PBS MiData registrieren') }}
+                    {{ __('t.views.register.via_midata') }}
                 </a>
                 @if ($errors->has('hitobito'))
                     <span class="invalid-feedback" role="alert">
@@ -17,7 +17,7 @@
                 @endif
             </div>
         </div>
-        <div class="hr-label">{{ __('oder') }}</div>
+        <div class="hr-label">{{ __('t.global.or') }}</div>
         <form method="POST" action="{{ route('register') }}">
             @csrf
 

@@ -40,6 +40,8 @@ class BlockController extends Controller {
             /** @var User $user */
             $user = Auth::user();
             $user->setLastUsedBlockDate($data['block_date'], $course);
+
+            $request->session()->flash('alert-success', __('t.views.admin.blocks.create_success', ['name' => $block->name]));
         });
 
         return Redirect::route('admin.blocks', ['course' => $course->id]);
@@ -76,7 +78,7 @@ class BlockController extends Controller {
             $user = Auth::user();
             $user->setLastUsedBlockDate($data['block_date'], $course);
 
-            $request->session()->flash('alert-success', __('Block erfolgreich gespeichert.'));
+            $request->session()->flash('alert-success', __('t.views.admin.blocks.edit_success', ['name' => $block->name]));
         });
         return Redirect::route('admin.blocks', ['course' => $course->id]);
     }
@@ -91,7 +93,7 @@ class BlockController extends Controller {
      */
     public function destroy(Request $request, Course $course, Block $block) {
         $block->delete();
-        $request->session()->flash('alert-success', __('Block erfolgreich gelöscht.'));
+        $request->session()->flash('alert-success', __('t.views.admin.blocks.delete_success', ['name' => $block->name]));
         return Redirect::route('admin.blocks', ['course' => $course->id]);
     }
 }

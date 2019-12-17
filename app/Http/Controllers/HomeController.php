@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -35,10 +37,12 @@ class HomeController extends Controller
     /**
      * edit User.
      *
-     * @return Redirect
+     * @param UserRequest $request
+     * @return RedirectResponse
      */
     public function updateUser(UserRequest $request)
     {
+        /** @var User $user */
         $user = Auth::user();
 
         if ($request->file('image') && $user->image_url) {
@@ -47,10 +51,9 @@ class HomeController extends Controller
 
         $user->update($request->validated());
 
-        $request->session()->flash('alert-success', __('User erfolgreich gespeichert.'));
+        $request->session()->flash('alert-success', __('t.views.user_settings.edit_success'));
 
         return Redirect::route('home');
     }
-
 
 }

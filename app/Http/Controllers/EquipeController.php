@@ -38,19 +38,19 @@ class EquipeController extends Controller {
                 Course::find($course->id)->users()->detach($user->id);
 
                 if (!Course::find($course->id)->users()->exists()) {
-                    throw new \LogicException('Cannot delete the last Leiter in the course');
+                    throw new \LogicException(__('t.views.admin.equipe.cannot_delete_last_leiter'));
                 }
 
             });
 
-            $request->session()->flash('alert-success', __('Leiterrole erfolgreich entfernt.'));
+            $request->session()->flash('alert-success', __('t.views.admin.equipe.delete_success'));
 
             if ($user->id === Auth::user()->getAuthIdentifier()) {
                 return Redirect::route('home');
             }
 
         } catch (\LogicException $e) {
-            $request->session()->flash('alert-danger', __('Mindestens ein Equipenmitglied muss im Kurs bleiben.'));
+            $request->session()->flash('alert-danger', $e->getMessage());
         }
 
         return Redirect::route('admin.equipe', ['course' => $course->id]);

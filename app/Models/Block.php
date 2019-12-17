@@ -61,6 +61,20 @@ class Block extends Model {
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function mandatory_requirements() {
+        return $this->requirements()->where('mandatory', '!=', 0);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function non_mandatory_requirements() {
+        return $this->requirements()->where('mandatory', '==', 0);
+    }
+
+    /**
      * Set the day_number attribute by string or int.
      *
      * @param string|int $value

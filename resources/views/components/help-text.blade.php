@@ -1,9 +1,11 @@
-<span>
-    <a href="#" class="text-secondary" data-toggle="collapse" data-target="#{{ $collapseId }}" aria-expanded="true" aria-controls="{{ $collapseId }}">
-        {{ $header }} <i class="fas fa-question-circle"></i>
+@php
+    if (!isset($params)) $params = [];
+@endphp<span>
+    <a href="#" class="text-secondary" data-toggle="collapse" data-target="#{{ $id }}" aria-expanded="true" aria-controls="{{ $id }}">
+        {{__($key . '.question', $params)}} <i class="fas fa-question-circle"></i>
     </a>
 
-    <div id="{{ $collapseId }}" class="collapse text-secondary">
-        {{ $slot }}
+    <div id="{{ $id }}" class="collapse text-secondary">
+        {{__($key . '.answer', $params)}}
     </div>
 </span>

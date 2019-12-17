@@ -5,6 +5,8 @@ Webapp zur Erfassung und Verwaltung von qualifikationsrelevanten Beobachtungen i
 
 Eine Live-Version ist unter <https://qualix.flamberg.ch> verfügbar.
 
+Wir benützen [Phrase](https://phrase.com), um Qualix auch in anderen Sprachen anzubieten.
+
 ## Lokale Installation
 
 Qualix ist ein PHP-Projekt basierend auf dem Framework Laravel. Wir verwenden [docker-compose](https://docs.docker.com/compose/install/) um es lokal zur Entwicklung laufen zu lassen. Wenn du auf Linux arbeitest, musst du zuerst noch separat [Docker für Linux](https://docs.docker.com/install/#server) installieren.
@@ -17,6 +19,8 @@ docker-compose up
 ```
 
 Wenn sich der Output beruhigt hat (wenn im Output mehrere Zeilen mit `qualix-npm` und `[emitted]` stehen), kannst du dein lokales Qualix unter <http://localhost> und das Datenbank-Tool phpMyAdmin unter <http://localhost:8081> aufrufen.
+
+Wenn du E-Mails in deiner Qualix-Kopie auslöst (zum Beispiel beim Passwort-Reset oder wenn du jemanden in einen Kurs einlädst), werden diese nicht wirklich abgesendet, sondern sie landen im Mailcatcher. Du kannst diese Mails unter <http://localhost:1080> ansehen.
 
 ### Composer, artisan, etc. im Container
 

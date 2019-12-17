@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Welcome;
+namespace Tests\Feature\App;
 
 use Tests\TestCaseWithBasicData;
 

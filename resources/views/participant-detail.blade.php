@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('TN Details'), 'bodyClass' => 'container-fluid'])
+    @component('components.card', ['header' => __('t.views.participant_details.title'), 'bodyClass' => 'container-fluid'])
 
         <div class="row my-3">
 
@@ -15,7 +15,7 @@
             <div class="col">
                 <h3>{{ $participant->scout_name }}</h3>
                 @if (isset($participant->group))<h5>{{ $participant->group }}</h5>@endif
-                <p>{{ trans_choice('{0}Keine Beobachtungen|{1}1 Beobachtung|[2,*]:count Beobachtungen', count($participant->observations), ['count' => count($participant->observations)])}}, {{ __('davon :positive mit positivem, :neutral mit neutralem und :negative mit negativem Eindruck.', ['positive' => $participant->positive->count(), 'neutral' => $participant->neutral->count(), 'negative' => $participant->negative->count()])}}</p>
+                <p>{{ trans_choice('t.views.participant_details.num_observations', $participant->observations, ['positive' => $participant->positive->count(), 'neutral' => $participant->neutral->count(), 'negative' => $participant->negative->count()])}}</p>
                 @php
                     $columns = [];
                     foreach ($course->users->all() as $user) {
@@ -28,18 +28,18 @@
                     'data' => [$participant->observations->all()],
                     'fields' => $columns,
                 ])@endcomponent
-                <a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id]) }}" class="btn btn-primary"><i class="fas fa-binoculars"></i> {{__('Beobachtung erfassen')}}</a>
+                <a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id]) }}" class="btn btn-primary"><i class="fas fa-binoculars"></i> {{__('t.global.add_observation')}}</a>
             </div>
 
         </div>
 
     @endcomponent
 
-    @component('components.card', ['header' => __('Beobachtungen')])
+    @component('components.card', ['header' => __('t.views.participant_details.existing_observations')])
 
         <div class="card">
             <div class="card-header" id="filters" data-toggle="collapse" data-target="#filters-collapse" aria-expanded="true" aria-controls="filters-collapse">
-                <i class="fas fa-filter"></i> Filter
+                <i class="fas fa-filter"></i> {{__('t.views.participant_details.filter')}}
             </div>
 
             <div id="filters-collapse" class="collapse{{ $requirement !== null || $category !== null ? ' show' : '' }}" aria-labelledby="filters">
@@ -58,12 +58,12 @@
                                   class="form-control-multiselect"
                                   value="{{ $requirement }}"
                                   :allow-empty="true"
-                                  placeholder="Mindestanforderung"
+                                  placeholder="{{__('t.views.participant_details.filter_by_requirement')}}"
                                   @php
                                     $jsonOptions = $course->requirements->map(function (\App\Models\Requirement $requirement) {
                                         return [ 'label' => (string)$requirement->content, 'value' => (string)$requirement->id ];
                                     });
-                                    $jsonOptions[] = [ 'label' => __('-- Beobachtungen ohne Mindestanforderungen --'), 'value' => '0' ];
+                                    $jsonOptions[] = [ 'label' => '-- ' . __('t.views.participant_details.observations_without_requirement') . ' --', 'value' => '0' ];
                                   @endphp
                                   :options="{{ json_encode($jsonOptions) }}"
                                   :multiple="false"
@@ -86,12 +86,12 @@
                                   class="form-control-multiselect"
                                   value="{{ $category }}"
                                   :allow-empty="true"
-                                  placeholder="Kategorie"
+                                  placeholder="{{__('t.views.participant_details.filter_by_category')}}"
                                   @php
                                       $jsonOptions = $course->categories->map(function (App\Models\Category $category) {
                                           return [ 'label' => (string)$category->name, 'value' => (string)$category->id ];
                                       });
-                                      $jsonOptions[] = [ 'label' => __('-- Beobachtungen ohne Kategorie --'), 'value' => '0' ];
+                                      $jsonOptions[] = [ 'label' => '-- ' . __('t.views.participant_details.observations_without_category') . ' --', 'value' => '0' ];
                                   @endphp
                                   :options="{{ json_encode($jsonOptions) }}"
                                   :multiple="false"
@@ -115,25 +115,25 @@
                 'data' => $observations,
                 'rawColumns' => true,
                 'fields' => [
-                    __('Beobachtung') => function(\App\Models\Observation $observation) { return (new App\Util\HtmlString)->nl2br_e($observation->content); },
-                    __('Block') => function(\App\Models\Observation $observation) { return $observation->block->blockname_and_number; },
-                    __('MA') => function(\App\Models\Observation $observation) {
+                    __('t.models.observation.content') => function(\App\Models\Observation $observation) { return (new App\Util\HtmlString)->nl2br_e($observation->content); },
+                    __('t.models.observation.block') => function(\App\Models\Observation $observation) { return $observation->block->blockname_and_number; },
+                    __('t.models.observation.requirements') => function(\App\Models\Observation $observation) {
                         return (new App\Util\HtmlString)->s(implode('', array_map(function(\App\Models\Requirement $requirement) {
                             return (new App\Util\HtmlString)->s('<span class="badge badge-' . ($requirement->mandatory ? 'warning' : 'info') . '" style="white-space: normal">')->e($requirement->content)->s('</span>');
                         }, $observation->requirements->all())));
                     },
-                    __('Eindruck') => function(\App\Models\Observation $observation) {
+                    __('t.models.observation.impression') => function(\App\Models\Observation $observation) {
                         $impmression = $observation->impression;
-                        if ($impmression === 0) return (new App\Util\HtmlString)->s('<span class="badge badge-danger">negativ</span>');
-                        else if ($impmression === 2) return (new App\Util\HtmlString)->s('<span class="badge badge-success">positiv</span>');
-                        else return (new App\Util\HtmlString)->s('<span class="badge badge-secondary">neutral</span>');
+                        if ($impmression === 0) return (new App\Util\HtmlString)->s('<span class="badge badge-danger">')->__('t.global.negative')->s('</span>');
+                        else if ($impmression === 2) return (new App\Util\HtmlString)->s('<span class="badge badge-success">')->__('t.global.positive')->s('</span>');
+                        else return (new App\Util\HtmlString)->s('<span class="badge badge-secondary">')->__('t.global.neutral')->s('</span>');
                     },
-                    __('Beobachter') => function(\App\Models\Observation $observation) { return $observation->user->name; }
+                    __('t.models.observation.user') => function(\App\Models\Observation $observation) { return $observation->user->name; }
                 ],
                 'actions' => [
                     'edit' => function(\App\Models\Observation $observation) use ($course) { return route('observation.edit', ['course' => $course->id, 'observation' => $observation->id]); },
                     'delete' => function(\App\Models\Observation $observation) use ($course) { return [
-                        'text' => __('Willst du diese Beobachtung wirklich löschen?'),
+                        'text' => __('t.views.participant_details.really_delete_observation'),
                         'route' => ['observation.delete', ['course' => $course->id, 'observation' => $observation->id]],
                      ];},
                 ]
@@ -141,7 +141,7 @@
 
         @else
 
-            {{__('Keine Beobachtungen gefunden.')}}
+            {{__('t.views.participant_details.no_observations')}}
 
         @endif
 

@@ -3,6 +3,7 @@
 namespace App\Util;
 
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString as LaravelHtmlString;
 use InvalidArgumentException;
 
@@ -99,6 +100,28 @@ class HtmlString extends LaravelHtmlString implements Htmlable
     }
 
     /**
+     * Append an internationalized pluralized unsafe string (possibly containing user input) to the HTML.
+     * The translated string will be escaped using htmlspecialchars.
+     *
+     * @param array $arguments
+     * @return $this
+     */
+    public function trans_choice_e(...$arguments) {
+        return $this->appendEscaping(trans_choice(...$arguments));
+    }
+
+    /**
+     * Append an internationalized pluralized unsafe string (possibly containing user input) to the HTML.
+     * The translated string will be escaped using htmlspecialchars.
+     *
+     * @param array $arguments
+     * @return $this
+     */
+    public function trans_choice(...$arguments) {
+        return $this->appendEscaping(trans_choice(...$arguments));
+    }
+
+    /**
      * Append an unsafe string (possibly containing user input) to the HTML, converting new lines to <br> tags.
      * The translated string will be escaped using htmlspecialchars (except for the added <br> tags).
      *
@@ -108,5 +131,21 @@ class HtmlString extends LaravelHtmlString implements Htmlable
      */
     public function nl2br_e($escapable, $doubleEncode = false) {
         return $this->append(nl2br((new HtmlString)->appendEscaping($escapable, $doubleEncode)->toHtml()));
+    }
+
+    /**
+     * Replace one or more search strings with corresponding replace strings. The replacements will be escaped
+     * (except if they're HtmlStrings themselves).
+     *
+     * @param $search
+     * @param $replace
+     * @param bool $doubleEncode
+     * @return $this
+     */
+    public function replace($search, $replace, $doubleEncode = false) {
+        $search = Arr::wrap($search);
+        $replace = array_map(function($r) use ($doubleEncode) { return e($r, $doubleEncode); }, Arr::wrap($replace));
+        $this->html = str_replace($search, $replace, $this->html, $doubleEncode);
+        return $this;
     }
 }

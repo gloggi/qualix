@@ -2,22 +2,21 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Einladung in :coursename', ['coursename' => $invitation->course->name])])
+    @component('components.card', ['header' => __('t.views.invitation.title', ['courseName' => $invitation->course->name])])
 
         @component('components.form', ['route' => 'invitation.claim'])
 
             @component('components.form.hiddenInput', ['name' => 'token', 'value' => $invitation->token])@endcomponent
 
             @component('components.form.text')
-                <p>{{__('Gehört dir die Mailadresse :email?', ['email' => $invitation->email])}}</p>
+                <p>{{__('t.views.invitation.is_email_yours', ['email' => $invitation->email])}}</p>
             @endcomponent
 
-            @component('components.form.submit', ['label' => __('Ja, Einladung annehmen')])
+            @component('components.form.submit', ['label' => __('t.views.invitation.accept_invitation')])
                 <a class="btn btn-link" href="{{ route('home') }}">
-                    {{ __('Nein, diese Einladung ist nicht für mich') }}
+                    {{ __('t.views.invitation.decline_invitation') }}
                 </a>
             @endcomponent
-
 
         @endcomponent
 

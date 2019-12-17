@@ -2,21 +2,17 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Neue Mindestanforderung')])
+    @component('components.card', ['header' => __('t.views.admin.requirements.new')])
 
         @component('components.form', ['route' => ['admin.requirements.store', ['course' => $course->id]]])
 
-            @component('components.form.textInput', ['name' => 'content', 'label' => __('Titel'), 'required' => true, 'autofocus' => true])@endcomponent
+            @component('components.form.textInput', ['name' => 'content', 'label' => __('t.models.requirement.content'), 'required' => true, 'autofocus' => true])@endcomponent
 
-            @component('components.form.checkboxInput', ['name' => 'mandatory', 'label' => __('Killer-Kriterium')])@endcomponent
+            @component('components.form.checkboxInput', ['name' => 'mandatory', 'label' => __('t.models.requirement.mandatory')])@endcomponent
 
-            @component('components.form.submit', ['label' => __('Hinzufügen')])
+            @component('components.form.submit', ['label' => __('t.global.add')])
 
-                @component('components.help-text', ['header' => 'Was sind Mindestanforderungen?', 'collapseId' => 'requirementHelp'])
-
-                    {{__('Mindestanforderungen sind klare Voraussetzungen und Kriterien, die alle Teilnehmenden während dem Kurs erfüllen sollen. Anhand der Mindestanforderungen wird beurteilt, wer den Kurs besteht und wer nicht. Du kannst Mindestanforderungen als Killer-Kriterien markieren wenn du willst, aber es hat momentan keine Auswirkungen in Qualix selber (bis auf eine etwas andere Farbgebung).')}}
-
-                @endcomponent
+                @component('components.help-text', ['id' => 'requirementsHelp', 'key' => 't.views.admin.requirements.what_are_requirements'])@endcomponent
 
             @endcomponent
 
@@ -24,18 +20,18 @@
 
     @endcomponent
 
-    @component('components.card', ['header' => __('Mindestanforderungen :courseName', ['courseName' => $course->name])])
+    @component('components.card', ['header' => __('t.views.admin.requirements.existing', ['courseName' => $course->name])])
 
         @if (count($course->requirements))
 
             @php
                 $fields = [
-                    __('Anforderung') => function(\App\Models\Requirement $requirement) { return $requirement->content; },
-                    __('Killer') => function(\App\Models\Requirement $requirement) { return $requirement->mandatory ? __('Ja') : __('Nein'); },
-                    __('Anzahl Beobachtungen') => function(\App\Models\Requirement $requirement) { return count($requirement->observations); },
+                    __('t.models.requirement.content') => function(\App\Models\Requirement $requirement) { return $requirement->content; },
+                    __('t.models.requirement.mandatory') => function(\App\Models\Requirement $requirement) { return $requirement->mandatory ? __('t.global.yes') : __('t.global.no'); },
+                    __('t.models.requirement.num_observations') => function(\App\Models\Requirement $requirement) { return count($requirement->observations); },
                 ];
                 if ($course->archived) {
-                    unset($fields[__('Anzahl Beobachtungen')]);
+                    unset($fields[__('t.models.requirement.num_observations')]);
                 }
             @endphp
             @component('components.responsive-table', [
@@ -44,7 +40,7 @@
                 'actions' => [
                     'edit' => function(\App\Models\Requirement $requirement) use ($course) { return route('admin.requirements.edit', ['course' => $course->id, 'requirement' => $requirement->id]); },
                     'delete' => function(\App\Models\Requirement $requirement) use ($course) { return [
-                        'text' => __('Willst du diese Mindestanforderung wirklich löschen?' . ($course->archived ? '' : ' ' . count($requirement->observations) . ' Beobachtung(en) ist / sind darauf zugewiesen.')),
+                        'text' => __('t.views.admin.requirements.really_delete') . ($course->archived ? '' : ' ' . trans_choice('t.views.admin.requirements.observations_on_requirement', $requirement->observations)),
                         'route' => ['admin.requirements.delete', ['course' => $course->id, 'requirement' => $requirement->id]],
                      ];},
                 ]
@@ -52,13 +48,9 @@
 
         @else
 
-            {{__('Bisher sind keine Mindestanforderungen erfasst.')}}
+            {{__('t.views.admin.requirements.no_requirements')}}
 
-            @component('components.help-text', ['header' => __('Muss ich Mindestanforderungen für meinen Kurs erfassen?'), 'collapseId' => 'noRequirementsHelp'])
-
-                {{__('Es ist sehr wichtig, vor dem Kurs im Kursteam Mindestanforderungen festzulegen, damit alle Teilnehmenden nach dem gleichen Schema qualifiziert werden und damit Entscheide im Kurs einfacher gefällt werden können. Aber wenn du diese nicht in Qualix führen willst, kannst du Beobachtungen auch ohne Mindestanforderungen erfassen.')}}
-
-            @endcomponent
+            @component('components.help-text', ['id' => 'noRequirementsHelp', 'key' => 't.views.admin.requirements.are_requirements_required'])@endcomponent
 
         @endif
 

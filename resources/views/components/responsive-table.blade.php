@@ -48,12 +48,15 @@
                         <td class="actions">
                             @foreach($actions as $actionName => $action)
                                 @if($actionName === 'delete')
-                                    <a class="text-danger" data-toggle="modal" href="#delete-{{ $rid }}">
+                                    <a class="text-danger" data-toggle="modal" href="#delete-{{ $rid }}" title="{{__('t.global.delete')}}">
                                         <i class="fas fa-minus-circle"></i>
                                     </a>
                                     @component('components.delete-modal', array_merge(['id' => 'delete-' . $rid], $action($row)))@endcomponent
                                 @else
-                                    <a href="{{ $action($row) }}"><i class="fas fa-{{ $actionName }}"></i></a>
+                                    <a href="{{ $action($row) }}">
+                                        <i class="fas fa-{{ $actionName }}"
+                                           @if(Lang::has('t.global.'.$actionName))title="{{__('t.global.'.$actionName)}}" @endif></i>
+                                    </a>
                                 @endif
                             @endforeach
                         </td>

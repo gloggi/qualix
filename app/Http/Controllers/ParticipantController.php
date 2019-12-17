@@ -32,7 +32,10 @@ class ParticipantController extends Controller
      */
     public function store(ParticipantRequest $request, Course $course)
     {
-        Participant::create(array_merge($request->validated(), ['course_id' => $course->id]));
+        /** @var Participant $participant */
+        $participant = Participant::create(array_merge($request->validated(), ['course_id' => $course->id]));
+
+        $request->session()->flash('alert-success', __('t.views.admin.participants.add_success', ['name' => $participant->scout_name]));
 
         return Redirect::route('admin.participants', ['course' => $course->id]);
     }
@@ -40,6 +43,7 @@ class ParticipantController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * @param Course $course
      * @param Participant $participant
      * @return Response
      */
@@ -64,7 +68,7 @@ class ParticipantController extends Controller
 
         $participant->update($request->validated());
 
-        $request->session()->flash('alert-success', __('TN erfolgreich gespeichert.'));
+        $request->session()->flash('alert-success', __('t.views.admin.participants.edit_success', ['name' => $participant->scout_name]));
         return Redirect::route('admin.participants', ['course' => $course->id]);
     }
 
@@ -82,7 +86,7 @@ class ParticipantController extends Controller
             Storage::delete($participant->image_url);
         }
         $participant->delete();
-        $request->session()->flash('alert-success', __('TN erfolgreich gelöscht.'));
+        $request->session()->flash('alert-success', __('t.views.admin.participants.remove_success', ['name' => $participant->scout_name]));
         return Redirect::route('admin.participants', ['course' => $course->id]);
     }
 }

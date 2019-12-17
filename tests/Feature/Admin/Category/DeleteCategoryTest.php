@@ -36,9 +36,8 @@ class DeleteCategoryTest extends TestCaseWithCourse {
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/admin/category');
-        /** @var TestResponse $response */
-        $response = $response->followRedirects();
-        $response->assertDontSee('Kategorie 1');
+        $response->followRedirects();
+        $this->assertSeeNone('td', 'Kategorie 1');
     }
 
     public function test_shouldValidateDeletedCategoryUrl_wrongId() {

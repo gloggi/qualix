@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -22,6 +23,8 @@ abstract class TestCase extends BaseTestCase {
     protected $crawler;
 
     public function setUp(): void {
+        putenv('APP_ENV=testing');
+
         parent::setUp();
 
         $this->createUser(['name' => 'Bari'], true);
@@ -106,12 +109,37 @@ abstract class TestCase extends BaseTestCase {
         }
 
         foreach ($matches as $index => $domElement) {
-            $needle = $contents[$index];
+            $needle = array_values($contents)[$index];
             $haystack = trim($domElement->textContent);
             try {
                 $this->assertContains($needle, $haystack);
             } catch (ExpectationFailedException $e) {
                 $this->fail('Failed asserting that the element at index ' . $index . ' contains the string "' . $contents[$index] . '", was "' . $haystack . '" instead.');
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Given a CSS selector string, check that none of the elements matching the query
+     * contain any of the values provided.
+     *
+     * @param string $selector
+     * @param string|array $contents
+     * @return $this
+     */
+    public function assertSeeNone($selector, $contents) {
+        $matches = $this->crawler->filter($selector);
+
+        foreach ($matches as $domElement) {
+            foreach (Arr::wrap($contents) as $needle) {
+                $haystack = trim($domElement->textContent);
+                try {
+                    $this->assertNotContains($needle, $haystack);
+                } catch (ExpectationFailedException $e) {
+                    $this->fail('Expected to find no element matching "' . $selector . '" that contains "' . $needle . '", but found "' . $domElement . '"');
+                }
             }
         }
 

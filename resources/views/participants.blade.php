@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Beobachtung für TN erfassen')])
+    @component('components.card', ['header' => __('t.views.participants.title')])
 
         @if (count($course->participants))
 
@@ -25,7 +25,7 @@
 
                                 </div>
 
-                                <div class="card-body"><a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id]) }}" class="btn btn-primary"><i class="fas fa-binoculars"></i> {{__('Beobachtung erfassen')}}</a></div>
+                                <div class="card-body"><a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id]) }}" class="btn btn-primary"><i class="fas fa-binoculars"></i> {{__('t.global.add_observation')}}</a></div>
                             </div>
                         </a>
                     </div>
@@ -36,7 +36,7 @@
 
         @else
 
-            {{__('Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie')}} <a href="{{ route('admin.participants', ['course' => $course->id]) }}">{{__('hier')}}</a>.
+            {{__('t.views.participants.no_participants', ['here' => $participantManagementLink])}}
 
         @endif
 

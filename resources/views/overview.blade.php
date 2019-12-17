@@ -2,14 +2,14 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Beobachtungs-Übersicht')])
+    @component('components.card', ['header' => __('t.views.overview.title')])
 
         @if (count($participants))
 
             @php
                 $columns = [
-                    __('TN') => function(\App\Models\Participant $participant) use ($course) { return (new App\Util\HtmlString)->s('<a href="' . route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) . '">' . (($participant->image_url!=null) ? view('components.img',  ['src' => asset(Storage::url($participant->image_url)), 'classes' => ['avatar-small']]) : '') . ' ')->e($participant->scout_name)->s('</a>'); },
-                    'Total' => function(\App\Models\Participant $participant) { return count($participant->observations->all()); },
+                    __('t.models.observation.participant') => function(\App\Models\Participant $participant) use ($course) { return (new App\Util\HtmlString)->s('<a href="' . route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) . '">' . (($participant->image_url!=null) ? view('components.img',  ['src' => asset(Storage::url($participant->image_url)), 'classes' => ['avatar-small']]) : '') . ' ')->e($participant->scout_name)->s('</a>'); },
+                    __('t.global.total') => function(\App\Models\Participant $participant) { return count($participant->observations); },
                 ];
                 foreach ($course->users->all() as $user) {
                     $columns[$user->name] = function($participant) use($user) {
@@ -32,7 +32,7 @@
 
         @else
 
-            {{__('Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie')}} <a href="{{ route('admin.participants', ['course' => $course->id]) }}">{{__('hier')}}</a>.
+            {{__('t.views.overview.no_participants', ['here' => $participantManagementLink])}}
 
         @endif
 

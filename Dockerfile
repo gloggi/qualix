@@ -3,7 +3,7 @@ FROM php:7.2.15-apache
 WORKDIR /var/www
 
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y install libxml2-dev curl zlib1g-dev unzip locales
-RUN echo "de_CH.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
+RUN echo "de_CH.UTF-8 UTF-8" >> /etc/locale.gen && echo "fr_CH.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

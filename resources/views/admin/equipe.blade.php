@@ -2,18 +2,18 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Equipe :courseName', ['courseName' => $course->name])])
+    @component('components.card', ['header' => __('t.views.admin.equipe.existing', ['courseName' => $course->name])])
 
         @component('components.responsive-table', [
             'id' => 'equipe',
             'data' => $course->users,
             'fields' => [
-                __('Name') => function(\App\Models\User $user) { return $user->name; },
-                __('E-Mail') => function(\App\Models\User $user) { return $user->email; },
+                __('t.models.user.name') => function(\App\Models\User $user) { return $user->name; },
+                __('t.models.user.email') => function(\App\Models\User $user) { return $user->email; },
             ],
             'actions' => [
                 'delete' => function(\App\Models\User $user) use ($course) { return [
-                    'text' => __('Willst du ' . $user->name . ' wirklich aus der Kursequipe entfernen?'),
+                    'text' => __('t.views.admin.equipe.really_delete', ['name' => $user->name]),
                     'route' => ['admin.equipe.delete', ['course' => $course->id, 'user' => $user->id]],
                  ];},
             ]
@@ -21,7 +21,7 @@
 
     @endcomponent
 
-    @component('components.card', ['header' => __('Einladungen')])
+    @component('components.card', ['header' => __('t.views.admin.equipe.existing_invitations')])
 
         @if (count($course->invitations))
 
@@ -29,11 +29,11 @@
                 'id' => 'invitations',
                 'data' => $course->invitations,
                 'fields' => [
-                    __('E-Mail') => function(\App\Models\Invitation $invitation) { return $invitation->email; },
+                    __('t.models.invitation.email') => function(\App\Models\Invitation $invitation) { return $invitation->email; },
                 ],
                 'actions' => [
                     'delete' => function(\App\Models\Invitation $invitation) use ($course) { return [
-                        'text' => __('Willst du die Einladung für ' . $invitation->email . ' wirklich entfernen?'),
+                        'text' => __('t.views.admin.equipe.really_delete_invitation', ['email' => $invitation->email]),
                         'route' => ['admin.invitation.delete', ['course' => $course->id, 'email' => $invitation->email]],
                      ]; },
                 ]
@@ -41,19 +41,19 @@
 
         @else
 
-            {{__('Momentan sind keine Einladungen offen.')}}
+            {{__('t.views.admin.equipe.no_invitations')}}
 
         @endif
 
     @endcomponent
 
-    @component('components.card', ['header' => __('Equipenmitglied einladen')])
+    @component('components.card', ['header' => __('t.views.admin.equipe.new_invitation')])
 
         @component('components.form', ['route' => ['admin.invitation.store', ['course' => $course->id]]])
 
-            @component('components.form.textInput', ['name' => 'email', 'label' => __('E-Mail'), 'required' => true])@endcomponent
+            @component('components.form.textInput', ['name' => 'email', 'label' => __('t.models.invitation.email'), 'required' => true])@endcomponent
 
-            @component('components.form.submit', ['label' => __('Einladen')])@endcomponent
+            @component('components.form.submit', ['label' => __('t.views.admin.equipe.invite')])@endcomponent
 
         @endcomponent
 

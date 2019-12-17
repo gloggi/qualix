@@ -47,7 +47,7 @@ class DeleteCourseTest extends TestCaseWithBasicData {
         $response->assertRedirect('/');
         /** @var TestResponse $response */
         $response->followRedirects();
-        $this->assertSeeAllInOrder('select option', ['Kursname']);
+        $this->assertSeeAllInOrder('select#globalCourseSelect option', ['Kursname']);
     }
 
     public function test_shouldDeleteRelatedData() {

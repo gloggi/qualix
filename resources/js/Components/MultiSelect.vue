@@ -3,7 +3,11 @@
     <multiselect v-bind="$attrs" @input="onInput" v-model="currentValue" label="label" track-by="value" :multiple="multiple" :options="options">
       <template slot="clear" slot-scope="props">
         <div v-if="showDeleteButton" @mousedown.prevent.stop="clear" class="multiselect__clear"></div>
-      </template></multiselect>
+      </template>
+      <template slot="noOptions" slot-scope="props">
+          <div class="text-secondary">{{ noOptions }}</div>
+      </template>
+    </multiselect>
     <input type="hidden" :name="this.name" :value="formValue">
   </span>
 </template>
@@ -19,6 +23,7 @@ export default {
   props: {
     name: String,
     multiple: Boolean,
+    noOptions: String,
     value: String,
     options: Array,
     submitOnInput: String,

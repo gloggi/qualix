@@ -67,18 +67,18 @@ class LoginController extends Controller
     {
         if ($request->error) {
             // User has denied access in Hitobito
-            return $this->redirectWithError(__('Zugriff in MiData verweigert.'));
+            return $this->redirectWithError(__('t.views.login.midata.user_has_denied_access'));
         }
         try {
             $socialiteUser = Socialite::driver('hitobito')->setRequest($request)->setScopes(['name'])->user();
             $user = $this->findOrCreateSocialiteUser($socialiteUser);
         } catch (InvalidStateException $exception) {
             // User has reused an old link or modified the redirect?
-            return $this->redirectWithError(__('Etwas hat nicht geklappt. Versuche es noch einmal.'));
+            return $this->redirectWithError(__('t.views.login.midata.error_please_retry'));
         } catch (InvalidLoginProviderException $exception) {
-            return $this->redirectWithError(__('Melde dich bitte wie üblich mit Benutzernamen und Passwort an.'));
+            return $this->redirectWithError(__('t.views.login.midata.use_normal_credentials'));
         } catch (Exception $exception) {
-            return $this->redirectWithError(__('Leider klappt es momentan gerade nicht. Versuche es später wieder, oder registriere unten einen klassischen Account.'));
+            return $this->redirectWithError(__('t.views.login.midata.error_retry_later'));
         }
 
         $this->guard()->login($user);

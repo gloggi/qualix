@@ -37,6 +37,8 @@ class InvitationController extends Controller {
 
         Mail::to($data['email'])->send(new InvitationMail($invitation));
 
+        $request->session()->flash('alert-success', __('t.views.admin.equipe.invitation_email_sent', ['email' => $invitation->email]));
+
         return Redirect::route('admin.equipe', ['course' => $course->id]);
     }
 
@@ -80,13 +82,13 @@ class InvitationController extends Controller {
 
                 $invitation->delete();
 
-                $request->session()->flash('alert-success', __('Einladung angenommen. Du bist jetzt in der Equipe von :coursename', ['coursename' => $invitation->course->name]));
+                $request->session()->flash('alert-success', __('t.views.invitation.accept_success', ['courseName' => $invitation->course->name]));
 
                 return Redirect::route('index', ['course' => $invitation->course->id]);
             });
         } catch (\Exception $e) {
 
-            $request->session()->flash('alert-danger', __('Einladung konnte nicht angenommen werden.'));
+            $request->session()->flash('alert-danger', __('t.views.invitation.error'));
             return Redirect::route('home');
 
         }
@@ -103,8 +105,10 @@ class InvitationController extends Controller {
      * @throws \Exception
      */
     public function destroy(Request $request, Course $course, $email) {
-        Invitation::where('course_id', '=', $course->id)->where('email', '=', $email)->firstOrFail()->delete();
+        $invitation = Invitation::where('course_id', '=', $course->id)->where('email', '=', $email)->firstOrFail();
+        $invitation->delete();
 
+        $request->session()->flash('alert-success', __('t.views.admin.equipe.delete_invitation_success', ['email' => $invitation->email]));
         return Redirect::route('admin.equipe', ['course' => $course->id]);
     }
 }

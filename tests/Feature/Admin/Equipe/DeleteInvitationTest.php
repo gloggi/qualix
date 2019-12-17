@@ -36,9 +36,8 @@ class DeleteInvitationTest extends TestCaseWithCourse {
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/admin/equipe');
-        /** @var TestResponse $response */
-        $response = $response->followRedirects();
-        $response->assertDontSee($this->email);
+        $response->followRedirects();
+        $this->assertSeeNone('td', $this->email);
     }
 
     public function test_shouldValidateDeletedInvitationUrl_wrongEmail() {

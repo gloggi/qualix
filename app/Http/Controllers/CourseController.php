@@ -47,7 +47,9 @@ class CourseController extends Controller {
      */
     public function store(CourseRequest $request) {
         DB::transaction(function () use ($request) {
-            Course::create($request->validated())->users()->attach(Auth::user()->getAuthIdentifier());
+            $course = Course::create($request->validated());
+            $course->users()->attach(Auth::user()->getAuthIdentifier());
+            $request->session()->flash('alert-success', __('t.views.admin.new_course.create_success', ['name' => $course->name]));
         });
 
         return Redirect::route('home');
@@ -70,7 +72,7 @@ class CourseController extends Controller {
      */
     public function update(CourseRequest $request, Course $course) {
         $course->update($request->validated());
-        $request->session()->flash('alert-success', __('Kursdetails erfolgreich gespeichert.'));
+        $request->session()->flash('alert-success', __('t.views.admin.course_settings.edit_success'));
         return Redirect::route('admin.course', ['course' => $course->id]);
     }
 
@@ -92,7 +94,7 @@ class CourseController extends Controller {
         foreach ($participantImageUrls as $participantImageUrl) {
             Storage::delete($participantImageUrl);
         }
-        $request->session()->flash('alert-success', __('Kurs :name und alle damit verbundenen Daten wurden gelöscht.', ['name' => $course->name]));
+        $request->session()->flash('alert-success', __('t.views.admin.course_settings.delete_success', ['name' => $course->name]));
         return Redirect::route('home');
     }
 
@@ -118,7 +120,7 @@ class CourseController extends Controller {
         foreach ($participantImageUrls as $participantImageUrl) {
             Storage::delete($participantImageUrl);
         }
-        $request->session()->flash('alert-success', __('Kurs :name wurde archiviert.', ['name' => $course->name]));
+        $request->session()->flash('alert-success', __('t.views.admin.course_settings.archive_success', ['name' => $course->name]));
         return Redirect::route('home');
     }
 }
