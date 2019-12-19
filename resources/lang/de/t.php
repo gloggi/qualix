@@ -1,5 +1,8 @@
 <?php
 return array(
+    "errors" => array(
+        "session_expired_try_again" => "Ups, du bist inzwischen nicht mehr eingeloggt. Bitte logge dich nochmals ein, deine Eingaben werden dann wiederhergestellt.",
+    ),
 	"footer" => array(
 		"slogan" => "Qualix. was gaffsch?",
 	),

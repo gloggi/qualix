@@ -10,7 +10,7 @@
                 'name' => 'participant_ids',
                 'label' => __('t.models.observation.participant'),
                 'required' => true,
-                'value' => $participant_id ?? '',
+                'value' => $participant_id,
                 'options' => $course->participants->all(),
                 'valueFn' => function(\App\Models\Participant $participant) { return $participant->id; },
                 'displayFn' => function(\App\Models\Participant $participant) { return $participant->scout_name; },
@@ -20,13 +20,13 @@
 
             @component('components.form.textareaInput', ['name' => 'content', 'label' => __('t.models.observation.content'), 'required' => true, 'autofocus' => ($participant_id !== null)])@endcomponent
 
-            <block-and-requirements-input-wrapper v-slot="slotProps">
+            <block-and-requirements-input-wrapper v-slot="slotProps" @if(old('requirement_ids', 'OBSERVATION_NO_OLD_VALUES') !== 'OBSERVATION_NO_OLD_VALUES') :has-old-values="true" @endif>
 
                 @component('components.form.multiSelectInput', [
                     'name' => 'block_id',
                     'label' => __('t.models.observation.block'),
                     'required' => true,
-                    'value' => $block_id ?? '',
+                    'value' => $block_id,
                     'options' => $course->blocks->all(),
                     'valueFn' => function(\App\Models\Block $block) { return $block->id; },
                     'displayFn' => function(\App\Models\Block $block) { return $block->blockname_and_number; },

@@ -1,5 +1,8 @@
 <?php
 return array(
+    "errors" => array(
+        "session_expired_try_again" => "Oups, tu n'es plus inscrit. Merci de t'inscrire encore une fois, tes données saisies seront restaurées.",
+    ),
 	"footer" => array(
 		"slogan" => "Qualix. quoi reluques-tu?",
 	),

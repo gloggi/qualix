@@ -24,6 +24,7 @@ export default {
     name: String,
     multiple: Boolean,
     noOptions: String,
+    oldValue: String,
     value: String,
     options: Array,
     submitOnInput: String,
@@ -34,7 +35,7 @@ export default {
   },
   data: function() {
     return {
-      currentValue: this.initialValue()
+      currentValue: this.selectedOptions(this.oldValue !== undefined ? this.oldValue : this.value)
     }
   },
   computed: {
@@ -50,11 +51,11 @@ export default {
     }
   },
   methods: {
-    initialValue() {
+    selectedOptions(value) {
       if (this.multiple) {
-        return this.value ? this.options.filter(el => this.value.split(',').includes(el.value)) : []
+        return value ? this.options.filter(el => value.split(',').includes(el.value)) : []
       } else {
-        return this.value ? this.options.find(el => el.value === this.value) : []
+        return value ? this.options.find(el => el.value === value) : []
       }
     },
     onInput(val, id) {
@@ -72,7 +73,7 @@ export default {
   },
   watch: {
     value (newValue, oldValue) {
-      this.currentValue = this.initialValue()
+      this.currentValue = this.selectedOptions(this.value)
     }
   },
   mounted () {

@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Http\Middleware\KeepOldInputInFlash;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -46,6 +48,21 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof AuthenticationException && $request->method() != 'GET') {
+            $this->preserveSubmittedFormData($request);
+        }
         return parent::render($request, $exception);
+    }
+
+    /**
+     * The user submitted a form but wasn't authenticated. Probably the session expired.
+     * Preserve the form data so it can be restored once the user logs back in.
+     *
+     * @param \Illuminate\Http\Request $request
+     */
+    protected function preserveSubmittedFormData($request) {
+        $request->flashExcept($this->dontFlash);
+        session()->flash('alert-warning', __('t.errors.session_expired_try_again'));
+        session()->flash(KeepOldInputInFlash::KEEP_OLD_INPUT_IN_FLASH, true);
     }
 }

@@ -83,7 +83,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/newcourse', 'CourseController@store')->name('admin.newcourse.store');
 });
 
-Auth::routes(['verify' => true]);
-Route::get('login/hitobito', 'Auth\LoginController@redirectToHitobitoOAuth')->name('login.hitobito');
-Route::get('login/hitobito/callback', 'Auth\LoginController@handleHitobitoOAuthCallback')->name('login.hitobito.callback');
-Route::get('locale/{locale}', 'LocalizationController@select')->name('locale.select');
+Route::middleware('keepOldInputInFlash')->group(function () {
+    Auth::routes(['verify' => true]);
+    Route::get('login/hitobito', 'Auth\LoginController@redirectToHitobitoOAuth')->name('login.hitobito');
+    Route::get('login/hitobito/callback', 'Auth\LoginController@handleHitobitoOAuthCallback')->name('login.hitobito.callback');
+    Route::get('locale/{locale}', 'LocalizationController@select')->name('locale.select');
+});
