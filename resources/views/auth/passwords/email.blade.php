@@ -14,7 +14,7 @@
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
 
-                <div class="form-group row">
+                <div class="form-group row required">
                     <label for="email" class="col-md-3 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                     <div class="col-md-6">
