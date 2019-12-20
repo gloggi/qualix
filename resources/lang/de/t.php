@@ -1,6 +1,7 @@
 <?php
 return array(
     "errors" => array(
+        "form_data_restored_please_submit_again" => "Deine eingegebenen Daten wurden wiederhergestellt. Speichern nicht vergessen!",
         "session_expired_try_again" => "Ups, du bist inzwischen nicht mehr eingeloggt. Bitte logge dich nochmals ein, deine Eingaben werden dann wiederhergestellt.",
     ),
 	"footer" => array(

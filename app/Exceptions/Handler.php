@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Http\Middleware\KeepOldInputInFlash;
+use App\Http\Middleware\RestoreFormDataFromExpiredSession;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -61,8 +61,7 @@ class Handler extends ExceptionHandler
      * @param \Illuminate\Http\Request $request
      */
     protected function preserveSubmittedFormData($request) {
-        $request->flashExcept($this->dontFlash);
+        session()->put(RestoreFormDataFromExpiredSession::KEY, $request->except($this->dontFlash));
         session()->flash('alert-warning', __('t.errors.session_expired_try_again'));
-        session()->flash(KeepOldInputInFlash::KEEP_OLD_INPUT_IN_FLASH, true);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 return array(
     "errors" => array(
+        "form_data_restored_please_submit_again" => "Tes données saisies ont étés restaurées. N'oublie pas a sauvegarder!",
         "session_expired_try_again" => "Oups, tu n'es plus inscrit. Merci de t'inscrire encore une fois, tes données saisies seront restaurées.",
     ),
 	"footer" => array(

@@ -14,7 +14,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
 
     Route::get('/', 'CourseController@noCourse')->name('home');
     Route::get('/course', 'CourseController@noCourse');
@@ -83,9 +83,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/newcourse', 'CourseController@store')->name('admin.newcourse.store');
 });
 
-Route::middleware('keepOldInputInFlash')->group(function () {
-    Auth::routes(['verify' => true]);
-    Route::get('login/hitobito', 'Auth\LoginController@redirectToHitobitoOAuth')->name('login.hitobito');
-    Route::get('login/hitobito/callback', 'Auth\LoginController@handleHitobitoOAuthCallback')->name('login.hitobito.callback');
-    Route::get('locale/{locale}', 'LocalizationController@select')->name('locale.select');
-});
+Auth::routes(['verify' => true]);
+Route::get('login/hitobito', 'Auth\LoginController@redirectToHitobitoOAuth')->name('login.hitobito');
+Route::get('login/hitobito/callback', 'Auth\LoginController@handleHitobitoOAuthCallback')->name('login.hitobito.callback');
+Route::get('locale/{locale}', 'LocalizationController@select')->name('locale.select');
