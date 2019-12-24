@@ -24,7 +24,7 @@ class RestoreFormDataFromExpiredSession
         if (session()->has(self::KEY)) {
             session()->now('_old_input', session(self::KEY));
             session()->forget(self::KEY);
-            session()->flash('alert-warning', __('t.errors.form_data_restored_please_submit_again'));
+            session()->now('alert-warning', __('t.errors.form_data_restored_please_submit_again'));
         }
         return $next($request);
     }
