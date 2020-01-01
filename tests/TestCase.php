@@ -27,7 +27,7 @@ abstract class TestCase extends BaseTestCase {
 
         parent::setUp();
 
-        $this->createUser(['name' => 'Bari'], true);
+        $this->createUser(['name' => 'Bari', 'password' => bcrypt('87654321'), 'email' => 'bari@example.com'], true);
 
         Session::start();
 

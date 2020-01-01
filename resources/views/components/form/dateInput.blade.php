@@ -7,7 +7,7 @@
             id="{{ $name }}"
             name="{{ $name }}"
             class="form-control{{ $errors->has($name) ? ' is-invalid' : '' }}"
-            value="{{ isset($value) ? $value->format('d.m.Y') : old($name) }}"
+            value="{{ old($name) ?? $value->format('d.m.Y') ?? '' }}"
             {{ isset($required) && $required ? 'required' : '' }}
             {{ isset($autofocus) && $autofocus ? 'autofocus v-focus' : '' }}
             :config="{ format: 'DD.MM.YYYY', useCurrent: false, locale: '{{App::getLocale()}}' }"></date-picker>

@@ -5,7 +5,7 @@
         <div class="my-auto">
             @foreach($options as $optionValue => $option)
                 <div class="custom-control custom-radio horizontal-radio">
-                    <input type="radio" id="{{ $name . $optionValue }}" name="{{ $name }}" value="{{ $optionValue }}" class="custom-control-input"{{ ((isset($value) && $value == $optionValue) || (!isset($value) && old($name) && old($name) == $optionValue)) ? ' checked' : '' }}>
+                    <input type="radio" id="{{ $name . $optionValue }}" name="{{ $name }}" value="{{ $optionValue }}" class="custom-control-input"{{ ((old($name) ?? $value ?? null) == $optionValue) ? ' checked' : '' }}>
                     <label class="custom-control-label" for="{{ $name . $optionValue }}">{{ $option }}</label>
                 </div>
             @endforeach

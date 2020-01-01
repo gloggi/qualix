@@ -9,7 +9,7 @@
               name="{{ $name }}"
               class="custom-control-input{{ $errors->has($name) ? ' is-invalid' : '' }}"
               value="1"
-              {{ ((isset($value) && $value) || (!isset($value) && old($name))) ? 'checked' : '' }}>
+              {{ (old($name) ?? $value ?? false) ? 'checked' : '' }}>
             <label class="custom-control-label" for="{{ $name }}"></label>
         </div>
 

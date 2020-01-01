@@ -7,7 +7,7 @@
             id="{{ $name }}"
             name="{{ $name }}"
             class="form-control{{ $errors->has($name) ? ' is-invalid' : '' }}"
-            value="{{ isset($value) ? $value : old($name) }}"
+            value="{{ old($name) ?? $value ?? '' }}"
             {{ isset($required) && $required ? 'required' : '' }}
             {{ isset($autofocus) && $autofocus ? 'autofocus v-focus' : '' }}>
 

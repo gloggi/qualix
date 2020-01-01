@@ -14,7 +14,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
 
     Route::get('/', 'CourseController@noCourse')->name('home');
     Route::get('/course', 'CourseController@noCourse');

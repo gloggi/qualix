@@ -29,13 +29,13 @@ class HitobitoOAuthTest extends TestCase {
             $location);
     }
 
-    protected function extractRedirectQueryParams($response) {
+    public static function extractRedirectQueryParams($response) {
         $response->assertRedirect();
         parse_str( parse_url( $response->headers->get('Location'), PHP_URL_QUERY), $result );
         return $result;
     }
 
-    protected function mockHitobitoResponses($hitobitoId, $email, $nickname) {
+    public static function mockHitobitoResponses($hitobitoId, $email, $nickname) {
         $hitobitoMock = new MockHandler([
             // Respond to the authorization_token request
             new Response(200, [], '{"access_token": "abcd"}'),

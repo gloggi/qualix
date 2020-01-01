@@ -6,10 +6,13 @@
             id="{{ $name }}"
             name="{{ $name }}"
             class="form-control-multiselect {{ $errors->has($name) ? ' is-invalid' : '' }}"
+            @if (old($name) !== null)
+                old-value="{{ old($name) }}"
+            @endif
             @if (isset($valueBind) && $valueBind)
                 :value="{{ $valueBind }}"
             @else
-                value="{{ isset($value) ? $value : old($name) }}"
+                value="{{ $value ?? '' }}"
             @endif
             {{ isset($required) && $required ? 'required' : '' }}
             :allow-empty="true"
