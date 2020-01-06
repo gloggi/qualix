@@ -15,6 +15,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\URL;
 
 class ObservationController extends Controller {
     /**
@@ -64,11 +65,13 @@ class ObservationController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
+     * @param Request $request
      * @param Course $course
      * @param Observation $observation
      * @return Response
      */
-    public function edit(Course $course, Observation $observation) {
+    public function edit(Request $request, Course $course, Observation $observation) {
+        $request->session()->flash('referer_before_edit', $request->session()->get('referer_before_edit', URL::previous()));
         return view('observation.edit', ['observation' => $observation]);
     }
 
@@ -94,7 +97,8 @@ class ObservationController extends Controller {
 
         $request->session()->flash('alert-success', __('t.views.observations.edit_success'));
 
-        return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $observation->participant->id]);
+        return Redirect::to($request->session()->get('referer_before_edit',
+            route('participants.detail', ['course' => $course->id, 'participant' => $observation->participant->id])));
     }
 
     /**
@@ -102,7 +106,7 @@ class ObservationController extends Controller {
      *
      * @param Request $request
      * @param Course $course
-     * @param Block $block
+     * @param Observation $observation
      * @return RedirectResponse
      */
     public function destroy(Request $request, Course $course, Observation $observation) {

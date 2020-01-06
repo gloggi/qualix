@@ -157,4 +157,18 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         // then
         $response->assertStatus(404);
     }
+
+    public function test_shouldRedirectBackToParticipantPage_includingFilters() {
+        // given
+        // visiting the edit observation form from the participant detail view with filters activated
+        $previous = '/course/' . $this->courseId . '/participants/' . $this->participantId . '?requirement=3';
+        $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect($previous);
+    }
 }
