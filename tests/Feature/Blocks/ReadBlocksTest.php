@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature\Bloecke;
+namespace Tests\Feature\Blocks;
 
 use Tests\TestCaseWithCourse;
 
-class ReadBloeckeTest extends TestCaseWithCourse {
+class ReadBlocksTest extends TestCaseWithCourse {
 
     public function test_shouldOrderBloecke() {
         // given
