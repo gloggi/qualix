@@ -12,7 +12,9 @@
             @if (isset($valueBind) && $valueBind)
                 :value="{{ $valueBind }}"
             @else
-                value="{{ $value ?? '' }}"
+                @if (!Arr::has(old(), $name))
+                    value="{{ $value ?? '' }}"
+                @endif
             @endif
             {{ isset($required) && $required ? 'required' : '' }}
             :allow-empty="true"

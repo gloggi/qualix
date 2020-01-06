@@ -10,15 +10,24 @@ use Tests\TestCaseWithBasicData;
 
 class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
 
-    private $payload;
     private $email = 'bari@example.com';
+    private $formUrl;
+    private $participantIds;
+    private $blockIds;
+    private $expectedRestoredFlashMessage = 'Deine eingegebenen Daten wurden wiederhergestellt. Speichern nicht vergessen!';
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->createObservation('hat gut mitgemacht', 1, [], [], $this->blockId);
+        $this->formUrl = '/course/' . $this->courseId . '/observation/new';
+        $this->participantIds = '' . $this->participantId;
+        $this->blockIds = '' . $this->blockId;
 
-        $this->payload = ['participant_ids' => '' . $this->participantId, 'content' => 'this text will be restored', 'impression' => '1', 'block_id' => '' . $this->blockId, 'requirement_ids' => '', 'category_ids' => ''];
+        $this->createObservation('hat gut mitgemacht', 1, [], [], $this->blockId);
+    }
+
+    private function payload(): array {
+        return ['participant_ids' => $this->participantIds, 'content' => 'this text will be restored', 'impression' => '1', 'block_id' => $this->blockIds, 'requirement_ids' => '', 'category_ids' => ''];
     }
 
     public function test_shouldRestoreSubmittedFormData_whenLoggingBackInNormally() {
@@ -74,22 +83,58 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
         $this->checkRestorationOfFormData(function () {
             // the user switches the language
             $this->get('/locale/fr');
+            $this->expectedRestoredFlashMessage = 'Tes données saisies ont étés restaurées. N&#039;oublie pas a sauvegarder!';
 
             // the user logs back in
             return $this->post('/login', ['email' => $this->email, 'password' => '87654321'], ['referer' => '/login']);
-        }, true, 'Tes données saisies ont étés restaurées. N&#039;oublie pas a sauvegarder!');
+        }, true);
     }
 
-    public function checkRestorationOfFormData(Closure $logBackIn, bool $shouldRestore = true, $restoredFlashMessage = 'Deine eingegebenen Daten wurden wiederhergestellt. Speichern nicht vergessen!') {
+    public function test_shouldRestoreEmptyParticipantField_evenWhenParticipantIsSpecifiedInURL() {
         // given
-        $this->get('/course/' . $this->courseId . '/observation/new');
+        // Participant is specified in URL
+        $this->formUrl = '/course/' . $this->courseId . '/observation/new?participant=' . $this->participantId;
+        // but not sent in payload, so the user deleted it from the form
+        $this->participantIds = '';
+
+        $this->checkRestorationOfFormData(function () {
+            // the user logs back in normally
+            return $this->post('/login', ['email' => $this->email, 'password' => '87654321'], ['referer' => '/login']);
+        }, true, function (TestResponse $response) {
+            // then
+            // the participant selection field in the restored form should still be empty
+            $response->assertDontSee(' value="' . $this->participantId . '"');
+        });
+    }
+
+    public function test_shouldRestoreChangedBlockField_evenWhenBlockIsSpecifiedInURL() {
+        // given
+        // Block is specified in URL
+        $this->formUrl = '/course/' . $this->courseId . '/observation/new?block=' . $this->blockId;
+        // but a different one is sent in payload, so the user manually changed it
+        $this->blockIds = '9999999';
+
+        $this->checkRestorationOfFormData(function () {
+            // the user logs back in normally
+            return $this->post('/login', ['email' => $this->email, 'password' => '87654321'], ['referer' => '/login']);
+        }, true, function (TestResponse $response) {
+            // then
+            // the participant selection field in the restored form should still be the changed value
+            $response->assertDontSee(' value="' . $this->blockId . '"');
+            $response->assertSee(' old-value="' . $this->blockIds . '"');
+        });
+    }
+
+    public function checkRestorationOfFormData(Closure $logBackIn, bool $shouldRestore = true, Closure $afterRelogin = null) {
+        // given
+        $this->get($this->formUrl);
 
         // simulate the user session expiring
         auth()->logout();
 
         // when
         // simulate the user clicking the stale submit button
-        $response = $this->post('/course/' . $this->courseId . '/observation/new', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $this->payload());
         $response->assertStatus(302);
         $response->assertRedirect('/login');
 
@@ -104,18 +149,23 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/observation/new');
+        $response->assertRedirect($this->formUrl);
 
         /** @var TestResponse $response */
         $response = $response->followRedirects();
 
         // check that restoration works as intended
         if ($shouldRestore) {
-            $response->assertSeeText($restoredFlashMessage);
+            $response->assertSeeText($this->expectedRestoredFlashMessage);
             $response->assertSee('this text will be restored');
         } else {
-            $response->assertDontSeeText($restoredFlashMessage);
+            $response->assertDontSeeText($this->expectedRestoredFlashMessage);
             $response->assertDontSee('this text will be restored');
+        }
+
+        if ($afterRelogin !== null) {
+            // additional assertions
+            $afterRelogin($response);
         }
 
         // when
@@ -124,7 +174,7 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
 
         // then
         // data should not be restored a second time
-        $response->assertDontSeeText($restoredFlashMessage);
+        $response->assertDontSeeText($this->expectedRestoredFlashMessage);
         $response->assertDontSee('this text will be restored');
     }
 
