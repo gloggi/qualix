@@ -47,7 +47,7 @@ class ObservationController extends Controller {
             $observation->requirements()->attach($requirement_ids);
             $observation->categories()->attach($category_ids);
 
-            $flash = (new HtmlString)->trans_choice('t.views.observations.add_success', $participant_ids);
+            $flash = (new HtmlString)->__('t.views.observations.add_success');
             if (count($participant_ids) == 1) {
                 $participant = Participant::find($participant_ids[0]);
                 $route = route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]);

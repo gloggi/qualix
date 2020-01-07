@@ -94,7 +94,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $response->assertRedirect('/course/' . $this->courseId . '/observation/new?participant=' . urlencode($participantIds) . '&block=' . $this->blockId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Beobachtungen erfasst.');
+        $response->assertSee('Beobachtung erfasst.');
     }
 
     public function test_shouldValidateNewBeobachtungData_noKommentar() {

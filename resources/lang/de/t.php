@@ -239,7 +239,7 @@ return array(
 			"via_midata" => "Via PBS MiData einloggen",
 		),
 		"observations" => array(
-			"add_success" => "{1}Beobachtung erfasst. Mässi!|[2,*]Beobachtungen erfasst. Mässi!",
+			"add_success" => "Beobachtung erfasst. Mässi!",
 			"back_to_participant" => "Zurück zu :name",
 			"edit" => "Beobachtung bearbeiten",
 			"edit_success" => "Beobachtung aktualisiert.",
