@@ -14,6 +14,7 @@ class HtmlString extends LaravelHtmlString implements Htmlable
         if ($html) {
             throw new InvalidArgumentException('HtmlString constructor may not be called with an argument');
         }
+        $this->html = '';
     }
 
     /**
@@ -61,6 +62,9 @@ class HtmlString extends LaravelHtmlString implements Htmlable
      * @return $this
      */
     public function e($escapable, $doubleEncode = false) {
+        if ($escapable instanceof \Illuminate\Support\HtmlString) {
+            return $this->append($escapable);
+        }
         return $this->appendEscaping($escapable, $doubleEncode);
     }
 
