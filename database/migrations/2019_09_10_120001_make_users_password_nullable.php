@@ -26,7 +26,7 @@ class MakeUsersPasswordNullable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->char('password', 128)->nullable(false)->change();
+            $table->string('password', 128)->nullable(false)->change();
         });
     }
 }

@@ -10,11 +10,11 @@
                 'name' => 'participant_id',
                 'label' => __('t.models.observation.participant'),
                 'required' => true,
-                'value' => $observation->participant->id,
+                'value' => implode(',', array_map(function (\App\Models\Participant $participant) { return $participant->id; }, $observation->participants->all())),
                 'options' => $course->participants->all(),
                 'valueFn' => function(\App\Models\Participant $participant) { return $participant->id; },
                 'displayFn' => function(\App\Models\Participant $participant) { return $participant->scout_name; },
-                'multiple' => false,
+                'multiple' => true,
                 'disabled' => true,
             ])@endcomponent
 

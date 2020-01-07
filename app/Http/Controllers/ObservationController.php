@@ -38,15 +38,14 @@ class ObservationController extends Controller {
     public function store(ObservationCreateRequest $request, Course $course) {
         $data = $request->validated();
         DB::transaction(function() use ($request, $course, $data) {
-            $participant_ids = explode(',', $data['participant_ids']);
+            $participant_ids = array_filter(explode(',', $data['participant_ids']));
             $requirement_ids = array_filter(explode(',', $data['requirement_ids']));
             $category_ids = array_filter(explode(',', $data['category_ids']));
 
-            foreach ($participant_ids as $participant_id) {
-                $observation = Observation::create(array_merge($data, ['participant_id' => $participant_id, 'course_id' => $course->id, 'user_id' => Auth::user()->getAuthIdentifier()]));
-                $observation->requirements()->attach($requirement_ids);
-                $observation->categories()->attach($category_ids);
-            }
+            $observation = Observation::create(array_merge($data, ['course_id' => $course->id, 'user_id' => Auth::user()->getAuthIdentifier()]));
+            $observation->participants()->attach($participant_ids);
+            $observation->requirements()->attach($requirement_ids);
+            $observation->categories()->attach($category_ids);
 
             $flash = (new HtmlString)->trans_choice('t.views.observations.add_success', $participant_ids);
             if (count($participant_ids) == 1) {
@@ -98,7 +97,7 @@ class ObservationController extends Controller {
         $request->session()->flash('alert-success', __('t.views.observations.edit_success'));
 
         return Redirect::to($request->session()->get('referer_before_edit',
-            route('participants.detail', ['course' => $course->id, 'participant' => $observation->participant->id])));
+            route('participants.detail', ['course' => $course->id, 'participant' => $observation->participants()->first()->id])));
     }
 
     /**
@@ -112,7 +111,7 @@ class ObservationController extends Controller {
     public function destroy(Request $request, Course $course, Observation $observation) {
         $observation->delete();
         $request->session()->flash('alert-success', __('t.views.participant_details.delete_observation_success'));
-        return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $observation->participant->id]);
+        return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $observation->participants()->first()->id]);
     }
 
     /**
