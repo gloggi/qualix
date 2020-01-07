@@ -21,7 +21,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $requirementId = $this->createRequirement('Mindestanforderung 1', true);
         $categoryId = $this->createCategory('Kategorie 1');
 
-        $this->payload = ['participant_id' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0', 'block_id' => '' . $blockId2, 'requirement_ids' => '' . $requirementId, 'category_ids' => '' . $categoryId];
+        $this->payload = ['participant_ids' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0', 'block_id' => '' . $blockId2, 'requirement_ids' => '' . $requirementId, 'category_ids' => '' . $categoryId];
     }
 
     public function test_shouldRequireLogin() {
@@ -165,6 +165,28 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
 
         // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect($previous);
+    }
+
+    public function test_shouldRedirectBackToParticipantPage_includingFilters_evenWhenValidationErrorsOccur() {
+        // given
+        // visiting the edit observation form from the participant detail view with filters activated
+        $previous = '/course/' . $this->courseId . '/participants/' . $this->participantId . '?requirement=3';
+        $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
+
+        // send something which will trigger validation errors
+        $payload = $this->payload;
+        $payload['content'] = '';
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+        $response->assertRedirect('/course/' . $this->courseId . '/observation/' . $this->observationId);
+        $response->followRedirects();
+
+        // when
+        // Try again with a correct request
         $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $this->payload);
 
         // then

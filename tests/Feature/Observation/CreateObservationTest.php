@@ -97,6 +97,24 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $response->assertSee('Beobachtung erfasst.');
     }
 
+    public function test_createObservationWitMultipleParticipantIds_shouldLinkTheObservations() {
+        // given
+        $participantId2 = $this->createParticipant('Pfnörch');
+        $participantIds = $this->participantId . ',' . $participantId2;
+        $payload = $this->payload;
+        $payload['participant_ids'] = $participantIds;
+        $payload['content'] = 'visible on both participants';
+
+        // when
+        $this->post('/course/' . $this->courseId . '/observation/new', $payload);
+
+        // then
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
+        $response->assertSee('visible on both participants');
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $participantId2);
+        $response->assertSee('visible on both participants');
+    }
+
     public function test_shouldValidateNewBeobachtungData_noKommentar() {
         // given
         $payload = $this->payload;

@@ -120,7 +120,7 @@
                         if ($observation->participants()->count() > 1) {
                             $rendered->s('<div>');
                             $observation->participants()->each(function(\App\Models\Participant $participant) use($rendered, $course) {
-                                $rendered->s('<a href="' . route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) . '" class="badge badge-secondary mr-1">')->e($participant->scout_name)->s('</a>');
+                                $rendered->s('<a href="' . route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) . '" class="badge badge-primary mr-1">')->e($participant->scout_name)->s('</a>');
                             });
                             $rendered->s('</div>');
                         }

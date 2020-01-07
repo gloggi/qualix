@@ -7,7 +7,7 @@
         @component('components.form', ['route' => ['observation.update', ['course' => $course->id, 'observation' => $observation->id]]])
 
             @component('components.form.multiSelectInput', [
-                'name' => 'participant_id',
+                'name' => 'participant_ids',
                 'label' => __('t.models.observation.participant'),
                 'required' => true,
                 'value' => implode(',', array_map(function (\App\Models\Participant $participant) { return $participant->id; }, $observation->participants->all())),
@@ -15,7 +15,6 @@
                 'valueFn' => function(\App\Models\Participant $participant) { return $participant->id; },
                 'displayFn' => function(\App\Models\Participant $participant) { return $participant->scout_name; },
                 'multiple' => true,
-                'disabled' => true,
             ])@endcomponent
 
             @component('components.form.textareaInput', ['name' => 'content', 'label' => __('t.models.observation.content'), 'required' => true, 'autofocus' => true, 'value' => $observation->content])@endcomponent

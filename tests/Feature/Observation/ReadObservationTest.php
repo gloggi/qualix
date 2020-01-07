@@ -93,6 +93,19 @@ class ReadObservationTest extends TestCaseWithBasicData {
         $response->assertSee("Mehrzeilige Beobachtungen<br />\n- nützlich<br />\n- wichtig<br />\n- erlauben Strukturierung");
     }
 
+    public function test_shouldRenderParticipants_whenMultipleAreAssigned() {
+        // given
+        $otherParticipantId = $this->createParticipant('Zweiter TN<em>yay!</em>');
+        $this->createObservation("Beobachtung", 1, [], [], null, [$this->participantId, $otherParticipantId]);
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee(">Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Beobachtung");
+    }
+
     public function test_shouldOrderBeobachtungenByBlockOrder() {
         // given
         $this->createBlock('later date', '1.1', '02.01.2019');
