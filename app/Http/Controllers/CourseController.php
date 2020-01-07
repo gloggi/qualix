@@ -110,9 +110,10 @@ class CourseController extends Controller {
         $participantImageUrls = $course->participants->map(function (Participant $participant) {
             return $participant->image_url;
         });
-        // Because of the ON DELETE CASCADE on database constraints, this will also delete all related data like observations
+        // Because of the ON DELETE CASCADE on database constraints, this will also delete all directly associated related data like blocks
         DB::transaction(function() use ($course) {
             $course->participants()->delete();
+            $course->observations()->delete();
             $course->update(['archived' => true]);
         });
         // Perform the image deletion after database deletion, so that a failing image doesn't prevent the whole deletion operation.

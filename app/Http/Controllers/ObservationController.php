@@ -109,9 +109,10 @@ class ObservationController extends Controller {
      * @return RedirectResponse
      */
     public function destroy(Request $request, Course $course, Observation $observation) {
+        $participantId = $observation->participants()->first()->id;
         $observation->delete();
         $request->session()->flash('alert-success', __('t.views.participant_details.delete_observation_success'));
-        return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $observation->participants()->first()->id]);
+        return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $participantId]);
     }
 
     /**
