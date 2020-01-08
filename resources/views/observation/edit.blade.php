@@ -8,7 +8,7 @@
 
             @component('components.form.multiSelectInput', [
                 'name' => 'participant_ids',
-                'label' => __('t.models.observation.participant'),
+                'label' => __('t.models.observation.participants'),
                 'required' => true,
                 'value' => implode(',', array_map(function (\App\Models\Participant $participant) { return $participant->id; }, $observation->participants->all())),
                 'options' => $course->participants->all(),

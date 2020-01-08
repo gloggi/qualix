@@ -65,7 +65,7 @@ return array(
 			"categories" => "Catégories",
 			"content" => "Observation",
 			"impression" => "Impression",
-			"participant" => "Participant-e-s",
+			"participants" => "Participant-e-s",
 			"requirements" => "Exigences minimales",
 			"user" => "Observateur-trice",
 		),

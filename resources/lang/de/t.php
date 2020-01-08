@@ -65,7 +65,7 @@ return array(
 			"categories" => "Kategorien",
 			"content" => "Beobachtung",
 			"impression" => "Eindruck",
-			"participant" => "TN",
+			"participants" => "TN",
 			"requirements" => "Mindestanforderungen",
 			"user" => "Beobachter",
 		),
