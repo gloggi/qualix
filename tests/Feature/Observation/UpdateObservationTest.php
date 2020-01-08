@@ -3,6 +3,7 @@
 namespace Tests\Feature\Observation;
 
 use App\Models\Course;
+use App\Models\Observation;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithBasicData;
@@ -21,7 +22,8 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $requirementId = $this->createRequirement('Mindestanforderung 1', true);
         $categoryId = $this->createCategory('Kategorie 1');
 
-        $this->payload = ['participant_ids' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0', 'block_id' => '' . $blockId2, 'requirement_ids' => '' . $requirementId, 'category_ids' => '' . $categoryId];
+        $this->payload = ['participant_ids' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0',
+            'block_id' => '' . $blockId2, 'requirement_ids' => '' . $requirementId, 'category_ids' => '' . $categoryId];
     }
 
     public function test_shouldRequireLogin() {
@@ -192,5 +194,65 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         // then
         $response->assertStatus(302);
         $response->assertRedirect($previous);
+    }
+
+    public function test_shouldRedirectBackToPreviouslyViewedParticipantPage_whenMultipleParticipantsAreAssigned() {
+        // given
+        $participantId2 = $this->createParticipant('Bari');
+        Observation::findOrFail($this->observationId)->participants()->attach($participantId2);
+
+        $previous = '/course/' . $this->courseId . '/participants/' . $participantId2;
+        $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
+        $payload = $this->payload;
+        $payload['participant_ids'] = $this->participantId . ',' . $participantId2;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect($previous);
+    }
+
+    public function test_shouldRedirectBackToPreviouslyViewedParticipantPage_whenMultipleParticipantsAreAssigned_evenWhenValidationErrorsOccur() {
+        // given
+        $participantId2 = $this->createParticipant('Bari');
+        Observation::findOrFail($this->observationId)->participants()->attach($participantId2);
+
+        $previous = '/course/' . $this->courseId . '/participants/' . $participantId2;
+        $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
+        $payload = $this->payload;
+        $payload['participant_ids'] = $this->participantId . ',' . $participantId2;
+
+        // send something which will trigger validation errors
+        $payloadWithErrors = $payload;
+        $payloadWithErrors['content'] = '';
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payloadWithErrors);
+        $response->assertRedirect('/course/' . $this->courseId . '/observation/' . $this->observationId);
+        $response->followRedirects();
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect($previous);
+    }
+
+    public function test_shouldRedirectBackToOneOfTheAssignedParticipants_whenPreviouslyAssignedParticipantIsUnassigned() {
+        // given
+        $participantId2 = $this->createParticipant('Bari');
+
+        $previous = '/course/' . $this->courseId . '/participants/' . $this->participantId;
+        $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
+        $payload = $this->payload;
+        $payload['participant_ids'] = $participantId2;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/participants/' . $participantId2);
     }
 }
