@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ObservationRequest;
 use App\Models\Course;
 use App\Models\Observation;
-use App\Models\Participant;
 use App\Util\HtmlString;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -39,18 +38,16 @@ class ObservationController extends Controller {
     public function store(ObservationRequest $request, Course $course) {
         $data = $request->validated();
         DB::transaction(function() use ($request, $course, $data) {
-            $participant_ids = array_filter(explode(',', $data['participant_ids']));
-            $requirement_ids = array_filter(explode(',', $data['requirement_ids']));
-            $category_ids = array_filter(explode(',', $data['category_ids']));
 
             $observation = Observation::create(array_merge($data, ['course_id' => $course->id, 'user_id' => Auth::user()->getAuthIdentifier()]));
-            $observation->participants()->attach($participant_ids);
-            $observation->requirements()->attach($requirement_ids);
-            $observation->categories()->attach($category_ids);
+
+            $participants = $observation->attachRelatedRecords($course, 'participants', $data, 'participant_ids');
+            $observation->attachRelatedRecords($course, 'requirements', $data, 'requirement_ids');
+            $observation->attachRelatedRecords($course, 'categories', $data, 'category_ids');
 
             $flash = (new HtmlString)->__('t.views.observations.add_success');
-            if (count($participant_ids) == 1) {
-                $participant = Participant::find($participant_ids[0]);
+            if (count($participants) == 1) {
+                $participant = $participants[0];
                 $route = route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]);
                 $flash->s(" <a href=\"{$route}\">")
                       ->__('t.views.observations.back_to_participant', ['name' => $participant->scout_name])
@@ -137,20 +134,9 @@ class ObservationController extends Controller {
             $data = $request->validated();
             $observation->update($data);
 
-            $observation->participants()->detach();
-            $observation->participants()->attach($course->participants()
-                ->whereIn('id', array_filter(explode(',', $data['participant_ids'])))
-                ->get());
-
-            $observation->requirements()->detach();
-            $observation->requirements()->attach($course->requirements()
-                ->whereIn('id', array_filter(explode(',', $data['requirement_ids'])))
-                ->get());
-
-            $observation->categories()->detach();
-            $observation->categories()->attach($course->categories()
-                ->whereIn('id', array_filter(explode(',', $data['category_ids'])))
-                ->get());
+            $observation->attachRelatedRecords($course, 'participants', $data, 'participant_ids');
+            $observation->attachRelatedRecords($course, 'requirements', $data, 'requirement_ids');
+            $observation->attachRelatedRecords($course, 'categories', $data, 'category_ids');
         });
 
         $request->session()->flash('alert-success', __('t.views.observations.edit_success'));

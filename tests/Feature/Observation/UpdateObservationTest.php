@@ -11,6 +11,8 @@ use Tests\TestCaseWithBasicData;
 class UpdateObservationTest extends TestCaseWithBasicData {
 
     private $observationId;
+    private $requirementId;
+    private $categoryId;
     private $payload;
 
     public function setUp(): void {
@@ -19,11 +21,11 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->observationId = $this->createObservation('hat gut mitgemacht', 1, [], [], $this->blockId);
 
         $blockId2 = $this->createBlock();
-        $requirementId = $this->createRequirement('Mindestanforderung 1', true);
-        $categoryId = $this->createCategory('Kategorie 1');
+        $this->requirementId = $this->createRequirement('Mindestanforderung 1', true);
+        $this->categoryId = $this->createCategory('Kategorie 1');
 
         $this->payload = ['participant_ids' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0',
-            'block_id' => '' . $blockId2, 'requirement_ids' => '' . $requirementId, 'category_ids' => '' . $categoryId];
+            'block_id' => '' . $blockId2, 'requirement_ids' => '' . $this->requirementId, 'category_ids' => '' . $this->categoryId];
     }
 
     public function test_shouldRequireLogin() {
@@ -65,7 +67,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertDontSee('hat gut mitgemacht');
     }
 
-    public function test_shouldValidateNewBeobachtungData_noKommentar() {
+    public function test_shouldValidateNewBeobachtungData_noComment() {
         // given
         $payload = $this->payload;
         unset($payload['content']);
@@ -254,5 +256,56 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/participants/' . $participantId2);
+    }
+
+    public function test_shouldNotAllowChangingParticipantToSomeoneFromADifferentCourse() {
+        // given
+        $differentCourse = $this->createCourse('Other course', '', false);
+        $participantFromDifferentCourse = $this->createParticipant('Foreign', $differentCourse);
+        $payload = $this->payload;
+        $payload['participant_ids'] = $this->participantId . ',' . $participantFromDifferentCourse;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für TN ist ungültig.', $exception->validator->errors()->first('participant_ids'));
+    }
+
+    public function test_shouldNotAllowChangingRequirementToOneFromADifferentCourse() {
+        // given
+        $differentCourse = $this->createCourse('Other course', '', false);
+        $requirementFromDifferentCourse = $this->createRequirement('Must not be a bad person', true, $differentCourse);
+        $payload = $this->payload;
+        $payload['requirement_ids'] = $this->requirementId . ',' . $requirementFromDifferentCourse;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Mindestanforderungen ist ungültig.', $exception->validator->errors()->first('requirement_ids'));
+    }
+
+    public function test_shouldNotAllowChangingCategoryToOneFromADifferentCourse() {
+        // given
+        $differentCourse = $this->createCourse('Other course', '', false);
+        $categoryFromDifferentCourse = $this->createCategory('Early observations', $differentCourse);
+        $payload = $this->payload;
+        $payload['category_ids'] = $this->categoryId . ',' . $categoryFromDifferentCourse;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Kategorien ist ungültig.', $exception->validator->errors()->first('category_ids'));
     }
 }

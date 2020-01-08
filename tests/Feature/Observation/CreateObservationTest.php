@@ -10,11 +10,17 @@ use Tests\TestCaseWithBasicData;
 class CreateObservationTest extends TestCaseWithBasicData {
 
     private $payload;
+    private $requirementId;
+    private $categoryId;
 
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['participant_ids' => '' . $this->participantId, 'content' => 'hat gut mitgemacht', 'impression' => '1', 'block_id' => '' . $this->blockId, 'requirement_ids' => '', 'category_ids' => ''];
+        $this->requirementId = $this->createRequirement('Mindestanforderung 1', true);
+        $this->categoryId = $this->createCategory('Kategorie 1');
+
+        $this->payload = ['participant_ids' => '' . $this->participantId, 'content' => 'hat gut mitgemacht', 'impression' => '1',
+            'block_id' => '' . $this->blockId, 'requirement_ids' => '' . $this->requirementId, 'category_ids' => '' . $this->categoryId];
     }
 
     public function test_shouldRequireLogin() {
@@ -115,7 +121,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $response->assertSee('visible on both participants');
     }
 
-    public function test_shouldValidateNewBeobachtungData_noKommentar() {
+    public function test_shouldValidateNewBeobachtungData_noContent() {
         // given
         $payload = $this->payload;
         unset($payload['content']);
@@ -211,5 +217,56 @@ class CreateObservationTest extends TestCaseWithBasicData {
         // then
         $response->assertDontSee($participantName);
         $response->assertSee(htmlspecialchars($participantName, ENT_QUOTES));
+    }
+
+    public function test_shouldNotAllowCreatingObservation_withParticipantFromADifferentCourse() {
+        // given
+        $differentCourse = $this->createCourse('Other course', '', false);
+        $participantFromDifferentCourse = $this->createParticipant('Foreign', $differentCourse);
+        $payload = $this->payload;
+        $payload['participant_ids'] = $this->participantId . ',' . $participantFromDifferentCourse;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für TN ist ungültig.', $exception->validator->errors()->first('participant_ids'));
+    }
+
+    public function test_shouldNotAllowCreatingObservation_withRequirementFromADifferentCourse() {
+        // given
+        $differentCourse = $this->createCourse('Other course', '', false);
+        $requirementFromDifferentCourse = $this->createRequirement('Must not be a bad person', true, $differentCourse);
+        $payload = $this->payload;
+        $payload['requirement_ids'] = $this->requirementId . ',' . $requirementFromDifferentCourse;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Mindestanforderungen ist ungültig.', $exception->validator->errors()->first('requirement_ids'));
+    }
+
+    public function test_shouldNotAllowCreatingObservation_withCategoryFromADifferentCourse() {
+        // given
+        $differentCourse = $this->createCourse('Other course', '', false);
+        $categoryFromDifferentCourse = $this->createCategory('Early observations', $differentCourse);
+        $payload = $this->payload;
+        $payload['category_ids'] = $this->categoryId . ',' . $categoryFromDifferentCourse;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Kategorien ist ungültig.', $exception->validator->errors()->first('category_ids'));
     }
 }
