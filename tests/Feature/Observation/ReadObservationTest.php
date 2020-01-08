@@ -96,14 +96,21 @@ class ReadObservationTest extends TestCaseWithBasicData {
     public function test_shouldRenderParticipants_whenMultipleAreAssigned() {
         // given
         $otherParticipantId = $this->createParticipant('Zweiter TN<em>yay!</em>');
-        $this->createObservation("Beobachtung", 1, [], [], null, [$this->participantId, $otherParticipantId]);
+        $this->createObservation("Wird auf allen TN angezeigt", 1, [], [], null, [$this->participantId, $otherParticipantId]);
 
         // when
         $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
 
         // then
         $response->assertOk();
-        $response->assertSee(">Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Beobachtung");
+        $response->assertSee(">Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt");
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $otherParticipantId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee(">Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt");
     }
 
     public function test_shouldOrderObservationsByBlockOrder() {
