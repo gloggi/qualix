@@ -47,7 +47,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
 
-    public function test_shouldCreateAndDisplayBeobachtung() {
+    public function test_shouldCreateAndDisplayObservation() {
         // given
 
         // when
@@ -61,7 +61,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $response->assertSee('Beobachtung erfasst.');
     }
 
-    public function test_shouldValidateNewBeobachtungData_noParticipantIds() {
+    public function test_shouldValidateNewObservationData_noParticipantIds() {
         // given
         $payload = $this->payload;
         unset($payload['participant_ids']);
@@ -73,7 +73,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidParticipantIds() {
+    public function test_shouldValidateNewObservationData_invalidParticipantIds() {
         // given
         $payload = $this->payload;
         $payload['participant_ids'] = 'a';
@@ -85,7 +85,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_multipleParticipantIds_shouldWork() {
+    public function test_shouldValidateNewObservationData_multipleParticipantIds_shouldWork() {
         // given
         $participantId2 = $this->createParticipant('Pfnörch');
         $participantIds = $this->participantId . ',' . $participantId2;
@@ -121,7 +121,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $response->assertSee('visible on both participants');
     }
 
-    public function test_shouldValidateNewBeobachtungData_noContent() {
+    public function test_shouldValidateNewObservationData_noContent() {
         // given
         $payload = $this->payload;
         unset($payload['content']);
@@ -133,7 +133,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_noImpression() {
+    public function test_shouldValidateNewObservationData_noImpression() {
         // given
         $payload = $this->payload;
         unset($payload['impression']);
@@ -145,7 +145,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidImpression() {
+    public function test_shouldValidateNewObservationData_invalidImpression() {
         // given
         $payload = $this->payload;
         $payload['impression'] = '3';
@@ -157,7 +157,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_noBlockId() {
+    public function test_shouldValidateNewObservationData_noBlockId() {
         // given
         $payload = $this->payload;
         unset($payload['block_id']);
@@ -169,7 +169,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidBlockId() {
+    public function test_shouldValidateNewObservationData_invalidBlockId() {
         // given
         $payload = $this->payload;
         $payload['block_id'] = '*';
@@ -181,7 +181,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidMAIds() {
+    public function test_shouldValidateNewObservationData_invalidMAIds() {
         // given
         $payload = $this->payload;
         $payload['requirement_ids'] = 'xyz';
@@ -193,7 +193,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidCategoryIds() {
+    public function test_shouldValidateNewObservationData_invalidCategoryIds() {
         // given
         $payload = $this->payload;
         $payload['category_ids'] = 'xyz';

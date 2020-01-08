@@ -52,7 +52,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
 
-    public function test_shouldUpdateBeobachtung() {
+    public function test_shouldUpdateObservation() {
         // given
 
         // when
@@ -67,7 +67,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertDontSee('hat gut mitgemacht');
     }
 
-    public function test_shouldValidateNewBeobachtungData_noComment() {
+    public function test_shouldValidateNewObservationData_noComment() {
         // given
         $payload = $this->payload;
         unset($payload['content']);
@@ -79,7 +79,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_noImpression() {
+    public function test_shouldValidateNewObservationData_noImpression() {
         // given
         $payload = $this->payload;
         unset($payload['impression']);
@@ -91,7 +91,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidImpression() {
+    public function test_shouldValidateNewObservationData_invalidImpression() {
         // given
         $payload = $this->payload;
         $payload['impression'] = '3';
@@ -103,7 +103,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_noBlockId() {
+    public function test_shouldValidateNewObservationData_noBlockId() {
         // given
         $payload = $this->payload;
         unset($payload['block_id']);
@@ -115,7 +115,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidBlockId() {
+    public function test_shouldValidateNewObservationData_invalidBlockId() {
         // given
         $payload = $this->payload;
         $payload['block_id'] = '*';
@@ -127,7 +127,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidMAIds() {
+    public function test_shouldValidateNewObservationData_invalidMAIds() {
         // given
         $payload = $this->payload;
         $payload['requirement_ids'] = 'xyz';
@@ -139,7 +139,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidCategoryIds() {
+    public function test_shouldValidateNewObservationData_invalidCategoryIds() {
         // given
         $payload = $this->payload;
         $payload['category_ids'] = 'xyz';
@@ -151,7 +151,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateUpdatedBeobachtungURL_wrongId() {
+    public function test_shouldValidateUpdatedObservationURL_wrongId() {
         // given
         $payload = $this->payload;
 
