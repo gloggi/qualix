@@ -85,7 +85,7 @@ class BlockController extends Controller {
         $data = $request->validated();
 
         try {
-            $request->getImporter()->setSupplementaryData($data)->import($request->file('file'), $course);
+            $request->getImporter()->setSupplementaryData($data)->import($request->file('file')->getRealPath(), $course);
         } catch (ECamp2BlockOverviewParsingException $e) {
             throw ValidationException::withMessages(['file' => $e->getMessage()]);
         } catch (\Exception $e) {

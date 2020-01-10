@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Exceptions\ECamp2BlockOverviewParsingException;
 use App\Models\Block;
 use App\Models\Course;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -21,8 +20,8 @@ class ECamp2BlockOverviewImporter implements BlockListImporter
     public static $COL_WITH_BLOCK_DESCRIPTION = 'A';
     public static $COL_WITH_BLOCK_DATE = 'B';
 
-    public function __construct() {
-        $this->reader = new PhpSpreadsheet\Reader\Xls();
+    public function __construct(PhpSpreadsheet\Reader\Xls $reader) {
+        $this->reader = $reader;
         $this->reader->setReadDataOnly(true);
     }
 
@@ -40,15 +39,15 @@ class ECamp2BlockOverviewImporter implements BlockListImporter
     /**
      * Parse the eCamp2 block overview and import the described blocks into the database.
      *
-     * @param UploadedFile $blockList
+     * @param string $filePath
      * @param Course $course
      * @return Collection
      */
-    public function import(UploadedFile $blockList, Course $course) {
-        return DB::transaction(function () use($blockList, $course) {
+    public function import(string $filePath, Course $course) {
+        return DB::transaction(function () use($filePath, $course) {
             $parsedBlocks = Collection::make();
 
-            $sheet = $this->reader->load($blockList->getRealPath())->getActiveSheet();
+            $sheet = $this->reader->load($filePath->getRealPath())->getActiveSheet();
             foreach($sheet->getRowIterator(self::$FIRST_ROW_WITH_DATA) as $row) {
                 $cells = Collection::make($row->getCellIterator(self::$COL_WITH_BLOCK_DESCRIPTION, self::$COL_WITH_BLOCK_DATE));
                 $blockDescription = $cells[self::$COL_WITH_BLOCK_DESCRIPTION]->getValue();
