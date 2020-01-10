@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Util;
+namespace App\Services;
 
+use App\Util\HtmlString;
 use Illuminate\Support\Str;
 use Illuminate\Translation\Translator as LaravelTranslator;
 

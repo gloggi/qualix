@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Http\ViewComposers\CurrentCourseViewComposer;
-use App\Util\Translator;
+use App\Services\Translator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
