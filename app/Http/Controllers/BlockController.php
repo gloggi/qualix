@@ -67,10 +67,7 @@ class BlockController extends Controller {
             ->s('<a href="https://ecamp.pfadiluzern.ch/index.php?app=aim" target="_blank">')
             ->__('t.views.admin.block_import.ecamp2.name')
             ->s('</a>');
-        /** @var User $user */
-        $user = Auth::user();
-        $year = $user->getLastUsedBlockDate($course)->year;
-        return view('admin.blocks-upload', ['ecamp2Link' => $ecamp2BlockOverviewLink, 'preselectedYear' => $year]);
+        return view('admin.blocks-import', ['ecamp2Link' => $ecamp2BlockOverviewLink]);
     }
 
     /**
@@ -82,10 +79,10 @@ class BlockController extends Controller {
      * @throws ValidationException if parsing the uploaded file fails
      */
     public function import(BlockImportRequest $request, Course $course) {
-        $data = $request->validated();
+        $request->validated();
 
         try {
-            $request->getImporter()->setSupplementaryData($data)->import($request->file('file')->getRealPath(), $course);
+            $request->getImporter()->import($request->file('file')->getRealPath(), $course);
         } catch (ECamp2BlockOverviewParsingException $e) {
             throw ValidationException::withMessages(['file' => $e->getMessage()]);
         } catch (\Exception $e) {

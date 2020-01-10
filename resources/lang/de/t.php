@@ -117,11 +117,6 @@ return array(
                         "question" => "Woher bekomme ich die Blockübersicht?",
                     ),
                     "name" => "eCamp v2",
-                    "why_year" => array(
-                        "answer" => "In der Blockübersicht wie eCamp v2 sie exportiert steht die Jahreszahl nicht drin. Daher musst du sie hier angeben.",
-                        "question" => "Warum muss ich ein Jahr angeben?",
-                    ),
-                    "year" => "Jahr für Blockdatum"
                 ),
                 "error_while_parsing" => "Die Blockübersicht konnte nicht korrekt gelesen werden - hast du die Datei unverändert hochgeladen?",
                 "import" => "Importieren",

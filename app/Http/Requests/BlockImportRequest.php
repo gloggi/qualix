@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Providers\ImportServiceProvider;
-use App\Services\BlockListImporter;
+use App\Services\Import\Blocks\BlockListImporter;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BlockImportRequest extends FormRequest
@@ -28,11 +28,12 @@ class BlockImportRequest extends FormRequest
         return [
             'source' => 'required|in:' . implode(',', array_keys(ImportServiceProvider::$BLOCK_IMPORTER_MAP)),
             'file' => 'required|max:2000',
-            'year' => 'required|integer|digits:4|min:1900',
         ];
     }
 
     /**
+     * Returns the correct importer to use for this request.
+     *
      * @return BlockListImporter
      */
     public function getImporter() {

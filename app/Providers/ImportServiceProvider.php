@@ -2,10 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\ViewComposers\CurrentCourseViewComposer;
-use App\Services\ECamp2BlockOverviewImporter;
-use App\Services\Translator;
-use Illuminate\Support\Facades\View;
+use App\Services\Import\Blocks\ECamp2\ECamp2BlockOverviewImporter;
 use Illuminate\Support\ServiceProvider;
 
 class ImportServiceProvider extends ServiceProvider

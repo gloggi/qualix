@@ -8,12 +8,6 @@
 
             @component('components.form.fileInput', ['name' => 'file', 'label' => __('t.views.admin.block_import.ecamp2.block_overview'), 'required' => true, 'accept' => 'application/vnd.ms-excel'])@endcomponent
 
-            @component('components.form.textInput', ['name' => 'year', 'label' => __('t.views.admin.block_import.ecamp2.year'), 'required' => true, 'value' => $preselectedYear])@endcomponent
-
-            @component('components.form.text')
-                @component('components.help-text', ['key' => 't.views.admin.block_import.ecamp2.why_year', 'id' => 'eCamp2BlockOverviewYear'])@endcomponent
-            @endcomponent
-
             @component('components.form.hiddenInput', ['name' => 'source', 'value' => 'eCamp2BlockOverview'])@endcomponent
 
             @component('components.form.submit', ['label' => __('t.views.admin.block_import.import')])
