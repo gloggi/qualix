@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ECamp2BlockOverviewParsingException;
+use App\Http\Requests\BlockImportRequest;
 use App\Http\Requests\BlockRequest;
 use App\Models\Block;
 use App\Models\Course;
 use App\Models\User;
+use App\Util\HtmlString;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class BlockController extends Controller {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return View
      */
     public function index() {
         return view('admin.blocks');
@@ -48,11 +52,55 @@ class BlockController extends Controller {
     }
 
     /**
+     * Display a form for uploading a list of blocks.
+     *
+     * @param Request $request
+     * @param Course $course
+     * @return View
+     */
+    public function upload(Request $request, Course $course) {
+        if ($course->blocks()->exists() && !$request->session()->has('alert-warning')) {
+            $request->session()->now('alert-warning', trans('t.views.admin.block_import.warning_existing_blocks'));
+        }
+
+        $ecamp2BlockOverviewLink = (new HtmlString)
+            ->s('<a href="https://ecamp.pfadiluzern.ch/index.php?app=aim" target="_blank">')
+            ->__('t.views.admin.block_import.ecamp2.name')
+            ->s('</a>');
+        /** @var User $user */
+        $user = Auth::user();
+        $year = $user->getLastUsedBlockDate($course)->year;
+        return view('admin.blocks-upload', ['ecamp2Link' => $ecamp2BlockOverviewLink, 'preselectedYear' => $year]);
+    }
+
+    /**
+     * Store an uploaded list of blocks in storage.
+     *
+     * @param BlockImportRequest $request
+     * @param Course $course
+     * @return RedirectResponse
+     * @throws ValidationException if parsing the uploaded file fails
+     */
+    public function import(BlockImportRequest $request, Course $course) {
+        $data = $request->validated();
+
+        try {
+            $request->getImporter()->setSupplementaryData($data)->import($request->file('file'), $course);
+        } catch (ECamp2BlockOverviewParsingException $e) {
+            throw ValidationException::withMessages(['file' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            return Redirect::back()->with('alert-danger', trans('t.views.admin.block_import.unknown_error'));
+        }
+
+        return Redirect::route('admin.blocks', ['course' => $course->id]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param Course $course
      * @param Block $block
-     * @return Response
+     * @return View
      */
     public function edit(Course $course, Block $block) {
         return view('admin.block-edit', ['block' => $block]);
