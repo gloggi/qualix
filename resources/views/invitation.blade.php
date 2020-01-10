@@ -8,7 +8,7 @@
 
             @component('components.form.hiddenInput', ['name' => 'token', 'value' => $invitation->token])@endcomponent
 
-            @component('components.form.text')
+            @component('components.form.text', ['classes' => 'mb-0'])
                 <p>{{__('t.views.invitation.is_email_yours', ['email' => $invitation->email])}}</p>
             @endcomponent
 
