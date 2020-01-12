@@ -6,6 +6,7 @@ use App\Exceptions\ECamp2BlockOverviewParsingException;
 use App\Models\Block;
 use App\Models\Course;
 use App\Services\Import\Blocks\BlockListParser;
+use App\Services\DateCalculator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -18,6 +19,8 @@ class ECamp2BlockOverviewParser implements BlockListParser
 {
     /** @var PhpSpreadsheet\Reader\Xls */
     protected $reader;
+    /** @var DateCalculator */
+    protected $dateCalculator;
 
     private $year = 2000;
 
@@ -27,7 +30,7 @@ class ECamp2BlockOverviewParser implements BlockListParser
 
     protected static $WEEKDAYS = ['Mo' => 0, 'Di' => 1, 'Mi' => 2, 'Do' => 3, 'Fr' => 4, 'Sa' => 5, 'So' => 6];
 
-    public function __construct(PhpSpreadsheet\Reader\Xls $reader) {
+    public function __construct(PhpSpreadsheet\Reader\Xls $reader, DateCalculator $dateCalculator) {
         $this->reader = $reader;
         $this->reader->setReadDataOnly(true);
 
@@ -36,6 +39,8 @@ class ECamp2BlockOverviewParser implements BlockListParser
         // For the guess, assume the user imports blocks from courses not older than last year and
         // no more than 3 years in the future.
         $this->year = Carbon::now()->year - 1;
+
+        $this->dateCalculator = $dateCalculator;
     }
 
     /**
@@ -113,32 +118,13 @@ class ECamp2BlockOverviewParser implements BlockListParser
         if (preg_match($regex, $cell->getValue(), $matches) != 1 || !Arr::has(self::$WEEKDAYS, $matches['weekday'])) {
             throw new ECamp2BlockOverviewParsingException(trans('t.views.admin.block_import.error_while_parsing'));
         }
+
         $weekday = self::$WEEKDAYS[$matches['weekday']];
         // The blocks are in chronological order, so all later blocks will have at least the same year number
-        $this->year = self::calculateEarliestPossibleYear($this->year, $weekday, $matches['month'], $matches['day']);
+        $this->year = $this->dateCalculator->calculateYearFromWeekdayAndDate($this->year, $weekday, $matches['month'], $matches['day']);
+
         return [
             'block_date' => Carbon::create($this->year, $matches['month'], $matches['day']),
         ];
-    }
-
-    /**
-     * Calculate the earliest year greater or equal to $startYear, in which the given date is the given weekday.
-     *
-     * @param $startYear
-     * @param $weekday
-     * @param $month
-     * @param $day
-     * @return integer year number
-     */
-    static function calculateEarliestPossibleYear($startYear, $weekday, $month, $day) {
-        while(true) {
-            $date = Carbon::create($startYear, $month, $day);
-            if ($date->weekday() == $weekday) {
-                return $startYear;
-            }
-            $startYear++;
-        }
-        // Useless return for static analysis
-        return 0;
     }
 }
