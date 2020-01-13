@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\Import\Blocks\BlockListImporter;
+use App\Services\Import\Blocks\BlockListParser;
 use App\Services\Import\Blocks\ECamp2\ECamp2BlockOverviewImporter;
+use App\Services\Import\Blocks\ECamp2\ECamp2BlockOverviewParser;
 use Illuminate\Support\ServiceProvider;
 
 class ImportServiceProvider extends ServiceProvider
@@ -18,7 +21,13 @@ class ImportServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app
+            ->when(ECamp2BlockOverviewImporter::class)
+            ->needs(BlockListParser::class)
+            ->give(ECamp2BlockOverviewParser::class);
+
+        $this->app->bind(ECamp2BlockOverviewParser::class);
+        $this->app->bind(ECamp2BlockOverviewImporter::class);
     }
 
     /**
@@ -28,6 +37,5 @@ class ImportServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        app()->singleton(ECamp2BlockOverviewImporter::class);
     }
 }

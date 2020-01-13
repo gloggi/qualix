@@ -12,6 +12,10 @@ abstract class BlockListImporter {
     /** @var BlockListParser */
     protected $parser;
 
+    public function __construct(BlockListParser $parser) {
+        $this->parser = $parser;
+    }
+
     /**
      * Reads blocks from an uploaded file and saves them to the database.
      * In case a full_block_number already exists in the database, the existing block will be updated instead.
