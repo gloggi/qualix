@@ -82,14 +82,14 @@ class BlockController extends Controller {
         $request->validated();
 
         try {
-            $request->getImporter()->import($request->file('file')->getRealPath(), $course);
+            $imported = $request->getImporter()->import($request->file('file')->getRealPath(), $course);
         } catch (ECamp2BlockOverviewParsingException $e) {
             throw ValidationException::withMessages(['file' => $e->getMessage()]);
         } catch (\Exception $e) {
             return Redirect::back()->with('alert-danger', trans('t.views.admin.block_import.unknown_error'));
         }
 
-        return Redirect::route('admin.blocks', ['course' => $course->id]);
+        return Redirect::route('admin.blocks', ['course' => $course->id])->with('alert-success', trans_choice('t.views.admin.block_import.import_success', $imported));
     }
 
     /**

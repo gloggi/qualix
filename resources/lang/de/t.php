@@ -121,6 +121,7 @@ return array(
                 "error_while_parsing" => "Die Blockübersicht konnte nicht korrekt gelesen werden - hast du die Datei unverändert hochgeladen?",
                 "import" => "Importieren",
                 "import_from" => "Blöcke aus :source importieren",
+                "import_success" => "{0}In der importierten Datei wurden keine Blöcke gefunden.|{1}In der importierten Datei wurde ein Block gefunden.|[2,*]In der importierten Datei wurden :count Blöcke gefunden.",
                 "unknown_error" => "Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Blöcke manuell.",
                 "warning_existing_blocks" => "In deinem Kurs sind bereits Blöcke definiert. Wenn beim Import eine Blocknummer schon existiert, wird der bestehende Block durch den Import aktualisiert."
             ),
