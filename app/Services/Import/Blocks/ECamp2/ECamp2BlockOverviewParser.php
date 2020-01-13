@@ -15,8 +15,7 @@ use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
-class ECamp2BlockOverviewParser implements BlockListParser
-{
+class ECamp2BlockOverviewParser implements BlockListParser {
     /** @var PhpSpreadsheet\Reader\Xls */
     protected $reader;
     /** @var DateCalculator */
@@ -36,8 +35,7 @@ class ECamp2BlockOverviewParser implements BlockListParser
 
         // Since the eCamp2 block overview doesn't mention the year, we have to guess it using the
         // weekdays and dates and the fact that the blocks are exported in chronological order.
-        // For the guess, assume the user imports blocks from courses not older than last year and
-        // no more than 3 years in the future.
+        // For the guess, assume the user imports blocks from courses not older than last year.
         $this->year = Carbon::now()->year - 1;
 
         $this->dateCalculator = $dateCalculator;
@@ -52,7 +50,7 @@ class ECamp2BlockOverviewParser implements BlockListParser
      * @throws PhpSpreadsheet\Exception
      */
     public function parse(string $filePath) {
-        return $this->readRows($filePath)->map(function(Row $row) {
+        return $this->readRows($filePath)->map(function (Row $row) {
 
             [$bezeichnung, $datumUndZeit] = $this->readCellsInRow($row);
 
@@ -114,7 +112,7 @@ class ECamp2BlockOverviewParser implements BlockListParser
      * @return array containing the extracted block date
      */
     protected function parseDatumUndZeit(PhpSpreadsheet\Cell\Cell $cell) {
-        $regex = '/^(?<weekday>So|Mo|Di|Mi|Do|Fr|Sa), (?<day>[0-3]?[0-9])\.(?<month>[0-1]?[0-9])\./';
+        $regex = '/^(?<weekday>Mo|Di|Mi|Do|Fr|Sa|So), (?<day>[0-3]?[0-9])\.(?<month>[0-1]?[0-9])\./';
         if (preg_match($regex, $cell->getValue(), $matches) != 1 || !Arr::has(self::$WEEKDAYS, $matches['weekday'])) {
             throw new ECamp2BlockOverviewParsingException(trans('t.views.admin.block_import.error_while_parsing'));
         }
