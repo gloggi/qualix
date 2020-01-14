@@ -6,7 +6,7 @@ use Tests\TestCaseWithCourse;
 
 class ReadBlocksTest extends TestCaseWithCourse {
 
-    public function test_shouldOrderBloecke() {
+    public function test_shouldOrderBlocks() {
         // given
         $this->createBlock('Block 1', '1.1', '01.01.2019');
         $this->createBlock('later date', '1.1', '02.01.2019');
