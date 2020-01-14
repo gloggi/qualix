@@ -35,6 +35,35 @@ class ECamp2BlockOverviewParserTest extends TestCase {
         ], array_values($result->all()));
     }
 
+    public function test_shouldParseEmptyECamp2BlockOverview() {
+        // given
+        $this->mock(DateCalculator::class, function ($mock) {
+            $mock->shouldReceive('calculateYearFromWeekdayAndDate')->andReturn(2020, 2020, 2021);
+        });
+        $this->prepareImportFile('Blockuebersicht-empty.xls');
+
+        // when
+        /** @var Collection $result */
+        $result = $this->parser->parse('path/to/file/doesnt/matter/we/are/using/mocks');
+
+        // then
+        $this->assertEquals([], $result->all());
+    }
+
+    public function test_shouldThrowECamp2BlockOverviewParsingException_whenColumnsNotAsExpected() {
+        // given
+        $this->mock(DateCalculator::class, function ($mock) {
+            $mock->shouldReceive('calculateYearFromWeekdayAndDate')->andReturn(2020, 2020, 2021);
+        });
+        $this->prepareImportFile('Blockuebersicht-cutOff.xls');
+
+        // then
+        $this->expectException(ECamp2BlockOverviewParsingException::class);
+
+        // when
+        $this->parser->parse('path/to/file/doesnt/matter/we/are/using/mocks');
+    }
+
     public function test_shouldThrowECamp2BlockOverviewParsingException_whenBezeichnungIsMalformed() {
         // given
         $this->mock(DateCalculator::class, function ($mock) {

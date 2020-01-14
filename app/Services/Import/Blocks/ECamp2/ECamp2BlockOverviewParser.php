@@ -70,7 +70,11 @@ class ECamp2BlockOverviewParser implements BlockListParser {
      * @throws PhpSpreadsheet\Reader\Exception
      */
     protected function readRows($filePath) {
-        return Collection::make($this->reader->load($filePath)->getActiveSheet()->getRowIterator(self::$FIRST_ROW_WITH_DATA));
+        $worksheet = $this->reader->load($filePath)->getActiveSheet();
+        if ($worksheet->getHighestRow() < self::$FIRST_ROW_WITH_DATA) {
+            return Collection::make();
+        }
+        return Collection::make($worksheet->getRowIterator(self::$FIRST_ROW_WITH_DATA));
     }
 
     /**
