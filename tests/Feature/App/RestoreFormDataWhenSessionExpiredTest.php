@@ -5,6 +5,7 @@ namespace Tests\Feature\Observation;
 use App\Models\HitobitoUser;
 use Closure;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Http\UploadedFile;
 use Tests\Feature\Auth\HitobitoOAuthTest;
 use Tests\TestCaseWithBasicData;
 
@@ -15,6 +16,7 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
     private $participantIds;
     private $blockIds;
     private $expectedRestoredFlashMessage = 'Deine eingegebenen Daten wurden wiederhergestellt. Speichern nicht vergessen!';
+    private $payloadOverride = null;
 
     public function setUp(): void {
         parent::setUp();
@@ -27,6 +29,9 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
     }
 
     private function payload(): array {
+        if ($this->payloadOverride !== null) {
+            return $this->payloadOverride;
+        }
         return ['participant_ids' => $this->participantIds, 'content' => 'this text will be restored', 'impression' => '1', 'block_id' => $this->blockIds, 'requirement_ids' => '', 'category_ids' => ''];
     }
 
@@ -122,6 +127,15 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
             // the participant selection field in the restored form should still be the changed value
             $response->assertDontSee(' value="' . $this->blockId . '"');
             $response->assertSee(' old-value="' . $this->blockIds . '"');
+        });
+    }
+
+    public function test_shouldNotRestoreFileInput() {
+        $this->formUrl = '/user';
+        $this->payloadOverride = ['name' => 'this text will be restored', 'image' => new UploadedFile(__DIR__.'/../../resources/Blockuebersicht.xls', 'profilePicture.jpg')];
+        $this->checkRestorationOfFormData(function () {
+            // the user logs back in
+            return $this->post('/login', ['email' => $this->email, 'password' => '87654321'], ['referer' => '/login']);
         });
     }
 
