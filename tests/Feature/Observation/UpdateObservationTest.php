@@ -67,6 +67,18 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertDontSee('hat gut mitgemacht');
     }
 
+    public function test_shouldValidateNewObservationData_noParticipantIds() {
+        // given
+        $payload = $this->payload;
+        $payload['participant_ids'] = '';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
     public function test_shouldValidateNewObservationData_noComment() {
         // given
         $payload = $this->payload;
