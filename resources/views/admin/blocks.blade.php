@@ -23,6 +23,10 @@
 
             @component('components.form.submit', ['label' => __('t.global.add')])
 
+                <a class="btn btn-link mb-1" href="{{ route('admin.block.import', ['course' => $course]) }}">
+                    {{ __('t.views.admin.blocks.import') }}
+                </a>
+
                 @component('components.help-text', ['key' => 't.views.admin.blocks.what_are_blocks', 'id' => 'blockHelp'])@endcomponent
 
             @endcomponent

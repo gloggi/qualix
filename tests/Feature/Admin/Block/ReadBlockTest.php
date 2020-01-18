@@ -62,7 +62,7 @@ class ReadBlockTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
-    public function test_shouldOrderBloecke() {
+    public function test_shouldOrderBlocks() {
         // given
         $this->createBlock('later date', '1.1', '02.01.2019');
         $this->createBlock('earlier date', '1.1', '31.12.2018');

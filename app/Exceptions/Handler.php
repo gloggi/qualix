@@ -6,6 +6,7 @@ use App\Http\Middleware\RestoreFormDataFromExpiredSession;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
@@ -32,8 +33,9 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
+     * @param Exception $exception
      * @return void
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
@@ -66,7 +68,10 @@ class Handler extends ExceptionHandler
      * @param \Illuminate\Http\Request $request
      */
     protected function preserveSubmittedFormData($request) {
-        session()->put(RestoreFormDataFromExpiredSession::KEY, $request->except($this->dontFlash));
+        session()->put(RestoreFormDataFromExpiredSession::KEY, array_filter($request->except($this->dontFlash), function($input) {
+            // File inputs are not serializable and therefore cannot be saved into the session
+            return !($input instanceof UploadedFile);
+        }));
         session()->flash('alert-warning', __('t.errors.session_expired_try_again'));
     }
 }

@@ -93,7 +93,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldShowMessage_whenNoBloeckeInCourse() {
+    public function test_shouldShowMessage_whenNoBlocksInCourse() {
         // given
 
         // when

@@ -63,6 +63,8 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
 
     Route::get('/course/{course}/admin/blocks', 'BlockController@index')->name('admin.blocks');
     Route::post('/course/{course}/admin/blocks', 'BlockController@store')->name('admin.block.store');
+    Route::get('/course/{course}/admin/blocks/import', 'BlockController@upload')->name('admin.block.upload');
+    Route::post('/course/{course}/admin/blocks/import', 'BlockController@import')->name('admin.block.import');
     Route::get('/course/{course}/admin/blocks/{block}', 'BlockController@edit')->name('admin.block.edit');
     Route::post('/course/{course}/admin/blocks/{block}', 'BlockController@update')->name('admin.block.update');
     Route::delete('/course/{course}/admin/blocks/{block}', 'BlockController@destroy')->name('admin.block.delete');

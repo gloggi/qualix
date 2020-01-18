@@ -98,6 +98,7 @@ return array(
 				"edit" => "Modifier le point de cours",
 				"edit_success" => "Le point de cours \":name\" a été sauvegardé avec succès.",
 				"existing" => "Points de cours :courseName",
+				"import" => "Importer des points de cours...",
 				"menu_name" => "Points de cours",
 				"new" => "Nouveau point de cours",
 				"no_blocks" => "Actuellement, aucun point de cours n'a été créé.",

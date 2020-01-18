@@ -7,5 +7,7 @@
 
     <div id="{{ $id }}" class="collapse text-secondary">
         {{__($key . '.answer', $params)}}
+
+        {{ $slot }}
     </div>
 </span>
