@@ -37,11 +37,11 @@ class Participant extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function observations()
     {
-        return $this->hasMany('App\Models\Observation', 'participant_id');
+        return $this->belongsToMany('App\Models\Observation', 'observations_participants');
     }
 
     public function getPositiveAttribute() {

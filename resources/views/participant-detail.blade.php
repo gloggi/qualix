@@ -115,7 +115,17 @@
                 'data' => $observations,
                 'rawColumns' => true,
                 'fields' => [
-                    __('t.models.observation.content') => function(\App\Models\Observation $observation) { return (new App\Util\HtmlString)->nl2br_e($observation->content); },
+                    __('t.models.observation.content') => function(\App\Models\Observation $observation) use($course) {
+                        $rendered = new App\Util\HtmlString;
+                        if ($observation->participants()->count() > 1) {
+                            $rendered->s('<div>');
+                            $observation->participants()->each(function(\App\Models\Participant $participant) use($rendered, $course) {
+                                $rendered->s('<a href="' . route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) . '" class="badge badge-primary mr-1">')->e($participant->scout_name)->s('</a>');
+                            });
+                            $rendered->s('</div>');
+                        }
+                        return $rendered->nl2br_e($observation->content);
+                    },
                     __('t.models.observation.block') => function(\App\Models\Observation $observation) { return $observation->block->blockname_and_number; },
                     __('t.models.observation.requirements') => function(\App\Models\Observation $observation) {
                         return (new App\Util\HtmlString)->s(implode('', array_map(function(\App\Models\Requirement $requirement) {

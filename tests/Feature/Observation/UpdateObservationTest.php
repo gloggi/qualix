@@ -3,6 +3,7 @@
 namespace Tests\Feature\Observation;
 
 use App\Models\Course;
+use App\Models\Observation;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithBasicData;
@@ -10,6 +11,8 @@ use Tests\TestCaseWithBasicData;
 class UpdateObservationTest extends TestCaseWithBasicData {
 
     private $observationId;
+    private $requirementId;
+    private $categoryId;
     private $payload;
 
     public function setUp(): void {
@@ -18,10 +21,11 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->observationId = $this->createObservation('hat gut mitgemacht', 1, [], [], $this->blockId);
 
         $blockId2 = $this->createBlock();
-        $requirementId = $this->createRequirement('Mindestanforderung 1', true);
-        $categoryId = $this->createCategory('Kategorie 1');
+        $this->requirementId = $this->createRequirement('Mindestanforderung 1', true);
+        $this->categoryId = $this->createCategory('Kategorie 1');
 
-        $this->payload = ['participant_id' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0', 'block_id' => '' . $blockId2, 'requirement_ids' => '' . $requirementId, 'category_ids' => '' . $categoryId];
+        $this->payload = ['participant_ids' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0',
+            'block_id' => '' . $blockId2, 'requirement_ids' => '' . $this->requirementId, 'category_ids' => '' . $this->categoryId];
     }
 
     public function test_shouldRequireLogin() {
@@ -48,7 +52,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
 
-    public function test_shouldUpdateBeobachtung() {
+    public function test_shouldUpdateObservation() {
         // given
 
         // when
@@ -63,7 +67,19 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertDontSee('hat gut mitgemacht');
     }
 
-    public function test_shouldValidateNewBeobachtungData_noKommentar() {
+    public function test_shouldValidateNewObservationData_noParticipantIds() {
+        // given
+        $payload = $this->payload;
+        $payload['participant_ids'] = '';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
+    public function test_shouldValidateNewObservationData_noComment() {
         // given
         $payload = $this->payload;
         unset($payload['content']);
@@ -75,7 +91,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_noImpression() {
+    public function test_shouldValidateNewObservationData_noImpression() {
         // given
         $payload = $this->payload;
         unset($payload['impression']);
@@ -87,7 +103,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidImpression() {
+    public function test_shouldValidateNewObservationData_invalidImpression() {
         // given
         $payload = $this->payload;
         $payload['impression'] = '3';
@@ -99,7 +115,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_noBlockId() {
+    public function test_shouldValidateNewObservationData_noBlockId() {
         // given
         $payload = $this->payload;
         unset($payload['block_id']);
@@ -111,7 +127,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidBlockId() {
+    public function test_shouldValidateNewObservationData_invalidBlockId() {
         // given
         $payload = $this->payload;
         $payload['block_id'] = '*';
@@ -123,7 +139,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidMAIds() {
+    public function test_shouldValidateNewObservationData_invalidMAIds() {
         // given
         $payload = $this->payload;
         $payload['requirement_ids'] = 'xyz';
@@ -135,7 +151,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewBeobachtungData_invalidCategoryIds() {
+    public function test_shouldValidateNewObservationData_invalidCategoryIds() {
         // given
         $payload = $this->payload;
         $payload['category_ids'] = 'xyz';
@@ -147,7 +163,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateUpdatedBeobachtungURL_wrongId() {
+    public function test_shouldValidateUpdatedObservationURL_wrongId() {
         // given
         $payload = $this->payload;
 
@@ -170,5 +186,138 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         // then
         $response->assertStatus(302);
         $response->assertRedirect($previous);
+    }
+
+    public function test_shouldRedirectBackToParticipantPage_includingFilters_evenWhenValidationErrorsOccur() {
+        // given
+        // visiting the edit observation form from the participant detail view with filters activated
+        $previous = '/course/' . $this->courseId . '/participants/' . $this->participantId . '?requirement=3';
+        $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
+
+        // send something which will trigger validation errors
+        $payload = $this->payload;
+        $payload['content'] = '';
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+        $response->assertRedirect('/course/' . $this->courseId . '/observation/' . $this->observationId);
+        $response->followRedirects();
+
+        // when
+        // Try again with a correct request
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect($previous);
+    }
+
+    public function test_shouldRedirectBackToPreviouslyViewedParticipantPage_whenMultipleParticipantsAreAssigned() {
+        // given
+        $participantId2 = $this->createParticipant('Bari');
+        Observation::findOrFail($this->observationId)->participants()->attach($participantId2);
+
+        $previous = '/course/' . $this->courseId . '/participants/' . $participantId2;
+        $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
+        $payload = $this->payload;
+        $payload['participant_ids'] = $this->participantId . ',' . $participantId2;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect($previous);
+    }
+
+    public function test_shouldRedirectBackToPreviouslyViewedParticipantPage_whenMultipleParticipantsAreAssigned_evenWhenValidationErrorsOccur() {
+        // given
+        $participantId2 = $this->createParticipant('Bari');
+        Observation::findOrFail($this->observationId)->participants()->attach($participantId2);
+
+        $previous = '/course/' . $this->courseId . '/participants/' . $participantId2;
+        $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
+        $payload = $this->payload;
+        $payload['participant_ids'] = $this->participantId . ',' . $participantId2;
+
+        // send something which will trigger validation errors
+        $payloadWithErrors = $payload;
+        $payloadWithErrors['content'] = '';
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payloadWithErrors);
+        $response->assertRedirect('/course/' . $this->courseId . '/observation/' . $this->observationId);
+        $response->followRedirects();
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect($previous);
+    }
+
+    public function test_shouldRedirectBackToOneOfTheAssignedParticipants_whenPreviouslyAssignedParticipantIsUnassigned() {
+        // given
+        $participantId2 = $this->createParticipant('Bari');
+
+        $previous = '/course/' . $this->courseId . '/participants/' . $this->participantId;
+        $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
+        $payload = $this->payload;
+        $payload['participant_ids'] = $participantId2;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/participants/' . $participantId2);
+    }
+
+    public function test_shouldNotAllowChangingParticipantToSomeoneFromADifferentCourse() {
+        // given
+        $differentCourse = $this->createCourse('Other course', '', false);
+        $participantFromDifferentCourse = $this->createParticipant('Foreign', $differentCourse);
+        $payload = $this->payload;
+        $payload['participant_ids'] = $this->participantId . ',' . $participantFromDifferentCourse;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für TN ist ungültig.', $exception->validator->errors()->first('participant_ids'));
+    }
+
+    public function test_shouldNotAllowChangingRequirementToOneFromADifferentCourse() {
+        // given
+        $differentCourse = $this->createCourse('Other course', '', false);
+        $requirementFromDifferentCourse = $this->createRequirement('Must not be a bad person', true, $differentCourse);
+        $payload = $this->payload;
+        $payload['requirement_ids'] = $this->requirementId . ',' . $requirementFromDifferentCourse;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Mindestanforderungen ist ungültig.', $exception->validator->errors()->first('requirement_ids'));
+    }
+
+    public function test_shouldNotAllowChangingCategoryToOneFromADifferentCourse() {
+        // given
+        $differentCourse = $this->createCourse('Other course', '', false);
+        $categoryFromDifferentCourse = $this->createCategory('Early observations', $differentCourse);
+        $payload = $this->payload;
+        $payload['category_ids'] = $this->categoryId . ',' . $categoryFromDifferentCourse;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Kategorien ist ungültig.', $exception->validator->errors()->first('category_ids'));
     }
 }

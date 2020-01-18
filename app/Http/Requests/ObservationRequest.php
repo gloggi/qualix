@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ObservationUpdateRequest extends FormRequest
+class ObservationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,7 @@ class ObservationUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'participant_ids' => 'required|regex:/^\d+(,\d+)*$/',
             'content' => 'required',
             'impression' => 'required|in:0,1,2',
             'block_id' => 'required|numeric',

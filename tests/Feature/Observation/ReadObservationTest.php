@@ -44,7 +44,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
         $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
 
-    public function test_shouldDisplayBeobachtung() {
+    public function test_shouldDisplayObservation() {
         // given
 
         // when
@@ -55,7 +55,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
         $response->assertSee('hat gut mitgemacht');
     }
 
-    public function test_shouldNotDisplayBeobachtung_fromOtherCourseOfSameUser() {
+    public function test_shouldNotDisplayObservation_fromOtherCourseOfSameUser() {
         // given
         $otherKursId = $this->createCourse('Zweiter Kurs', '');
 
@@ -66,22 +66,22 @@ class ReadObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
-    public function test_shouldNotDisplayBeobachtung_fromOtherUser() {
+    public function test_shouldNotDisplayObservation_fromOtherUser() {
         // given
-        $otherKursId = $this->createCourse('Zweiter Kurs', '', false);
-        $otherParticipantId = Participant::create(['course_id' => $otherKursId, 'scout_name' => 'Pflock'])->id;
-        $otherBlockId = Block::create(['course_id' => $otherKursId, 'full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '01.01.2019', 'requirement_ids' => null])->id;
+        $otherCourseId = $this->createCourse('Zweiter Kurs', '', false);
+        $otherParticipantId = Participant::create(['course_id' => $otherCourseId, 'scout_name' => 'Pflock'])->id;
+        $otherBlockId = Block::create(['course_id' => $otherCourseId, 'full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '01.01.2019', 'requirement_ids' => null])->id;
         $otherUserId = $this->createUser(['name' => 'Lindo'])->id;
-        $otherBeobachtungId = Observation::create(['block_id' => $otherBlockId, 'participant_id' => $otherParticipantId, 'user_id' => $otherUserId, 'content' => 'hat gut mitgemacht', 'impression' => '1', 'requirement_ids' => '', 'category_ids' => ''])->id;
+        $otherObservationId = $this->createObservation('hat gut mitgemacht', '1', [], [], $otherBlockId, $otherParticipantId, $otherUserId);
 
         // when
-        $response = $this->get('/course/' . $otherKursId . '/observation/' . $otherBeobachtungId);
+        $response = $this->get('/course/' . $otherCourseId . '/observation/' . $otherObservationId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
-    public function test_shouldRenderNewlinesInBeobachtung() {
+    public function test_shouldRenderNewlinesInObservation() {
         // given
         $this->createObservation("Mehrzeilige Beobachtungen\n- nützlich\n- wichtig\n- erlauben Strukturierung");
 
@@ -93,7 +93,27 @@ class ReadObservationTest extends TestCaseWithBasicData {
         $response->assertSee("Mehrzeilige Beobachtungen<br />\n- nützlich<br />\n- wichtig<br />\n- erlauben Strukturierung");
     }
 
-    public function test_shouldOrderBeobachtungenByBlockOrder() {
+    public function test_shouldRenderParticipants_whenMultipleAreAssigned() {
+        // given
+        $otherParticipantId = $this->createParticipant('Zweiter TN<em>yay!</em>');
+        $this->createObservation("Wird auf allen TN angezeigt", 1, [], [], null, [$this->participantId, $otherParticipantId]);
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee(">Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt");
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/participants/' . $otherParticipantId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee(">Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt");
+    }
+
+    public function test_shouldOrderObservationsByBlockOrder() {
         // given
         $this->createBlock('later date', '1.1', '02.01.2019');
         $this->createBlock('earlier date', '1.1', '31.12.2018');
@@ -105,9 +125,9 @@ class ReadObservationTest extends TestCaseWithBasicData {
         $this->createBlock('Block 0 earlier block name', '1.1', '01.01.2019');
         /** @var Collection $blockIds */
         $blockIds = $this->user()->lastAccessedCourse->blocks->map(function (Block $block) { return $block->id; });
-        $blockIdsToCreateBeobachtungen = $blockIds->sort();
-        $blockIdsToCreateBeobachtungen->shift();
-        foreach ($blockIdsToCreateBeobachtungen as $blockId) {
+        $blockIdsToCreateObservations = $blockIds->sort();
+        $blockIdsToCreateObservations->shift();
+        foreach ($blockIdsToCreateObservations as $blockId) {
             $this->createObservation(Block::find($blockId)->name, 1, [], [], $blockId);
         }
 
