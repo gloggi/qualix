@@ -93,7 +93,7 @@ class ImportBlocksTest extends TestCaseWithCourse {
         // given
         $blockId = $this->createBlock('Existierender Block', '1.1', '09.09.2009');
         $participantId = $this->createParticipant('Pflock');
-        $existingObservationId = Observation::create(['user_id' => $this->user()->id, 'block_id' => $blockId, 'content' => 'something', 'impression' => 0, 'participant_id' => $participantId])->id;
+        $existingObservationId = Observation::create(['user_id' => $this->user()->id, 'block_id' => $blockId, 'content' => 'something', 'impression' => 0, 'participant_ids' => [$participantId]])->id;
         $this->setUpInputFile('Blockuebersicht.xls');
 
         // when

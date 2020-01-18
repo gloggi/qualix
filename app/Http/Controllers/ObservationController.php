@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ObservationCreateRequest;
-use App\Http\Requests\ObservationUpdateRequest;
-use App\Models\Block;
+use App\Http\Requests\ObservationRequest;
 use App\Models\Course;
 use App\Models\Observation;
-use App\Models\Participant;
 use App\Util\HtmlString;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\RouteCollection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
 class ObservationController extends Controller {
@@ -31,26 +31,23 @@ class ObservationController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param ObservationCreateRequest $request
+     * @param ObservationRequest $request
      * @param Course $course
      * @return RedirectResponse
      */
-    public function store(ObservationCreateRequest $request, Course $course) {
+    public function store(ObservationRequest $request, Course $course) {
         $data = $request->validated();
         DB::transaction(function() use ($request, $course, $data) {
-            $participant_ids = explode(',', $data['participant_ids']);
-            $requirement_ids = array_filter(explode(',', $data['requirement_ids']));
-            $category_ids = array_filter(explode(',', $data['category_ids']));
 
-            foreach ($participant_ids as $participant_id) {
-                $observation = Observation::create(array_merge($data, ['participant_id' => $participant_id, 'course_id' => $course->id, 'user_id' => Auth::user()->getAuthIdentifier()]));
-                $observation->requirements()->attach($requirement_ids);
-                $observation->categories()->attach($category_ids);
-            }
+            $observation = Observation::create(array_merge($data, ['course_id' => $course->id, 'user_id' => Auth::user()->getAuthIdentifier()]));
 
-            $flash = (new HtmlString)->trans_choice('t.views.observations.add_success', $participant_ids);
-            if (count($participant_ids) == 1) {
-                $participant = Participant::find($participant_ids[0]);
+            $participants = $observation->attachRelatedRecords($course, 'participants', $data, 'participant_ids');
+            $observation->attachRelatedRecords($course, 'requirements', $data, 'requirement_ids');
+            $observation->attachRelatedRecords($course, 'categories', $data, 'category_ids');
+
+            $flash = (new HtmlString)->__('t.views.observations.add_success');
+            if (count($participants) == 1) {
+                $participant = $participants[0];
                 $route = route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]);
                 $flash->s(" <a href=\"{$route}\">")
                       ->__('t.views.observations.back_to_participant', ['name' => $participant->scout_name])
@@ -71,34 +68,80 @@ class ObservationController extends Controller {
      * @return Response
      */
     public function edit(Request $request, Course $course, Observation $observation) {
-        $request->session()->flash('referer_before_edit', $request->session()->get('referer_before_edit', URL::previous()));
+        $this->rememberPreviouslyActiveView($request);
         return view('observation.edit', ['observation' => $observation]);
+    }
+
+    /**
+     * Stores the active filters and the participant which the user was just looking at into the session,
+     * for restoring the same view later.
+     *
+     * @param Request $request
+     */
+    protected function rememberPreviouslyActiveView(Request $request) {
+        $previousQueryParams = [];
+        parse_str(parse_url(URL::previous(), PHP_URL_QUERY), $previousQueryParams);
+        $request->session()->flash('query_params_before_edit', $request->session()->get('query_params_before_edit', $previousQueryParams));
+        $returnTo = $this->extractPathParameter(URL::previous(), 'participants.detail', 'participant');
+        $request->session()->flash('participant_before_edit', $request->session()->get('participant_before_edit', $returnTo));
+    }
+
+    /**
+     * Redirects the user back to the view that was remembered in the session previously, restoring the
+     * filters. If the previously viewed participant is not in the passed options, falls back to the first
+     * viable option.
+     *
+     * @param Request $request
+     * @param Course $course
+     * @param Collection $returnOptions a collection of participant ids that are legal to be viewed
+     * @return RedirectResponse
+     */
+    protected function redirectToPreviouslyActiveView(Request $request, Course $course, Collection $returnOptions) {
+        $returnTo = $request->session()->get('participant_before_edit');
+        if (!$returnOptions->contains($returnTo)) {
+            $returnTo = $returnOptions->first();
+        }
+
+        return Redirect::to(route('participants.detail', array_merge(
+            $request->session()->get('query_params_before_edit', []), ['course' => $course->id, 'participant' => $returnTo]
+        )));
+    }
+
+    /**
+     * Parse a URL, interpret it as a route in our app and extract one of the parameters values.
+     *
+     * @param $url
+     * @param $routeName
+     * @param $parameterName
+     * @return string|object|null
+     */
+    protected function extractPathParameter($url, $routeName, $parameterName) {
+        /** @var RouteCollection $routes */
+        $routes = Route::getRoutes();
+        return $routes->getByName($routeName)->bind(new Request([], [], [], [], [], ['REQUEST_URI' => $url]))->parameter($parameterName);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param ObservationUpdateRequest $request
+     * @param ObservationRequest $request
      * @param Course $course
      * @param Observation $observation
      * @return RedirectResponse
      */
-    public function update(ObservationUpdateRequest $request, Course $course, Observation $observation) {
-        DB::transaction(function () use ($request, $observation) {
+    public function update(ObservationRequest $request, Course $course, Observation $observation) {
+        DB::transaction(function () use ($request, $course, $observation) {
             $data = $request->validated();
             $observation->update($data);
 
-            $observation->requirements()->detach();
-            $observation->requirements()->attach(array_filter(explode(',', $data['requirement_ids'])));
-
-            $observation->categories()->detach();
-            $observation->categories()->attach(array_filter(explode(',', $data['category_ids'])));
+            $observation->attachRelatedRecords($course, 'participants', $data, 'participant_ids');
+            $observation->attachRelatedRecords($course, 'requirements', $data, 'requirement_ids');
+            $observation->attachRelatedRecords($course, 'categories', $data, 'category_ids');
         });
 
         $request->session()->flash('alert-success', __('t.views.observations.edit_success'));
 
-        return Redirect::to($request->session()->get('referer_before_edit',
-            route('participants.detail', ['course' => $course->id, 'participant' => $observation->participant->id])));
+        return $this->redirectToPreviouslyActiveView($request, $course, $observation->participants()->pluck('id'));
     }
 
     /**
@@ -110,9 +153,10 @@ class ObservationController extends Controller {
      * @return RedirectResponse
      */
     public function destroy(Request $request, Course $course, Observation $observation) {
+        $participantId = $observation->participants()->first()->id;
         $observation->delete();
         $request->session()->flash('alert-success', __('t.views.participant_details.delete_observation_success'));
-        return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $observation->participant->id]);
+        return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $participantId]);
     }
 
     /**

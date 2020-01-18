@@ -8,7 +8,7 @@
 
             @php
                 $columns = [
-                    __('t.models.observation.participant') => function(\App\Models\Participant $participant) use ($course) { return (new App\Util\HtmlString)->s('<a href="' . route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) . '">' . (($participant->image_url!=null) ? view('components.img',  ['src' => asset(Storage::url($participant->image_url)), 'classes' => ['avatar-small']]) : '') . ' ')->e($participant->scout_name)->s('</a>'); },
+                    __('t.models.observation.participants') => function(\App\Models\Participant $participant) use ($course) { return (new App\Util\HtmlString)->s('<a href="' . route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) . '">' . (($participant->image_url!=null) ? view('components.img',  ['src' => asset(Storage::url($participant->image_url)), 'classes' => ['avatar-small']]) : '') . ' ')->e($participant->scout_name)->s('</a>'); },
                     __('t.global.total') => function(\App\Models\Participant $participant) { return count($participant->observations); },
                 ];
                 foreach ($course->users->all() as $user) {

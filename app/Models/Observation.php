@@ -38,11 +38,11 @@ class Observation extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function participant()
+    public function participants()
     {
-        return $this->belongsTo('App\Models\Participant', 'participant_id');
+        return $this->belongsToMany('App\Models\Participant', 'observations_participants');
     }
 
     /**

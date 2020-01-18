@@ -67,7 +67,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
-    public function test_shouldShowMessage_whenNoBeobachtungForParticipant() {
+    public function test_shouldShowMessage_whenNoObservationForParticipant() {
         // given
 
         // when
@@ -78,7 +78,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         $response->assertSee('Keine Beobachtungen gefunden.');
     }
 
-    public function test_shouldNotShowMessage_whenSomeBeobachtungForParticipant() {
+    public function test_shouldNotShowMessage_whenSomeObservationForParticipant() {
         // given
         $this->createObservation();
 

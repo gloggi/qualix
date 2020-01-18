@@ -7,20 +7,20 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString as LaravelHtmlString;
 use InvalidArgumentException;
 
-class HtmlString extends LaravelHtmlString implements Htmlable
-{
+class HtmlString extends LaravelHtmlString implements Htmlable {
     public function __construct($html = null) {
         parent::__construct($html);
         if ($html) {
             throw new InvalidArgumentException('HtmlString constructor may not be called with an argument');
         }
+        $this->html = '';
     }
 
     /**
      * Append a safe string (not containing user input) to the HTML.
      * The string will not be escaped.
      *
-     * @param  string  $safe
+     * @param string|Htmlable $safe
      * @return $this
      */
     public function s($safe) {
@@ -31,7 +31,7 @@ class HtmlString extends LaravelHtmlString implements Htmlable
      * Append a safe string (not containing user input) to the HTML.
      * The string will not be escaped.
      *
-     * @param  string  $safe
+     * @param string $safe
      * @return $this
      */
     public function append($safe) {
@@ -56,24 +56,25 @@ class HtmlString extends LaravelHtmlString implements Htmlable
      * Append an unsafe string (possibly containing user input) to the HTML.
      * The string will be escaped using htmlspecialchars.
      *
-     * @param  string  $escapable
-     * @param  boolean $doubleEncode
+     * @param string|Htmlable $escapable
      * @return $this
      */
-    public function e($escapable, $doubleEncode = false) {
-        return $this->appendEscaping($escapable, $doubleEncode);
+    public function e($escapable) {
+        return $this->appendEscaping($escapable);
     }
 
     /**
      * Append an unsafe string (possibly containing user input) to the HTML.
      * The string will be escaped using htmlspecialchars.
      *
-     * @param  string  $escapable
-     * @param  boolean $doubleEncode
+     * @param string|Htmlable $escapable
      * @return $this
      */
-    public function appendEscaping($escapable, $doubleEncode = false) {
-        $this->html .= htmlspecialchars($escapable, ENT_QUOTES, 'UTF-8', $doubleEncode);
+    public function appendEscaping($escapable) {
+        if ($escapable instanceof Htmlable) {
+            return $this->append($escapable->toHtml());
+        }
+        $this->html .= htmlspecialchars($escapable, ENT_QUOTES, 'UTF-8');
         return $this;
     }
 
@@ -125,12 +126,11 @@ class HtmlString extends LaravelHtmlString implements Htmlable
      * Append an unsafe string (possibly containing user input) to the HTML, converting new lines to <br> tags.
      * The translated string will be escaped using htmlspecialchars (except for the added <br> tags).
      *
-     * @param $escapable
-     * @param bool $doubleEncode
+     * @param string|Htmlable $escapable
      * @return $this
      */
-    public function nl2br_e($escapable, $doubleEncode = false) {
-        return $this->append(nl2br((new HtmlString)->appendEscaping($escapable, $doubleEncode)->toHtml()));
+    public function nl2br_e($escapable) {
+        return $this->append(nl2br((new HtmlString)->appendEscaping($escapable)->toHtml()));
     }
 
     /**
@@ -138,14 +138,15 @@ class HtmlString extends LaravelHtmlString implements Htmlable
      * (except if they're HtmlStrings themselves).
      *
      * @param $search
-     * @param $replace
-     * @param bool $doubleEncode
+     * @param string|Htmlable $replace
      * @return $this
      */
-    public function replace($search, $replace, $doubleEncode = false) {
+    public function replace($search, $replace) {
         $search = Arr::wrap($search);
-        $replace = array_map(function($r) use ($doubleEncode) { return e($r, $doubleEncode); }, Arr::wrap($replace));
-        $this->html = str_replace($search, $replace, $this->html, $doubleEncode);
+        $replace = array_map(function ($r) {
+            return e($r);
+        }, Arr::wrap($replace));
+        $this->html = str_replace($search, $replace, $this->html);
         return $this;
     }
 }

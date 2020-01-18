@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -32,8 +33,9 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
+     * @param Exception $exception
      * @return void
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
@@ -51,6 +53,10 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof AuthenticationException && $request->method() != 'GET') {
             $this->preserveSubmittedFormData($request);
+        }
+        if ($exception instanceof ValidationException) {
+            // needed for remembering the active filters while editing an observation
+            session()->reflash();
         }
         return parent::render($request, $exception);
     }

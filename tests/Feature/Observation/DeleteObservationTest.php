@@ -40,7 +40,7 @@ class DeleteObservationTest extends TestCaseWithBasicData {
         $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
 
-    public function test_shouldDeleteBeobachtung() {
+    public function test_shouldDeleteObservation() {
         // given
 
         // when
@@ -54,7 +54,7 @@ class DeleteObservationTest extends TestCaseWithBasicData {
         $response->assertDontSee('hat gut mitgemacht');
     }
 
-    public function test_shouldValidateDeletedBeobachtungUrl_wrongId() {
+    public function test_shouldValidateDeletedObservationUrl_wrongId() {
         // given
 
         // when

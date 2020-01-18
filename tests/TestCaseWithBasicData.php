@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\Observation;
+use Illuminate\Support\Arr;
 
 abstract class TestCaseWithBasicData extends TestCaseWithCourse
 {
@@ -16,10 +17,11 @@ abstract class TestCaseWithBasicData extends TestCaseWithCourse
         $this->blockId = $this->createBlock('Block 1', '1.1', '01.01.2019', null);
     }
 
-    protected function createObservation($content = 'hat gut mitgemacht', $impression = 1, $requirementId = [], $categoryIds = [], $blockId = null, $participantId = null, $userId = null) {
-        $observation = Observation::create(['user_id' => ($userId !== null ? $userId : $this->user()->id), 'participant_id' => ($participantId !== null ? $participantId : $this->participantId), 'block_id' => ($blockId !== null ? $blockId : $this->blockId), 'content' => $content, 'impression' => $impression]);
+    protected function createObservation($content = 'hat gut mitgemacht', $impression = 1, $requirementId = [], $categoryIds = [], $blockId = null, $participantIds = null, $userId = null) {
+        $observation = Observation::create(['user_id' => ($userId !== null ? $userId : $this->user()->id), 'block_id' => ($blockId !== null ? $blockId : $this->blockId), 'content' => $content, 'impression' => $impression]);
         $observation->requirements()->attach($requirementId);
         $observation->categories()->attach($categoryIds);
+        $observation->participants()->attach(($participantIds !== null ? Arr::wrap($participantIds) : [$this->participantId]));
         return $observation->id;
     }
 }

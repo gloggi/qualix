@@ -65,7 +65,7 @@ return array(
 			"categories" => "Catégories",
 			"content" => "Observation",
 			"impression" => "Impression",
-			"participant" => "Participant-e-s",
+			"participants" => "Participant-e-s",
 			"requirements" => "Exigences minimales",
 			"user" => "Observateur-trice",
 		),
@@ -240,7 +240,7 @@ return array(
 			"via_midata" => "S'enregistrer via MiData MSdS",
 		),
 		"observations" => array(
-			"add_success" => "{1}Observation saisie. Merci!|[2,*]Observations saisies. Merci!",
+			"add_success" => "Observation saisie. Merci!",
 			"back_to_participant" => "Revenir à :name",
 			"edit" => "Modifier l'observation",
 			"edit_success" => "Observation actualisée",
@@ -268,7 +268,7 @@ return array(
 			"num_observations" => "{0}Actuellement aucune observation|{1}Seulement une observation. Il y en a plus!|[2,*]:count observations, dont :positive avec une impression positive, :neutral avec une impression neutre et :negative avec une impression négative.",
 			"observations_without_category" => "Observations sans catégorie",
 			"observations_without_requirement" => "Observations sans exigence minimale",
-			"really_delete_observation" => "Souhaites-tu réellement supprimer ces observations?",
+			"really_delete_observation" => "Souhaites-tu réellement supprimer cette observation?",
 			"title" => "Détails des participant-e-s",
 		),
 		"register" => array(
