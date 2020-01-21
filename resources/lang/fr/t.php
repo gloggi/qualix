@@ -1,11 +1,11 @@
 <?php
 return array(
-    "errors" => array(
-        "form_data_restored_please_submit_again" => "Tes données saisies ont étés restaurées. N'oublie pas a sauvegarder!",
-        "session_expired_try_again" => "Oups, tu n'es plus inscrit. Merci de t'inscrire encore une fois, tes données saisies seront restaurées.",
-    ),
+	"errors" => array(
+		"form_data_restored_please_submit_again" => "Tes données saisies ont étés restaurées. N'oublie pas a sauvegarder!",
+		"session_expired_try_again" => "Oups, tu n'es plus inscrit. Merci de t'inscrire encore une fois, tes données saisies seront restaurées.",
+	),
 	"footer" => array(
-		"slogan" => "Qualix. quoi reluques-tu?",
+		"slogan" => "Qualix. Qu'as-tu vu?",
 	),
 	"global" => array(
 		"add" => "Ajouter",
@@ -65,6 +65,7 @@ return array(
 			"categories" => "Catégories",
 			"content" => "Observation",
 			"impression" => "Impression",
+			"participant" => "Participant-e",
 			"participants" => "Participant-e-s",
 			"requirements" => "Exigences minimales",
 			"user" => "Observateur-trice",
@@ -108,6 +109,22 @@ return array(
 					"answer" => "Les points de cours sont des périodes de temps dans le programme général. On pourrait également les appeler leçons ou unités de programme. Tu peux saisir quelles exigences minimales doivent être observées de manière la plus impérative dans un point de cours (par exemple une exigence minimale sur les réflexions de sécurité dans un point de cours sur le concept de sécurité). Lors de la saisie d'observations, il est toujours possible de les changer.",
 					"question" => "Que sont des points de cours?",
 				),
+			),
+			"block_import" => array(
+				"ecamp2" => array(
+					"block_overview" => "Vue d'ensemble des points de cours",
+					"how_to_get_the_block_overview" => array(
+						"answer" => "Lorsque tu as saisi les points de cours dans ton cours sur :ecamp2, va à gauche dans la navigation sur\"Objectifs de cours\". Tu pourras télécharger la vue d'ensemble des points de cours en haut à droite comme fichier Excel.",
+						"question" => "Où puis-je trouver la vue d'ensemble des points de cours?",
+					),
+					"name" => "eCamp v2",
+				),
+				"error_while_parsing" => "La vue d'ensemble des points de cours n'a pas pu être lue correctement - as-tu téléchargé les données sans modification?",
+				"import" => "Importer",
+				"import_from" => "Importer les points de cours de :source",
+				"import_success" => "{0}Aucun point de cours de cours n'a été trouvé dans les données importées.|{1}Un point de cours a été trouvé dans les données importées.|[2,*] :count points de cours ont été trouvés dans les données importées.",
+				"unknown_error" => "Une erreur s'est produite lors de l'importantion. Essaye encore une fois ou saisis ton point point de cours manuellement.",
+				"warning_existing_blocks" => "Des points de cours sont déjà définis dans ton cours.Si un numéro de point de cours existe déjà dans ton impoortation, le point de cours déjà existant sera actualisé lors de l'importation.",
 			),
 			"categories" => array(
 				"are_categories_required" => array(
@@ -205,14 +222,14 @@ return array(
 		),
 		"blocks" => array(
 			"here" => "ici",
-			"menu_name" => "P.d.c.",
+			"menu_name" => "Points de cours",
 			"no_blocks" => "Actuellement, aucun point de cours n'est créé. Merci de les créer :here.",
 			"title" => "Créer une observation dans le point de cours",
 		),
 		"crib" => array(
 			"here" => "ici",
 			"mandatory_requirements" => "Éliminatoire",
-			"menu_name" => "Rappel",
+			"menu_name" => "À observer",
 			"non_mandatory_requirements" => "Non-éliminatoire",
 			"no_blocks" => "Actuellement, aucun point de cours n'est créé. Merci d'en créer un et de le lier :here à des exigences minimales.",
 			"see_only_empty_blocks" => array(

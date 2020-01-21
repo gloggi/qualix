@@ -1,9 +1,9 @@
 <?php
 return array(
-    "errors" => array(
-        "form_data_restored_please_submit_again" => "Deine eingegebenen Daten wurden wiederhergestellt. Speichern nicht vergessen!",
-        "session_expired_try_again" => "Ups, du bist inzwischen nicht mehr eingeloggt. Bitte logge dich nochmals ein, deine Eingaben werden dann wiederhergestellt.",
-    ),
+	"errors" => array(
+		"form_data_restored_please_submit_again" => "Deine eingegebenen Daten wurden wiederhergestellt. Speichern nicht vergessen!",
+		"session_expired_try_again" => "Ups, du bist inzwischen nicht mehr eingeloggt. Bitte logge dich nochmals ein, deine Eingaben werden dann wiederhergestellt.",
+	),
 	"footer" => array(
 		"slogan" => "Qualix. was gaffsch?",
 	),
@@ -65,6 +65,7 @@ return array(
 			"categories" => "Kategorien",
 			"content" => "Beobachtung",
 			"impression" => "Eindruck",
+			"participant" => "TN",
 			"participants" => "TN",
 			"requirements" => "Mindestanforderungen",
 			"user" => "Beobachter",
@@ -110,21 +111,21 @@ return array(
 				),
 			),
 			"block_import" => array(
-                "ecamp2" => array(
-                    "block_overview" => "Blockübersicht",
-                    "how_to_get_the_block_overview" => array(
-                        "answer" => "Wenn du die Blöcke in deinem Kurs auf :ecamp2 erfasst hast, gehe dort links in der Navigation zu \"Kurs Ziele\". Danach kannst du die Blockübersicht oben rechts als Excel-Datei herunterladen.",
-                        "question" => "Woher bekomme ich die Blockübersicht?",
-                    ),
-                    "name" => "eCamp v2",
-                ),
-                "error_while_parsing" => "Die Blockübersicht konnte nicht korrekt gelesen werden - hast du die Datei unverändert hochgeladen?",
-                "import" => "Importieren",
-                "import_from" => "Blöcke aus :source importieren",
-                "import_success" => "{0}In der importierten Datei wurden keine Blöcke gefunden.|{1}In der importierten Datei wurde ein Block gefunden.|[2,*]In der importierten Datei wurden :count Blöcke gefunden.",
-                "unknown_error" => "Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Blöcke manuell.",
-                "warning_existing_blocks" => "In deinem Kurs sind bereits Blöcke definiert. Wenn beim Import eine Blocknummer schon existiert, wird der bestehende Block durch den Import aktualisiert."
-            ),
+				"ecamp2" => array(
+					"block_overview" => "Blockübersicht",
+					"how_to_get_the_block_overview" => array(
+						"answer" => "Wenn du die Blöcke in deinem Kurs auf :ecamp2 erfasst hast, gehe dort links in der Navigation zu \"Kurs Ziele\". Danach kannst du die Blockübersicht oben rechts als Excel-Datei herunterladen.",
+						"question" => "Woher bekomme ich die Blockübersicht?",
+					),
+					"name" => "eCamp v2",
+				),
+				"error_while_parsing" => "Die Blockübersicht konnte nicht korrekt gelesen werden - hast du die Datei unverändert hochgeladen?",
+				"import" => "Importieren",
+				"import_from" => "Blöcke aus :source importieren",
+				"import_success" => "{0}In der importierten Datei wurden keine Blöcke gefunden.|{1}In der importierten Datei wurde ein Block gefunden.|[2,*]In der importierten Datei wurden :count Blöcke gefunden.",
+				"unknown_error" => "Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Blöcke manuell.",
+				"warning_existing_blocks" => "In deinem Kurs sind bereits Blöcke definiert. Wenn beim Import eine Blocknummer schon existiert, wird der bestehende Block durch den Import aktualisiert.",
+			),
 			"categories" => array(
 				"are_categories_required" => array(
 					"answer" => "Nein, Kategorien sind komplett optional, falls ihr in eurem Kursteam keine Verwendung dafür habt.",
