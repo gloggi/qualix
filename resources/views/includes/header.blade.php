@@ -79,20 +79,22 @@
                 </div>
             </li>
             @auth
-                <li class="nav-item{{ Route::currentRouteName() == 'benutzer' ? ' active' : '' }}">
-                    <a class="nav-link" href="{{ route('user') }}">
-                        @lang('t.header.welcome', [ 'user' => Auth::user()->name ])
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarAccount" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                       title="{{ Auth::user()->name }}">
                         <img class="avatar-small" src="{{ Auth::user()->image_url != null ? asset(Storage::url(Auth::user()->image_url)) : asset('images/was-gaffsch.svg') }}">
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('logout') }}"
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        {{__('Logout')}}
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
+                    <div class="dropdown-menu" aria-labelledby="navbarAccount">
+                        <a class="dropdown-item{{ Route::currentRouteName() == 'user' ? ' active' : '' }}" href="{{ route('user') }}">{{ Auth::user()->name }}</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            {{__('Logout')}}
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
                 </li>
             @else
                 <li>
