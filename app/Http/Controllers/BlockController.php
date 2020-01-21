@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ECamp2BlockOverviewParsingException;
+use App\Exceptions\Handler;
 use App\Http\Requests\BlockImportRequest;
 use App\Http\Requests\BlockRequest;
 use App\Models\Block;
 use App\Models\Course;
 use App\Models\User;
 use App\Util\HtmlString;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -85,7 +87,8 @@ class BlockController extends Controller {
             $imported = $request->getImporter()->import($request->file('file')->getRealPath(), $course);
         } catch (ECamp2BlockOverviewParsingException $e) {
             throw ValidationException::withMessages(['file' => $e->getMessage()]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            app(Handler::class)->report($e);
             return Redirect::back()->with('alert-danger', trans('t.views.admin.block_import.unknown_error'));
         }
 

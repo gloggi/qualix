@@ -3,15 +3,11 @@
 namespace App\Services\Import\Blocks\ECamp2;
 
 use App\Exceptions\ECamp2BlockOverviewParsingException;
-use App\Models\Block;
-use App\Models\Course;
-use App\Services\Import\Blocks\BlockListParser;
 use App\Services\DateCalculator;
+use App\Services\Import\Blocks\BlockListParser;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
