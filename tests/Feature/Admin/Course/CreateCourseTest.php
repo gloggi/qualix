@@ -53,4 +53,28 @@ class CreateCourseTest extends TestCase {
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
+
+    public function test_shouldValidateNewCourseData_longName() {
+        // given
+        $payload = $this->payload;
+        $payload['name'] = 'Extrem langer Kursname 1Extrem langer Kursname 2Extrem langer Kursname 3Extrem langer Kursname 4Extrem langer Kursname 5Extrem langer Kursname 6Extrem langer Kursname 7Extrem langer Kursname 8Extrem langer Kursname 9Extrem langer Kursname 10Extrem langer Kursname 11';
+
+        // when
+        $response = $this->post('/newcourse', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
+    public function test_shouldValidateNewCourseData_longCourseNumber() {
+        // given
+        $payload = $this->payload;
+        $payload['course_number'] = 'Extrem lange Kursnummer 1Extrem lange Kursnummer 2Extrem lange Kursnummer 3Extrem lange Kursnummer 4Extrem lange Kursnummer 5Extrem lange Kursnummer 6Extrem lange Kursnummer 7Extrem lange Kursnummer 8Extrem lange Kursnummer 9Extrem lange Kursnummer 10Extrem lange Kursnummer 11';
+
+        // when
+        $response = $this->post('/newcourse', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
 }

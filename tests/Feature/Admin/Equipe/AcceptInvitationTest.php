@@ -108,6 +108,17 @@ class AcceptInvitationTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
+    public function test_shouldValidateClaimedInvitation_longToken() {
+        // given
+        $this->createUser(['name' => 'Lindo'], true);
+
+        // when
+        $response = $this->post('/invitation/', ['token' => 'extremely-long-token-extremely-long-token-extremely-long-token-extremely-long-token-extremely-long-token-extremely-long-token-extremely-long-token']);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
     public function test_shouldRedirectToInvitationClaimPage_afterCompletingLogin() {
         // given
         $this->createUser(['name' => 'Lindo', 'password' => bcrypt('12345678'), 'email' => $this->email], true);

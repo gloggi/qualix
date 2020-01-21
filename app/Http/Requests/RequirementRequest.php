@@ -21,7 +21,7 @@ class RequirementRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'content' => 'required',
+            'content' => 'required|max:255',
             'mandatory' => 'boolean',
         ];
     }

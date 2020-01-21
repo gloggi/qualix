@@ -69,6 +69,18 @@ class CreateInvitationTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
+    public function test_shouldValidateNewInvitationData_longEmail() {
+        // given
+        $payload = $this->payload;
+        $payload['email'] = 'extrem_lange_email_adresse.extrem_lange_email_adresse@example.com';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/invitation', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
     public function test_shouldValidateNewInvitationData_invalidEmail() {
         // given
         $payload = $this->payload;

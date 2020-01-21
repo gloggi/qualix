@@ -24,8 +24,8 @@ class CourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'course_number' => '',
+            'name' => 'required|max:255',
+            'course_number' => 'max:255',
         ];
     }
 }

@@ -28,7 +28,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldCreateAndDisplayMA() {
+    public function test_shouldCreateAndDisplayRequirement() {
         // given
 
         // when
@@ -42,7 +42,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertSee($this->payload['content']);
     }
 
-    public function test_shouldValidateNewMAData_noAnforderungText() {
+    public function test_shouldValidateNewRequirementData_noAnforderungText() {
         // given
         $payload = $this->payload;
         unset($payload['content']);
@@ -54,7 +54,19 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewMAData_killerNotSet_shouldWork() {
+    public function test_shouldValidateNewRequirementData_longAnforderungText() {
+        // given
+        $payload = $this->payload;
+        $payload['content'] = ' Die TN kennen den Ablauf der Lagerplanung, verfügen über Werkzeuge der einzelnen Planungsschritte und können ein Lager administrieren. Sie verfügen über vertiefte Kenntnisse der Pfadigrundlagen und können damit ausgewogene Lagerprogramme sowie Blöcke (LA/LS) planen, durchführen und auswerten.';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
+    public function test_shouldValidateNewRequirementData_killerNotSet_shouldWork() {
         // given
         $payload = $this->payload;
         unset($payload['mandatory']);
@@ -71,7 +83,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertDontSee('>Ja<');
     }
 
-    public function test_shouldValidateNewMAData_killerFalse_shouldWork() {
+    public function test_shouldValidateNewRequirementData_killerFalse_shouldWork() {
         // given
         $payload = $this->payload;
         $payload['mandatory'] = '0';
@@ -88,7 +100,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertDontSee('>Ja<');
     }
 
-    public function test_shouldValidateNewMAData_killerTrue_shouldWork() {
+    public function test_shouldValidateNewRequirementData_killerTrue_shouldWork() {
         // given
         $payload = $this->payload;
         $payload['mandatory'] = '1';
@@ -105,7 +117,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertDontSee('>Nein<');
     }
 
-    public function test_shouldShowMessage_whenNoMAInCourse() {
+    public function test_shouldShowMessage_whenNoRequirementInCourse() {
         // given
 
         // when
@@ -116,7 +128,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertSee('Bisher sind keine Mindestanforderungen erfasst.');
     }
 
-    public function test_shouldNotShowMessage_whenSomeMAInCourse() {
+    public function test_shouldNotShowMessage_whenSomeRequirementInCourse() {
         // given
         $this->createRequirement();
 

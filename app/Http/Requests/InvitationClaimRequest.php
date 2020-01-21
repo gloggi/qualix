@@ -24,7 +24,7 @@ class InvitationClaimRequest extends FormRequest
     public function rules()
     {
         return [
-            'token' => 'required',
+            'token' => 'required|max:128',
         ];
     }
 }

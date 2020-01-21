@@ -91,6 +91,18 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
+    public function test_shouldValidateNewObservationData_longComment() {
+        // given
+        $payload = $this->payload;
+        $payload['content'] = 'Unglaublich lange Beobachtung. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr.';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
     public function test_shouldValidateNewObservationData_noImpression() {
         // given
         $payload = $this->payload;

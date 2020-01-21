@@ -28,6 +28,7 @@ abstract class BlockListImporter {
         $parsedBlocks = $this->parser->parse($filePath);
 
         return $parsedBlocks->map(function ($parsedBlock) use($course) {
+            $parsedBlock['name'] = mb_substr($parsedBlock['name'], 0, 255);
             return Block::updateOrCreate([
                 'course_id' => $course->id,
                 'day_number' => $parsedBlock['day_number'],

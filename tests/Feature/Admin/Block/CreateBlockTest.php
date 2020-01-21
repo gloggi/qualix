@@ -69,6 +69,18 @@ class CreateBlockTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
+    public function test_shouldValidateNewBlockData_longBlockname() {
+        // given
+        $payload = $this->payload;
+        $payload['name'] = 'Extrem langer Blockname 1Extrem langer Blockname 2Extrem langer Blockname 3Extrem langer Blockname 4Extrem langer Blockname 5Extrem langer Blockname 6Extrem langer Blockname 7Extrem langer Blockname 8Extrem langer Blockname 9Extrem langer Blockname 10Extrem langer Blockname 11';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
     public function test_shouldValidateNewBlockData_noDatum() {
         // given
         $payload = $this->payload;

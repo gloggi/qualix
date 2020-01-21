@@ -24,8 +24,8 @@ class ParticipantRequest extends FormRequest
     public function rules()
     {
         return [
-            'scout_name' => 'required',
-            'group' => '',
+            'scout_name' => 'required|max:255',
+            'group' => 'max:255',
             'image' => 'nullable|image|max:2000',
         ];
     }

@@ -71,6 +71,30 @@ class UpdateParticipantTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
+    public function test_shouldValidateNewParticipantData_longScoutName() {
+        // given
+        $payload = $this->payload;
+        $payload['scout_name'] = 'Unglaublich langer Pfadiname Unglaublich langer Pfadiname Unglaublich langer Pfadiname Unglaublich langer Pfadiname Unglaublich langer Pfadiname Unglaublich langer Pfadiname Unglaublich langer Pfadiname Unglaublich langer Pfadiname Unglaublich langer Pfadiname';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->participantId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
+    public function test_shouldValidateNewParticipantData_longGroup() {
+        // given
+        $payload = $this->payload;
+        $payload['scout_name'] = 'Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->participantId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
     public function test_shouldValidateNewParticipantData_wrongId() {
         // given
         $payload = $this->payload;

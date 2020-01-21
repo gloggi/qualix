@@ -74,6 +74,21 @@ class ImportBlocksTest extends TestCaseWithCourse {
         ]);
     }
 
+    public function test_shouldCropOverlyLongBlockNames() {
+        // given
+        $this->setUpInputFile('Blockuebersicht-longBlockName.xls');
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSeeText('Zweiter Block am gleichen Tag und mit extrem langem Blocknamen, so lang dass der Blockname gar nicht in die entsprechende Datenbank-Spalte in Qualix hineinpassen will, denn diese ist auf zweihundertundfünfundfünfzig Zeichen limitiert während dieser Blo');
+    }
+
     public function test_shouldShowMessage_whenNoBlocksInImportedFile() {
         // given
         $this->setUpInputFile('Blockuebersicht-empty.xls');

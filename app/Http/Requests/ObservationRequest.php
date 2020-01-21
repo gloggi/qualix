@@ -25,7 +25,7 @@ class ObservationRequest extends FormRequest
     {
         return [
             'participant_ids' => 'required|regex:/^\d+(,\d+)*$/',
-            'content' => 'required',
+            'content' => 'required|max:1023',
             'impression' => 'required|in:0,1,2',
             'block_id' => 'required|numeric',
             'requirement_ids' => 'regex:/^\d+(,\d+)*$/|nullable',

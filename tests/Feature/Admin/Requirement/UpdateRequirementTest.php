@@ -60,6 +60,18 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
+    public function test_shouldValidateNewRequirementData_longAnforderungText() {
+        // given
+        $payload = $this->payload;
+        $payload['content'] = ' Die TN kennen den Ablauf der Lagerplanung, verfügen über Werkzeuge der einzelnen Planungsschritte und können ein Lager administrieren. Sie verfügen über vertiefte Kenntnisse der Pfadigrundlagen und können damit ausgewogene Lagerprogramme sowie Blöcke (LA/LS) planen, durchführen und auswerten.';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
     public function test_shouldValidateNewRequirementData_mandatoryNotSet_shouldNotChangeMandatory() {
         // given
         $payload = $this->payload;
