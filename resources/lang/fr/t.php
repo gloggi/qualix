@@ -114,7 +114,7 @@ return array(
 				"ecamp2" => array(
 					"block_overview" => "Vue d'ensemble des points de cours",
 					"how_to_get_the_block_overview" => array(
-						"answer" => "Lorsque tu as saisi les points de cours dans ton cours sur :ecamp2, va à gauche dans la navigation sur\"Objectifs de cours\". Tu pourras télécharger la vue d'ensemble des points de cours en haut à droite comme fichier Excel.",
+						"answer" => "Lorsque tu as saisi les points de cours dans ton cours sur :ecamp2, va à gauche dans la navigation sur \"Kurs Ziele\". Tu pourras télécharger la vue d'ensemble des points de cours en haut à droite comme fichier Excel.",
 						"question" => "Où puis-je trouver la vue d'ensemble des points de cours?",
 					),
 					"name" => "eCamp v2",
@@ -123,8 +123,8 @@ return array(
 				"import" => "Importer",
 				"import_from" => "Importer les points de cours de :source",
 				"import_success" => "{0}Aucun point de cours de cours n'a été trouvé dans les données importées.|{1}Un point de cours a été trouvé dans les données importées.|[2,*] :count points de cours ont été trouvés dans les données importées.",
-				"unknown_error" => "Une erreur s'est produite lors de l'importantion. Essaye encore une fois ou saisis ton point point de cours manuellement.",
-				"warning_existing_blocks" => "Des points de cours sont déjà définis dans ton cours.Si un numéro de point de cours existe déjà dans ton impoortation, le point de cours déjà existant sera actualisé lors de l'importation.",
+				"unknown_error" => "Une erreur s'est produite lors de l'importantion. Essaye encore une fois ou saisis tes points de cours manuellement.",
+				"warning_existing_blocks" => "Des points de cours sont déjà définis dans ton cours. Si un numéro de point de cours existe déjà dans ton importation, le point de cours déjà existant sera actualisé lors de l'importation.",
 			),
 			"categories" => array(
 				"are_categories_required" => array(
