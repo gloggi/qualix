@@ -1,13 +1,23 @@
 os:
   - linux
 
+addons:
+  apt:
+    packages:
+      - lftp
+
 language: php
 
 before_install:
-  - docker-compose --version
-
   - docker-compose up -d --build
-  - ./wait-for-container-startup.sh
+  - "./wait-for-container-startup.sh"
 
 script:
   - docker-compose exec app vendor/bin/phpunit
+
+deploy:
+  provider: script
+  script: bash .travis/deploy.sh
+  skip_cleanup: true
+  on:
+    branch: continuousdelivery
