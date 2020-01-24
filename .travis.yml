@@ -10,7 +10,7 @@ language: php
 
 before_install:
   - docker-compose up -d --build
-  - "./wait-for-container-startup.sh"
+  - ".travis/wait-for-container-startup.sh"
 
 script:
   - docker-compose exec app vendor/bin/phpunit

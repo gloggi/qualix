@@ -2,7 +2,7 @@ version: "3"
 
 services:
   app:
-    build: .
+    build: .docker
     container_name: 'qualix-app'
     ports:
       - '80:80'
