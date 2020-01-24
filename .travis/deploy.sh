@@ -25,23 +25,23 @@ sed -ri "s~^HITOBITO_CLIENT_UID=.*$~HITOBITO_CLIENT_UID=$HITOBITO_CLIENT_UID~" .
 sed -ri "s~^HITOBITO_CLIENT_SECRET=.*$~HITOBITO_CLIENT_SECRET=$HITOBITO_CLIENT_SECRET~" .env
 sed -ri "s~^HITOBITO_CALLBACK_URI=.*$~HITOBITO_CALLBACK_URI=${HITOBITO_CALLBACK_URI:-${APP_URL}/login/hitobito/callback}~" .env
 
-docker-compose run --entrypoint "/bin/sh -c 'composer install --no-dev'" app
+docker-compose run --entrypoint "composer install --no-dev" app
 docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod'" node
 
+# Travis CI uses OpenSSL 1.0.2g  1 Mar 2016. Files encrypted with newer versions of OpenSSL are not decryptable by
+# the Travis CI version, error message is "bad decrypt". So to encrypt a file, use the following:
+# docker run --rm -v $(pwd):/app -w /app frapsoft/openssl aes-256-cbc -k "<password>" -in <input_file> -out <output_file>
 openssl aes-256-cbc -k "$ID_RSA_PASSWORD" -in .travis/id_rsa.enc -out .travis/id_rsa -d
 eval "$(ssh-agent -s)"
 chmod 600 .travis/id_rsa
 ssh-add .travis/id_rsa
 
 echo "Uploading files to the server..."
-lftp -c "set sftp:auto-confirm true; set dns:order \"inet\"; open -u $SFTP_USERNAME, sftp://$SFTP_HOST ; mirror -enRv -x .env -x node_modules -x .git -x tests -x .travis . $SFTP_DIRECTORY"
+lftp -c "set sftp:auto-confirm true; set dns:order \"inet\"; open -u $SSH_USERNAME, sftp://$SSH_HOST ; mirror -enRv -x .env -x node_modules -x .git -x tests -x .travis . $SSH_DIRECTORY"
 echo "All files uploaded to the server."
 
-ssh -l $SFTP_USERNAME $SFTP_HOST <<EOF
-  cd $SFTP_DIRECTORY
-  php artisan route:clear
-  php artisan config:clear
-  php artisan cache:clear
+ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
+  cd $SSH_DIRECTORY
   php artisan storage:link
   php artisan migrate --force
 EOF

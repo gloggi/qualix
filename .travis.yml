@@ -15,6 +15,9 @@ before_install:
 script:
   - docker-compose exec app vendor/bin/phpunit
 
+before_deploy:
+  - docker-compose run --entrypoint "/bin/sh -c 'php artisan cache:clear && php artisan route:clear && php artisan config:clear && php artisan view:clear && rm -f storage/framework/sessions/*'" app
+
 deploy:
   provider: script
   script: bash .travis/deploy.sh
