@@ -37,7 +37,15 @@ chmod 600 .travis/id_rsa
 ssh-add .travis/id_rsa
 
 echo "Uploading files to the server..."
-lftp -c "set sftp:auto-confirm true; set dns:order \"inet\"; open -u $SSH_USERNAME, sftp://$SSH_HOST ; mirror -enRv -x .env -x node_modules -x .git -x tests -x .travis . $SSH_DIRECTORY"
+lftp <<EOF
+  set sftp:auto-confirm true
+  set dns:order "inet"
+  open -u $SSH_USERNAME, sftp://$SSH_HOST
+  cd $SSH_DIRECTORY
+  mirror -enRv -x '^node_modules' -x '^\.' -x '^tests' -x '^storage/logs/.*'
+  mirror -Rv -f .env
+EOF
+
 echo "All files uploaded to the server."
 
 ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
