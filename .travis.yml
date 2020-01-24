@@ -23,4 +23,5 @@ deploy:
   script: bash .travis/deploy.sh
   skip_cleanup: true
   on:
-    branch: continuousdelivery
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^(master|deploy-gryfensee|deploy-gloggi)$
