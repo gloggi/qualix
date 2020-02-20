@@ -16,4 +16,4 @@ RUN docker-php-ext-install pdo pdo_mysql mbstring xml bcmath zip gd
 RUN a2enmod rewrite
 COPY apache-vhost.conf /etc/apache2/sites-enabled/000-default.conf
 
-ENTRYPOINT bash docker-entrypoint.sh
+ENTRYPOINT bash .docker/entrypoint.sh

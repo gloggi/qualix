@@ -2,13 +2,13 @@ version: "3"
 
 services:
   app:
-    build: .
+    build: .docker
     container_name: 'qualix-app'
     ports:
       - '80:80'
-    links:
+    depends_on:
       - db
-      - mail
+      - node
     volumes:
       - .:/var/www
       - ./public/.htaccess.docker:/var/www/public/.htaccess
@@ -40,7 +40,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: 'qualix-phpmyadmin'
+    depends_on:
+      - db
     ports:
       - '8081:80'
-    links:
-      - db
