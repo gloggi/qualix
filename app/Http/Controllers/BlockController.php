@@ -26,7 +26,7 @@ class BlockController extends Controller {
      * @return View
      */
     public function index() {
-        return view('admin.blocks');
+        return view('admin.blocks.index');
     }
 
     /**
@@ -69,7 +69,7 @@ class BlockController extends Controller {
             ->s('<a href="https://ecamp.pfadiluzern.ch/index.php?app=aim" target="_blank">')
             ->__('t.views.admin.block_import.ecamp2.name')
             ->s('</a>');
-        return view('admin.blocks-import', ['ecamp2Link' => $ecamp2BlockOverviewLink]);
+        return view('admin.blocks.import', ['ecamp2Link' => $ecamp2BlockOverviewLink]);
     }
 
     /**
@@ -103,7 +103,7 @@ class BlockController extends Controller {
      * @return View
      */
     public function edit(Course $course, Block $block) {
-        return view('admin.block-edit', ['block' => $block]);
+        return view('admin.blocks.edit', ['block' => $block]);
     }
 
     /**

@@ -17,7 +17,7 @@ class CategoryController extends Controller {
      * @return Response
      */
     public function index() {
-        return view('admin.categories');
+        return view('admin.categories.index');
     }
 
     /**
@@ -41,7 +41,7 @@ class CategoryController extends Controller {
      * @return Response
      */
     public function edit(Course $course, Category $category) {
-        return view('admin.category-edit', ['category' => $category]);
+        return view('admin.categories.edit', ['category' => $category]);
     }
 
     /**

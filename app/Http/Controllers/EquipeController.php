@@ -18,7 +18,7 @@ class EquipeController extends Controller {
      * @return Response
      */
     public function index() {
-        return view('admin.equipe');
+        return view('admin.equipe.index');
     }
 
     /**

@@ -61,7 +61,7 @@ class CourseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit() {
-        return view('admin.course-edit');
+        return view('admin.course.edit');
     }
 
     /**
