@@ -42,7 +42,7 @@ lftp <<EOF
   set dns:order "inet"
   open -u $SSH_USERNAME, sftp://$SSH_HOST
   cd $SSH_DIRECTORY
-  mirror -enRv -x '^node_modules' -x '^\.' -x '^tests' -x '^storage/logs/.*'
+  mirror -enRv -x '^node_modules' -x '^\.' -x '^tests' -x '^storage/logs/.*' -x '^storage/app/.*'
   mirror -Rv -f .env
 EOF
 
