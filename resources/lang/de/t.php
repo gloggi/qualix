@@ -238,6 +238,18 @@ return array(
 			),
 			"title" => "Welche Mindestanforderungen können in welchen Blöcken beobachtet werden",
 		),
+		"error_form" => array(
+			"back" => "Zurück zu wo ich gerade noch war...",
+			"back_without_sending_report" => "Zurück ohne eine Beschreibung zu senden",
+			"error_report_has_been_submitted" => "Deine Beschreibung wurde abgesendet. Vielen Dank!",
+			"it_looks_like_we_are_having_issues" => "Es sieht so aus als hätten wir ein Problem.",
+			"our_team_has_been_notified" => "Das Qualix-Team wurde bereits informiert. Wenn du uns helfen möchtest, teile uns bitte unten mit, was geschehen ist.",
+			"please_try_again_later" => "Bitte versuche es später nochmals.",
+			"send_description" => "Beschreibung absenden",
+			"thank_you" => "Danke",
+			"what_happened" => "Was ist passiert?",
+			"what_happened_example" => "Ich habe auf das \"X\" und dann auf \"Bestätigen\" geklickt.",
+		),
 		"invitation" => array(
 			"accept_invitation" => "Ja, Einladung annehmen",
 			"accept_success" => "Einladung angenommen. Du bist jetzt in der Kursequipe von \":courseName\".",

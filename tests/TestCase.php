@@ -5,6 +5,7 @@ namespace Tests;
 use App\Models\Course;
 use App\Models\NativeUser;
 use App\Models\User;
+use Dotenv\Dotenv;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\TestResponse;
@@ -23,7 +24,7 @@ abstract class TestCase extends BaseTestCase {
     protected $crawler;
 
     public function setUp(): void {
-        putenv('APP_ENV=testing');
+        Dotenv::create(__DIR__.'/../', '.env.testing')->load();
 
         parent::setUp();
 

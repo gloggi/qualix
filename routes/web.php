@@ -89,3 +89,6 @@ Auth::routes(['verify' => true]);
 Route::get('login/hitobito', 'Auth\LoginController@redirectToHitobitoOAuth')->name('login.hitobito');
 Route::get('login/hitobito/callback', 'Auth\LoginController@handleHitobitoOAuthCallback')->name('login.hitobito.callback');
 Route::get('locale/{locale}', 'LocalizationController@select')->name('locale.select');
+
+Route::post('/error-report', 'ErrorReportController@submit')->name('errorReport.submit');
+Route::get('/error-report', 'ErrorReportController@after')->name('errorReport.after');
