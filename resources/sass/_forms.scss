@@ -4,6 +4,10 @@
     color: $red;
 }
 
+.form-control::placeholder {
+    opacity: 0.5;
+}
+
 .form-control[type="file"] {
     height: auto;
 }
