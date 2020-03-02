@@ -20,7 +20,7 @@ class ErrorReportController extends Controller {
     public function submit(ErrorReportRequest $request) {
         $params = $request->validated();
         $request->session()->flash('previousUrl', $params['previousUrl']);
-        $client = new GuzzleHttp\Client();
+        $client = app(GuzzleHttp\Client::class);
         $url = env('SENTRY_USER_FEEDBACK_URL');
         $dsn = env('SENTRY_LARAVEL_DSN', env('SENTRY_DSN'));
         $client->post($url, [
