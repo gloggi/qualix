@@ -66,7 +66,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewRequirementData_killerNotSet_shouldWork() {
+    public function test_shouldValidateNewRequirementData_mandatoryNotSet_shouldWork() {
         // given
         $payload = $this->payload;
         unset($payload['mandatory']);
@@ -83,7 +83,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertDontSee('>Ja<');
     }
 
-    public function test_shouldValidateNewRequirementData_killerFalse_shouldWork() {
+    public function test_shouldValidateNewRequirementData_mandatoryFalse_shouldWork() {
         // given
         $payload = $this->payload;
         $payload['mandatory'] = '0';
@@ -100,7 +100,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertDontSee('>Ja<');
     }
 
-    public function test_shouldValidateNewRequirementData_killerTrue_shouldWork() {
+    public function test_shouldValidateNewRequirementData_mandatoryTrue_shouldWork() {
         // given
         $payload = $this->payload;
         $payload['mandatory'] = '1';
