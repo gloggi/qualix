@@ -125,7 +125,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
 
         // then
         $response->assertStatus(200);
-        $response->assertSee('Bisher sind keine Mindestanforderungen erfasst.');
+        $response->assertSee('Bisher sind keine Anforderungen erfasst.');
     }
 
     public function test_shouldNotShowMessage_whenSomeRequirementInCourse() {
@@ -137,6 +137,6 @@ class CreateRequirementTest extends TestCaseWithCourse {
 
         // then
         $response->assertStatus(200);
-        $response->assertDontSee('Bisher sind keine Mindestanforderungen erfasst.');
+        $response->assertDontSee('Bisher sind keine Anforderungen erfasst.');
     }
 }
