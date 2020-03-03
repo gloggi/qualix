@@ -142,7 +142,7 @@ return array(
 				"observations_on_category" => "{0}Aucune observation liée.|{1} Une observation est liée, mais elle ne sera pas supprimée.|[2,*]:count observations sont liées, mais elles ne seront pas supprimées.",
 				"really_delete" => "Souhaites-tu réellement supprimer la catégorie \":name\"?",
 				"what_are_categories" => array(
-					"answer" => "Les catégories peuvent être utilisées de manière différente. Il est possible d'attribuer une, plusieurs ou aucune catégorie à une observation. On peut par exemple les utiliser pour le classement dans différents passages d'un formulaire de qualité (quand les extraits ne correspondent pas de toute façon aux exigences minimales). On peut aussi s'en servir pour marquer si une observation a déjà été abordée dans l'évaluation intermédiaire. Ou alors, il est possible de faire toute autre utilisation qui te viendrait à l'esprit. Une fois cela fait, tu peux filter la liste d'observation d'un-e participant-e selon des catégories.",
+					"answer" => "Les catégories peuvent être utilisées de manière différente. Il est possible d'attribuer une, plusieurs ou aucune catégorie à une observation. On peut par exemple les utiliser pour le classement dans différents passages d'un formulaire de qualité. On peut aussi s'en servir pour marquer si une observation a déjà été abordée dans l'évaluation intermédiaire. Ou alors, il est possible de faire toute autre utilisation qui te viendrait à l'esprit. Une fois cela fait, tu peux filter la liste d'observation d'un-e participant-e selon des catégories.",
 					"question" => "Que sont des catégories?",
 				),
 			),
