@@ -106,7 +106,7 @@ return array(
 				"observations_on_block" => "{0}Es ist keine Beobachtung damit verbunden.|{1}Damit verbunden ist eine Beobachtung, die mitgelöscht wird.|[2,*]Damit verbunden sind :count Beobachtungen, die mitgelöscht werden.",
 				"really_delete" => "Willst du den Block \":name\" wirklich löschen?",
 				"what_are_blocks" => array(
-					"answer" => "Blöcke sind zeitliche Abschnitte im Grobprogramm. Man könnte sie auch Lektionen oder Programmeinheiten nennen. Du kannst zudem erfassen, welche Mindestanforderungen in einem Block wohl am ehesten beobachtet werden können (z.B. eine Mindestanforderung zu Sicherheitsüberlegungen in einem Block über Sicherheitskonzepte). Beim Erfassen von Beobachtungen kann das aber immer noch übersteuert werden.",
+					"answer" => "Blöcke sind zeitliche Abschnitte im Grobprogramm. Man könnte sie auch Lektionen oder Programmeinheiten nennen. Du kannst zudem erfassen, welche Anforderungen in einem Block wohl am ehesten beobachtet werden können (z.B. eine Anforderung zu Sicherheitsüberlegungen in einem Block über Sicherheitskonzepte). Beim Erfassen von Beobachtungen kann das aber immer noch übersteuert werden.",
 					"question" => "Was sind Blöcke?",
 				),
 			),
@@ -158,7 +158,7 @@ return array(
 				),
 				"delete" => "Kurs komplett löschen…",
 				"delete_confirm" => "Definitiv löschen",
-				"delete_description" => "Dies wird den Kurs komplett und dauerhaft löschen, inklusive alle Blöcke, TN, Mindestanforderungen, Kategorien, Teilnehmer und Beobachtungen darin. Diese Aktion kann nicht rückgängig gemacht werden.",
+				"delete_description" => "Dies wird den Kurs komplett und dauerhaft löschen, inklusive alle Blöcke, TN, Anforderungen, Kategorien, Teilnehmer und Beobachtungen darin. Diese Aktion kann nicht rückgängig gemacht werden.",
 				"delete_success" => "Kurs \":name\" und alle damit verbundenen Daten wurden gelöscht.",
 				"edit" => "Kurseinstellungen :name",
 				"edit_success" => "Kursdetails erfolgreich gespeichert.",
@@ -201,7 +201,7 @@ return array(
 			),
 			"requirements" => array(
 				"are_requirements_required" => array(
-					"answer" => "Es ist sehr wichtig, vor dem Kurs im Kursteam Mindestanforderungen festzulegen, damit alle Teilnehmenden nach dem gleichen Schema qualifiziert werden und damit Entscheide im Kurs einfacher gefällt werden können. Aber wenn du diese nicht in Qualix führen willst, kannst du Beobachtungen auch ohne Mindestanforderungen erfassen.",
+					"answer" => "Es ist sehr wichtig, vor dem Kurs im Kursteam Anforderungen festzulegen, damit alle Teilnehmenden nach dem gleichen Schema qualifiziert werden und damit Entscheide im Kurs einfacher gefällt werden können. Aber wenn du diese nicht in Qualix führen willst, kannst du Beobachtungen auch ohne Anforderungen erfassen.",
 					"question" => "Muss ich Anforderungen für meinen Kurs erfassen?",
 				),
 				"create_success" => "Anforderung wurde erfolgreich erstellt.",
@@ -231,12 +231,12 @@ return array(
 			"mandatory_requirements" => "Mindestanforderungen",
 			"menu_name" => "Spick",
 			"non_mandatory_requirements" => "Weitere Anforderungen",
-			"no_blocks" => "Bisher sind keine Blöcke erfasst. Bitte erfasse und verbinde sie :here mit Mindestanforderungen.",
+			"no_blocks" => "Bisher sind keine Blöcke erfasst. Bitte erfasse und verbinde sie :here mit Anforderungen.",
 			"see_only_empty_blocks" => array(
-				"answer" => "Dann sind bisher keine Blöcke mit Mindesanforderungen verbunden. Bitte verbinde die Blöcke :here mit Mindestanforderungen.",
+				"answer" => "Dann sind bisher keine Blöcke mit Anforderungen verbunden. Bitte verbinde die Blöcke :here mit Anforderungen.",
 				"question" => "Siehst du nur leere Blöcke ohne Anforderungen?",
 			),
-			"title" => "Welche Mindestanforderungen können in welchen Blöcken beobachtet werden",
+			"title" => "Welche Anforderungen können in welchen Blöcken beobachtet werden",
 		),
 		"error_form" => array(
 			"back" => "Zurück zu wo ich gerade noch war...",
