@@ -106,6 +106,9 @@ class AcceptInvitationTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Token muss ausgefüllt sein.', $exception->validator->errors()->first('token'));
     }
 
     public function test_shouldValidateClaimedInvitation_longToken() {
@@ -117,6 +120,9 @@ class AcceptInvitationTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Token darf maximal 128 Zeichen haben.', $exception->validator->errors()->first('token'));
     }
 
     public function test_shouldRedirectToInvitationClaimPage_afterCompletingLogin() {

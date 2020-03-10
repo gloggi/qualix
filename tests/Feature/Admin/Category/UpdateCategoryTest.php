@@ -56,6 +56,9 @@ class UpdateCategoryTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Titel muss ausgefüllt sein.', $exception->validator->errors()->first('name'));
     }
 
     public function test_shouldValidateNewCategoryData_longName() {
@@ -68,6 +71,9 @@ class UpdateCategoryTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Titel darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('name'));
     }
 
     public function test_shouldValidateNewCategoryData_wrongId() {

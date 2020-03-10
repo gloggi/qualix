@@ -58,6 +58,9 @@ class UpdateRequirementTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Anforderung muss ausgefüllt sein.', $exception->validator->errors()->first('content'));
     }
 
     public function test_shouldValidateNewRequirementData_longAnforderungText() {
@@ -70,6 +73,9 @@ class UpdateRequirementTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Anforderung darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('content'));
     }
 
     public function test_shouldValidateNewRequirementData_mandatoryNotSet_shouldNotChangeMandatory() {

@@ -65,6 +65,9 @@ class CreateParticipantTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Pfadiname muss ausgefüllt sein.', $exception->validator->errors()->first('scout_name'));
     }
 
     public function test_shouldValidateNewParticipantData_longScoutName() {
@@ -77,6 +80,9 @@ class CreateParticipantTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Pfadiname darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('scout_name'));
     }
 
     public function test_shouldValidateNewParticipantData_longGroup() {
@@ -89,6 +95,9 @@ class CreateParticipantTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Abteilung darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('group'));
     }
 
     public function test_shouldShowMessage_whenNoParticipantInCourse() {
