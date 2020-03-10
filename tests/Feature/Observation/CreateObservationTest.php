@@ -262,7 +262,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Der gewählte Wert für Mindestanforderungen ist ungültig.', $exception->validator->errors()->first('requirement_ids'));
+        $this->assertEquals('Der gewählte Wert für Anforderungen ist ungültig.', $exception->validator->errors()->first('requirement_ids'));
     }
 
     public function test_shouldNotAllowCreatingObservation_withCategoryFromADifferentCourse() {

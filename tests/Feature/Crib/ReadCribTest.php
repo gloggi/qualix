@@ -96,7 +96,7 @@ class ReadCribTest extends TestCaseWithCourse {
 
         // then
         $response->assertOk();
-        $response->assertSee('Siehst du nur leere Blöcke ohne Mindestanforderungen?');
+        $response->assertSee('Siehst du nur leere Blöcke ohne Anforderungen?');
     }
 
     public function test_shouldNotDisplayCrib_toOtherUser() {

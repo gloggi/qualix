@@ -66,7 +66,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_shouldValidateNewRequirementData_killerNotSet_shouldWork() {
+    public function test_shouldValidateNewRequirementData_mandatoryNotSet_shouldWork() {
         // given
         $payload = $this->payload;
         unset($payload['mandatory']);
@@ -83,7 +83,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertDontSee('>Ja<');
     }
 
-    public function test_shouldValidateNewRequirementData_killerFalse_shouldWork() {
+    public function test_shouldValidateNewRequirementData_mandatoryFalse_shouldWork() {
         // given
         $payload = $this->payload;
         $payload['mandatory'] = '0';
@@ -100,7 +100,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertDontSee('>Ja<');
     }
 
-    public function test_shouldValidateNewRequirementData_killerTrue_shouldWork() {
+    public function test_shouldValidateNewRequirementData_mandatoryTrue_shouldWork() {
         // given
         $payload = $this->payload;
         $payload['mandatory'] = '1';
@@ -125,7 +125,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
 
         // then
         $response->assertStatus(200);
-        $response->assertSee('Bisher sind keine Mindestanforderungen erfasst.');
+        $response->assertSee('Bisher sind keine Anforderungen erfasst.');
     }
 
     public function test_shouldNotShowMessage_whenSomeRequirementInCourse() {
@@ -137,6 +137,6 @@ class CreateRequirementTest extends TestCaseWithCourse {
 
         // then
         $response->assertStatus(200);
-        $response->assertDontSee('Bisher sind keine Mindestanforderungen erfasst.');
+        $response->assertDontSee('Bisher sind keine Anforderungen erfasst.');
     }
 }
