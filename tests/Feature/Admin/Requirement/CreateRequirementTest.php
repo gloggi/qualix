@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Requirement;
 
+use App\Models\Requirement;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithCourse;
@@ -13,7 +14,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['content' => 'Mindestanforderung 1', 'mandatory' => '1'];
+        $this->payload = ['content' => 'Mindestanforderung 1', 'mandatory' => '1', 'blocks' => null];
     }
 
     public function test_shouldRequireLogin() {
@@ -121,6 +122,97 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response = $response->followRedirects();
         $response->assertSee('>Ja<');
         $response->assertDontSee('>Nein<');
+    }
+
+    public function test_shouldValidateNewRequirementData_noBlockIds() {
+        // given
+        $payload = $this->payload;
+        $payload['blocks'] = null;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
+        $this->assertEquals([], Requirement::latest()->first()->blocks->pluck('id')->all());
+    }
+
+    public function test_shouldValidateNewRequirementData_invalidBlockIds() {
+        // given
+        $payload = $this->payload;
+        $payload['blocks'] = 'xyz';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Blöcke Format ist ungültig.', $exception->validator->errors()->first('blocks'));
+    }
+
+    public function test_shouldValidateNewRequirementData_oneValidRequirementId() {
+        // given
+        $payload = $this->payload;
+        $blockId = $this->createBlock();
+        $payload['blocks'] = $blockId;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
+        $this->assertEquals([$blockId], Requirement::latest()->first()->blocks->pluck('id')->all());
+    }
+
+    public function test_shouldValidateNewRequirementData_multipleValidBlockIds() {
+        // given
+        $payload = $this->payload;
+        $blockIds = [$this->createBlock(), $this->createBlock()];
+        $payload['blocks'] = implode(',', $blockIds);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
+        $this->assertEquals($blockIds, Requirement::latest()->first()->blocks->pluck('id')->all());
+    }
+
+    public function test_shouldValidateNewRequirementData_someNonexistentBlockIds() {
+        // given
+        $payload = $this->payload;
+        $blockIds = [$this->createBlock(), '999999', $this->createBlock()];
+        $payload['blocks'] = implode(',', $blockIds);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Blöcke ist ungültig.', $exception->validator->errors()->first('blocks'));
+    }
+
+    public function test_shouldValidateNewRequirementData_someInvalidBlockIds() {
+        // given
+        $payload = $this->payload;
+        $blockIds = [$this->createBlock(), 'abc', $this->createBlock()];
+        $payload['blocks'] = implode(',', $blockIds);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/requirement', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Blöcke Format ist ungültig.', $exception->validator->errors()->first('blocks'));
     }
 
     public function test_shouldShowMessage_whenNoRequirementInCourse() {

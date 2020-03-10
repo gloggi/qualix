@@ -24,6 +24,7 @@ class RequirementRequest extends FormRequest {
         return [
             'content' => 'required|max:255',
             'mandatory' => 'boolean',
+            'blocks' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
         ];
     }
 

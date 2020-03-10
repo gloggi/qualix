@@ -79,6 +79,7 @@ return array(
 			"scout_name" => "Nom",
 		),
 		"requirement" => array(
+			"blocks" => "Points de cours",
 			"content" => "Exigence",
 			"mandatory" => "Éliminatoire",
 			"num_observations" => "Nombre d'observations",
