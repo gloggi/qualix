@@ -16,7 +16,7 @@ class UpdateBlockTest extends TestCaseWithCourse {
 
         $this->blockId = $this->createBlock('Block 1');
 
-        $this->payload = ['full_block_number' => '1.2', 'name' => 'Geänderter Blockname', 'block_date' => '22.12.2019', 'requirement_ids' => null];
+        $this->payload = ['full_block_number' => '1.2', 'name' => 'Geänderter Blockname', 'block_date' => '22.12.2019', 'requirements' => null];
     }
 
     public function test_shouldRequireLogin() {

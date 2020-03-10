@@ -41,7 +41,7 @@ class BlockController extends Controller {
             $data = $request->validated();
             $block = Block::create(array_merge($data, ['course_id' => $course->id]));
 
-            $block->requirements()->attach(array_filter(explode(',', $data['requirement_ids'])));
+            $block->requirements()->attach(array_filter(explode(',', $data['requirements'])));
 
             /** @var User $user */
             $user = Auth::user();
@@ -120,7 +120,7 @@ class BlockController extends Controller {
             $block->update($data);
 
             $block->requirements()->detach(null);
-            $block->requirements()->attach(array_filter(explode(',', $data['requirement_ids'])));
+            $block->requirements()->attach(array_filter(explode(',', $data['requirements'])));
 
             /** @var User $user */
             $user = Auth::user();

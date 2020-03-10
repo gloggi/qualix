@@ -25,7 +25,7 @@ class ObservationController extends Controller {
      * @return Response
      */
     public function create(Request $request) {
-        return view('observation.new', ['participant_id' => $request->input('participant'), 'block_id' => $request->input('block')]);
+        return view('observation.new', ['participants' => $request->input('participant'), 'block' => $request->input('block')]);
     }
 
     /**
@@ -41,13 +41,14 @@ class ObservationController extends Controller {
 
             $observation = Observation::create(array_merge($data, ['course_id' => $course->id, 'user_id' => Auth::user()->getAuthIdentifier()]));
 
-            $participants = $observation->attachRelatedRecords($course, 'participants', $data, 'participant_ids');
-            $observation->attachRelatedRecords($course, 'requirements', $data, 'requirement_ids');
-            $observation->attachRelatedRecords($course, 'categories', $data, 'category_ids');
+            $participantIds = array_filter(explode(',', $data['participants']));
+            $observation->participants()->attach($participantIds);
+            $observation->requirements()->attach(array_filter(explode(',', $data['requirements'])));
+            $observation->categories()->attach(array_filter(explode(',', $data['categories'])));
 
             $flash = (new HtmlString)->__('t.views.observations.add_success');
-            if (count($participants) == 1) {
-                $participant = $participants[0];
+            if (count($participantIds) == 1) {
+                $participant = $observation->participants()->first();
                 $route = route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]);
                 $flash->s(" <a href=\"{$route}\">")
                       ->__('t.views.observations.back_to_participant', ['name' => $participant->scout_name])
@@ -56,7 +57,7 @@ class ObservationController extends Controller {
             $request->session()->flash('alert-success', $flash);
         });
 
-        return Redirect::route('observation.new', ['course' => $course->id, 'participant' => $data['participant_ids'], 'block' => $data['block_id']]);
+        return Redirect::route('observation.new', ['course' => $course->id, 'participant' => $data['participants'], 'block' => $data['block']]);
     }
 
     /**
@@ -134,9 +135,12 @@ class ObservationController extends Controller {
             $data = $request->validated();
             $observation->update($data);
 
-            $observation->attachRelatedRecords($course, 'participants', $data, 'participant_ids');
-            $observation->attachRelatedRecords($course, 'requirements', $data, 'requirement_ids');
-            $observation->attachRelatedRecords($course, 'categories', $data, 'category_ids');
+            $observation->participants()->detach();
+            $observation->participants()->attach(array_filter(explode(',', $data['participants'])));
+            $observation->requirements()->detach();
+            $observation->requirements()->attach(array_filter(explode(',', $data['requirements'])));
+            $observation->categories()->detach();
+            $observation->categories()->attach(array_filter(explode(',', $data['categories'])));
         });
 
         $request->session()->flash('alert-success', __('t.views.observations.edit_success'));

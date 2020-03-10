@@ -19,8 +19,8 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->requirementId = $this->createRequirement('Mindestanforderung 1', true);
         $this->categoryId = $this->createCategory('Kategorie 1');
 
-        $this->payload = ['participant_ids' => '' . $this->participantId, 'content' => 'hat gut mitgemacht', 'impression' => '1',
-            'block_id' => '' . $this->blockId, 'requirement_ids' => '' . $this->requirementId, 'category_ids' => '' . $this->categoryId];
+        $this->payload = ['participants' => '' . $this->participantId, 'content' => 'hat gut mitgemacht', 'impression' => '1',
+            'block' => '' . $this->blockId, 'requirements' => '' . $this->requirementId, 'categories' => '' . $this->categoryId];
     }
 
     public function test_shouldRequireLogin() {
@@ -64,7 +64,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
     public function test_shouldValidateNewObservationData_noParticipantIds() {
         // given
         $payload = $this->payload;
-        unset($payload['participant_ids']);
+        unset($payload['participants']);
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
@@ -76,7 +76,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
     public function test_shouldValidateNewObservationData_invalidParticipantIds() {
         // given
         $payload = $this->payload;
-        $payload['participant_ids'] = 'a';
+        $payload['participants'] = 'a';
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
@@ -90,7 +90,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $participantId2 = $this->createParticipant('Pfnörch');
         $participantIds = $this->participantId . ',' . $participantId2;
         $payload = $this->payload;
-        $payload['participant_ids'] = $participantIds;
+        $payload['participants'] = $participantIds;
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
@@ -108,7 +108,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $participantId2 = $this->createParticipant('Pfnörch');
         $participantIds = $this->participantId . ',' . $participantId2;
         $payload = $this->payload;
-        $payload['participant_ids'] = $participantIds;
+        $payload['participants'] = $participantIds;
         $payload['content'] = 'visible on both participants';
 
         // when
@@ -172,7 +172,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
     public function test_shouldValidateNewObservationData_noBlockId() {
         // given
         $payload = $this->payload;
-        unset($payload['block_id']);
+        unset($payload['block']);
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
@@ -184,7 +184,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
     public function test_shouldValidateNewObservationData_invalidBlockId() {
         // given
         $payload = $this->payload;
-        $payload['block_id'] = '*';
+        $payload['block'] = '*';
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
@@ -208,7 +208,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
     public function test_shouldValidateNewObservationData_invalidCategoryIds() {
         // given
         $payload = $this->payload;
-        $payload['category_ids'] = 'xyz';
+        $payload['categories'] = 'xyz';
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
@@ -221,7 +221,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         // given
         $participantName = '<b>Participant name</b> with \'some" formatting';
         $payload = $this->payload;
-        $payload['participant_ids'] = $this->createParticipant($participantName);
+        $payload['participants'] = $this->createParticipant($participantName);
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload)->followRedirects();
@@ -236,7 +236,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $differentCourse = $this->createCourse('Other course', '', false);
         $participantFromDifferentCourse = $this->createParticipant('Foreign', $differentCourse);
         $payload = $this->payload;
-        $payload['participant_ids'] = $this->participantId . ',' . $participantFromDifferentCourse;
+        $payload['participants'] = $this->participantId . ',' . $participantFromDifferentCourse;
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
@@ -245,7 +245,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Der gewählte Wert für TN ist ungültig.', $exception->validator->errors()->first('participant_ids'));
+        $this->assertEquals('Der gewählte Wert für TN ist ungültig.', $exception->validator->errors()->first('participants'));
     }
 
     public function test_shouldNotAllowCreatingObservation_withRequirementFromADifferentCourse() {
@@ -253,7 +253,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $differentCourse = $this->createCourse('Other course', '', false);
         $requirementFromDifferentCourse = $this->createRequirement('Must not be a bad person', true, $differentCourse);
         $payload = $this->payload;
-        $payload['requirement_ids'] = $this->requirementId . ',' . $requirementFromDifferentCourse;
+        $payload['requirements'] = $this->requirementId . ',' . $requirementFromDifferentCourse;
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
@@ -262,7 +262,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Der gewählte Wert für Anforderungen ist ungültig.', $exception->validator->errors()->first('requirement_ids'));
+        $this->assertEquals('Der gewählte Wert für Anforderungen ist ungültig.', $exception->validator->errors()->first('requirements'));
     }
 
     public function test_shouldNotAllowCreatingObservation_withCategoryFromADifferentCourse() {
@@ -270,7 +270,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $differentCourse = $this->createCourse('Other course', '', false);
         $categoryFromDifferentCourse = $this->createCategory('Early observations', $differentCourse);
         $payload = $this->payload;
-        $payload['category_ids'] = $this->categoryId . ',' . $categoryFromDifferentCourse;
+        $payload['categories'] = $this->categoryId . ',' . $categoryFromDifferentCourse;
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
@@ -279,6 +279,6 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Der gewählte Wert für Kategorien ist ungültig.', $exception->validator->errors()->first('category_ids'));
+        $this->assertEquals('Der gewählte Wert für Kategorien ist ungültig.', $exception->validator->errors()->first('categories'));
     }
 }

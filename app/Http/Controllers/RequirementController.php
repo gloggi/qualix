@@ -8,6 +8,7 @@ use App\Models\Requirement;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class RequirementController extends Controller {
@@ -28,8 +29,14 @@ class RequirementController extends Controller {
      * @return RedirectResponse
      */
     public function store(RequirementRequest $request, Course $course) {
-        Requirement::create(array_merge($request->validated(), ['course_id' => $course->id]));
-        $request->session()->flash('alert-success', __('t.views.admin.requirements.create_success'));
+        DB::transaction(function () use ($request, $course) {
+            $data = $request->validated();
+            $requirement = Requirement::create(array_merge($data, ['course_id' => $course->id]));
+
+            $requirement->blocks()->attach(array_filter(explode(',', $data['blocks'])));
+
+            $request->session()->flash('alert-success', __('t.views.admin.requirements.create_success'));
+        });
         return Redirect::route('admin.requirements', ['course' => $course->id]);
     }
 
@@ -53,8 +60,14 @@ class RequirementController extends Controller {
      * @return RedirectResponse
      */
     public function update(RequirementRequest $request, Course $course, Requirement $requirement) {
-        $requirement->update($request->validated());
-        $request->session()->flash('alert-success', __('t.views.admin.requirements.edit_success'));
+        DB::transaction(function () use ($request, $course, $requirement) {
+            $data = $request->validated();
+            $requirement->update($data);
+
+            $requirement->blocks()->detach(null);
+            $requirement->blocks()->attach(array_filter(explode(',', $data['blocks'])));
+            $request->session()->flash('alert-success', __('t.views.admin.requirements.edit_success'));
+        });
         return Redirect::route('admin.requirements', ['course' => $course->id]);
     }
 

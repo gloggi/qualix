@@ -60,6 +60,9 @@ return array(
 		"invitation" => array(
 			"email" => "E-mail",
 		),
+		"invitation_claim" => array(
+			"token" => "Token"
+		),
 		"observation" => array(
 			"block" => "Point de cours",
 			"categories" => "Catégories",

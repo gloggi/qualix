@@ -53,7 +53,7 @@ class ReadBlockTest extends TestCaseWithCourse {
     public function test_shouldNotDisplayBlock_fromOtherUser() {
         // given
         $otherKursId = $this->createCourse('Zweiter Kurs', '', false);
-        $otherBlockId = Block::create(['course_id' => $otherKursId, 'full_block_number' => '1.1', 'name' => 'later date', 'block_date' => '02.01.2019', 'requirement_ids' => null])->id;
+        $otherBlockId = Block::create(['course_id' => $otherKursId, 'full_block_number' => '1.1', 'name' => 'later date', 'block_date' => '02.01.2019', 'requirements' => null])->id;
 
         // when
         $response = $this->get('/course/' . $otherKursId . '/admin/blocks/' . $otherBlockId);

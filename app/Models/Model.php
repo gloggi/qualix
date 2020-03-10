@@ -5,32 +5,40 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
+use LaravelFillableRelations\Eloquent\Concerns\HasFillableRelations;
 
 /**
  * @mixin Builder
  */
-abstract class Model extends BaseModel
-{
+abstract class Model extends BaseModel {
+    use HasFillableRelations;
+
+    protected $fillable_relations = [];
+
     /**
-     * Attaches related records specified by an id list to the model, replacing all previously attached related entities.
-     *
-     * @param Course $course the active course
-     * @param string $relation the name of the manyToMany relation
-     * @param array $data validated data from a request
-     * @param string $fieldName the field name from the request that contains the related record ids
-     * @return Collection the related records that are attached to the observation
-     * @throws ValidationException if some of the related records are not found in the course
+     * @param BelongsTo $relation
+     * @param array|\Illuminate\Database\Eloquent\Model $attributes
      */
-    public function attachRelatedRecords(Course $course, string $relation, array $data, string $fieldName) {
-        try {
-            $relatedRecords = $course->$relation()->findOrFail(array_filter(explode(',', $data[$fieldName])));
-            $this->$relation()->detach();
-            $this->$relation()->attach($relatedRecords);
-        } catch (ModelNotFoundException $e) {
-            throw ValidationException::withMessages([ $fieldName => trans('validation.exists', ['attribute' => trans("t.models.observation.$relation") ]) ]);
+    public function fillBelongsToRelation(BelongsTo $relation, $attributes, $relationName) {
+        $entity = $attributes;
+        if (is_array($attributes)) {
+            $entity = $relation->getRelated()
+                ->where($attributes)->firstOrFail();
         }
-        return $relatedRecords;
+
+        $relation->associate($entity);
+    }
+
+    /**
+     * Returns the name of the database table that is used to store this model.
+     *
+     * @return string table name
+     */
+    public static function tableName() {
+        return with(new static)->getTable();
     }
 }

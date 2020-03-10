@@ -7,6 +7,7 @@ return array(
 	"alpha" => "Le champ :attribute doit contenir uniquement des lettres.",
 	"alpha_dash" => "Le champ :attribute doit contenir uniquement des lettres, des chiffres et des tirets.",
 	"alpha_num" => "Le champ :attribute doit contenir uniquement des chiffres et des lettres.",
+	"all_exist_in_course" => "Le champ :attribute sélectionné est invalide.",
 	"array" => "Le champ :attribute doit être un tableau.",
 	"attributes" => array(
 		"address" => "adresse",
@@ -65,6 +66,7 @@ return array(
 	"email" => "Le champ :attribute doit être une adresse email valide.",
 	"ends_with" => "Le champ :attribute doit se terminer par une des valeurs suivantes : :values",
 	"exists" => "Le champ :attribute sélectionné est invalide.",
+	"exists_in_course" => "Le champ :attribute sélectionné est invalide.",
 	"file" => "Le champ :attribute doit être un fichier.",
 	"filled" => "Le champ :attribute doit avoir une valeur.",
 	"gt" => array(

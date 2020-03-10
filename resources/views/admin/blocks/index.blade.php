@@ -13,7 +13,7 @@
             @component('components.form.dateInput', ['name' => 'block_date', 'label' => __('t.models.block.block_date'), 'required' => true, 'value' => Auth::user()->getLastUsedBlockDate($course)])@endcomponent
 
             @component('components.form.multiSelectInput', [
-                'name' => 'requirement_ids',
+                'name' => 'requirements',
                 'label' => __('t.models.block.requirements'),
                 'options' => $course->requirements->all(),
                 'valueFn' => function(\App\Models\Requirement $requirement) { return $requirement->id; },

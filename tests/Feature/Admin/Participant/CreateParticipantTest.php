@@ -82,7 +82,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
     public function test_shouldValidateNewParticipantData_longGroup() {
         // given
         $payload = $this->payload;
-        $payload['scout_name'] = 'Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname';
+        $payload['group'] = 'Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname Unglaublich langer Gruppenname';
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants', $payload);

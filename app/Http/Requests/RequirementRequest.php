@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Lang;
 
 class RequirementRequest extends FormRequest {
     /**
@@ -24,5 +25,9 @@ class RequirementRequest extends FormRequest {
             'content' => 'required|max:255',
             'mandatory' => 'boolean',
         ];
+    }
+
+    public function attributes() {
+        return Lang::get('t.models.requirement');
     }
 }

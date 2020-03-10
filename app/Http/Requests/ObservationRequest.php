@@ -3,16 +3,15 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Lang;
 
-class ObservationRequest extends FormRequest
-{
+class ObservationRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -21,15 +20,18 @@ class ObservationRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            'participant_ids' => 'required|regex:/^\d+(,\d+)*$/',
+            'participants' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
             'content' => 'required|max:1023',
             'impression' => 'required|in:0,1,2',
-            'block_id' => 'required|numeric',
-            'requirement_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
-            'category_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
+            'block' => 'required|regex:/^\d+$/|existsInCourse',
+            'requirements' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
+            'categories' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
         ];
+    }
+
+    public function attributes() {
+        return Lang::get('t.models.observation');
     }
 }
