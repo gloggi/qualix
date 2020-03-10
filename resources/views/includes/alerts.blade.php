@@ -10,3 +10,6 @@
 @if(Session::has('alert-warning'))
     @component('components.alert', ['type' => 'warning', 'message' => Session::get('alert-warning')])@endcomponent
 @endif
+@if(Session::has('status'))
+    @component('components.alert', ['type' => 'success', 'message' => Session::get('status')])@endcomponent
+@endif

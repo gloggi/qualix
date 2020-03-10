@@ -85,6 +85,8 @@ return array(
 			"group" => "Abteilung",
 			"image" => "Bild",
 			"name" => "Name",
+			"password" => "Passwort",
+			"password_confirmation" => "Passwort bestätigen",
 		),
 	),
 	"views" => array(
