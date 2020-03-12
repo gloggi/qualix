@@ -13,6 +13,9 @@
             @component('components.form.fileInput', ['name' => 'image', 'label' => __('t.models.participant.image'), 'accept' => 'image/*'])@endcomponent
 
             @component('components.form.submit', ['label' => __('t.global.add')])@endcomponent
+            <a class="btn btn-link mb-1" href="{{ route('admin.participants.import', ['course' => $course]) }}">
+                {{ __('t.views.admin.participants.import') }}
+            </a>
 
         @endcomponent
 
