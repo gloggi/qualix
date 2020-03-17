@@ -13,6 +13,15 @@
                 :value="{{ $valueBind }}"
             @else
                 @if (!Arr::has(old(), $name))
+                    @php
+                    if (isset($value) && ($value || $value === [])) {
+                        if (is_array($value) || $value instanceof Illuminate\Database\Eloquent\Collection) {
+                            $value = implode(',', collect($value)->map($valueFn)->all());
+                        } else if ($value instanceof App\Models\Model) {
+                            $value = $valueFn($value);
+                        }
+                    }
+                    @endphp
                     value="{{ $value ?? '' }}"
                 @endif
             @endif
