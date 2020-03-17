@@ -13,7 +13,7 @@
             @component('components.form.multiSelectInput', [
                 'name' => 'blocks',
                 'label' => __('t.models.requirement.blocks'),
-                'value' => implode(',', array_map(function(\App\Models\Block $block) { return $block->id; }, $requirement->blocks->all())),
+                'value' => $requirement->blocks->all(),
                 'options' => $course->blocks->all(),
                 'valueFn' => function(\App\Models\Block $block) { return $block->id; },
                 'displayFn' => function(\App\Models\Block $block) { return $block->name; },

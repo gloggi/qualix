@@ -15,7 +15,7 @@
             @component('components.form.multiSelectInput', [
                 'name' => 'requirements',
                 'label' => __('t.models.block.requirements'),
-                'value' => implode(',', array_map(function(\App\Models\Requirement $requirement) { return $requirement->id; }, $block->requirements->all())),
+                'value' => $block->requirements->all(),
                 'options' => $course->requirements->all(),
                 'valueFn' => function(\App\Models\Requirement $requirement) { return $requirement->id; },
                 'displayFn' => function(\App\Models\Requirement $requirement) { return $requirement->content; },
