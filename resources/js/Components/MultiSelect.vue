@@ -1,6 +1,6 @@
 <template>
   <span>
-    <multiselect v-bind="$attrs" @input="onInput" v-model="currentValue" label="label" track-by="value" :multiple="multiple" :options="options">
+    <multiselect v-bind="$attrs" @input="onInput" @select="onSelect" v-model="currentValue" label="label" track-by="value" :multiple="multiple" :options="options">
       <template slot="clear" slot-scope="props">
         <div v-if="showDeleteButton" @mousedown.prevent.stop="clear" class="multiselect__clear"></div>
       </template>
@@ -55,16 +55,31 @@ export default {
       if (this.multiple) {
         return value ? this.options.filter(el => value.split(',').includes(el.value)) : []
       } else {
-        return value ? this.options.find(el => el.value === value) : []
+        return value ? (this.options.find(el => el.value === value) || []) : []
+      }
+    },
+    onSelect(option, id) {
+      if (this.isGroup(option)) {
+        // Right after this select event there will be an input event which includes the group in the selected elements.
+        // We wait for one tick until that input event has gone, and then overwrite the value of the multiselect.
+        this.$nextTick(() => {
+          this.currentValue = this.selectedOptions(option.groupValue)
+          this.onInput(this.currentValue, id)
+        })
       }
     },
     onInput(val, id) {
       this.$emit('input', val, id)
-      if (this.submitOnInput) {
+      // Don't auto-submit if a group was selected.
+      // One tick later there will be another input event which will include the group contents.
+      if (this.submitOnInput && !this.isGroup(val)) {
         this.$nextTick(() => {
           document.getElementById(this.submitOnInput).submit()
         })
       }
+    },
+    isGroup(option) {
+      return option.groupValue !== undefined
     },
     clear() {
       this.currentValue = []
