@@ -61,7 +61,7 @@ return array(
 			"email" => "E-Mail",
 		),
 		"invitation_claim" => array(
-		    "token" => "Token",
+			"token" => "Token",
 		),
 		"observation" => array(
 			"block" => "Block",
