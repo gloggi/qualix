@@ -88,6 +88,12 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::post('/course/{course}/admin/category/{category}', 'CategoryController@update')->name('admin.categories.update');
     Route::delete('/course/{course}/admin/category/{category}', 'CategoryController@destroy')->name('admin.categories.delete');
 
+    Route::get('/course/{course}/admin/qualis', 'QualiController@index')->name('admin.qualis');
+    Route::post('/course/{course}/admin/qualis', 'QualiController@store')->name('admin.qualis.store');
+    Route::get('/course/{course}/admin/qualis/{quali_data}', 'QualiController@edit')->name('admin.qualis.edit');
+    Route::post('/course/{course}/admin/qualis/{quali_data}', 'QualiController@update')->name('admin.qualis.update');
+    Route::delete('/course/{course}/admin/qualis/{quali_data}', 'QualiController@destroy')->name('admin.qualis.delete');
+
     Route::get('/newcourse', 'CourseController@create')->name('admin.newcourse');
     Route::post('/newcourse', 'CourseController@store')->name('admin.newcourse.store');
 });

@@ -22,7 +22,7 @@ class QualiRequirement extends Model {
     /**
      * @var array
      */
-    protected $fillable = ['passed', 'notes'];
+    protected $fillable = ['passed', 'notes', 'requirement_id'];
     protected $fillable_relations = ['quali', 'requirement'];
 
     /**

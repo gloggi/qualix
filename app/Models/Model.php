@@ -4,11 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as BaseModel;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Collection;
-use Illuminate\Validation\ValidationException;
 use LaravelFillableRelations\Eloquent\Concerns\HasFillableRelations;
 
 /**

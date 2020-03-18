@@ -55,11 +55,20 @@ class ExistsInCourse {
             [$connection, $table] = $validator->parseTable($parameters[0]);
         } else {
             $connection = null;
-            $model = $this->modelNamespace . '\\' . Str::singular(Str::studly($attribute));
+            $model = $this->modelNamespace . '\\' . $this->guessModelName($attribute);
             $table = call_user_func($model . '::tableName');
         }
 
         return [$connection, $table, $column];
+    }
+
+    protected function guessModelName($attribute) {
+        // In case the attribute name is a nested attribute like 'related.*.some_other_model',
+        // use just the last portion 'some_other_model'
+        $segments = explode('.', $attribute);
+        $attribute = end($segments);
+
+        return Str::singular(Str::studly($attribute));
     }
 
 }
