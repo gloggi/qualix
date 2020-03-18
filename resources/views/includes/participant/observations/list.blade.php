@@ -1,6 +1,5 @@
 @component('components.responsive-table', [
     'data' => $observations,
-    'rawColumns' => true,
     'fields' => [
         __('t.models.observation.content') => function(\App\Models\Observation $observation) use($course) {
             $rendered = new App\Util\HtmlString;
