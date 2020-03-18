@@ -23,7 +23,7 @@
             @component('components.form.multiSelectInput', [
                 'name' => 'requirements',
                 'label' => __('t.models.quali.requirements'),
-                'required' => true,
+                'required' => false,
                 'value' => $quali_data->requirements->all(),
                 'options' => $course->requirements->all(),
                 'groups' => [__('t.views.admin.qualis.select_all_requirements') => $course->requirements->all()],

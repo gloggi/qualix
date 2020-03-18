@@ -24,7 +24,7 @@ class QualiRequest extends FormRequest {
         return [
             'name' => 'required|max:255',
             'participants' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
-            'requirements' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
+            'requirements' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
             'quali_notes_template' => 'nullable|max:2047',
             'qualis' => 'nullable|array',
             'qualis.*.user' => 'nullable|regex:/^\d+$/|existsInCourse:trainers,user_id',
