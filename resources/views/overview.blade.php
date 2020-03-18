@@ -22,7 +22,6 @@
             @endphp
             @component('components.responsive-table', [
                 'data' => $participants,
-                'rawColumns' => true,
                 'fields' => $columns,
                 'cellClass' => 'position-relative',
                 'actions' => [
