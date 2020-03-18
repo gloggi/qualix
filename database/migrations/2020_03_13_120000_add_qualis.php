@@ -19,7 +19,6 @@ class AddQualis extends Migration {
             $table->integer('course_id');
             $table->timestamps();
             $table->foreign('course_id', 'fk_quali_datas_course_id')->references('id')->on('courses')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->primary('id');
         });
 
         Schema::create('qualis', function (Blueprint $table) {
@@ -33,7 +32,6 @@ class AddQualis extends Migration {
             $table->foreign('participant_id', 'fk_qualis_participant_id')->references('id')->on('participants')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('user_id', 'fk_qualis_user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('SET NULL');
             $table->unique(['quali_data_id', 'participant_id']);
-            $table->primary('id');
         });
 
         Schema::create('quali_requirements', function (Blueprint $table) {
@@ -46,7 +44,6 @@ class AddQualis extends Migration {
             $table->foreign('quali_id', 'fk_quali_requirements_quali_id')->references('id')->on('qualis')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('requirement_id', 'fk_quali_requirements_requirement_id')->references('id')->on('requirements')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->unique(['quali_id', 'requirement_id']);
-            $table->primary('id');
         });
 
         Schema::create('observations_quali_requirements', function (Blueprint $table) {
@@ -54,7 +51,7 @@ class AddQualis extends Migration {
             $table->integer('quali_requirement_id');
             $table->foreign('observation_id', 'fk_observations_quali_requirements_observation_id')->references('id')->on('observations')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('quali_requirement_id', 'fk_observations_quali_requirements_quali_id')->references('id')->on('quali_requirements')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->primary(['observation_id', 'quali_id', 'requirement_id']);
+            $table->primary(['observation_id', 'quali_requirement_id'], 'observations_quali_requirements_composite_primary');
         });
     }
 

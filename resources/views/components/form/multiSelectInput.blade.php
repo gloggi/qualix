@@ -43,7 +43,7 @@
                 }
             @endphp
             :options="{{ json_encode($jsonOptions) }}"
-            @if (isset($groups) && $groups)
+            @if ((isset($showClear) && $showClear) || (isset($groups) && $groups))
                 :show-clear="true"
             @endif
 

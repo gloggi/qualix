@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Course;
+use App\Models\Participant;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
@@ -60,6 +61,16 @@ class RouteServiceProvider extends ServiceProvider
             /** @var Course $course */
             $course = $route->parameter('course');
             return $course->observations()->findOrFail($id);
+        });
+        Route::bind('quali_data', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Course $course */
+            $course = $route->parameter('course');
+            return $course->quali_datas()->findOrFail($id);
+        });
+        Route::bind('quali', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Participant $participant */
+            $participant = $route->parameter('participant');
+            return $participant->qualis()->findOrFail($id);
         });
 
         parent::boot();

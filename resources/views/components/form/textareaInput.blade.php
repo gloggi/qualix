@@ -17,5 +17,7 @@
                 <strong>{{ $errors->first($name) }}</strong>
             </span>
         @endif
+
+        {{ $slot }}
     </div>
 </div>

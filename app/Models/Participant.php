@@ -14,8 +14,7 @@ namespace App\Models;
  * @property Course $course
  * @property Observation[] $observations
  */
-class Participant extends Model
-{
+class Participant extends Model {
     /**
      * The table associated with the model.
      *
@@ -31,17 +30,22 @@ class Participant extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function course()
-    {
-        return $this->belongsTo('App\Models\Course', 'course_id');
+    public function course() {
+        return $this->belongsTo(Course::class, 'course_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function observations()
-    {
-        return $this->belongsToMany('App\Models\Observation', 'observations_participants');
+    public function observations() {
+        return $this->belongsToMany(Observation::class, 'observations_participants');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function qualis() {
+        return $this->hasMany(Quali::class);
     }
 
     public function getPositiveAttribute() {

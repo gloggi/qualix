@@ -16,8 +16,7 @@ use Illuminate\Support\Collection;
  * @property Collection $participants
  * @property boolean $archived
  */
-class Course extends Model
-{
+class Course extends Model {
     /**
      * @var array
      */
@@ -26,56 +25,56 @@ class Course extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function blocks()
-    {
+    public function blocks() {
         return $this->hasMany('App\Models\Block', 'course_id')->orderBy('block_date')->orderBy('day_number')->orderBy('block_number')->orderBy('name')->orderBy('id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function invitations()
-    {
+    public function invitations() {
         return $this->hasMany('App\Models\Invitation', 'course_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
-    {
+    public function users() {
         return $this->belongsToMany('App\Models\User', 'trainers', 'course_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function requirements()
-    {
+    public function requirements() {
         return $this->hasMany('App\Models\Requirement', 'course_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function categories()
-    {
+    public function categories() {
         return $this->hasMany('App\Models\Category', 'course_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function participants()
-    {
+    public function participants() {
         return $this->hasMany('App\Models\Participant', 'course_id')->orderBy('scout_name');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function observations()
-    {
+    public function observations() {
         return $this->hasManyThrough(Observation::class, Block::class)->orderBy('blocks.block_date')->orderBy('blocks.day_number')->orderBy('blocks.block_number')->orderBy('blocks.name')->orderBy('blocks.id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function quali_datas() {
+        return $this->hasMany(QualiData::class)->orderBy('name');
     }
 }

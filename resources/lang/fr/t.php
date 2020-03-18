@@ -138,7 +138,7 @@ return array(
 					"question" => "Dois-je créer des catégories pour mon cours?",
 				),
 				"create_success" => "La catégorie \":name\" a été créée avec succès.",
-				"delete_success" => "La catégorie \":name\" a été créée avec succès.",
+				"delete_success" => "La catégorie \":name\" a été supprimé avec succès.",
 				"edit" => "Modifier la catégorie",
 				"edit_success" => "La catégorie \":name\" a été sauvegardée avec succès.",
 				"existing" => "Catégories :courseName",
