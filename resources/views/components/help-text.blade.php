@@ -1,7 +1,7 @@
 @php
     if (!isset($params)) $params = [];
 @endphp<span>
-    <a href="#" class="text-secondary" data-toggle="collapse" data-target="#{{ $id }}" aria-expanded="true" aria-controls="{{ $id }}">
+    <a href="#" class="text-secondary collapsed" data-toggle="collapse" data-target="#{{ $id }}" aria-expanded="true" aria-controls="{{ $id }}">
         {{__($key . '.question', $params)}} <i class="fas fa-question-circle"></i>
     </a>
 
