@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <b-card>
+    <b-card class="container-fluid">
         <template #header>{{__('t.views.quali_details.title')}}</template>
 
         <div class="row my-3">
@@ -14,24 +14,73 @@
             </div>
 
             <div class="col">
-                <h3>{{__('t.views.quali_details.participant_quali', ['participant' => $participant->scout_name, 'quali' => $quali->name])}}</h3>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6">
+                        <h3>{{__('t.views.quali_details.participant_quali', ['participant' => $participant->scout_name, 'quali' => $quali->name])}}</h3>
 
-                <p>
-                    <a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}">
-                        <i class="fas fa-arrow-left"></i> {{__('t.views.quali_details.back_to_participant', ['name' => $participant->scout_name])}}
-                    </a>
-                </p>
+                        <p>
+                            <a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}">
+                                <i class="fas fa-arrow-left"></i> {{__('t.views.quali_details.back_to_participant', ['name' => $participant->scout_name])}}
+                            </a>
+                        </p>
+                    </div>
 
-                <p>
-                    {{ (new \App\Util\HtmlString)->nl2br_e($quali->notes) }}
-                </p>
+                    <div class="col">
+                        @if($quali->user)
+                            <div class="d-flex justify-content-end">
+                                @if($quali->user->image_url)
+                                    @component('components.img',  ['src' => asset(Storage::url($quali->user->image_url)), 'classes' => ['avatar-small mr-2']])@endcomponent
+                                @endif
+                                <span>
+                                    <div>{{__('t.models.quali.user')}}:</div>
+                                    <div>{{ $quali->user->name }}</div>
+                                </span>
+                            </div>
+                        @endif
+                    </div>
+
+                </div>
 
                 @if($quali->requirements()->count())
+                    <h5>{{__('t.views.quali_details.requirements_status')}}</h5>
+
                     @component('components.requirement-progress', ['quali' => $quali])@endcomponent
                 @endif
+
+                <p class="mt-3">
+                    {{ (new \App\Util\HtmlString)->nl2br_e($quali->notes) }}
+                </p>
             </div>
 
         </div>
+
+        @if($quali->requirements()->count())
+
+            @foreach($quali->requirements as $requirement)
+
+                <b-card>
+                    <template #header>{{$requirement->requirement->content}}</template>
+
+                    @if($requirement->notes)
+                        <p>{{ (new \App\Util\HtmlString)->nl2br_e($requirement->notes) }}</p>
+                    @endif
+
+                    @foreach($requirement->observations as $observation)
+
+                        @component('components.card')
+                            {{ (new \App\Util\HtmlString)->nl2br_e($observation->observation->content) }}
+                            <p class="card-text"><small class="text-muted">{{ $observation->observation->block->name }}, {{ $observation->observation->block->block_date->formatLocalized('%A %d.%m.%Y') }}</small></p>
+                        @endcomponent
+
+                        {{ (new \App\Util\HtmlString)->nl2br_e($observation->notes) }}
+
+                    @endforeach
+
+                </b-card>
+
+            @endforeach
+
+        @endif
 
     </b-card>
 

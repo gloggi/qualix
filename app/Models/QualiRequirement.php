@@ -9,7 +9,7 @@ namespace App\Models;
  * @property string $notes
  * @property Quali $quali
  * @property Requirement $requirement
- * @property Observation[] $observations
+ * @property QualiObservation[] $observations
  */
 class QualiRequirement extends Model {
     /**
@@ -40,9 +40,9 @@ class QualiRequirement extends Model {
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function observations() {
-        return $this->belongsToMany(Observation::class, 'observations_quali_requirements', 'quali_requirement_id');
+        return $this->hasMany(QualiObservation::class, 'quali_requirement_id');
     }
 }

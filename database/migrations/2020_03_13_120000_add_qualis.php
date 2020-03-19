@@ -46,9 +46,10 @@ class AddQualis extends Migration {
             $table->unique(['quali_id', 'requirement_id']);
         });
 
-        Schema::create('observations_quali_requirements', function (Blueprint $table) {
+        Schema::create('quali_observations', function (Blueprint $table) {
             $table->integer('observation_id');
             $table->integer('quali_requirement_id');
+            $table->string('notes', 2047)->nullable();
             $table->foreign('observation_id', 'fk_observations_quali_requirements_observation_id')->references('id')->on('observations')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('quali_requirement_id', 'fk_observations_quali_requirements_quali_id')->references('id')->on('quali_requirements')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->primary(['observation_id', 'quali_requirement_id'], 'observations_quali_requirements_composite_primary');
