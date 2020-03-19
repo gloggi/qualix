@@ -348,6 +348,7 @@ return array(
 		"quali_details" => array(
 			"back_to_participant" => "Zurück zu :name",
 			"participant_quali" => ":quali: :participant",
+			"requirements_status" => "Anforderungen",
 			"title" => "Quali Details",
 		),
 		"register" => array(
