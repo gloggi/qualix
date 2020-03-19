@@ -6,12 +6,12 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\Observation;
 use App\Models\Participant;
+use App\Models\Quali;
 use App\Models\Requirement;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class ParticipantDetailController extends Controller
-{
+class ParticipantDetailController extends Controller {
     /**
      * Display a listing of the resource.
      *
@@ -20,8 +20,7 @@ class ParticipantDetailController extends Controller
      * @param Participant $participant
      * @return Response
      */
-    public function index(Request $request, Course $course, Participant $participant)
-    {
+    public function index(Request $request, Course $course, Participant $participant) {
         $observations = $participant->observations;
 
         $requirement = $request->input('requirement');
@@ -54,7 +53,9 @@ class ParticipantDetailController extends Controller
             }
         }
 
-        $observations = $observations->sortBy(function (Observation $observation) { return $observation->block->block_date->timestamp . '.' . $observation->block->day_number . '.' . $observation->block->block_number . '.' . $observation->block->name . '.' . $observation->block->id; });
+        $observations = $observations->sortBy(function (Observation $observation) {
+            return $observation->block->block_date->timestamp . '.' . $observation->block->day_number . '.' . $observation->block->block_number . '.' . $observation->block->name . '.' . $observation->block->id;
+        });
 
         return view('participant-detail', ['participant' => $participant, 'observations' => $observations, 'requirement' => $requirement, 'category' => $category]);
     }

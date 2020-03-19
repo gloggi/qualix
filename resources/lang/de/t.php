@@ -83,6 +83,7 @@ return array(
 			"notes" => "Notizen",
 			"participant" => "TN",
 			"participants" => "TN",
+			"requirement_progress" => "Anforderungen",
 			"requirements" => "Relevante Anforderungen",
 			"user" => "Verantwortlich",
 		),
@@ -336,8 +337,18 @@ return array(
 			"num_observations" => "{0}Bisher keine Beobachtungen.|{1}Erst eine Beobachtung. Da geht noch mehr!|[2,*]:count Beobachtungen, davon :positive mit positivem, :neutral mit neutralem und :negative mit negativem Eindruck.",
 			"observations_without_category" => "Beobachtungen ohne Kategorie",
 			"observations_without_requirement" => "Beobachtungen ohne Anforderung",
+			"qualis" => array(
+				"requirements_failed" => ":count nicht bestanden",
+				"requirements_passed" => ":count bestanden",
+				"title" => "Qualis",
+			),
 			"really_delete_observation" => "Willst du diese Beobachtung wirklich löschen?",
 			"title" => "TN Details",
+		),
+		"quali_details" => array(
+			"back_to_participant" => "Zurück zu :name",
+			"participant_quali" => ":quali: :participant",
+			"title" => "Quali Details",
 		),
 		"register" => array(
 			"via_midata" => "Via PBS MiData registrieren",
