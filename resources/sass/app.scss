@@ -128,3 +128,11 @@
 [data-toggle=collapse].collapsed .fa-caret-down {
     transform: rotate(0deg) translate(0, 0);
 }
+
+.progress {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.multiline {
+    white-space: pre-wrap;
+}
