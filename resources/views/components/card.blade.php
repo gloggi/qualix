@@ -1,9 +1,12 @@
-<div class="card">
-    @if(isset($header))
-        <div class="card-header">{{ $header }}</div>
+<div class="card {{ $class ?? '' }}" {{ $attrs ?? '' }}>
+    @if(isset($header) || isset($headerRight))
+        <div class="card-header d-flex justify-content-between">
+            <span>{{ $header ?? '' }}</span>
+            <span class="text-right">{{ $headerRight ?? '' }}</span>
+        </div>
     @endif
 
-    <div class="{{ isset($bodyClass) ? $bodyClass : 'card-body' }}">
+    <div class="{{ $bodyClass ?? 'card-body' }}">
         {{ $slot }}
     </div>
 </div>
