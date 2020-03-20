@@ -3,6 +3,7 @@
 
   th, td {
     vertical-align: middle;
+    @extend .multiline
   }
 
   th {

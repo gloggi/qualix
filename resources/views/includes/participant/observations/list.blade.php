@@ -10,7 +10,7 @@
                 });
                 $rendered->s('</div>');
             }
-            return $rendered->nl2br_e($observation->content);
+            return $rendered->e($observation->content);
         },
         __('t.models.observation.block') => function(\App\Models\Observation $observation) { return $observation->block->blockname_and_number; },
         __('t.models.observation.requirements') => function(\App\Models\Observation $observation) {

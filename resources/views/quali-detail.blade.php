@@ -46,8 +46,8 @@
                     @component('components.requirement-progress', ['quali' => $quali])@endcomponent
                 @endif
 
-                <p class="mt-3">
-                    {{ (new \App\Util\HtmlString)->nl2br_e($quali->notes) }}
+                <p class="mt-3" style="white-space: pre-wrap">
+                    {{ (new \App\Util\HtmlString)->e($quali->notes) }}
                 </p>
             </div>
 
@@ -60,17 +60,17 @@
                 @component('components.card', ['header' => $requirement->requirement->content])
 
                     @if($requirement->notes)
-                        <p>{{ (new \App\Util\HtmlString)->nl2br_e($requirement->notes) }}</p>
+                        <p class="multiline">{{ (new \App\Util\HtmlString)->e($requirement->notes) }}</p>
                     @endif
 
                     @foreach($requirement->observations as $observation)
 
                         @component('components.card')
-                            {{ (new \App\Util\HtmlString)->nl2br_e($observation->observation->content) }}
+                            <p class="multiline">{{ (new \App\Util\HtmlString)->e($observation->observation->content) }}</p>
                             <p class="card-text"><small class="text-muted">{{ $observation->observation->block->name }}, {{ $observation->observation->block->block_date->formatLocalized('%A %d.%m.%Y') }}</small></p>
                         @endcomponent
 
-                        {{ (new \App\Util\HtmlString)->nl2br_e($observation->notes) }}
+                        <p class="multiline">{{ (new \App\Util\HtmlString)->e($observation->notes) }}</p>
 
                     @endforeach
 
