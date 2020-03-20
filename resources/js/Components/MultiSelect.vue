@@ -8,7 +8,7 @@
           <div class="text-secondary">{{ noOptions }}</div>
       </template>
     </multiselect>
-    <input type="hidden" :name="this.name" :value="formValue">
+    <input type="hidden" :name="name" :value="formValue">
   </span>
 </template>
 
