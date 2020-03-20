@@ -1,4 +1,5 @@
-@component('components.card', ['header' => __('t.views.participant_details.qualis.title')])
+<b-card>
+    <template #header>{{__('t.views.participant_details.qualis.title')}}</template>
 
     @php
     $fields = [
@@ -23,4 +24,4 @@
         ]
     ])@endcomponent
 
-@endcomponent
+</b-card>

@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.qualis.edit')])
+    <b-card>
+        <template #header>{{__('t.views.admin.qualis.edit')}}</template>
 
         @component('components.form', ['route' => ['admin.qualis.update', ['course' => $course->id, 'quali_data' => $quali_data->id]]])
 
@@ -49,6 +50,6 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

@@ -56,29 +56,7 @@
 
         @if($quali->requirements()->count())
 
-            @foreach($quali->requirements as $requirement)
-
-                <b-card>
-                    <template #header>{{$requirement->requirement->content}}</template>
-
-                    @if($requirement->notes)
-                        <p>{{ (new \App\Util\HtmlString)->nl2br_e($requirement->notes) }}</p>
-                    @endif
-
-                    @foreach($requirement->observations as $observation)
-
-                        @component('components.card')
-                            {{ (new \App\Util\HtmlString)->nl2br_e($observation->observation->content) }}
-                            <p class="card-text"><small class="text-muted">{{ $observation->observation->block->name }}, {{ $observation->observation->block->block_date->formatLocalized('%A %d.%m.%Y') }}</small></p>
-                        @endcomponent
-
-                        {{ (new \App\Util\HtmlString)->nl2br_e($observation->notes) }}
-
-                    @endforeach
-
-                </b-card>
-
-            @endforeach
+            @component('includes.quali.requirements', ['qualiRequirements' => $quali->requirements])@endcomponent
 
         @endif
 
