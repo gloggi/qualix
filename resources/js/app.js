@@ -18,8 +18,9 @@ jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
 });
 Vue.component('date-picker', datePicker);
 
-const files = require.context('./', true, /\.vue$/i);
-files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+require.context('./', true, /\.vue$/i, 'lazy').keys().forEach(file => {
+    Vue.component(file.split('/').pop().split('.')[0], () => import(`${file}` /*webpackChunkName: "[request]" */));
+});
 
 /**
  * Fix autofocus on form elements inside the Vue.js area of the page by adding v-focus additionally to autofocus:
