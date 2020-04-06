@@ -204,17 +204,23 @@ return array(
 			),
             "participant_import" => array(
                 "MiData" => array(
-                    "participant_list" => "Teilnehmerliste",
+                    "participant_list" => "Adressliste",
                     "how_to_get_the_participant_list" => array(
-                        "answer" => "Wenn die Teilnehmenden in deinem Kurs auf :MiData erfasst sind, gehe dort auf deinen Kurs und in der Navigation zu \"Teilnehmende\". Danach kannst du die Teilnehmerliste oben rechts als Excel-Datei herunterladen.",
-                        "question" => "Woher bekomme ich die Teilnehmerliste?",
+                        "answer" => "Wenn die Teilnehmenden in deinem Kurs auf :MiData erfasst sind, gehe dort auf deinen Kurs und in der Navigation zu \"Teilnehmende\". Danach kannst du die Adressliste der Teilnehmenden oben rechts als Excel-Datei herunterladen.",
+                        "question" => "Woher bekomme ich die Adressliste?",
                     ),
                     "name" => "MiData",
+                    "column_names" => array(
+                        "scout_name" => "Pfadiname",
+                        "first_name" => "Vorname",
+                        "last_name" => "Nachname",
+                        "group" => "Hauptebene",
+                    ),
                 ),
                 "error_while_parsing" => "Die Teilnehmerliste konnte nicht korrekt gelesen werden - hast du die Datei unverändert hochgeladen?",
                 "import" => "Importieren",
                 "import_from" => "Teilnehmende aus :source importieren",
-                "import_success" => "{0}In der importierten Datei wurden keine Teilnehmer gefunden.|{1}In der importierten Datei wurde ein Teilnehmer gefunden.|[2,*]In der importierten Datei wurden :count Teilnehmer gefunden.",
+                "import_success" => "{0}In der importierten Datei wurden keine Teilnehmende gefunden.|{1}In der importierten Datei wurde ein Teilnehmer* gefunden.|[2,*]In der importierten Datei wurden :count Teilnehmende gefunden.",
                 "unknown_error" => "Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Teilnehmende manuell.",
                 "warning_existing_participants" => "In deinem Kurs sind bereits Teilnehmende erfasst. Wenn beim Import schon Teilnehmende exisitieren, bleiben diese bestehenden und durch den Import werden neue zusätzliche erfasst.",
             ),
