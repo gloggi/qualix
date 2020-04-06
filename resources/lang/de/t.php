@@ -204,7 +204,7 @@ return array(
 			),
             "participant_import" => array(
                 "MiData" => array(
-                    "participant_list" => "Teilnehmer",
+                    "participant_list" => "Teilnehmerliste",
                     "how_to_get_the_participant_list" => array(
                         "answer" => "Wenn die Teilnehmenden in deinem Kurs auf :MiData erfasst sind, gehe dort auf deinen Kurs und in der Navigation zu \"Teilnehmende\". Danach kannst du oben rechts die Liste der Teilnehmenden als Excel-Datei herunterladen. Andernfalls kannst du die Liste auch manuell erstellen mit den Spaltenbezeichnungen: \"Pfadiname\" und \"Hauptebene\"",
                         "question" => "Woher bekomme ich die Teilnehmerliste?",
