@@ -111,12 +111,22 @@ class MiDataParticipantListParser implements ParticipantListParser {
      * @return array containing the extracted data
      */
     protected function parseName(PhpSpreadsheet\Cell\Cell $cell, Row $row) {
-        $newName = "";
+        $newName="";
+        $firstName="";
+        $lastName="";
         if(empty($cell->getValue())){
             $newCells = Collection::make($row->getCellIterator(self::$COL_WITH_FIRST_NAME, self::$COL_WITH_LAST_NAME));
-            $firstName = $newCells[self::$COL_WITH_FIRST_NAME]->getValue();
-            $lastName = $newCells[self::$COL_WITH_LAST_NAME]->getValue();
-            $newName =$firstName." ".$lastName;
+            if(!empty(self::$COL_WITH_FIRST_NAME)){
+                $firstName = $newCells[self::$COL_WITH_FIRST_NAME]->getValue();
+            }
+            if(!empty(self::$COL_WITH_LAST_NAME)) {
+                $lastName = $newCells[self::$COL_WITH_LAST_NAME]->getValue();
+            }
+            if(empty($firstName)){
+                $newName = $lastName;
+            } elseif (empty($lastName)){
+                $newName = $firstName;
+            } else $newName =$firstName." ".$lastName;
         } else $newName=  $cell->getValue();
         return [
           'scout_name' => $newName
