@@ -194,6 +194,7 @@ return array(
 				"edit" => "Modifier participant-e-s",
 				"edit_success" => "Participant-e \":name\" a été saisi-e avec succès.",
 				"existing" => "Participant-e-s :courseName",
+				"import" => "Importer des participants...",
 				"menu_name" => "Participants",
 				"new" => "Nouveaux/nouvelles participant-e-s",
 				"no_participants" => "Pour l'instant, aucun-e participant-e saisi-e",
