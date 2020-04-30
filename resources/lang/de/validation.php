@@ -4,6 +4,7 @@ return array(
 	"active_url" => ":attribute ist keine gültige Internet-Adresse.",
 	"after" => ":attribute muss ein Datum nach dem :date sein.",
 	"after_or_equal" => ":attribute muss ein Datum nach dem :date oder gleich dem :date sein.",
+	"all_exist_in_course" => "Der gewählte Wert für :attribute ist ungültig.",
 	"alpha" => ":attribute darf nur aus Buchstaben bestehen.",
 	"alpha_dash" => ":attribute darf nur aus Buchstaben, Zahlen, Binde- und Unterstrichen bestehen.",
 	"alpha_num" => ":attribute darf nur aus Buchstaben und Zahlen bestehen.",
@@ -65,6 +66,7 @@ return array(
 	"email" => ":attribute muss eine gültige E-Mail-Adresse sein.",
 	"ends_with" => ":attribute muss auf einen der folgenden Werte enden: :values",
 	"exists" => "Der gewählte Wert für :attribute ist ungültig.",
+	"exists_in_course" => "Der gewählte Wert für :attribute ist ungültig.",
 	"file" => ":attribute muss eine Datei sein.",
 	"filled" => ":attribute muss ausgefüllt sein.",
 	"gt" => array(

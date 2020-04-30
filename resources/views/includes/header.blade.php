@@ -47,16 +47,16 @@
                                href="{{ route('admin.course', ['course' => $course->id]) }}">{{__('t.views.admin.course_settings.menu_name')}}</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.equipe' ? ' active' : '' }}"
                                href="{{ route('admin.equipe', ['course' => $course->id]) }}">{{__('t.views.admin.equipe.menu_name')}}</a>
-                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.requirements' ? ' active' : '' }}"
-                               href="{{ route('admin.requirements', ['course' => $course->id]) }}">{{__('t.views.admin.requirements.menu_name')}}</a>
-                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.categories' ? ' active' : '' }}"
-                               href="{{ route('admin.categories', ['course' => $course->id]) }}">{{__('t.views.admin.categories.menu_name')}}</a>
                             <a class="dropdown-item{{ Route::currentRouteName() == 'admin.blocks' ? ' active' : '' }}"
                                href="{{ route('admin.blocks', ['course' => $course->id]) }}">{{__('t.views.admin.blocks.menu_name')}}</a>
                             @if(!$course->archived)
                                 <a class="dropdown-item{{ Route::currentRouteName() == 'admin.participants' ? ' active' : '' }}"
                                    href="{{ route('admin.participants', ['course' => $course->id]) }}">{{__('t.views.admin.participants.menu_name')}}</a>
                             @endif
+                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.requirements' ? ' active' : '' }}"
+                               href="{{ route('admin.requirements', ['course' => $course->id]) }}">{{__('t.views.admin.requirements.menu_name')}}</a>
+                            <a class="dropdown-item{{ Route::currentRouteName() == 'admin.categories' ? ' active' : '' }}"
+                               href="{{ route('admin.categories', ['course' => $course->id]) }}">{{__('t.views.admin.categories.menu_name')}}</a>
                         </div>
                     </li>
                 @endif

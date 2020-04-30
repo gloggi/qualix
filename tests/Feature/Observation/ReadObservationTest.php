@@ -70,7 +70,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
         // given
         $otherCourseId = $this->createCourse('Zweiter Kurs', '', false);
         $otherParticipantId = Participant::create(['course_id' => $otherCourseId, 'scout_name' => 'Pflock'])->id;
-        $otherBlockId = Block::create(['course_id' => $otherCourseId, 'full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '01.01.2019', 'requirement_ids' => null])->id;
+        $otherBlockId = Block::create(['course_id' => $otherCourseId, 'full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '01.01.2019', 'requirements' => null])->id;
         $otherUserId = $this->createUser(['name' => 'Lindo'])->id;
         $otherObservationId = $this->createObservation('hat gut mitgemacht', '1', [], [], $otherBlockId, $otherParticipantId, $otherUserId);
 

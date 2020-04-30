@@ -10,6 +10,15 @@
 
             @component('components.form.checkboxInput', ['name' => 'mandatory', 'label' => __('t.models.requirement.mandatory')])@endcomponent
 
+            @component('components.form.multiSelectInput', [
+                'name' => 'blocks',
+                'label' => __('t.models.requirement.blocks'),
+                'options' => $course->blocks->all(),
+                'valueFn' => function(\App\Models\Block $block) { return $block->id; },
+                'displayFn' => function(\App\Models\Block $block) { return $block->name; },
+                'multiple' => true,
+            ])@endcomponent
+
             @component('components.form.submit', ['label' => __('t.global.add')])
 
                 @component('components.help-text', ['id' => 'requirementsHelp', 'key' => 't.views.admin.requirements.what_are_requirements'])@endcomponent

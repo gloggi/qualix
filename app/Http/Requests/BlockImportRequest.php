@@ -6,15 +6,13 @@ use App\Providers\ImportServiceProvider;
 use App\Services\Import\Blocks\BlockListImporter;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BlockImportRequest extends FormRequest
-{
+class BlockImportRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -23,8 +21,7 @@ class BlockImportRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'source' => 'required|in:' . implode(',', array_keys(ImportServiceProvider::$BLOCK_IMPORTER_MAP)),
             'file' => 'required|max:2000',
@@ -37,6 +34,6 @@ class BlockImportRequest extends FormRequest
      * @return BlockListImporter
      */
     public function getImporter() {
-       return app()->get(ImportServiceProvider::$BLOCK_IMPORTER_MAP[$this->input('source')]);
+        return app()->get(ImportServiceProvider::$BLOCK_IMPORTER_MAP[$this->input('source')]);
     }
 }

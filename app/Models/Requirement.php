@@ -54,7 +54,7 @@ class Requirement extends Model
      */
     public function blocks()
     {
-        return $this->belongsToMany('App\Models\Block');
+        return $this->belongsToMany('App\Models\Block', 'blocks_requirements', 'requirement_id', 'block_id');
     }
 
     /**

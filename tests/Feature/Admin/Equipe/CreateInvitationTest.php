@@ -67,6 +67,9 @@ class CreateInvitationTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('E-Mail muss ausgefüllt sein.', $exception->validator->errors()->first('email'));
     }
 
     public function test_shouldValidateNewInvitationData_longEmail() {
@@ -79,6 +82,9 @@ class CreateInvitationTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('E-Mail darf maximal 50 Zeichen haben.', $exception->validator->errors()->first('email'));
     }
 
     public function test_shouldValidateNewInvitationData_invalidEmail() {
@@ -91,6 +97,9 @@ class CreateInvitationTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('E-Mail muss eine gültige E-Mail-Adresse sein.', $exception->validator->errors()->first('email'));
     }
 
     public function test_shouldShowMessage_whenNoInvitationInCourse() {

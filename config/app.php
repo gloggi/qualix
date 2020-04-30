@@ -188,6 +188,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\ImportServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ValidationServiceProvider::class,
 
     ],
 

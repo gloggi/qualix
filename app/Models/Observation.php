@@ -27,7 +27,8 @@ class Observation extends Model
     /**
      * @var array
      */
-    protected $fillable = ['participant_id', 'block_id', 'user_id', 'impression', 'content'];
+    protected $fillable = ['user_id', 'impression', 'content'];
+    protected $fillable_relations = ['block'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

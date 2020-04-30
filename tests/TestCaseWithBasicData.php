@@ -18,7 +18,7 @@ abstract class TestCaseWithBasicData extends TestCaseWithCourse
     }
 
     protected function createObservation($content = 'hat gut mitgemacht', $impression = 1, $requirementId = [], $categoryIds = [], $blockId = null, $participantIds = null, $userId = null) {
-        $observation = Observation::create(['user_id' => ($userId !== null ? $userId : $this->user()->id), 'block_id' => ($blockId !== null ? $blockId : $this->blockId), 'content' => $content, 'impression' => $impression]);
+        $observation = Observation::create(['user_id' => ($userId !== null ? $userId : $this->user()->id), 'block' => ($blockId !== null ? $blockId : $this->blockId), 'content' => $content, 'impression' => $impression]);
         $observation->requirements()->attach($requirementId);
         $observation->categories()->attach($categoryIds);
         $observation->participants()->attach(($participantIds !== null ? Arr::wrap($participantIds) : [$this->participantId]));
