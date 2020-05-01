@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-header d-flex py-1 pr-2">
+    <div class="card-header d-flex p-2">
       <quali-requirement-menu v-model="value" class="mr-2 my-auto"></quali-requirement-menu>
       <div class="flex-grow-1 my-auto">{{ value.content }}</div>
       <i class="fas fa-arrows-alt mx-2 handle my-auto"></i>

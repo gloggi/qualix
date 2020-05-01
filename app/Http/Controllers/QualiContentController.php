@@ -36,7 +36,8 @@ class QualiContentController extends Controller {
     public function edit(Request $request, Course $course, Participant $participant, Quali $quali) {
         return view('quali-edit', ['participant' => $participant, 'quali' => $quali,
             'translations' => $this->getTranslations([
-                't.models.observation.model_name'
+                't.models.observation.model_name',
+                't.views.quali_content.text_placeholder'
             ])
         ]);
     }
@@ -57,10 +58,10 @@ class QualiContentController extends Controller {
                 throw ValidationException::withMessages(['contents' => trans('t.views.quali_content.error_requirements_changed')]);
             }
 
-            $allNoteIds = $data->filter(function ($element) { return $element['type'] === 'text'; })->map(function ($element) { return $element->id; });
+            $allNoteIds = $data->filter(function ($element) { return ($element['type'] === 'text') && $element['content']; })->map(function ($element) { return $element['id']; });
             $quali->notes()->whereNotIn('id', $allNoteIds)->delete();
 
-            $allQualiObservationIds = $data->filter(function ($element) { return $element['type'] === 'observation'; })->map(function ($element) { return $element->id; });
+            $allQualiObservationIds = $data->filter(function ($element) { return $element['type'] === 'observation'; })->map(function ($element) { return $element['id']; });
             $quali->observations()->whereNotIn('id', $allQualiObservationIds)->detach();
 
 
@@ -69,10 +70,14 @@ class QualiContentController extends Controller {
             $data->each(function ($element) use($quali, &$order) {
                 switch ($element['type']) {
                     case 'text':
-                        $quali->notes()->updateOrCreate(['id' => $element['id']], ['order' => $order++, 'notes' => $element['content']]);
+                        if ($element['content']) {
+                            $quali->notes()->updateOrCreate(['id' => $element['id']], ['order' => $order++, 'notes' => $element['content']]);
+                        }
                         break;
                     case 'observation':
-                        $quali->observations()->syncWithoutDetaching([$element['id'] => ['order' => $order++]]);
+                        if ($element['id']) {
+                            $quali->observations()->syncWithoutDetaching([$element['id'] => ['order' => $order++]]);
+                        }
                         break;
                     case 'requirement':
                         $quali->requirements()->find($element['id'])->update(['order' => $order++, 'passed' => $element['passed']]);
@@ -80,6 +85,7 @@ class QualiContentController extends Controller {
                         break;
                 }
             });
+
             return Redirect::route('qualiContent.detail', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]);
         });
     }

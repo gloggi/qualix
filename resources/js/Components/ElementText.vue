@@ -1,12 +1,8 @@
 <template>
-  <div class="card">
-    <div class="card-header d-flex pr-2">
-      <div class="flex-grow-1">{{ value.content }}</div>
-      <div><i class="fas fa-arrows-alt mr-2 handle"></i></div>
-    </div>
-    <div class="card-body bg-light p-0">
-      <textarea class="form-control quali-note-content" v-model="value.content" />
-    </div>
+  <div class="d-flex pr-4 element-text-container">
+    <textarea class="flex-grow-1 form-control" v-model="value.content" :placeholder="translations['t.views.quali_content.text_placeholder']" />
+    <a class="text-danger" @click="remove"><i class="fas fa-minus-circle mx-3"></i></a>
+    <div><i class="fas fa-arrows-alt mr-2 handle"></i></div>
   </div>
 </template>
 
@@ -15,8 +11,10 @@
 export default {
   name: 'ElementText',
   props: {
-    value: Object
-  }
+    value: Object,
+    remove: Function,
+    translations: Object,
+  },
 }
 </script>
 

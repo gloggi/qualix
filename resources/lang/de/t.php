@@ -409,6 +409,8 @@ return array(
 			"error_requirements_changed" => "Die Änderungen konnten nicht gespeichert werden, weil die Anforderungen im Quali inzwischen geändert wurden.",
 			"participant_quali" => ":quali: :participant",
 			"requirements_status" => "Anforderungen",
+			"text_element" => "Text",
+			"text_placeholder" => "Hier tippen...",
 			"title" => "Quali Details",
 		),
 		"register" => array(
