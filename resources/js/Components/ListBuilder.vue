@@ -1,12 +1,17 @@
 <template>
-  <draggable v-model="currentValue" v-on="$listeners" handle=".handle">
-    <div v-for="(element,idx) in currentValue" :key="idx">
-      <template v-if="$scopedSlots[element.type]">
-        <slot :name="element.type" :value="element" :translations="translations" />
+  <div>
+    <draggable v-model="currentValue" v-on="$listeners" handle=".handle">
+      <div v-for="(element,idx) in currentValue">
+        <slot :name="element.type" :value="element" :translations="translations" :remove="() => removeElement(idx)" />
+      </div>
+      <input v-if="name" type="hidden" :name="name" :value="JSON.stringify(currentValue)">
+    </draggable>
+    <div class="btn-toolbar d-flex justify-content-start my-2" role="toolbar">
+      <template v-for="slot in addButtonSlots">
+        <slot :name="slot" :add-element="addElement" />
       </template>
     </div>
-    <input v-if="name" type="hidden" :name="name" :value="JSON.stringify(currentValue)">
-  </draggable>
+  </div>
 </template>
 
 <script>
@@ -28,9 +33,20 @@ export default {
       currentValue: this.oldValue !== undefined ? this.oldValue : this.value
     }
   },
+  computed: {
+    addButtonSlots() {
+      return Object.keys(this.$scopedSlots).filter(key => key.startsWith('add-'))
+    }
+  },
   methods: {
-    onInput: function (...args) {
+    onInput(...args) {
       this.$emit('input', ...args)
+    },
+    addElement(element) {
+      this.currentValue.push(element)
+    },
+    removeElement(index) {
+      this.currentValue.splice(index, 1)
     }
   }
 }
