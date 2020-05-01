@@ -34,11 +34,11 @@
 
             @component('components.form.textareaInput', ['name' => 'quali_notes_template', 'label' => __('t.views.admin.qualis.quali_notes_template')])
 
-                @component('components.help-text', ['id' => 'qualiNotesTemplateHelp', 'key' => 't.views.admin.qualis.quali_notes_template_description', 'params' => ['notes' => __('t.models.quali.notes')]])@endcomponent
+                @component('components.help-text', ['id' => 'qualiNotesTemplateHelp', 'key' => 't.views.admin.qualis.quali_notes_template_description'])@endcomponent
 
             @endcomponent
 
-            @component('components.form.submit', ['label' => __('t.global.add')])
+            @component('components.form.submit', ['label' => __('t.views.admin.qualis.create')])
 
                 @component('components.help-text', ['id' => 'qualiHelp', 'key' => 't.views.admin.qualis.what_are_qualis'])@endcomponent
 

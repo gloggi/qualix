@@ -7,9 +7,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                {{ $text }}
-            </div>
+            <div class="modal-body">{{ $text }}</div>
             <div class="modal-footer">
                 @component('components.form', ['method' => 'DELETE', 'route' => $route])
                     <button type="submit" class="btn btn-danger">{{ __('t.global.delete') }}</button>

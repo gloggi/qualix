@@ -7,11 +7,11 @@ namespace App\Models;
  * @property int $quali_data_id
  * @property int $participant_id
  * @property int $user_id
- * @property string $notes
  * @property QualiData $quali_data
  * @property Participant $participant
  * @property User|null $user
  * @property QualiRequirement[] $quali_requirements
+ * @property array $contents
  */
 class Quali extends Model {
     /**
@@ -32,7 +32,7 @@ class Quali extends Model {
      * @var array
      */
     protected $fillable = ['notes', 'participant_id'];
-    protected $fillable_relations = ['participant', 'user'];
+    protected $fillable_relations = ['participant', 'user', 'notes'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -70,6 +70,20 @@ class Quali extends Model {
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function observations() {
+        return $this->belongsToMany(Observation::class, 'quali_observations')->withPivot('order')->orderBy('quali_observations.order');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notes() {
+        return $this->hasMany(QualiNote::class)->orderBy('order');
+    }
+
+    /**
      * Convenience method for getting the quali's name from the related quali_data.
      * @return string
      */
@@ -84,5 +98,35 @@ class Quali extends Model {
      */
     public function setNameAttribute($name) {
         $this->quali_data->attributes['name'] = $name;
+    }
+
+    public function getContentsAttribute() {
+        return $this->notes->map(function (QualiNote $note) {
+            return [
+                'type' => 'text',
+                'id' => $note->id,
+                'order' => $note->order,
+                'content' => $note->notes
+            ];
+        })->concat($this->observations->map(function (Observation $observation) {
+            return [
+                'type' => 'observation',
+                'id' => $observation->pivot->id,
+                'quali_id' => $observation->pivot->quali_id,
+                'order' => $observation->pivot->order,
+                'content' => $observation->content,
+                'block' => $observation->block->name,
+                'date' => $observation->block->block_date->formatLocalized('%A %d.%m.%Y'),
+            ];
+        }))->concat($this->requirements->map(function (QualiRequirement $requirement) {
+            return [
+                'type' => 'requirement',
+                'id' => $requirement->id,
+                'order' => $requirement->order,
+                'content' => $requirement->requirement->content,
+                'passed' => $requirement->passed,
+                'contents' => $requirement->contents,
+            ];
+        }))->sortBy('order')->values();
     }
 }

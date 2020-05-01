@@ -19,7 +19,7 @@ jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
 Vue.component('date-picker', datePicker);
 
 require.context('./', true, /\.vue$/i, 'lazy').keys().forEach(file => {
-    Vue.component(file.split('/').pop().split('.')[0], () => import(`${file}`));
+    Vue.component(file.split('/').pop().split('.')[0], () => import(`${file}` /*webpackChunkName: "[request]" */));
 });
 
 /**

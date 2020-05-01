@@ -80,12 +80,11 @@ return array(
 		),
 		"quali" => array(
 			"name" => "Titel",
-			"notes" => "Notizen",
 			"participant" => "TN",
 			"participants" => "TN",
 			"requirement_progress" => "Anforderungen",
 			"requirements" => "Relevante Anforderungen",
-			"user" => "Verantwortlich",
+			"user" => "Zuständig",
 		),
 		"requirement" => array(
 			"blocks" => "Blöcke",
@@ -216,6 +215,7 @@ return array(
 			),
 			"qualis" => array(
 				"back_to_quali_list" => "zurück zur Liste der Qualis",
+				"create" => "Erstellen",
 				"go_back_to_quali_list" => "Zurück zur Liste der Qualis",
 				"create_success" => "Das Quali \":name\" wurde erfolgreich erstellt. Du kannst nun noch die einzelnen TN-Qualis den Equipenmitgliedern zuweisen. Falls du das jetzt nicht machen möchtest, gehts hier :back_to_quali_list",
 				"delete_success" => "Das Quali \":name\" wurde erfolgreich gelöscht.",
@@ -228,14 +228,14 @@ return array(
 				"no_qualis" => "Bisher sind keine Qualis erfasst.",
 				"select_all_participants" => "Alle auswählen",
 				"select_all_requirements" => "Alle auswählen",
-				"quali_notes_template" => "Vorlage für Quali-Notizen",
+				"quali_notes_template" => "Vorlage für Quali-Text",
 				"quali_notes_template_description" => array(
-					"answer" => "Das Freitextfeld \":notes\" des Qualis wird bei allen TN mit diesem Text vorausgefüllt. Achtung: Wenn das Quali erst mal erstellt ist, kann dieses Freitextfeld nur noch von Hand bei allen TN einzeln angepasst werden!",
+					"answer" => "Der Quali-Text wird bei allen TN vorausgefüllt mit dem Text den du hier eingibst. So kannst du zum Beispiel vorgeben, welche Abschnitte jedes Quali haben sollte. Aber Achtung: Nachdem das Quali erstellt ist kannst du den Quali-Text nur noch ändern indem du ihn bei allen TN einzeln von Hand bearbeiten!",
 					"question" => "Wofür ist dieses Feld?",
 				),
 				"really_delete" => "Willst du das Quali \":name\" wirklich löschen? Alle Informationen über bestandene Anforderungen werden dabei mitgelöscht. Die Beobachtungen die damit verbunden waren bleiben aber erhalten.",
 				"what_are_qualis" => array(
-					"answer" => "Ein Quali steht für ein TN-Gespräch, Zwischengespräch oder eine Qualifikation die alle Teilnehmenden separat bestehen können. Für ein Quali können alle oder nur ein Teil der Anforderungen des Kurses relevant sein.",
+					"answer" => "Ein Quali steht für ein TN-Gespräch, Zwischengespräch oder eine Qualifikation die alle Teilnehmenden separat bestehen können. Auf der Detailansicht der ausgewählten TN kannst du später einen Quali-Text zusammenstellen. Für ein Quali können alle Anforderungen des Kurses oder auch nur ein Teil davon relevant sein.",
 					"question" => "Was sind Qualis?",
 				),
 			),
@@ -345,8 +345,9 @@ return array(
 			"really_delete_observation" => "Willst du diese Beobachtung wirklich löschen?",
 			"title" => "TN Details",
 		),
-		"quali_details" => array(
+		"quali_content" => array(
 			"back_to_participant" => "Zurück zu :name",
+			"error_requirements_changed" => "Die Änderungen konnten nicht gespeichert werden, weil die Anforderungen im Quali inzwischen geändert wurden.",
 			"participant_quali" => ":quali: :participant",
 			"requirements_status" => "Anforderungen",
 			"title" => "Quali Details",

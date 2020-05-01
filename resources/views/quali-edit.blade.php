@@ -6,7 +6,7 @@
 
         <div class="row my-3">
 
-            <div class="col-3 mb-3">
+            <div class="col-4 col-md-2 col-lg-1 mb-3">
                 <div class="square-container">
                     <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
                 </div>
@@ -16,12 +16,6 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-8">
                         <h3>{{__('t.views.quali_content.participant_quali', ['participant' => $participant->scout_name, 'quali' => $quali->name])}}</h3>
-
-                        <p>
-                            <a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}">
-                                <i class="fas fa-arrow-left"></i> {{__('t.views.quali_content.back_to_participant', ['name' => $participant->scout_name])}}
-                            </a>
-                        </p>
                     </div>
 
                     <div class="col">
@@ -41,7 +35,7 @@
                 </div>
 
                 @if($quali->requirements()->count())
-                    <div class="d-none d-lg-block">
+                    <div class="d-none d-lg-block mb-3">
                         <h5>{{__('t.views.quali_content.requirements_status')}}</h5>
                         @component('components.requirement-progress', ['quali' => $quali])@endcomponent
                     </div>
@@ -51,13 +45,13 @@
         </div>
 
         @if($quali->requirements()->count())
-            <div class="d-lg-none">
+            <div class="d-lg-none mb-3">
                 <h5>{{__('t.views.quali_content.requirements_status')}}</h5>
                 @component('components.requirement-progress', ['quali' => $quali])@endcomponent
             </div>
         @endif
 
-        @component('includes.qualiContent.text', ['quali' => $quali, 'participant' => $participant, 'course' => $course])@endcomponent
+        @component('includes.qualiContent.edit', ['quali' => $quali, 'participant' => $participant, 'course' => $course, 'translations' => $translations])@endcomponent
 
     @endcomponent
 
