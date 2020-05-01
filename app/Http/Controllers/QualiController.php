@@ -38,18 +38,23 @@ class QualiController extends Controller {
 
             $qualis = $qualiData->qualis()->createMany(
                 collect(array_filter(explode(',', $data['participants'])))
-                    ->map(function ($participant) use($data) {
-                        return [
-                            'participant' => ['id' => $participant],
-                            'notes' => $data['quali_notes_template'],
-                        ];
-                    })
+                    ->map(function ($participant) use($data) { return ['participant' => ['id' => $participant]]; })
                     ->all()
             );
 
+            if (trim($data['quali_notes_template'])) {
+                $qualis->each(function (Quali $quali) use ($data) {
+                    $quali->notes()->create(['notes' => $data['quali_notes_template'], 'order' => 0]);
+                });
+            }
+
             $qualis->each(function(Quali $quali) use($data) {
+                $order = 1;
                 $qualiRequirements = collect(array_filter(explode(',', $data['requirements'])))
-                    ->map(function ($requirement) use($data) { return ['requirement' => ['id' => $requirement]]; })
+                    ->map(function ($requirement) use($data, &$order) { return [
+                        'requirement' => ['id' => $requirement],
+                        'order' => $order++,
+                    ]; })
                     ->all();
                 $quali->requirements()->createMany($qualiRequirements);
             });
@@ -109,8 +114,9 @@ class QualiController extends Controller {
             });
 
             $qualiData->qualis()->each(function(Quali $quali) use($requirements) {
-                collect($requirements)->each(function ($requirement) use ($quali) {
-                    $quali->requirements()->updateOrCreate(['requirement_id' => $requirement], []);
+                $order = count($quali->contents);
+                collect($requirements)->each(function ($requirement) use ($quali, &$order) {
+                    $quali->requirements()->updateOrCreate(['requirement_id' => $requirement], ['order' => $order++]);
                 });
             });
 

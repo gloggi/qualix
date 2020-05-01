@@ -30,7 +30,9 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
         Route::get('/course/{course}/participants', 'ParticipantListController@index')->name('participants');
         Route::get('/course/{course}/participants/{participant}', 'ParticipantDetailController@index')->name('participants.detail');
 
-        Route::get('/course/{course}/participants/{participant}/qualis/{quali}', 'QualiDetailController@index')->name('quali.detail');
+        Route::get('/course/{course}/participants/{participant}/qualis/{quali}', 'QualiContentController@index')->name('qualiContent.detail');
+        Route::get('/course/{course}/participants/{participant}/qualis/{quali}/edit', 'QualiContentController@edit')->name('qualiContent.edit');
+        Route::post('/course/{course}/participants/{participant}/qualis/{quali}', 'QualiContentController@update')->name('qualiContent.update');
 
         Route::get('/course/{course}/overview', 'ObservationController@overview')->name('overview');
 

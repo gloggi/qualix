@@ -1,5 +1,11 @@
 const mix = require('laravel-mix');
 
+mix.webpackConfig({
+    output: {
+        chunkFilename: 'js/[name].[contenthash].js',
+    }
+});
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management

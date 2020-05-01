@@ -28,7 +28,7 @@
 
             <input-textarea @forminput('quali_notes_template') label="{{__('t.views.admin.qualis.quali_notes_template')}}">
 
-                @component('components.help-text', ['id' => 'qualiNotesTemplateHelp', 'key' => 't.views.admin.qualis.quali_notes_template_description', 'params' => ['notes' => __('t.models.quali.notes')]])@endcomponent
+                @component('components.help-text', ['id' => 'qualiNotesTemplateHelp', 'key' => 't.views.admin.qualis.quali_notes_template_description'])@endcomponent
 
             </input-textarea>
 

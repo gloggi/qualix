@@ -4,7 +4,7 @@
     @php
     $fields = [
         __('t.models.quali.name') => function(\App\Models\Quali $quali) use($course, $participant) {
-            return (new App\Util\HtmlString)->s('<a href="' . route('quali.detail', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]) . '">')->e($quali->name)->s('</a>');
+            return (new App\Util\HtmlString)->s('<a href="' . route('qualiContent.detail', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]) . '">')->e($quali->name)->s('</a>');
         },
     ];
     if ($participant->qualis()->whereHas('requirements')->exists()) {
@@ -20,7 +20,7 @@
         'data' => $participant->qualis,
         'fields' => $fields,
         'actions' => [
-            'edit' => function(\App\Models\Quali $quali) use ($course, $participant) { return route('quali.detail', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]); },
+            'edit' => function(\App\Models\Quali $quali) use ($course, $participant) { return route('qualiContent.detail', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]); },
         ]
     ])@endcomponent
 
