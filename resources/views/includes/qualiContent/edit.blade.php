@@ -6,7 +6,7 @@
 
     <list-builder
         name="contents"
-        :value="{{ json_encode($quali->contents) }}"
+        :value="{{ old('contents') ?? json_encode($quali->contents) }}"
         :translations="{{ json_encode($translations) }}">
         <template v-slot:text="{ value, remove, translations }"><element-text v-model="value" :remove="remove" :translations="translations" /></template>
         <template v-slot:observation="{ value, remove, translations }"><element-observation v-model="value" :remove="remove" :translations="translations" /></template>
