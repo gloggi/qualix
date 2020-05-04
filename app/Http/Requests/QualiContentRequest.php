@@ -22,7 +22,7 @@ class QualiContentRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'contents' => 'required|array',
+            'contents' => 'present|array',
             'contents.*.type' => 'required|in:text,observation,requirement',
         ];
     }
@@ -32,8 +32,7 @@ class QualiContentRequest extends FormRequest {
      *
      * @return void
      */
-    protected function prepareForValidation()
-    {
+    protected function prepareForValidation() {
         $this->merge(['contents' => json_decode($this->get('contents'), true)]);
     }
 }

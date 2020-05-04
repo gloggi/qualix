@@ -4,6 +4,12 @@
         <div><a class="btn-link" href="#">Alle Anforderungen einklappen</a></div>
     </div>
 
+    @error('contents')
+        <div class="invalid-feedback d-block" role="alert">
+            <strong>{{ $message }}</strong>
+        </div>
+    @enderror
+
     <list-builder
         name="contents"
         :value="{{ old('contents') ?? json_encode($quali->contents) }}"

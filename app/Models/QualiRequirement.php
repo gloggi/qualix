@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Collection;
+
 /**
  * @property int $id
  * @property int $quali_id
@@ -11,7 +13,7 @@ namespace App\Models;
  * @property Quali $quali
  * @property Requirement $requirement
  * @property Observation[] $observations
- * @property array $contents
+ * @property Collection $contents
  */
 class QualiRequirement extends Model {
     /**
@@ -73,6 +75,6 @@ class QualiRequirement extends Model {
                 'block' => $observation->block->name,
                 'date' => $observation->block->block_date->formatLocalized('%A %d.%m.%Y'),
             ];
-        }))->sortBy('order');
+        }))->sortBy('order')->values();
     }
 }

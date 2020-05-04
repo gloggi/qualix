@@ -8,6 +8,7 @@ use App\Models\Participant;
 use App\Models\Quali;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
@@ -53,8 +54,9 @@ class QualiContentController extends Controller {
         $data = collect($request->validated()['contents']);
         return DB::transaction(function() use($request, $course, $participant, $quali, $data) {
 
-            $allRequirementIds = $data->filter(function ($element) { return $element['type'] === 'requirement'; })->map(function ($element) { return $element['id']; });
-            if (count($allRequirementIds->diff($quali->requirements()->pluck('id'))) !== 0) {
+            if ($correctedContents = $this->qualiRequirementsHaveBeenChanged($data, $quali)) {
+                // Edit the original request because old_input is derived from that
+                app(Request::class)->offsetSet('contents', $correctedContents->toJson());
                 throw ValidationException::withMessages(['contents' => trans('t.views.quali_content.error_requirements_changed')]);
             }
 
@@ -94,5 +96,25 @@ class QualiContentController extends Controller {
         return collect($keys)->mapWithKeys(function ($key) {
             return [$key => trans($key)];
         })->all();
+    }
+
+    protected function qualiRequirementsHaveBeenChanged(Collection $qualiContentsFromRequest, Quali $qualiFromDB) {
+        $requestRequirementIds = $qualiContentsFromRequest
+            ->filter(function ($element) { return $element['type'] === 'requirement'; })
+            ->map(function ($element) { return $element['id']; });
+        $dbRequirementIds = $qualiFromDB->requirements()
+            ->pluck('id');
+        if ($requestRequirementIds->sort()->values()->all() !== $dbRequirementIds->sort()->values()->all()) {
+            $stillValid = $qualiContentsFromRequest->reject($this->requirementsExcept($dbRequirementIds));
+            $missingRequirements = $qualiFromDB->contents->filter($this->requirementsExcept($requestRequirementIds));
+            return $stillValid->merge($missingRequirements);
+        }
+        return false;
+    }
+
+    protected function requirementsExcept(Collection $excludedIds) {
+        return function ($element) use($excludedIds) {
+            return $element['type'] === 'requirement' && !$excludedIds->containsStrict($element['id']);
+        };
     }
 }

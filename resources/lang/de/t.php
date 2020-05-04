@@ -347,7 +347,7 @@ return array(
 		),
 		"quali_content" => array(
 			"back_to_participant" => "Zurück zu :name",
-			"error_requirements_changed" => "Die Änderungen konnten nicht gespeichert werden, weil die Anforderungen im Quali inzwischen geändert wurden.",
+			"error_requirements_changed" => "Die Änderungen konnten nicht gespeichert werden, weil die Anforderungen im Quali inzwischen geändert wurden. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"participant_quali" => ":quali: :participant",
 			"requirements_status" => "Anforderungen",
 			"text_element" => "Text",
