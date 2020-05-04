@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Collection;
+
 /**
  * @property int $id
  * @property int $quali_data_id
@@ -11,7 +13,7 @@ namespace App\Models;
  * @property Participant $participant
  * @property User|null $user
  * @property QualiRequirement[] $quali_requirements
- * @property array $contents
+ * @property Collection $contents
  */
 class Quali extends Model {
     /**
