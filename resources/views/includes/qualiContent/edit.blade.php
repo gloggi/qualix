@@ -1,4 +1,9 @@
 @component('components.form', ['route' => ['qualiContent.update', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]]])
+    <div class="mb-3">
+        <h5>{{__('t.views.quali_content.requirements_status')}}</h5>
+        @component('components.requirement-progress', ['quali' => $quali])@endcomponent
+    </div>
+
     <div class="d-flex justify-content-between mb-2">
         <button type="submit" class="btn btn-primary">{{__('t.global.save')}}</button>
         <div><a class="btn-link" href="#">Alle Anforderungen einklappen</a></div>
@@ -26,7 +31,7 @@
         </template>
 
         <template v-slot:add-text="{ addElement }">
-            <button-add @click="addElement" :payload="{{ json_encode(['type' => 'text','content' => 'Hello', 'id' => null]) }}">{{__('t.views.quali_content.text_element')}}</button-add>
+            <button-add @click="addElement" :payload="{{ json_encode(['type' => 'text','content' => '', 'id' => null]) }}">{{__('t.views.quali_content.text_element')}}</button-add>
         </template>
     </list-builder>
 @endcomponent

@@ -34,23 +34,9 @@
                     </div>
 
                 </div>
-
-                @if($quali->requirements()->count())
-                    <div class="d-none d-lg-block mb-3">
-                        <h5>{{__('t.views.quali_content.requirements_status')}}</h5>
-                        @component('components.requirement-progress', ['quali' => $quali])@endcomponent
-                    </div>
-                @endif
             </div>
 
         </div>
-
-        @if($quali->requirements()->count())
-            <div class="d-lg-none mb-3">
-                <h5>{{__('t.views.quali_content.requirements_status')}}</h5>
-                @component('components.requirement-progress', ['quali' => $quali])@endcomponent
-            </div>
-        @endif
 
         @component('includes.qualiContent.edit', ['quali' => $quali, 'participant' => $participant, 'course' => $course, 'translations' => $translations])@endcomponent
 
