@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.requirements.edit')])
+    <b-card>
+        <template #header>{{__('t.views.admin.requirements.edit')}}</template>
 
         @component('components.form', ['route' => ['admin.requirements.update', ['course' => $course->id, 'requirement' => $requirement->id]]])
 
@@ -24,6 +25,6 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

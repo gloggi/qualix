@@ -1,11 +1,11 @@
 <div class="form-group row{{ isset($required) && $required ? ' required' : ''}}">
-    <label for="{{ $name }}" class="col-md-3 col-form-label text-md-right">{{ $label }}</label>
+    <label for="{{ Str::kebab($name) }}" class="col-md-3 col-form-label text-md-right">{{ $label }}</label>
 
     <div class="col-md-6">
         <multi-select
-            id="{{ $name }}"
+            id="{{ Str::kebab($name) }}"
             name="{{ $name }}"
-            class="form-control-multiselect {{ $errors->has($name) ? ' is-invalid' : '' }}"
+            class="form-control-multiselect @error($name) is-invalid @enderror"
             @if (old($name) !== null)
                 old-value="{{ old($name) }}"
             @endif
@@ -55,10 +55,10 @@
             no-options="{{__('t.global.no_options')}}"
             @if (isset($onInput) && $onInput) @input="{{ $onInput }}" @endif></multi-select>
 
-        @if ($errors->has($name))
+        @error($name)
             <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first($name) }}</strong>
+                <strong>{{ $message }}</strong>
             </span>
-        @endif
+        @enderror
     </div>
 </div>

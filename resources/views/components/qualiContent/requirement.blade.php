@@ -1,5 +1,5 @@
-<div class="card">
-    <div class="card-header pl-3" id="heading{{ $id }}" @if(count($contents))data-toggle="collapse" data-target="#collapse{{ $id }}" aria-expanded="true" aria-controls="collapse{{ $id }}"@endif>
+<b-card no-body>
+    <b-card-header class="pl-3" @if(count($contents))v-b-toggle.collapse-{{ $id }}@endif>
         <h5 class="mb-0 d-flex justify-content-between">
             <span>
                 @if($passed === 1)
@@ -16,10 +16,10 @@
                 <i class="fas fa-caret-down"></i>
             @endif
         </h5>
-    </div>
+    </b-card-header>
 
     @if(count($contents))
-        <div id="collapse{{ $id }}" class="card-body @if(count($contents))collapse @endif show px-4" aria-labelledby="heading{{ $id }}">
+        <b-collapse id="collapse-{{ $id }}">
 
             @foreach($contents as $content)
 
@@ -27,7 +27,7 @@
 
             @endforeach
 
-        </div>
+        </b-collapse>
     @endif
-</div>
+</b-card>
 

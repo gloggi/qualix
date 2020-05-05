@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.categories.edit')])
+    <b-card>
+        <template #header>{{__('t.views.admin.categories.edit')}}</template>
 
         @component('components.form', ['route' => ['admin.categories.update', ['course' => $course->id, 'category' => $category->id]]])
 
@@ -12,6 +13,6 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

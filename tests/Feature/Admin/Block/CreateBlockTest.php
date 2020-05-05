@@ -243,7 +243,7 @@ class CreateBlockTest extends TestCaseWithCourse {
 
         // then
         $response->assertStatus(200);
-        $response->assertSee(Carbon::today()->format('d.m.Y'));
+        $response->assertSee(Carbon::today()->format('Y-m-d'));
     }
 
     public function test_shouldShowDateFromLastCreatedBlockInForm_whenBlockHasBeenCreated() {
@@ -255,7 +255,7 @@ class CreateBlockTest extends TestCaseWithCourse {
 
         // then
         $response->assertStatus(200);
-        $response->assertDontSee(Carbon::today()->format('d.m.Y'));
-        $this->assertRegExp('/<date-picker.*value="' . str_replace('.', '\.', $this->payload['block_date']) . '"/s', $response->content());
+        $response->assertDontSee(Carbon::today()->format('Y-m-d'));
+        $this->assertRegExp('/<b-form-datepicker.*value="2019-01-01"/s', $response->content());
     }
 }

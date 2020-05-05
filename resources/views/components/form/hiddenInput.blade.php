@@ -1,5 +1,5 @@
 <input
   type="hidden"
-  id="{{ $id ?? $name }}"
+  id="{{ Str::kebab($id ?? $name) }}"
   name="{{ $name }}"
   value="{{ $value }}" />

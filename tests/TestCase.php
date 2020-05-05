@@ -102,7 +102,8 @@ abstract class TestCase extends BaseTestCase {
      * @param array $contents
      * @return $this
      */
-    public function assertSeeAllInOrder($selector, Array $contents) {
+    public function assertSeeAllInOrder($selector, array $contents, $extractor = null) {
+        if ($extractor === null) $extractor = function($domElement) { return trim($domElement->textContent); };
         $matches = $this->crawler->filter($selector);
 
         if ($matches->count() !== count($contents)) {
@@ -111,7 +112,7 @@ abstract class TestCase extends BaseTestCase {
 
         foreach ($matches as $index => $domElement) {
             $needle = array_values($contents)[$index];
-            $haystack = trim($domElement->textContent);
+            $haystack = $extractor($domElement);
             try {
                 $this->assertContains($needle, $haystack);
             } catch (ExpectationFailedException $e) {

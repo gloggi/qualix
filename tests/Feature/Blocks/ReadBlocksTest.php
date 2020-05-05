@@ -23,7 +23,7 @@ class ReadBlocksTest extends TestCaseWithCourse {
 
         // then
         $response->assertOk();
-        $this->assertSeeAllInOrder('a.list-group-item h5', [
+        $this->assertSeeAllInOrder('b-list-group-item h5', [
           'earlier date',
           'earlier day number',
           'earlier block number',

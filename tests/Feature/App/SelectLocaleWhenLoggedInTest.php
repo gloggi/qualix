@@ -98,8 +98,8 @@ class SelectLocaleWhenLoggedInTest extends TestCase {
 
         // then
         $response->assertStatus(200);
-        $this->assertSeeAllInOrder('a#navbarLocaleSelect', [$expected]);
-        $this->assertSeeAllInOrder('a#navbarLocaleSelect + div.dropdown-menu a.dropdown-item', $unselected);
+        $this->assertSeeAllInOrder('#navbar-locale-select', [$expected], function($domElement) { return $domElement->getAttribute('text'); });
+        $this->assertSeeAllInOrder('#navbar-locale-select b-dropdown-item', $unselected);
         $response->assertSessionHas('locale', $expected);
         $this->assertThat(App::getLocale(), $this->equalTo($expected));
         $response->assertHeader('Content-Language', $expected);

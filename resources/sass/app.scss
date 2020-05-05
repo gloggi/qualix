@@ -10,7 +10,7 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-@import '~pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+@import '~bootstrap-vue/src/index.scss';
 @import 'multiselect-bootstrap';
 
 // Font Awesome
@@ -26,9 +26,20 @@
     }
 }
 
-[data-toggle~="collapse"] {
+[aria-controls*=collapse] {
     // required to make collapse divs work on iPad
     cursor: pointer;
+
+    .fa-caret-down::before {
+        transition: transform .3s ease;
+        transform: rotate(180deg);
+        transform-origin: 50% 58%;
+        display: inline-block;
+    }
+
+    &.collapsed .fa-caret-down::before {
+        transform: rotate(0deg);
+    }
 }
 
 [v-cloak] > * {
@@ -120,16 +131,6 @@
     }
 }
 
-[data-toggle=collapse] .fa-caret-down::before {
-    transition: transform .2s ease;
-    transform: rotate(180deg);
-    transform-origin: 50% 58%;
-    display: inline-block;
-}
-[data-toggle=collapse].collapsed .fa-caret-down::before {
-    transform: rotate(0deg);
-}
-
 .progress {
     border: 1px solid rgba(0, 0, 0, 0.125);
 }
@@ -143,8 +144,8 @@
 }
 
 .element-text-container {
-    margin: 0.5rem -15px;
-    padding: 7px 15px 15px;
+    margin: 0.5rem -1.25rem;
+    padding: 7px 1.25rem 15px;
     @extend .bg-light;
 
     textarea {

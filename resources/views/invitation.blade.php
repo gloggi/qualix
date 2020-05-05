@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.invitation.title', ['courseName' => $invitation->course->name])])
+    ['{{__('t.views.invitation.title', ['courseName' => $invitation->course->name])}}']
 
         @component('components.form', ['route' => 'invitation.claim'])
 
@@ -20,6 +20,6 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

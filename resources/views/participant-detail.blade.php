@@ -10,7 +10,8 @@
 
     @endif
 
-    @component('components.card', ['header' => __('t.views.participant_details.existing_observations')])
+    <b-card>
+        <template #header>{{__('t.views.participant_details.existing_observations')}}</template>
 
         @component('includes.participant.observations.filters', ['participant' => $participant, 'requirement' => $requirement, 'category' => $category])@endcomponent
 
@@ -20,6 +21,6 @@
             {{__('t.views.participant_details.no_observations')}}
         @endif
 
-    @endcomponent
+    </b-card>
 
 @endsection

@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.new_course.title')])
+    <b-card>
+        <template #header>{{__('t.views.admin.new_course.title')}}</template>
 
         @component('components.form', ['route' => 'admin.newcourse.store'])
 
@@ -14,6 +15,6 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

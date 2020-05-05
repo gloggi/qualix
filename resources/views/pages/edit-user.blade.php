@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.user_settings.edit')])
+    <b-card>
+        <template #header>{{__('t.views.user_settings.edit')}}</template>
 
         @component('components.form', ['route' => ['user.update'], 'enctype' => 'multipart/form-data'])
 
@@ -16,6 +17,6 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

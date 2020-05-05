@@ -2,16 +2,16 @@
 
 @section('layout')
 
-    @include('includes.header', ['navigation' => true])
+    <b-container id="app" v-cloak>
 
-    <div class="container" id="app" v-cloak>
+        @include('includes.header', ['navigation' => true])
 
         @include('includes.alerts')
 
         @yield('content')
 
-    </div>
+        @include('includes.footer')
 
-    @include('includes.footer')
+    </b-container>
 
 @endsection

@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.participants.edit')])
+    <b-card>
+        <template #header>{{__('t.views.admin.participants.edit')}}</template>
 
         @component('components.form', ['route' => ['admin.participants.update', ['course' => $course->id, 'participant' => $participant->id]], 'enctype' => 'multipart/form-data'])
 
@@ -16,6 +17,6 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

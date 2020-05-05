@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.qualis.new')])
+    <b-card>
+        <template #header>{{__('t.views.admin.qualis.new')}}</template>
 
         @component('components.form', ['route' => ['admin.qualis.store', ['course' => $course->id]]])
 
@@ -46,9 +47,10 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
-    @component('components.card', ['header' => __('t.views.admin.qualis.existing', ['courseName' => $course->name])])
+    <b-card>
+        <template #header>{{__('t.views.admin.qualis.existing', ['courseName' => $course->name])}}</template>
 
         @if (count($course->quali_datas))
 
@@ -75,6 +77,6 @@
 
         @endif
 
-    @endcomponent
+    </b-card>
 
 @endsection

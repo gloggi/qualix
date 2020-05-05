@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.quali_content.title'), 'bodyClass' => 'container-fluid'])
+    <b-card body-class="container-fluid">
+        <template #header>{{__('t.views.quali_content.title')}}</template>
 
         <div class="row my-3">
 
@@ -39,6 +40,6 @@
 
         @component('includes.qualiContent.edit', ['quali' => $quali, 'participant' => $participant, 'course' => $course, 'translations' => $translations])@endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

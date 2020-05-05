@@ -1,4 +1,5 @@
-@component('components.card', ['header' => __('t.views.participant_details.title'), 'bodyClass' => 'container-fluid'])
+<b-card body-class="container-fluid">
+    <template #header>{{__('t.views.participant_details.title')}}</template>
 
     <div class="row my-3">
 
@@ -29,4 +30,4 @@
 
     </div>
 
-@endcomponent
+</b-card>

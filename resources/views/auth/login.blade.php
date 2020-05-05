@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Login')])
+    <b-card>
+        <template #header>{{__('Login')}}</template>
         <div class="form-group row">
             <div class="col-md-6 offset-md-3">
                 <a
@@ -83,5 +84,5 @@
                 </div>
             </div>
         </form>
-    @endcomponent
+    </b-card>
 @endsection

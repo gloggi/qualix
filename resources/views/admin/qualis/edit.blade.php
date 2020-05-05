@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.qualis.edit')])
+    <b-card>
+        <template #header>{{__('t.views.admin.qualis.edit')}}</template>
 
         @component('components.form', ['route' => ['admin.qualis.update', ['course' => $course->id, 'quali' => $quali_data->id]]])
 
@@ -33,11 +34,11 @@
             ])@endcomponent
 
             @component('components.form.text')
-                <span id="headingLeaderAssignments" class="btn btn-link px-0{{ $hideLeaderAssignments ? ' collapsed' : '' }}" data-toggle="collapse" data-target="#collapseLeaderAssignments" aria-expanded="true" aria-controls="collapseLeaderAssignments">
+                <b-button variant="link" class="px-0" v-b-toggle.collapse-leader-assignments>
                     {{__('t.views.admin.qualis.leader_assignment')}} <i class="fas fa-caret-down"></i>
-                </span>
+                </b-button>
             @endcomponent
-            <div id="collapseLeaderAssignments" class="collapse{{ $hideLeaderAssignments ? '' : ' show' }}" aria-labelledby="headingLeaderAssignments">
+            <b-collapse id="collapse-leader-assignments" {{ $hideLeaderAssignments ? '' : 'visible' }}>
                 @foreach($quali_data->qualis as $quali)
                     @component('components.form.multiSelectInput', [
                         'name' => 'qualis[' . $quali->id . '][user]',
@@ -51,7 +52,7 @@
                         'showClear' => true,
                     ])@endcomponent
                 @endforeach
-            </div>
+            </b-collapse>
 
             @component('components.form.submit', ['label' => __('t.global.save')])
 
@@ -61,6 +62,6 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

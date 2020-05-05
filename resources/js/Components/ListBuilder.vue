@@ -6,11 +6,9 @@
       </div>
       <input v-if="name" type="hidden" :name="name" :value="JSON.stringify(currentValue)">
     </draggable>
-    <div class="btn-toolbar d-flex justify-content-start my-2" role="toolbar">
-      <template v-for="slot in addButtonSlots">
-        <slot :name="slot" :add-element="addElement" />
-      </template>
-    </div>
+    <b-btn-toolbar class="d-flex justify-content-start my-2">
+      <slot name="add-buttons" :add-element="addElement" />
+    </b-btn-toolbar>
   </div>
 </template>
 
@@ -33,11 +31,6 @@ export default {
       currentValue: this.oldValue !== undefined ? this.oldValue : this.value
     }
   },
-  computed: {
-    addButtonSlots() {
-      return Object.keys(this.$scopedSlots).filter(key => key.startsWith('add-'))
-    }
-  },
   methods: {
     onInput(...args) {
       this.$emit('input', ...args)
@@ -53,5 +46,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .btn-toolbar >>> > * + * {
+    margin-left: 0.5rem;
+  }
 </style>

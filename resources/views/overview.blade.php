@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.overview.title')])
+    <b-card>
+        <template #header>{{__('t.views.overview.title')}}</template>
 
         @if (count($participants))
 
@@ -35,6 +36,6 @@
 
         @endif
 
-    @endcomponent
+    </b-card>
 
 @endsection

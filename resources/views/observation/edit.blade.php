@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.observations.edit')])
+    <b-card>
+        <template #header>{{__('t.views.observations.edit')}}</template>
 
         @component('components.form', ['route' => ['observation.update', ['course' => $course->id, 'observation' => $observation->id]]])
 
@@ -63,6 +64,6 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection
