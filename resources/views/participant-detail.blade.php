@@ -4,7 +4,8 @@
 
     @component('includes.participant.details', ['participant' => $participant])@endcomponent
 
-    @component('components.card', ['header' => __('t.views.participant_details.existing_observations')])
+    <b-card>
+        <template #header>{{__('t.views.participant_details.existing_observations')}}</template>
 
         @component('includes.participant.observations.filters', ['participant' => $participant, 'requirement' => $requirement, 'category' => $category])@endcomponent
 
@@ -18,6 +19,6 @@
 
         @endif
 
-    @endcomponent
+    </b-card>
 
 @endsection

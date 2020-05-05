@@ -2,21 +2,11 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-var datePicker = require('vue-bootstrap-datetimepicker');
-jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
-    icons: {
-        time: 'fas fa-clock',
-        date: 'fas fa-calendar',
-        up: 'fas fa-arrow-up',
-        down: 'fas fa-arrow-down',
-        previous: 'fas fa-chevron-left',
-        next: 'fas fa-chevron-right',
-        today: 'fas fa-calendar-check',
-        clear: 'fas fa-trash-alt',
-        close: 'fas fa-times-circle'
-    }
-});
-Vue.component('date-picker', datePicker);
+var { BootstrapVue, IconsPlugin } = require('bootstrap-vue');
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+
+Vue.prototype.$window = window;
 
 require.context('./', true, /\.vue$/i, 'lazy').keys().forEach(file => {
     Vue.component(file.split('/').pop().split('.')[0], () => import(`${file}` /*webpackChunkName: "[request]" */));

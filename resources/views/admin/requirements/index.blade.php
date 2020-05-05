@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.requirements.new')])
+    <b-card>
+        <template #header>{{__('t.views.admin.requirements.new')}}</template>
 
         @component('components.form', ['route' => ['admin.requirements.store', ['course' => $course->id]]])
 
@@ -27,9 +28,10 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
-    @component('components.card', ['header' => __('t.views.admin.requirements.existing', ['courseName' => $course->name])])
+    <b-card>
+        <template #header>{{__('t.views.admin.requirements.existing', ['courseName' => $course->name])}}</template>
 
         @if (count($course->requirements))
 
@@ -63,6 +65,6 @@
 
         @endif
 
-    @endcomponent
+    </b-card>
 
 @endsection

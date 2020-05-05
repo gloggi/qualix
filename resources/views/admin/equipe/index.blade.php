@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.equipe.existing', ['courseName' => $course->name])])
+    <b-card>
+        <template #header>{{__('t.views.admin.equipe.existing', ['courseName' => $course->name])}}</template>
 
         @component('components.responsive-table', [
             'id' => 'equipe',
@@ -19,9 +20,10 @@
             ]
         ])@endcomponent
 
-    @endcomponent
+    </b-card>
 
-    @component('components.card', ['header' => __('t.views.admin.equipe.existing_invitations')])
+    <b-card>
+        <template #header>{{__('t.views.admin.equipe.existing_invitations')}}</template>
 
         @if (count($course->invitations))
 
@@ -45,9 +47,10 @@
 
         @endif
 
-    @endcomponent
+    </b-card>
 
-    @component('components.card', ['header' => __('t.views.admin.equipe.new_invitation')])
+    <b-card>
+        <template #header>{{__('t.views.admin.equipe.new_invitation')}}</template>
 
         @component('components.form', ['route' => ['admin.invitation.store', ['course' => $course->id]]])
 
@@ -57,6 +60,6 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

@@ -1,15 +1,15 @@
-<div class="card">
-    <div class="card-header" id="filters" data-toggle="collapse" data-target="#filters-collapse" aria-expanded="true" aria-controls="filters-collapse">
+<b-card id="filters" no-body>
+    <b-card-header v-b-toggle.filters-collapse>
         <i class="fas fa-filter"></i> {{__('t.views.participant_details.filter')}}
-    </div>
+    </b-card-header>
 
-    <div id="filters-collapse" class="collapse{{ $requirement !== null || $category !== null ? ' show' : '' }}" aria-labelledby="filters">
+    <b-collapse id="filters-collapse" {{ $requirement !== null || $category !== null ? 'visible' : '' }}>
 
-        <div class="card-body">
+        <b-card-body>
 
-            <div class="row">
+            <b-row>
 
-                <div class="col-md-6 col-sm-12">
+                <b-col cols="12" md="6">
 
                     <form id="requirement-form" method="GET" action="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}#filters">
 
@@ -35,9 +35,9 @@
 
                     </form>
 
-                </div>
+                </b-col>
 
-                <div class="col-md-6 col-sm-12">
+                <b-col cols="12" md="6">
 
                     <form id="category-form" method="GET" action="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}#filters">
 
@@ -63,9 +63,9 @@
 
                     </form>
 
-                </div>
+                </b-col>
 
-            </div>
-        </div>
-    </div>
-</div>
+            </b-row>
+        </b-card-body>
+    </b-collapse>
+</b-card>

@@ -1,21 +1,23 @@
 <div class="form-group row{{ isset($required) && $required ? ' required' : ''}}">
-    <label for="{{ $name }}" class="col-md-3 col-form-label text-md-right">{{ $label }}</label>
+    <label for="{{ Str::kebab($name) }}" class="col-md-3 col-form-label text-md-right">{{ $label }}</label>
 
     <div class="col-md-6">
-        <date-picker
-            type="{{ $type ?? 'text' }}"
-            id="{{ $name }}"
+        <b-form-datepicker
+            id="{{ Str::kebab($name) }}"
             name="{{ $name }}"
-            class="form-control{{ $errors->has($name) ? ' is-invalid' : '' }}"
-            value="{{ old($name) ?? $value->format('d.m.Y') ?? '' }}"
+            class="form-control @error($name) is-invalid @enderror"
+            value="{{ old($name) ?? $value->format('Y-m-d') ?? '' }}"
             {{ isset($required) && $required ? 'required' : '' }}
             {{ isset($autofocus) && $autofocus ? 'autofocus v-focus' : '' }}
-            :config="{ format: 'DD.MM.YYYY', useCurrent: false, locale: '{{App::getLocale()}}' }"></date-picker>
+            locale="{{ App::getLocale() }}"
+            :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
+            hide-header
+            label-help=""></b-form-datepicker>
 
-        @if ($errors->has($name))
+        @error($name)
             <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first($name) }}</strong>
+                <strong>{{ $message }}</strong>
             </span>
-        @endif
+        @enderror
     </div>
 </div>

@@ -2,7 +2,9 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Server Error')])
+    <b-card>
+        <template #header>{{__('Server Error')}}</template>
+
         @if(app()->bound('sentry') && app('sentry')->getLastEventId() && env('SENTRY_USER_FEEDBACK_URL'))
 
             <h5>{{__('t.views.error_form.it_looks_like_we_are_having_issues')}}</h5>
@@ -32,6 +34,7 @@
         @else
             <p>{{__('t.views.error_form.please_try_again_later')}}</p>
         @endif
-    @endcomponent
+
+    </b-card>
 
 @endsection

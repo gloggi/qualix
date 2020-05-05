@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.participant_import.import_from', ['source' => __('t.views.admin.participant_import.MiData.name')])])
+    <b-card>
+        <template #header>{{__('t.views.admin.participant_import.import_from', ['source' => __('t.views.admin.participant_import.MiData.name')])}}</template>
 
         @component('components.form', ['route' => ['admin.participants.import', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
 
@@ -22,6 +23,6 @@
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

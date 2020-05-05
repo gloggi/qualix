@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.error_form.thank_you')])
+    <b-card>
+        <template #header>{{__('t.views.error_form.thank_you')}}</template>
 
         <p>{{__('t.views.error_form.error_report_has_been_submitted')}}</p>
 
@@ -10,6 +11,6 @@
             {{ __('t.views.error_form.back') }}
         </a>
 
-    @endcomponent
+    </b-card>
 
 @endsection

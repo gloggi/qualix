@@ -1,7 +1,8 @@
 @extends('layouts.default')
 
 @section('content')
-    @component('components.card', ['header' => __('Register')])
+    <b-card>
+        <template #header>{{__('Register')}}</template>
         <div class="form-group row required">
             <div class="col-md-6 offset-md-3">
                 <a
@@ -90,5 +91,5 @@
                 </div>
             </div>
         </form>
-    @endcomponent
+    </b-card>
 @endsection
