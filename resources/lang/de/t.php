@@ -61,7 +61,7 @@ return array(
 			"email" => "E-Mail",
 		),
 		"invitation_claim" => array(
-		    "token" => "Token",
+			"token" => "Token",
 		),
 		"observation" => array(
 			"block" => "Block",
@@ -138,7 +138,7 @@ return array(
 					"question" => "Muss ich Kategorien für meinen Kurs erfassen?",
 				),
 				"create_success" => "Kategorie \":name\" wurde erfolgreich erstellt.",
-				"delete_success" => "Kategorie \":name\" wurde erfolgreich erstellt.",
+				"delete_success" => "Kategorie \":name\" wurde erfolgreich gelöscht.",
 				"edit" => "Kategorie bearbeiten",
 				"edit_success" => "Kategorie \":name\" wurde erfolgreich gespeichert.",
 				"existing" => "Kategorien :courseName",
