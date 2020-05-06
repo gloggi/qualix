@@ -10,7 +10,6 @@ namespace App\Models;
  * @property Quali[] $qualis
  */
 class QualiData extends Model {
-    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     /**
      * The table associated with the model.
@@ -50,12 +49,5 @@ class QualiData extends Model {
      */
     public function quali_requirements() {
         return $this->hasManyThrough(QualiRequirement::class, Quali::class, 'quali_data_id', 'quali_id', 'id', 'id');
-    }
-
-    /**
-     * @return \Staudenmeir\EloquentHasManyDeep\HasManyDeep
-     */
-    public function requirements() {
-        return $this->hasManyDeep(Requirement::class, [Quali::class, QualiRequirement::class], ['quali_data_id', 'quali_id', 'id'], ['id', 'id', 'requirement_id']);
     }
 }

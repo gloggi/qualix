@@ -16,7 +16,6 @@
     "laravel/tinker": "^1.0",
     "phpoffice/phpspreadsheet": "^1.10",
     "sentry/sentry-laravel": "^1.7",
-    "staudenmeir/eloquent-has-many-deep": "^1.7",
     "tightenco/parental": "^0.8.0",
     "troelskn/laravel-fillable-relations": "master"
   },
