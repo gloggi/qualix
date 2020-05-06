@@ -4,10 +4,10 @@ return array(
 	"active_url" => "Le champ :attribute n'est pas une URL valide.",
 	"after" => "Le champ :attribute doit être une date postérieure au :date.",
 	"after_or_equal" => "Le champ :attribute doit être une date postérieure ou égale au :date.",
+	"all_exist_in_course" => "Le champ :attribute sélectionné est invalide.",
 	"alpha" => "Le champ :attribute doit contenir uniquement des lettres.",
 	"alpha_dash" => "Le champ :attribute doit contenir uniquement des lettres, des chiffres et des tirets.",
 	"alpha_num" => "Le champ :attribute doit contenir uniquement des chiffres et des lettres.",
-	"all_exist_in_course" => "Le champ :attribute sélectionné est invalide.",
 	"array" => "Le champ :attribute doit être un tableau.",
 	"attributes" => array(
 		"address" => "adresse",

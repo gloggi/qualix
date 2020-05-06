@@ -6,10 +6,15 @@ phraseapp:
     - file: ./resources/lang/<locale_code>/<tag>.php
       params:
         file_format: laravel
+        tags:
+          - auth
+          - pagination
+          - passwords
+          - validation
     - file: ./resources/lang/<locale_code>.json
       params:
         file_format: simple_json
-        tags: override
+        tags: translations
   pull:
     targets:
       - file: ./resources/lang/<locale_code>/auth.php
@@ -27,7 +32,7 @@ phraseapp:
       - file: ./resources/lang/<locale_code>/t.php
         params:
           file_format: laravel
-          tag: t
+          tag: translations
       - file: ./resources/lang/<locale_code>/validation.php
         params:
           file_format: laravel
@@ -35,4 +40,4 @@ phraseapp:
       - file: ./resources/lang/<locale_code>.json
         params:
           file_format: simple_json
-          tag: override
+          tag: translations
