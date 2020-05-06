@@ -245,7 +245,7 @@ return array(
 					"answer" => "Der Quali-Text wird bei allen TN vorausgefüllt mit dem Text den du hier eingibst. So kannst du zum Beispiel vorgeben, welche Abschnitte jedes Quali haben sollte. Aber Achtung: Nachdem das Quali erstellt ist kannst du den Quali-Text nur noch ändern indem du ihn bei allen TN einzeln von Hand bearbeiten!",
 					"question" => "Wofür ist dieses Feld?",
 				),
-				"really_delete" => "Willst du das Quali \":name\" wirklich löschen? Alle Informationen über bestandene Anforderungen werden dabei mitgelöscht. Die Beobachtungen die damit verbunden waren bleiben aber erhalten.",
+				"really_delete" => "Willst du das Quali \":name\" wirklich löschen? Alle Quali-Texte und Informationen über erfüllte Mindestanforderungen werden dabei mitgelöscht.",
 				"what_are_qualis" => array(
 					"answer" => "Ein Quali steht für ein TN-Gespräch, Zwischengespräch oder eine Qualifikation die alle Teilnehmenden separat bestehen können. Auf der Detailansicht der ausgewählten TN kannst du später einen Quali-Text zusammenstellen. Für ein Quali können alle Anforderungen des Kurses oder auch nur ein Teil davon relevant sein.",
 					"question" => "Was sind Qualis?",
@@ -350,8 +350,8 @@ return array(
 			"observations_without_category" => "Beobachtungen ohne Kategorie",
 			"observations_without_requirement" => "Beobachtungen ohne Anforderung",
 			"qualis" => array(
-				"requirements_failed" => ":count nicht bestanden",
-				"requirements_passed" => ":count bestanden",
+				"requirements_failed" => ":count nicht erfüllt",
+				"requirements_met" => ":count erfüllt",
 				"title" => "Qualis",
 			),
 			"really_delete_observation" => "Willst du diese Beobachtung wirklich löschen?",

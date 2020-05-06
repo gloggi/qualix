@@ -6,10 +6,17 @@ phraseapp:
     - file: ./resources/lang/<locale_code>/<tag>.php
       params:
         file_format: laravel
+        tags:
+          - auth
+          - pagination
+          - passwords
+          - validation
     - file: ./resources/lang/<locale_code>.json
       params:
         file_format: simple_json
-        tags: override
+        tags:
+          - override
+          - t
   pull:
     targets:
       - file: ./resources/lang/<locale_code>/auth.php
