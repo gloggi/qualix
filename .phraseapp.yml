@@ -10,6 +10,10 @@ phraseapp:
       params:
         file_format: simple_json
         tags: override
+    - file: ./resources/lang/qualix/<locale_code>.json
+      params:
+        file_format: nested_json
+        tags: qualix
   pull:
     targets:
       - file: ./resources/lang/<locale_code>/auth.php
@@ -24,10 +28,6 @@ phraseapp:
         params:
           file_format: laravel
           tag: passwords
-      - file: ./resources/lang/<locale_code>/t.php
-        params:
-          file_format: laravel
-          tag: t
       - file: ./resources/lang/<locale_code>/validation.php
         params:
           file_format: laravel
@@ -36,3 +36,7 @@ phraseapp:
         params:
           file_format: simple_json
           tag: override
+      - file: ./resources/lang/qualix/<locale_code>.json
+        params:
+          file_format: nested_json
+          tag: t
