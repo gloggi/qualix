@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'info@qualix.flamberg.ch'),
+        'address' => env('MAIL_FROM_ADDRESS', env('MAIL_USERNAME')),
         'name' => env('MAIL_FROM_NAME', 'Qualix'),
     ],
 

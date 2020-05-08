@@ -14,11 +14,14 @@ sed -ri "s~^DB_DATABASE=.*$~DB_DATABASE=${DB_DATABASE:-qualix}~" .env
 sed -ri "s~^DB_USERNAME=.*$~DB_USERNAME=$DB_USERNAME~" .env
 sed -ri "s~^DB_PASSWORD=.*$~DB_PASSWORD=$DB_PASSWORD~" .env
 
+sed -ri "s~^SESSION_SECURE_COOKIE=.*$~SESSION_SECURE_COOKIE=true~" .env
+
 sed -ri "s~^MAIL_HOST=.*$~MAIL_HOST=${MAIL_HOST:-localhost}~" .env
 sed -ri "s~^MAIL_PORT=.*$~MAIL_PORT=${MAIL_PORT:-1025}~" .env
 sed -ri "s~^MAIL_USERNAME=.*$~MAIL_USERNAME=$MAIL_USERNAME~" .env
 sed -ri "s~^MAIL_PASSWORD=.*$~MAIL_PASSWORD=$MAIL_PASSWORD~" .env
 sed -ri "s~^MAIL_ENCRYPTION=.*$~MAIL_ENCRYPTION=$MAIL_ENCRYPTION~" .env
+sed -ri "s~^MAIL_FROM_ADDRESS=.*$~MAIL_FROM_ADDRESS=$MAIL_FROM_ADDRESS~" .env
 
 sed -ri "s~^HITOBITO_BASE_URL=.*$~HITOBITO_BASE_URL=${HITOBITO_BASE_URL:-https://pbs.puzzle.ch}~" .env
 sed -ri "s~^HITOBITO_CLIENT_UID=.*$~HITOBITO_CLIENT_UID=$HITOBITO_CLIENT_UID~" .env

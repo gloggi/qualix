@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Tightenco\Parental\HasParent;
+use Parental\HasParent;
 
 /**
  * @property int $id

@@ -8,7 +8,7 @@ use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
-use Tightenco\Parental\HasParent;
+use Parental\HasParent;
 
 /**
  * @property int $id

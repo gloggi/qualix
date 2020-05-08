@@ -114,7 +114,7 @@ abstract class TestCase extends BaseTestCase {
             $needle = array_values($contents)[$index];
             $haystack = $extractor($domElement);
             try {
-                $this->assertContains($needle, $haystack);
+                $this->assertStringContainsString($needle, $haystack);
             } catch (ExpectationFailedException $e) {
                 $this->fail('Failed asserting that the element at index ' . $index . ' contains the string "' . $contents[$index] . '", was "' . $haystack . '" instead.');
             }
@@ -138,7 +138,7 @@ abstract class TestCase extends BaseTestCase {
             foreach (Arr::wrap($contents) as $needle) {
                 $haystack = trim($domElement->textContent);
                 try {
-                    $this->assertNotContains($needle, $haystack);
+                    $this->assertStringNotContainsString($needle, $haystack);
                 } catch (ExpectationFailedException $e) {
                     $this->fail('Expected to find no element matching "' . $selector . '" that contains "' . $needle . '", but found "' . $domElement . '"');
                 }

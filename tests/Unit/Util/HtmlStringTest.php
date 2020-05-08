@@ -19,8 +19,8 @@ class HtmlStringTest extends TestCase {
         $this->htmlString = new HtmlString;
 
         $this->mock('translator', function ($mock) {
-            $mock->shouldReceive('getFromJson')->andReturn($this->unescaped);
-            $mock->shouldReceive('transChoice')->andReturn($this->unescaped);
+            $mock->shouldReceive('get')->andReturn($this->unescaped);
+            $mock->shouldReceive('choice')->andReturn($this->unescaped);
         });
     }
 

@@ -13,7 +13,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Tightenco\Parental\HasChildren;
+use Parental\HasChildren;
 
 /**
  * @property int $id
