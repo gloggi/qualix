@@ -18,7 +18,6 @@
 
                 @endcomponent
 
-
             @endcomponent
 
         @endcomponent
