@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin\Equipe;
 
 use App\Mail\InvitationMail;
+use App\Models\Invitation;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
@@ -55,6 +56,22 @@ class CreateInvitationTest extends TestCaseWithCourse {
         Mail::assertSent(InvitationMail::class, function (InvitationMail $mail) {
             return $mail->hasTo($this->payload['email']);
         });
+    }
+
+    public function test_shouldAllowSendingInvitationsToSameEmailFromDifferentCourses() {
+        // given
+        Mail::fake();
+        $this->post('/course/' . $this->courseId . '/admin/invitation', $this->payload);
+        $secondCourseId = $this->createCourse('Zweiter Kurs');
+
+        // when
+        $this->post('/course/' . $secondCourseId . '/admin/invitation', $this->payload);
+
+        // then
+        Mail::assertSent(InvitationMail::class, function (InvitationMail $mail) {
+            return $mail->hasTo($this->payload['email']);
+        });
+        $this->assertEquals(2, Invitation::where(['email' => 'neues-mitglied@equipe.com'])->count());
     }
 
     public function test_shouldValidateNewInvitationData_noEmail() {
