@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\Handler;
 use App\Exceptions\MiDataParticipantsListsParsingException;
+use App\Exceptions\UnsupportedFormatException;
 use App\Http\Requests\ParticipantImportRequest;
 use App\Http\Requests\ParticipantRequest;
 use App\Models\Course;
@@ -81,6 +82,8 @@ class ParticipantController extends Controller
         try {
             $imported = $request->getImporter()->import($request->file('file')->getRealPath(), $course);
         } catch (MiDataParticipantsListsParsingException $e) {
+            throw ValidationException::withMessages(['file' => $e->getMessage()]);
+        } catch (UnsupportedFormatException $e) {
             throw ValidationException::withMessages(['file' => $e->getMessage()]);
         } catch (Exception $e) {
             app(Handler::class)->report($e);

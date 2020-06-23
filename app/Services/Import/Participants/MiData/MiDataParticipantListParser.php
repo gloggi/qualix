@@ -3,18 +3,16 @@
 namespace App\Services\Import\Participants\MiData;
 
 use App\Exceptions\MiDataParticipantsListsParsingException;
-use App\Services\DateCalculator;
+use App\Exceptions\UnsupportedFormatException;
 use App\Services\Import\Participants\ParticipantListParser;
-
-
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
-class MiDataParticipantListParser implements ParticipantListParser {
-    /** @var PhpSpreadsheet\Reader\Xlsx */
-    protected $reader;
 
+class MiDataParticipantListParser implements ParticipantListParser {
+    /** @var PhpSpreadsheet\Reader\BaseReader[] */
+    protected $readers;
 
     public static $FIRST_ROW_WITH_DATA = 2;
 
@@ -23,13 +21,13 @@ class MiDataParticipantListParser implements ParticipantListParser {
     public static $COL_WITH_SCOUT_NAME ;
     public static $COL_WITH_GROUP;
 
-
-
-
-    public function __construct(PhpSpreadsheet\Reader\Xlsx $reader) {
-        $this->reader = $reader;
-        $this->reader->setReadDataOnly(true);
-
+    public function __construct(PhpSpreadsheet\Reader\Xlsx $xlsxReader, PhpSpreadsheet\Reader\Xls $xlsReader, PhpSpreadsheet\Reader\Csv $csvReader) {
+        $this->readers[] = $xlsxReader;
+        $this->readers[] = $xlsReader;
+        $this->readers[] = $csvReader;
+        collect($this->readers)->each(function (PhpSpreadsheet\Reader\BaseReader $reader) {
+            $reader->setReadDataOnly(true);
+        });
     }
 
     /**
@@ -53,6 +51,23 @@ class MiDataParticipantListParser implements ParticipantListParser {
     }
 
     /**
+     * Dynamically select the correct reader to read the given spreadsheet file.
+     *
+     * @param $filePath
+     * @return PhpSpreadsheet\Worksheet\Worksheet
+     */
+    protected function readActiveSheet($filePath) {
+        foreach ($this->readers as $reader) {
+            try {
+                return $reader->load($filePath)->getActiveSheet();
+            } catch (PhpSpreadsheet\Exception | \ErrorException $e) {
+                // Not the right reader, try the next one
+            }
+        }
+        throw new UnsupportedFormatException(trans('t.views.admin.participant_import.error_unsupported_format'));
+    }
+
+    /**
      * Read the rows in the given participants list from MiData.
      * Dynamically set COLUMNS
      *
@@ -63,7 +78,7 @@ class MiDataParticipantListParser implements ParticipantListParser {
      * @throws MiDataParticipantsListsParsingException if no names are found
      */
     protected function readRows($filePath) {
-        $worksheet = $this->reader->load($filePath)->getActiveSheet();
+        $worksheet = $this->readActiveSheet($filePath);
         $row = $worksheet->getRowIterator(1,1);
         $colIterator = $row->current()->getCellIterator();
         foreach ($colIterator as $col){
@@ -83,7 +98,7 @@ class MiDataParticipantListParser implements ParticipantListParser {
         }
 
         if(empty(self::$COL_WITH_SCOUT_NAME)&&empty(self::$COL_WITH_FIRST_NAME)&&empty(self::$COL_WITH_LAST_NAME)){
-            throw new MiDataParticipantsListsParsingException;
+            throw new MiDataParticipantsListsParsingException(trans('t.views.admin.participant_import.error_while_parsing'));
         }
 
         if ($worksheet->getHighestRow() < self::$FIRST_ROW_WITH_DATA) {
@@ -131,12 +146,11 @@ class MiDataParticipantListParser implements ParticipantListParser {
         return [
           'scout_name' => $newName
         ];
-
     }
 
     /**
      * Parse the data in the "Hauptebene" column.
-
+     *
      * @param PhpSpreadsheet\Cell\Cell $cell
      * @return array containing the extracted block date
      */

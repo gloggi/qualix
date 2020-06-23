@@ -218,6 +218,7 @@ return array(
                     ),
                 ),
                 "error_while_parsing" => "Die Teilnehmerliste konnte nicht korrekt gelesen werden - hast du die Datei unverändert hochgeladen?",
+                "error_unsupported_format" => "Das Format der Teilnehmerliste ist nicht unterstützt.",
                 "import" => "Importieren",
                 "import_from" => "Teilnehmende aus :source importieren",
                 "import_success" => "{0}In der importierten Datei wurden keine Teilnehmende gefunden.|{1}In der importierten Datei wurde ein Teilnehmer* gefunden.|[2,*]In der importierten Datei wurden :count Teilnehmende gefunden.",

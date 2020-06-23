@@ -6,7 +6,7 @@
 
         @component('components.form', ['route' => ['admin.participants.import', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
 
-            @component('components.form.fileInput', ['name' => 'file', 'label' => __('t.views.admin.participant_import.MiData.participant_list'), 'required' => true, 'accept' => 'application/vnd.ms-excel'])@endcomponent
+            @component('components.form.fileInput', ['name' => 'file', 'label' => __('t.views.admin.participant_import.MiData.participant_list'), 'required' => true, 'accept' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv'])@endcomponent
 
             @component('components.form.hiddenInput', ['name' => 'source', 'value' => 'MiDataParticipantList'])@endcomponent
 
