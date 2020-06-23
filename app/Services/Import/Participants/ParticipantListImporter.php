@@ -28,6 +28,8 @@ abstract class ParticipantListImporter {
         $parsedParticipants = $this->parser->parse($filePath);
 
         return $parsedParticipants->map(function ($parsedParticipant) use($course) {
+            $parsedParticipant['scout_name'] = mb_substr($parsedParticipant['scout_name'], 0, 255);
+            $parsedParticipant['group'] = mb_substr($parsedParticipant['group'], 0, 255);
             return Participant::create([
                 'scout_name' => $parsedParticipant['scout_name'],
                 'course_id' => $course->id,

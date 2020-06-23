@@ -9,17 +9,17 @@ use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
-
 class MiDataParticipantListParser implements ParticipantListParser {
     /** @var PhpSpreadsheet\Reader\BaseReader[] */
     protected $readers;
 
-    public static $FIRST_ROW_WITH_DATA = 2;
+    protected $firstRowWithData = 2;
+    protected $lastRowWithData = 0;
 
-    public static $COL_WITH_FIRST_NAME;
-    public static $COL_WITH_LAST_NAME;
-    public static $COL_WITH_SCOUT_NAME ;
-    public static $COL_WITH_GROUP;
+    protected $firstNameCol;
+    protected $lastNameCol;
+    protected $scoutNameCol;
+    protected $groupCol;
 
     public function __construct(PhpSpreadsheet\Reader\Xlsx $xlsxReader, PhpSpreadsheet\Reader\Xls $xlsReader, PhpSpreadsheet\Reader\Csv $csvReader) {
         $this->readers[] = $xlsxReader;
@@ -41,9 +41,9 @@ class MiDataParticipantListParser implements ParticipantListParser {
     public function parse(string $filePath) {
         return $this->readRows($filePath)->map(function (Row $row) {
 
-            [$scout_name, $group] = $this->readCellsInRow($row);
+            [$scoutName, $group] = $this->readCellsInRow($row);
             return array_merge(
-                $this->parseName($scout_name, $row),
+                $this->parseName($scoutName, $row),
                 $this->parseGroup($group)
             );
 
@@ -82,29 +82,36 @@ class MiDataParticipantListParser implements ParticipantListParser {
         $row = $worksheet->getRowIterator(1,1);
         $colIterator = $row->current()->getCellIterator();
         foreach ($colIterator as $col){
-            $name = $col->getValue();
-            if(empty(self::$COL_WITH_SCOUT_NAME)&&$name == trans('t.views.admin.participant_import.MiData.column_names.scout_name')){
-                self::$COL_WITH_SCOUT_NAME=$col->getColumn();
+            $name = $col->getValue() . '';
+            if(empty($this->scoutNameCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.scout_name')){
+                $this->scoutNameCol = $col->getColumn();
             }
-            if(empty(self::$COL_WITH_FIRST_NAME)&&$name == trans('t.views.admin.participant_import.MiData.column_names.first_name')){
-                self::$COL_WITH_FIRST_NAME=$col->getColumn();
+            if(empty($this->firstNameCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.first_name')){
+                $this->firstNameCol = $col->getColumn();
             }
-            if(empty(self::$COL_WITH_LAST_NAME)&&$name == trans('t.views.admin.participant_import.MiData.column_names.last_name')){
-                self::$COL_WITH_LAST_NAME=$col->getColumn();
+            if(empty($this->lastNameCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.last_name')){
+                $this->lastNameCol = $col->getColumn();
             }
-            if(empty(self::$COL_WITH_GROUP)&&$name == trans('t.views.admin.participant_import.MiData.column_names.group')){
-                self::$COL_WITH_GROUP=$col->getColumn();
+            if(empty($this->groupCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.group')){
+                $this->groupCol = $col->getColumn();
             }
         }
 
-        if(empty(self::$COL_WITH_SCOUT_NAME)&&empty(self::$COL_WITH_FIRST_NAME)&&empty(self::$COL_WITH_LAST_NAME)){
+        if(empty($this->scoutNameCol) && empty($this->firstNameCol) && empty($this->lastNameCol)){
             throw new MiDataParticipantsListsParsingException(trans('t.views.admin.participant_import.error_while_parsing'));
         }
 
-        if ($worksheet->getHighestRow() < self::$FIRST_ROW_WITH_DATA) {
+        $this->lastRowWithData = max(
+            $worksheet->getHighestRow($this->firstNameCol) ?? 0,
+            $worksheet->getHighestRow($this->lastNameCol) ?? 0,
+            $worksheet->getHighestRow($this->scoutNameCol) ?? 0,
+            $worksheet->getHighestRow($this->groupCol) ?? 0
+        );
+        if ($this->lastRowWithData < $this->firstRowWithData) {
             return Collection::make();
         }
-        return Collection::make($worksheet->getRowIterator(self::$FIRST_ROW_WITH_DATA));
+
+        return Collection::make($worksheet->getRowIterator($this->firstRowWithData, $this->lastRowWithData));
     }
 
     /**
@@ -114,38 +121,32 @@ class MiDataParticipantListParser implements ParticipantListParser {
      * @return array
      */
     protected function readCellsInRow(Row $row) {
-        $cells = Collection::make($row->getCellIterator(self::$COL_WITH_SCOUT_NAME, self::$COL_WITH_GROUP));
+        $cells = Collection::make($row->getCellIterator($this->scoutNameCol, $this->groupCol));
 
-        return [$cells[self::$COL_WITH_SCOUT_NAME], $cells[self::$COL_WITH_GROUP]];
+        return [$cells[$this->scoutNameCol], $cells[$this->groupCol]];
     }
 
     /**
      * Parse the data in the "Pfadiname" column, if empty: concat first and last name
      *
      * @param PhpSpreadsheet\Cell\Cell $cell
+     * @param Row $row
      * @return array containing the extracted data
      */
     protected function parseName(PhpSpreadsheet\Cell\Cell $cell, Row $row) {
-        $newName="";
-        $firstName="";
-        $lastName="";
-        if(empty($cell->getValue())){
-            $newCells = Collection::make($row->getCellIterator(self::$COL_WITH_FIRST_NAME, self::$COL_WITH_LAST_NAME));
-            if(!empty(self::$COL_WITH_FIRST_NAME)){
-                $firstName = $newCells[self::$COL_WITH_FIRST_NAME]->getValue();
-            }
-            if(!empty(self::$COL_WITH_LAST_NAME)) {
-                $lastName = $newCells[self::$COL_WITH_LAST_NAME]->getValue();
-            }
-            if(empty($firstName)){
-                $newName = $lastName;
-            } elseif (empty($lastName)){
-                $newName = $firstName;
-            } else $newName =$firstName." ".$lastName;
-        } else $newName=  $cell->getValue();
+        $name = $cell->getValue() . '';
+        if(empty($name)){
+            $firstName = $this->extractCellFromRow($row, $this->firstNameCol);
+            $lastName = $this->extractCellFromRow($row, $this->lastNameCol);
+            $name = implode(' ', array_filter([$firstName, $lastName]));
+        }
         return [
-          'scout_name' => $newName
+          'scout_name' => $name
         ];
+    }
+
+    protected function extractCellFromRow(Row $row, $colName = null) {
+        return $colName === null ? null : '' . $row->getCellIterator($colName, $colName)->current()->getValue();
     }
 
     /**
@@ -156,7 +157,7 @@ class MiDataParticipantListParser implements ParticipantListParser {
      */
     protected function parseGroup(PhpSpreadsheet\Cell\Cell $cell) {
         return [
-            'group' => $cell->getValue()
+            'group' => $cell->getValue() . ''
         ];
     }
 }
