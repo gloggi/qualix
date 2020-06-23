@@ -1,3 +1,6 @@
+import languageBundle from '@kirschbaum-development/laravel-translations-loader!@kirschbaum-development/laravel-translations-loader'
+import VueI18n from 'vue-i18n'
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -5,6 +8,7 @@ window.Vue = require('vue');
 var { BootstrapVue, IconsPlugin } = require('bootstrap-vue');
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
+Vue.use(VueI18n);
 
 Vue.prototype.$window = window;
 
@@ -43,6 +47,11 @@ Vue.directive('focus', {
     }
 });
 
+const i18n = new VueI18n({
+    locale: document.documentElement.lang,
+    messages: languageBundle
+});
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -50,5 +59,6 @@ Vue.directive('focus', {
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    i18n
 });
