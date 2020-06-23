@@ -202,16 +202,16 @@ return array(
 				"really_remove" => "Souhaites-tu réellement supprimer :name du cours?",
 				"remove_success" => "Le/la participant-e \":name\" a été supprimée du cours avec succès.",
 			),
-            "participant_import" => array(
-                "MiData" => array(
-                    "column_names" => array(
-                        "scout_name" => "Totem",
-                        "first_name" => "Prénom",
-                        "last_name" => "Nom",
-                        "group" => "Niveau",
-                    ),
-                ),
-            ),
+			"participant_import" => array(
+				"MiData" => array(
+					"column_names" => array(
+						"scout_name" => "Totem",
+						"first_name" => "Prénom",
+						"last_name" => "Nom",
+						"group" => "Niveau",
+					),
+				),
+			),
 			"requirements" => array(
 				"are_requirements_required" => array(
 					"answer" => "Il est très important de définir des exigences minimales avec l'équipe de cours avant le début du cours afin que les participant-e-s puissent être évalués sur le même schéma et qu'ainsi des décisions pendant le cours puissent être prises plus facilement. Mais si tu ne souhaites pas les réaliser dans Qualix, tu peux également rédiger des observations sans exigences minimales.",

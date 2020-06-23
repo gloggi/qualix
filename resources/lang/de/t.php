@@ -194,7 +194,7 @@ return array(
 				"edit" => "TN ändern",
 				"edit_success" => "TN \":name\" erfolgreich gespeichert.",
 				"existing" => "Teilnehmende :courseName",
-                "import" => "TN importieren...",
+				"import" => "TN importieren...",
 				"menu_name" => "TN",
 				"new" => "Neue Teilnehmende",
 				"no_participants" => "Bisher sind keine Teilnehmende erfasst.",
@@ -202,29 +202,29 @@ return array(
 				"really_remove" => "Willst du :name wirklich aus deinem Kurs entfernen?",
 				"remove_success" => "TN \":name\" erfolgreich aus dem Kurs entfernt.",
 			),
-            "participant_import" => array(
-                "MiData" => array(
-                    "participant_list" => "Teilnehmerliste",
-                    "how_to_get_the_participant_list" => array(
-                        "answer" => "Wenn die Teilnehmenden in deinem Kurs auf :MiData erfasst sind, gehe dort auf deinen Kurs und in der Navigation zu \"Teilnehmende\". Danach kannst du oben rechts die Liste der Teilnehmenden als Excel-Datei herunterladen. Andernfalls kannst du die Liste auch manuell erstellen mit den Spaltenbezeichnungen: \"Pfadiname\" und \"Hauptebene\"",
-                        "question" => "Woher bekomme ich die Teilnehmerliste?",
-                    ),
-                    "name" => "MiData",
-                    "column_names" => array(
-                        "scout_name" => "Pfadiname",
-                        "first_name" => "Vorname",
-                        "last_name" => "Nachname",
-                        "group" => "Hauptebene",
-                    ),
-                ),
-                "error_while_parsing" => "Die Teilnehmerliste konnte nicht korrekt gelesen werden - hast du die Datei unverändert hochgeladen?",
-                "error_unsupported_format" => "Das Format der Teilnehmerliste ist nicht unterstützt.",
-                "import" => "Importieren",
-                "import_from" => "Teilnehmende aus :source importieren",
-                "import_success" => "{0}In der importierten Datei wurden keine Teilnehmende gefunden.|{1}In der importierten Datei wurde ein Teilnehmer* gefunden.|[2,*]In der importierten Datei wurden :count Teilnehmende gefunden.",
-                "unknown_error" => "Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Teilnehmende manuell.",
-                "warning_existing_participants" => "In deinem Kurs sind bereits Teilnehmende erfasst. Diese bleiben bestehen und durch den Import werden neue zusätzliche erfasst.",
-            ),
+			"participant_import" => array(
+				"MiData" => array(
+					"participant_list" => "Teilnehmerliste",
+					"how_to_get_the_participant_list" => array(
+						"answer" => "Wenn die Teilnehmenden in deinem Kurs auf :MiData erfasst sind, gehe dort auf deinen Kurs und in der Navigation zu \"Teilnehmende\". Danach kannst du oben rechts die Liste der Teilnehmenden als Excel-Datei herunterladen. Andernfalls kannst du die Liste auch manuell erstellen mit den Spaltenbezeichnungen: \"Pfadiname\" und \"Hauptebene\"",
+						"question" => "Woher bekomme ich die Teilnehmerliste?",
+					),
+					"name" => "MiData",
+					"column_names" => array(
+						"scout_name" => "Pfadiname",
+						"first_name" => "Vorname",
+						"last_name" => "Nachname",
+						"group" => "Hauptebene",
+					),
+				),
+				"error_while_parsing" => "Die Teilnehmerliste konnte nicht korrekt gelesen werden - hast du die Datei unverändert hochgeladen?",
+				"error_unsupported_format" => "Das Format der Teilnehmerliste ist nicht unterstützt.",
+				"import" => "Importieren",
+				"import_from" => "Teilnehmende aus :source importieren",
+				"import_success" => "{0}In der importierten Datei wurden keine Teilnehmende gefunden.|{1}In der importierten Datei wurde ein Teilnehmer* gefunden.|[2,*]In der importierten Datei wurden :count Teilnehmende gefunden.",
+				"unknown_error" => "Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Teilnehmende manuell.",
+				"warning_existing_participants" => "In deinem Kurs sind bereits Teilnehmende erfasst. Diese bleiben bestehen und durch den Import werden neue zusätzliche erfasst.",
+			),
 			"requirements" => array(
 				"are_requirements_required" => array(
 					"answer" => "Es ist sehr wichtig, vor dem Kurs im Kursteam Anforderungen festzulegen, damit alle Teilnehmenden nach dem gleichen Schema qualifiziert werden und damit Entscheide im Kurs einfacher gefällt werden können. Aber wenn du diese nicht in Qualix führen willst, kannst du Beobachtungen auch ohne Anforderungen erfassen.",
