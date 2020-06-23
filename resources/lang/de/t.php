@@ -223,7 +223,7 @@ return array(
                 "import_from" => "Teilnehmende aus :source importieren",
                 "import_success" => "{0}In der importierten Datei wurden keine Teilnehmende gefunden.|{1}In der importierten Datei wurde ein Teilnehmer* gefunden.|[2,*]In der importierten Datei wurden :count Teilnehmende gefunden.",
                 "unknown_error" => "Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Teilnehmende manuell.",
-                "warning_existing_participants" => "In deinem Kurs sind bereits Teilnehmende erfasst. Wenn beim Import schon Teilnehmende exisitieren, bleiben diese bestehenden und durch den Import werden neue zusätzliche erfasst.",
+                "warning_existing_participants" => "In deinem Kurs sind bereits Teilnehmende erfasst. Diese bleiben bestehen und durch den Import werden neue zusätzliche erfasst.",
             ),
 			"requirements" => array(
 				"are_requirements_required" => array(
