@@ -7,7 +7,7 @@
         @component('components.form', ['route' => ['observation.update', ['course' => $course->id, 'observation' => $observation->id]]])
 
             @component('components.form.multiSelectInput', [
-                'name' => 'participant_ids',
+                'name' => 'participants',
                 'label' => __('t.models.observation.participants'),
                 'required' => true,
                 'value' => implode(',', array_map(function (\App\Models\Participant $participant) { return $participant->id; }, $observation->participants->all())),
@@ -20,7 +20,7 @@
             @component('components.form.textareaInput', ['name' => 'content', 'label' => __('t.models.observation.content'), 'required' => true, 'autofocus' => true, 'value' => $observation->content])@endcomponent
 
             @component('components.form.multiSelectInput', [
-                'name' => 'block_id',
+                'name' => 'block',
                 'label' => __('t.models.observation.block'),
                 'required' => true,
                 'value' => $observation->block->id,
@@ -32,7 +32,7 @@
             ])@endcomponent
 
             @component('components.form.multiSelectInput', [
-                'name' => 'requirement_ids',
+                'name' => 'requirements',
                 'label' => __('t.models.observation.requirements'),
                 'value' => implode(',', array_map(function (\App\Models\Requirement $requirement) { return $requirement->id; }, $observation->requirements->all())),
                 'options' => $course->requirements->all(),
@@ -50,7 +50,7 @@
             ])@endcomponent
 
             @component('components.form.multiSelectInput', [
-                'name' => 'category_ids',
+                'name' => 'categories',
                 'label' => __('t.models.observation.categories'),
                 'options' => $course->categories->all(),
                 'value' => implode(',', array_map(function (\App\Models\Category $category) { return $category->id; }, $observation->categories->all())),

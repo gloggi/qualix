@@ -2,17 +2,17 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Requirement;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Lang;
 
-class BlockRequest extends FormRequest
-{
+class BlockRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -21,13 +21,16 @@ class BlockRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'name' => 'required|max:255',
             'full_block_number' => 'regex:/^\d+\.\d+$/|nullable',
             'block_date' => 'date|required',
-            'requirement_ids' => 'regex:/^\d+(,\d+)*$/|nullable',
+            'requirements' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
         ];
+    }
+
+    public function attributes() {
+        return Lang::get('t.models.block');
     }
 }

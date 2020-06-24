@@ -60,6 +60,9 @@ return array(
 		"invitation" => array(
 			"email" => "E-Mail",
 		),
+		"invitation_claim" => array(
+		    "token" => "Token",
+		),
 		"observation" => array(
 			"block" => "Block",
 			"categories" => "Kategorien",
@@ -76,6 +79,7 @@ return array(
 			"scout_name" => "Pfadiname",
 		),
 		"requirement" => array(
+			"blocks" => "Blöcke",
 			"content" => "Anforderung",
 			"mandatory" => "Mindestanforderung",
 			"num_observations" => "Anzahl Beobachtungen",

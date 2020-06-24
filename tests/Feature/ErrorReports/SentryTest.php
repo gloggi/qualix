@@ -9,6 +9,12 @@ use Tests\TestCase;
 
 class SentryTest extends TestCase {
 
+    public function setUp(): void {
+        parent::setUp();
+        // Turn off debug mode just in this test, because in debug mode Sentry isn't called (not even our mock)
+        $_ENV['APP_DEBUG'] = false;
+    }
+
     public function test_shouldReportErrorToSentry_andDisplayErrorForm_when500ErrorOccurs() {
         // given
         $sentryMock = Mockery::mock(app('sentry'));

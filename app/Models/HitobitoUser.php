@@ -26,11 +26,6 @@ class HitobitoUser extends User {
     public function __construct(...$args) {
         $this->fillable[] = 'hitobito_id';
         parent::__construct(...$args);
-    }
-
-    public function newInstance($attributes = [], $exists = false) {
-        return tap(parent::newInstance($attributes, $exists), function ($instance) {
-            $instance->email_verified_at = Carbon::now();
-        });
+        $this->email_verified_at = Carbon::now();
     }
 }

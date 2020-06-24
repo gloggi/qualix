@@ -3,16 +3,15 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Lang;
 
-class ParticipantRequest extends FormRequest
-{
+class ParticipantRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -21,8 +20,7 @@ class ParticipantRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'scout_name' => 'required|max:255',
             'group' => 'max:255',
@@ -42,5 +40,9 @@ class ParticipantRequest extends FormRequest
             unset($validated['image']);
         }
         return $validated;
+    }
+
+    public function attributes() {
+        return Lang::get('t.models.participant');
     }
 }

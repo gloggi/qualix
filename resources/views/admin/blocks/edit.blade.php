@@ -13,7 +13,7 @@
             @component('components.form.dateInput', ['name' => 'block_date', 'label' => __('t.models.block.block_date'), 'required' => true, 'value' => $block->block_date])@endcomponent
 
             @component('components.form.multiSelectInput', [
-                'name' => 'requirement_ids',
+                'name' => 'requirements',
                 'label' => __('t.models.block.requirements'),
                 'value' => implode(',', array_map(function(\App\Models\Requirement $requirement) { return $requirement->id; }, $block->requirements->all())),
                 'options' => $course->requirements->all(),

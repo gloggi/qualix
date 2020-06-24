@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin\Equipe;
 
 use App\Mail\InvitationMail;
+use App\Models\Invitation;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
@@ -57,6 +58,22 @@ class CreateInvitationTest extends TestCaseWithCourse {
         });
     }
 
+    public function test_shouldAllowSendingInvitationsToSameEmailFromDifferentCourses() {
+        // given
+        Mail::fake();
+        $this->post('/course/' . $this->courseId . '/admin/invitation', $this->payload);
+        $secondCourseId = $this->createCourse('Zweiter Kurs');
+
+        // when
+        $this->post('/course/' . $secondCourseId . '/admin/invitation', $this->payload);
+
+        // then
+        Mail::assertSent(InvitationMail::class, function (InvitationMail $mail) {
+            return $mail->hasTo($this->payload['email']);
+        });
+        $this->assertEquals(2, Invitation::where(['email' => 'neues-mitglied@equipe.com'])->count());
+    }
+
     public function test_shouldValidateNewInvitationData_noEmail() {
         // given
         $payload = $this->payload;
@@ -67,6 +84,9 @@ class CreateInvitationTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('E-Mail muss ausgefüllt sein.', $exception->validator->errors()->first('email'));
     }
 
     public function test_shouldValidateNewInvitationData_longEmail() {
@@ -79,6 +99,9 @@ class CreateInvitationTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('E-Mail darf maximal 50 Zeichen haben.', $exception->validator->errors()->first('email'));
     }
 
     public function test_shouldValidateNewInvitationData_invalidEmail() {
@@ -91,6 +114,9 @@ class CreateInvitationTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('E-Mail muss eine gültige E-Mail-Adresse sein.', $exception->validator->errors()->first('email'));
     }
 
     public function test_shouldShowMessage_whenNoInvitationInCourse() {

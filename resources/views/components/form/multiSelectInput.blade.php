@@ -25,8 +25,18 @@
                 $jsonOptions = array_map(function($option) use($displayFn, $valueFn, $dataFn) {
                     return ['label' => (string)$displayFn($option), 'value' => (string)$valueFn($option), 'data' => $dataFn($option)];
                 }, $options);
+
+                if (isset($groups) && $groups) {
+                    $jsonOptions = array_merge($jsonOptions, array_map(function($groupName, $options) use($valueFn) {
+                        $values = array_map(function($option) use($valueFn) { return (string)$valueFn($option); }, $options);
+                        return ['label' => (string)$groupName, 'groupValue' => implode(',', $values)];
+                    }, array_keys($groups), $groups));
+                }
             @endphp
             :options="{{ json_encode($jsonOptions) }}"
+            @if (isset($groups) && $groups)
+                :show-clear="true"
+            @endif
 
             :multiple="{{ ($multiple ?? false) ? 'true' : 'false' }}"
             @if (isset($disabled) && $disabled):disabled="true"@endif

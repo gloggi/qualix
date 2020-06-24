@@ -7,26 +7,26 @@
         @component('components.form', ['route' => ['observation.store', ['course' => $course->id]]])
 
             @component('components.form.multiSelectInput', [
-                'name' => 'participant_ids',
+                'name' => 'participants',
                 'label' => __('t.models.observation.participants'),
                 'required' => true,
-                'value' => $participant_id,
+                'value' => $participants,
                 'options' => $course->participants->all(),
                 'valueFn' => function(\App\Models\Participant $participant) { return $participant->id; },
                 'displayFn' => function(\App\Models\Participant $participant) { return $participant->scout_name; },
                 'multiple' => true,
-                'autofocus' => ($participant_id === null)
+                'autofocus' => ($participants === null)
             ])@endcomponent
 
-            @component('components.form.textareaInput', ['name' => 'content', 'label' => __('t.models.observation.content'), 'required' => true, 'autofocus' => ($participant_id !== null)])@endcomponent
+            @component('components.form.textareaInput', ['name' => 'content', 'label' => __('t.models.observation.content'), 'required' => true, 'autofocus' => ($participants !== null)])@endcomponent
 
-            <block-and-requirements-input-wrapper v-slot="slotProps" @if(old('requirement_ids', 'OBSERVATION_NO_OLD_VALUES') !== 'OBSERVATION_NO_OLD_VALUES') :has-old-values="true" @endif>
+            <block-and-requirements-input-wrapper v-slot="slotProps" @if(old('requirements', 'OBSERVATION_NO_OLD_VALUES') !== 'OBSERVATION_NO_OLD_VALUES') :has-old-values="true" @endif>
 
                 @component('components.form.multiSelectInput', [
-                    'name' => 'block_id',
+                    'name' => 'block',
                     'label' => __('t.models.observation.block'),
                     'required' => true,
-                    'value' => $block_id,
+                    'value' => $block,
                     'options' => $course->blocks->all(),
                     'valueFn' => function(\App\Models\Block $block) { return $block->id; },
                     'displayFn' => function(\App\Models\Block $block) { return $block->blockname_and_number; },
@@ -36,7 +36,7 @@
                 ])@endcomponent
 
                 @component('components.form.multiSelectInput', [
-                    'name' => 'requirement_ids',
+                    'name' => 'requirements',
                     'label' => __('t.models.observation.requirements'),
                     'valueBind' => 'slotProps.requirementsValue',
                     'options' => $course->requirements->all(),
@@ -56,7 +56,7 @@
             ])@endcomponent
 
             @component('components.form.multiSelectInput', [
-                'name' => 'category_ids',
+                'name' => 'categories',
                 'label' => __('t.models.observation.categories'),
                 'options' => $course->categories->all(),
                 'valueFn' => function(\App\Models\Category $category) { return $category->id; },

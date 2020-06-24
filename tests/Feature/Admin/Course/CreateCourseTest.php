@@ -52,6 +52,9 @@ class CreateCourseTest extends TestCase {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Kursname muss ausgefüllt sein.', $exception->validator->errors()->first('name'));
     }
 
     public function test_shouldValidateNewCourseData_longName() {
@@ -64,6 +67,9 @@ class CreateCourseTest extends TestCase {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Kursname darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('name'));
     }
 
     public function test_shouldValidateNewCourseData_longCourseNumber() {

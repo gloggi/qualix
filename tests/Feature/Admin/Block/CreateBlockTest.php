@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Block;
 
+use App\Models\Block;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
@@ -14,7 +15,7 @@ class CreateBlockTest extends TestCaseWithCourse {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '01.01.2019', 'requirement_ids' => null];
+        $this->payload = ['full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '01.01.2019', 'requirements' => null];
     }
 
     public function test_shouldRequireLogin() {
@@ -55,6 +56,9 @@ class CreateBlockTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Blocknummer Format ist ungültig.', $exception->validator->errors()->first('full_block_number'));
     }
 
     public function test_shouldValidateNewBlockData_noBlockname() {
@@ -67,6 +71,9 @@ class CreateBlockTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Blockname muss ausgefüllt sein.', $exception->validator->errors()->first('name'));
     }
 
     public function test_shouldValidateNewBlockData_longBlockname() {
@@ -79,6 +86,9 @@ class CreateBlockTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Blockname darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('name'));
     }
 
     public function test_shouldValidateNewBlockData_noDatum() {
@@ -91,6 +101,9 @@ class CreateBlockTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Datum muss ausgefüllt sein.', $exception->validator->errors()->first('block_date'));
     }
 
     public function test_shouldValidateNewBlockData_invalidDatum() {
@@ -103,6 +116,100 @@ class CreateBlockTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Datum muss ein gültiges Datum sein.', $exception->validator->errors()->first('block_date'));
+    }
+
+    public function test_shouldValidateNewBlockData_noRequirementIds() {
+        // given
+        $payload = $this->payload;
+        $payload['requirements'] = null;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks');
+        $this->assertEquals([], Block::latest()->first()->requirements->pluck('id')->all());
+    }
+
+    public function test_shouldValidateNewBlockData_invalidRequirementIds() {
+        // given
+        $payload = $this->payload;
+        $payload['requirements'] = 'xyz';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Anforderungen Format ist ungültig.', $exception->validator->errors()->first('requirements'));
+    }
+
+    public function test_shouldValidateNewBlockData_oneValidRequirementId() {
+        // given
+        $payload = $this->payload;
+        $requirementId = $this->createRequirement();
+        $payload['requirements'] = $requirementId;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks');
+        $this->assertEquals([$requirementId], Block::latest()->first()->requirements->pluck('id')->all());
+    }
+
+    public function test_shouldValidateNewBlockData_multipleValidRequirementIds() {
+        // given
+        $payload = $this->payload;
+        $requirementIds = [$this->createRequirement(), $this->createRequirement()];
+        $payload['requirements'] = implode(',', $requirementIds);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks');
+        $this->assertEquals($requirementIds, Block::latest()->first()->requirements->pluck('id')->all());
+    }
+
+    public function test_shouldValidateNewBlockData_someNonexistentRequirementIds() {
+        // given
+        $payload = $this->payload;
+        $requirementIds = [$this->createRequirement(), '999999', $this->createRequirement()];
+        $payload['requirements'] = implode(',', $requirementIds);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Anforderungen ist ungültig.', $exception->validator->errors()->first('requirements'));
+    }
+
+    public function test_shouldValidateNewBlockData_someInvalidRequirementIds() {
+        // given
+        $payload = $this->payload;
+        $requirementIds = [$this->createRequirement(), 'abc', $this->createRequirement()];
+        $payload['requirements'] = implode(',', $requirementIds);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Anforderungen Format ist ungültig.', $exception->validator->errors()->first('requirements'));
     }
 
     public function test_shouldShowMessage_whenNoBlocksInCourse() {

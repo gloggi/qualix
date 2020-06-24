@@ -13,7 +13,7 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
 
     private $email = 'bari@example.com';
     private $formUrl;
-    private $participantIds;
+    private $payloadParticipants;
     private $blockIds;
     private $expectedRestoredFlashMessage = 'Deine eingegebenen Daten wurden wiederhergestellt. Speichern nicht vergessen!';
     private $payloadOverride = null;
@@ -22,7 +22,7 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
         parent::setUp();
 
         $this->formUrl = '/course/' . $this->courseId . '/observation/new';
-        $this->participantIds = '' . $this->participantId;
+        $this->payloadParticipants = '' . $this->participantId;
         $this->blockIds = '' . $this->blockId;
 
         $this->createObservation('hat gut mitgemacht', 1, [], [], $this->blockId);
@@ -32,7 +32,7 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
         if ($this->payloadOverride !== null) {
             return $this->payloadOverride;
         }
-        return ['participant_ids' => $this->participantIds, 'content' => 'this text will be restored', 'impression' => '1', 'block_id' => $this->blockIds, 'requirement_ids' => '', 'category_ids' => ''];
+        return ['participants' => $this->payloadParticipants, 'content' => 'this text will be restored', 'impression' => '1', 'block' => $this->blockIds, 'requirements' => '', 'categories' => ''];
     }
 
     public function test_shouldRestoreSubmittedFormData_whenLoggingBackInNormally() {
@@ -100,7 +100,7 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
         // Participant is specified in URL
         $this->formUrl = '/course/' . $this->courseId . '/observation/new?participant=' . $this->participantId;
         // but not sent in payload, so the user deleted it from the form
-        $this->participantIds = '';
+        $this->payloadParticipants = '';
 
         $this->checkRestorationOfFormData(function () {
             // the user logs back in normally

@@ -60,6 +60,9 @@ return array(
 		"invitation" => array(
 			"email" => "E-mail",
 		),
+		"invitation_claim" => array(
+			"token" => "Token"
+		),
 		"observation" => array(
 			"block" => "Point de cours",
 			"categories" => "Catégories",
@@ -76,6 +79,7 @@ return array(
 			"scout_name" => "Nom",
 		),
 		"requirement" => array(
+			"blocks" => "Points de cours",
 			"content" => "Exigence",
 			"mandatory" => "Éliminatoire",
 			"num_observations" => "Nombre d'observations",
