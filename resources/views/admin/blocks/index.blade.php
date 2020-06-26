@@ -7,22 +7,20 @@
 
         @component('components.form', ['route' => ['admin.block.store', ['course' => $course->id]]])
 
-            @component('components.form.textInput', ['name' => 'full_block_number', 'label' => __('t.models.block.full_block_number')])@endcomponent
+            <input-text @forminput('full_block_number') label="{{__('t.models.block.full_block_number')}}"></input-text>
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('t.models.block.name'), 'required' => true, 'autofocus' => true])@endcomponent
+            <input-text @forminput('name') label="{{__('t.models.block.name')}}" required autofocus></input-text>
 
-            @component('components.form.dateInput', ['name' => 'block_date', 'label' => __('t.models.block.block_date'), 'required' => true, 'value' => Auth::user()->getLastUsedBlockDate($course)])@endcomponent
+            <input-date @forminput('block_date', Auth::user()->getLastUsedBlockDate($course)->format('Y-m-d')) label="{{__('t.models.block.block_date')}}" required></input-date>
 
-            @component('components.form.multiSelectInput', [
-                'name' => 'requirements',
-                'label' => __('t.models.block.requirements'),
-                'options' => $course->requirements->all(),
-                'valueFn' => function(\App\Models\Requirement $requirement) { return $requirement->id; },
-                'displayFn' => function(\App\Models\Requirement $requirement) { return $requirement->content; },
-                'multiple' => true,
-            ])@endcomponent
+            <input-multi-select
+                @forminput('requirements')
+                label="{{__('t.models.block.requirements')}}"
+                :options="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
+                display-field="content"
+                multiple></input-multi-select>
 
-            @component('components.form.submit', ['label' => __('t.global.add')])
+            <button-submit label="{{__('t.global.add')}}">
 
                 <a class="btn btn-link mb-1" href="{{ route('admin.block.import', ['course' => $course]) }}">
                     {{ __('t.views.admin.blocks.import') }}
@@ -30,7 +28,7 @@
 
                 @component('components.help-text', ['key' => 't.views.admin.blocks.what_are_blocks', 'id' => 'blockHelp'])@endcomponent
 
-            @endcomponent
+            </button-submit>
 
         @endcomponent
 

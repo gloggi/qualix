@@ -54,9 +54,9 @@
 
         @component('components.form', ['route' => ['admin.invitation.store', ['course' => $course->id]]])
 
-            @component('components.form.textInput', ['name' => 'email', 'label' => __('t.models.invitation.email'), 'required' => true])@endcomponent
+            <input-text @forminput('email') label="{{__('t.models.invitation.email')}}"></input-text>
 
-            @component('components.form.submit', ['label' => __('t.views.admin.equipe.invite')])@endcomponent
+            <button-submit label="{{__('t.views.admin.equipe.invite')}}"></button-submit>
 
         @endcomponent
 

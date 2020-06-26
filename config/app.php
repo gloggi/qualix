@@ -189,6 +189,7 @@ return [
         App\Providers\ImportServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ValidationServiceProvider::class,
+        App\Providers\ViewServiceProvider::class,
 
     ],
 

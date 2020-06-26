@@ -7,13 +7,13 @@
 
         @component('components.form', ['route' => ['admin.participants.update', ['course' => $course->id, 'participant' => $participant->id]], 'enctype' => 'multipart/form-data'])
 
-            @component('components.form.textInput', ['name' => 'scout_name', 'label' => __('t.models.participant.scout_name'), 'required' => true, 'autofocus' => true, 'value' => $participant->scout_name])@endcomponent
+            <input-text @forminput('scout_name', $participant->scout_name) label="{{__('t.models.participant.scout_name')}}" required autofocus></input-text>
 
-            @component('components.form.textInput', ['name' => 'group', 'label' => __('t.models.participant.group'), 'value' => $participant->group])@endcomponent
+            <input-text @forminput('group', $participant->group) label="{{__('t.models.participant.group')}}"></input-text>
 
-            @component('components.form.fileInput', ['name' => 'image', 'label' => __('t.models.participant.image'), 'accept' => 'image/*'])@endcomponent
+            <input-file @forminput('image') label="{{__('t.models.participant.image')}}" accept="image/*"></input-file>
 
-            @component('components.form.submit', ['label' => __('t.global.save')])@endcomponent
+            <button-submit></button-submit>
 
         @endcomponent
 

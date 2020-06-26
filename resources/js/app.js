@@ -1,5 +1,6 @@
 import languageBundle from '@kirschbaum-development/laravel-translations-loader!@kirschbaum-development/laravel-translations-loader'
 import VueI18n from 'vue-i18n'
+import { kebabCase } from 'lodash'
 
 require('./bootstrap');
 
@@ -46,6 +47,9 @@ Vue.directive('focus', {
         }
     }
 });
+
+Vue.filter('kebabCase', value => kebabCase(value));
+Vue.filter('append', (value, suffix) => value + suffix);
 
 const i18n = new VueI18n({
     locale: document.documentElement.lang,

@@ -7,11 +7,11 @@
 
         @component('components.form', ['route' => 'admin.newcourse.store'])
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('t.models.course.name'), 'required' => true, 'autofocus' => true])@endcomponent
+            <input-text @forminput('name') label="{{__('t.models.course.name')}}" required autofocus></input-text>
 
-            @component('components.form.textInput', ['name' => 'course_number', 'label' => __('t.models.course.course_number')])@endcomponent
+            <input-text @forminput('course_number') label="{{__('t.models.course.course_number')}}"></input-text>
 
-            @component('components.form.submit', ['label' => __('t.views.admin.new_course.create')])@endcomponent
+            <button-submit label="{{__('t.views.admin.new_course.create')}}"></button-submit>
 
         @endcomponent
 

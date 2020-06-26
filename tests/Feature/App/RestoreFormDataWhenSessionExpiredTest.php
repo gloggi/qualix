@@ -125,8 +125,8 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
         }, true, function (TestResponse $response) {
             // then
             // the participant selection field in the restored form should still be the changed value
-            $response->assertDontSee(' value="' . $this->blockId . '"');
-            $response->assertSee(' old-value="' . $this->blockIds . '"');
+            $response->assertDontSee(' value="' . $this->blockId . '"', false);
+            $response->assertSee(' value="' . $this->blockIds . '"', false);
         });
     }
 

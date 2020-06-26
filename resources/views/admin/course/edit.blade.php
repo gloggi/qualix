@@ -7,11 +7,11 @@
 
         @component('components.form', ['route' => ['admin.course.update', ['course' => $course->id]]])
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('t.models.course.name'), 'required' => true, 'autofocus' => true, 'value' => $course->name])@endcomponent
+            <input-text @forminput('name', $course->name) label="{{__('t.models.course.name')}}" required autofocus></input-text>
 
-            @component('components.form.textInput', ['name' => 'course_number', 'label' => __('t.models.course.course_number'), 'value' => $course->course_number])@endcomponent
+            <input-text @forminput('course_number', $course->course_number) label="{{__('t.models.course.course_number')}}"></input-text>
 
-            @component('components.form.submit', ['label' => __('t.global.save')])@endcomponent
+            <button-submit></button-submit>
 
         @endcomponent
 

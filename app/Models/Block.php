@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property string $full_block_number
  * @property string $blockname_and_number
  * @property CarbonInterface $block_date
+ * @property Collection $requirement_ids
  * @property Course $course
  * @property Observation[] $observations
  * @property Collection $requirements
@@ -139,5 +140,14 @@ class Block extends Model {
      */
     public function getBlocknameAndNumberAttribute() {
         return implode(': ', array_filter([$this->full_block_number, $this->name]));
+    }
+
+    /**
+     * Get the block date attribute in a localized format.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getRequirementIdsAttribute() {
+        return $this->requirements->pluck('id');
     }
 }

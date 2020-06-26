@@ -7,23 +7,20 @@
 
         @component('components.form', ['route' => ['admin.block.update', ['course' => $course->id, 'block' => $block->id]]])
 
-            @component('components.form.textInput', ['name' => 'full_block_number', 'label' => __('t.models.block.full_block_number'), 'value' => $block->full_block_number])@endcomponent
+            <input-text @forminput('full_block_number', $block->full_block_number) label="{{__('t.models.block.full_block_number')}}"></input-text>
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('t.models.block.name'), 'required' => true, 'autofocus' => true, 'value' => $block->name])@endcomponent
+            <input-text @forminput('name', $block->name) label="{{__('t.models.block.name')}}" required autofocus></input-text>
 
-            @component('components.form.dateInput', ['name' => 'block_date', 'label' => __('t.models.block.block_date'), 'required' => true, 'value' => $block->block_date])@endcomponent
+            <input-date @forminput('block_date', $block->block_date->format('Y-m-d')) label="{{__('t.models.block.block_date')}}" required></input-date>
 
-            @component('components.form.multiSelectInput', [
-                'name' => 'requirements',
-                'label' => __('t.models.block.requirements'),
-                'value' => $block->requirements->all(),
-                'options' => $course->requirements->all(),
-                'valueFn' => function(\App\Models\Requirement $requirement) { return $requirement->id; },
-                'displayFn' => function(\App\Models\Requirement $requirement) { return $requirement->content; },
-                'multiple' => true,
-            ])@endcomponent
+            <input-multi-select
+                @forminput('requirements', $block->requirements->pluck('id')->join(','))
+                label="{{__('t.models.block.requirements')}}"
+                :options="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
+                display-field="content"
+                multiple></input-multi-select>
 
-            @component('components.form.submit', ['label' => __('t.global.save')])@endcomponent
+            <button-submit></button-submit>
 
         @endcomponent
 
