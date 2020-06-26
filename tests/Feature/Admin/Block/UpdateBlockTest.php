@@ -3,7 +3,7 @@
 namespace Tests\Feature\Admin\Block;
 
 use App\Models\Block;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithCourse;
 

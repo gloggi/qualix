@@ -9,7 +9,7 @@ use App\Util\HtmlString;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\RouteCollection;
+use Illuminate\Routing\RouteCollectionInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -117,7 +117,7 @@ class ObservationController extends Controller {
      * @return string|object|null
      */
     protected function extractPathParameter($url, $routeName, $parameterName) {
-        /** @var RouteCollection $routes */
+        /** @var RouteCollectionInterface $routes */
         $routes = Route::getRoutes();
         return $routes->getByName($routeName)->bind(new Request([], [], [], [], [], ['REQUEST_URI' => $url]))->parameter($parameterName);
     }

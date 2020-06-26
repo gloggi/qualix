@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\App;
 
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\App;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class SelectLocaleWhenLoggedInTest extends TestCase {

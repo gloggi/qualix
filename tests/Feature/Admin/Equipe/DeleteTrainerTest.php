@@ -4,7 +4,7 @@ namespace Tests\Feature\Admin\Equipe;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCaseWithCourse;
 
 class DeleteTrainerTest extends TestCaseWithCourse {

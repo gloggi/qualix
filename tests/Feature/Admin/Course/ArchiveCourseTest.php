@@ -13,6 +13,7 @@ use App\Models\RequirementDetail;
 use App\Models\Trainer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCaseWithBasicData;
 
 class ArchiveCourseTest extends TestCaseWithBasicData {
@@ -121,10 +122,11 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $courseId = $this->createCourse($courseName);
 
         // when
+        /** @var TestResponse $response */
         $response = $this->post('/course/' . $courseId . '/admin/archive')->followRedirects();
 
         // then
-        $response->assertDontSee($courseName);
-        $response->assertSee(htmlspecialchars($courseName, ENT_QUOTES));
+        $response->assertDontSee($courseName, false);
+        $response->assertSee(htmlspecialchars($courseName, ENT_QUOTES), false);
     }
 }

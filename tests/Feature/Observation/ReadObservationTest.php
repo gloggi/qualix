@@ -103,14 +103,14 @@ class ReadObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertSee(">Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt");
+        $response->assertSee('>Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt', false);
 
         // when
         $response = $this->get('/course/' . $this->courseId . '/participants/' . $otherParticipantId);
 
         // then
         $response->assertOk();
-        $response->assertSee(">Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt");
+        $response->assertSee('>Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt', false);
     }
 
     public function test_shouldOrderObservationsByBlockOrder() {

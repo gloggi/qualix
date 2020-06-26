@@ -3,7 +3,7 @@
 namespace Tests\Feature\Admin\Participant;
 
 use App\Models\Course;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithCourse;
 

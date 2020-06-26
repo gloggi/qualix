@@ -4,8 +4,8 @@ namespace Tests\Feature\Observation;
 
 use App\Models\HitobitoUser;
 use Closure;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Testing\TestResponse;
 use Tests\Feature\Auth\HitobitoOAuthTest;
 use Tests\TestCaseWithBasicData;
 
@@ -170,10 +170,10 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
 
         // check that restoration works as intended
         if ($shouldRestore) {
-            $response->assertSeeText($this->expectedRestoredFlashMessage);
+            $response->assertSeeText($this->expectedRestoredFlashMessage, false);
             $response->assertSee('this text will be restored');
         } else {
-            $response->assertDontSeeText($this->expectedRestoredFlashMessage);
+            $response->assertDontSeeText($this->expectedRestoredFlashMessage, false);
             $response->assertDontSee('this text will be restored');
         }
 
@@ -188,7 +188,7 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
 
         // then
         // data should not be restored a second time
-        $response->assertDontSeeText($this->expectedRestoredFlashMessage);
+        $response->assertDontSeeText($this->expectedRestoredFlashMessage, false);
         $response->assertDontSee('this text will be restored');
     }
 

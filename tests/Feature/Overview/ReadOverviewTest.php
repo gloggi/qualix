@@ -133,9 +133,9 @@ class ReadOverviewTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertDontSee($participantName);
-        $response->assertSee(htmlspecialchars($participantName, ENT_QUOTES));
-        $response->assertDontSee($userName);
-        $response->assertSee(htmlspecialchars($userName, ENT_QUOTES));
+        $response->assertDontSee($participantName, false);
+        $response->assertSee(htmlspecialchars($participantName, ENT_QUOTES), false);
+        $response->assertDontSee($userName, false);
+        $response->assertSee(htmlspecialchars($userName, ENT_QUOTES), false);
     }
 }

@@ -3,7 +3,7 @@
 namespace Tests\Feature\Admin\Course;
 
 use App\Models\Course;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class SelectCourseTest extends TestCase {

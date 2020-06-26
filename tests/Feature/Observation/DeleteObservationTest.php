@@ -3,7 +3,7 @@
 namespace Tests\Feature\Observation;
 
 use App\Models\Course;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCaseWithBasicData;
 
 class DeleteObservationTest extends TestCaseWithBasicData {

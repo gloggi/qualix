@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin\Category;
 
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCaseWithCourse;
 
 class DeleteCategoryTest extends TestCaseWithCourse {

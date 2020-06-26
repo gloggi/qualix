@@ -8,11 +8,11 @@ use App\Models\User;
 use Dotenv\Dotenv;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -24,7 +24,7 @@ abstract class TestCase extends BaseTestCase {
     protected $crawler;
 
     public function setUp(): void {
-        Dotenv::create(__DIR__.'/../', '.env.testing')->load();
+        Dotenv::createImmutable(__DIR__.'/../', '.env.testing')->load();
 
         parent::setUp();
 
