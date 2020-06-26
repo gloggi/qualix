@@ -1,0 +1,4 @@
+Vorname;Nachname;Pfadiname;Firmenname;Firma;Haupt-E-Mail;Adresse;PLZ;Ort;Land;Geschlecht;Geburtstag;Hauptebene;Rollen;Tags;Titel;Anrede;Korrespondenzsprache;Kantonalverband;Id;Id der Hauptebene;Weitere E-Mail Mutter und Vater;Weitere E-Mail Pfadi;Telefonnummer Privat
+Test Wolf;"";Testliwoelfi;"";nein;test@wolf.ch;teststrasse aaa;"";"";"";männlich;03.02.1990;Helveter;Teilnehmer/-in;"";"";Hallo Test Wolf;"";"";2133;66;;;
+Hussein;Kohlmann;Consequuntur;Puzzle ITC;nein;hussein_kohlmann@hitobito.example.com;TESTSTRASSE;4123;Allschwil;"";männlich;30.12.1990;Pfadibewegung Schweiz;Teilnehmer/-in;Fotos, Lala land, Digital;"";Sehr geehrter Herr Kohlmann;de;"";2;1;mutter@m.ch;consi@test.com;+41 79 838 49 26
+Ungültig;Mail Dude;"";"";nein;voelliginvalid@daedomaingitsnid.com;;;;;unbekannt;;Pfadibewegung Schweiz;Teilnehmer/-in;"";;Hallo Ungültig;;"";2981;1;;;

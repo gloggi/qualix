@@ -198,12 +198,23 @@ return array(
 				"edit" => "Modifier participant-e-s",
 				"edit_success" => "Participant-e \":name\" a été saisi-e avec succès.",
 				"existing" => "Participant-e-s :courseName",
+				"import" => "Importer des participants...",
 				"menu_name" => "Participants",
 				"new" => "Nouveaux/nouvelles participant-e-s",
 				"no_participants" => "Pour l'instant, aucun-e participant-e saisi-e",
 				"observations_on_participant" => "{0}Aucune observation n'est liée.|{1}Une observation qui sera également supprimée est liée.|[2,*]:count observations qui seront également supprimées sont liées.",
 				"really_remove" => "Souhaites-tu réellement supprimer :name du cours?",
 				"remove_success" => "Le/la participant-e \":name\" a été supprimée du cours avec succès.",
+			),
+			"participant_import" => array(
+				"MiData" => array(
+					"column_names" => array(
+						"scout_name" => "Totem",
+						"first_name" => "Prénom",
+						"last_name" => "Nom",
+						"group" => "Niveau",
+					),
+				),
 			),
 			"requirements" => array(
 				"are_requirements_required" => array(

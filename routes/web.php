@@ -56,6 +56,8 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::middleware('courseNotArchived')->group(function() {
         Route::get('/course/{course}/admin/participants', 'ParticipantController@index')->name('admin.participants');
         Route::post('/course/{course}/admin/participants', 'ParticipantController@store')->name('admin.participants.store');
+        Route::get('/course/{course}/admin/participants/import', 'ParticipantController@upload')->name('admin.participants.upload');
+        Route::post('/course/{course}/admin/participants/import', 'ParticipantController@import')->name('admin.participants.import');
         Route::get('/course/{course}/admin/participants/{participant}', 'ParticipantController@edit')->name('admin.participants.edit');
         Route::post('/course/{course}/admin/participants/{participant}', 'ParticipantController@update')->name('admin.participants.update');
         Route::delete('/course/{course}/admin/participants/{participant}', 'ParticipantController@destroy')->name('admin.participants.delete');
