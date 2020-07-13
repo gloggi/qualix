@@ -42,6 +42,22 @@ eval "$(ssh-agent -s)"
 chmod 600 .travis/id_rsa
 ssh-add .travis/id_rsa
 
+# Add fingerprint of server to known hosts
+echo "|1|JR7fpL0gLKe8icyVQtx89E3xKA0=|fWzxmKWZG+dr2Q+7aGePHZEYcgA= ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKlHpAA/T87DCjPTHb2o5nLuxfPDhj00cZB2lBlNjbbb" >> ~/.ssh/known_hosts
+echo "|1|kwYauc4WMSDAwXG/SfFoYNwYYnM=|xu3ceXG8okp44TfyR6h56godaLQ= ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKlHpAA/T87DCjPTHb2o5nLuxfPDhj00cZB2lBlNjbbb" >> ~/.ssh/known_hosts
+echo "|1|tkWQ7CJXd4LxeV0L/T6usElIEMk=|KPrqJZWpOb3tNR+nm4/u6KXSiFU= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIKVCZ0dYk2R0cKd7/hDY4vOTkCm4vmdwtV9jhoWLff70uCAyVbYQ0qReRn/zQY15jbJmr7U84vYHwipUcndBc0=" >> ~/.ssh/known_hosts
+echo "|1|HkwzaiV9MewbGGd+CNmnUwShkD0=|w2gSII2hnyxvIX24RxdwXB94rhQ= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIKVCZ0dYk2R0cKd7/hDY4vOTkCm4vmdwtV9jhoWLff70uCAyVbYQ0qReRn/zQY15jbJmr7U84vYHwipUcndBc0=" >> ~/.ssh/known_hosts
+echo "|1|AKBTB7xthFG7AL4DDjk70zQc+Pg=|6pMFoR9FwtTtfDOmpP1Ziudngx0= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKSQ6V3VRAg8jxrM/LGkSQzCrhLa83DV3rYIIuUchzrhal8q12Ab0GERYy5Suaqmj11ydna7CkN8uSs757PTB6g=" >> ~/.ssh/known_hosts
+echo "|1|dfj9V26TOanb1MT539vM0ttx21s=|5bdR/2oxiaBU8Uh1CMVu/vwX5VA= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKSQ6V3VRAg8jxrM/LGkSQzCrhLa83DV3rYIIuUchzrhal8q12Ab0GERYy5Suaqmj11ydna7CkN8uSs757PTB6g=" >> ~/.ssh/known_hosts
+
+echo "Checking PHP version"
+ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
+  set -e
+  php -v
+  cd $SSH_DIRECTORY
+  php -r "if((explode('.',PHP_VERSION)[0]*10000+explode('.',PHP_VERSION)[1]*100+explode('.',PHP_VERSION)[2])<${PHP_MIN_VERSION:-70205}){echo \"Your PHP version is too old\\n\";exit(1);}"
+EOF
+
 echo "Uploading files to the server..."
 lftp <<EOF
   set sftp:auto-confirm true

@@ -1,8 +1,8 @@
-FROM php:7.2.15-apache
+FROM php:7.3.18-apache
 
 WORKDIR /var/www
 
-RUN apt-get -y update && apt-get -y upgrade && apt-get -y install libxml2-dev libpng-dev curl zlib1g-dev unzip locales
+RUN apt-get -y update && apt-get -y upgrade && apt-get -y install libxml2-dev libpng-dev curl zlib1g-dev unzip libzip-dev locales
 RUN echo "de_CH.UTF-8 UTF-8" >> /etc/locale.gen && echo "fr_CH.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
