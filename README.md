@@ -34,6 +34,8 @@ docker exec -it qualix-app php -v
 
 ## Produktive Installation
 
+> Qualix basiert auf Laravel 7 und benötigt deshalb eine PHP Version >= 7.2.5
+
 1. **Code herunterladen**: `git clone https://github.com/gloggi/qualix.git && cd qualix`
 2. **Server-Einstellungen**: Eine Kopie von .env.example namens .env erstellen und die Angaben darin ergänzen. Zum Beispiel so (kritische Angaben sind mit `<snip>` zensiert):
 ```
