@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Auth;
+namespace Tests\Feature\ErrorReports;
 
 use App\Http\Requests\UserRequest;
 use Illuminate\Validation\ValidationException;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Util;
+namespace Tests\Unit\Util;
 
 use App\Util\HtmlString;
 use Tests\TestCase;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Observation;
+namespace Tests\Feature\App;
 
 use App\Models\HitobitoUser;
 use Closure;
