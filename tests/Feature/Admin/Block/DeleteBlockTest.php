@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin\Block;
 
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCaseWithCourse;
 
 class DeleteBlockTest extends TestCaseWithCourse {

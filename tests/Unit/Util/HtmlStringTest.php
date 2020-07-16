@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Util;
+namespace Tests\Unit\Util;
 
 use App\Util\HtmlString;
 use Tests\TestCase;
@@ -19,8 +19,8 @@ class HtmlStringTest extends TestCase {
         $this->htmlString = new HtmlString;
 
         $this->mock('translator', function ($mock) {
-            $mock->shouldReceive('getFromJson')->andReturn($this->unescaped);
-            $mock->shouldReceive('transChoice')->andReturn($this->unescaped);
+            $mock->shouldReceive('get')->andReturn($this->unescaped);
+            $mock->shouldReceive('choice')->andReturn($this->unescaped);
         });
     }
 
@@ -156,27 +156,6 @@ class HtmlStringTest extends TestCase {
 
         // then
         $this->assertEquals($this->escaped, $result);
-    }
-
-    public function test_nl2br_e_shouldEscapeAndConvertNewlinesToBrTags() {
-        // given
-
-        // when
-        $result = $this->htmlString->nl2br_e($this->unescaped)->__toString();
-
-        // then
-        $this->assertEquals("&lt;div&gt;Two<br />\nLines&lt;/div&gt;", $result);
-    }
-
-    public function test_nl2br_e_shouldNotEscapeHtmlStringAgain_butStillConvertNewlinesToBrTags() {
-        // given
-        $alreadySafe = (new HtmlString)->s($this->unescaped);
-
-        // when
-        $result = $this->htmlString->nl2br_e($alreadySafe)->__toString();
-
-        // then
-        $this->assertEquals("<div>Two<br />\nLines</div>", $result);
     }
 
     public function test_replace_shouldEscapeReplacement() {

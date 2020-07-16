@@ -1,32 +1,21 @@
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import languageBundle from '@kirschbaum-development/laravel-translations-loader!@kirschbaum-development/laravel-translations-loader'
+import VueI18n from 'vue-i18n'
+import { kebabCase } from 'lodash'
 
 require('./bootstrap');
 
 window.Vue = require('vue');
 
-var datePicker = require('vue-bootstrap-datetimepicker');
-jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
-    icons: {
-        time: 'fas fa-clock',
-        date: 'fas fa-calendar',
-        up: 'fas fa-arrow-up',
-        down: 'fas fa-arrow-down',
-        previous: 'fas fa-chevron-left',
-        next: 'fas fa-chevron-right',
-        today: 'fas fa-calendar-check',
-        clear: 'fas fa-trash-alt',
-        close: 'fas fa-times-circle'
-    }
-});
-Vue.component('date-picker', datePicker);
+var { BootstrapVue, IconsPlugin } = require('bootstrap-vue');
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+Vue.use(VueI18n);
 
-const files = require.context('./', true, /\.vue$/i);
-files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+Vue.prototype.$window = window;
+
+require.context('./', true, /\.vue$/i, 'lazy').keys().forEach(file => {
+    Vue.component(file.split('/').pop().split('.')[0], () => import(`${file}` /*webpackChunkName: "[request]" */));
+});
 
 /**
  * Fix autofocus on form elements inside the Vue.js area of the page by adding v-focus additionally to autofocus:
@@ -59,6 +48,14 @@ Vue.directive('focus', {
     }
 });
 
+Vue.filter('kebabCase', value => kebabCase(value));
+Vue.filter('append', (value, suffix) => value + suffix);
+
+const i18n = new VueI18n({
+    locale: document.documentElement.lang,
+    messages: languageBundle
+});
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -66,5 +63,6 @@ Vue.directive('focus', {
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    i18n
 });

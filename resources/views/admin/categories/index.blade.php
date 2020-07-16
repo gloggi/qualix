@@ -2,23 +2,25 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.categories.new')])
+    <b-card>
+        <template #header>{{__('t.views.admin.categories.new')}}</template>
 
         @component('components.form', ['route' => ['admin.categories.store', ['course' => $course->id]]])
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('t.models.category.name'), 'required' => true, 'autofocus' => true])@endcomponent
+            <input-text @forminput('name') label="{{__('t.models.category.name')}}" required autofocus></input-text>
 
-            @component('components.form.submit', ['label' => __('t.global.add')])
+            <button-submit label="{{__('t.global.add')}}">
 
                 @component('components.help-text', ['id' => 'categoryHelp', 'key' => 't.views.admin.categories.what_are_categories'])@endcomponent
 
-            @endcomponent
+            </button-submit>
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
-    @component('components.card', ['header' => __('t.views.admin.categories.existing', ['courseName' => $course->name])])
+    <b-card>
+        <template #header>{{__('t.views.admin.categories.existing', ['courseName' => $course->name])}}</template>
 
         @if (count($course->categories))
 
@@ -51,6 +53,6 @@
 
         @endif
 
-    @endcomponent
+    </b-card>
 
 @endsection

@@ -1,13 +1,13 @@
 @php
     if (!isset($params)) $params = [];
 @endphp<span>
-    <a href="#" class="text-secondary" data-toggle="collapse" data-target="#{{ $id }}" aria-expanded="true" aria-controls="{{ $id }}">
+    <b-link href="#" v-b-toggle.{{ Str::kebab($id) }} class="text-secondary">
         {{__($key . '.question', $params)}} <i class="fas fa-question-circle"></i>
-    </a>
+    </b-link>
 
-    <div id="{{ $id }}" class="collapse text-secondary">
+    <b-collapse id="{{ Str::kebab($id) }}" class="text-secondary">
         {{__($key . '.answer', $params)}}
 
         {{ $slot }}
-    </div>
+    </b-collapse>
 </span>

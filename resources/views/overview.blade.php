@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.overview.title')])
+    <b-card>
+        <template #header>{{__('t.views.overview.title')}}</template>
 
         @if (count($participants))
 
@@ -22,7 +23,6 @@
             @endphp
             @component('components.responsive-table', [
                 'data' => $participants,
-                'rawColumns' => true,
                 'fields' => $columns,
                 'cellClass' => 'position-relative',
                 'actions' => [
@@ -36,6 +36,6 @@
 
         @endif
 
-    @endcomponent
+    </b-card>
 
 @endsection

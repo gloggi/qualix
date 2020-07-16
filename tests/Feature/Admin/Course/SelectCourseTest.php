@@ -3,7 +3,7 @@
 namespace Tests\Feature\Admin\Course;
 
 use App\Models\Course;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class SelectCourseTest extends TestCase {
@@ -28,8 +28,8 @@ class SelectCourseTest extends TestCase {
         $response->assertRedirect('/course/' . $course2->id);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $this->assertRegExp("%<option value=\"[^\"]*\">{$course1->name}</option>%", $response->content());
-        $this->assertRegExp("%<option value=\"[^\"]*\" selected>{$course2->name}</option>%", $response->content());
+        $this->assertRegExp("%<b-form-select-option value=\"[^\"]*\">{$course1->name}</b-form-select-option>%", $response->content());
+        $this->assertRegExp("%<b-form-select[^>]*id=\"global-course-select\"[^>]*value=\"([^\"]*)\"((?!</b-form-select>).)*<b-form-select-option value=\"\\1\">" . $course2->name . "</b-form-select-option>%s", $response->content());
     }
 
     public function test_shouldShowSelectedCourse() {
@@ -49,8 +49,8 @@ class SelectCourseTest extends TestCase {
 
         // then
         $response->assertStatus(200);
-        $this->assertRegExp("%<option value=\"[^\"]*\" selected>{$course1->name}</option>%", $response->content());
-        $this->assertRegExp("%<option value=\"[^\"]*\">{$course2->name}</option>%", $response->content());
+        $this->assertRegExp("%<b-form-select[^>]*id=\"global-course-select\"[^>]*value=\"([^\"]*)\"((?!</b-form-select>).)*<b-form-select-option value=\"\\1\">" . $course1->name . "</b-form-select-option>%s", $response->content());
+        $this->assertRegExp("%<b-form-select-option value=\"[^\"]*\">{$course2->name}</b-form-select-option>%", $response->content());
     }
 
     public function test_shouldNotUpdateLeiterLastAccessed_whenSameCourseWasLastViewedBefore() {

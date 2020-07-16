@@ -2,67 +2,52 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.observations.edit')])
+    <b-card>
+        <template #header>{{__('t.views.observations.edit')}}</template>
 
         @component('components.form', ['route' => ['observation.update', ['course' => $course->id, 'observation' => $observation->id]]])
 
-            @component('components.form.multiSelectInput', [
-                'name' => 'participants',
-                'label' => __('t.models.observation.participants'),
-                'required' => true,
-                'value' => implode(',', array_map(function (\App\Models\Participant $participant) { return $participant->id; }, $observation->participants->all())),
-                'options' => $course->participants->all(),
-                'valueFn' => function(\App\Models\Participant $participant) { return $participant->id; },
-                'displayFn' => function(\App\Models\Participant $participant) { return $participant->scout_name; },
-                'multiple' => true,
-            ])@endcomponent
+            <input-multi-select
+                @forminput('participants', $observation->participants->pluck('id')->join(','))
+                label="{{__('t.models.observation.participants')}}"
+                required
+                :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
+                display-field="scout_name"
+                multiple></input-multi-select>
 
-            @component('components.form.textareaInput', ['name' => 'content', 'label' => __('t.models.observation.content'), 'required' => true, 'autofocus' => true, 'value' => $observation->content])@endcomponent
+            <input-textarea @forminput('content', $observation->content) label="{{__('t.models.observation.content')}}" required autofocus></input-textarea>
 
-            @component('components.form.multiSelectInput', [
-                'name' => 'block',
-                'label' => __('t.models.observation.block'),
-                'required' => true,
-                'value' => $observation->block->id,
-                'options' => $course->blocks->all(),
-                'valueFn' => function(\App\Models\Block $block) { return $block->id; },
-                'displayFn' => function(\App\Models\Block $block) { return $block->blockname_and_number; },
-                'dataFn' => function(\App\Models\Block $block) { return implode(',', array_map(function(\App\Models\Requirement $requirement) { return $requirement->id; }, $block->requirements->all())); },
-                'multiple' => false,
-            ])@endcomponent
+            <input-multi-select
+                @forminput('block', $observation->block->id)
+                label="{{__('t.models.observation.block')}}"
+                required
+                :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number')) }}"
+                display-field="blockname_and_number"></input-multi-select>
 
-            @component('components.form.multiSelectInput', [
-                'name' => 'requirements',
-                'label' => __('t.models.observation.requirements'),
-                'value' => implode(',', array_map(function (\App\Models\Requirement $requirement) { return $requirement->id; }, $observation->requirements->all())),
-                'options' => $course->requirements->all(),
-                'valueFn' => function(\App\Models\Requirement $requirement) { return $requirement->id; },
-                'displayFn' => function(\App\Models\Requirement $requirement) { return $requirement->content; },
-                'multiple' => true,
-            ])@endcomponent
+            <input-multi-select
+                @forminput('requirements', $observation->requirements->pluck('id')->join(','))
+                label="{{__('t.models.observation.requirements')}}"
+                :options="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
+                display-field="content"
+                multiple></input-multi-select>
 
-            @component('components.form.radioButtonInput', [
-                'name' => 'impression',
-                'label' => __('t.models.observation.impression'),
-                'required' => true,
-                'value' => $observation->impression,
-                'options' => [ '2' => __('t.global.positive'), '1' => __('t.global.neutral'), '0' => __('t.global.negative')]
-            ])@endcomponent
+            <input-radio-button
+                @forminput('impression', $observation->impression)
+                label="{{__('t.models.observation.impression')}}"
+                required
+                :options="{{ json_encode([ '2' => __('t.global.positive'), '1' => __('t.global.neutral'), '0' => __('t.global.negative')]) }}"></input-radio-button>
 
-            @component('components.form.multiSelectInput', [
-                'name' => 'categories',
-                'label' => __('t.models.observation.categories'),
-                'options' => $course->categories->all(),
-                'value' => implode(',', array_map(function (\App\Models\Category $category) { return $category->id; }, $observation->categories->all())),
-                'valueFn' => function(\App\Models\Category $category) { return $category->id; },
-                'displayFn' => function(\App\Models\Category $category) { return $category->name; },
-                'multiple' => true,
-            ])@endcomponent
+            <input-multi-select
+                @forminput('categories', $observation->categories->pluck('id')->join(','))
+                label="{{__('t.models.observation.categories')}}"
+                :options="{{ json_encode($course->categories->map->only('id', 'name')) }}"
+                display-field="name"
+                multiple></input-multi-select>
 
-            @component('components.form.submit', ['label' => __('t.global.save')])@endcomponent
+            <button-submit label="{{__('t.views.admin.new_course.create')}}"></button-submit>
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

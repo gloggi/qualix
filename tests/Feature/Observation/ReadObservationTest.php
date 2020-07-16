@@ -90,7 +90,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertSee("Mehrzeilige Beobachtungen<br />\n- nützlich<br />\n- wichtig<br />\n- erlauben Strukturierung");
+        $response->assertSee("Mehrzeilige Beobachtungen\n- nützlich\n- wichtig\n- erlauben Strukturierung");
     }
 
     public function test_shouldRenderParticipants_whenMultipleAreAssigned() {
@@ -103,14 +103,14 @@ class ReadObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertSee(">Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt");
+        $response->assertSee('>Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt', false);
 
         // when
         $response = $this->get('/course/' . $this->courseId . '/participants/' . $otherParticipantId);
 
         // then
         $response->assertOk();
-        $response->assertSee(">Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt");
+        $response->assertSee('>Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt', false);
     }
 
     public function test_shouldOrderObservationsByBlockOrder() {

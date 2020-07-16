@@ -2,28 +2,29 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.participants.new')])
+    <b-card>
+        <template #header>{{__('t.views.admin.participants.new')}}</template>
 
         @component('components.form', ['route' => ['admin.participants.store', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
 
-            @component('components.form.textInput', ['name' => 'scout_name', 'label' => __('t.models.participant.scout_name'), 'required' => true, 'autofocus' => true])@endcomponent
+            <input-text @forminput('scout_name') label="{{__('t.models.participant.scout_name')}}" required autofocus></input-text>
 
-            @component('components.form.textInput', ['name' => 'group', 'label' => __('t.models.participant.group')])@endcomponent
+            <input-text @forminput('group') label="{{__('t.models.participant.group')}}"></input-text>
 
-            @component('components.form.fileInput', ['name' => 'image', 'label' => __('t.models.participant.image'), 'accept' => 'image/*'])@endcomponent
+            <input-file @forminput('image') label="{{__('t.models.participant.image')}}" accept="image/*"></input-file>
 
-            @component('components.form.submit', ['label' => __('t.global.add')])
+            <button-submit label="{{__('t.global.add')}}">
                 <a class="btn btn-link mb-1" href="{{ route('admin.participants.import', ['course' => $course]) }}">
                     {{ __('t.views.admin.participants.import') }}
                 </a>
-            @endcomponent
-
+            </button-submit>
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
-    @component('components.card', ['header' => __('t.views.admin.participants.existing', ['courseName' => $course->name])])
+    <b-card>
+        <template #header>{{__('t.views.admin.participants.existing', ['courseName' => $course->name])}}</template>
 
         @if (count($course->participants))
 
@@ -51,6 +52,6 @@
 
         @endif
 
-    @endcomponent
+    </b-card>
 
 @endsection

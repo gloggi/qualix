@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Auth;
+namespace Tests\Feature\ErrorReports;
 
 use GuzzleHttp;
 use Tests\TestCase;

@@ -2,7 +2,9 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('Server Error')])
+    <b-card>
+        <template #header>{{__('Server Error')}}</template>
+
         @if(app()->bound('sentry') && app('sentry')->getLastEventId() && env('SENTRY_USER_FEEDBACK_URL'))
 
             <h5>{{__('t.views.error_form.it_looks_like_we_are_having_issues')}}</h5>
@@ -11,27 +13,28 @@
 
             @component('components.form', ['route' => ['errorReport.submit'], 'method' => 'POST'])
 
-                @component('components.form.hiddenInput', ['name' => 'eventId', 'value' => app('sentry')->getLastEventId()])@endcomponent
+                <input-hidden @forminput('eventId', app('sentry')->getLastEventId())></input-hidden>
 
-                @component('components.form.hiddenInput', ['name' => 'previousUrl', 'value' => url()->previous()])@endcomponent
+                <input-hidden @forminput('previousUrl', url()->previous())></input-hidden>
 
-                @component('components.form.textInput', ['name' => 'name', 'label' => __('t.models.user.name'), 'required' => true, 'autofocus' => true])@endcomponent
+                <input-text @forminput('name') label="{{__('t.models.user.name')}}" required autofocus></input-text>
 
-                @component('components.form.textInput', ['name' => 'email', 'label' => __('t.models.user.email'), 'required' => true])@endcomponent
+                <input-text @forminput('email') label="{{__('t.models.user.email')}}" required></input-text>
 
-                @component('components.form.textareaInput', ['name' => 'description', 'label' => __('t.views.error_form.what_happened'), 'required' => true, 'placeholder' => __('t.views.error_form.what_happened_example')])@endcomponent
+                <input-textarea @forminput('description') label="{{__('t.views.error_form.what_happened')}}" placeholder="{{__('t.views.error_form.what_happened_example')}}" required></input-textarea>
 
-                @component('components.form.submit', ['label' => __('t.views.error_form.send_description')])
-                        <a class="btn btn-link mb-1" href="{{ url()->previous() }}">
-                            {{ __('t.views.error_form.back_without_sending_report') }}
-                        </a>
-                @endcomponent
+                <button-submit label="{{__('t.views.error_form.send_description')}}">
+                    <a class="btn btn-link mb-1" href="{{ url()->previous() }}">
+                        {{ __('t.views.error_form.back_without_sending_report') }}
+                    </a>
+                </button-submit>
 
             @endcomponent
 
         @else
             <p>{{__('t.views.error_form.please_try_again_later')}}</p>
         @endif
-    @endcomponent
+
+    </b-card>
 
 @endsection

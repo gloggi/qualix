@@ -4,8 +4,8 @@ namespace Tests\Feature\Admin\Block;
 
 use App\Models\Block;
 use App\Models\Observation;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Testing\TestResponse;
 use Mockery;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use Tests\TestCaseWithCourse;

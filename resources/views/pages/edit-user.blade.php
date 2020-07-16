@@ -2,20 +2,21 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.user_settings.edit')])
+    <b-card>
+        <template #header>{{__('t.views.user_settings.edit')}}</template>
 
         @component('components.form', ['route' => ['user.update'], 'enctype' => 'multipart/form-data'])
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('t.models.user.name'), 'required' => true, 'value' => $user->name])@endcomponent
+            <input-text @forminput('name', $user->name) label="{{__('t.models.user.name')}}" required></input-text>
 
-            @component('components.form.textInput', ['name' => 'group', 'label' => __('t.models.user.group'), 'autofocus' => true, 'value' => $user->group])@endcomponent
+            <input-text @forminput('group', $user->group) label="{{__('t.models.user.group')}}" autofocus></input-text>
 
-            @component('components.form.fileInput', ['name' => 'image', 'label' => __('t.models.user.image'), 'accept' => 'image/*'])@endcomponent
+            <input-file @forminput('image') label="{{__('t.models.user.image')}}" accept="image/*"></input-file>
 
-            @component('components.form.submit', ['label' => __('t.global.save')])@endcomponent
+            <button-submit></button-submit>
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

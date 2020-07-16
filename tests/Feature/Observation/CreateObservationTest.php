@@ -4,7 +4,7 @@ namespace Tests\Feature\Observation;
 
 use App\Models\Course;
 use App\Models\Observation;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithBasicData;
 
@@ -518,8 +518,8 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload)->followRedirects();
 
         // then
-        $response->assertDontSee($participantName);
-        $response->assertSee(htmlspecialchars($participantName, ENT_QUOTES));
+        $response->assertDontSee($participantName, false);
+        $response->assertSee(htmlspecialchars($participantName, ENT_QUOTES), false);
     }
 
     public function test_shouldNotAllowCreatingObservation_withParticipantFromADifferentCourse() {

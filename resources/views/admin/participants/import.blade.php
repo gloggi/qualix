@@ -2,15 +2,16 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.participant_import.import_from', ['source' => __('t.views.admin.participant_import.MiData.name')])])
+    <b-card>
+        <template #header>{{__('t.views.admin.participant_import.import_from', ['source' => __('t.views.admin.participant_import.MiData.name')])}}</template>
 
         @component('components.form', ['route' => ['admin.participants.import', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
 
-            @component('components.form.fileInput', ['name' => 'file', 'label' => __('t.views.admin.participant_import.MiData.participant_list'), 'required' => true, 'accept' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv'])@endcomponent
+            <input-file @forminput('file') label="{{__('t.views.admin.participant_import.MiData.participant_list')}}" required accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"></input-file>
 
-            @component('components.form.hiddenInput', ['name' => 'source', 'value' => 'MiDataParticipantList'])@endcomponent
+            <input-hidden @forminput('source', 'MiDataParticipantList')></input-hidden>
 
-            @component('components.form.submit', ['label' => __('t.views.admin.participant_import.import')])
+            <button-submit label="{{__('t.views.admin.participant_import.import')}}">
 
                 @component('components.help-text', ['key' => 't.views.admin.participant_import.MiData.how_to_get_the_participant_list', 'id' => 'MiDataParticipantListHelp', 'params' => ['MiData' => $MiDataLink]])
 
@@ -18,10 +19,10 @@
 
                 @endcomponent
 
-            @endcomponent
+            </button-submit>
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

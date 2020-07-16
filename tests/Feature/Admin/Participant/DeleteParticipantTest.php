@@ -3,7 +3,6 @@
 namespace Tests\Feature\Admin\Participant;
 
 use App\Models\Course;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCaseWithCourse;
 
 class DeleteParticipantTest extends TestCaseWithCourse {

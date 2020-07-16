@@ -2,24 +2,25 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.invitation.title', ['courseName' => $invitation->course->name])])
+    <b-card>
+        <template #header>{{__('t.views.invitation.title', ['courseName' => $invitation->course->name])}}</template>
 
         @component('components.form', ['route' => 'invitation.claim'])
 
-            @component('components.form.hiddenInput', ['name' => 'token', 'value' => $invitation->token])@endcomponent
+            <input-hidden @forminput('token', $invitation->token)></input-hidden>
 
-            @component('components.form.text', ['classes' => 'mb-0'])
+            <row-text class="mb-0">
                 <p>{{__('t.views.invitation.is_email_yours', ['email' => $invitation->email])}}</p>
-            @endcomponent
+            </row-text>
 
-            @component('components.form.submit', ['label' => __('t.views.invitation.accept_invitation')])
+            <button-submit label="{{__('t.views.invitation.accept_invitation')}}">
                 <a class="btn btn-link" href="{{ route('home') }}">
                     {{ __('t.views.invitation.decline_invitation') }}
                 </a>
-            @endcomponent
+            </button-submit>
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

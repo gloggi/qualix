@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\Course;
 
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithCourse;
 
@@ -39,7 +39,7 @@ class UpdateCourseTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $this->assertRegExp("%<option value=\"[^\"]*\" selected>{$this->payload['name']}</option>%", $response->content());
+        $this->assertRegExp("%<b-form-select-option value=\"[^\"]*\">{$this->payload['name']}</b-form-select-option>%", $response->content());
     }
 
     public function test_shouldValidateNewCourseData_noName() {

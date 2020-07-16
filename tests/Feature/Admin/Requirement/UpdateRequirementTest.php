@@ -3,7 +3,7 @@
 namespace Tests\Feature\Admin\Requirement;
 
 use App\Models\Requirement;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithCourse;
 
@@ -92,8 +92,8 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('>Ja<');
-        $response->assertDontSee('>Nein<');
+        $response->assertSee('>Ja<', false);
+        $response->assertDontSee('>Nein<', false);
     }
 
     public function test_shouldValidateNewRequirementData_mandatoryFalse_shouldWork() {
@@ -109,8 +109,8 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('>Nein<');
-        $response->assertDontSee('>Ja<');
+        $response->assertSee('>Nein<', false);
+        $response->assertDontSee('>Ja<', false);
     }
 
     public function test_shouldValidateNewRequirementData_mandatoryTrue_shouldWork() {
@@ -126,8 +126,8 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('>Ja<');
-        $response->assertDontSee('>Nein<');
+        $response->assertSee('>Ja<', false);
+        $response->assertDontSee('>Nein<', false);
     }
 
     public function test_shouldValidateNewRequirementData_noBlockIds() {

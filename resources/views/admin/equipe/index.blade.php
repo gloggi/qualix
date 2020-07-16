@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.equipe.existing', ['courseName' => $course->name])])
+    <b-card>
+        <template #header>{{__('t.views.admin.equipe.existing', ['courseName' => $course->name])}}</template>
 
         @component('components.responsive-table', [
             'id' => 'equipe',
@@ -19,9 +20,10 @@
             ]
         ])@endcomponent
 
-    @endcomponent
+    </b-card>
 
-    @component('components.card', ['header' => __('t.views.admin.equipe.existing_invitations')])
+    <b-card>
+        <template #header>{{__('t.views.admin.equipe.existing_invitations')}}</template>
 
         @if (count($course->invitations))
 
@@ -45,18 +47,19 @@
 
         @endif
 
-    @endcomponent
+    </b-card>
 
-    @component('components.card', ['header' => __('t.views.admin.equipe.new_invitation')])
+    <b-card>
+        <template #header>{{__('t.views.admin.equipe.new_invitation')}}</template>
 
         @component('components.form', ['route' => ['admin.invitation.store', ['course' => $course->id]]])
 
-            @component('components.form.textInput', ['name' => 'email', 'label' => __('t.models.invitation.email'), 'required' => true])@endcomponent
+            <input-text @forminput('email') label="{{__('t.models.invitation.email')}}"></input-text>
 
-            @component('components.form.submit', ['label' => __('t.views.admin.equipe.invite')])@endcomponent
+            <button-submit label="{{__('t.views.admin.equipe.invite')}}"></button-submit>
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

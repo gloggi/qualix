@@ -13,6 +13,7 @@ use App\Models\RequirementDetail;
 use App\Models\Trainer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCaseWithBasicData;
 
 class ArchiveCourseTest extends TestCaseWithBasicData {
@@ -59,8 +60,8 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         // Laravel bug: The Auth::user used in the application is cached and will not get the updated course list in this test, unless we refresh it manually
         $this->refreshUser();
         $response = $this->get('/course/' . $courseId . '/admin');
-        $this->assertSeeAllInOrder('select#globalCourseSelect option', ['Kursname', $courseName]);
-        $this->assertSeeAllInOrder('select#globalCourseSelect optgroup[label="Archiviert"] option', [$courseName]);
+        $this->assertSeeAllInOrder('b-form-select#global-course-select b-form-select-option', ['Kursname', $courseName]);
+        $this->assertSeeAllInOrder('b-form-select#global-course-select b-form-select-option-group[label="Archiviert"] b-form-select-option', [$courseName]);
         $response->assertDontSee('Überblick');
     }
 
@@ -121,10 +122,11 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $courseId = $this->createCourse($courseName);
 
         // when
+        /** @var TestResponse $response */
         $response = $this->post('/course/' . $courseId . '/admin/archive')->followRedirects();
 
         // then
-        $response->assertDontSee($courseName);
-        $response->assertSee(htmlspecialchars($courseName, ENT_QUOTES));
+        $response->assertDontSee($courseName, false);
+        $response->assertSee(htmlspecialchars($courseName, ENT_QUOTES), false);
     }
 }

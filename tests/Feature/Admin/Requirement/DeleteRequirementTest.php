@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\Requirement;
 
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCaseWithCourse;
 
 class DeleteRequirementTest extends TestCaseWithCourse {

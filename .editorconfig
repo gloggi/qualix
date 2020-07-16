@@ -11,5 +11,14 @@ trim_trailing_whitespace = true
 [*.md]
 trim_trailing_whitespace = false
 
-[*.yml]
+[*.{yml,yaml,json}]
+indent_size = 2
+
+[resources/lang/**.php]
+insert_final_newline = false
+indent_style = tab
+tab_width = 4
+trim_trailing_whitespace = true
+
+[*.vue]
 indent_size = 2

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin\Equipe;
 
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCaseWithCourse;
 
 class DeleteInvitationTest extends TestCaseWithCourse {

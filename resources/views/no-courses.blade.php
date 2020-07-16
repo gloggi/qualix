@@ -2,10 +2,11 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.welcome.title')])
+    <b-card>
+        <template #header>{{__('t.views.welcome.title')}}</template>
 
         {{ __('t.views.welcome.no_courses') }}
 
-    @endcomponent
+    </b-card>
 
 @endsection

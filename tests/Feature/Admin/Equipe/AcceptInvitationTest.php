@@ -5,8 +5,8 @@ namespace Tests\Feature\Admin\Equipe;
 use App\Models\Invitation;
 use App\Models\User;
 use App\Notifications\VerifyEmailNotification;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithCourse;
 

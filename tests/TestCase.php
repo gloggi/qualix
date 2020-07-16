@@ -8,11 +8,11 @@ use App\Models\User;
 use Dotenv\Dotenv;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -24,7 +24,7 @@ abstract class TestCase extends BaseTestCase {
     protected $crawler;
 
     public function setUp(): void {
-        Dotenv::create(__DIR__.'/../', '.env.testing')->load();
+        Dotenv::createImmutable(__DIR__.'/../', '.env.testing')->load();
 
         parent::setUp();
 
@@ -102,7 +102,8 @@ abstract class TestCase extends BaseTestCase {
      * @param array $contents
      * @return $this
      */
-    public function assertSeeAllInOrder($selector, Array $contents) {
+    public function assertSeeAllInOrder($selector, array $contents, $extractor = null) {
+        if ($extractor === null) $extractor = function($domElement) { return trim($domElement->textContent); };
         $matches = $this->crawler->filter($selector);
 
         if ($matches->count() !== count($contents)) {
@@ -111,9 +112,9 @@ abstract class TestCase extends BaseTestCase {
 
         foreach ($matches as $index => $domElement) {
             $needle = array_values($contents)[$index];
-            $haystack = trim($domElement->textContent);
+            $haystack = $extractor($domElement);
             try {
-                $this->assertContains($needle, $haystack);
+                $this->assertStringContainsString($needle, $haystack);
             } catch (ExpectationFailedException $e) {
                 $this->fail('Failed asserting that the element at index ' . $index . ' contains the string "' . $contents[$index] . '", was "' . $haystack . '" instead.');
             }
@@ -137,7 +138,7 @@ abstract class TestCase extends BaseTestCase {
             foreach (Arr::wrap($contents) as $needle) {
                 $haystack = trim($domElement->textContent);
                 try {
-                    $this->assertNotContains($needle, $haystack);
+                    $this->assertStringNotContainsString($needle, $haystack);
                 } catch (ExpectationFailedException $e) {
                     $this->fail('Expected to find no element matching "' . $selector . '" that contains "' . $needle . '", but found "' . $domElement . '"');
                 }

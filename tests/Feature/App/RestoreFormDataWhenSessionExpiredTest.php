@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature\Observation;
+namespace Tests\Feature\App;
 
 use App\Models\HitobitoUser;
 use Closure;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Testing\TestResponse;
 use Tests\Feature\Auth\HitobitoOAuthTest;
 use Tests\TestCaseWithBasicData;
 
@@ -125,8 +125,8 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
         }, true, function (TestResponse $response) {
             // then
             // the participant selection field in the restored form should still be the changed value
-            $response->assertDontSee(' value="' . $this->blockId . '"');
-            $response->assertSee(' old-value="' . $this->blockIds . '"');
+            $response->assertDontSee(' value="' . $this->blockId . '"', false);
+            $response->assertSee(' value="' . $this->blockIds . '"', false);
         });
     }
 
@@ -170,10 +170,10 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
 
         // check that restoration works as intended
         if ($shouldRestore) {
-            $response->assertSeeText($this->expectedRestoredFlashMessage);
+            $response->assertSeeText($this->expectedRestoredFlashMessage, false);
             $response->assertSee('this text will be restored');
         } else {
-            $response->assertDontSeeText($this->expectedRestoredFlashMessage);
+            $response->assertDontSeeText($this->expectedRestoredFlashMessage, false);
             $response->assertDontSee('this text will be restored');
         }
 
@@ -188,7 +188,7 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
 
         // then
         // data should not be restored a second time
-        $response->assertDontSeeText($this->expectedRestoredFlashMessage);
+        $response->assertDontSeeText($this->expectedRestoredFlashMessage, false);
         $response->assertDontSee('this text will be restored');
     }
 

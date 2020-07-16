@@ -2,26 +2,25 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.block_import.import_from', ['source' => __('t.views.admin.block_import.ecamp2.name')])])
+    <b-card>
+        <template #header>{{__('t.views.admin.block_import.import_from', ['source' => __('t.views.admin.block_import.ecamp2.name')])}}</template>
 
         @component('components.form', ['route' => ['admin.block.import', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
 
-            @component('components.form.fileInput', ['name' => 'file', 'label' => __('t.views.admin.block_import.ecamp2.block_overview'), 'required' => true, 'accept' => 'application/vnd.ms-excel'])@endcomponent
+            <input-file @forminput('file') label="{{__('t.views.admin.block_import.ecamp2.block_overview')}}" required accept="application/vnd.ms-excel"></input-file>
 
-            @component('components.form.hiddenInput', ['name' => 'source', 'value' => 'eCamp2BlockOverview'])@endcomponent
+            <input-hidden @forminput('source', 'eCamp2BlockOverview')></input-hidden>
 
-            @component('components.form.submit', ['label' => __('t.views.admin.block_import.import')])
+            <button-submit label="{{__('t.views.admin.block_import.import')}}">
 
                 @component('components.help-text', ['key' => 't.views.admin.block_import.ecamp2.how_to_get_the_block_overview', 'id' => 'eCamp2BlockOverviewHelp', 'params' => ['ecamp2' => $ecamp2Link]])
-
                     <img src="{{ asset('images/ecamp2-block-overview.png') }}" class="img-fluid w-100 mt-2 border">
-
                 @endcomponent
 
-            @endcomponent
+            </button-submit>
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

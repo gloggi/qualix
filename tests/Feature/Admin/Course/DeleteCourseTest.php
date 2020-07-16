@@ -11,9 +11,9 @@ use App\Models\Participant;
 use App\Models\Requirement;
 use App\Models\RequirementDetail;
 use App\Models\Trainer;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCaseWithBasicData;
 
 class DeleteCourseTest extends TestCaseWithBasicData {
@@ -47,7 +47,7 @@ class DeleteCourseTest extends TestCaseWithBasicData {
         $response->assertRedirect('/');
         /** @var TestResponse $response */
         $response->followRedirects();
-        $this->assertSeeAllInOrder('select#globalCourseSelect option', ['Kursname']);
+        $this->assertSeeAllInOrder('b-form-select#global-course-select b-form-select-option', ['Kursname']);
     }
 
     public function test_shouldDeleteRelatedData() {
@@ -109,7 +109,7 @@ class DeleteCourseTest extends TestCaseWithBasicData {
         $response = $this->delete('/course/' . $courseId . '/admin')->followRedirects();
 
         // then
-        $response->assertDontSee($courseName);
-        $response->assertSee(htmlspecialchars($courseName, ENT_QUOTES));
+        $response->assertDontSee($courseName, false);
+        $response->assertSee(htmlspecialchars($courseName, ENT_QUOTES), false);
     }
 }

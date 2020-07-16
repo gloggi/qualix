@@ -2,34 +2,34 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.requirements.new')])
+    <b-card>
+        <template #header>{{__('t.views.admin.requirements.new')}}</template>
 
         @component('components.form', ['route' => ['admin.requirements.store', ['course' => $course->id]]])
 
-            @component('components.form.textInput', ['name' => 'content', 'label' => __('t.models.requirement.content'), 'required' => true, 'autofocus' => true])@endcomponent
+            <input-text @forminput('content') label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
 
-            @component('components.form.checkboxInput', ['name' => 'mandatory', 'label' => __('t.models.requirement.mandatory')])@endcomponent
+            <input-checkbox @forminput('mandatory', false) label="{{__('t.models.requirement.mandatory')}}"></input-checkbox>
 
-            @component('components.form.multiSelectInput', [
-                'name' => 'blocks',
-                'label' => __('t.models.requirement.blocks'),
-                'options' => $course->blocks->all(),
-                'valueFn' => function(\App\Models\Block $block) { return $block->id; },
-                'displayFn' => function(\App\Models\Block $block) { return $block->name; },
-                'multiple' => true,
-            ])@endcomponent
+            <input-multi-select
+                @forminput('blocks')
+                label="{{__('t.models.requirement.blocks')}}"
+                :options="{{ json_encode($course->blocks->map->only('id', 'name')) }}"
+                display-field="name"
+                multiple></input-multi-select>
 
-            @component('components.form.submit', ['label' => __('t.global.add')])
+            <button-submit label="{{__('t.global.add')}}">
 
                 @component('components.help-text', ['id' => 'requirementsHelp', 'key' => 't.views.admin.requirements.what_are_requirements'])@endcomponent
 
-            @endcomponent
+            </button-submit>
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
-    @component('components.card', ['header' => __('t.views.admin.requirements.existing', ['courseName' => $course->name])])
+    <b-card>
+        <template #header>{{__('t.views.admin.requirements.existing', ['courseName' => $course->name])}}</template>
 
         @if (count($course->requirements))
 
@@ -63,6 +63,6 @@
 
         @endif
 
-    @endcomponent
+    </b-card>
 
 @endsection

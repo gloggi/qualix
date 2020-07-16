@@ -2,16 +2,17 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.categories.edit')])
+    <b-card>
+        <template #header>{{__('t.views.admin.categories.edit')}}</template>
 
         @component('components.form', ['route' => ['admin.categories.update', ['course' => $course->id, 'category' => $category->id]]])
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('t.models.category.name'), 'required' => true, 'autofocus' => true, 'value' => $category->name])@endcomponent
+            <input-text @forminput('name', $category->name) label="{{__('t.models.category.name')}}" required autofocus></input-text>
 
-            @component('components.form.submit', ['label' => __('t.global.save')])@endcomponent
+            <button-submit></button-submit>
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
 @endsection

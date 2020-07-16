@@ -2,78 +2,59 @@
 
 @section('content')
 
-    @component('components.card', ['header' => __('t.views.admin.course_settings.edit', ['name' => $course->name])])
+    <b-card>
+        <template #header>{{__('t.views.admin.course_settings.edit', ['name' => $course->name])}}</template>
 
         @component('components.form', ['route' => ['admin.course.update', ['course' => $course->id]]])
 
-            @component('components.form.textInput', ['name' => 'name', 'label' => __('t.models.course.name'), 'required' => true, 'autofocus' => true, 'value' => $course->name])@endcomponent
+            <input-text @forminput('name', $course->name) label="{{__('t.models.course.name')}}" required autofocus></input-text>
 
-            @component('components.form.textInput', ['name' => 'course_number', 'label' => __('t.models.course.course_number'), 'value' => $course->course_number])@endcomponent
+            <input-text @forminput('course_number', $course->course_number) label="{{__('t.models.course.course_number')}}"></input-text>
 
-            @component('components.form.submit', ['label' => __('t.global.save')])@endcomponent
+            <button-submit></button-submit>
 
         @endcomponent
 
-    @endcomponent
+    </b-card>
 
-    @component('components.card', ['header' => __('t.views.admin.course_settings.archive_or_delete', ['courseName' => $course->name])])
+    <b-card>
+        <template #header>{{__('t.views.admin.course_settings.archive_or_delete')}}</template>
 
         @if($course->archived)
             <p>{{__('t.views.admin.course_settings.is_archived', ['name' => $course->name])}}</p>
         @else
-            <a class="btn btn-danger" data-toggle="modal" href="#course-archive-modal">
+            <b-button class="btn btn-danger" v-b-modal.course-archive-modal>
                 {{__('t.views.admin.course_settings.archive')}}
-            </a>
-            <div class="modal fade" id="course-archive-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">{{ __('t.views.admin.course_settings.really_archive', ['name' => $course->name]) }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="{{__('t.global.close')}}">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            {{__('t.views.admin.course_settings.archive_description')}}
-                        </div>
-                        <div class="modal-footer">
-                            @component('components.form', ['route' => ['admin.course.archive', ['course' => $course->id]]])
-                                <button type="submit" class="btn btn-danger">{{ __('t.views.admin.course_settings.archive_confirm') }}</button>
-                            @endcomponent
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </b-button>
+            <b-modal id="course-archive-modal" title="{{ __('t.views.admin.course_settings.really_archive', ['name' => $course->name]) }}">
+                {{__('t.views.admin.course_settings.archive_description')}}
+
+                <template #modal-footer>
+                    @component('components.form', ['route' => ['admin.course.archive', ['course' => $course->id]]])
+                        @csrf
+                        <b-button type="submit" variant="danger">{{ __('t.views.admin.course_settings.archive_confirm') }}</b-button>
+                    @endcomponent
+                </template>
+            </b-modal>
         @endif
 
-        <a class="btn btn-danger" data-toggle="modal" href="#course-delete-modal">
+        <b-button variant="danger" v-b-modal.course-delete-modal>
             {{__('t.views.admin.course_settings.delete')}}
-        </a>
-        <div class="modal fade" id="course-delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ __('t.views.admin.course_settings.really_delete', ['name' => $course->name]) }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="{{__('t.global.close')}}">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        {{__('t.views.admin.course_settings.delete_description')}}
-                    </div>
-                    <div class="modal-footer">
-                        @component('components.form', ['route' => ['admin.course.delete', ['course' => $course->id]]])
-                            <button type="submit" class="btn btn-danger">{{ __('t.views.admin.course_settings.delete_confirm') }}</button>
-                        @endcomponent
-                    </div>
-                </div>
-            </div>
-        </div>
+        </b-button>
+        <b-modal id="course-delete-modal" title="{{ __('t.views.admin.course_settings.really_delete', ['name' => $course->name]) }}">
+            {{__('t.views.admin.course_settings.delete_description')}}
+
+            <template #modal-footer>
+                @component('components.form', ['route' => ['admin.course.delete', ['course' => $course->id]]])
+                    <button type="submit" class="btn btn-danger">{{ __('t.views.admin.course_settings.delete_confirm') }}</button>
+                @endcomponent
+            </template>
+        </b-modal>
 
         <div class="mt-3">
             @component('components.help-text', ['id' => 'archiveVsDeleteHelp', 'key' => 't.views.admin.course_settings.archive_vs_delete'])@endcomponent
         </div>
 
-    @endcomponent
+    </b-card>
 
 @endsection

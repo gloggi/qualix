@@ -11,6 +11,18 @@ return array(
 		"add" => "Hinzufügen",
 		"add_observation" => "Beobachtung erfassen",
 		"close" => "Schliessen",
+		"datepicker" => array(
+			"calendar" => "Kalender",
+			"current_month" => "Aktueller Monat",
+			"nav" => "Kalendernavigation",
+			"next_month" => "Nächster Monat",
+			"next_year" => "Nächstes Jahr",
+			"no_date_selected" => "Kein Datum ausgewählt",
+			"previous_month" => "Vorheriger Monat",
+			"previous_year" => "Vorheriges Jahr",
+			"selected_date" => "Ausgewähltes Datum",
+			"today" => "Heute",
+		),
 		"delete" => "Löschen",
 		"edit" => "Bearbeiten",
 		"negative" => "Negativ",
@@ -61,7 +73,7 @@ return array(
 			"email" => "E-Mail",
 		),
 		"invitation_claim" => array(
-		    "token" => "Token",
+			"token" => "Token",
 		),
 		"observation" => array(
 			"block" => "Block",
