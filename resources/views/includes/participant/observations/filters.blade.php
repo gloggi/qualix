@@ -20,18 +20,13 @@
                             value="{{ $requirement }}"
                             :allow-empty="true"
                             placeholder="{{__('t.views.participant_details.filter_by_requirement')}}"
-                            @php
-                                $jsonOptions = $course->requirements->map(function (\App\Models\Requirement $requirement) {
-                                    return [ 'label' => (string)$requirement->content, 'value' => (string)$requirement->id ];
-                                });
-                                $jsonOptions[] = [ 'label' => '-- ' . __('t.views.participant_details.observations_without_requirement') . ' --', 'value' => '0' ];
-                            @endphp
-                            :options="{{ json_encode($jsonOptions) }}"
+                            :options="{{ json_encode($course->requirements->map->only('id', 'content')->concat([['content' => '-- ' . __('t.views.participant_details.observations_without_requirement') . ' --', 'id' => '0']])) }}"
                             :multiple="false"
                             :close-on-select="true"
                             :show-labels="false"
                             submit-on-input="requirement-form"
-                            :show-clear="true"></multi-select>
+                            :show-clear="true"
+                            display-field="content"></multi-select>
 
                     </form>
 
@@ -48,18 +43,13 @@
                             value="{{ $category }}"
                             :allow-empty="true"
                             placeholder="{{__('t.views.participant_details.filter_by_category')}}"
-                            @php
-                                $jsonOptions = $course->categories->map(function (App\Models\Category $category) {
-                                    return [ 'label' => (string)$category->name, 'value' => (string)$category->id ];
-                                });
-                                $jsonOptions[] = [ 'label' => '-- ' . __('t.views.participant_details.observations_without_category') . ' --', 'value' => '0' ];
-                            @endphp
-                            :options="{{ json_encode($jsonOptions) }}"
+                            :options="{{ json_encode($course->categories->map->only('id', 'name')->concat([['name' => '-- ' . __('t.views.participant_details.observations_without_category') . ' --', 'id' => '0']])) }}"
                             :multiple="false"
                             :close-on-select="true"
                             :show-labels="false"
                             submit-on-input="category-form"
-                            :show-clear="true"></multi-select>
+                            :show-clear="true"
+                            display-field="name"></multi-select>
 
                     </form>
 
