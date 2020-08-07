@@ -9,24 +9,24 @@
 <script>
 
 export default {
-  name: 'QualiRequirementMenu',
+  name: 'RequirementMenu',
   props: {
-    value: Object,
+    value: { required: true, validator: prop => [null, 0, 1].includes(prop) },
   },
   computed: {
     passed() {
-      return this.value.passed === 1
+      return this.value === 1
     },
     failed() {
-      return this.value.passed === 0
+      return this.value === 0
     },
     observing() {
-      return this.value.passed === null
+      return this.value === null
     }
   },
   methods: {
     setPassed(passed) {
-      this.value.passed = passed
+      this.$emit('input', passed)
     }
   }
 }
