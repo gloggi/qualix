@@ -81,7 +81,7 @@ export default {
       }
     },
     onSelect(option, id) {
-      if (option._isGroup) {
+      if (this.isGroup(option)) {
         // Right after this select event there will be an input event which includes the group in the selected elements.
         // We wait for one tick until that input event has gone, and then overwrite the value of the multiselect.
         this.$nextTick(() => {
@@ -94,11 +94,14 @@ export default {
       this.$emit('input', val, id)
       // Don't auto-submit if a group was selected.
       // One tick later there will be another input event which will include the group contents.
-      if (this.submitOnInput && !val._isGroup) {
+      if (this.submitOnInput && !this.isGroup(val)) {
         this.$nextTick(() => {
           document.getElementById(this.submitOnInput).submit()
         })
       }
+    },
+    isGroup(val) {
+      return val && val._isGroup
     },
     clear() {
       this.localValue = this.multiple ? [] : null
