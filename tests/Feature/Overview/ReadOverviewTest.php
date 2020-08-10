@@ -80,7 +80,7 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $this->createObservation(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $participantId2);
         $this->createObservation(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $participantId2);
 
-        // create another leader in the course
+        // create another trainer in the course
         $user2 = $this->createUser(['name' => 'Lindo']);
         $user2->courses()->attach($this->courseId);
 

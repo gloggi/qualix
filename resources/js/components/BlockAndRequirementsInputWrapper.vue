@@ -29,7 +29,7 @@ export default {
 
       const block = this.blockRequirementsMapping.find(b => ('' + b.id) === blockId)
       if (blockId != null && block !== undefined) {
-        this.requirementsValue = block.requirement_ids.join(',')
+        this.requirementsValue = block.requirement_ids.join()
       }
     }
   }

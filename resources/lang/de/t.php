@@ -281,7 +281,7 @@ return array(
 				"edit" => "Quali bearbeiten",
 				"edit_success" => "Das Quali \":name\" wurde erfolgreich gespeichert.",
 				"existing" => "Qualis :courseName",
-				"leader_assignment" => "Zuordnung der TN zu den Equipenmitgliedern",
+				"trainer_assignment" => "Zuordnung der TN zu den Equipenmitgliedern",
 				"menu_name" => "Qualis",
 				"new" => "Neues Quali",
 				"no_qualis" => "Bisher sind keine Qualis erfasst.",

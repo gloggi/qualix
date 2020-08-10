@@ -60,7 +60,7 @@ class QualiController extends Controller {
             });
 
             $request->session()->flash('alert-success', __('t.views.admin.qualis.create_success', ['name' => $qualiData->name, 'back_to_quali_list' => $this->qualiListLink($course, 't.views.admin.qualis.back_to_quali_list')]));
-            $request->session()->flash('hideLeaderAssignments', false);
+            $request->session()->flash('hideTrainerAssignments', false);
             return Redirect::route('admin.qualis.edit', ['course' => $course->id, 'quali_data' => $qualiData->id]);
         });
     }
@@ -87,7 +87,7 @@ class QualiController extends Controller {
      * @return Response
      */
     public function edit(Course $course, QualiData $quali_data) {
-        return view('admin.qualis.edit', ['quali_data' => $quali_data, 'hideLeaderAssignments' => session('hideLeaderAssignments', true)]);
+        return view('admin.qualis.edit', ['quali_data' => $quali_data, 'hideTrainerAssignments' => session('hideTrainerAssignments', true)]);
     }
 
     /**
@@ -114,14 +114,14 @@ class QualiController extends Controller {
             });
 
             $qualiData->qualis()->each(function(Quali $quali) use($requirements) {
-                $order = count($quali->contents);
+                $order = collect($quali->contents)->max->order + 1;
                 collect($requirements)->each(function ($requirement) use ($quali, &$order) {
                     $quali->requirements()->updateOrCreate(['requirement_id' => $requirement], ['order' => $order++]);
                 });
             });
 
             $qualiData->qualis()->each(function(Quali $quali) use($data) {
-                $key = 'qualis.'.$quali->id.'.user';
+                $key = 'qualis.'.$quali->participant->id.'.user';
                 $quali->update(['user' => Arr::get($data, $key)]);
 
                 // Bug in laravel-fillable-relations. Remove this once

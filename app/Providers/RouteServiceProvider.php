@@ -70,7 +70,12 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('quali_data', function($id, \Illuminate\Routing\Route $route) {
             /** @var Course $course */
             $course = $route->parameter('course');
-            return $course->quali_datas()->findOrFail($id);
+            return $course->quali_datas()
+                ->with('qualis')
+                ->with('qualis.participant')
+                ->with('qualis.requirements')
+                ->with('qualis.user')
+                ->findOrFail($id);
         });
         Route::bind('quali', function($id, \Illuminate\Routing\Route $route) {
             /** @var Participant $participant */

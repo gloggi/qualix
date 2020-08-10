@@ -61,7 +61,7 @@ export default {
     },
     formValue() {
       if (this.multiple) {
-        return this.localValue.map(option => option[this.valueField]).join(',')
+        return this.localValue.map(option => option[this.valueField]).join()
       } else {
         if (this.localValue == null) return ''
         return '' + this.localValue[this.valueField]
