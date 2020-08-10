@@ -1,6 +1,6 @@
 <template>
   <span>
-    <multiselect
+    <vue-multiselect
       v-bind="$attrs"
       @input="onInput"
       @select="onSelect"
@@ -9,7 +9,6 @@
       :track-by="valueField"
       :multiple="multiple"
       :options="allOptions"
-      :allow-empty="true"
       :close-on-select="true"
       :show-labels="false"
       :placeholder="placeholder"
@@ -22,18 +21,18 @@
         <div class="text-secondary">{{ noOptions }}</div>
       </template>
 
-    </multiselect>
+    </vue-multiselect>
     <input v-if="name" type="hidden" :name="name" :value="formValue">
   </span>
 </template>
 
 <script>
-import { Multiselect } from 'vue-multiselect'
+import { Multiselect as VueMultiselect } from 'vue-multiselect'
 
 export default {
   name: 'MultiSelect',
   components: {
-    Multiselect
+    VueMultiselect
   },
   props: {
     name: { type: String, required: false },
@@ -65,7 +64,7 @@ export default {
         return this.localValue.map(option => option[this.valueField]).join(',')
       } else {
         if (this.localValue == null) return ''
-        return this.localValue[this.valueField]
+        return '' + this.localValue[this.valueField]
       }
     },
     showClearButton() {
@@ -91,7 +90,7 @@ export default {
       }
     },
     onInput(val, id) {
-      this.$emit('input', val, id)
+      this.$emit('input', this.formValue, id)
       // Don't auto-submit if a group was selected.
       // One tick later there will be another input event which will include the group contents.
       if (this.submitOnInput && !this.isGroup(val)) {
@@ -109,12 +108,12 @@ export default {
     }
   },
   watch: {
-    value (newValue, oldValue) {
+    value () {
       this.localValue = this.selectedOptions(this.value)
     }
   },
   mounted () {
-    this.$emit('input', this.localValue, this.$attrs['id'])
+    this.$emit('input', this.formValue, this.$attrs['id'])
   }
 }
 </script>

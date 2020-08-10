@@ -7,7 +7,7 @@
 
         @component('components.form', ['route' => 'invitation.claim'])
 
-            <input-hidden @forminput('token', $invitation->token)></input-hidden>
+            <input-hidden name="token" value="{{ $invitation->token }}"></input-hidden>
 
             <row-text class="mb-0">
                 <p>{{__('t.views.invitation.is_email_yours', ['email' => $invitation->email])}}</p>

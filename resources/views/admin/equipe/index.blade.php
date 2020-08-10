@@ -54,7 +54,7 @@
 
         @component('components.form', ['route' => ['admin.invitation.store', ['course' => $course->id]]])
 
-            <input-text @forminput('email') label="{{__('t.models.invitation.email')}}"></input-text>
+            <input-text name="email" required label="{{__('t.models.invitation.email')}}"></input-text>
 
             <button-submit label="{{__('t.views.admin.equipe.invite')}}"></button-submit>
 

@@ -7,7 +7,7 @@
 
         @component('components.form', ['route' => ['admin.categories.update', ['course' => $course->id, 'category' => $category->id]]])
 
-            <input-text @forminput('name', $category->name) label="{{__('t.models.category.name')}}" required autofocus></input-text>
+            <input-text name="name" value="{{ $category->name }}" label="{{__('t.models.category.name')}}" required autofocus></input-text>
 
             <button-submit></button-submit>
 

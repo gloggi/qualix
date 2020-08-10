@@ -7,11 +7,11 @@
 
         @component('components.form', ['route' => ['admin.participants.store', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
 
-            <input-text @forminput('scout_name') label="{{__('t.models.participant.scout_name')}}" required autofocus></input-text>
+            <input-text name="scout_name" label="{{__('t.models.participant.scout_name')}}" required autofocus></input-text>
 
-            <input-text @forminput('group') label="{{__('t.models.participant.group')}}"></input-text>
+            <input-text name="group" label="{{__('t.models.participant.group')}}"></input-text>
 
-            <input-file @forminput('image') label="{{__('t.models.participant.image')}}" accept="image/*"></input-file>
+            <input-file name="image" label="{{__('t.models.participant.image')}}" accept="image/*"></input-file>
 
             <button-submit label="{{__('t.global.add')}}">
                 <a class="btn btn-link mb-1" href="{{ route('admin.participants.import', ['course' => $course]) }}">

@@ -7,9 +7,9 @@
 
         @component('components.form', ['route' => ['admin.course.update', ['course' => $course->id]]])
 
-            <input-text @forminput('name', $course->name) label="{{__('t.models.course.name')}}" required autofocus></input-text>
+            <input-text name="name" value="{{ $course->name }}" label="{{__('t.models.course.name')}}" required autofocus></input-text>
 
-            <input-text @forminput('course_number', $course->course_number) label="{{__('t.models.course.course_number')}}"></input-text>
+            <input-text name="course_number" value="{{ $course->course_number }}" label="{{__('t.models.course.course_number')}}"></input-text>
 
             <button-submit></button-submit>
 

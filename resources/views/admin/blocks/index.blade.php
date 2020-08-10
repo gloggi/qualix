@@ -7,14 +7,14 @@
 
         @component('components.form', ['route' => ['admin.block.store', ['course' => $course->id]]])
 
-            <input-text @forminput('full_block_number') label="{{__('t.models.block.full_block_number')}}"></input-text>
+            <input-text name="full_block_number" label="{{__('t.models.block.full_block_number')}}"></input-text>
 
-            <input-text @forminput('name') label="{{__('t.models.block.name')}}" required autofocus></input-text>
+            <input-text name="name" label="{{__('t.models.block.name')}}" required autofocus></input-text>
 
-            <input-date @forminput('block_date', Auth::user()->getLastUsedBlockDate($course)->format('Y-m-d')) label="{{__('t.models.block.block_date')}}" required></input-date>
+            <input-date name="block_date" value="{{ Auth::user()->getLastUsedBlockDate($course)->format('Y-m-d') }}" label="{{__('t.models.block.block_date')}}" required></input-date>
 
             <input-multi-select
-                @forminput('requirements')
+                name="requirements"
                 label="{{__('t.models.block.requirements')}}"
                 :options="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
                 display-field="content"

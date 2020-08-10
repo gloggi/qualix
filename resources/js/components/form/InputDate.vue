@@ -7,7 +7,7 @@
         :id="name | kebabCase"
         :name="name"
         class="form-control" :class="{ 'is-invalid': errorMessage }"
-        :value="value"
+        v-model="currentValue"
         :required="required"
         :autofocus="autofocus"
         :v-focus="autofocus"
@@ -24,14 +24,13 @@
 </template>
 
 <script>
+import Input from '../../mixins/input'
 export default {
   name: 'InputDate',
+  mixins: [ Input ],
   props: {
-    name: { type: String, required: true },
     required: { type: Boolean, default: false },
     label: { type: String, required: true },
-    value: { type: String, default: '' },
-    errorMessage: { type: String, required: false },
     autofocus: { type: Boolean, default: false },
   },
 }

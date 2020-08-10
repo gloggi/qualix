@@ -7,10 +7,11 @@
 
         @component('components.form', ['route' => ['admin.qualis.update', ['course' => $course->id, 'quali_data' => $quali_data->id]]])
 
-            <input-text @forminput('name', $quali_data->name) label="{{__('t.models.quali.name')}}" required autofocus></input-text>
+            <input-text name="name" value="{{ $quali_data->name }}" label="{{__('t.models.quali.name')}}" required autofocus></input-text>
 
             <input-multi-select
-                @forminput('participants', $quali_data->participants->pluck('id')->join(','))
+                name="participants"
+                value="{{ $quali_data->participants->pluck('id')->join(',') }}"
                 label="{{__('t.models.quali.participants')}}"
                 required
                 :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
@@ -19,7 +20,8 @@
                 multiple></input-multi-select>
 
             <input-multi-select
-                @forminput('requirements', $quali_data->quali_requirements->map->requirement->pluck('id')->join(','))
+                name="requirements"
+                value="{{ $quali_data->quali_requirements->map->requirement->pluck('id')->join(',') }}"
                 label="{{__('t.models.quali.requirements')}}"
                 :options="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
                 :groups="{{ json_encode([__('t.views.admin.qualis.select_all_requirements') => $course->requirements->pluck('id')->join(',')]) }}"
@@ -34,7 +36,8 @@
             <b-collapse id="collapse-leader-assignments" {{ $hideLeaderAssignments ? '' : 'visible' }}>
                 @foreach($quali_data->qualis as $quali)
                     <input-multi-select
-                        @forminput('qualis[' . $quali->id . '][user]', $quali->user ? $quali->user->id : '')
+                        name="qualis[{{ $quali->id }}][user]"
+                        value="{{ $quali->user ? $quali->user->id : '' }}"
                         label="{{ $quali->participant->scout_name }}"
                         :options="{{ json_encode($course->users->map->only('id', 'name')) }}"
                         display-field="name"

@@ -7,10 +7,11 @@
 
         @component('components.form', ['route' => ['admin.qualis.store', ['course' => $course->id]]])
 
-            <input-text @forminput('name') label="{{__('t.models.quali.name')}}" required autofocus></input-text>
+            <input-text name="name" label="{{__('t.models.quali.name')}}" required autofocus></input-text>
 
             <input-multi-select
-                @forminput('participants', $course->participants->pluck('id')->join(','))
+                name="participants"
+                value="{{ $course->participants->pluck('id')->join(',') }}"
                 label="{{__('t.models.quali.participants')}}"
                 required
                 :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
@@ -19,14 +20,15 @@
                 multiple></input-multi-select>
 
             <input-multi-select
-                @forminput('requirements', $course->requirements->pluck('id')->join(','))
+                name="requirements"
+                value="{{ $course->requirements->pluck('id')->join(',') }}"
                 label="{{__('t.models.quali.requirements')}}"
                 :options="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
                 :groups="{{ json_encode([__('t.views.admin.qualis.select_all_requirements') => $course->requirements->pluck('id')->join(',')]) }}"
                 display-field="content"
                 multiple></input-multi-select>
 
-            <input-textarea @forminput('quali_notes_template') label="{{__('t.views.admin.qualis.quali_notes_template')}}">
+            <input-textarea name="quali_notes_template" label="{{__('t.views.admin.qualis.quali_notes_template')}}">
 
                 @component('components.help-text', ['id' => 'qualiNotesTemplateHelp', 'key' => 't.views.admin.qualis.quali_notes_template_description'])@endcomponent
 

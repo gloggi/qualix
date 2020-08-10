@@ -7,12 +7,13 @@
 
         @component('components.form', ['route' => ['admin.requirements.update', ['course' => $course->id, 'requirement' => $requirement->id]]])
 
-            <input-text @forminput('content', $requirement->content) label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
+            <input-text name="content" value="{{ $requirement->content }}" label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
 
-            <input-checkbox @forminput('mandatory', $requirement->mandatory) label="{{__('t.models.requirement.mandatory')}}"></input-checkbox>
+            <input-checkbox name="mandatory" value="{{ $requirement->mandatory }}" label="{{__('t.models.requirement.mandatory')}}"></input-checkbox>
 
             <input-multi-select
-                @forminput('blocks', $requirement->blocks->pluck('id')->join(','))
+                name="blocks"
+                value="{{ $requirement->blocks->pluck('id')->join(',') }}"
                 label="{{__('t.models.requirement.blocks')}}"
                 :options="{{ json_encode($course->blocks->map->only('id', 'name')) }}"
                 display-field="name"

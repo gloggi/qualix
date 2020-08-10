@@ -13,15 +13,15 @@
 
             @component('components.form', ['route' => ['errorReport.submit'], 'method' => 'POST'])
 
-                <input-hidden @forminput('eventId', app('sentry')->getLastEventId())></input-hidden>
+                <input-hidden name="eventId" value="{{ app('sentry')->getLastEventId() }}"></input-hidden>
 
-                <input-hidden @forminput('previousUrl', url()->previous())></input-hidden>
+                <input-hidden name="previousUrl" value="{{ url()->previous() }}"></input-hidden>
 
-                <input-text @forminput('name') label="{{__('t.models.user.name')}}" required autofocus></input-text>
+                <input-text name="name" label="{{__('t.models.user.name')}}" required autofocus></input-text>
 
-                <input-text @forminput('email') label="{{__('t.models.user.email')}}" required></input-text>
+                <input-text name="email" label="{{__('t.models.user.email')}}" required></input-text>
 
-                <input-textarea @forminput('description') label="{{__('t.views.error_form.what_happened')}}" placeholder="{{__('t.views.error_form.what_happened_example')}}" required></input-textarea>
+                <input-textarea name="description" label="{{__('t.views.error_form.what_happened')}}" placeholder="{{__('t.views.error_form.what_happened_example')}}" required></input-textarea>
 
                 <button-submit label="{{__('t.views.error_form.send_description')}}">
                     <a class="btn btn-link mb-1" href="{{ url()->previous() }}">

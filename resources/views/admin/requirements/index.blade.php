@@ -7,12 +7,12 @@
 
         @component('components.form', ['route' => ['admin.requirements.store', ['course' => $course->id]]])
 
-            <input-text @forminput('content') label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
+            <input-text name="content" label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
 
-            <input-checkbox @forminput('mandatory', false) label="{{__('t.models.requirement.mandatory')}}"></input-checkbox>
+            <input-checkbox name="mandatory" label="{{__('t.models.requirement.mandatory')}}"></input-checkbox>
 
             <input-multi-select
-                @forminput('blocks')
+                name="blocks"
                 label="{{__('t.models.requirement.blocks')}}"
                 :options="{{ json_encode($course->blocks->map->only('id', 'name')) }}"
                 display-field="name"

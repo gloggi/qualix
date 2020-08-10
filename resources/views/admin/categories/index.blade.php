@@ -7,7 +7,7 @@
 
         @component('components.form', ['route' => ['admin.categories.store', ['course' => $course->id]]])
 
-            <input-text @forminput('name') label="{{__('t.models.category.name')}}" required autofocus></input-text>
+            <input-text name="name" label="{{__('t.models.category.name')}}" required autofocus></input-text>
 
             <button-submit label="{{__('t.global.add')}}">
 

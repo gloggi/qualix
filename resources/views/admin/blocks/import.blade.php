@@ -7,9 +7,9 @@
 
         @component('components.form', ['route' => ['admin.block.import', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
 
-            <input-file @forminput('file') label="{{__('t.views.admin.block_import.ecamp2.block_overview')}}" required accept="application/vnd.ms-excel"></input-file>
+            <input-file name="file" label="{{__('t.views.admin.block_import.ecamp2.block_overview')}}" required accept="application/vnd.ms-excel"></input-file>
 
-            <input-hidden @forminput('source', 'eCamp2BlockOverview')></input-hidden>
+            <input-hidden name="source" value="eCamp2BlockOverview"></input-hidden>
 
             <button-submit label="{{__('t.views.admin.block_import.import')}}">
 

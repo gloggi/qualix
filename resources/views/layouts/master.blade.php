@@ -9,6 +9,11 @@
     <title>{{__('t.global.page_title')}}</title>
     <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
+    <script type="application/javascript">
+        {{-- Using @json is okay here because it's in the context of a <script> tag, not in a HTML attribute --}}
+        window.oldInput = @json((object) Session::getOldInput());
+        window.errors = @json((object) $errors->get('*'));
+    </script>
 </head>
 <body>
 

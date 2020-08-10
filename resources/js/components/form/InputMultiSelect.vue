@@ -10,6 +10,7 @@
         :required="required"
         :autofocus="autofocus"
         :v-focus="autofocus"
+        v-model="currentValue"
         v-bind="$attrs"
         v-on="$listeners"></multi-select>
 
@@ -21,12 +22,12 @@
 </template>
 
 <script>
+import Input from '../../mixins/input'
 export default {
   name: 'InputMultiSelect',
+  mixins: [ Input ],
   props: {
-    name: { type: String, required: true },
     label: { type: String, required: true },
-    errorMessage: { type: String, required: false },
     required: { type: Boolean, default: false },
     autofocus: { type: Boolean, default: false }
   }

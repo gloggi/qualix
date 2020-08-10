@@ -21,14 +21,14 @@
 </template>
 
 <script>
+import Input from '../../mixins/input'
 export default {
   name: 'InputFile',
+  mixins: [ Input ],
   props: {
-    name: { type: String, required: true },
     accept: { type: String, required: true },
     required: { type: Boolean, default: false },
     label: { type: String, required: true },
-    errorMessage: { type: String, required: false },
     autofocus: { type: Boolean, default: false },
   },
 }

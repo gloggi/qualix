@@ -10,7 +10,8 @@
           :placeholder="placeholder"
           :required="required"
           :autofocus="autofocus"
-          :v-focus="autofocus">{{ value }}</textarea>
+          :v-focus="autofocus"
+          v-model="currentValue"></textarea>
 
       <span v-if="errorMessage" class="invalid-feedback" role="alert">
         <strong>{{ errorMessage }}</strong>
@@ -22,14 +23,13 @@
 </template>
 
 <script>
+import Input from '../../mixins/input'
 export default {
   name: 'InputTextarea',
+  mixins: [ Input ],
   props: {
-    name: { type: String, required: true },
     required: { type: Boolean, default: false },
     label: { type: String, required: true },
-    value: { type: String, default: '' },
-    errorMessage: { type: String, required: false },
     autofocus: { type: Boolean, default: false },
     placeholder: { type: String, required: false }
   },

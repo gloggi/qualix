@@ -8,7 +8,8 @@
         @component('components.form', ['route' => ['observation.store', ['course' => $course->id]]])
 
             <input-multi-select
-                @forminput('participants', $participants)
+                name="participants"
+                value="{{ $participants }}"
                 label="{{__('t.models.observation.participants')}}"
                 :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
 
@@ -23,15 +24,19 @@
                 :autofocus="{{ $participants === null ? 'true' : 'false' }}"></input-multi-select>
 
             <input-textarea
-                @forminput('content')
+                name="content"
                 label="{{__('t.models.observation.content')}}"
                 required
                 :autofocus="{{ ($participants !== null) ? 'true' : 'false' }}"></input-textarea>
 
-            <block-and-requirements-input-wrapper v-slot="{ onBlockUpdate, requirementsValue }" initial-requirements-value="{{ old('requirements') }}">
+            <block-and-requirements-input-wrapper
+                v-slot="{ onBlockUpdate, requirementsValue }"
+                initial-requirements-value="{{ old('requirements') }}"
+                :block-requirements-mapping="{{ json_encode($course->blocks->map->only('id', 'requirement_ids')) }}">
 
                 <input-multi-select
-                    @forminput('block', $block)
+                    name="block"
+                    value="{{ $block }}"
                     label="{{__('t.models.observation.block')}}"
                     required
                     :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number', 'requirement_ids')) }}"
@@ -50,13 +55,14 @@
             </block-and-requirements-input-wrapper>
 
             <input-radio-button
-                @forminput('impression', 1)
+                name="impression"
+                value="1"
                 label="{{__('t.models.observation.impression')}}"
                 required
                 :options="{{ json_encode([ '2' => __('t.global.positive'), '1' => __('t.global.neutral'), '0' => __('t.global.negative')]) }}"></input-radio-button>
 
             <input-multi-select
-                @forminput('categories')
+                name="categories"
                 label="{{__('t.models.observation.categories')}}"
                 :options="{{ json_encode($course->categories->map->only('id', 'name')) }}"
                 display-field="name"
