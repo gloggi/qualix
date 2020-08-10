@@ -7,10 +7,12 @@ use App\Models\Course;
 use App\Models\Quali;
 use App\Models\QualiData;
 use App\Util\HtmlString;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -59,24 +61,12 @@ class QualiController extends Controller {
                 $quali->requirements()->createMany($qualiRequirements);
             });
 
-            $request->session()->flash('alert-success', __('t.views.admin.qualis.create_success', ['name' => $qualiData->name, 'back_to_quali_list' => $this->qualiListLink($course, 't.views.admin.qualis.back_to_quali_list')]));
-            $request->session()->flash('hideTrainerAssignments', false);
-            return Redirect::route('admin.qualis.edit', ['course' => $course->id, 'quali_data' => $qualiData->id]);
-        });
-    }
+            $this->setTrainerAssignments($qualis, $data);
 
-    /**
-     * Creates a link to the quali list page with the text given through a translation key.
-     *
-     * @param Course $course
-     * @param $translationKey
-     * @return HtmlString
-     */
-    protected function qualiListLink(Course $course, $translationKey) {
-        return (new HtmlString)
-            ->s('<a href="' . route('admin.qualis', ['course' => $course->id]) . '">')
-            ->__($translationKey)
-            ->s(' <i class="fas fa-arrow-right"></i></a>');
+            $request->session()->flash('alert-success', __('t.views.admin.qualis.create_success', ['name' => $qualiData->name]));
+            $request->session()->flash('hideTrainerAssignments', false);
+            return Redirect::route('admin.qualis', ['course' => $course->id]);
+        });
     }
 
     /**
@@ -120,17 +110,7 @@ class QualiController extends Controller {
                 });
             });
 
-            $qualiData->qualis()->each(function(Quali $quali) use($data) {
-                $key = 'qualis.'.$quali->participant->id.'.user';
-                $quali->update(['user' => Arr::get($data, $key)]);
-
-                // Bug in laravel-fillable-relations. Remove this once
-                // https://github.com/troelskn/laravel-fillable-relations/pull/27 is merged
-                if (Arr::has($data, $key) && Arr::get($data, $key) === null) {
-                    $quali->user()->dissociate();
-                    $quali->save();
-                }
-            });
+            $this->setTrainerAssignments($qualiData->qualis(), $data);
 
             $request->session()->flash('alert-success', __('t.views.admin.qualis.edit_success', ['name' => $qualiData->name]));
             return Redirect::route('admin.qualis', ['course' => $course->id]);
@@ -149,5 +129,23 @@ class QualiController extends Controller {
         $qualiData->delete();
         $request->session()->flash('alert-success', __('t.views.admin.qualis.delete_success', ['name' => $qualiData->name]));
         return Redirect::route('admin.qualis', ['course' => $course->id]);
+    }
+
+    /**
+     * @param Collection|HasMany $qualis
+     * @param array $data
+     */
+    protected function setTrainerAssignments($qualis, $data) {
+        $qualis->each(function(Quali $quali) use($data) {
+            $key = 'qualis.'.$quali->participant->id.'.user';
+            $quali->update(['user' => Arr::get($data, $key)]);
+
+            // Bug in laravel-fillable-relations. Remove this once
+            // https://github.com/troelskn/laravel-fillable-relations/pull/27 is merged
+            if (Arr::has($data, $key) && Arr::get($data, $key) === null) {
+                $quali->user()->dissociate();
+                $quali->save();
+            }
+        });
     }
 }

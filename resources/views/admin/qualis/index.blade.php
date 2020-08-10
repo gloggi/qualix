@@ -6,39 +6,26 @@
         <template #header>{{__('t.views.admin.qualis.new')}}</template>
 
         @component('components.form', ['route' => ['admin.qualis.store', ['course' => $course->id]]])
+            <quali-data-form
+                :participants="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
+                :requirements="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
+                :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}"
+                quali-notes-template
+                back-url="{{ \Illuminate\Support\Facades\URL::route('admin.qualis', ['course' => $course->id]) }}">
 
-            <input-text name="name" label="{{__('t.models.quali.name')}}" required autofocus></input-text>
+                <input-textarea name="quali_notes_template" label="{{__('t.views.admin.qualis.quali_notes_template')}}">
 
-            <input-multi-select
-                name="participants"
-                value="{{ $course->participants->pluck('id')->join(',') }}"
-                label="{{__('t.models.quali.participants')}}"
-                required
-                :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
-                :groups="{{ json_encode([__('t.views.admin.qualis.select_all_participants') => $course->participants->pluck('id')->join(',')]) }}"
-                display-field="scout_name"
-                multiple></input-multi-select>
+                    @component('components.help-text', ['id' => 'qualiNotesTemplateHelp', 'key' => 't.views.admin.qualis.quali_notes_template_description'])@endcomponent
 
-            <input-multi-select
-                name="requirements"
-                value="{{ $course->requirements->pluck('id')->join(',') }}"
-                label="{{__('t.models.quali.requirements')}}"
-                :options="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
-                :groups="{{ json_encode([__('t.views.admin.qualis.select_all_requirements') => $course->requirements->pluck('id')->join(',')]) }}"
-                display-field="content"
-                multiple></input-multi-select>
+                </input-textarea>
 
-            <input-textarea name="quali_notes_template" label="{{__('t.views.admin.qualis.quali_notes_template')}}">
+                <template #submit>
+                    <button-submit label="{{__('t.views.admin.qualis.create')}}">
+                        @component('components.help-text', ['id' => 'qualiHelp', 'key' => 't.views.admin.qualis.what_are_qualis'])@endcomponent
+                    </button-submit>
+                </template>
 
-                @component('components.help-text', ['id' => 'qualiNotesTemplateHelp', 'key' => 't.views.admin.qualis.quali_notes_template_description'])@endcomponent
-
-            </input-textarea>
-
-            <button-submit label="{{__('t.views.admin.qualis.create')}}">
-
-                @component('components.help-text', ['id' => 'qualiHelp', 'key' => 't.views.admin.qualis.what_are_qualis'])@endcomponent
-
-            </button-submit>
+            </quali-data-form>
 
         @endcomponent
 

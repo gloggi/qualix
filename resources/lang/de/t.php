@@ -273,10 +273,9 @@ return array(
 				),
 			),
 			"qualis" => array(
-				"back_to_quali_list" => "zurück zur Liste der Qualis",
 				"create" => "Erstellen",
 				"go_back_to_quali_list" => "Zurück zur Liste der Qualis",
-				"create_success" => "Das Quali \":name\" wurde erfolgreich erstellt. Du kannst nun noch die einzelnen TN-Qualis den Equipenmitgliedern zuweisen. Falls du das jetzt nicht machen möchtest, gehts hier :back_to_quali_list",
+				"create_success" => "Das Quali \":name\" wurde erfolgreich erstellt.",
 				"delete_success" => "Das Quali \":name\" wurde erfolgreich gelöscht.",
 				"edit" => "Quali bearbeiten",
 				"edit_success" => "Das Quali \":name\" wurde erfolgreich gespeichert.",
