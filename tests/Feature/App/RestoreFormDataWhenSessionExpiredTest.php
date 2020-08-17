@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App;
 
+use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\HitobitoUser;
 use Closure;
 use Illuminate\Http\UploadedFile;
@@ -20,6 +21,7 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
 
     public function setUp(): void {
         parent::setUp();
+        $this->fakeCSRFMiddleware();
 
         $this->formUrl = '/course/' . $this->courseId . '/observation/new';
         $this->payloadParticipants = '' . $this->participantId;
@@ -125,8 +127,12 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
         }, true, function (TestResponse $response) {
             // then
             // the participant selection field in the restored form should still be the changed value
-            $response->assertDontSee(' value="' . $this->blockId . '"', false);
-            $response->assertSee(' value="' . $this->blockIds . '"', false);
+            $response->assertDontSee('"block":"' . $this->blockId . '"', false);
+            $response->assertSee('"block":"' . $this->blockIds . '"', false);
+            // in the form, the value is still the default value, because Vue will pick up the oldInput
+            // and use it instead of the prescribed value on the input
+            $response->assertSee(' value="' . $this->blockId . '"', false);
+            $response->assertDontSee(' value="' . $this->blockIds . '"', false);
         });
     }
 
@@ -150,12 +156,13 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
         // simulate the user clicking the stale submit button
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $this->payload());
         $response->assertStatus(302);
-        $response->assertRedirect('/login');
+        $response->assertRedirect($this->formUrl);
 
         // then
         // check that the flash message is displayed
         /** @var TestResponse $response */
         $response = $response->followRedirects();
+        $response->assertViewIs('auth.login');
         $response->assertSeeText('Ups, du bist inzwischen nicht mehr eingeloggt. Bitte logge dich nochmals ein, deine Eingaben werden dann wiederhergestellt.');
 
         // when
@@ -192,4 +199,31 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
         $response->assertDontSee('this text will be restored');
     }
 
+    protected function fakeCSRFMiddleware() {
+        $this->app->bind(VerifyCsrfToken::class, TestVerifyCsrfToken::class);
+    }
+}
+
+class TestVerifyCsrfToken extends VerifyCsrfToken {
+
+    /**
+     * In this test, we want the CSRF protection to be active.
+     *
+     * @return bool
+     */
+    protected function runningUnitTests()
+    {
+        return false;
+    }
+
+    /**
+     * In this test, we want the CSRF protection to fail, except on the login page.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return bool
+     */
+    protected function tokensMatch($request)
+    {
+        return $request->route()->uri === 'login';
+    }
 }
