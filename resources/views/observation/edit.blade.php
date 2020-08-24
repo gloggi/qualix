@@ -44,7 +44,7 @@
                 display-field="name"
                 multiple></input-multi-select>
 
-            <button-submit label="{{__('t.views.admin.new_course.create')}}"></button-submit>
+            <button-submit></button-submit>
 
         @endcomponent
 
