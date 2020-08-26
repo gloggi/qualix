@@ -16,6 +16,8 @@ services:
   db:
     image: mariadb:10.3
     container_name: 'qualix-db'
+    ports:
+      - '3306:3306'
     environment:
       - MYSQL_DATABASE=qualix
       - MYSQL_ROOT_PASSWORD=will-be-randomized-and-output-on-the-console
@@ -46,3 +48,22 @@ services:
       - db
     ports:
       - '8081:80'
+
+  e2e:
+    build:
+      context: .docker
+      dockerfile: Dockerfile.cypress
+    working_dir: /e2e
+    environment:
+      - DISPLAY
+      - APP_BASE_URL=http://app
+      - CYPRESS_PROJECT=.
+    volumes:
+      - ./tests/E2E/:/e2e
+      - ./.docker/cypress-entrypoint.sh:/bin/entrypoint.sh
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    depends_on:
+      - app
+    entrypoint:
+      - /bin/entrypoint.sh
+    command: []

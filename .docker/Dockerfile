@@ -2,7 +2,8 @@ FROM php:7.4.5-apache
 
 WORKDIR /var/www
 
-RUN apt-get -y update && apt-get -y upgrade && apt-get -y install libxml2-dev libpng-dev curl zlib1g-dev unzip libzip-dev libonig-dev locales
+# default-mysql-client is only needed for E2E tests (mysqldump to quickly restore the DB state between tests)
+RUN apt-get -y update && apt-get -y upgrade && apt-get -y install libxml2-dev libpng-dev curl zlib1g-dev unzip libzip-dev libonig-dev locales default-mysql-client
 RUN echo "de_CH.UTF-8 UTF-8" >> /etc/locale.gen && echo "fr_CH.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
