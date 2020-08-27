@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\CourseMustNotBeArchived;
 use App\Http\Middleware\Localization;
+use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\UpdateLeiterLastAccessed;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -24,6 +25,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        SecurityHeaders::class,
     ];
 
     /**
