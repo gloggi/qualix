@@ -13,8 +13,8 @@ Vue.use(VueI18n);
 
 Vue.prototype.$window = window;
 
-require.context('./', true, /\.vue$/i, 'lazy').keys().forEach(file => {
-    Vue.component(file.split('/').pop().split('.')[0], () => import(`${file}` /*webpackChunkName: "[request]" */));
+require.context('./', true, /\.vue$/i).keys().forEach(file => {
+    Vue.component(file.split('/').pop().split('.')[0], import(`${file}`));
 });
 
 /**
