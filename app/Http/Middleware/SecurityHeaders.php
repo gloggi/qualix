@@ -61,7 +61,7 @@ class SecurityHeaders {
         // Outside of production, allow inline scripts (Vue dev tools)
         if (App::environment() !== 'production') return "script-src 'self' 'unsafe-inline' 'unsafe-eval'";
 
-        return "script-src 'self'";
+        return "script-src 'self' 'unsafe-eval'";
     }
 
     protected function getCSPStyleSrc() {
