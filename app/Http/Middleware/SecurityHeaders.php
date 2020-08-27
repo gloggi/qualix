@@ -30,6 +30,7 @@ class SecurityHeaders {
             $this->getCSPDefaultSrc(),
             $this->getCSPScriptSrc(),
             $this->getCSPStyleSrc(),
+            $this->getCSPImgSrc(),
             $this->getCSPReportUri(),
         ]));
     }
@@ -69,6 +70,10 @@ class SecurityHeaders {
         if (App::environment() !== 'production') return "style-src 'self' 'unsafe-inline'";
 
         return "style-src 'self'";
+    }
+
+    protected function getCSPImgSrc() {
+        return "img-src 'self' data:";
     }
 
     protected function getCSPReportUri() {
