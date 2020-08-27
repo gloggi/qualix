@@ -74,6 +74,7 @@ HITOBITO_CALLBACK_URI=https://qualix.flamberg.ch/login/hitobito/callback
 
 SENTRY_LARAVEL_DSN=<snip>
 SENTRY_USER_FEEDBACK_URL=<snip>
+SENTRY_CSP_REPORT_URI=<snip>
 ```
 3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker-compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" app`
 4. **Frontend-Code builden**: `docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod'" node`
