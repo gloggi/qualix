@@ -35,13 +35,29 @@
 
             @php
                 $fields = [
-                    __('t.models.participantGroup.content') => function(\App\Models\ParticipantGroup $participantGroup) { return $participantGroup->group_name; },
-                    __('t.models.participantGroup.participants') => function(\App\Models\ParticipantGroup $participantGroup) { return $participantGroup->group_name; },
+                    __('t.models.participantGroup.group_name') => function(\App\Models\ParticipantGroup $participantGroup) { return $participantGroup->group_name; },
+                    __('t.models.participantGroup.participants') => function(\App\Models\ParticipantGroup $participantGroup) {
+                    $names = $participantGroup->participants->map(function ($item){
+                        $scout_name = $item['scout_name'];
+                        return $item['group'] ? $scout_name." ".$item['group'] : $scout_name;
+                    });
+
+
+                    return $names->implode(', '); },
                 ];
-                if ($course->archived) {
-                    unset($fields[__('t.models.requirement.num_observations')]);
-                }
+
             @endphp
+            @component('components.responsive-table', [
+                'data' => $course->participantGroups,
+                'fields' => $fields,
+                'actions' => [
+                    'edit' => function(\App\Models\ParticipantGroup $participantGroup) use ($course) { return route('admin.participantGroups.edit', ['course' => $course->id, 'participantGroup' => $participantGroup->id]); },
+                    'delete' => function(\App\Models\ParticipantGroup $participantGroup) use ($course) { return [
+                        'text' => __('t.views.admin.participantGroups.really_delete') . ($course->archived ? '' : ' ' . trans_choice('t.views.admin.participantGroups.participants_on_group', $participantGroup->participants)),
+                        'route' => ['admin.participantGroups.destroy', ['course' => $course->id, 'participantGroup' => $participantGroup->id]],
+                     ];},
+                ]
+            ])@endcomponent
 
 
 

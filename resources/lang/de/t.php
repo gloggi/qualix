@@ -258,8 +258,8 @@ return array(
 				"menu_name" => "TN-Gruppen",
 				"new" => "Neue Teilnehmergruppe",
 				"no_participantGroup" => "Bisher sind keine Teilnehmergruppen erfasst.",
-				"observations_on_requirement" => "{0}Es ist keine Beobachtung damit verbunden.|{1}Damit verbunden ist eine Beobachtung, diese wird aber nicht gelöscht.|[2,*]Damit verbunden sind :count Beobachtungen, diese werden aber nicht gelöscht.",
-				"really_delete" => "Willst du diese Teilnehmergruppen wirklich löschen?",
+				"participants_on_group" => "{0}Es sind keine TN damit verbunden.|{1}Damit verbunden ist ein TN, dieser wird aber nicht gelöscht.|[2,*]Damit verbunden sind :count TNs, diese werden aber nicht gelöscht.",
+				"really_delete" => "Willst du diese Teilnehmergruppe wirklich löschen?",
 				"what_are_participantGroup" => array(
 					"answer" => "Teilnehmende können zu Gruppen hinzugefügt werden, damit diese Gruppen dann als Vorwahl für Beobachtungen oder Beobachtungsaufträge gesetzt werden können, und die Teilnehmenden nicht jedes mal von neuem ausgewählt werden müssen.",
 					"question" => "Was sind Teilnehmergruppen?",
