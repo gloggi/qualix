@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  app:
+  qualix:
     build: .docker
     container_name: 'qualix-app'
     ports:
@@ -56,14 +56,14 @@ services:
     working_dir: /e2e
     environment:
       - DISPLAY
-      - APP_BASE_URL=http://app
+      - APP_BASE_URL=http://qualix
       - CYPRESS_PROJECT=.
     volumes:
       - .:/e2e
       - ./.docker/cypress-entrypoint.sh:/bin/entrypoint.sh
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
     depends_on:
-      - app
+      - qualix
       - e2e-mocks
     entrypoint:
       - /bin/entrypoint.sh

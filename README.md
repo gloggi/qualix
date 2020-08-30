@@ -27,9 +27,9 @@ Wenn du E-Mails in deiner Qualix-Kopie auslöst (zum Beispiel beim Passwort-Rese
 Da alles was mit Qualix zu tun hat, inklusive PHP, Composer, artisan, etc. nur im Container läuft, musst du entsprechende Befehle auch in den Container hinein absetzen. Hier ein Paar Beispiele:
 
 ```
-docker exec -it qualix-app composer update
-docker exec -it qualix-app php artisan tinker
-docker exec -it qualix-app php -v
+docker-compose exec qualix composer update
+docker-compose exec qualix php artisan tinker
+docker-compose exec qualix php -v
 ```
 
 ## Produktive Installation
@@ -76,9 +76,9 @@ SENTRY_LARAVEL_DSN=<snip>
 SENTRY_USER_FEEDBACK_URL=<snip>
 SENTRY_CSP_REPORT_URI=<snip>
 ```
-3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker-compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" app`
+3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker-compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" qualix`
 4. **Frontend-Code builden**: `docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod'" node`
-5. **Optimierung (optional)**: `docker-compose run --entrypoint "composer install --optimize-autoloader --no-dev" app`
+5. **Optimierung (optional)**: `docker-compose run --entrypoint "composer install --optimize-autoloader --no-dev" qualix`
 6. **Auf den Webhost hochladen**: Z.B. mit FTP alles (Ordner und Dateien) ausser .git, node_modules und tests hochladen
 7. **Mit SSH auf den Server einloggen**, da die folgenden Befehle in der finalen Umgebung ausgeführt werden müssen
 8. **Optimierung (optional)**: `php artisan config:cache && php artisan route:cache`

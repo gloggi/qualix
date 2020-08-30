@@ -32,7 +32,7 @@ sed -ri "s~^SENTRY_LARAVEL_DSN=.*$~SENTRY_LARAVEL_DSN=${SENTRY_LARAVEL_DSN:-null
 sed -ri "s~^SENTRY_USER_FEEDBACK_URL=.*$~SENTRY_USER_FEEDBACK_URL=$SENTRY_USER_FEEDBACK_URL~" .env
 sed -ri "s~^SENTRY_CSP_REPORT_URI=.*$~SENTRY_CSP_REPORT_URI=$SENTRY_CSP_REPORT_URI~" .env
 
-docker-compose run --entrypoint "composer install --no-dev" app
+docker-compose run --entrypoint "composer install --no-dev" qualix
 docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod --no-unsafe-inline'" node
 
 # Travis CI uses OpenSSL 1.0.2g  1 Mar 2016. Files encrypted with newer versions of OpenSSL are not decryptable by

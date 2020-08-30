@@ -13,10 +13,10 @@ before_install:
   - ".travis/wait-for-container-startup.sh"
 
 script:
-  - docker-compose exec app vendor/bin/phpunit
+  - docker-compose exec qualix vendor/bin/phpunit
 
 before_deploy:
-  - docker-compose run --entrypoint "/bin/sh -c 'php artisan cache:clear && php artisan route:clear && php artisan config:clear && php artisan view:clear && rm -f storage/framework/sessions/*'" app
+  - docker-compose run --entrypoint "/bin/sh -c 'php artisan cache:clear && php artisan route:clear && php artisan config:clear && php artisan view:clear && rm -f storage/framework/sessions/*'" qualix
 
 deploy:
   provider: script
