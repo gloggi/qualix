@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateParticipantsGroupsTable extends Migration
+class CreateParticipantGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateParticipantsGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('participants_groups', function (Blueprint $table) {
+        Schema::create('participant_groups', function (Blueprint $table) {
             $table->integer('id', true);
             $table->integer('course_id');
             $table->string('group_name');
             $table->timestamps();
         });
-        Schema::table('participants_groups', function(Blueprint $table)
+        Schema::table('participant_groups', function(Blueprint $table)
         {
-            $table->foreign('course_id', 'fk_course_participants_group')->references('id')->on('courses')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('course_id', 'fk_course_participant_group')->references('id')->on('courses')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
@@ -32,10 +32,10 @@ class CreateParticipantsGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::table('participants_groups', function(Blueprint $table)
+        Schema::table('participant_groups', function(Blueprint $table)
         {
-            $table->dropForeign('fk_course_participants_group');
+            $table->dropForeign('fk_course_participant_group');
         });
-        Schema::dropIfExists('participants_groups');
+        Schema::dropIfExists('participant_groups');
     }
 }
