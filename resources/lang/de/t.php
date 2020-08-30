@@ -91,8 +91,7 @@ return array(
 			"scout_name" => "Pfadiname",
 		),
 		"participantGroup" => array(
-			"group_name" => "Name der Gruppe",
-			"content" => "Gruppe",
+			"group_name" => "Gruppe",
 			"participants" => "Teilnehmer"
 
 		),
@@ -257,7 +256,7 @@ return array(
 				"edit" => "Teilnehmergruppe bearbeiten",
 				"edit_success" => "Teilnehmergruppe wurde erfolgreich gespeichert.",
 				"existing" => "Teilnehmergruppen :courseName",
-				"menu_name" => "Teilnehmergruppen",
+				"menu_name" => "TN-Gruppen",
 				"new" => "Neue Teilnehmergruppe",
 				"no_participantGroup" => "Bisher sind keine Teilnehmergruppen erfasst.",
 				"observations_on_requirement" => "{0}Es ist keine Beobachtung damit verbunden.|{1}Damit verbunden ist eine Beobachtung, diese wird aber nicht gelöscht.|[2,*]Damit verbunden sind :count Beobachtungen, diese werden aber nicht gelöscht.",

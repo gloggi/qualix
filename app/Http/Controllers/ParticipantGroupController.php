@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ParticipantGroupRequest;
 use App\Models\Course;
 use App\Models\ParticipantGroup;
 use Illuminate\Http\Request;
@@ -22,12 +23,14 @@ class ParticipantGroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ParticipantGroupRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ParticipantGroupRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        dd($request);
     }
 
 
