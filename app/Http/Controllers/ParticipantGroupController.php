@@ -64,7 +64,7 @@ class ParticipantGroupController extends Controller
      */
     public function edit(Course $course, ParticipantGroup $participantGroup)
     {
-        return view('admin.participantGroup.edit', ['participantGroup' => $participantGroup]);
+        return view('admin.participantGroups.edit', ['participantGroup' => $participantGroup]);
 
     }
 
