@@ -14,15 +14,15 @@ class CreateParticipantsGroupsTable extends Migration
     public function up()
     {
         Schema::create('participants_groups', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id', true);
             $table->integer('course_id');
             $table->string('group_name');
             $table->timestamps();
         });
         Schema::table('participants_groups', function(Blueprint $table)
-    {
-        $table->foreign('course_id', 'fk_course_participants_group')->references('id')->on('courses')->onUpdate('CASCADE')->onDelete('CASCADE');
-    });
+        {
+            $table->foreign('course_id', 'fk_course_participants_group')->references('id')->on('courses')->onUpdate('CASCADE')->onDelete('CASCADE');
+        });
     }
 
     /**
