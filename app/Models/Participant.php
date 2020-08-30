@@ -44,6 +44,14 @@ class Participant extends Model
         return $this->belongsToMany('App\Models\Observation', 'observations_participants');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function participant_groups()
+    {
+        return $this->belongsToMany('App\Models\ParticipantGroup', 'participant_groups_participants');
+    }
+
     public function getPositiveAttribute() {
         return $this->observations()->where('impression', '=', '2');
     }
