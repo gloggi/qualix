@@ -1,6 +1,4 @@
-import { useDatabaseResets, cleanupDatabaseSavepoints } from "../support/databaseTransactions"
-
-cleanupDatabaseSavepoints();
+import { useDatabaseResets } from "../support/databaseTransactions"
 
 describe('login page', () => {
 
@@ -38,7 +36,7 @@ describe('login page', () => {
       useDatabaseResets();
 
       it('logs in successfully', () => {
-        cy.create('User', {name: 'Test Account'})
+        cy.create('App\\Models\\User', {name: 'Test Account'})
           .then(user => {
             cy.get('#email')
               .type(user.email)

@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use NoelDeMartin\LaravelCypress\Facades\Cypress;
+use Laracasts\Cypress\Controllers\CypressController;
 
 class CypressServiceProvider extends ServiceProvider
 {
@@ -31,10 +31,8 @@ class CypressServiceProvider extends ServiceProvider
             return;
         }
 
-        Cypress::setModelsNamespace('App\Models');
-
-        Route::namespace('App\Http\Controllers')
-            ->middleware('web')
+        $this->app->bind('CypressController', \App\Http\Controllers\CypressController::class);
+        Route::middleware('web')
             ->group(function () {
                 Route::get('/_cypress/create_snapshot/{name?}', 'CypressController@createSnapshot');
                 Route::get('/_cypress/restore_snapshot/{name?}', 'CypressController@restoreSnapshot');

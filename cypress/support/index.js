@@ -13,13 +13,14 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-import { useCypressLaravel } from 'cypress-laravel';
-
-useCypressLaravel();
-
-// Import commands.js using ES2015 syntax:
 import './commands'
-import './databaseTransactions'
+import './laravel-commands';
+import './assertions';
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+before(() => {
+    cy.task('activateCypressEnvFile', {}, {log: false});
+});
+
+after(() => {
+    cy.task('activateLocalEnvFile', {}, {log: false});
+});

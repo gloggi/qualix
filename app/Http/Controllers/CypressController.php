@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Artisan;
-use NoelDeMartin\LaravelCypress\Http\Controllers\CypressController as LaravelCypressController;
+use Laracasts\Cypress\Controllers\CypressController as LaravelCypressController;
 
 class CypressController extends LaravelCypressController {
 

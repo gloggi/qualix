@@ -59,7 +59,7 @@ services:
       - APP_BASE_URL=http://app
       - CYPRESS_PROJECT=.
     volumes:
-      - ./tests/E2E/:/e2e
+      - .:/e2e
       - ./.docker/cypress-entrypoint.sh:/bin/entrypoint.sh
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
     depends_on:

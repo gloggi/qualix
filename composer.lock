@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56907d3432ca7481283ccd4c236edb92",
+    "content-hash": "95606048c1024c395ddf31633a9a0e7f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -6663,6 +6663,60 @@
             "time": "2020-07-09T08:09:16+00:00"
         },
         {
+            "name": "laracasts/cypress",
+            "version": "1.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laracasts/cypress.git",
+                "reference": "868477f7c6a1096d5b5512d40666a25e8fb4d6e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laracasts/cypress/zipball/868477f7c6a1096d5b5512d40666a25e8fb4d6e0",
+                "reference": "868477f7c6a1096d5b5512d40666a25e8fb4d6e0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^6.0|^7.0",
+                "php": "^7.4"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laracasts\\Cypress\\CypressServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laracasts\\Cypress\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeffrey Way",
+                    "email": "jeffrey@laracasts.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Cypress Boilerplate",
+            "homepage": "https://github.com/laracasts/cypress",
+            "keywords": [
+                "cypress",
+                "laracasts"
+            ],
+            "time": "2020-08-07T19:54:51+00:00"
+        },
+        {
             "name": "mockery/mockery",
             "version": "1.4.1",
             "source": {
@@ -6783,55 +6837,6 @@
                 }
             ],
             "time": "2020-06-29T13:22:24+00:00"
-        },
-        {
-            "name": "noeldemartin/laravel-cypress",
-            "version": "v0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/NoelDeMartin/laravel-cypress.git",
-                "reference": "354684f4cf2088453e62999ac1b11e1efbfa2dab"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/NoelDeMartin/laravel-cypress/zipball/354684f4cf2088453e62999ac1b11e1efbfa2dab",
-                "reference": "354684f4cf2088453e62999ac1b11e1efbfa2dab",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": ">=5.5.0",
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "NoelDeMartin\\LaravelCypress\\CypressServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "NoelDeMartin\\LaravelCypress\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Noel De Martin",
-                    "email": "noeldemartin@gmail.com"
-                }
-            ],
-            "description": "Laravel package used for running tests with Cypress.",
-            "keywords": [
-                "cypress",
-                "laravel",
-                "testing"
-            ],
-            "time": "2020-05-30T19:07:51+00:00"
         },
         {
             "name": "nunomaduro/collision",
