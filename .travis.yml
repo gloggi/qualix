@@ -14,6 +14,7 @@ before_install:
 
 script:
   - docker-compose exec qualix vendor/bin/phpunit
+  - docker-compose run e2e run
 
 before_deploy:
   - docker-compose run --entrypoint "/bin/sh -c 'php artisan cache:clear && php artisan route:clear && php artisan config:clear && php artisan view:clear && rm -f storage/framework/sessions/*'" qualix
