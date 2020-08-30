@@ -43,6 +43,9 @@ describe('login page', () => {
             cy.get('#password')
               .type('password{enter}')
             cy.contains('Willkommä bim Qualix')
+            cy.location().should((loc) => {
+              expect(loc.pathname).to.eq('/')
+            })
           })
       })
 
@@ -61,18 +64,70 @@ describe('login page', () => {
   })
 
   context('MiData login', () => {
+    beforeEach(() => {
+      cy.resetMocks()
+    })
+
     it('displays the MiData login button', () => {
       cy.contains('Via PBS MiData einloggen')
         .should('have.attr', 'href').and('match', /\/login\/hitobito$/)
 
       cy.request({
         url: '/login/hitobito',
-        followRedirect: false // turn off following redirects
+        followRedirect: false
       })
         .then((resp) => {
           expect(resp.status).to.eq(302)
-          expect(resp.redirectedToUrl).to.match(/^https:\/\/[a-zA-Z.-]+\/oauth\/authorize\?client_id=/)
+          expect(resp.redirectedToUrl).to.match(/^http:\/\/e2e-mocks:1080\/oauth\/authorize\?client_id=xxx/)
         })
+    })
+
+    it('logs in successfully', () => {
+      cy.mockMiDataOAuth()
+
+      // Visit the URL that the MiData login button leads to, in order to get the the state token from the backend
+      cy.request({
+        url: '/login/hitobito',
+        followRedirects: false
+      })
+        .then(response => {
+          const state = response.headers.location.match(/[&?]state=([^&]+)/)[1]
+
+          // OAuth application has redirected back to the callback route
+          cy.visit('/login/hitobito/callback?code=foo&state=' + state)
+
+          cy.contains('Willkommä bim Qualix')
+          cy.location().should((loc) => {
+            expect(loc.pathname).to.eq('/')
+          })
+        })
+    })
+
+    it('fails gracefully when MiData is down', () => {
+
+      // Visit the URL that the MiData login button leads to, in order to get the the state token from the backend
+      cy.request({
+        url: '/login/hitobito',
+        followRedirects: false
+      })
+        .then(response => {
+          const state = response.headers.location.match(/[&?]state=([^&]+)/)[1]
+
+          // OAuth application has redirected back to the callback route
+          cy.visit('/login/hitobito/callback?code=foo&state=' + state)
+
+          cy.contains('Leider klappt es momentan gerade nicht. Versuche es später wieder, oder registriere dich mit einem klassischen Account.')
+        })
+
+    })
+
+    it('fails gracefully when permission on MiData not granted', () => {
+
+        // Callback is called with error, this means the user has denied permission
+        cy.visit('/login/hitobito/callback?code=foo&error=123')
+
+        cy.contains('Zugriff in MiData verweigert.')
+
     })
   })
 })
