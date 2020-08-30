@@ -90,6 +90,12 @@ return array(
 			"image" => "Bild",
 			"scout_name" => "Pfadiname",
 		),
+		"participantGroup" => array(
+			"group_name" => "Name der Gruppe",
+			"content" => "Gruppe",
+			"participants" => "Teilnehmer"
+
+		),
 		"requirement" => array(
 			"blocks" => "Blöcke",
 			"content" => "Anforderung",
@@ -240,6 +246,26 @@ return array(
 				"import_success" => "{0}In der importierten Datei wurden keine Teilnehmende gefunden.|{1}In der importierten Datei wurde ein Teilnehmer* gefunden.|[2,*]In der importierten Datei wurden :count Teilnehmende gefunden.",
 				"unknown_error" => "Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Teilnehmende manuell.",
 				"warning_existing_participants" => "In deinem Kurs sind bereits Teilnehmende erfasst. Diese bleiben bestehen und durch den Import werden neue zusätzliche erfasst.",
+			),
+			"participantGroups" => array(
+				"are_participantGroups_required" => array(
+					"answer" => "Nein, musst du natürlich nicht. Sie sind nur dazu da, den Aufwand zu verringern .",
+					"question" => "Muss ich Teilnehmergruppen für meinen Kurs erfassen?",
+				),
+				"create_success" => "Teilnehmergruppe wurde erfolgreich erstellt.",
+				"delete_success" => "Teilnehmergruppe wurde erfolgreich gelöscht.",
+				"edit" => "Teilnehmergruppe bearbeiten",
+				"edit_success" => "Teilnehmergruppe wurde erfolgreich gespeichert.",
+				"existing" => "Teilnehmergruppen :courseName",
+				"menu_name" => "Teilnehmergruppen",
+				"new" => "Neue Teilnehmergruppe",
+				"no_participantGroup" => "Bisher sind keine Teilnehmergruppen erfasst.",
+				"observations_on_requirement" => "{0}Es ist keine Beobachtung damit verbunden.|{1}Damit verbunden ist eine Beobachtung, diese wird aber nicht gelöscht.|[2,*]Damit verbunden sind :count Beobachtungen, diese werden aber nicht gelöscht.",
+				"really_delete" => "Willst du diese Teilnehmergruppen wirklich löschen?",
+				"what_are_participantGroup" => array(
+					"answer" => "Teilnehmende können zu Gruppen hinzugefügt werden, damit diese Gruppen dann als Vorwahl für Beobachtungen oder Beobachtungsaufträge gesetzt werden können, und die Teilnehmenden nicht jedes mal von neuem ausgewählt werden müssen.",
+					"question" => "Was sind Teilnehmergruppen?",
+				),
 			),
 			"requirements" => array(
 				"are_requirements_required" => array(

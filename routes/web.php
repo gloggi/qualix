@@ -62,7 +62,7 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
         Route::post('/course/{course}/admin/participants/{participant}', 'ParticipantController@update')->name('admin.participants.update');
         Route::delete('/course/{course}/admin/participants/{participant}', 'ParticipantController@destroy')->name('admin.participants.delete');
 
-        Route::resource('/course/{course}/admin/participant_groups', 'ParticipantGroupController');
+        Route::resource('/course/{course}/admin/participantGroups', 'ParticipantGroupController',  ['as' => 'admin'])->except('show', 'create');
 
     });
 

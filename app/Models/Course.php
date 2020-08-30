@@ -54,6 +54,13 @@ class Course extends Model
     {
         return $this->hasMany('App\Models\Requirement', 'course_id');
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function participantGroups()
+    {
+        return $this->hasMany('App\Models\ParticipantGroup', 'course_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

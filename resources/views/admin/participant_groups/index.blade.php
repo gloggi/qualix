@@ -3,24 +3,24 @@
 @section('content')
 
     <b-card>
-        <template #header>{{__('t.views.admin.requirements.new')}}</template>
+        <template #header>{{__('t.views.admin.participantGroups.new')}}</template>
 
-        @component('components.form', ['route' => ['admin.requirements.store', ['course' => $course->id]]])
+        @component('components.form', ['route' => ['admin.participantGroups.store', ['course' => $course->id]]])
 
-            <input-text @forminput('content') label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
-
-            <input-checkbox @forminput('mandatory', false) label="{{__('t.models.requirement.mandatory')}}"></input-checkbox>
+            <input-text @forminput('content') label="{{__('t.models.participantGroup.content')}}" required autofocus></input-text>
 
             <input-multi-select
-                @forminput('blocks')
-                label="{{__('t.models.requirement.blocks')}}"
-                :options="{{ json_encode($course->blocks->map->only('id', 'name')) }}"
-                display-field="name"
-                multiple></input-multi-select>
+                @forminput('participants', $participants)
+            label="{{__('t.models.participantGroup.participants')}}"
+            :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
+            display-field="scout_name"
+            multiple
+            required
+            :autofocus="{{ $participants === null ? 'true' : 'false' }}"></input-multi-select>
 
             <button-submit label="{{__('t.global.add')}}">
 
-                @component('components.help-text', ['id' => 'requirementsHelp', 'key' => 't.views.admin.requirements.what_are_requirements'])@endcomponent
+                @component('components.help-text', ['id' => 'requirementsHelp', 'key' => 't.views.admin.participantGroups.what_are_participantGroup'])@endcomponent
 
             </button-submit>
 
@@ -29,37 +29,27 @@
     </b-card>
 
     <b-card>
-        <template #header>{{__('t.views.admin.requirements.existing', ['courseName' => $course->name])}}</template>
+        <template #header>{{__('t.views.admin.participantGroups.existing', ['courseName' => $course->name])}}</template>
 
-        @if (count($course->requirements))
+        @if (count($course->participantGroups))
 
             @php
                 $fields = [
-                    __('t.models.requirement.content') => function(\App\Models\Requirement $requirement) { return $requirement->content; },
-                    __('t.models.requirement.mandatory') => function(\App\Models\Requirement $requirement) { return $requirement->mandatory ? __('t.global.yes') : __('t.global.no'); },
-                    __('t.models.requirement.num_observations') => function(\App\Models\Requirement $requirement) { return count($requirement->observations); },
+                    __('t.models.participantGroup.content') => function(\App\Models\ParticipantGroup $participantGroup) { return $participantGroup->group_name; },
+                    __('t.models.participantGroup.participants') => function(\App\Models\ParticipantGroup $participantGroup) { return $participantGroup->group_name; },
                 ];
                 if ($course->archived) {
                     unset($fields[__('t.models.requirement.num_observations')]);
                 }
             @endphp
-            @component('components.responsive-table', [
-                'data' => $course->requirements,
-                'fields' => $fields,
-                'actions' => [
-                    'edit' => function(\App\Models\Requirement $requirement) use ($course) { return route('admin.requirements.edit', ['course' => $course->id, 'requirement' => $requirement->id]); },
-                    'delete' => function(\App\Models\Requirement $requirement) use ($course) { return [
-                        'text' => __('t.views.admin.requirements.really_delete') . ($course->archived ? '' : ' ' . trans_choice('t.views.admin.requirements.observations_on_requirement', $requirement->observations)),
-                        'route' => ['admin.requirements.delete', ['course' => $course->id, 'requirement' => $requirement->id]],
-                     ];},
-                ]
-            ])@endcomponent
+
+
 
         @else
 
-            {{__('t.views.admin.requirements.no_requirements')}}
+            {{__('t.views.admin.participantGroups.no_participantGroup')}}
 
-            @component('components.help-text', ['id' => 'noRequirementsHelp', 'key' => 't.views.admin.requirements.are_requirements_required'])@endcomponent
+            @component('components.help-text', ['id' => 'noGroupsHelp', 'key' => 't.views.admin.participantGroups.are_participantGroups_required'])@endcomponent
 
         @endif
 

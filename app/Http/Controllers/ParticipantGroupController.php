@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\ParticipantGroup;
 use Illuminate\Http\Request;
 
@@ -12,20 +13,11 @@ class ParticipantGroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return view('admin.participant_groups.index', ['participants' => $request->input('participant')]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -38,26 +30,18 @@ class ParticipantGroupController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ParticipantGroup  $participantGroup
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ParticipantGroup $participantGroup)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      *
+     * @param Course $course
      * @param  \App\Models\ParticipantGroup  $participantGroup
      * @return \Illuminate\Http\Response
      */
-    public function edit(ParticipantGroup $participantGroup)
+    public function edit(Course $course, ParticipantGroup $participantGroup)
     {
-        //
+        return view('admin.participant_group.edit', ['participantGroup' => $participantGroup]);
+
     }
 
     /**
@@ -75,10 +59,12 @@ class ParticipantGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param Request $request
+     * @param Course $course
      * @param  \App\Models\ParticipantGroup  $participantGroup
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ParticipantGroup $participantGroup)
+    public function destroy(Request $request, Course $course, ParticipantGroup $participantGroup)
     {
         //
     }
