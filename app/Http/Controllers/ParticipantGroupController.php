@@ -64,20 +64,30 @@ class ParticipantGroupController extends Controller
      */
     public function edit(Course $course, ParticipantGroup $participantGroup)
     {
-        return view('admin.participant_group.edit', ['participantGroup' => $participantGroup]);
+        return view('admin.participantGroup.edit', ['participantGroup' => $participantGroup]);
 
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ParticipantGroup  $participantGroup
-     * @return \Illuminate\Http\Response
+     * @param  ParticipantGroupRequest $request
+     * @param Course $course
+     * @param  ParticipantGroup  $participantGroup
+     * @return RedirectResponse
      */
-    public function update(Request $request, ParticipantGroup $participantGroup)
+    public function update(ParticipantGroupRequest $request, Course $course, ParticipantGroup $participantGroup)
     {
-        //
+        DB::transaction(function () use ($request, $course, $participantGroup) {
+            $data = $request->validated();
+            $participantGroup->update($data);
+
+            $participantGroup->participants()->detach(null);
+            $participantGroup->participants()->attach(array_filter(explode(',', $data['participants'])));
+            $request->session()->flash('alert-success', __('t.views.admin.participantGroups.edit_success'));
+        });
+        return Redirect::route('admin.participantGroups.index', ['course' => $course->id]);
+
     }
 
     /**
@@ -85,11 +95,14 @@ class ParticipantGroupController extends Controller
      *
      * @param Request $request
      * @param Course $course
-     * @param  \App\Models\ParticipantGroup  $participantGroup
-     * @return \Illuminate\Http\Response
+     * @param  ParticipantGroup  $participantGroup
+     * @return RedirectResponse
+     *
      */
     public function destroy(Request $request, Course $course, ParticipantGroup $participantGroup)
     {
-        //
+        $participantGroup->delete();
+        $request->session()->flash('alert-success', __('t.views.admin.participantGroups.delete_success'));
+        return Redirect::route('admin.participantGroups.index', ['course' => $course->id]);
     }
 }
