@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class ParticipantGroup extends Model
 {
     /**
@@ -19,10 +17,10 @@ class ParticipantGroup extends Model
     protected $fillable = ['course_id', 'group_name'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function participants()
     {
-        return $this->hasMany('App\Models\Participant');
+        return $this->belongsToMany('App\Models\Participant','participant_groups_participants');
     }
 }

@@ -92,8 +92,7 @@ return array(
 		),
 		"participantGroup" => array(
 			"group_name" => "Gruppe",
-			"participants" => "Teilnehmer"
-
+			"participants" => "Teilnehmer",
 		),
 		"requirement" => array(
 			"blocks" => "Blöcke",

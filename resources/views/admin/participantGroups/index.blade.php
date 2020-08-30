@@ -7,7 +7,7 @@
 
         @component('components.form', ['route' => ['admin.participantGroups.store', ['course' => $course->id]]])
 
-            <input-text @forminput('content') label="{{__('t.models.participantGroup.group_name')}}" required autofocus></input-text>
+            <input-text @forminput('group_name') label="{{__('t.models.participantGroup.group_name')}}" required autofocus></input-text>
 
             <input-multi-select
                 @forminput('participants', $participants)

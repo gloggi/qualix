@@ -5,7 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ParticipantGroupRequest;
 use App\Models\Course;
 use App\Models\ParticipantGroup;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\RouteCollectionInterface;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 class ParticipantGroupController extends Controller
 {
@@ -16,7 +25,7 @@ class ParticipantGroupController extends Controller
      */
     public function index(Request $request)
     {
-        return view('admin.participant_groups.index', ['participants' => $request->input('participant')]);
+        return view('admin.participantGroups.index', ['participants' => $request->input('participant')]);
     }
 
 
@@ -24,13 +33,25 @@ class ParticipantGroupController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  ParticipantGroupRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ParticipantGroupRequest $request)
-    {
-        $data = $request->validated();
+     * @param Course $course
 
-        dd($request);
+     * @return RedirectResponse
+     */
+    public function store(ParticipantGroupRequest $request, Course $course)
+    {
+
+        DB::transaction(function() use ($request, $course){
+            $data = $request->validated();
+            $participantGroup = ParticipantGroup::create(array_merge($data, ['course_id' => $course->id]));
+
+            $participantIds = array_filter(explode(',', $data['participants']));
+            $participantGroup->participants()->attach($participantIds);
+
+            $request->session()->flash('alert-success', __('t.views.admin.participantGroups.create_success'));        });
+
+        return Redirect::route('admin.participantGroups.index', ['course' => $course->id]);
+
+
     }
 
 
