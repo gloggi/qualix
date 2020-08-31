@@ -43,9 +43,7 @@ describe('login page', () => {
             cy.get('#password')
               .type('password{enter}')
             cy.contains('Willkommä bim Qualix')
-            cy.location().should((loc) => {
-              expect(loc.pathname).to.eq('/')
-            })
+            cy.assertRedirect('/')
           })
       })
 
@@ -97,9 +95,7 @@ describe('login page', () => {
           cy.visit('/login/hitobito/callback?code=foo&state=' + state)
 
           cy.contains('Willkommä bim Qualix')
-          cy.location().should((loc) => {
-            expect(loc.pathname).to.eq('/')
-          })
+          cy.assertRedirect('/')
         })
     })
 
