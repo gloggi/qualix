@@ -3,6 +3,7 @@ import { useDatabaseResets } from "../support/databaseTransactions"
 describe('login page', () => {
 
   beforeEach(() => {
+    cy.logout()
     cy.visit('/login')
   })
 
@@ -51,7 +52,7 @@ describe('login page', () => {
 
     it('validates wrong login', () => {
       cy.get('#email')
-        .type('test2@qualix.flamberg.ch')
+        .type('someone-who-doesnt-exist@qualix.flamberg.ch')
 
       cy.get('#password')
         .type('wrong{enter}')
@@ -62,6 +63,7 @@ describe('login page', () => {
   })
 
   context('MiData login', () => {
+    useDatabaseResets();
     beforeEach(() => {
       cy.resetMocks()
     })

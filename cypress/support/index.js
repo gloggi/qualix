@@ -19,10 +19,12 @@ import './assertions'
 
 before(() => {
   cy.task('activateCypressEnvFile', {}, {log: false})
-  cy.artisan('config:clear')
+  cy.artisan('config:clear', {}, {log: false})
+  cy.artisan('cache:clear', {}, {log: false})
 })
 
 after(() => {
   cy.task('activateLocalEnvFile', {}, {log: false})
-  cy.artisan('config:clear')
+  cy.artisan('config:clear', {}, {log: false})
+  cy.artisan('cache:clear', {}, {log: false})
 })

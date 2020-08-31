@@ -132,11 +132,13 @@ Cypress.Commands.add('seed', (seederClass) => {
  * @example cy.artisan('cache:clear');
  */
 Cypress.Commands.add('artisan', (command, parameters = {}) => {
-    Cypress.log({
+    if (parameters.log) {
+      Cypress.log({
         name: 'artisan',
         message: command,
-        consoleProps: () => ({ command, parameters })
-    });
+        consoleProps: () => ({command, parameters})
+      });
+    }
 
     return cy.csrfToken()
         .then(token => {
