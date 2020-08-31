@@ -14,13 +14,15 @@
 // ***********************************************************
 
 import './commands'
-import './laravel-commands';
-import './assertions';
+import './laravel-commands'
+import './assertions'
 
 before(() => {
-    cy.task('activateCypressEnvFile', {}, {log: false});
-});
+  cy.task('activateCypressEnvFile', {}, {log: false})
+  cy.artisan('config:clear')
+})
 
 after(() => {
-    cy.task('activateLocalEnvFile', {}, {log: false});
-});
+  cy.task('activateLocalEnvFile', {}, {log: false})
+  cy.artisan('config:clear')
+})
