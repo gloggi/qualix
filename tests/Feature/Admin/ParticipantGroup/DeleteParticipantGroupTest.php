@@ -3,10 +3,8 @@
 namespace Tests\Feature\Admin\ParticipantGroup;
 
 use App\Models\Course;
-use App\Models\ParticipantGroup;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCaseWithBasicData;
-use Tests\TestCaseWithCourse;
 
 class DeleteParticipantGroupTest extends TestCaseWithBasicData {
 

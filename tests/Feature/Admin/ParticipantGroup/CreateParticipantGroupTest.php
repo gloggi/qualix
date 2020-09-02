@@ -4,10 +4,8 @@ namespace Tests\Feature\Admin\ParticipantGroup;
 
 use App\Models\Course;
 use App\Models\ParticipantGroup;
-use Illuminate\Support\Arr;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCaseWithBasicData;
 use Tests\TestCaseWithCourse;
 
 class CreateParticipantGroupTest extends TestCaseWithCourse

@@ -3,7 +3,6 @@
 namespace Tests\Feature\Admin\ParticipantGroup;
 
 use App\Models\Course;
-use App\Models\Observation;
 use App\Models\ParticipantGroup;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
