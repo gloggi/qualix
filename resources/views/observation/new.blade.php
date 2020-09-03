@@ -11,7 +11,13 @@
                 @forminput('participants', $participants)
                 label="{{__('t.models.observation.participants')}}"
                 :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
-                display-field="scout_name"
+
+                :groups="{{json_encode(
+                    $course->participantGroups->mapWithKeys(function ($group) {
+                        return [$group['group_name'] => $group->participants->pluck('id')->join(',')];
+                    }))}}"
+
+            display-field="scout_name"
                 multiple
                 required
                 :autofocus="{{ $participants === null ? 'true' : 'false' }}"></input-multi-select>

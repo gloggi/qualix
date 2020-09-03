@@ -90,6 +90,10 @@ return array(
 			"image" => "Bild",
 			"scout_name" => "Pfadiname",
 		),
+		"participant_group" => array(
+			"group_name" => "Gruppe",
+			"participants" => "Teilnehmer",
+		),
 		"requirement" => array(
 			"blocks" => "Blöcke",
 			"content" => "Anforderung",
@@ -240,6 +244,25 @@ return array(
 				"import_success" => "{0}In der importierten Datei wurden keine Teilnehmende gefunden.|{1}In der importierten Datei wurde ein Teilnehmer* gefunden.|[2,*]In der importierten Datei wurden :count Teilnehmende gefunden.",
 				"unknown_error" => "Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Teilnehmende manuell.",
 				"warning_existing_participants" => "In deinem Kurs sind bereits Teilnehmende erfasst. Diese bleiben bestehen und durch den Import werden neue zusätzliche erfasst.",
+			),
+			"participant_groups" => array(
+				"are_participant_groups_required" => array(
+					"answer" => "Nein, musst du natürlich nicht. Sie sind nur dazu da, den Aufwand zu verringern .",
+					"question" => "Muss ich Teilnehmergruppen für meinen Kurs erfassen?",
+				),
+				"create_success" => "Teilnehmergruppe wurde erfolgreich erstellt.",
+				"delete_success" => "Teilnehmergruppe wurde erfolgreich gelöscht.",
+				"edit" => "Teilnehmergruppe bearbeiten",
+				"edit_success" => "Teilnehmergruppe wurde erfolgreich gespeichert.",
+				"existing" => "Teilnehmergruppen :courseName",
+				"menu_name" => "TN-Gruppen",
+				"new" => "Neue Teilnehmergruppe",
+				"no_participant_group" => "Bisher sind keine Teilnehmergruppen erfasst.",
+				"really_delete" => "Willst du die Teilnehmergruppe \":name\" wirklich löschen?",
+				"what_are_participant_groups" => array(
+					"answer" => "Teilnehmende können zu Gruppen hinzugefügt werden. Diese Gruppen stehen dann zur Schnellwahl bei Beobachtungen zu Verfügung.",
+					"question" => "Was sind Teilnehmergruppen?",
+				),
 			),
 			"requirements" => array(
 				"are_requirements_required" => array(

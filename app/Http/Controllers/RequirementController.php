@@ -47,6 +47,7 @@ class RequirementController extends Controller {
      * @param Requirement $requirement
      * @return Response
      */
+
     public function edit(Course $course, Requirement $requirement) {
         return view('admin.requirements.edit', ['requirement' => $requirement]);
     }

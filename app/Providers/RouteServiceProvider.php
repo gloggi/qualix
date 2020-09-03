@@ -61,6 +61,11 @@ class RouteServiceProvider extends ServiceProvider
             $course = $route->parameter('course');
             return $course->observations()->findOrFail($id);
         });
+        Route::bind('participantGroup', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Course $course */
+            $course = $route->parameter('course');
+            return $course->participantGroups()->findOrFail($id);
+        });
 
         parent::boot();
     }

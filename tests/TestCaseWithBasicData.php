@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\Observation;
+use App\Models\ParticipantGroup;
 use Illuminate\Support\Arr;
 
 abstract class TestCaseWithBasicData extends TestCaseWithCourse
@@ -23,5 +24,12 @@ abstract class TestCaseWithBasicData extends TestCaseWithCourse
         $observation->categories()->attach($categoryIds);
         $observation->participants()->attach(($participantIds !== null ? Arr::wrap($participantIds) : [$this->participantId]));
         return $observation->id;
+    }
+
+    protected function createParticipantGroup($group_name = "Test Gruppe", $participantIds = null, $courseId = null) {
+        $participant_group = ParticipantGroup::create(['course_id' => ($courseId !== null ? $courseId : $this->courseId), 'group_name' => $group_name]);
+        $participant_group->participants()->attach(($participantIds !== null ? Arr::wrap($participantIds) : [$this->participantId]));
+        return $participant_group->id;
+
     }
 }

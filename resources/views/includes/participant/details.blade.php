@@ -29,5 +29,7 @@
         </div>
 
     </div>
+    @component('includes.participant.groups', ['groups' => $participant->participant_groups])@endcomponent
+
 
 </b-card>
