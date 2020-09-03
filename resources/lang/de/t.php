@@ -90,7 +90,7 @@ return array(
 			"image" => "Bild",
 			"scout_name" => "Pfadiname",
 		),
-		"participantGroup" => array(
+		"participant_group" => array(
 			"group_name" => "Gruppe",
 			"participants" => "Teilnehmer",
 		),
@@ -245,8 +245,8 @@ return array(
 				"unknown_error" => "Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Teilnehmende manuell.",
 				"warning_existing_participants" => "In deinem Kurs sind bereits Teilnehmende erfasst. Diese bleiben bestehen und durch den Import werden neue zusätzliche erfasst.",
 			),
-			"participantGroups" => array(
-				"are_participantGroups_required" => array(
+			"participant_groups" => array(
+				"are_participant_groups_required" => array(
 					"answer" => "Nein, musst du natürlich nicht. Sie sind nur dazu da, den Aufwand zu verringern .",
 					"question" => "Muss ich Teilnehmergruppen für meinen Kurs erfassen?",
 				),
@@ -257,11 +257,10 @@ return array(
 				"existing" => "Teilnehmergruppen :courseName",
 				"menu_name" => "TN-Gruppen",
 				"new" => "Neue Teilnehmergruppe",
-				"no_participantGroup" => "Bisher sind keine Teilnehmergruppen erfasst.",
-				"participants_on_group" => "{0}Es sind keine TN damit verbunden.|{1}Damit verbunden ist ein TN, dieser wird aber nicht gelöscht.|[2,*]Damit verbunden sind :count TNs, diese werden aber nicht gelöscht.",
-				"really_delete" => "Willst du diese Teilnehmergruppe wirklich löschen?",
-				"what_are_participantGroup" => array(
-					"answer" => "Teilnehmende können zu Gruppen hinzugefügt werden, damit diese Gruppen dann als Vorwahl für Beobachtungen oder Beobachtungsaufträge gesetzt werden können, und die Teilnehmenden nicht jedes mal von neuem ausgewählt werden müssen.",
+				"no_participant_group" => "Bisher sind keine Teilnehmergruppen erfasst.",
+				"really_delete" => "Willst du die Teilnehmergruppe \":name\" wirklich löschen?",
+				"what_are_participant_groups" => array(
+					"answer" => "Teilnehmende können zu Gruppen hinzugefügt werden. Diese Gruppen stehen dann zur Schnellwahl bei Beobachtungen zu Verfügung.",
 					"question" => "Was sind Teilnehmergruppen?",
 				),
 			),

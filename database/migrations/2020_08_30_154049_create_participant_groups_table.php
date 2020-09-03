@@ -15,8 +15,8 @@ class CreateParticipantGroupsTable extends Migration
     {
         Schema::create('participant_groups', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->integer('course_id');
-            $table->string('group_name');
+            $table->integer('course_id')->nullable(false);
+            $table->string('group_name')->nullable(false);
             $table->timestamps();
         });
         Schema::table('participant_groups', function(Blueprint $table)

@@ -29,6 +29,6 @@ class ParticipantGroupRequest extends FormRequest {
 
 
     public function attributes() {
-        return Lang::get('t.models.participantGroup');
+        return Lang::get('t.models.participant_group');
     }
 }

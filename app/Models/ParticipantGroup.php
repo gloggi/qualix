@@ -2,6 +2,12 @@
 
 namespace App\Models;
 
+/**
+ * @property int $id
+ * @property int $course_id
+ * @property string $group_name
+ * @property Participant[] $participants
+ */
 class ParticipantGroup extends Model
 {
     /**

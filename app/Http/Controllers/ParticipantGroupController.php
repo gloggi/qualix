@@ -21,11 +21,11 @@ class ParticipantGroupController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index()
     {
-        return view('admin.participantGroups.index', ['participants' => $request->input('participant')]);
+        return view('admin.participantGroups.index');
     }
 
 
@@ -47,7 +47,8 @@ class ParticipantGroupController extends Controller
             $participantIds = array_filter(explode(',', $data['participants']));
             $participantGroup->participants()->attach($participantIds);
 
-            $request->session()->flash('alert-success', __('t.views.admin.participantGroups.create_success'));        });
+            $request->session()->flash('alert-success', __('t.views.admin.participant_groups.create_success'));
+        });
 
         return Redirect::route('admin.participantGroups.index', ['course' => $course->id]);
 
@@ -84,7 +85,7 @@ class ParticipantGroupController extends Controller
 
             $participantGroup->participants()->detach(null);
             $participantGroup->participants()->attach(array_filter(explode(',', $data['participants'])));
-            $request->session()->flash('alert-success', __('t.views.admin.participantGroups.edit_success'));
+            $request->session()->flash('alert-success', __('t.views.admin.participant_groups.edit_success'));
         });
         return Redirect::route('admin.participantGroups.index', ['course' => $course->id]);
 
@@ -102,7 +103,7 @@ class ParticipantGroupController extends Controller
     public function destroy(Request $request, Course $course, ParticipantGroup $participantGroup)
     {
         $participantGroup->delete();
-        $request->session()->flash('alert-success', __('t.views.admin.participantGroups.delete_success'));
+        $request->session()->flash('alert-success', __('t.views.admin.participant_groups.delete_success'));
         return Redirect::route('admin.participantGroups.index', ['course' => $course->id]);
     }
 }

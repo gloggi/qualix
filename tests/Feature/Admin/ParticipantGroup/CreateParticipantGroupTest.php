@@ -180,7 +180,7 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         $response->assertSee('Teilnehmergruppe wurde erfolgreich erstellt.');
     }
 
-    public function test_createObservationWitMultipleParticipantIds_shouldLinkTheParticipantGroup()
+    public function test_createParticipantGroupWitMultipleParticipantIds_shouldLinkTheParticipantGroup()
     {
         // given
         $participantId2 = $this->createParticipant('Pfnörch');
@@ -247,7 +247,7 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         $response->assertSee(htmlspecialchars($participantName, ENT_QUOTES), false);
     }
 
-    public function test_shouldNotAllowCreatingObservation_withParticipantFromADifferentCourse()
+    public function test_shouldNotAllowCreatingParticipantGroup_withParticipantFromADifferentCourse()
     {
         // given
         $differentCourse = $this->createCourse('Other course', '', false);
