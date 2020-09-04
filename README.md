@@ -32,6 +32,26 @@ docker-compose exec qualix php artisan tinker
 docker-compose exec qualix php -v
 ```
 
+### End-to-end Tests
+
+Um die E2E-Tests laufen zu lassen, müssen zuerst die Container laufen (`docker-compose up`).
+Du kannst die E2E-Tests mit Cypress headless laufen lassen:
+```
+docker-compose run e2e run
+```
+
+Oder du kannst das grafische Tool von Cypress vom Container aus auf deinem Mac- oder Linux-Computer öffnen:
+```
+# Nur auf Mac OS: xhost installieren, danach den Computer neu starten
+brew cask install xquartz
+
+# Dem Container erlauben, auf dem Host Fenster zu öffnen (nur einmal pro Computer-Neustart nötig)
+xhost local:root
+
+# Cypress öffnen
+docker-compose run e2e open
+```
+
 ## Produktive Installation
 
 > Qualix basiert auf Laravel 7 und benötigt deshalb eine PHP Version >= 7.2.5
