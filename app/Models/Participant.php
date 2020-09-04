@@ -67,6 +67,14 @@ class Participant extends Model {
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function observationOrders()
+    {
+        return $this->hasMany('App\Models\ObservationOrder');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function participant_groups()

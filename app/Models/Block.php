@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Collection;
  * @property Collection $requirement_ids
  * @property Course $course
  * @property Observation[] $observations
+ * @property ObservationOrder[] $obsersationOrders
+ * @property Collection $requirements
  * @property Collection $requirementIds
  * @property int $num_observations
  */
@@ -60,6 +62,12 @@ class Block extends Model {
      */
     public function observations() {
         return $this->hasMany('App\Models\Observation');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function observationsOrders() {
+        return $this->hasMany('App\Models\ObservationOrder');
     }
 
     /**
