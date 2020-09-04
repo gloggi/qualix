@@ -93,6 +93,12 @@ return array(
 			"requirements" => "Anforderungen",
 			"user" => "Beobachter",
 		),
+		"observation_order" => array(
+			"trainer" => "Equipenmitglied",
+			"participant" => "TN",
+			"participants" => "TN",
+			"block" => "Block",
+		),
 		"participant" => array(
 			"group" => "Abteilung",
 			"image" => "Bild",
@@ -229,6 +235,25 @@ return array(
 				"create_success" => "Kurs \":name\" wurde erfolgreich erstellt.",
 				"menu_name" => "Neuen Kurs erstellen",
 				"title" => "Neuen Kurs erstellen",
+			),
+			"observation_orders" => array(
+				"are_observation_orders_required" => array(
+					"answer" => "Nein, aber sie sind ein nützliches Tool beim RQF (Rückmelde-, Qualifizierungs-, Förderungs-') Prozess",
+					"question" => "Muss ich Beobachtungsaufträge für meinen Kurs erfassen?",
+				),
+				"create_success" => "Beobachtungsauftrag wurde erfolgreich erstellt.",
+				"delete_success" => "Beobachtungsauftrag wurde erfolgreich gelöscht.",
+				"edit" => "Beobachtungsauftrag bearbeiten",
+				"edit_success" => "Beobachtungsauftrag wurde erfolgreich gespeichert.",
+				"existing" => "Beobachtungsaufträge :courseName",
+				"menu_name" => "Beobachtungsaufträge",
+				"new" => "Neuer Beobachtungsauftrag",
+				"no_participant_group" => "Bisher sind keine Beobachtungsaufträge erfasst.",
+				"really_delete" => "Willst du den Beobachtungsauftrag wirklich löschen?",
+				"what_are_observation_orders" => array(
+					"answer" => "Viele Equipen definieren, wer wann wen beobachten sollte. Diese Aufträge könnt ihr hier definieren und seht diese (und ob sie schon erfüllt sind) z.Bsp. beim Spick.",
+					"question" => "Was sind Beobachtungsaufträge?",
+				),
 			),
 			"participants" => array(
 				"add_success" => "TN \":name\" erfolgreich erfasst.",
