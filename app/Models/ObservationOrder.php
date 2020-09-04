@@ -8,7 +8,7 @@ class ObservationOrder extends Model
 {
     protected $table = 'observation_orders';
 
-    protected $fillable = ['user_id', 'block_id', 'participant_id'];
+    protected $fillable = ['order_name'];
 
 
     /**
@@ -24,7 +24,7 @@ class ObservationOrder extends Model
      */
     public function participant()
     {
-        return $this->belongsTo('App\Models\Participant', 'observations_participants');
+        return $this->belongsTo('App\Models\Participant');
     }
 
     /**

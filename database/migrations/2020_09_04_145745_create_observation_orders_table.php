@@ -14,17 +14,14 @@ class CreateObservationOrdersTable extends Migration
     public function up()
     {
         Schema::create('observation_orders', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id')->nullable(false);
-            $table->integer('block_id')->nullable(false);
-            $table->integer('participant_id')->nullable(false);
+            $table->integer('id', true);
+            $table->integer('course_id')->nullable(false);
+            $table->string('order_name')->nullable(false);
             $table->timestamps();
         });
         Schema::table('observation_orders', function(Blueprint $table)
         {
-            $table->foreign('user_id', 'fk_user_observation_orders')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('block_id', 'fk_block_observation_orders')->references('id')->on('blocks')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('participant_id', 'fk_participants_observation_orders')->references('id')->on('participants')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('course_id', 'fk_course_observation_order')->references('id')->on('courses')->onUpdate('CASCADE')->onDelete('CASCADE');
 
         });
     }
@@ -38,9 +35,8 @@ class CreateObservationOrdersTable extends Migration
     {
         Schema::table('observation_orders', function(Blueprint $table)
         {
-            $table->dropForeign('fk_user_observation_orders');
-            $table->dropForeign('fk_block_observation_orders');
-            $table->dropForeign('fk_participants_observation_orders');
+            $table->dropForeign('fk_course_observation_order');
+
         });
         Schema::dropIfExists('observation_orders');
     }
