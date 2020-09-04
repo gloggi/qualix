@@ -30,7 +30,7 @@
                             @else
                                 <b-list-group-item action tag="a" class="d-flex justify-content-between align-items-center" href="{{ route('observation.new', ['course' => $course->id, 'block' => $block->id]) }}">
                                     <h5 class="mb-0">{{ $block->blockname_and_number }}</h5>
-                                    <span class="badge badge-primary" style="font-size: 1.125rem;">{{ count($block->observations) }} <i class="fas fa-binoculars"></i></span>
+                                    <span class="font-size-larger badge badge-primary">{{ count($block->observations) }} <i class="fas fa-binoculars"></i></span>
                                 </b-list-group-item>
                             @endif
                         @endforeach

@@ -124,6 +124,8 @@ return [
     |
     */
 
+    // Ideally, we'd want to use a prefix like __Secure- or even __Host-, but
+    // that breaks OAuth.
     'cookie' => env(
         'SESSION_COOKIE',
         Str::slug(env('APP_NAME', 'qualix'), '_').'_session'

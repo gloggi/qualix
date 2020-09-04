@@ -6,8 +6,7 @@
         <div class="form-group row required">
             <div class="col-md-6 offset-md-3">
                 <a
-                    class="btn btn-hitobito form-control{{ $errors->has('hitobito') ? ' is-invalid' : '' }}"
-                    style="width: 100%"
+                    class="w-100 btn btn-hitobito form-control{{ $errors->has('hitobito') ? ' is-invalid' : '' }}"
                     href="{{ route('login.hitobito') }}">
                     {{ __('t.views.register.via_midata') }}
                 </a>

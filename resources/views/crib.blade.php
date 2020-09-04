@@ -31,14 +31,14 @@
                                     <br>
                                     {{__('t.views.crib.mandatory_requirements')}}:
                                     @foreach($block->mandatory_requirements as $requirement)
-                                        <span class="badge badge-warning" style="white-space: normal"> {{$requirement->content}} </span>
+                                        <span class="white-space-normal badge badge-warning"> {{$requirement->content}} </span>
                                     @endforeach
                                 @endif
                                 @if(count($block->non_mandatory_requirements))
                                     <br>
                                     {{__('t.views.crib.non_mandatory_requirements')}}:
                                     @foreach($block->non_mandatory_requirements as $requirement)
-                                        <span class="badge badge-info" style="white-space: normal"> {{$requirement->content}} </span>
+                                        <span class="white-space-normal badge badge-info"> {{$requirement->content}} </span>
                                     @endforeach
                                 @endif
                             </b-list-group-item>
