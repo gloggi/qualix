@@ -6,6 +6,7 @@
         <template #header>{{__('t.views.admin.observation_orders.new')}}</template>
 
         @component('components.form', ['route' => ['admin.observationOrders.store', ['course' => $course->id]]])
+            <input-text @forminput('group_name') label="{{__('t.models.observation_order.order_name')}}" required autofocus></input-text>
 
             <input-multi-select
                 @forminput('user')
