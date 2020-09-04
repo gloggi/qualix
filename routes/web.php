@@ -72,9 +72,12 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
         Route::post('/course/{course}/admin/participantGroups/{participantGroup}', 'ParticipantGroupController@update')->name('admin.participantGroups.update');
         Route::delete('/course/{course}/admin/participantGroups/{participantGroup}', 'ParticipantGroupController@destroy')->name('admin.participantGroups.delete');
 
+        Route::get('/course/{course}/admin/observationOrders', 'ObservationOrderController@index')->name('admin.observationOrders');
+        Route::post('/course/{course}/admin/observationOrders', 'ObservationOrderController@store')->name('admin.observationOrders.store');
+        Route::get('/course/{course}/admin/observationOrders/{observationOrder}', 'ObservationOrderController@edit')->name('admin.observationOrders.edit');
+        Route::post('/course/{course}/admin/observationOrders/{observationOrder}', 'ObservationOrderController@update')->name('admin.observationOrders.update');
+        Route::delete('/course/{course}/admin/observationOrders/{observationOrder}', 'ObservationOrderController@destroy')->name('admin.observationOrders.delete');
     });
-
-
 
     Route::get('/course/{course}/admin/blocks', 'BlockController@index')->name('admin.blocks');
     Route::post('/course/{course}/admin/blocks', 'BlockController@store')->name('admin.block.store');

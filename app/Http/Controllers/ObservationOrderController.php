@@ -19,7 +19,7 @@ class ObservationOrderController extends Controller
      */
     public function index()
     {
-        return view('admin.observationOrders.index');
+        return view('admin.observationOrders');
     }
 
 
@@ -71,7 +71,7 @@ class ObservationOrderController extends Controller
     {
         $observationOrder->delete();
         $request->session()->flash('alert-success', __('t.views.admin.observation_orders.delete_success'));
-        return Redirect::route('admin.observationOrders.index', ['course' => $course->id]);
+        return Redirect::route('admin.observationOrders', ['course' => $course->id]);
 
     }
 }
