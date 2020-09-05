@@ -2,13 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+
 
 class ObservationOrder extends Model
 {
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'observation_orders';
 
-    protected $fillable = ['order_name'];
+
+    /**
+     * @var array
+     */
+    protected $fillable = ['order_name, course_id'];
 
 
     /**
@@ -16,22 +25,22 @@ class ObservationOrder extends Model
      */
     public function block()
     {
-        return $this->belongsTo('App\Models\Block');
+        return $this->belongsTo('App\Models\Block', 'fk_block_observation_order_block');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function participant()
+    public function participants()
     {
-        return $this->belongsTo('App\Models\Participant');
+        return $this->belongsTo('App\Models\Participant', 'fk_participant_observation_order_participant');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function users()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User', 'fk_user_observation_order_user');
     }
 }

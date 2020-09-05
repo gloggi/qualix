@@ -98,7 +98,7 @@ return array(
 			"order_name" => "Beobachtungsauftrag",
 			"participant" => "TN",
 			"participants" => "TN",
-			"trainer" => "Equipenmitglied",
+			"user" => "Equipenmitglied",
 
 		),
 		"participant" => array(

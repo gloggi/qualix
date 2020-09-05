@@ -6,11 +6,11 @@
         <template #header>{{__('t.views.admin.observation_orders.new')}}</template>
 
         @component('components.form', ['route' => ['admin.observationOrders.store', ['course' => $course->id]]])
-            <input-text @forminput('group_name') label="{{__('t.models.observation_order.order_name')}}" required autofocus></input-text>
+            <input-text @forminput('order_name') label="{{__('t.models.observation_order.order_name')}}" required autofocus></input-text>
 
             <input-multi-select
                 @forminput('user')
-            label="{{__('t.models.observation_order.trainer')}}"
+            label="{{__('t.models.observation_order.user')}}"
             :options="{{ json_encode($course->users->map->only('id', 'name')) }}"
 
             display-field="name"
@@ -40,6 +40,7 @@
             :autofocus="true"
             display-field="blockname_and_number"
             multiple
+            :autofocus="true"
             ></input-multi-select>
 
             <button-submit label="{{__('t.global.add')}}">

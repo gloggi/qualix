@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\ObservationOrder;
+use App\Http\Requests\ObservationOrderRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -26,12 +27,26 @@ class ObservationOrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  ObservationOrderRequest $request
+     * @param Course $course
+
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(ObservationOrderRequest $request, Course $course)
     {
-        //
+        $data = $request->validated();
+
+        $completeData = (array_merge($data, ['course_id' => $course->id]));
+        DB::transaction(function() use ($request, $completeData, $data){
+
+            $observationOrder = ObservationOrder::create($completeData);
+            dd($observationOrder);
+
+            $request->session()->flash('alert-success', __('t.views.admin.observation_orders.create_success'));
+        });
+
+        return Redirect::route('admin.observationOrders.index', ['course' => $course->id]);
+
     }
 
 

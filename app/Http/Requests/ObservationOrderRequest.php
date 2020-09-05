@@ -4,8 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Lang;
+use App\Models\Trainer;
 
-class ParticipantGroupRequest extends FormRequest {
+
+class ObservationOrderRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -22,13 +24,14 @@ class ParticipantGroupRequest extends FormRequest {
      */
     public function rules() {
         return [
+            'order_name' => 'required|max:1023',
+            'block' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
             'participants' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
-            'group_name' => 'required|max:1023'
-        ];
+            'user' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse:' . Trainer::class . ',user_id'        ];
     }
 
 
     public function attributes() {
-        return Lang::get('t.models.participant_group');
+        return Lang::get('t.models.observation_order');
     }
 }
