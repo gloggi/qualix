@@ -14,6 +14,8 @@
 // ***********************************************************
 
 import './commands'
+import './mail'
+import './midata-oauth'
 import './laravel-commands'
 import './assertions'
 

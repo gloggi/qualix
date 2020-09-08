@@ -34,9 +34,10 @@ class CypressServiceProvider extends ServiceProvider
         $this->app->bind('CypressController', \App\Http\Controllers\CypressController::class);
         Route::middleware('web')
             ->group(function () {
-                Route::get('/_cypress/create_snapshot/{name?}', 'CypressController@createSnapshot');
-                Route::get('/_cypress/restore_snapshot/{name?}', 'CypressController@restoreSnapshot');
-                Route::get('/_cypress/cleanup_snapshots', 'CypressController@cleanupSnapshots');
+                Route::get('/__cypress__/create-snapshot/{name?}', 'CypressController@createSnapshot');
+                Route::get('/__cypress__/restore-snapshot/{name?}', 'CypressController@restoreSnapshot');
+                Route::get('/__cypress__/cleanup-snapshots', 'CypressController@cleanupSnapshots');
+                Route::post('/__cypress__/generate', 'CypressController@generate');
             });
     }
 }

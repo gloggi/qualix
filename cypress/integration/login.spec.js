@@ -8,7 +8,7 @@ describe('login page', () => {
   })
 
   it('displays the page title', () => {
-    cy.contains('Anmelden')
+    cy.get('.card-header').contains('Anmelden')
   })
 
   it('displays the registration link', () => {
@@ -21,33 +21,42 @@ describe('login page', () => {
       .should('have.attr', 'href').and('match', /\/password\/reset$/)
   })
 
-  context('classic login', () => {
+  it('requires email', () => {
+    cy.get('#email')
+      .should('have.attr', 'required')
+  })
 
-    it('requires email', () => {
-      cy.get('#email')
-        .should('have.attr', 'required')
+  it('requires password', () => {
+    cy.get('#password')
+      .should('have.attr', 'required')
+  })
+
+  it('displays the MiData login button', () => {
+    cy.contains('Via PBS MiData einloggen')
+      .should('have.attr', 'href').and('match', /\/login\/hitobito$/)
+
+    cy.request({
+      url: '/login/hitobito',
+      followRedirect: false
     })
-
-    it('requires password', () => {
-      cy.get('#password')
-        .should('have.attr', 'required')
-    })
-
-    context('with user in db', () => {
-      useDatabaseResets();
-
-      it('logs in successfully', () => {
-        cy.create('App\\Models\\User', {name: 'Test Account'})
-          .then(user => {
-            cy.get('#email')
-              .type(user.email)
-            cy.get('#password')
-              .type('password{enter}')
-            cy.contains('Willkommä bim Qualix')
-            cy.assertRedirect('/')
-          })
+      .then((resp) => {
+        expect(resp.status).to.eq(302)
+        expect(resp.redirectedToUrl).to.match(/^http:\/\/e2e-mocks:1080\/oauth\/authorize\?client_id=xxx/)
       })
+  })
 
+  context('classic login', () => {
+    useDatabaseResets();
+
+    it('logs in successfully', () => {
+      cy.create('App\\Models\\User', {name: 'Test Account'}).then(user => {
+        cy.get('#email')
+          .type(user.email)
+        cy.get('#password')
+          .type('password{enter}')
+        cy.contains('Willkommä bim Qualix')
+        cy.assertRedirect('/')
+      })
     })
 
     it('validates wrong login', () => {
@@ -64,41 +73,31 @@ describe('login page', () => {
 
   context('MiData login', () => {
     useDatabaseResets();
+
     beforeEach(() => {
       cy.resetMocks()
-    })
-
-    it('displays the MiData login button', () => {
-      cy.contains('Via PBS MiData einloggen')
-        .should('have.attr', 'href').and('match', /\/login\/hitobito$/)
-
-      cy.request({
-        url: '/login/hitobito',
-        followRedirect: false
-      })
-        .then((resp) => {
-          expect(resp.status).to.eq(302)
-          expect(resp.redirectedToUrl).to.match(/^http:\/\/e2e-mocks:1080\/oauth\/authorize\?client_id=xxx/)
-        })
     })
 
     it('logs in successfully', () => {
       cy.mockMiDataOAuth()
 
-      // Visit the URL that the MiData login button leads to, in order to get the the state token from the backend
-      cy.request({
-        url: '/login/hitobito',
-        followRedirects: false
-      })
-        .then(response => {
-          const state = response.headers.location.match(/[&?]state=([^&]+)/)[1]
+      cy.create('App\\Models\\HitobitoUser', {hitobito_id: '1234', email: 'oauther@email.com'}).then(user => {
 
-          // OAuth application has redirected back to the callback route
-          cy.visit('/login/hitobito/callback?code=foo&state=' + state)
-
-          cy.contains('Willkommä bim Qualix')
-          cy.assertRedirect('/')
+        // Visit the URL that the MiData login button leads to, in order to get the the state token from the backend
+        cy.request({
+          url: '/login/hitobito',
+          followRedirects: false
         })
+          .then(response => {
+            const state = response.headers.location.match(/[&?]state=([^&]+)/)[1]
+
+            // OAuth application has redirected back to the callback route
+            cy.visit('/login/hitobito/callback?code=foo&state=' + state)
+
+            cy.contains('Willkommä bim Qualix')
+            cy.assertRedirect('/')
+          })
+      })
     })
 
     it('fails gracefully when MiData is down', () => {
