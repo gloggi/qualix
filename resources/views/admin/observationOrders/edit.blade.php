@@ -24,7 +24,7 @@
             display-field="scout_name"
             multiple></input-multi-select>
             <input-multi-select
-                @forminput('participants', $observationOrder->blocks->pluck('id')->join(','))
+                @forminput('block', $observationOrder->blocks->pluck('id')->join(','))
             label="{{__('t.models.observation_order.block')}}"
             required
             :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number')) }}"

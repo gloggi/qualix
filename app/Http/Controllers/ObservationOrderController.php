@@ -76,7 +76,6 @@ class ObservationOrderController extends Controller
     {
         DB::transaction(function () use ($request, $course, $observationOrder) {
             $data = $request->validated();
-            dd($observationOrder);
 
             $observationOrder->update($data);
             $observationOrder->participants()->detach(null);
@@ -85,7 +84,7 @@ class ObservationOrderController extends Controller
             $observationOrder->blocks()->attach(array_filter(explode(',', $data['block'])));
             $observationOrder->users()->detach(null);
             $observationOrder->users()->attach(array_filter(explode(',', $data['user'])));
-            $request->session()->flash('alert-success', __('t.views.admin.observation_order.edit_success'));
+            $request->session()->flash('alert-success', __('t.views.admin.observation_orders.edit_success'));
         });
         return Redirect::route('admin.observationOrders.index', ['course' => $course->id]);
 

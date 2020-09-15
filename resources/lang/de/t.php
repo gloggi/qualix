@@ -246,7 +246,7 @@ return array(
 				"create_success" => "Beobachtungsauftrag wurde erfolgreich erstellt.",
 				"delete_success" => "Beobachtungsauftrag wurde erfolgreich gelöscht.",
 				"edit" => "Beobachtungsauftrag bearbeiten",
-				"edit_success" => "Beobachtungsauftrag wurde erfolgreich gespeichert.",
+				"edit_success" => "Beobachtungsauftrag wurde erfolgreich geändert.",
 				"existing" => "Beobachtungsaufträge :courseName",
 				"menu_name" => "Beobachtungsaufträge",
 				"new" => "Neuer Beobachtungsauftrag",
