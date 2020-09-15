@@ -54,31 +54,46 @@
     </b-card>
 
     <b-card>
-        <template #header>{{__('t.views.admin.participant_groups.existing', ['courseName' => $course->name])}}</template>
+        <template #header>{{__('t.views.admin.observation_orders.existing', ['courseName' => $course->name])}}</template>
 
-        @if (count($course->participantGroups))
-
+        @if (count($course->observationOrders))
             @php
                 $fields = [
-                    __('t.models.participant_group.group_name') => function(\App\Models\ParticipantGroup $participantGroup) { return $participantGroup->group_name; },
-                    __('t.models.participant_group.participants') => function(\App\Models\ParticipantGroup $participantGroup) {
-                        return $participantGroup->participants->map(function ($item){
+                    __('t.models.observation_order.order_name') => function(\App\Models\ObservationOrder $observationOrder) { return $observationOrder->order_name; },
+                    __('t.models.observation_order.user') => function(\App\Models\ObservationOrder $observationOrder) {
+                        return $observationOrder->users->map(function ($item){ return $item['name'];
+                        })->implode(', ');
+
+                    },
+                    __('t.models.observation_order.participants') => function(\App\Models\ObservationOrder $observationOrder) {
+                        return $observationOrder->participants->map(function ($item){
                             $scout_name = $item['scout_name'];
                             $group = $item['group'];
                             return $group ? "$scout_name ($group)" : $scout_name;
                         })->implode(', ');
+
+                    },
+                    __('t.models.observation_order.block') => function(\App\Models\ObservationOrder $observationOrder) {
+                        return $observationOrder->blocks->map(function ($item){
+                            $block_name = $item['name'];
+                            $block_number = $item['block_number'];
+                            $day_number = $item['day_number'];
+                            $number = "$day_number.$block_number";
+                            return $number ? "($number) $block_name" : $block_name;
+                        })->implode(', ');
+
                     },
                 ];
 
             @endphp
             @component('components.responsive-table', [
-                'data' => $course->participantGroups,
+                'data' => $course->observationOrders,
                 'fields' => $fields,
                 'actions' => [
-                    'edit' => function(\App\Models\ParticipantGroup $participantGroup) use ($course) { return route('admin.participantGroups.edit', ['course' => $course->id, 'participantGroup' => $participantGroup->id]); },
-                    'delete' => function(\App\Models\ParticipantGroup $participantGroup) use ($course) { return [
-                        'text' => __('t.views.admin.participant_groups.really_delete', [ 'name' => $participantGroup->group_name]),
-                        'route' => ['admin.participantGroups.destroy', ['course' => $course->id, 'participantGroup' => $participantGroup->id]],
+                    'edit' => function(\App\Models\ObservationOrder $observationOrder) use ($course) { return route('admin.observationOrders.edit', ['course' => $course->id, 'observationOrder' => $observationOrder->id]); },
+                    'delete' => function(\App\Models\ObservationOrder $observationOrder) use ($course) { return [
+                        'text' => __('t.views.admin.observation_orders.really_delete', [ 'name' => $observationOrder->order_name]),
+                        'route' => ['admin.observationOrders.destroy', ['course' => $course->id, 'observationOrder' => $observationOrder->id]],
                      ];},
                 ]
             ])@endcomponent
@@ -87,9 +102,9 @@
 
         @else
 
-            {{__('t.views.admin.participant_groups.no_participant_group')}}
+            {{__('t.views.admin.observation_orders.no_observation_order')}}
 
-            @component('components.help-text', ['id' => 'noGroupsHelp', 'key' => 't.views.admin.participant_groups.are_participant_groups_required'])@endcomponent
+            @component('components.help-text', ['id' => 'noGroupsHelp', 'key' => 't.views.admin.observation_orders.are_observation_orders_required'])@endcomponent
 
         @endif
 

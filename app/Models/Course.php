@@ -60,6 +60,13 @@ class Course extends Model {
     {
         return $this->hasMany('App\Models\ParticipantGroup', 'course_id');
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function observationOrders()
+    {
+        return $this->hasMany('App\Models\ObservationOrder', 'course_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
