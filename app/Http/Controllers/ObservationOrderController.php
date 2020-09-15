@@ -54,11 +54,11 @@ class ObservationOrderController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
+     * @param Course $course
      * @param  \App\Models\ObservationOrder  $observationOrder
      * @return \Illuminate\Http\Response
      */
-    public function edit(ObservationOrder $observationOrder)
+    public function edit(Course $course ,ObservationOrder $observationOrder)
     {
         return view('admin.observationOrders.edit', ['observationOrder' => $observationOrder]);
     }
@@ -66,13 +66,29 @@ class ObservationOrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     *
+     * @param  ObservationOrderRequest  $request
+     * @param  Course $course
      * @param  \App\Models\ObservationOrder  $observationOrder
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function update(Request $request, ObservationOrder $observationOrder)
+    public function update(ObservationOrderRequest $request, Course $course, ObservationOrder $observationOrder)
     {
-        //
+        DB::transaction(function () use ($request, $course, $observationOrder) {
+            $data = $request->validated();
+            dd($observationOrder);
+
+            $observationOrder->update($data);
+            $observationOrder->participants()->detach(null);
+            $observationOrder->participants()->attach(array_filter(explode(',', $data['participants'])));
+            $observationOrder->blocks()->detach(null);
+            $observationOrder->blocks()->attach(array_filter(explode(',', $data['block'])));
+            $observationOrder->users()->detach(null);
+            $observationOrder->users()->attach(array_filter(explode(',', $data['user'])));
+            $request->session()->flash('alert-success', __('t.views.admin.observation_order.edit_success'));
+        });
+        return Redirect::route('admin.observationOrders.index', ['course' => $course->id]);
+
     }
 
     /**

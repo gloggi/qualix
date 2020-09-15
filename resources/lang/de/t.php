@@ -94,7 +94,7 @@ return array(
 			"user" => "Beobachter",
 		),
 		"observation_order" => array(
-			"block" => "Block",
+			"block" => "Blöcke",
 			"order_name" => "Beobachtungsauftrag",
 			"participant" => "TN",
 			"participants" => "TN",
