@@ -17,30 +17,30 @@ class ObservationOrder extends Model
     /**
      * @var array
      */
-    protected $fillable = ['order_name, course_id'];
+    protected $fillable = ['order_name', 'course_id'];
 
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function block()
+    public function blocks()
     {
-        return $this->belongsTo('App\Models\Block', 'fk_block_observation_order_block');
+        return $this->belongsToMany('App\Models\Block', 'observation_order_blocks');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function participants()
     {
-        return $this->belongsTo('App\Models\Participant', 'fk_participant_observation_order_participant');
+        return $this->belongsToMany('App\Models\Participant', 'observation_order_participants');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {
-        return $this->belongsTo('App\Models\User', 'fk_user_observation_order_user');
+        return $this->belongsToMany('App\Models\User', 'observation_order_users');
     }
 }

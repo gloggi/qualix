@@ -36,11 +36,13 @@ class ObservationOrderController extends Controller
     {
         $data = $request->validated();
 
-        $completeData = (array_merge($data, ['course_id' => $course->id]));
-        DB::transaction(function() use ($request, $completeData, $data){
+        DB::transaction(function() use ($request,$course, $data){
 
-            $observationOrder = ObservationOrder::create($completeData);
-            dd($observationOrder);
+            $observationOrder = ObservationOrder::create(array_merge($data, ['course_id' => $course->id]));
+
+            $observationOrder->participants()->attach(array_filter(explode(',', $data['participants'])));
+            $observationOrder->blocks()->attach(array_filter(explode(',', $data['block'])));
+            $observationOrder->users()->attach(array_filter(explode(',', $data['user'])));
 
             $request->session()->flash('alert-success', __('t.views.admin.observation_orders.create_success'));
         });

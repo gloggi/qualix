@@ -14,12 +14,12 @@ class CreateObservationOrderBlocks extends Migration
     public function up()
     {
         Schema::create('observation_order_blocks', function (Blueprint $table) {
-            $table->integer('order_id')->nullable(false);
+            $table->integer('observation_order_id')->nullable(false);
             $table->integer('block_id')->nullable(false);
         });
 
         Schema::table('observation_order_blocks', function (Blueprint $table) {
-            $table->foreign('order_id', 'fk_order_observation_order_block')->references('id')->on('observation_orders')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('observation_order_id', 'fk_order_observation_order_block')->references('id')->on('observation_orders')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('block_id', 'fk_block_observation_order_block')->references('id')->on('blocks')->onUpdate('CASCADE')->onDelete('CASCADE');
 
         });

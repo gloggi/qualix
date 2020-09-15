@@ -14,12 +14,12 @@ class CreateObservationOrderUsers extends Migration
     public function up()
     {
         Schema::create('observation_order_users', function (Blueprint $table) {
-            $table->integer('order_id')->nullable(false);
+            $table->integer('observation_order_id')->nullable(false);
             $table->integer('user_id')->nullable(false);
         });
 
         Schema::table('observation_order_users', function (Blueprint $table) {
-            $table->foreign('order_id', 'fk_order_observation_order_user')->references('id')->on('observation_orders')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('observation_order_id', 'fk_order_observation_order_user')->references('id')->on('observation_orders')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('user_id', 'fk_user_observation_order_user')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
 
         });
