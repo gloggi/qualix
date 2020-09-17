@@ -6,7 +6,7 @@
         <template #header>{{__('t.views.admin.qualis.new')}}</template>
 
         @component('components.form', ['route' => ['admin.qualis.store', ['course' => $course->id]]])
-            <quali-data-form
+            <form-quali-data
                 :participants="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
                 :requirements="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
                 :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}"
@@ -25,7 +25,7 @@
                     </button-submit>
                 </template>
 
-            </quali-data-form>
+            </form-quali-data>
 
         @endcomponent
 

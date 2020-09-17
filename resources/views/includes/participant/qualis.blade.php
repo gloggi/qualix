@@ -20,7 +20,8 @@
         'data' => $participant->qualis,
         'fields' => $fields,
         'actions' => [
-            'edit' => function(\App\Models\Quali $quali) use ($course, $participant) { return route('qualiContent.detail', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]); },
+            'eye' => function(\App\Models\Quali $quali) use ($course, $participant) { return route('qualiContent.detail', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]); },
+            'edit' => function(\App\Models\Quali $quali) use ($course, $participant) { return route('qualiContent.edit', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]); },
         ]
     ])@endcomponent
 

@@ -3,7 +3,14 @@
 @section('content')
 
     <b-card body-class="container-fluid">
-        <template #header>{{__('t.views.quali_content.title')}}</template>
+        <template #header>
+            <div class="d-flex justify-content-between">
+                <span>{{__('t.views.quali_content.title')}}</span>
+                <a class="btn-link" href="{{ route('qualiContent.edit', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]) }}">
+                    {{__('t.global.edit')}} <i class="fas fa-edit"></i>
+                </a>
+            </div>
+        </template>
 
         <div class="row my-3">
 

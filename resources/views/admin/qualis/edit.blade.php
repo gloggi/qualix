@@ -7,7 +7,7 @@
 
         @component('components.form', ['route' => ['admin.qualis.update', ['course' => $course->id, 'quali_data' => $quali_data->id]]])
 
-            <quali-data-form
+            <form-quali-data
                 name="{{ $quali_data->name }}"
                 :qualis="{{ json_encode($quali_data->qualis) }}"
                 :participants="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
@@ -22,7 +22,7 @@
                     </button-submit>
                 </template>
 
-            </quali-data-form>
+            </form-quali-data>
 
         @endcomponent
 

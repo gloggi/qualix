@@ -50,7 +50,7 @@
 <script>
 
 export default {
-  name: 'QualiDataForm',
+  name: 'FormQualiData',
   props: {
     name: { type: String, required: false },
     qualis: { type: Array, default: undefined },

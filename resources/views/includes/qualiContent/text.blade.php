@@ -1,5 +1,4 @@
-<div class="d-flex justify-content-between mb-2">
-    <a class="btn-link" href="{{ route('qualiContent.edit', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]) }}">{{__('t.global.edit')}} <i class="fas fa-edit"></i></a>
+<div class="d-flex align-items-end w-100 mb-2">
     <div><a class="btn-link" href="#">Alle Anforderungen einklappen</a></div>
 </div>
 
