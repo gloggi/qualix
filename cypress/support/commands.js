@@ -27,3 +27,8 @@
 Cypress.Commands.add("resetMocks", () => {
   cy.request('PUT', 'http://e2e-mocks:1080/mockserver/reset')
 }, { prevSubject: false })
+
+Cypress.Commands.add("courseId", () => {
+  cy.request({ url: '/', followRedirects: false })
+    .then(response => response.headers.location.match(/\/course\/([0-9]+)$/)[1])
+})
