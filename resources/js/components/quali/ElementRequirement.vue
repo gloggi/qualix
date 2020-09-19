@@ -6,7 +6,7 @@
       <i class="fas fa-arrows-alt mx-2 handle my-auto"></i>
     </div>
     <div class="card-body">
-      <slot :value="value" :translations="translations"></slot>
+      <slot :value="value"></slot>
     </div>
   </div>
 </template>
@@ -18,8 +18,7 @@ export default {
   name: 'ElementRequirement',
   components: {RequirementMenu},
   props: {
-    value: Object,
-    translations: Object,
+    value: Object
   },
 }
 </script>

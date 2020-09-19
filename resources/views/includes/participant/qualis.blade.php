@@ -9,7 +9,7 @@
     ];
     if ($participant->qualis()->whereHas('requirements')->exists()) {
         $fields[__('t.models.quali.requirement_progress')] = function(\App\Models\Quali $quali) {
-            return (new App\Util\HtmlString)->s(view('components.requirement-progress', ['quali' => $quali])->render());
+            return (new App\Util\HtmlString)->s('<requirement-progress :quali-requirements="')->e(json_encode($quali->requirements))->s('"></quali-requirements>');
         };
     }
     if ($participant->qualis()->whereNotNull('user_id')->exists()) {

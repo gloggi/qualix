@@ -1,7 +1,7 @@
 @component('components.form', ['route' => ['qualiContent.update', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]]])
     <div class="mb-3">
         <h5>{{__('t.views.quali_content.requirements_status')}}</h5>
-        @component('components.requirement-progress', ['quali' => $quali])@endcomponent
+        <requirement-progress :quali-requirements="{{ json_encode($quali->requirements) }}"></requirement-progress>
     </div>
 
     <div class="d-flex justify-content-between mb-2">

@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header d-flex pr-2">
-      <div class="flex-grow-1">{{ translations['t.models.observation.model_name'] }}</div>
+      <div class="flex-grow-1">{{ $t('t.models.observation.model_name') }}</div>
       <div><i class="fas fa-arrows-alt mr-2 handle"></i></div>
     </div>
     <div class="card-body bg-light">
@@ -16,8 +16,7 @@
 export default {
   name: 'ElementObservation',
   props: {
-    value: Object,
-    translations: Object,
+    value: Object
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <div>
     <draggable v-model="currentValue" v-on="$listeners" handle=".handle">
       <div v-for="(element,idx) in currentValue">
-        <slot :name="element.type" :value="element" :translations="translations" :remove="() => removeElement(idx)" />
+        <slot :name="element.type" :value="element" :remove="() => removeElement(idx)" />
       </div>
       <input v-if="name" type="hidden" :name="name" :value="JSON.stringify(currentValue)">
     </draggable>
@@ -26,7 +26,6 @@ export default {
     value: Array,
     oldValue: Array,
     name: String,
-    translations: Object,
   },
   data: function() {
     return {

@@ -51,7 +51,7 @@
                 @if($quali->requirements()->count())
                     <div class="d-none d-lg-block">
                         <h5>{{__('t.views.quali_content.requirements_status')}}</h5>
-                        @component('components.requirement-progress', ['quali' => $quali])@endcomponent
+                        <requirement-progress :quali-requirements="{{ json_encode($quali->requirements) }}"></requirement-progress>
                     </div>
                 @endif
             </div>
@@ -61,7 +61,7 @@
         @if($quali->requirements()->count())
             <div class="d-lg-none">
                 <h5>{{__('t.views.quali_content.requirements_status')}}</h5>
-                @component('components.requirement-progress', ['quali' => $quali])@endcomponent
+                <requirement-progress :quali-requirements="{{ json_encode($quali->requirements) }}"></requirement-progress>
             </div>
         @endif
 
