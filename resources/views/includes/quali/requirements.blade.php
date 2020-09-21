@@ -10,7 +10,7 @@
                     'content' => $observation->observation->content,
                     'notes' => $observation->notes,
                     'block' => $observation->observation->block->name,
-                    'date' => $observation->observation->block->block_date->formatLocalized('%A %d.%m.%Y'),
+                    'date' => $observation->observation->block->block_date->formatLocalized(__('t.global.date_format')),
                 ];
             }),
         ];

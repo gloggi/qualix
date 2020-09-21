@@ -73,7 +73,7 @@ class QualiRequirement extends Model {
                 'order' => $observation->pivot->order,
                 'content' => $observation->content,
                 'block' => $observation->block->name,
-                'date' => $observation->block->block_date->formatLocalized('%A %d.%m.%Y'),
+                'date' => $observation->block->block_date->formatLocalized(trans('t.global.date_format')),
             ];
         }))->sortBy('order')->values();
     }
