@@ -6,7 +6,7 @@ use App\Http\Requests\QualiRequest;
 use App\Models\Course;
 use App\Models\Quali;
 use App\Models\QualiData;
-use App\Util\HtmlString;
+use App\Services\TiptapFormatter;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,25 +40,27 @@ class QualiController extends Controller {
 
             $qualis = $qualiData->qualis()->createMany(
                 collect(array_filter(explode(',', $data['participants'])))
-                    ->map(function ($participant) use($data) { return ['participant' => ['id' => $participant]]; })
-                    ->all()
+                    ->map(function ($participant) { return ['participant' => ['id' => $participant]]; })
             );
 
-            if (trim($data['quali_notes_template'])) {
-                $qualis->each(function (Quali $quali) use ($data) {
-                    $quali->notes()->create(['notes' => $data['quali_notes_template'], 'order' => 0]);
-                });
-            }
+            $qualis->each(function(Quali $quali) use($data, &$order) {
+                $order = 0;
 
-            $qualis->each(function(Quali $quali) use($data) {
-                $order = 1;
-                $qualiRequirements = collect(array_filter(explode(',', $data['requirements'])))
-                    ->map(function ($requirement) use($data, &$order) { return [
-                        'requirement' => ['id' => $requirement],
-                        'order' => $order++,
-                    ]; })
-                    ->all();
-                $quali->requirements()->createMany($qualiRequirements);
+                if ($data['quali_notes_template']) {
+                    $quali->contentNodes()->createMany(collect(explode("\n", $data['quali_notes_template']))
+                        ->map(function($line) { return trim($line); })
+                        ->map(function($paragraph) use($quali, &$order) {
+                            return [
+                                'json' => TiptapFormatter::createContentNodeJSON($paragraph),
+                                'order' => $order++,
+                            ];
+                        }));
+                }
+
+                collect(array_filter(explode(',', $data['requirements'])))
+                    ->each(function($requirementId) use($quali, &$order) {
+                        $quali->requirements()->attach($requirementId, ['order' => $order++]);
+                    });
             });
 
             $this->setTrainerAssignments($qualis, $data);
@@ -97,16 +99,15 @@ class QualiController extends Controller {
             $requirements = array_filter(explode(',', $data['requirements']));
 
             $qualiData->qualis()->whereNotIn('participant_id', $participants)->delete();
-            $qualiData->quali_requirements()->whereNotIn('requirement_id', $requirements)->delete();
-
             collect($participants)->each(function ($participant) use($qualiData, $data) {
                 $qualiData->qualis()->updateOrCreate(['participant_id' => $participant], []);
             });
 
-            $qualiData->qualis()->each(function(Quali $quali) use($requirements) {
-                $order = collect($quali->contents)->max->order + 1;
+            $qualiData->qualis()->each(function (Quali $quali) use($requirements) {
+                $quali->requirements()->whereNotIn('id', $requirements)->detach();
+                $order = $quali->highest_order_number + 1;
                 collect($requirements)->each(function ($requirement) use ($quali, &$order) {
-                    $quali->requirements()->updateOrCreate(['requirement_id' => $requirement], ['order' => $order++]);
+                    $quali->requirements()->attach($requirement, ['order' => $order++]);
                 });
             });
 

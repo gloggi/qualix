@@ -38,7 +38,7 @@
 
         </div>
 
-        @component('includes.qualiContent.edit', ['quali' => $quali, 'participant' => $participant, 'course' => $course, 'translations' => $translations])@endcomponent
+        @component('includes.qualiContent.edit', ['quali' => $quali, 'participant' => $participant, 'course' => $course, 'observations' => $observations])@endcomponent
 
     </b-card>
 

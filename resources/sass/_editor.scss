@@ -1,0 +1,44 @@
+.ProseMirror {
+    p {
+        margin-bottom: 0.5rem;
+    }
+
+    .observation {
+        border-left: 2px solid $gray-500;
+        background-color: $gray-200;
+
+        &.selected {
+            outline: 1px dashed $gray-500;
+        }
+
+        .delete-button {
+            visibility: hidden;
+        }
+
+        &.selected .delete-button, &:hover .delete-button {
+            visibility: visible;
+        }
+    }
+
+    .requirement {
+        &:hover {
+            background-color: $gray-200;
+        }
+
+        &.selected {
+            outline: 1px dashed $gray-500;
+        }
+
+        .requirement-menu {
+            visibility: hidden;
+        }
+
+        &.selected .requirement-menu, &:hover .requirement-menu {
+            visibility: visible;
+        }
+    }
+
+    &[contenteditable=false] .requirement:hover {
+        background-color: unset;
+    }
+}

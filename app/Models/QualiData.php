@@ -46,7 +46,7 @@ class QualiData extends Model {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function quali_requirements() {
-        return $this->hasManyThrough(QualiRequirement::class, Quali::class, 'quali_data_id', 'quali_id', 'id', 'id');
+    public function requirements() {
+        return $this->hasManyThrough(Requirement::class, Quali::class, 'quali_data_id', 'quali_id', 'id', 'id');
     }
 }

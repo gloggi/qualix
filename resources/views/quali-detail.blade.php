@@ -51,7 +51,7 @@
                 @if($quali->requirements()->count())
                     <div class="d-none d-lg-block">
                         <h5>{{__('t.views.quali_content.requirements_status')}}</h5>
-                        <requirement-progress :quali-requirements="{{ json_encode($quali->requirements) }}"></requirement-progress>
+                        <requirement-progress :requirements="{{ json_encode($quali->requirements) }}"></requirement-progress>
                     </div>
                 @endif
             </div>
@@ -61,11 +61,11 @@
         @if($quali->requirements()->count())
             <div class="d-lg-none">
                 <h5>{{__('t.views.quali_content.requirements_status')}}</h5>
-                <requirement-progress :quali-requirements="{{ json_encode($quali->requirements) }}"></requirement-progress>
+                <requirement-progress :requirements="{{ json_encode($quali->requirements) }}"></requirement-progress>
             </div>
         @endif
 
-        @component('includes.qualiContent.text', ['quali' => $quali, 'participant' => $participant, 'course' => $course])@endcomponent
+        <quali-editor :readonly="true" name="" :value="{{ json_encode($quali->contents) }}" :observations="{{ json_encode($observations) }}" :requirements="{{ json_encode($quali->requirements) }}"></quali-editor>
     </b-card>
 
 @endsection

@@ -19,6 +19,7 @@
 
 @import 'forms';
 @import 'responsive-table';
+@import 'editor';
 
 @include media-breakpoint-up(lg) {
     .align-items-center-lg {

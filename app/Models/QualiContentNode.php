@@ -6,21 +6,21 @@ namespace App\Models;
  * @property int $id
  * @property int $quali_id
  * @property int $order
- * @property string $notes
+ * @property string $json
  * @property Quali $quali
  */
-class QualiNote extends Model {
+class QualiContentNode extends Model {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'quali_notes';
+    protected $table = 'quali_content_nodes';
 
     /**
      * @var array
      */
-    protected $fillable = ['order', 'notes'];
+    protected $fillable = ['order', 'json'];
     protected $fillable_relations = ['quali'];
 
     /**

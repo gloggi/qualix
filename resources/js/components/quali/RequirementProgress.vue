@@ -14,20 +14,20 @@
   export default {
     name: 'RequirementProgress',
     props: {
-      qualiRequirements: { type: Array, required: true }
+      requirements: { type: Array, required: true }
     },
     data() {
       return {}
     },
     computed: {
       total() {
-        return this.qualiRequirements.length
+        return this.requirements.length
       },
       passed() {
-        return this.qualiRequirements.filter(r => r.passed === 1).length
+        return this.requirements.filter(r => r.passed === 1).length
       },
       failed() {
-        return this.qualiRequirements.filter(r => r.passed === 0).length
+        return this.requirements.filter(r => r.passed === 0).length
       }
     }
   }

@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Lang;
 
 class QualiContentRequest extends FormRequest {
     /**
@@ -22,8 +21,12 @@ class QualiContentRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'contents' => 'present|array',
-            'contents.*.type' => 'required|in:text,observation,requirement',
+            'qualiContents' => 'required|array',
+            'qualiContents.type' => 'required|in:doc',
+            'qualiContents.content' => 'present|array',
+            'qualiContents.content.*.type' => 'required|in:paragraph,observation,requirement',
+            'qualiContents.content.*.attrs.passed' => 'nullable|in:0,1,null',
+            'qualiContents.content.*.attrs.id' => 'nullable|numeric',
         ];
     }
 
@@ -33,6 +36,6 @@ class QualiContentRequest extends FormRequest {
      * @return void
      */
     protected function prepareForValidation() {
-        $this->merge(['contents' => json_decode($this->get('contents'), true)]);
+        $this->merge(['qualiContents' => json_decode($this->get('qualiContents'), true)]);
     }
 }

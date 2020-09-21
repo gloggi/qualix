@@ -1,9 +1,7 @@
 <?php
 
-use App\Models\Observation;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class AddQualis extends Migration {
@@ -42,13 +40,13 @@ class AddQualis extends Migration {
             $table->foreign('quali_id', 'fk_quali_observations_quali_id')->references('id')->on('qualis')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
 
-        Schema::create('quali_notes', function (Blueprint $table) {
+        Schema::create('quali_content_nodes', function (Blueprint $table) {
             $table->integer('id', true);
             $table->integer('quali_id');
             $table->integer('order');
-            $table->string('notes', 2047);
+            $table->json('json');
             $table->timestamps();
-            $table->foreign('quali_id', 'fk_quali_notes_quali_id')->references('id')->on('qualis')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('quali_id', 'fk_quali_content_nodes_quali_id')->references('id')->on('qualis')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
 
         Schema::create('quali_requirements', function (Blueprint $table) {
@@ -62,24 +60,6 @@ class AddQualis extends Migration {
             $table->foreign('requirement_id', 'fk_quali_requirements_requirement_id')->references('id')->on('requirements')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->unique(['quali_id', 'requirement_id']);
         });
-
-        Schema::create('quali_requirement_observations', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->integer('observation_id');
-            $table->integer('quali_requirement_id');
-            $table->integer('order');
-            $table->foreign('observation_id', 'fk_quali_requirement_observations_observation_id')->references('id')->on('observations')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('quali_requirement_id', 'fk_quali_requirement_observations_quali_requirement_id')->references('id')->on('quali_requirements')->onUpdate('CASCADE')->onDelete('CASCADE');
-        });
-
-        Schema::create('quali_requirement_notes', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->integer('quali_requirement_id');
-            $table->integer('order');
-            $table->timestamps();
-            $table->string('notes', 2047);
-            $table->foreign('quali_requirement_id', 'fk_quali_requirement_notes_quali_requirement_id')->references('id')->on('quali_requirements')->onUpdate('CASCADE')->onDelete('CASCADE');
-        });
     }
 
     /**
@@ -88,10 +68,8 @@ class AddQualis extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('quali_requirement_notes');
-        Schema::drop('quali_requirement_observations');
         Schema::drop('quali_requirements');
-        Schema::drop('quali_notes');
+        Schema::drop('quali_content_nodes');
         Schema::drop('quali_observations');
         Schema::drop('qualis');
         Schema::drop('quali_datas');

@@ -81,6 +81,7 @@ return array(
 			"categories" => "Kategorien",
 			"content" => "Beobachtung",
 			"impression" => "Eindruck",
+			"one" => "Beobachtung",
 			"participant" => "TN",
 			"participants" => "TN",
 			"requirements" => "Anforderungen",
@@ -108,6 +109,7 @@ return array(
 			"content" => "Anforderung",
 			"mandatory" => "Mindestanforderung",
 			"num_observations" => "Anzahl Beobachtungen",
+			"one" => "Anforderung",
 		),
 		"user" => array(
 			"email" => "E-Mail",
@@ -406,9 +408,17 @@ return array(
 		),
 		"quali_content" => array(
 			"back_to_participant" => "Zurück zu :name",
+			"error_observation_not_found" => "Eine der eingefügten Beobachtungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirements_changed" => "Die Änderungen konnten nicht gespeichert werden, weil die Anforderungen im Quali inzwischen geändert wurden. Kontrolliere ob alles stimmt und speichere dann erneut.",
+			"error_requirement_not_found" => "Eine der eingefügten Anforderungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"participant_quali" => ":quali: :participant",
+			"requirements" => [
+				"failed" => "Nicht erfüllt",
+				"observing" => "Unter Beobachtung",
+				"passed" => "Erfüllt",
+			],
 			"requirements_status" => "Anforderungen",
+			"select_observation" => "Beobachtung wählen",
 			"text_element" => "Text",
 			"text_placeholder" => "Hier tippen...",
 			"title" => "Quali Details",

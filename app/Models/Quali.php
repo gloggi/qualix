@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\TiptapFormatter;
 use Illuminate\Support\Collection;
 
 /**
@@ -12,7 +13,10 @@ use Illuminate\Support\Collection;
  * @property QualiData $quali_data
  * @property Participant $participant
  * @property User|null $user
- * @property QualiRequirement[] $quali_requirements
+ * @property Requirement[] $requirements
+ * @property Observation[] $observations
+ * @property QualiContentNode[] $contentNodes
+ * @property int $highest_order_number
  * @property Collection $contents
  */
 class Quali extends Model {
@@ -35,6 +39,13 @@ class Quali extends Model {
      */
     protected $fillable = ['notes', 'participant_id'];
     protected $fillable_relations = ['participant', 'user', 'notes'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['name', 'contents'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -65,10 +76,10 @@ class Quali extends Model {
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function requirements() {
-        return $this->hasMany(QualiRequirement::class);
+        return $this->belongsToMany(Requirement::class, 'quali_requirements')->withPivot('order', 'passed')->orderBy('quali_requirements.order');
     }
 
     /**
@@ -81,8 +92,8 @@ class Quali extends Model {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function notes() {
-        return $this->hasMany(QualiNote::class)->orderBy('order');
+    public function contentNodes() {
+        return $this->hasMany(QualiContentNode::class)->orderBy('order');
     }
 
     /**
@@ -103,32 +114,24 @@ class Quali extends Model {
     }
 
     public function getContentsAttribute() {
-        return $this->notes->map(function (QualiNote $note) {
-            return [
-                'type' => 'text',
-                'id' => $note->id,
-                'order' => $note->order,
-                'content' => $note->notes
-            ];
-        })->concat($this->observations->map(function (Observation $observation) {
-            return [
-                'type' => 'observation',
-                'id' => $observation->pivot->id,
-                'quali_id' => $observation->pivot->quali_id,
-                'order' => $observation->pivot->order,
-                'content' => $observation->content,
-                'block' => $observation->block->name,
-                'date' => $observation->block->block_date->formatLocalized(trans('t.global.date_format')),
-            ];
-        }))->concat($this->requirements->map(function (QualiRequirement $requirement) {
-            return [
-                'type' => 'requirement',
-                'id' => $requirement->id,
-                'order' => $requirement->order,
-                'content' => $requirement->requirement->content,
-                'passed' => $requirement->passed,
-                'contents' => $requirement->contents,
-            ];
-        }))->sortBy('order')->values();
+        return $this->getTiptapFormatter()->toTiptap();
+    }
+
+    public function setContentsAttribute(array $contents) {
+        $this->getTiptapFormatter()->applyToQuali($contents);
+    }
+
+    public function getHighestOrderNumberAttribute() {
+        return $this->getTiptapFormatter()->getHighestOrderNumber();
+    }
+
+    protected $tiptapFormatter = null;
+
+    /**
+     * @return TiptapFormatter
+     */
+    protected function getTiptapFormatter() {
+        if (!$this->tiptapFormatter) $this->tiptapFormatter = new TiptapFormatter($this);
+        return $this->tiptapFormatter;
     }
 }
