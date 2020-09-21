@@ -46,16 +46,14 @@ class QualiController extends Controller {
             $qualis->each(function(Quali $quali) use($data, &$order) {
                 $order = 0;
 
-                if ($data['quali_notes_template']) {
-                    $quali->contentNodes()->createMany(collect(explode("\n", $data['quali_notes_template']))
-                        ->map(function($line) { return trim($line); })
-                        ->map(function($paragraph) use($quali, &$order) {
-                            return [
-                                'json' => TiptapFormatter::createContentNodeJSON($paragraph),
-                                'order' => $order++,
-                            ];
-                        }));
-                }
+                $quali->contentNodes()->createMany(collect(explode("\n", $data['quali_notes_template']))
+                    ->map(function($line) { return trim($line); })
+                    ->map(function($paragraph) use($quali, &$order) {
+                        return [
+                            'json' => TiptapFormatter::createContentNodeJSON($paragraph),
+                            'order' => $order++,
+                        ];
+                    }));
 
                 collect(array_filter(explode(',', $data['requirements'])))
                     ->each(function($requirementId) use($quali, &$order) {
