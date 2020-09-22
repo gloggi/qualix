@@ -35,6 +35,10 @@
         background-color: $gray-200;
         cursor: move;
 
+        p {
+            user-select: none;
+        }
+
         &.selected {
             outline: 1px dashed $gray-500;
         }
@@ -58,6 +62,10 @@
 
         &.selected {
             outline: 1px dashed $gray-500;
+        }
+
+        h5 {
+            user-select: none;
         }
 
         .requirement-menu {
