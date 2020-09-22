@@ -12,6 +12,7 @@
     <quali-editor
       ref="qualiContents"
       name="qualiContents"
+      autofocus
       v-model="json"
       :observations="observations"
       :requirements="requirements"></quali-editor>

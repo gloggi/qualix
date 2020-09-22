@@ -30,6 +30,7 @@
       observations: { type: Array, required: true },
       requirements: { type: Array, required: true },
       readonly: { type: Boolean, default: false },
+      autofocus: { type: Boolean, default: false },
     },
     data() {
       const currentValue = JSON.parse(get(window.oldInput, this.name, 'null')) ?? this.value
@@ -37,7 +38,7 @@
         editor: new Editor({
           content: currentValue,
           editable: !this.readonly,
-          autoFocus: true,
+          autoFocus: this.autofocus,
           injectCSS: false,
           extensions: [
             new History(),
