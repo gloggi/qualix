@@ -1,5 +1,22 @@
+// Import TipTap styles here rather than letting them be automatically injected, to satisfy CSP constraints
+@import '~tiptap/src/style.css';
+
 .editor {
     position: relative;
+
+    &__floating-menu {
+        position: absolute;
+        right: 0;
+        z-index: 1;
+        margin-top: -0.25rem;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s, visibility 0.2s;
+        &.is-active {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
 }
 
 .editor-content {
@@ -66,6 +83,10 @@
 
         .requirement:hover {
             background-color: unset;
+        }
+
+        .ProseMirror-gapcursor:after {
+            display: none;
         }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <b-progress :max="100" height="1.5rem">
+  <b-progress :max="100">
     <b-progress-bar variant="success" :value="100. * passed / total">
       {{ $tc('t.views.participant_details.qualis.requirements_passed', passed) }}
     </b-progress-bar>
