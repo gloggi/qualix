@@ -1,9 +1,9 @@
 <template>
   <b-progress :max="100" height="1.5rem">
-    <b-progress-bar v-if="passed > 0" variant="success" :value="100. * passed / total">
+    <b-progress-bar variant="success" :value="100. * passed / total">
       {{ $tc('t.views.participant_details.qualis.requirements_passed', passed) }}
     </b-progress-bar>
-    <b-progress-bar v-if="failed > 0" variant="danger" :value="100. * failed / total">
+    <b-progress-bar variant="danger" :value="100. * failed / total">
       {{ $tc('t.views.participant_details.qualis.requirements_failed', failed) }}
     </b-progress-bar>
   </b-progress>
@@ -24,10 +24,10 @@
         return this.requirements.length
       },
       passed() {
-        return this.requirements.filter(r => r.passed === 1).length
+        return this.requirements.filter(r => r.pivot.passed === 1).length
       },
       failed() {
-        return this.requirements.filter(r => r.passed === 0).length
+        return this.requirements.filter(r => r.pivot.passed === 0).length
       }
     }
   }

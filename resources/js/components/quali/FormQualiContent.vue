@@ -39,7 +39,7 @@
       localRequirements() {
         return this.json.content
           .filter(node => node.type === 'requirement')
-          .map(node => node.attrs)
+          .map(node => ({ pivot: node.attrs }))
       }
     }
   }
