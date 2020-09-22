@@ -7,10 +7,10 @@
 
         @component('components.form', ['route' => ['admin.participantGroups.store', ['course' => $course->id]]])
 
-            <input-text @forminput('group_name') label="{{__('t.models.participant_group.group_name')}}" required autofocus></input-text>
+            <input-text name="group_name" label="{{__('t.models.participant_group.group_name')}}" required autofocus></input-text>
 
             <input-multi-select
-                @forminput('participants')
+                name="participants"
                 label="{{__('t.models.participant_group.participants')}}"
                 :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
                 display-field="scout_name"
