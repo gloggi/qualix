@@ -102,11 +102,14 @@ class QualiController extends Controller {
             });
 
             $qualiData->qualis()->each(function (Quali $quali) use($requirements) {
-                $quali->requirements()->whereNotIn('id', $requirements)->detach();
+                $quali->requirements()->wherePivotNotIn('requirement_id', $requirements)->detach();
                 $order = $quali->highest_order_number + 1;
-                collect($requirements)->each(function ($requirement) use ($quali, &$order) {
-                    $quali->requirements()->attach($requirement, ['order' => $order++]);
-                });
+                $quali->participant->course->requirements()
+                    ->whereIn('id', $requirements)
+                    ->whereNotIn('id', $quali->requirements()->select(['requirements.id']))
+                    ->each(function ($requirement) use ($quali, &$order) {
+                        $quali->requirements()->attach($requirement, ['order' => $order++]);
+                    });
             });
 
             $this->setTrainerAssignments($qualiData->qualis(), $data);

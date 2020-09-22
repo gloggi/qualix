@@ -108,9 +108,10 @@ class TiptapFormatter {
     }
 
     protected function getAllContents() {
-        if (! $this->allContents) $this->allContents = $this->qualiRequirements($this->quali)
-            ->merge($this->qualiObservations($this->quali))
-            ->merge($this->qualiContentNodes($this->quali));
+        if (! $this->allContents) $this->allContents = collect(array_merge(
+            $this->qualiRequirements()->all(),
+            $this->qualiObservations()->all(),
+            $this->qualiContentNodes()->all()));
         return $this->allContents;
     }
 
@@ -155,11 +156,10 @@ class TiptapFormatter {
     }
 
     /**
-     * @param Quali $quali
      * @return Collection
      */
-    protected static function qualiRequirements(Quali $quali) {
-        return $quali->requirements->map(function(Requirement $requirement) {
+    protected function qualiRequirements() {
+        return $this->quali->requirements->map(function(Requirement $requirement) {
             return [
                 'order' => $requirement->pivot->order,
                 'type' => 'requirement',
@@ -172,11 +172,10 @@ class TiptapFormatter {
     }
 
     /**
-     * @param Quali $quali
      * @return Collection
      */
-    protected static function qualiObservations(Quali $quali) {
-        return $quali->observations->map(function(Observation $observation) {
+    protected function qualiObservations() {
+        return $this->quali->observations->map(function(Observation $observation) {
             return [
                 'order' => $observation->pivot->order,
                 'type' => 'observation',
@@ -188,11 +187,10 @@ class TiptapFormatter {
     }
 
     /**
-     * @param Quali $quali
      * @return Collection
      */
-    protected static function qualiContentNodes(Quali $quali) {
-        return $quali->contentNodes->map(function(QualiContentNode $contentNode) {
+    protected function qualiContentNodes() {
+        return $this->quali->contentNodes->map(function(QualiContentNode $contentNode) {
             return collect(json_decode($contentNode->json))
                 ->merge([
                     'order' => $contentNode->order
