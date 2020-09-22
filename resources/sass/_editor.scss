@@ -1,4 +1,6 @@
 .ProseMirror {
+    margin-left: 3.8rem;
+
     p {
         margin-bottom: 0.5rem;
     }
@@ -21,6 +23,8 @@
     }
 
     .requirement {
+        margin-left: -3.8rem;
+
         &:hover {
             background-color: $gray-200;
         }
@@ -38,7 +42,15 @@
         }
     }
 
-    &[contenteditable=false] .requirement:hover {
-        background-color: unset;
+    &[contenteditable=false] {
+        margin-left: 1.5rem;
+
+        .requirement {
+            margin-left: -1.5rem;
+        }
+
+        .requirement:hover {
+            background-color: unset;
+        }
     }
 }
