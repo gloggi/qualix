@@ -59,16 +59,11 @@ class SecurityHeaders {
     }
 
     protected function getCSPScriptSrc() {
-        // Outside of production, allow inline scripts (Vue dev tools)
-        if (App::environment() !== 'production') return "script-src 'self' 'unsafe-inline' 'unsafe-eval'";
-
-        return "script-src 'self' 'unsafe-eval'";
+        $nonce = app('csp-nonce');
+        return "script-src 'self' 'unsafe-eval' 'nonce-$nonce'";
     }
 
     protected function getCSPStyleSrc() {
-        // Outside of production, allow inline styles
-        if (App::environment() !== 'production') return "style-src 'self' 'unsafe-inline'";
-
         return "style-src 'self'";
     }
 
