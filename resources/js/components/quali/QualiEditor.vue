@@ -9,9 +9,9 @@
         :class="{ 'is-active': menu.isActive }"
         :style="`top: ${menu.top}px`">
 
-        <button-add v-if="observations.length" @click="addObservation = commands.observation">{{ $t('t.models.observation.one') }}</button-add>
+        <button-add v-if="availableObservations.length" @click="addObservation = commands.observation">{{ $t('t.models.observation.one') }}</button-add>
 
-        <modal-add-observation :observations="observations" v-model="addObservation"></modal-add-observation>
+        <modal-add-observation :observations="availableObservations" v-model="addObservation"></modal-add-observation>
 
       </div>
     </editor-floating-menu>
@@ -75,6 +75,14 @@
       },
       formValue() {
         return JSON.stringify(this.currentValue)
+      },
+      usedObservations() {
+        return this.currentValue.content
+          .filter(node => node.type === 'observation')
+          .map(observation => observation.attrs.id)
+      },
+      availableObservations() {
+        return this.observations.filter(observation => !this.usedObservations.includes(observation.id))
       }
     },
     provide() {
