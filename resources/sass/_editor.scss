@@ -45,6 +45,7 @@
 
         .delete-button {
             visibility: hidden;
+            cursor: pointer;
         }
 
         &.selected .delete-button, &:hover .delete-button {
