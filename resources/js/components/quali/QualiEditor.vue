@@ -15,7 +15,7 @@
 
       </div>
     </editor-floating-menu>
-    <editor-content :editor="editor" />
+    <editor-content class="editor-content" :class="{ readonly }" :editor="editor" />
     <input-hidden v-if="name" :value="formValue" :name="name"></input-hidden>
   </div>
 </template>

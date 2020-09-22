@@ -1,5 +1,13 @@
-.ProseMirror {
+.editor {
+    position: relative;
+}
+
+.editor-content {
     margin-left: 3.8rem;
+
+    :focus {
+        outline: none;
+    }
 
     p {
         margin-bottom: 0.5rem;
@@ -8,6 +16,7 @@
     .observation {
         border-left: 2px solid $gray-500;
         background-color: $gray-200;
+        cursor: move;
 
         &.selected {
             outline: 1px dashed $gray-500;
@@ -24,6 +33,7 @@
 
     .requirement {
         margin-left: -3.8rem;
+        cursor: move;
 
         &:hover {
             background-color: $gray-200;
@@ -42,11 +52,16 @@
         }
     }
 
-    &[contenteditable=false] {
+    &.readonly {
         margin-left: 1.5rem;
+
+        .observation {
+            cursor: unset;
+        }
 
         .requirement {
             margin-left: -1.5rem;
+            cursor: unset;
         }
 
         .requirement:hover {
