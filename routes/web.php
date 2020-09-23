@@ -66,7 +66,11 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
         Route::post('/course/{course}/admin/participants/{participant}', 'ParticipantController@update')->name('admin.participants.update');
         Route::delete('/course/{course}/admin/participants/{participant}', 'ParticipantController@destroy')->name('admin.participants.delete');
 
-        Route::resource('/course/{course}/admin/participantGroups', 'ParticipantGroupController',  ['as' => 'admin'])->except('show', 'create');
+        Route::get('/course/{course}/admin/participantGroups', 'ParticipantGroupController@index')->name('admin.participantGroups');
+        Route::post('/course/{course}/admin/participantGroups', 'ParticipantGroupController@store')->name('admin.participantGroups.store');
+        Route::get('/course/{course}/admin/participantGroups/{participantGroup}', 'ParticipantGroupController@edit')->name('admin.participantGroups.edit');
+        Route::post('/course/{course}/admin/participantGroups/{participantGroup}', 'ParticipantGroupController@update')->name('admin.participantGroups.update');
+        Route::delete('/course/{course}/admin/participantGroups/{participantGroup}', 'ParticipantGroupController@destroy')->name('admin.participantGroups.delete');
 
     });
 
