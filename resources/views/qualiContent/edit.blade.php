@@ -38,7 +38,11 @@
 
         </div>
 
-        @component('includes.qualiContent.edit', ['quali' => $quali, 'participant' => $participant, 'course' => $course, 'observations' => $observations])@endcomponent
+        <form-quali-content
+            :action="['qualiContent.update', { course: {{ $course->id }}, participant: {{ $participant->id }}, quali: {{ $quali->id }} }]"
+            :quali="{{ json_encode($quali) }}"
+            :observations="{{ json_encode($observations) }}"
+            :requirements="{{ json_encode($quali->requirements) }}"></form-quali-content>
 
     </b-card>
 

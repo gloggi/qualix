@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <form-basic :action="action">
     <input-text name="name" v-model="currentName" :label="$t('t.models.quali.name')" required autofocus></input-text>
 
     <input-multi-select
@@ -44,7 +44,7 @@
 
     <slot name="submit"></slot>
 
-  </div>
+  </form-basic>
 </template>
 
 <script>
@@ -52,6 +52,7 @@
 export default {
   name: 'FormQualiData',
   props: {
+    action: {},
     name: { type: String, required: false },
     qualis: { type: Array, default: undefined },
     participants: { type: Array, required: true },

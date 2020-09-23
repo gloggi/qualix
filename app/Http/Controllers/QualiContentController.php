@@ -27,7 +27,7 @@ class QualiContentController extends Controller {
      * @return View
      */
     public function index(Request $request, Course $course, Participant $participant, Quali $quali) {
-        return view('quali-detail', [
+        return view('qualiContent.index', [
             'participant' => $participant,
             'quali' => $quali,
             'observations' => $participant->observations()->with(['block', 'participants'])->get(),
@@ -42,7 +42,7 @@ class QualiContentController extends Controller {
      * @return View
      */
     public function edit(Request $request, Course $course, Participant $participant, Quali $quali) {
-        return view('quali-edit', [
+        return view('qualiContent.edit', [
             'participant' => $participant,
             'quali' => $quali,
             'observations' => $participant->observations()->with(['block', 'participants'])->get(),

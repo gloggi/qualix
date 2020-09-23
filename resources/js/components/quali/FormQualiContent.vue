@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <form-basic :action="action">
     <div class="mb-3" v-if="localRequirements.length">
       <h5>{{ $tc('t.views.quali_content.requirements_status') }}</h5>
       <requirement-progress :requirements="localRequirements"></requirement-progress>
@@ -16,17 +16,19 @@
       v-model="json"
       :observations="observations"
       :requirements="requirements"></quali-editor>
-  </div>
+  </form-basic>
 </template>
 
 <script>
   import RequirementProgress from './RequirementProgress'
   import QualiEditor from './QualiEditor'
+  import FormBasic from "../FormBasic"
 
   export default {
     name: 'FormQualiContent',
-    components: {RequirementProgress, QualiEditor},
+    components: {FormBasic, RequirementProgress, QualiEditor},
     props: {
+      action: {},
       quali: { type: Object, required: true },
       observations: { type: Array, default: () => [] },
       requirements: { type: Array, default: () => [] },

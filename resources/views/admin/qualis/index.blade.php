@@ -5,29 +5,27 @@
     <b-card>
         <template #header>{{__('t.views.admin.qualis.new')}}</template>
 
-        <form-basic :action="['admin.qualis.store', { course: {{ $course->id }} }]">
-            <form-quali-data
-                :participants="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
-                :requirements="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
-                :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}"
-                quali-notes-template
-                back-url="{{ \Illuminate\Support\Facades\URL::route('admin.qualis', ['course' => $course->id]) }}">
+        <form-quali-data
+            :action="['admin.qualis.store', { course: {{ $course->id }} }]"
+            :participants="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
+            :requirements="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
+            :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}"
+            quali-notes-template
+            back-url="{{ \Illuminate\Support\Facades\URL::route('admin.qualis', ['course' => $course->id]) }}">
 
-                <input-textarea name="quali_notes_template" label="{{__('t.views.admin.qualis.quali_notes_template')}}">
+            <input-textarea name="quali_notes_template" label="{{__('t.views.admin.qualis.quali_notes_template')}}">
 
-                    @component('components.help-text', ['id' => 'qualiNotesTemplateHelp', 'key' => 't.views.admin.qualis.quali_notes_template_description'])@endcomponent
+                @component('components.help-text', ['id' => 'qualiNotesTemplateHelp', 'key' => 't.views.admin.qualis.quali_notes_template_description'])@endcomponent
 
-                </input-textarea>
+            </input-textarea>
 
-                <template #submit>
-                    <button-submit label="{{__('t.views.admin.qualis.create')}}">
-                        @component('components.help-text', ['id' => 'qualiHelp', 'key' => 't.views.admin.qualis.what_are_qualis'])@endcomponent
-                    </button-submit>
-                </template>
+            <template #submit>
+                <button-submit label="{{__('t.views.admin.qualis.create')}}">
+                    @component('components.help-text', ['id' => 'qualiHelp', 'key' => 't.views.admin.qualis.what_are_qualis'])@endcomponent
+                </button-submit>
+            </template>
 
-            </form-quali-data>
-
-        </form-basic>
+        </form-quali-data>
 
     </b-card>
 
