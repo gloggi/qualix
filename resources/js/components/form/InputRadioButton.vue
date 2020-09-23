@@ -4,8 +4,8 @@
     <div class="col-md-6">
       <div class="my-auto d-flex" :class="{ 'is-invalid': errorMessage }">
         <b-form-radio v-for="(option, optionValue) in options"
-                      :key="name | append('-' + optionValue)"
-                      :id="name | append('-' + optionValue) | kebabCase"
+                      :key="name + '-' + optionValue"
+                      :id="name + '-' + optionValue | kebabCase"
                       :name="name"
                       class="horizontal-radio"
                       :value="optionValue"
