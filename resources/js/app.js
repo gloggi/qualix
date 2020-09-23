@@ -13,14 +13,21 @@ Vue.use(VueI18n);
 
 Vue.prototype.$window = window;
 
-Vue.prototype.route = function (name, parameters) {
+Vue.prototype.routeUri = function (name, parameters) {
   if (window.routes[name] === undefined) {
     console.error('Route not found ', name);
   } else {
-    return '/' + window.routes[name]
+    return window.routes[name].uri
       .replaceAll(/\{(.*?)(\?)?\}/g, (match, p1) => parameters && parameters.hasOwnProperty(p1) ? parameters[p1] : match)
       .replaceAll(/\{.*?\}/g, match => Array.isArray(parameters) ? parameters.shift() : match)
       .replaceAll(/\{.*?\?\}/g, '');
+  }
+};
+Vue.prototype.routeMethod = function (name, parameters) {
+  if (window.routes[name] === undefined) {
+    console.error('Route not found ', name);
+  } else {
+    return window.routes[name].method;
   }
 };
 

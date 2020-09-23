@@ -13,7 +13,8 @@
         {{-- Using @json is okay here because it's in the context of a <script> tag, not in a HTML attribute --}}
         window.oldInput = @json((object) Session::getOldInput());
         window.errors = @json((object) $errors->get('*'));
-        window.routes = @json(collect(Route::getRoutes())->mapWithKeys(function ($route) { return [$route->getName() => $route->uri()]; }))
+        window.routes = @json(collect(Route::getRoutes())->mapWithKeys(function (\Illuminate\Routing\Route $route) { return [$route->getName() => [ 'uri' => '/'.$route->uri(), 'method' => head($route->methods())]]; }));
+        window.csrf = '{{ csrf_token() }}';
     </script>
 </head>
 <body>
