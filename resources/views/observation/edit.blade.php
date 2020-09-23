@@ -16,7 +16,7 @@
                 :groups="{{json_encode(
                         $course->participantGroups->mapWithKeys(function ($group) {
                             return [$group['group_name'] => $group->participants->pluck('id')->join(',')];
-                        }))}}"
+                        }), JSON_FORCE_OBJECT)}}"
                 display-field="scout_name"
                 multiple></input-multi-select>
 

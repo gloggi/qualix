@@ -12,11 +12,10 @@
                 value="{{ $participants }}"
                 label="{{__('t.models.observation.participants')}}"
                 :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
-
                 :groups="{{json_encode(
                     $course->participantGroups->mapWithKeys(function ($group) {
                         return [$group['group_name'] => $group->participants->pluck('id')->join(',')];
-                    }))}}"
+                    }), JSON_FORCE_OBJECT)}}"
 
             display-field="scout_name"
                 multiple
