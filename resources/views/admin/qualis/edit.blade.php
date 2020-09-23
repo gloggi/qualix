@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.admin.qualis.edit')}}</template>
 
-        @component('components.form', ['route' => ['admin.qualis.update', ['course' => $course->id, 'quali_data' => $quali_data->id]]])
+        <form-basic :action="['admin.qualis.update', { course: {{ $course->id }}, quali_data: {{ $quali_data->id }} }]">
 
             <form-quali-data
                 name="{{ $quali_data->name }}"
@@ -24,7 +24,7 @@
 
             </form-quali-data>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

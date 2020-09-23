@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.invitation.title', ['courseName' => $invitation->course->name])}}</template>
 
-        @component('components.form', ['route' => 'invitation.claim'])
+        <form-basic action="invitation.claim">
 
             <input-hidden name="token" value="{{ $invitation->token }}"></input-hidden>
 
@@ -19,7 +19,7 @@
                 </a>
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

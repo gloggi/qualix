@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.admin.blocks.edit')}}</template>
 
-        @component('components.form', ['route' => ['admin.block.update', ['course' => $course->id, 'block' => $block->id]]])
+        <form-basic :action="['admin.block.update', {course: {{ $course->id }}, block: {{ $block->id }} }]">
 
             <input-text name="full_block_number" value="{{ $block->full_block_number }}" label="{{__('t.models.block.full_block_number')}}"></input-text>
 
@@ -23,7 +23,7 @@
 
             <button-submit></button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

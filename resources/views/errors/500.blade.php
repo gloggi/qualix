@@ -11,7 +11,7 @@
 
             <p>{{__('t.views.error_form.our_team_has_been_notified')}}</p>
 
-            @component('components.form', ['route' => ['errorReport.submit'], 'method' => 'POST'])
+            <form-basic action="errorReport.submit">
 
                 <input-hidden name="eventId" value="{{ app('sentry')->getLastEventId() }}"></input-hidden>
 
@@ -29,7 +29,7 @@
                     </a>
                 </button-submit>
 
-            @endcomponent
+            </form-basic>
 
         @else
             <p>{{__('t.views.error_form.please_try_again_later')}}</p>

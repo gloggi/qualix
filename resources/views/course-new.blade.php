@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.admin.new_course.title')}}</template>
 
-        @component('components.form', ['route' => 'admin.newcourse.store'])
+        <form-basic action="admin.newcourse.store">
 
             <input-text name="name" label="{{__('t.models.course.name')}}" required autofocus></input-text>
 
@@ -13,7 +13,7 @@
 
             <button-submit label="{{__('t.views.admin.new_course.create')}}"></button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

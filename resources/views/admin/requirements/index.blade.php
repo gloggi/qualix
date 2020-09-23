@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.admin.requirements.new')}}</template>
 
-        @component('components.form', ['route' => ['admin.requirements.store', ['course' => $course->id]]])
+        <form-basic :action="['admin.requirements.store', { course: {{ $course->id }} }]">
 
             <input-text name="content" label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
 
@@ -24,7 +24,7 @@
 
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

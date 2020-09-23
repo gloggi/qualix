@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.admin.participant_groups.new')}}</template>
 
-        @component('components.form', ['route' => ['admin.participantGroups.store', ['course' => $course->id]]])
+        <form-basic :action="['admin.participantGroups.store', { course: {{ $course->id }} }]">
 
             <input-text name="group_name" label="{{__('t.models.participant_group.group_name')}}" required autofocus></input-text>
 
@@ -24,7 +24,7 @@
 
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

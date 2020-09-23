@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.user_settings.edit')}}</template>
 
-        @component('components.form', ['route' => ['user.update'], 'enctype' => 'multipart/form-data'])
+        <form-basic action="user.update" enctype="multipart/form-data">
 
             <input-text name="name" value="{{ $user->name }}" label="{{__('t.models.user.name')}}" required></input-text>
 
@@ -15,7 +15,7 @@
 
             <button-submit></button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

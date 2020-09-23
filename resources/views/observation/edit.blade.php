@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.observations.edit')}}</template>
 
-        @component('components.form', ['route' => ['observation.update', ['course' => $course->id, 'observation' => $observation->id]]])
+        <form-basic :action="['observation.update', { course: {{ $course->id }}, observation: {{ $observation->id }} }]">
 
             <input-multi-select
                 name="participants"
@@ -60,7 +60,7 @@
 
             <button-submit></button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

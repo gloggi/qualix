@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.admin.block_import.import_from', ['source' => __('t.views.admin.block_import.ecamp2.name')])}}</template>
 
-        @component('components.form', ['route' => ['admin.block.import', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
+        <form-basic :action="['admin.block.import', { course: {{ $course->id }} }]" enctype="multipart/form-data">
 
             <input-file name="file" label="{{__('t.views.admin.block_import.ecamp2.block_overview')}}" required accept="application/vnd.ms-excel"></input-file>
 
@@ -19,7 +19,7 @@
 
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

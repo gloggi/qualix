@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.admin.categories.new')}}</template>
 
-        @component('components.form', ['route' => ['admin.categories.store', ['course' => $course->id]]])
+        <form-basic :action="['admin.categories.store', { course: {{ $course->id }} }]">
 
             <input-text name="name" label="{{__('t.models.category.name')}}" required autofocus></input-text>
 
@@ -15,7 +15,7 @@
 
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

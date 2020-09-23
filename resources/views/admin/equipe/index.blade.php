@@ -52,13 +52,13 @@
     <b-card>
         <template #header>{{__('t.views.admin.equipe.new_invitation')}}</template>
 
-        @component('components.form', ['route' => ['admin.invitation.store', ['course' => $course->id]]])
+        <form-basic :action="['admin.invitation.store', { course: {{ $course->id }} }]">
 
             <input-text name="email" required label="{{__('t.models.invitation.email')}}"></input-text>
 
             <button-submit label="{{__('t.views.admin.equipe.invite')}}"></button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

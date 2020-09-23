@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.admin.blocks.new')}}</template>
 
-        @component('components.form', ['route' => ['admin.block.store', ['course' => $course->id]]])
+        <form-basic :action="['admin.block.store', { course: {{ $course->id }} }]">
 
             <input-text name="full_block_number" label="{{__('t.models.block.full_block_number')}}"></input-text>
 
@@ -30,7 +30,7 @@
 
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 

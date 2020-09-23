@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.admin.course_settings.edit', ['name' => $course->name])}}</template>
 
-        @component('components.form', ['route' => ['admin.course.update', ['course' => $course->id]]])
+        <form-basic :action="['admin.course.update', {course: {{ $course->id }} }]">
 
             <input-text name="name" value="{{ $course->name }}" label="{{__('t.models.course.name')}}" required autofocus></input-text>
 
@@ -13,7 +13,7 @@
 
             <button-submit></button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 
@@ -30,10 +30,9 @@
                 {{__('t.views.admin.course_settings.archive_description')}}
 
                 <template #modal-footer>
-                    @component('components.form', ['route' => ['admin.course.archive', ['course' => $course->id]]])
-                        @csrf
+                    <form-basic :action="['admin.course.archive', {course: {{ $course->id }} }]">
                         <b-button type="submit" variant="danger">{{ __('t.views.admin.course_settings.archive_confirm') }}</b-button>
-                    @endcomponent
+                    </form-basic>
                 </template>
             </b-modal>
         @endif
@@ -45,9 +44,9 @@
             {{__('t.views.admin.course_settings.delete_description')}}
 
             <template #modal-footer>
-                @component('components.form', ['route' => ['admin.course.delete', ['course' => $course->id]]])
+                <form-basic :action="['admin.course.delete', {course: {{ $course->id }} }]">
                     <button type="submit" class="btn btn-danger">{{ __('t.views.admin.course_settings.delete_confirm') }}</button>
-                @endcomponent
+                </form-basic>
             </template>
         </b-modal>
 

@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('t.views.admin.participants.new')}}</template>
 
-        @component('components.form', ['route' => ['admin.participants.store', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
+        <form-basic :action="['admin.participants.store', { course: {{ $course->id }} }]" enctype="multipart/form-data">
 
             <input-text name="scout_name" label="{{__('t.models.participant.scout_name')}}" required autofocus></input-text>
 
@@ -19,7 +19,7 @@
                 </a>
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 
