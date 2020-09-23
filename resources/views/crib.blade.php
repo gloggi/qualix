@@ -12,6 +12,11 @@
                 foreach($course->blocks as $block) {
                     $days[$block->block_date->timestamp][] = $block;
                 }
+
+                /*
+                    use this to change the crib for other trainers
+                */
+                $trainerId = Auth::id();
             @endphp
 
             @foreach($days as $day)
@@ -41,6 +46,18 @@
                                         <span class="white-space-normal badge badge-info"> {{$requirement->content}} </span>
                                     @endforeach
                                 @endif
+
+                                {{"----------"}}
+                                {{$block->observationOrdersPerUser()}}
+                                {{"----------"}}
+
+                                @foreach($block->observationOrders as $orders)
+                                    @if(in_array($trainerId, [$orders->users->pluck('id')->join(',')]))
+                                        {{$orders->participants->pluck('id', 'scout_name')}}
+                                    @endif
+                                @endforeach
+
+
                             </b-list-group-item>
 
                         @endforeach

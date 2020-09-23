@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
+use PhpParser\Node\Expr\Cast\Object_;
 
 /**
  * @property int $id
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property Collection $requirement_ids
  * @property Course $course
  * @property Observation[] $observations
- * @property ObservationOrder[] $obsersationOrders
+ * @property ObservationOrder[] $observationOrders
  * @property Collection $requirements
  * @property Collection $requirementIds
  * @property int $num_observations
@@ -64,10 +65,63 @@ class Block extends Model {
         return $this->hasMany('App\Models\Observation');
     }
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function observationsOrders() {
-        return $this->hasMany('App\Models\ObservationOrder');
+    public function observationOrders() {
+        return $this->belongsToMany('App\Models\ObservationOrder', 'observation_order_blocks')->with('users', 'participants');
+    }
+
+    public function observationOrdersUser(){
+        $block = $this;
+        return $this->course->users()->mapWithKeys(function (User $user) use($block) {
+            return [ $user->id =>
+                $user->observationOrders()->whereIn('id', $block->observationOrders()->pluck('id'))->get()->participants
+            ];
+        });
+
+        $obj = $this->observationOrders->map(
+            function ($order){
+                return (object) $order->users->pluck('id', 'name');
+            })->collapse();
+        $trainers= "";
+        $users = $this->observationOrders->map(
+            function ($observationOrder){
+                $users = array();
+                foreach ($observationOrder->users as $user){
+                    $users[]= ['id' => $user->id];
+                }
+                return $users;
+
+            })->collapse()->unique();
+
+        $obj = $this->observationOrders->map(
+            function ( $observationOrder){
+                $users = array();
+                foreach ($observationOrder->users as $user){
+                    $users[]= ['id' => $user->id, 'name' => $user->name, 'participants' => $observationOrder->participants->pluck('id')];
+                }
+                return $users;
+                /*
+                $test = ['id' => $observationOrder->users->pluck('id'), 'name' =>$observationOrder->users->pluck('name')
+                ];
+                return $test;
+                */
+
+            })->collapse();
+
+
+
+
+
+        return $this->observationOrders;
+        //$trainers = array_unique (array_merge ($array1, $array2));
+
+    }
+    public function observationOrdersperUser(){
+        $user = $this->observationOrdersUser();
+
+
+        return $user;
     }
 
     /**
