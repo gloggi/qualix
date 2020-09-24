@@ -30,7 +30,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         auth()->logout();
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -43,7 +43,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         Course::find($this->courseId)->update(['archived' => true]);
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -55,7 +55,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         // given
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -73,7 +73,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $payload['participants'] = '';
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -89,7 +89,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $payload['participants'] = 'a';
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -106,7 +106,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $payload['participants'] = $participantId;
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
 
         // then
         $response->assertStatus(302);
@@ -122,7 +122,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $payload['participants'] = implode(',', $participantIds);
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
 
         // then
         $response->assertStatus(302);
@@ -138,7 +138,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $payload['participants'] = implode(',', $participantIds);
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -155,7 +155,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $payload['participants'] = implode(',', $participantIds);
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -173,7 +173,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $payload['participants'] = $participantIds;
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
 
         // then
         $response->assertStatus(302);
@@ -190,7 +190,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         unset($payload['group_name']);
 
         // when
-        $response = $this->put('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -206,7 +206,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $payload['group_name'] = 'Unglaublich langer Name. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr.';
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
@@ -224,7 +224,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $payload['participants'] = $this->participantId . ',' . $participantFromDifferentCourse;
 
         // when
-        $response = $this->patch('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);

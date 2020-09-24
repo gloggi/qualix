@@ -24,7 +24,7 @@ class ReadParticipantGroupTest extends TestCaseWithBasicData
         auth()->logout();
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId . '/edit');
+        $response = $this->get('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId);
 
         // then
         $response->assertStatus(302);
@@ -37,7 +37,7 @@ class ReadParticipantGroupTest extends TestCaseWithBasicData
         Course::find($this->courseId)->update(['archived' => true]);
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId . '/edit');
+        $response = $this->get('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId);
 
         // then
         $response->assertStatus(302);
@@ -49,7 +49,7 @@ class ReadParticipantGroupTest extends TestCaseWithBasicData
         // given
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId . '/edit');
+        $response = $this->get('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId);
 
         // then
         $response->assertOk();
@@ -62,7 +62,7 @@ class ReadParticipantGroupTest extends TestCaseWithBasicData
         $otherKursId = $this->createCourse('Zweiter Kurs', '');
 
         // when
-        $response = $this->get('/course/' . $otherKursId . '/admin/participantGroups/' . $this->participantGroupId . '/edit');
+        $response = $this->get('/course/' . $otherKursId . '/admin/participantGroups/' . $this->participantGroupId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
