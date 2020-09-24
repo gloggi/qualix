@@ -35,7 +35,7 @@ class E2EScenario extends Command
             return 1;
         }
 
-        $userId = $this->option('user-id') || User::firstOrFail();
+        $userId = $this->option('user-id') ?? User::firstOrFail();
 
         /** @var Course $course */
         $course = factory(Course::class)->create();

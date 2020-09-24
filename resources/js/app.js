@@ -13,6 +13,9 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueI18n)
 
+const element = document.getElementById('laravel-data')
+window.Laravel = JSON.parse(element.getAttribute('data-laravel'))
+element.remove()
 Vue.prototype.$window = window
 
 Vue.prototype.routeUri = function (name, parameters) {
@@ -21,13 +24,14 @@ Vue.prototype.routeUri = function (name, parameters) {
   } else {
     const uri = new URL(
       window.Laravel.routes[name].uri
-        .replaceAll(/\{(.*?)(\?)?\}/g, (match, p1) => parameters && parameters.hasOwnProperty(p1) ? parameters[p1] : match)
-        .replaceAll(/\{.*?\}/g, match => Array.isArray(parameters) ? parameters.shift() : match)
-        .replaceAll(/\{.*?\?\}/g, ''),
+        .replace(/\{(.*?)(\?)?\}/g, (match, p1) => parameters && parameters.hasOwnProperty(p1) ? parameters[p1] : match)
+        .replace(/\{.*?\}/g, match => Array.isArray(parameters) ? parameters.shift() : match)
+        .replace(/\{.*?\?\}/g, ''),
       window.location.origin)
 
     if (parameters) {
-      const mentionedParameters = Array.from(window.Laravel.routes[name].uri.matchAll(/\{(.*?)\??\}/g)).map(group => group[1])
+      const mentionedParameters = (window.Laravel.routes[name].uri.match(/\{.*?\??\}/g) ?? [])
+        .map(match => match.replace(/^\{|\??\}$/g, ''))
       const unmentionedParameters = Object.entries(parameters)
         .filter(([key, _]) => !mentionedParameters.includes(key))
       const queryParams = new URLSearchParams(uri.search)

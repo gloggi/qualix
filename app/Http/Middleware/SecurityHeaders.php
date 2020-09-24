@@ -59,8 +59,7 @@ class SecurityHeaders {
     }
 
     protected function getCSPScriptSrc() {
-        $nonce = app('csp-nonce');
-        return "script-src 'self' 'unsafe-eval' 'nonce-$nonce'";
+        return "script-src 'self' 'unsafe-eval'";
     }
 
     protected function getCSPStyleSrc() {

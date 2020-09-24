@@ -14,7 +14,7 @@ before_install:
 
 script:
   - docker-compose exec qualix vendor/bin/phpunit
-  - sudo git clean -qfdx storage/logs
+  - sudo chmod -R a+rwx storage
   - docker-compose run e2e run
 
 before_deploy:

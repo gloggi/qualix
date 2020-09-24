@@ -9,19 +9,17 @@
     <title>{{__('t.global.page_title')}}</title>
     <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
-    <script type="application/javascript" @nonce>
-        {{-- Using @json is okay here because it's in the context of a <script> tag, not in a HTML attribute --}}
-        window.Laravel = {}
-        window.Laravel.oldInput = @json((object) Session::getOldInput());
-        window.Laravel.errors = @json((object) $errors->get('*'));
-        window.Laravel.routes = @json(collect(Route::getRoutes())->mapWithKeys(function (\Illuminate\Routing\Route $route) { return [$route->getName() => [ 'uri' => '/'.$route->uri(), 'method' => head($route->methods())]]; }));
-        window.Laravel.csrf = '{{ csrf_token() }}';
-    </script>
 </head>
 <body>
 
 @yield('layout')
 
+<div id="laravel-data" data-laravel="{{ json_encode([
+    'oldInput' => (object) Session::getOldInput(),
+    'errors' => (object) $errors->get('*'),
+    'routes' => collect(Route::getRoutes())->mapWithKeys(function (\Illuminate\Routing\Route $route) { return [$route->getName() => [ 'uri' => '/'.$route->uri(), 'method' => head($route->methods())]]; }),
+    'csrf' => csrf_token()
+]) }}"></div>
 <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

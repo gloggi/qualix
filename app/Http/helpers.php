@@ -11,15 +11,3 @@ if (! function_exists('route_method')) {
         return head(app('router')->getRoutes()->getByName($name)->methods());
     }
 }
-
-if (! function_exists('csp_nonce')) {
-    /**
-     * Get the CSP nonce for this request, in order to confirm the validity of inline scripts.
-     *
-     * @return string
-     */
-    function csp_nonce(): string
-    {
-        return app('csp-nonce');
-    }
-}

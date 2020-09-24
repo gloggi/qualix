@@ -7,11 +7,8 @@ describe('observation form', () => {
 
   beforeEach(() => {
     cy.then(() => {
-      cy.generate('App\\Models\\User').then(user => {
-        cy.login({name: user.name, email: user.email}).then(user => {
-          cy.artisan('e2e:scenario', { '--user-id': user.id })
-        })
-
+      cy.login().then(user => {
+        cy.artisan('e2e:scenario', { '--user-id': user.id })
       })
     })
     cy.courseId().then(id => courseId = id)
@@ -31,7 +28,7 @@ describe('observation form', () => {
 
     cy.get('#requirements').click()
     cy.get('#requirements .multiselect__option').first().click()
-    cy.get('#requirements').click()
+    cy.get('#requirements').click('right')
     cy.get('#requirements .multiselect__option').eq(2).click()
 
     cy.contains('Positiv').click()
