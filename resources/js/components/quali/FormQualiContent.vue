@@ -1,7 +1,7 @@
 <template>
   <form-basic :action="action">
     <div class="mb-3" v-if="localRequirements.length">
-      <h5>{{ $tc('t.views.quali_content.requirements_status') }}</h5>
+      <h5>{{ $t('t.views.quali_content.requirements_status') }}</h5>
       <requirement-progress :requirements="localRequirements"></requirement-progress>
     </div>
 
