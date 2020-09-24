@@ -8,8 +8,8 @@
 
 <script>
 import { isArray } from 'lodash'
-
 import InputHidden from "./form/InputHidden"
+
 export default {
   name: 'FormBasic',
   components: {InputHidden},
@@ -22,7 +22,7 @@ export default {
       return isArray(this.action) ? this.action : [this.action]
     },
     csrfToken() {
-      return window.csrf;
+      return window.Laravel.csrf;
     },
     method() {
       return this.routeMethod(...this.arrayAction)

@@ -33,7 +33,7 @@
       autofocus: { type: Boolean, default: false },
     },
     data() {
-      const currentValue = JSON.parse(get(window.oldInput, this.name, 'null')) ?? this.value
+      const currentValue = JSON.parse(get(window.Laravel.oldInput, this.name, 'null')) ?? this.value
       return {
         editor: new Editor({
           content: currentValue,

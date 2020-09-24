@@ -1,6 +1,7 @@
-import languageBundle from '@kirschbaum-development/laravel-translations-loader?parameters={$1}!@kirschbaum-development/laravel-translations-loader'
+import languageBundle
+  from '@kirschbaum-development/laravel-translations-loader?parameters={$1}!@kirschbaum-development/laravel-translations-loader'
 import VueI18n from 'vue-i18n'
-import { kebabCase } from 'lodash'
+import {kebabCase} from 'lodash'
 
 require('./bootstrap');
 
@@ -14,20 +15,32 @@ Vue.use(VueI18n);
 Vue.prototype.$window = window;
 
 Vue.prototype.routeUri = function (name, parameters) {
-  if (window.routes[name] === undefined) {
+  if (window.Laravel.routes[name] === undefined) {
     console.error('Route not found ', name);
   } else {
-    return window.routes[name].uri
-      .replaceAll(/\{(.*?)(\?)?\}/g, (match, p1) => parameters && parameters.hasOwnProperty(p1) ? parameters[p1] : match)
-      .replaceAll(/\{.*?\}/g, match => Array.isArray(parameters) ? parameters.shift() : match)
-      .replaceAll(/\{.*?\?\}/g, '');
+    const uri = new URL(
+      window.Laravel.routes[name].uri
+        .replaceAll(/\{(.*?)(\?)?\}/g, (match, p1) => parameters && parameters.hasOwnProperty(p1) ? parameters[p1] : match)
+        .replaceAll(/\{.*?\}/g, match => Array.isArray(parameters) ? parameters.shift() : match)
+        .replaceAll(/\{.*?\?\}/g, ''),
+      window.location.origin);
+
+    if(parameters) {
+      const mentionedParameters = Array.from(window.Laravel.routes[name].uri.matchAll(/\{(.*?)\??\}/g)).map(group => group[1])
+      const unmentionedParameters = Object.entries(parameters)
+        .filter(([key, _]) => !mentionedParameters.includes(key))
+      const queryParams = new URLSearchParams(uri.search)
+      unmentionedParameters.forEach(([key, value]) => queryParams.set(key, value))
+      uri.search = queryParams.toString()
+    }
+    return uri.toString();
   }
 };
 Vue.prototype.routeMethod = function (name, parameters) {
-  if (window.routes[name] === undefined) {
+  if (window.Laravel.routes[name] === undefined) {
     console.error('Route not found ', name);
   } else {
-    return window.routes[name].method;
+    return window.Laravel.routes[name].method;
   }
 };
 

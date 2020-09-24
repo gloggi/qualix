@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+import {get} from 'lodash'
 
 export default {
   props: {
@@ -7,12 +7,12 @@ export default {
   },
   data() {
     return {
-      currentValue: get(window.oldInput, this.name, this.value)
+      currentValue: get(window.Laravel.oldInput, this.name, this.value)
     }
   },
   computed: {
     errorMessage() {
-      const errors = window.errors[this.name]
+      const errors = window.Laravel.errors[this.name]
       return errors && errors.length ? errors[0] : undefined;
     }
   },
