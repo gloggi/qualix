@@ -18,7 +18,8 @@ use Illuminate\Database\Eloquent\Collection;
  * @property Collection $requirement_ids
  * @property Course $course
  * @property Observation[] $observations
- * @property Collection $requirements
+ * @property Collection $requirementIds
+ * @property int $num_observations
  */
 class Block extends Model {
     /**
@@ -39,6 +40,13 @@ class Block extends Model {
      * @var array
      */
     protected $casts = ['block_date' => 'date'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['blockname_and_number', 'full_block_number', 'num_observations'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -117,7 +125,7 @@ class Block extends Model {
      * @return string|null
      */
     public function getFullBlockNumberAttribute() {
-        if ($this->day_number == null || $this->block_number == null) {
+        if ($this->day_number === null || $this->block_number === null) {
             return null;
         }
         return $this->day_number . '.' . $this->block_number;
@@ -143,11 +151,20 @@ class Block extends Model {
     }
 
     /**
-     * Get the block date attribute in a localized format.
+     * Get the ids of the requirements that are connected to the block.
      *
      * @return \Illuminate\Support\Collection
      */
     public function getRequirementIdsAttribute() {
         return $this->requirements->pluck('id');
+    }
+
+    /**
+     * Get the number of observations connected to this block.
+     *
+     * @return integer
+     */
+    public function getNumObservationsAttribute() {
+        return $this->observations()->count();
     }
 }

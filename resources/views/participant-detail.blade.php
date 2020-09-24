@@ -2,11 +2,66 @@
 
 @section('content')
 
-    @component('includes.participant.details', ['participant' => $participant])@endcomponent
+    <b-card body-class="container-fluid">
+        <template #header>{{__('t.views.participant_details.title')}}</template>
+
+        <div class="row my-3">
+
+            <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                <div class="square-container">
+                    <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
+                </div>
+            </div>
+
+            <div class="col">
+                <h3>{{ $participant->scout_name }}</h3>
+                @if (isset($participant->group))<h5>{{ $participant->group }}</h5>@endif
+                <p>{{ trans_choice('t.views.participant_details.num_observations', $participant->observations, ['positive' => $participant->positive->count(), 'neutral' => $participant->neutral->count(), 'negative' => $participant->negative->count()])}}</p>
+
+                <table-observation-overview
+                    :users="{{ json_encode($course->users) }}"
+                    :participants="{{ json_encode([ $participant->observationCountsByUser() ]) }}"></table-observation-overview>
+
+                <a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id]) }}" class="btn btn-primary"><i class="fas fa-binoculars"></i> {{__('t.global.add_observation')}}</a>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col">
+                @foreach ($participant->participant_groups as $group)
+                    <a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $group->participants->implode('id',',')]) }}" class="btn btn-secondary my-1"><i class="fas fa-binoculars"></i> {{__($group->group_name)}}</a>
+                @endforeach
+            </div>
+        </div>
+
+    </b-card>
+
 
     @if ($participant->qualis()->count())
 
-        @component('includes.participant.qualis', ['participant' => $participant])@endcomponent
+        <b-card>
+            <template #header>{{__('t.views.participant_details.qualis.title')}}</template>
+
+            <responsive-table
+                :data="{{ json_encode($participant->qualis) }}"
+                :fields="[
+                    { label: $t('t.models.quali.name'), value: quali => quali.name, href: quali => routeUri('qualiContent.detail', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}) },
+                    @if($participant->qualis()->whereHas('requirements')->exists()){ label: $t('t.models.quali.requirement_progress'), slot: 'requirement-progress'},@endif
+                    @if($participant->qualis()->whereNotNull('user_id')->exists()){ label: $t('t.models.quali.user'), value: quali => quali.user ? quali.user.name : '' },@endif
+                ]"
+                :actions="{
+                    eye: quali => routeUri('qualiContent.detail', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}),
+                    edit: quali => routeUri('qualiContent.edit', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}),
+                }">
+
+                <template v-slot:requirement-progress="{ row: quali }">
+                    <requirement-progress v-if="quali.requirements.length" :requirements="quali.requirements"></requirement-progress>
+                </template>
+
+            </responsive-table>
+
+        </b-card>
 
     @endif
 
@@ -16,7 +71,42 @@
         @component('includes.participant.observations.filters', ['participant' => $participant, 'requirement' => $requirement, 'category' => $category])@endcomponent
 
         @if (count($observations))
-            @component('includes.participant.observations.list', ['observations' => $observations])@endcomponent
+
+            <responsive-table
+                :data="{{ json_encode($observations) }}"
+                :fields="[
+                    { label: $t('t.models.observation.content'), slot: 'observation-content' },
+                    { label: $t('t.models.observation.block'), value: observation => observation.block.blockname_and_number },
+                    { label: $t('t.models.observation.requirements'), slot: 'requirements' },
+                    { label: $t('t.models.observation.impression'), slot: 'impression' },
+                    { label: $t('t.models.observation.user'), value: observation => observation.user.name },
+                ]"
+                :actions="{
+                    edit: observation => routeUri('observation.edit', {course: {{ $course->id }}, observation: observation.id}),
+                    delete: observation => ({
+                        text: $t('t.views.participant_details.really_delete_observation'),
+                        route: ['observation.delete', {course: {{ $course->id }}, observation: observation.id}]
+                    })
+                }">
+
+                <template v-slot:observation-content="{ row: observation }">
+                    <observation-content :observation="observation"></observation-content>
+                </template>
+
+                <template v-slot:requirements="{ row: observation }">
+                    <template v-for="requirement in observation.requirements">
+                        <span class="white-space-normal badge" :class="requirement.mandatory ? 'badge-warning' : 'badge-info'">@{{ requirement.content }}</span>
+                    </template>
+                </template>
+
+                <template v-slot:impression="{ row: observation }">
+                    <span v-if="observation.impression === 0" class="badge badge-danger">@{{ $t('t.global.negative') }}</span>
+                    <span v-else-if="observation.impression === 2" class="badge badge-success">@{{ $t('t.global.positive') }}</span>
+                    <span v-else class="badge badge-secondary">@{{ $t('t.global.neutral') }}</span>
+                </template>
+
+            </responsive-table>
+
         @else
             {{__('t.views.participant_details.no_observations')}}
         @endif

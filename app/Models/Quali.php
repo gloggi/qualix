@@ -32,7 +32,7 @@ class Quali extends Model {
      *
      * @var array
      */
-    protected $with = ['quali_data'];
+    protected $with = ['quali_data', 'requirements', 'user'];
 
     /**
      * @var array

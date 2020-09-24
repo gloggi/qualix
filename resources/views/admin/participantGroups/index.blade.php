@@ -33,32 +33,20 @@
 
         @if (count($course->participantGroups))
 
-            @php
-                $fields = [
-                    __('t.models.participant_group.group_name') => function(\App\Models\ParticipantGroup $participantGroup) { return $participantGroup->group_name; },
-                    __('t.models.participant_group.participants') => function(\App\Models\ParticipantGroup $participantGroup) {
-                        return $participantGroup->participants->map(function ($item){
-                            $scout_name = $item['scout_name'];
-                            $group = $item['group'];
-                            return $group ? "$scout_name ($group)" : $scout_name;
-                        })->implode(', ');
-                    },
-                ];
-
-            @endphp
-            @component('components.responsive-table', [
-                'data' => $course->participantGroups,
-                'fields' => $fields,
-                'actions' => [
-                    'edit' => function(\App\Models\ParticipantGroup $participantGroup) use ($course) { return route('admin.participantGroups.edit', ['course' => $course->id, 'participantGroup' => $participantGroup->id]); },
-                    'delete' => function(\App\Models\ParticipantGroup $participantGroup) use ($course) { return [
-                        'text' => __('t.views.admin.participant_groups.really_delete', [ 'name' => $participantGroup->group_name]),
-                        'route' => ['admin.participantGroups.destroy', ['course' => $course->id, 'participantGroup' => $participantGroup->id]],
-                     ];},
-                ]
-            ])@endcomponent
-
-
+            <responsive-table
+                :data="{{ json_encode($course->participantGroups) }}"
+                :fields="[
+                    { label: $t('t.models.participant_group.group_name'), value: participantGroup => participantGroup.group_name },
+                    { label: $t('t.models.participant_group.group_name'), value: participantGroup => participantGroup.participant_names },
+                ]"
+                :actions="{
+                    edit: participantGroup => routeUri('admin.participantGroups.edit', {course: {{ $course->id }}, participantGroup: participantGroup.id}),
+                    delete: participantGroup => ({
+                        text: $t('t.views.admin.participant_groups.really_delete', participantGroup),
+                        route: ['admin.participantGroups.delete', {course: {{ $course->id }}, participantGroup: participantGroup.id}]
+                    })
+                }"
+            ></responsive-table>
 
         @else
 

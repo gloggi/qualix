@@ -25,6 +25,13 @@ class Observation extends Model
     protected $table = 'observations';
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['block', 'user', 'participants', 'requirements'];
+
+    /**
      * @var array
      */
     protected $fillable = ['user_id', 'impression', 'content'];

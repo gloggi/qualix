@@ -230,7 +230,7 @@ return array(
 				"new" => "Neue Teilnehmende",
 				"no_participants" => "Bisher sind keine Teilnehmende erfasst.",
 				"observations_on_participant" => "{0}Es ist keine Beobachtung damit verbunden.|{1}Damit verbunden ist eine Beobachtung, die mitgelöscht wird.|[2,*]Damit verbunden sind :count Beobachtungen, die mitgelöscht werden.",
-				"really_remove" => "Willst du :name wirklich aus deinem Kurs entfernen?",
+				"really_remove" => "Willst du :scout_name wirklich aus deinem Kurs entfernen?",
 				"remove_success" => "TN \":name\" erfolgreich aus dem Kurs entfernt.",
 			),
 			"participant_import" => array(
@@ -269,7 +269,7 @@ return array(
 				"menu_name" => "TN-Gruppen",
 				"new" => "Neue Teilnehmergruppe",
 				"no_participant_group" => "Bisher sind keine Teilnehmergruppen erfasst.",
-				"really_delete" => "Willst du die Teilnehmergruppe \":name\" wirklich löschen?",
+				"really_delete" => "Willst du die Teilnehmergruppe \":group_name\" wirklich löschen?",
 				"what_are_participant_groups" => array(
 					"answer" => "Teilnehmende können zu Gruppen hinzugefügt werden. Diese Gruppen stehen dann zur Schnellwahl bei Beobachtungen zu Verfügung.",
 					"question" => "Was sind Teilnehmergruppen?",

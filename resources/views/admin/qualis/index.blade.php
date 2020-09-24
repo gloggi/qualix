@@ -34,22 +34,18 @@
 
         @if (count($course->quali_datas))
 
-            @php
-                $fields = [
-                    __('t.models.quali.name') => function(\App\Models\QualiData $qualiData) { return $qualiData->name; },
-                ];
-            @endphp
-            @component('components.responsive-table', [
-                'data' => $course->quali_datas,
-                'fields' => $fields,
-                'actions' => [
-                    'edit' => function(\App\Models\QualiData $qualiData) use ($course) { return route('admin.qualis.edit', ['course' => $course->id, 'quali_data' => $qualiData->id]); },
-                    'delete' => function(\App\Models\QualiData $qualiData) use ($course) { return [
-                        'text' => __('t.views.admin.qualis.really_delete', ['name' => $qualiData->name]),
-                        'route' => ['admin.qualis.delete', ['course' => $course->id, 'quali_data' => $qualiData->id]],
-                     ]; },
-                ]
-            ])@endcomponent
+            <responsive-table
+                :data="{{ json_encode($course->quali_datas) }}"
+                :fields="[
+                    { label: $t('t.models.quali.name'), value: qualiData => qualiData.name },
+                ]"
+                :actions="{
+                    edit: qualiData => routeUri('admin.qualis.edit', {course: {{ $course->id }}, quali_data: qualiData.id}),
+                    delete: qualiData => ({
+                        text: $t('t.views.admin.qualis.really_delete', qualiData),
+                        route: ['admin.qualis.delete', {course: {{ $course->id }}, quali_data: qualiData.id}]
+                    })
+                }"></responsive-table>
 
         @else
 

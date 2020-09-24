@@ -7,28 +7,10 @@
 
         @if (count($participants))
 
-            @php
-                $columns = [
-                    __('t.models.observation.participants') => function(\App\Models\Participant $participant) use ($course) { return (new App\Util\HtmlString)->s('<a href="' . route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) . '">' . (($participant->image_url!=null) ? view('components.img',  ['src' => asset(Storage::url($participant->image_url)), 'classes' => ['avatar-small']]) : '') . ' ')->e($participant->scout_name)->s('</a>'); },
-                    __('t.global.total') => function(\App\Models\Participant $participant) { return count($participant->observations); },
-                ];
-                foreach ($course->users->all() as $user) {
-                    $columns[$user->name] = function($participant) use($user) {
-                        $count=count(array_filter($participant->observations->all(), function(\App\Models\Observation $observation) use($user) {
-                            return $observation->user->id === $user->id;
-                        }));
-                        return (new App\Util\HtmlString)->s('<div class="responsive-td-background ' . ($count >= 10 ? 'bg-success-light' : ($count < 5 ? 'bg-danger-light' : '')) . '">' . $count . '</div>');
-                    };
-                }
-            @endphp
-            @component('components.responsive-table', [
-                'data' => $participants,
-                'fields' => $columns,
-                'cellClass' => 'position-relative',
-                'actions' => [
-                    'binoculars' => function(\App\Models\Participant $participant) use ($course) { return route('observation.new', ['course' => $course->id, 'participant' => $participant->id]); },
-                ]
-            ])@endcomponent
+            <table-observation-overview
+                multiple
+                :users="{{ json_encode($course->users) }}"
+                :participants="{{ json_encode(collect($participants)->map->observationCountsByUser()) }}"></table-observation-overview>
 
         @else
 

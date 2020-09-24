@@ -204,7 +204,7 @@ return array(
 				"new" => "Nouveaux/nouvelles participant-e-s",
 				"no_participants" => "Pour l'instant, aucun-e participant-e saisi-e",
 				"observations_on_participant" => "{0}Aucune observation n'est liée.|{1}Une observation qui sera également supprimée est liée.|[2,*]:count observations qui seront également supprimées sont liées.",
-				"really_remove" => "Souhaites-tu réellement supprimer :name du cours?",
+				"really_remove" => "Souhaites-tu réellement supprimer :scout_name du cours?",
 				"remove_success" => "Le/la participant-e \":name\" a été supprimée du cours avec succès.",
 			),
 			"participant_import" => array(

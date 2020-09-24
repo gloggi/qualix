@@ -49,26 +49,21 @@
                     $blocks[] = ['type' => 'header', 'text' => $day[0]->block_date->formatLocalized(__('t.global.date_format'))];
                     $blocks = array_merge($blocks, $day);
                 }
-                $fields = [
-                    __('t.models.block.full_block_number') => function(\App\Models\Block $block) { return $block->full_block_number; },
-                    __('t.models.block.name') => function(\App\Models\Block $block) { return $block->name; },
-                    __('t.models.block.num_observations') => function(\App\Models\Block $block) { return count($block->observations); },
-                ];
-                if ($course->archived) {
-                    unset($fields[__('t.models.block.num_observations')]);
-                }
             @endphp
-            @component('components.responsive-table', [
-                'data' => $blocks,
-                'fields' => $fields,
-                'actions' => [
-                    'edit' => function(\App\Models\Block $block) use ($course) { return route('admin.block.edit', ['course' => $course->id, 'block' => $block->id]); },
-                    'delete' => function(\App\Models\Block $block) use ($course) { return [
-                        'text' => __('t.views.admin.blocks.really_delete', ['name' => $block->name]) . ($course->archived ? '' : ' ' . trans_choice('t.views.admin.blocks.observations_on_block', $block->observations)),
-                        'route' => ['admin.block.delete', ['course' => $course->id, 'block' => $block->id]],
-                     ];},
-                ]
-            ])@endcomponent
+            <responsive-table
+                :data="{{ json_encode($blocks) }}"
+                :fields="[
+                    { label: $t('t.models.block.full_block_number'), value: block => block.full_block_number },
+                    { label: $t('t.models.block.name'), value: block => block.name },
+                    @if(!$course->archived){ label: $t('t.models.block.num_observations'), value: block => block.num_observations },@endif
+                ]"
+                :actions="{
+                    edit: block => routeUri('admin.block.edit', {course: {{ $course->id }}, block: block.id}),
+                    delete: block => ({
+                        text: $t('t.views.admin.blocks.really_delete', block) @if(!$course->archived) + ' ' + $tc('t.views.admin.blocks.observations_on_block', block.num_observations)@endif,
+                        route: ['admin.block.delete', {course: {{ $course->id }}, block: block.id}]
+                    })
+                }"></responsive-table>
 
         @else
 

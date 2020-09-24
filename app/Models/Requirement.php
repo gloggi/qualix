@@ -11,6 +11,7 @@ namespace App\Models;
  * @property Observation[] $observations
  * @property Block[] $blocks
  * @property RequirementDetail[] $requirementDetails
+ * @property int $num_observations
  */
 class Requirement extends Model
 {
@@ -32,6 +33,13 @@ class Requirement extends Model
      * @var array
      */
     protected $casts = ['mandatory' => 'bool'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['num_observations'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -63,5 +71,14 @@ class Requirement extends Model
     public function requirementDetails()
     {
         return $this->hasMany('App\Models\RequirementDetail');
+    }
+
+    /**
+     * Get the number of observations connected to this category.
+     *
+     * @return integer
+     */
+    public function getNumObservationsAttribute() {
+        return $this->observations()->count();
     }
 }
