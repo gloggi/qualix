@@ -108,10 +108,12 @@ class TiptapFormatter {
     }
 
     protected function getAllContents() {
-        if (! $this->allContents) $this->allContents = collect(array_merge(
-            $this->qualiRequirements()->all(),
-            $this->qualiObservations()->all(),
-            $this->qualiContentNodes()->all()));
+        if (!$this->allContents) {
+            $this->allContents = collect(array_merge(
+                $this->qualiRequirements()->all(),
+                $this->qualiObservations()->all(),
+                $this->qualiContentNodes()->all()));
+        }
         return $this->allContents;
     }
 

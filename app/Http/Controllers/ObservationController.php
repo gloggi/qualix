@@ -128,12 +128,9 @@ class ObservationController extends Controller {
             $data = $request->validated();
             $observation->update($data);
 
-            $observation->participants()->detach();
-            $observation->participants()->attach(array_filter(explode(',', $data['participants'])));
-            $observation->requirements()->detach();
-            $observation->requirements()->attach(array_filter(explode(',', $data['requirements'])));
-            $observation->categories()->detach();
-            $observation->categories()->attach(array_filter(explode(',', $data['categories'])));
+            $observation->participants()->sync(array_filter(explode(',', $data['participants'])));
+            $observation->requirements()->sync(array_filter(explode(',', $data['requirements'])));
+            $observation->categories()->sync(array_filter(explode(',', $data['categories'])));
         });
 
         $request->session()->flash('alert-success', __('t.views.observations.edit_success'));

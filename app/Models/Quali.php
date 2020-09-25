@@ -55,13 +55,6 @@ class Quali extends Model {
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
-     */
-    public function course() {
-        return $this->hasOneThrough(Course::class, QualiData::class);
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function participant() {

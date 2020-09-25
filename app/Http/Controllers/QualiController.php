@@ -104,7 +104,7 @@ class QualiController extends Controller {
             $qualiData->qualis()->each(function (Quali $quali) use($requirements) {
                 $quali->requirements()->wherePivotNotIn('requirement_id', $requirements)->detach();
                 $order = $quali->highest_order_number + 1;
-                $quali->participant->course->requirements()
+                $quali->quali_data->course->requirements()
                     ->whereIn('id', $requirements)
                     ->whereNotIn('id', $quali->requirements()->select(['requirements.id']))
                     ->each(function ($requirement) use ($quali, &$order) {
