@@ -78,8 +78,8 @@
                             $block_name = $item['name'];
                             $block_number = $item['block_number'];
                             $day_number = $item['day_number'];
-                            $number = "$day_number.$block_number";
-                            return $number ? "($number) $block_name" : $block_name;
+                            $number = ($day_number && $block_number) ? "($day_number.$block_number) " : "";
+                            return $number.$block_name;
                         })->implode(', ');
 
                     },
