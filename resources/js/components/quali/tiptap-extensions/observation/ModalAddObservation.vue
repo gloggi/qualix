@@ -5,15 +5,18 @@
     size="xl"
     scrollable
     hide-footer>
-    <b-list-group>
-      <b-list-group-item
-        v-for="observation in observations"
-        :key="observation.id"
-        button
-        @click="select(observation.id)">
-        <observation-content :observation="observation"></observation-content>
-      </b-list-group-item>
-    </b-list-group>
+
+    <observation-list
+      :course-id="courseId"
+      :observations="observations"
+      :requirements="requirements"
+      :categories="categories"
+      show-content
+      show-block
+      show-user
+      pointer-cursor
+      @clickObservation="observation => select(observation.id)"></observation-list>
+
   </b-modal>
 </template>
 
@@ -27,6 +30,7 @@
       value: { type: Function, required: false },
       observations: { type: Array, required: true },
     },
+    inject: [ 'courseId', 'requirements', 'categories' ],
     computed: {
       addingObservation: {
         get() {

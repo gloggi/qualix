@@ -12,10 +12,12 @@
     <quali-editor
       ref="qualiContents"
       name="qualiContents"
+      :course-id="courseId"
       autofocus
       v-model="json"
       :observations="observations"
-      :requirements="requirements"></quali-editor>
+      :requirements="requirements"
+      :categories="categories"></quali-editor>
   </form-basic>
 </template>
 
@@ -29,9 +31,11 @@
     components: {FormBasic, RequirementProgress, QualiEditor},
     props: {
       action: {},
+      courseId: { type: String },
       quali: { type: Object, required: true },
       observations: { type: Array, default: () => [] },
       requirements: { type: Array, default: () => [] },
+      categories: { type: Array, default: () => [] },
     },
     data() {
       return {

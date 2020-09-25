@@ -39,6 +39,7 @@ export default {
     multiple: { type: Boolean, default: false },
     noOptions: { type: String, required: false },
     value: { type: String, default: '' },
+    selected: { type: [Array,Object], default: null },
     valueField: { type: String, default: 'id' },
     displayField: { type: String, default: 'label' },
     options: { type: Array, default: () => [] },
@@ -47,9 +48,9 @@ export default {
     showClear: { type: Boolean, default: false },
     placeholder: { type: String, default: '' }
   },
-  data: function() {
+  data() {
     return {
-      localValue: this.selectedOptions(this.value)
+      localValue: this.selected !== null ? this.selected : this.parse(this.value)
     }
   },
   computed: {
@@ -72,11 +73,18 @@ export default {
     }
   },
   methods: {
-    selectedOptions(value) {
+    parse(value) {
       if (this.multiple) {
         return value ? this.options.filter(el => value.split(',').includes('' + el[this.valueField])) : []
       } else {
         return value ? (this.options.find(el => '' + el[this.valueField] === value)) : null
+      }
+    },
+    selection(selected) {
+      if (this.multiple) {
+
+      } else {
+        return
       }
     },
     onSelect(option, id) {
@@ -84,13 +92,14 @@ export default {
         // Right after this select event there will be an input event which includes the group in the selected elements.
         // We wait for one tick until that input event has gone, and then overwrite the value of the multiselect.
         this.$nextTick(() => {
-          this.localValue = this.selectedOptions(option[this.valueField])
+          this.localValue = this.parse(option[this.valueField])
           this.onInput(this.localValue, id)
         })
       }
     },
     onInput(val, id) {
       this.$emit('input', this.formValue, id)
+      this.$emit('update:selected', this.localValue, id)
       // Don't auto-submit if a group was selected.
       // One tick later there will be another input event which will include the group contents.
       if (this.submitOnInput && !this.isGroup(val)) {
@@ -109,8 +118,11 @@ export default {
   },
   watch: {
     value () {
-      this.localValue = this.selectedOptions(this.value)
-    }
+      this.localValue = this.selected !== null ? this.selected : this.parse(this.value)
+    },
+    selected () {
+      this.localValue = this.selected !== null ? this.selected : this.parse(this.value)
+    },
   },
   mounted () {
     this.$emit('input', this.formValue, this.$attrs['id'])

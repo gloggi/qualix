@@ -68,44 +68,25 @@
     <b-card>
         <template #header>{{__('t.views.participant_details.existing_observations')}}</template>
 
-        @component('includes.participant.observations.filters', ['participant' => $participant, 'requirement' => $requirement, 'category' => $category])@endcomponent
-
         @if (count($observations))
 
-            <responsive-table
-                :data="{{ json_encode($observations) }}"
-                :fields="[
-                    { label: $t('t.models.observation.content'), slot: 'observation-content' },
-                    { label: $t('t.models.observation.block'), value: observation => observation.block.blockname_and_number },
-                    { label: $t('t.models.observation.requirements'), slot: 'requirements' },
-                    { label: $t('t.models.observation.impression'), slot: 'impression' },
-                    { label: $t('t.models.observation.user'), value: observation => observation.user.name },
-                ]"
+            <observation-list
+                course-id="{{ $course->id }}"
+                :observations="{{ json_encode($observations) }}"
+                :requirements="{{ json_encode($course->requirements) }}"
+                :categories="{{ json_encode($course->categories) }}"
+                show-content
+                show-block
+                show-requirements
+                show-impression
+                show-user
                 :actions="{
                     edit: observation => routeUri('observation.edit', {course: {{ $course->id }}, observation: observation.id}),
                     delete: observation => ({
                         text: $t('t.views.participant_details.really_delete_observation'),
                         route: ['observation.delete', {course: {{ $course->id }}, observation: observation.id}]
                     })
-                }">
-
-                <template v-slot:observation-content="{ row: observation }">
-                    <observation-content :observation="observation"></observation-content>
-                </template>
-
-                <template v-slot:requirements="{ row: observation }">
-                    <template v-for="requirement in observation.requirements">
-                        <span class="white-space-normal badge" :class="requirement.mandatory ? 'badge-warning' : 'badge-info'">@{{ requirement.content }}</span>
-                    </template>
-                </template>
-
-                <template v-slot:impression="{ row: observation }">
-                    <span v-if="observation.impression === 0" class="badge badge-danger">@{{ $t('t.global.negative') }}</span>
-                    <span v-else-if="observation.impression === 2" class="badge badge-success">@{{ $t('t.global.positive') }}</span>
-                    <span v-else class="badge badge-secondary">@{{ $t('t.global.neutral') }}</span>
-                </template>
-
-            </responsive-table>
+                }"></observation-list>
 
         @else
             {{__('t.views.participant_details.no_observations')}}

@@ -11,14 +11,14 @@
     </b-thead>
     <b-tbody>
       <b-tr v-for="(row, rowIdx) in data" :key="row.id">
-        <th v-if="isHeaderRow(row)" :colspan="numCols">{{ row.text }}</th>
+        <th v-if="isHeaderRow(row)" :colspan="numCols"  @click="onClick(row, null, rowIdx, 0)">{{ row.text }}</th>
         <template v-else>
           <template v-for="(col, idx) in fields">
-            <td v-if="isSlotCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label"><slot :name="col.slot" :row="row"></slot></td>
-            <td v-else-if="isImageCol(col) && isLinkCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label"><a :href="call(col.href, row)"><img v-if="call(col.value, row)" :src="call(col.value, row)" class="avatar-small"/></a></td>
-            <td v-else-if="isImageCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label"><img v-if="call(col.value, row)" :src="call(col.value, row)" class="avatar-small"/></td>
-            <td v-else-if="isLinkCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label"><a :href="call(col.href, row)">{{ call(col.value, row) }}</a></td>
-            <td v-else :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label">{{ call(col.value, row) }}</td>
+            <td v-if="isSlotCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label" @click="onClick(row, col, rowIdx, idx)"><slot :name="col.slot" :row="row"></slot></td>
+            <td v-else-if="isImageCol(col) && isLinkCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label" @click="onClick(row, col, rowIdx, idx)"><a :href="call(col.href, row)"><img v-if="call(col.value, row)" :src="call(col.value, row)" class="avatar-small"/></a></td>
+            <td v-else-if="isImageCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label" @click="onClick(row, col, rowIdx, idx)"><img v-if="call(col.value, row)" :src="call(col.value, row)" class="avatar-small"/></td>
+            <td v-else-if="isLinkCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label" @click="onClick(row, col, rowIdx, idx)"><a :href="call(col.href, row)">{{ call(col.value, row) }}</a></td>
+            <td v-else :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label" @click="onClick(row, col, rowIdx, idx)">{{ call(col.value, row) }}</td>
           </template>
           <td v-if="showActions" class="actions">
             <template v-for="(action, name) in actions">
@@ -88,6 +88,9 @@ export default {
     calculateCellClass(cellValue, row, colLabel, rowIdx, colIdx) {
       return this.call(this.cellClass, { cellValue, row, colLabel, rowIdx, colIdx })
     },
+    onClick(...args) {
+      return this.$emit('clickCell', ...args)
+    }
   }
 }
 </script>

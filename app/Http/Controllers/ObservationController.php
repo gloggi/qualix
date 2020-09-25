@@ -74,23 +74,18 @@ class ObservationController extends Controller {
     }
 
     /**
-     * Stores the active filters and the participant which the user was just looking at into the session,
-     * for restoring the same view later.
+     * Stores the participant which the user was just looking at into the session, for restoring the same view later.
      *
      * @param Request $request
      */
     protected function rememberPreviouslyActiveView(Request $request) {
-        $previousQueryParams = [];
-        parse_str(parse_url(URL::previous(), PHP_URL_QUERY), $previousQueryParams);
-        $request->session()->flash('query_params_before_edit', $request->session()->get('query_params_before_edit', $previousQueryParams));
         $returnTo = $this->extractPathParameter(URL::previous(), 'participants.detail', 'participant');
         $request->session()->flash('participant_before_edit', $request->session()->get('participant_before_edit', $returnTo));
     }
 
     /**
-     * Redirects the user back to the view that was remembered in the session previously, restoring the
-     * filters. If the previously viewed participant is not in the passed options, falls back to the first
-     * viable option.
+     * Redirects the user back to the view that was remembered in the session previously. If the previously viewed
+     * participant is not in the passed options, falls back to the first viable option.
      *
      * @param Request $request
      * @param Course $course
@@ -103,9 +98,7 @@ class ObservationController extends Controller {
             $returnTo = $returnOptions->first();
         }
 
-        return Redirect::to(route('participants.detail', array_merge(
-            $request->session()->get('query_params_before_edit', []), ['course' => $course->id, 'participant' => $returnTo]
-        )));
+        return Redirect::to(route('participants.detail', ['course' => $course->id, 'participant' => $returnTo]));
     }
 
     /**
