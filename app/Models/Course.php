@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property int $id
@@ -68,6 +69,18 @@ class Course extends Model {
         return $this->hasMany('App\Models\ObservationOrder', 'course_id');
     }
 
+    public function observationOrdersPerUserAndPerBlock() {
+        return $this->participants()->select(['users.id as user_id', 'observation_order_blocks.block_id as block_id', DB::raw('COUNT(observations_participants.id) as observation_count'), 'participants.*'])->distinct()
+            ->join('observation_order_participants', 'participants.id', 'observation_order_participants.participant_id')
+            ->join('observation_order_users', 'observation_order_participants.observation_order_id', 'observation_order_users.observation_order_id')
+            ->join('observation_order_blocks', 'observation_order_participants.observation_order_id', 'observation_order_blocks.observation_order_id')
+            ->join('users', 'users.id', 'observation_order_users.user_id')
+            ->join('trainers', 'users.id', 'trainers.user_id')
+            ->join('observations_participants', 'participants.id', 'observations_participants.participant_id')
+            ->mergeConstraintsFrom($this->users()->getQuery())->get()
+            ->groupBy('user_id')
+            ->map->groupBy('block_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

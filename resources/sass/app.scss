@@ -98,6 +98,12 @@
     }
 }
 
+.text-overflow-ellipsis{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .bg-success-light {
     background-color: #d7f3e3;
 }

@@ -65,63 +65,50 @@ class Block extends Model {
         return $this->hasMany('App\Models\Observation');
     }
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function observationsWithParticipants(){
+
+        return $this->hasMany('App\Models\Observation')->with('participants');
+
+    }
+
+
+    public function observationsMultipleParticipantsId(){
+
+        return $this->hasMany('App\Models\Observation')->with('participants:id');
+
+
+    }
+    public function observationsMultipleParticipants(){
+        return $this->observationsMultipleParticipantsId();
+
+        foreach ($o as $obs){
+            $obj=array_push($obs->participants->map(function ($o){
+                return $o->pluck('id');
+            }));
+        }
+        return $obj;
+   $obj->participants->map(function ($participant){return $participant->pluck('id');});
+    }
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function observationOrders() {
         return $this->belongsToMany('App\Models\ObservationOrder', 'observation_order_blocks')->with('users', 'participants');
     }
 
-    public function observationOrdersUser(){
-        $block = $this;
-        return $this->course->users()->mapWithKeys(function (User $user) use($block) {
-            return [ $user->id =>
-                $user->observationOrders()->whereIn('id', $block->observationOrders()->pluck('id'))->get()->participants
-            ];
-        });
 
-        $obj = $this->observationOrders->map(
-            function ($order){
-                return (object) $order->users->pluck('id', 'name');
-            })->collapse();
-        $trainers= "";
-        $users = $this->observationOrders->map(
-            function ($observationOrder){
-                $users = array();
-                foreach ($observationOrder->users as $user){
-                    $users[]= ['id' => $user->id];
-                }
-                return $users;
-
-            })->collapse()->unique();
-
-        $obj = $this->observationOrders->map(
-            function ( $observationOrder){
-                $users = array();
-                foreach ($observationOrder->users as $user){
-                    $users[]= ['id' => $user->id, 'name' => $user->name, 'participants' => $observationOrder->participants->pluck('id')];
-                }
-                return $users;
-                /*
-                $test = ['id' => $observationOrder->users->pluck('id'), 'name' =>$observationOrder->users->pluck('name')
-                ];
-                return $test;
-                */
-
-            })->collapse();
-
-
-
-
-
-        return $this->observationOrders;
-        //$trainers = array_unique (array_merge ($array1, $array2));
-
-    }
-    public function observationOrdersperUser(){
-        $user = $this->observationOrdersUser();
-
-
-        return $user;
+    public function observationOrdersPerUser() {
+        return $this->course->participants()->select(['users.id as user_id', 'participants.*'])->distinct()
+            ->join('observation_order_participants', 'participants.id', 'observation_order_participants.participant_id')
+            ->join('observation_order_users', 'observation_order_participants.observation_order_id', 'observation_order_users.observation_order_id')
+            ->join('observation_order_blocks', 'observation_order_participants.observation_order_id', 'observation_order_blocks.observation_order_id')
+            ->join('users', 'users.id', 'observation_order_users.user_id')
+            ->join('trainers', 'users.id', 'trainers.user_id')
+            ->mergeConstraintsFrom($this->course->users()->getQuery())
+            ->where('observation_order_blocks.block_id', $this->id)->get()
+            ->groupBy('user_id');
     }
 
     /**
