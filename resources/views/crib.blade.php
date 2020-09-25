@@ -18,6 +18,7 @@
                 */
                 $trainerId = Auth::id();
                 $trainerObservationOrders = $course->observationOrdersPerUserAndPerBlock()[$trainerId];
+                $neededObs =1;
             @endphp
 
             @foreach($days as $day)
@@ -59,7 +60,7 @@
                                                             <div class="card rounded-circle mb-0 position-relative">
                                                                 <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
                                                                 <div class="card-img-overlay w-100 p-0 d-flex flex-column ">
-                                                                    <div class="btn btn-danger pt-0 pb-0 mt-1 w-100 mt-auto text-overflow-ellipsis">{{$participant->scout_name }}</div>
+                                                                    <div class="btn {{$participant->observation_count >= $neededObs ? 'btn-success' : 'btn-danger'}} pt-0 pb-0 mt-1 w-100 mt-auto text-overflow-ellipsis">{{$participant->scout_name }}</div>
 
                                                                 </div>
                                                             </div>
