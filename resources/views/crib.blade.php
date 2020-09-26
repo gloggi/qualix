@@ -52,7 +52,7 @@
                                         @endif
                                     </b-list-group-item>
                                     <b-list-group-item tag="h5" class="border-0 mb-0 col-sm-12 col-md-6">
-                                        @if($trainerObservationOrders[$block->id])
+                                        @if(isset($trainerObservationOrders[$block->id]))
                                             <div class="row">
                                                 @foreach($trainerObservationOrders[$block->id] as $participant)
                                                     <div class="col-6 col-sm-4 col-md-4 col-lg-3 mb-1 text-center">
@@ -67,7 +67,6 @@
 
                                                         </a>
                                                     </div>
-                                                    {{$participant->observation_count}}
                                                 @endforeach
                                             </div>
                                         @endif

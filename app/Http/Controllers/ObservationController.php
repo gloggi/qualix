@@ -54,6 +54,8 @@ class ObservationController extends Controller {
                       ->__('t.views.observations.back_to_participant', ['name' => $participant->scout_name])
                       ->s(' <i class="fas fa-arrow-right"></i></a>');
             }
+
+
             $request->session()->flash('alert-success', $flash);
         });
 

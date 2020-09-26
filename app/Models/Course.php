@@ -74,27 +74,33 @@ class Course extends Model {
 
     public function observationOrdersPerUserAndPerBlock() {
         if (!$this->observationAssignments) {
-            $query = $this->participants()->select([
+            $observationAssignmentsQuery = ObservationOrder::select([
                 'users.id as user_id',
                 'observation_order_blocks.block_id as block_id',
-                DB::raw('COUNT(observations_participants.observation_id) as observation_count'),
+                DB::raw('COUNT(DISTINCT observations.id) as observation_count'),
                 'participants.id as participant_id'
             ])->distinct()
-                ->join('observation_order_participants', 'participants.id', 'observation_order_participants.participant_id')
-                ->join('observation_order_users', 'observation_order_participants.observation_order_id', 'observation_order_users.observation_order_id')
-                ->join('observation_order_blocks', 'observation_order_participants.observation_order_id', 'observation_order_blocks.observation_order_id')
+                ->join('observation_order_participants', 'observation_orders.id', 'observation_order_participants.observation_order_id')
+                ->join('observation_order_users', 'observation_orders.id', 'observation_order_users.observation_order_id')
+                ->join('observation_order_blocks', 'observation_orders.id', 'observation_order_blocks.observation_order_id')
                 ->join('users', 'users.id', 'observation_order_users.user_id')
-                ->join('trainers', 'users.id', 'trainers.user_id')
+                ->join('participants', 'participants.id', 'observation_order_participants.participant_id')
                 ->leftJoin('observations_participants', 'participants.id', 'observations_participants.participant_id')
+                ->leftJoin('observations', function($join) {
+                    $join->on('observations.id', 'observations_participants.observation_id');
+                    $join->on('observations.block_id', 'observation_order_blocks.block_id');
+                    $join->on('observations.user_id', 'users.id');
+                })
+                ->join('trainers', 'users.id', 'trainers.course_id')
                 ->mergeConstraintsFrom($this->users()->getQuery())
-                ->groupBy('user_id', 'block_id', 'participants.id');
+                ->groupBy('user_id', 'block_id', 'participant_id');
 
             $this->observationAssignments = $this->participants()->select([
                 'query.user_id as user_id',
                 'query.block_id as block_id',
                 'query.observation_count as observation_count',
                 'participants.*'
-            ])->joinSub($query, 'query', function (JoinClause $join) {
+            ])->joinSub($observationAssignmentsQuery, 'query', function ($join) {
                 $join->on('participants.id', 'query.participant_id');
             })->get()
                 ->groupBy('user_id')
