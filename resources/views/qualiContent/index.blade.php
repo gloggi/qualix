@@ -65,7 +65,12 @@
             </div>
         @endif
 
-        <quali-editor :readonly="true" name="" :value="{{ json_encode($quali->contents) }}" :observations="{{ json_encode($observations) }}" :requirements="{{ json_encode($quali->requirements) }}"></quali-editor>
+        <quali-editor
+            readonly
+            name=""
+            :value="{{ json_encode($quali->contents) }}"
+            :observations="{{ json_encode($observations) }}"
+            :requirements="{{ json_encode($quali->requirements) }}"></quali-editor>
     </b-card>
 
 @endsection

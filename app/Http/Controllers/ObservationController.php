@@ -135,7 +135,7 @@ class ObservationController extends Controller {
 
         $request->session()->flash('alert-success', __('t.views.observations.edit_success'));
 
-        return $this->redirectToPreviouslyActiveView($request, $course, $observation->participants()->pluck('id'));
+        return $this->redirectToPreviouslyActiveView($request, $course, $observation->participants()->pluck('participants.id'));
     }
 
     /**

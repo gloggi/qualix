@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class AddQualis extends Migration {
@@ -31,13 +32,23 @@ class AddQualis extends Migration {
             $table->unique(['quali_data_id', 'participant_id']);
         });
 
-        Schema::create('quali_observations', function (Blueprint $table) {
+
+        Schema::table('observations_participants', function (Blueprint $table) {
+            $table->unique(['observation_id','participant_id']);
+            $table->dropPrimary();
+        });
+
+        Schema::table('observations_participants', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->integer('observation_id');
+        });
+
+        Schema::create('quali_observations_participants', function (Blueprint $table) {
+            $table->integer('id', true);
+            $table->integer('participant_observation_id');
             $table->integer('quali_id');
             $table->integer('order');
-            $table->foreign('observation_id', 'fk_quali_observations_observation_id')->references('id')->on('observations')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('quali_id', 'fk_quali_observations_quali_id')->references('id')->on('qualis')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('participant_observation_id', 'fk_quali_observations_participants_participant_observation_id')->references('id')->on('observations_participants')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('quali_id', 'fk_quali_observations_participants_quali_id')->references('id')->on('qualis')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
 
         Schema::create('quali_content_nodes', function (Blueprint $table) {
@@ -70,7 +81,15 @@ class AddQualis extends Migration {
     public function down() {
         Schema::drop('quali_requirements');
         Schema::drop('quali_content_nodes');
-        Schema::drop('quali_observations');
+        Schema::drop('quali_participant_observations');
+        Schema::table('observations_participants', function (Blueprint $table) {
+            $table->dropPrimary();
+        });
+        Schema::table('observations_participants', function (Blueprint $table) {
+            $table->dropColumn('id');
+            $table->dropUnique('observations_participants_observation_id_participant_id_unique');
+            $table->primary(['observation_id','participant_id']);
+        });
         Schema::drop('qualis');
         Schema::drop('quali_datas');
     }

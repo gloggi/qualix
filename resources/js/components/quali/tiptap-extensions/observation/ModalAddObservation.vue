@@ -15,7 +15,7 @@
       show-block
       show-user
       pointer-cursor
-      @clickObservation="observation => select(observation.id)"></observation-list>
+      @clickObservation="observation => select(observation.pivot.id)"></observation-list>
 
   </b-modal>
 </template>

@@ -30,7 +30,7 @@
   inject: [ 'observations' ],
   computed: {
     observation() {
-      const observation = this.observations.find(observation => observation.id === this.node.attrs.id)
+      const observation = this.observations.find(observation => observation.pivot.id === this.node.attrs.id)
       if (!observation) {
         this.remove()
       }

@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Exceptions\ObservationNotFoundException;
+use App\Exceptions\ParticipantObservationNotFoundException;
 use App\Exceptions\RequirementNotFoundException;
 use App\Exceptions\RequirementsOutdatedException;
-use App\Models\Observation;
+use App\Models\ParticipantObservation;
 use App\Models\Quali;
 use App\Models\QualiContentNode;
 use App\Models\Requirement;
@@ -58,16 +58,16 @@ class TiptapFormatter {
     public function applyToQuali(array $tiptap) {
         $this->checkRequirementsAreUpToDate($tiptap);
 
-        [$requirements, $observations, $contentNodes] = $this->nodesToModels($this->getNodes($tiptap));
-        $requirements = $requirements->mapWithKeys(function($requirement) {
+        [$requirements, $participantObservations, $contentNodes] = $this->nodesToModels($this->getNodes($tiptap));
+        $requirements = $requirements->mapWithKeys(function(Requirement $requirement) {
             return [$requirement->id => ['passed' => $requirement->pivot->passed, 'order' => $requirement->pivot->order]];
-        });
-        $observations = $observations->mapWithKeys(function($observation) {
-            return [$observation->id => ['order' => $observation->pivot->order]];
         });
 
         $this->quali->requirements()->sync($requirements);
-        $this->quali->observations()->sync($observations);
+        $this->quali->participant_observations()->detach();
+        $participantObservations->each(function(ParticipantObservation $participantObservation) {
+            $this->quali->participant_observations()->attach($participantObservation->id, ['order' => $participantObservation->order]);
+        });
         $this->quali->contentNodes()->delete();
         $this->quali->contentNodes()->createMany($contentNodes);
     }
@@ -75,9 +75,9 @@ class TiptapFormatter {
     public function nodesToModels(Collection $nodes) {
         $order = 0;
         $requirements = [];
-        $observations = [];
+        $participantObservations = [];
         $contentNodes = [];
-        $nodes->each(function($node) use(&$order, &$requirements, &$observations, &$contentNodes) {
+        $nodes->each(function($node) use(&$order, &$requirements, &$participantObservations, &$contentNodes) {
             switch($node['type']) {
                 case 'requirement':
                     /** @var Requirement|null $requirement */
@@ -88,10 +88,10 @@ class TiptapFormatter {
                     $requirements[] = $requirement;
                     break;
                 case 'observation':
-                    $observation = $this->quali->participant->observations()->find(data_get($node, 'attrs.id'));
-                    if (!$observation) throw new ObservationNotFoundException();
-                    $observation->pivot->order = $order;
-                    $observations[] = $observation;
+                    $participantObservation = $this->quali->participant->participant_observations()->find(data_get($node, 'attrs.id'));
+                    if (!$participantObservation) throw new ParticipantObservationNotFoundException();
+                    $participantObservation->order = $order;
+                    $participantObservations[] = $participantObservation;
                     break;
                 default:
                     $contentNodes[] = [ 'json' => json_encode($node), 'order' => $order ];
@@ -99,7 +99,7 @@ class TiptapFormatter {
             }
             $order++;
         });
-        return [collect($requirements), collect($observations), collect($contentNodes)];
+        return [collect($requirements), collect($participantObservations), collect($contentNodes)];
     }
 
     public static function createContentNodeJSON($paragraphText) {
@@ -177,12 +177,12 @@ class TiptapFormatter {
      * @return Collection
      */
     protected function qualiObservations() {
-        return $this->quali->observations->map(function(Observation $observation) {
+        return $this->quali->participant_observations->map(function(ParticipantObservation $participantObservation) {
             return [
-                'order' => $observation->pivot->order,
+                'order' => $participantObservation->pivot->order,
                 'type' => 'observation',
                 'attrs' => [
-                    'id' => $observation->id,
+                    'id' => $participantObservation->id,
                 ]
             ];
         });

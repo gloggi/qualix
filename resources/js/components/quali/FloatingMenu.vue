@@ -1,19 +1,19 @@
 <template>
   <div ref="menu" class="editor__floating-menu" :class="{ 'is-active': menu.isActive }">
-    <button-add v-if="availableObservations.length" @click="addObservation = commands.observation">{{ $t('t.models.observation.one') }}</button-add>
-    <modal-add-observation :observations="availableObservations" v-model="addObservation"></modal-add-observation>
+    <button-add v-if="observations.length" @click="addObservation = commands.observation">{{ $t('t.models.observation.one') }}</button-add>
+    <modal-add-observation :observations="observations" v-model="addObservation"></modal-add-observation>
   </div>
 </template>
 
 <script>
-import ModalAddObservation from "./tiptap-extensions/observation/ModalAddObservation"
-import ButtonAdd from "./ButtonAdd"
+  import ModalAddObservation from "./tiptap-extensions/observation/ModalAddObservation"
+  import ButtonAdd from "./ButtonAdd"
 
-export default {
+  export default {
   name: 'floating-menu',
   components: {ModalAddObservation, ButtonAdd},
   props: {
-    availableObservations: { type: Array, default: [] },
+    observations: { type: Array, default: [] },
     readonly: { type: Boolean, default: false },
     commands: { type: Object, required: true },
     menu: { type: Object, required: true },

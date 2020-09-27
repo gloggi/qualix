@@ -4,7 +4,7 @@
       <strong>{{ errorMessage }}</strong>
     </div>
     <editor-floating-menu v-if="!readonly" :editor="editor" v-slot="{ commands, menu }">
-      <floating-menu :available-observations="availableObservations" :readonly="readonly" :commands="commands" :menu="menu"/>
+      <floating-menu :observations="observations" :readonly="readonly" :commands="commands" :menu="menu"/>
     </editor-floating-menu>
     <editor-content class="editor-content" :class="{ readonly }" :editor="editor" />
     <input-hidden v-if="name" :value="formValue" :name="name"></input-hidden>
@@ -13,12 +13,12 @@
 
 <script>
 import {get} from 'lodash'
-  import Input from '../../mixins/input'
-  import {Editor, EditorContent, EditorFloatingMenu} from 'tiptap'
-  import {History} from 'tiptap-extensions'
-  import Observation from './tiptap-extensions/observation/NodeObservation'
-  import Requirement from './tiptap-extensions/requirement/NodeRequirement'
-  import InputHidden from "../form/InputHidden"
+import Input from '../../mixins/input'
+import {Editor, EditorContent, EditorFloatingMenu} from 'tiptap'
+import {History} from 'tiptap-extensions'
+import Observation from './tiptap-extensions/observation/NodeObservation'
+import Requirement from './tiptap-extensions/requirement/NodeRequirement'
+import InputHidden from "../form/InputHidden"
 import FloatingMenu from "./FloatingMenu"
 
 export default {
@@ -58,14 +58,6 @@ export default {
   computed: {
     formValue() {
       return JSON.stringify(this.currentValue)
-    },
-    usedObservations() {
-      return this.currentValue.content
-        .filter(node => node.type === 'observation')
-        .map(observation => observation.attrs.id)
-    },
-    availableObservations() {
-      return this.observations.filter(observation => !this.usedObservations.includes(observation.id))
     }
   },
   provide() {

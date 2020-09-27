@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
  * @property Participant $participant
  * @property User|null $user
  * @property Requirement[] $requirements
- * @property Observation[] $observations
+ * @property ParticipantObservation[] $participant_observations
  * @property QualiContentNode[] $contentNodes
  * @property int $highest_order_number
  * @property Collection $contents
@@ -78,8 +78,8 @@ class Quali extends Model {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function observations() {
-        return $this->belongsToMany(Observation::class, 'quali_observations')->withPivot('order')->orderBy('quali_observations.order');
+    public function participant_observations() {
+        return $this->belongsToMany(ParticipantObservation::class, 'quali_observations_participants')->withPivot('order')->with('observation')->orderBy('quali_observations_participants.order');
     }
 
     /**

@@ -55,6 +55,13 @@ class Participant extends Model {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    public function participant_observations() {
+        return $this->hasMany(ParticipantObservation::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function qualis() {
         return $this->hasMany(Quali::class);
     }

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\ObservationNotFoundException;
+use App\Exceptions\ParticipantObservationNotFoundException;
 use App\Exceptions\RequirementNotFoundException;
+use App\Exceptions\RequirementsOutdatedException;
 use App\Http\Requests\QualiContentRequest;
 use App\Models\Course;
 use App\Models\Participant;
 use App\Models\Quali;
-use App\Exceptions\RequirementsOutdatedException;
-use App\Services\TiptapFormatter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +29,7 @@ class QualiContentController extends Controller {
         return view('qualiContent.index', [
             'participant' => $participant,
             'quali' => $quali,
-            'observations' => $participant->observations()->with(['block', 'participants'])->get(),
+            'observations' => $participant->observations()->with(['block', 'participants'])->withPivot('id')->get(),
         ]);
     }
 
@@ -45,7 +44,7 @@ class QualiContentController extends Controller {
         return view('qualiContent.edit', [
             'participant' => $participant,
             'quali' => $quali,
-            'observations' => $participant->observations()->with(['block', 'participants'])->get(),
+            'observations' => $participant->observations()->with(['block', 'participants'])->withPivot('id')->get(),
         ]);
     }
 
@@ -69,7 +68,7 @@ class QualiContentController extends Controller {
                 throw ValidationException::withMessages(['qualiContents' => trans('t.views.quali_content.error_requirements_changed')]);
             } catch (RequirementNotFoundException $e) {
                 throw ValidationException::withMessages(['qualiContents' => trans('t.views.quali_content.error_requirement_not_found')]);
-            } catch (ObservationNotFoundException $e) {
+            } catch (ParticipantObservationNotFoundException $e) {
                 throw ValidationException::withMessages(['qualiContents' => trans('t.views.quali_content.error_observation_not_found')]);
             }
         });
