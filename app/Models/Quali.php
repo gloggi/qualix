@@ -45,7 +45,7 @@ class Quali extends Model {
      *
      * @var array
      */
-    protected $appends = ['name', 'contents'];
+    protected $appends = ['name', 'contents', 'display_name'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -104,6 +104,14 @@ class Quali extends Model {
      */
     public function setNameAttribute($name) {
         $this->quali_data->attributes['name'] = $name;
+    }
+
+    /**
+     * Display name of the quali including the participant's name.
+     * @return string
+     */
+    public function getDisplayNameAttribute() {
+        return trans('t.models.quali.display_name', [ 'quali_name' => $this->getNameAttribute(), 'participant_name' => $this->participant->scout_name ]);
     }
 
     public function getContentsAttribute() {

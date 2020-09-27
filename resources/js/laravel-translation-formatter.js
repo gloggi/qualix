@@ -1,4 +1,4 @@
-import {isEmpty, upperCase, upperFirst, size} from 'lodash'
+import {isEmpty, upperCase, upperFirst} from 'lodash'
 
 export default class LaravelTranslationFormatter {
   constructor (options = {}) {

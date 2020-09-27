@@ -14,7 +14,10 @@ use Illuminate\Support\Collection;
  * @property Requirement[] $requirements
  * @property Category[] $categories
  * @property Collection $participants
+ * @property QualiData[] $quali_datas
+ * @property Quali[] $qualis
  * @property boolean $archived
+ * @property array $qualis_using_observations
  */
 class Course extends Model {
     /**
@@ -83,5 +86,29 @@ class Course extends Model {
      */
     public function quali_datas() {
         return $this->hasMany(QualiData::class)->orderBy('name');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function qualis() {
+        return $this->hasManyThrough(Quali::class, QualiData::class);
+    }
+
+    /**
+     * Get the names of all Qualis that contain this observation.
+     *
+     * @return array
+     */
+    public function getQualisUsingObservationsAttribute() {
+        return $this->qualis()
+            ->select(['qualis.*', 'observations_participants.observation_id as observation_id'])
+            ->distinct()
+            ->join('quali_observations_participants', 'qualis.id', 'quali_observations_participants.quali_id')
+            ->join('observations_participants', 'observations_participants.id', 'quali_observations_participants.participant_observation_id')
+            ->get()
+            ->mapToGroups(function(Quali $quali) {
+                return [$quali->observation_id => $quali->display_name];
+            })->all();
     }
 }

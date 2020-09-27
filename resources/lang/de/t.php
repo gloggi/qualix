@@ -97,6 +97,7 @@ return array(
 			"participants" => "Teilnehmer",
 		),
 		"quali" => array(
+			"display_name" => ":quali_name :participant_name",
 			"name" => "Titel",
 			"participant" => "TN",
 			"participants" => "TN",
@@ -403,6 +404,7 @@ return array(
 				"requirements_passed" => ":count erfüllt",
 				"title" => "Qualis",
 			),
+			"qualis_using_observation" => "{0}|{1} Folgendes Quali verwendet diese Beobachtung: :qualis|[2,*] Die folgenden :count Qualis verwenden diese Beobachtung: :qualis",
 			"really_delete_observation" => "Willst du diese Beobachtung wirklich löschen?",
 			"title" => "TN Details",
 		),

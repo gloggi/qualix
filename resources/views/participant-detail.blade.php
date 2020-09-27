@@ -70,7 +70,8 @@
 
         @if (count($observations))
 
-            <observation-list
+            <participant-detail-observation-list
+                :qualis-using-observations="{{ json_encode($qualis_using_observations) }}"
                 course-id="{{ $course->id }}"
                 :observations="{{ json_encode($observations) }}"
                 :requirements="{{ json_encode($course->requirements) }}"
@@ -79,14 +80,7 @@
                 show-block
                 show-requirements
                 show-impression
-                show-user
-                :actions="{
-                    edit: observation => routeUri('observation.edit', {course: {{ $course->id }}, observation: observation.id}),
-                    delete: observation => ({
-                        text: $t('t.views.participant_details.really_delete_observation'),
-                        route: ['observation.delete', {course: {{ $course->id }}, observation: observation.id}]
-                    })
-                }"></observation-list>
+                show-user></participant-detail-observation-list>
 
         @else
             {{__('t.views.participant_details.no_observations')}}
