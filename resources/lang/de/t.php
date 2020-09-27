@@ -182,11 +182,11 @@ return array(
 			"course_settings" => array(
 				"archive" => "Kurs archivieren…",
 				"archive_confirm" => "Definitiv archivieren",
-				"archive_description" => "Dies wird alle TN und Beobachtungen im Kurs komplett und dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden. Blöcke, Anforderungen, Kategorien und Equipenmitglieder bleiben zur späteren Einsicht bestehen.",
+				"archive_description" => "Dies wird alle TN, Beobachtungen und Qualis im Kurs komplett und dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden. Blöcke, Anforderungen, Kategorien und Equipenmitglieder bleiben zur späteren Einsicht bestehen.",
 				"archive_or_delete" => "Kurs archivieren oder löschen",
 				"archive_success" => "Kurs \":name\" wurde archiviert.",
 				"archive_vs_delete" => array(
-					"answer" => "Wenn du einen Kurs archivierst, werden alle personenbezogenen Daten (TN, Bilder, Beobachtungen) dauerhaft gelöscht. So kannst du Datenschutz-Problemen entgegenwirken, aber für spätere Kurse trotzdem noch deine alten Anforderungen und Blöcke einsehen. Wenn du den Kurs hingegen ganz löschst wird alles was damit zu tun hat unwiderruflich entfernt.",
+					"answer" => "Wenn du einen Kurs archivierst, werden alle personenbezogenen Daten (TN, Bilder, Beobachtungen, Qualis) dauerhaft gelöscht. So kannst du Datenschutz-Problemen entgegenwirken, aber für spätere Kurse trotzdem noch deine alten Anforderungen und Blöcke einsehen. Wenn du den Kurs hingegen ganz löschst wird alles was damit zu tun hat unwiderruflich entfernt.",
 					"question" => "Was ist der Unterschied?",
 				),
 				"delete" => "Kurs komplett löschen…",
