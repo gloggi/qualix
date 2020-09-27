@@ -22,34 +22,34 @@
 </template>
 
 <script>
-  import RequirementProgress from './RequirementProgress'
-  import QualiEditor from './QualiEditor'
-  import FormBasic from "../FormBasic"
+import RequirementProgress from './RequirementProgress'
+import QualiEditor from './QualiEditor'
+import FormBasic from "../FormBasic"
 
-  export default {
-    name: 'FormQualiContent',
-    components: {FormBasic, RequirementProgress, QualiEditor},
-    props: {
-      action: {},
-      courseId: { type: String },
-      quali: { type: Object, required: true },
-      observations: { type: Array, default: () => [] },
-      requirements: { type: Array, default: () => [] },
-      categories: { type: Array, default: () => [] },
-    },
-    data() {
-      return {
-        json: this.quali.contents,
-      }
-    },
-    computed: {
-      localRequirements() {
-        return this.json.content
-          .filter(node => node.type === 'requirement')
-          .map(node => ({ pivot: node.attrs }))
-      }
+export default {
+  name: 'FormQualiContent',
+  components: {FormBasic, RequirementProgress, QualiEditor},
+  props: {
+    action: {},
+    courseId: { type: String },
+    qualiContents: { type: Object, required: true },
+    observations: { type: Array, default: () => [] },
+    requirements: { type: Array, default: () => [] },
+    categories: { type: Array, default: () => [] },
+  },
+  data() {
+    return {
+      json: this.qualiContents,
+    }
+  },
+  computed: {
+    localRequirements() {
+      return this.json.content
+        .filter(node => node.type === 'requirement')
+        .map(node => ({ pivot: node.attrs }))
     }
   }
+}
 </script>
 
 <style scoped>

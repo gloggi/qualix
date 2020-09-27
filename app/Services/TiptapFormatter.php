@@ -30,14 +30,32 @@ class TiptapFormatter {
      * @return array quali contents in tiptap format
      */
     public function toTiptap() {
-        $contents = $this->getAllContents()
-            ->sortBy->order
-            ->map(function($entry) { return Arr::except($entry, 'order'); })
-            ->values();
+        return self::wrapInDocument(self::contentsToTiptap($this->getAllQualiContents()->sortBy->get('order')));
+    }
+
+    /**
+     * Converts the quali contents from the quali model to the format used by the tiptap editor.
+     *
+     * @param Collection $contents
+     * @return Collection quali contents in tiptap format
+     */
+    protected static function contentsToTiptap(Collection $contents) {
+        return $contents->map(function($entry) { return Arr::except($entry, 'order'); })->values();
+    }
+
+    protected static function wrapInDocument(Collection $contents) {
         return [
             'type' => 'doc',
             'content' => $contents->all(),
         ];
+    }
+
+    /**
+     * @param array $tiptap
+     * @return Collection
+     */
+    protected static function tiptapToContents(array $tiptap) {
+        return collect(data_get($tiptap, 'content', []));
     }
 
     /**
@@ -46,7 +64,7 @@ class TiptapFormatter {
      * @return array quali contents in tiptap format
      */
     public function getHighestOrderNumber() {
-        return $this->getAllContents()->max->order;
+        return $this->getAllQualiContents()->max->get('order');
     }
 
     /**
@@ -56,9 +74,10 @@ class TiptapFormatter {
      * @throws RequirementsOutdatedException
      */
     public function applyToQuali(array $tiptap) {
-        $this->checkRequirementsAreUpToDate($tiptap);
+        $contents = $this->tiptapToContents($tiptap);
+        $this->checkRequirementsAreUpToDate($contents);
 
-        [$requirements, $participantObservations, $contentNodes] = $this->nodesToModels($this->getNodes($tiptap));
+        [$requirements, $participantObservations, $contentNodes] = $this->contentsToModels($contents);
         $requirements = $requirements->mapWithKeys(function(Requirement $requirement) {
             return [$requirement->id => ['passed' => $requirement->pivot->passed, 'order' => $requirement->pivot->order]];
         });
@@ -72,12 +91,12 @@ class TiptapFormatter {
         $this->quali->contentNodes()->createMany($contentNodes);
     }
 
-    public function nodesToModels(Collection $nodes) {
+    public function contentsToModels(Collection $contents) {
         $order = 0;
         $requirements = [];
         $participantObservations = [];
         $contentNodes = [];
-        $nodes->each(function($node) use(&$order, &$requirements, &$participantObservations, &$contentNodes) {
+        $contents->each(function($node) use(&$order, &$requirements, &$participantObservations, &$contentNodes) {
             switch($node['type']) {
                 case 'requirement':
                     /** @var Requirement|null $requirement */
@@ -102,33 +121,51 @@ class TiptapFormatter {
         return [collect($requirements), collect($participantObservations), collect($contentNodes)];
     }
 
+    protected function modelsToContents(Collection $models) {
+        return collect(array_filter($models->map(function ($model) {
+            if ($model instanceof Requirement) {
+                return collect([
+                    'order' => $model->pivot->order,
+                    'type' => 'requirement',
+                    'attrs' => [
+                        'id' => $model->id,
+                        'passed' => $model->pivot->passed,
+                    ]
+                ]);
+            }
+            if ($model instanceof ParticipantObservation) {
+                return collect([
+                    'order' => $model->pivot->order,
+                    'type' => 'observation',
+                    'attrs' => [
+                        'id' => $model->id,
+                    ]
+                ]);
+            }
+            if ($model instanceof QualiContentNode) {
+                return collect(json_decode($model->json))
+                    ->merge([
+                        'order' => $model->order
+                    ]);
+            }
+            return null;
+        })->all()));
+    }
+
     public static function createContentNodeJSON($paragraphText) {
         $content = $paragraphText ? ['content' =>  [[ 'type' => 'text', 'text' => $paragraphText ]]] : [];
         return json_encode(array_merge(['type' => 'paragraph'], $content));
     }
 
-    protected function getAllContents() {
+    protected function getAllQualiContents() {
         if (!$this->allContents) {
-            $this->allContents = collect(array_merge(
-                $this->qualiRequirements()->all(),
-                $this->qualiObservations()->all(),
-                $this->qualiContentNodes()->all()));
+            $this->allContents = $this->modelsToContents(collect(array_merge(
+                $this->quali->requirements->all(),
+                $this->quali->participant_observations->all(),
+                $this->quali->contentNodes->all()
+            )));
         }
         return $this->allContents;
-    }
-
-    /**
-     * @param array $tiptap
-     * @param string|null $nodeType
-     * @return Collection
-     */
-    protected function getNodes(array $tiptap, $nodeType = null) {
-        if ($nodeType === null) {
-            return collect(data_get($tiptap, 'content', []));
-        }
-        return collect(data_get($tiptap, 'content', []))->filter(function($node) use($nodeType) {
-            return $node['type'] === $nodeType;
-        });
     }
 
     /**
@@ -136,67 +173,25 @@ class TiptapFormatter {
      * assigned to the quali. Throws a RequirementsOutdatedException containing corrected tiptap formatted content if
      * there is a mismatch.
      *
-     * @param array $tiptap
-     * @return bool|Collection
+     * @param Collection $contents
      * @throws RequirementsOutdatedException
      */
-    protected function checkRequirementsAreUpToDate(array $tiptap) {
-        $requirementNodes = $this->getNodes($tiptap, 'requirement');
-        $tiptapRequirementIds = $requirementNodes->pluck('attrs.id');
-        $qualiRequirementIds = $this->quali->requirements()->pluck('requirement_id');
+    protected function checkRequirementsAreUpToDate(Collection $contents) {
+        $tiptapRequirementIds = $contents
+            ->filter(function($node) { return data_get($node, 'type') === 'requirement'; })
+            ->pluck('attrs.id');
+
+        $qualiRequirements = $this->quali->requirements;
+        $qualiRequirementIds = $qualiRequirements->pluck('id');
 
         if ($tiptapRequirementIds->sort()->values()->all() !== $qualiRequirementIds->sort()->values()->all()) {
-            $stillValid = $requirementNodes->filter(function($node) use ($qualiRequirementIds) {
-                $qualiRequirementIds->containsStrict($node['id']);
-            });
-            $missingRequirements = $this->quali->requirements()->whereNotIn('id', $tiptapRequirementIds)->get();
-            $correctedContents = $stillValid->merge($missingRequirements);
+            $stillValid = $contents->filter(function($node) use ($qualiRequirementIds) {
+                return (data_get($node, 'type') !== 'requirement') || $qualiRequirementIds->containsStrict(data_get($node, 'attrs.id'));
+            })->values();
+            $missingRequirements = $this->modelsToContents($this->quali->requirements()->whereNotIn('requirements.id', $tiptapRequirementIds)->get());
+            $correctedContents = $stillValid->merge($missingRequirements->all());
 
-            throw new RequirementsOutdatedException($correctedContents->toJson());
+            throw new RequirementsOutdatedException(collect(self::wrapInDocument($correctedContents))->toJson());
         }
-        return false;
-    }
-
-    /**
-     * @return Collection
-     */
-    protected function qualiRequirements() {
-        return $this->quali->requirements->map(function(Requirement $requirement) {
-            return [
-                'order' => $requirement->pivot->order,
-                'type' => 'requirement',
-                'attrs' => [
-                    'id' => $requirement->id,
-                    'passed' => $requirement->pivot->passed,
-                ]
-            ];
-        });
-    }
-
-    /**
-     * @return Collection
-     */
-    protected function qualiObservations() {
-        return $this->quali->participant_observations->map(function(ParticipantObservation $participantObservation) {
-            return [
-                'order' => $participantObservation->pivot->order,
-                'type' => 'observation',
-                'attrs' => [
-                    'id' => $participantObservation->id,
-                ]
-            ];
-        });
-    }
-
-    /**
-     * @return Collection
-     */
-    protected function qualiContentNodes() {
-        return $this->quali->contentNodes->map(function(QualiContentNode $contentNode) {
-            return collect(json_decode($contentNode->json))
-                ->merge([
-                    'order' => $contentNode->order
-                ])->all();
-        });
     }
 }

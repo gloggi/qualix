@@ -41,7 +41,7 @@
         <form-quali-content
             :action="['qualiContent.update', { course: {{ $course->id }}, participant: {{ $participant->id }}, quali: {{ $quali->id }} }]"
             course-id="{{ $course->id }}"
-            :quali="{{ json_encode($quali) }}"
+            :quali-contents="{{ json_encode($quali->contents) }}"
             :observations="{{ json_encode($observations) }}"
             :requirements="{{ json_encode($quali->requirements) }}"
             :categories="{{ json_encode($course->categories) }}"></form-quali-content>
