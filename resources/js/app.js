@@ -88,6 +88,7 @@ Vue.filter('kebabCase', value => kebabCase(value))
 
 const i18n = new VueI18n({
   locale: document.documentElement.lang,
+  fallbackLocale: 'de',
   messages: languageBundle,
   formatter: new LaravelTranslationFormatter({ locale: document.documentElement.lang })
 })

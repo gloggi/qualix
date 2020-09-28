@@ -392,7 +392,7 @@ return array(
 		"participant_details" => array(
 			"delete_observation_success" => "Beobachtung gelöscht.",
 			"existing_observations" => "Beobachtungen",
-			"filter" => "Filter",
+			"filter" => "Beobachtungen filtern",
 			"filter_by_category" => "Kategorie",
 			"filter_by_requirement" => "Anforderung",
 			"no_observations" => "Keine Beobachtungen gefunden.",

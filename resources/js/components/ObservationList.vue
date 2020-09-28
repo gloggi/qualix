@@ -1,52 +1,47 @@
 <template>
   <div>
 
-    <b-card id="filters" no-body>
-      <b-card-header v-b-toggle.filters-collapse>
-        <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }}
-      </b-card-header>
+    <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse>
+      <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
+    </b-button>
 
-      <b-collapse id="filters-collapse" :visible="filtersVisibleInitially">
-      <b-card-body>
-        <b-row>
+    <b-collapse id="filters-collapse" :visible="filtersVisibleInitially">
+      <b-row>
 
-          <b-col cols="12" md="6">
-              <multi-select
-                id="filter-requirements"
-                name="filter-requirements"
-                class="form-control-multiselect"
-                :selected.sync="selectedRequirement"
-                :allow-empty="true"
-                :placeholder="$t('t.views.participant_details.filter_by_requirement')"
-                :options="requirementOptions"
-                :multiple="false"
-                :close-on-select="true"
-                :show-labels="false"
-                :show-clear="true"
-                display-field="content"></multi-select>
-          </b-col>
+        <b-col cols="12" md="6">
+          <multi-select
+            id="filter-requirements"
+            name="filter-requirements"
+            class="form-control-multiselect"
+            :selected.sync="selectedRequirement"
+            :allow-empty="true"
+            :placeholder="$t('t.views.participant_details.filter_by_requirement')"
+            :options="requirementOptions"
+            :multiple="false"
+            :close-on-select="true"
+            :show-labels="false"
+            :show-clear="true"
+            display-field="content"></multi-select>
+        </b-col>
 
-          <b-col cols="12" md="6">
-              <multi-select
-                id="filter-categories"
-                name="filter-categories"
-                class="form-control-multiselect"
-                :selected.sync="selectedCategory"
-                :allow-empty="true"
-                :placeholder="$t('t.views.participant_details.filter_by_category')"
-                :options="categoryOptions"
-                :multiple="false"
-                :close-on-select="true"
-                :show-labels="false"
-                :show-clear="true"
-                display-field="name"></multi-select>
-          </b-col>
+        <b-col cols="12" md="6">
+          <multi-select
+            id="filter-categories"
+            name="filter-categories"
+            class="form-control-multiselect"
+            :selected.sync="selectedCategory"
+            :allow-empty="true"
+            :placeholder="$t('t.views.participant_details.filter_by_category')"
+            :options="categoryOptions"
+            :multiple="false"
+            :close-on-select="true"
+            :show-labels="false"
+            :show-clear="true"
+            display-field="name"></multi-select>
+        </b-col>
 
-        </b-row>
-      </b-card-body>
-      </b-collapse>
-    </b-card>
-
+      </b-row>
+    </b-collapse>
 
     <responsive-table
       :data="filteredObservations"
