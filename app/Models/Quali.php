@@ -122,8 +122,12 @@ class Quali extends Model {
         $this->getTiptapFormatter()->applyToQuali($contents);
     }
 
-    public function getHighestOrderNumberAttribute() {
-        return $this->getTiptapFormatter()->getHighestOrderNumber();
+    public function appendRequirements(Collection $requirements) {
+        $this->getTiptapFormatter()->appendRequirementsToQuali($requirements);
+    }
+
+    public function appendContentNodes(Collection $lines) {
+        $this->getTiptapFormatter()->appendContentNodesToQuali($lines);
     }
 
     protected $tiptapFormatter = null;
@@ -132,7 +136,6 @@ class Quali extends Model {
      * @return TiptapFormatter
      */
     protected function getTiptapFormatter() {
-        if (!$this->tiptapFormatter) $this->tiptapFormatter = new TiptapFormatter($this);
-        return $this->tiptapFormatter;
+        return new TiptapFormatter($this);
     }
 }

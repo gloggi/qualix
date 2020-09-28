@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
  * @property User[] $users
  * @property Requirement[] $requirements
  * @property Category[] $categories
+ * @property Observation[] $observations
  * @property Collection $participants
  * @property QualiData[] $quali_datas
  * @property Quali[] $qualis

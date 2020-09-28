@@ -43,22 +43,15 @@ class QualiController extends Controller {
                     ->map(function ($participant) { return ['participant' => ['id' => $participant]]; })
             );
 
-            $qualis->each(function(Quali $quali) use($data, &$order) {
-                $order = 0;
-
-                $quali->contentNodes()->createMany(collect(explode("\n", $data['quali_notes_template']))
+            $qualis->each(function(Quali $quali) use($data, $course) {
+                $quali->appendContentNodes(collect(explode("\n", $data['quali_notes_template']))
                     ->map(function($line) { return trim($line); })
-                    ->map(function($paragraph) use($quali, &$order) {
-                        return [
-                            'json' => TiptapFormatter::createContentNodeJSON($paragraph),
-                            'order' => $order++,
-                        ];
-                    }));
-
-                collect(array_filter(explode(',', $data['requirements'])))
-                    ->each(function($requirementId) use($quali, &$order) {
-                        $quali->requirements()->attach($requirementId, ['order' => $order++]);
-                    });
+                );
+                $quali->appendRequirements(
+                    $course->requirements()
+                        ->whereIn('id', collect(array_filter(explode(',', $data['requirements']))))
+                        ->get()
+                );
             });
 
             $this->setTrainerAssignments($qualis, $data);
@@ -103,13 +96,13 @@ class QualiController extends Controller {
 
             $qualiData->qualis()->each(function (Quali $quali) use($requirements) {
                 $quali->requirements()->wherePivotNotIn('requirement_id', $requirements)->detach();
-                $order = $quali->highest_order_number + 1;
-                $quali->quali_data->course->requirements()
-                    ->whereIn('id', $requirements)
-                    ->whereNotIn('id', $quali->requirements()->select(['requirements.id']))
-                    ->each(function ($requirement) use ($quali, &$order) {
-                        $quali->requirements()->attach($requirement, ['order' => $order++]);
-                    });
+                $quali->unsetRelation('requirements');
+                $quali->appendRequirements(
+                    $quali->quali_data->course->requirements()
+                        ->whereIn('id', $requirements)
+                        ->whereNotIn('id', $quali->requirements()->pluck('requirements.id'))
+                        ->get()
+                );
             });
 
             $this->setTrainerAssignments($qualiData->qualis(), $data);

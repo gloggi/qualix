@@ -71,7 +71,7 @@
         @if (count($observations))
 
             <participant-detail-observation-list
-                :qualis-using-observations="{{ json_encode($qualis_using_observations) }}"
+                :qualis-using-observations="{{ json_encode($qualis_using_observations, JSON_FORCE_OBJECT) }}"
                 course-id="{{ $course->id }}"
                 :observations="{{ json_encode($observations) }}"
                 :requirements="{{ json_encode($course->requirements) }}"
