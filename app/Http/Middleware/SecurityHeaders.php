@@ -55,6 +55,11 @@ class SecurityHeaders {
     }
 
     protected function getCSPDefaultSrc() {
+        if (env('MIX_SENTRY_VUE_DSN')) {
+            $parsed = parse_url(env('MIX_SENTRY_VUE_DSN'));
+            $sentryUrl = $parsed['scheme'] . '://' . $parsed['host'] . (isset($parsed['port']) ? ':' . $parsed['port'] : '');
+            return "default-src 'self' $sentryUrl";
+        }
         return "default-src 'self'";
     }
 

@@ -12,6 +12,9 @@
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^5.13.0",
         "@kirschbaum-development/laravel-translations-loader": "^1.0.2",
+        "@sentry/browser": "^5.24.2",
+        "@sentry/integrations": "^5.24.2",
+        "@sentry/tracing": "^5.24.2",
         "axios": "^0.19.2",
         "bootstrap": "^4.5.0",
         "bootstrap-vue": "^2.13.1",
