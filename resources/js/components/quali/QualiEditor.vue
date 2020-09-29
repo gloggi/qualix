@@ -89,7 +89,10 @@ export default {
         this.editor.setContent(this.currentValue)
         this.$emit('input', this.currentValue)
       }
-    }
+    },
+    focus() {
+      this.editor.focus(0)
+    },
   },
   watch: {
     qualiRequirements(newIds) {

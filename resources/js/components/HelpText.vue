@@ -1,11 +1,11 @@
 <template>
   <span>
-    <b-link href="#" @click="toggleCollapsed" class="text-secondary">
-        {{ $t(key + '.question', params) }} <i class="fas fa-question-circle"></i>
-    </b-link>
+    <b-button variant="link" href="#" @click="toggleOpen" class="text-secondary px-0">
+        {{ $t(trans + '.question', params) }} <i class="fas fa-question-circle"></i>
+    </b-button>
 
-    <b-collapse :id="id | kebabCase" v-model="collapsed" class="text-secondary">
-        <slot>{{ $t(key + '.answer', params) }}</slot>
+    <b-collapse :id="id | kebabCase" v-model="visible" class="text-secondary">
+        <slot>{{ $t(trans + '.answer', params) }}</slot>
     </b-collapse>
 </span>
 </template>
@@ -16,17 +16,17 @@ export default {
   name: 'HelpText',
   props: {
     id: { type: String },
-    key: { type: String, required: true },
+    trans: { type: String, required: true },
     params: { type: Object, default: () => {} }
   },
   data() {
     return {
-      collapsed: true
+      visible: false
     }
   },
   methods: {
-    toggleCollapsed() {
-      this.collapsed = !this.collapsed
+    toggleOpen() {
+      this.visible = !this.visible
     }
   }
 }

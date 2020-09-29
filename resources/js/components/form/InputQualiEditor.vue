@@ -6,6 +6,7 @@
       <quali-editor
         :id="name | kebabCase"
         :name="name"
+        ref="qualiEditor"
         :class="{ 'form-control': !readonly, 'is-invalid': errorMessage }"
         v-model="currentValue"
         @input="$emit('input', currentValue)"
@@ -46,6 +47,11 @@ export default {
     qualiRequirements() {
       if (!this.selectedRequirements) return []
       return this.selectedRequirements.split(',').map(id => parseInt(id))
+    }
+  },
+  methods: {
+    focus() {
+      this.$refs.qualiEditor.focus()
     }
   }
 }

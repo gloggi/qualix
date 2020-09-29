@@ -24,12 +24,13 @@
 
     <template v-if="qualiNotesTemplate">
       <row-text>
-        <b-button variant="link" class="px-0" v-b-toggle.collapse-quali-notes-template>
+        <b-button variant="link" class="px-0 mr-2" v-b-toggle.collapse-quali-notes-template @click="focusQualiNotesTemplate">
           {{ $t('t.views.admin.qualis.quali_notes_template') }} <i class="fas fa-caret-down"></i>
         </b-button>
+        <help-text id="qualiNotesTemplateHelp" trans="t.views.admin.qualis.quali_notes_template_description"></help-text>
       </row-text>
 
-      <b-collapse id="collapse-quali-notes-template" :visible="false">
+      <b-collapse id="collapse-quali-notes-template" v-model="qualiNotesTemplateVisible">
         <input-quali-editor
           ref="qualiNotesTemplate"
           name="quali_notes_template"
@@ -66,8 +67,10 @@
 
 <script>
 
+import HelpText from "../HelpText"
 export default {
   name: 'FormQualiData',
+  components: {HelpText},
   props: {
     action: {},
     name: { type: String, required: false },
@@ -87,7 +90,8 @@ export default {
         .map(p => {
           const quali = this.qualis ? this.qualis.find(q => q.participant.id === p.id) : undefined
           return { participantId: p.id, trainerId: '' + (quali && quali.user ? quali.user.id : null) }
-        })
+        }),
+      qualiNotesTemplateVisible: false,
     }
   },
   computed: {
@@ -108,6 +112,9 @@ export default {
     },
     scoutName(participantId) {
       return this.participants.find(p => '' + p.id === '' + participantId).scout_name
+    },
+    focusQualiNotesTemplate() {
+      if (!this.qualiNotesTemplateVisible) this.$refs.qualiNotesTemplate.focus()
     }
   }
 }
