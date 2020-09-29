@@ -43,7 +43,7 @@
             course-id="{{ $course->id }}"
             :quali-contents="{{ json_encode($quali->contents) }}"
             :observations="{{ json_encode($observations) }}"
-            :requirements="{{ json_encode($quali->requirements) }}"
+            :requirements="{{ json_encode($course->requirements) }}"
             :categories="{{ json_encode($course->categories) }}"></form-quali-content>
 
     </b-card>

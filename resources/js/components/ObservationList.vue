@@ -44,6 +44,7 @@
     </b-collapse>
 
     <responsive-table
+      class="mt-3 mt-lg-0"
       :data="filteredObservations"
       :actions="actions"
       :fields="fields"
@@ -67,6 +68,8 @@
       </template>
 
     </responsive-table>
+
+    <div v-if="!filteredObservations.length" class="text-center min-vh-50">{{ $t('t.global.no_options') }}</div>
 
   </div>
 </template>

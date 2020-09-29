@@ -29,7 +29,7 @@ class Observation extends Model
      *
      * @var array
      */
-    protected $with = ['block', 'user', 'participants', 'requirements'];
+    protected $with = ['block', 'user', 'participants', 'requirements', 'categories'];
 
     /**
      * @var array
