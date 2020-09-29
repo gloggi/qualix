@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import {get, sortBy, isEqual, cloneDeep} from 'lodash'
+import {sortBy, isEqual, cloneDeep} from 'lodash'
 import {Editor, EditorContent, EditorFloatingMenu} from 'tiptap'
-import {History} from 'tiptap-extensions'
+import {History, Heading} from 'tiptap-extensions'
 import Observation from './tiptap-extensions/observation/NodeObservation'
 import Requirement from './tiptap-extensions/requirement/NodeRequirement'
 import InputHidden from "../form/InputHidden"
@@ -39,6 +39,7 @@ export default {
       injectCSS: false,
       extensions: [
         new History(),
+        new Heading({ levels: [ 5 ] }),
         new Observation(this.readonly),
         new Requirement(this.readonly),
       ],

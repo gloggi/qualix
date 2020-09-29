@@ -26,6 +26,7 @@ return array(
 		"date_format" => "%A %d.%m.%Y",
 		"delete" => "Löschen",
 		"edit" => "Bearbeiten",
+		"heading" => "Titel",
 		"negative" => "Negativ",
 		"neutral" => "Neutral",
 		"no" => "Nein",

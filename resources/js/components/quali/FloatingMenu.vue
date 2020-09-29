@@ -1,5 +1,6 @@
 <template>
   <div ref="menu" class="editor__floating-menu" :class="{ 'is-active': menu.isActive }">
+    <button-add @click="commands.heading({ level: 5 })">{{ $t('t.global.heading') }}</button-add>
     <button-add v-if="observations.length" @click="addObservation = commands.observation">{{ $t('t.models.observation.one') }}</button-add>
     <modal-add-observation :observations="observations" v-model="addObservation"></modal-add-observation>
   </div>
