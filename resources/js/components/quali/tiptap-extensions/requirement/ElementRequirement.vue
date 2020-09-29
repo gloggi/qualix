@@ -7,9 +7,8 @@
 
 <script>
 
-  import RequirementMenu from "./RequirementMenu"
-
-  export default {
+import RequirementMenu from "./RequirementMenu"
+export default {
   name: 'ElementRequirement',
   components: {RequirementMenu},
   // `node` is a Prosemirror Node Object

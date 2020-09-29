@@ -23,7 +23,7 @@
                         @if($quali->user)
                             <div class="d-flex justify-content-end">
                                 @if($quali->user->image_url)
-                                    @component('components.img',  ['src' => asset(Storage::url($quali->user->image_url)), 'classes' => ['avatar-small mr-2']])@endcomponent
+                                    <img src="{{ asset(Storage::url($quali->user->image_url)) }}" class="avatar-small mr-2'" />
                                 @endif
                                 <span>
                                     <div>{{__('t.models.quali.user')}}:</div>

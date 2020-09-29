@@ -1,8 +1,5 @@
 <template>
-  <div class="editor">
-    <div v-if="errorMessage" class="invalid-feedback d-block" role="alert">
-      <strong>{{ errorMessage }}</strong>
-    </div>
+  <div class="editor" :class="{ 'focus': focused }">
     <editor-floating-menu v-if="!readonly" :editor="editor" v-slot="{ commands, menu }">
       <floating-menu :observations="observations" :readonly="readonly" :commands="commands" :menu="menu"/>
     </editor-floating-menu>
@@ -12,8 +9,7 @@
 </template>
 
 <script>
-import {get} from 'lodash'
-import Input from '../../mixins/input'
+import {get, sortBy, isEqual, cloneDeep} from 'lodash'
 import {Editor, EditorContent, EditorFloatingMenu} from 'tiptap'
 import {History} from 'tiptap-extensions'
 import Observation from './tiptap-extensions/observation/NodeObservation'
@@ -24,40 +20,80 @@ import FloatingMenu from "./FloatingMenu"
 export default {
   name: 'QualiEditor',
   components: {FloatingMenu, InputHidden, EditorContent, EditorFloatingMenu},
-  mixins: [Input],
   props: {
+    name: { type: String },
     courseId: { type: String },
     value: { type: Object, default: null },
-    observations: { type: Array, required: true },
+    observations: { type: Array, default: () => [] },
     requirements: { type: Array, required: true },
+    qualiRequirements: { type: Array, default: null },
     categories: { type: Array, default: () => [] },
     readonly: { type: Boolean, default: false },
     autofocus: { type: Boolean, default: false },
   },
   data() {
-    const currentValue = JSON.parse(get(window.Laravel.oldInput, this.name, 'null')) ?? this.value
+    const editor = new Editor({
+      content: this.value ?? null,
+      editable: !this.readonly,
+      autoFocus: this.autofocus,
+      injectCSS: false,
+      extensions: [
+        new History(),
+        new Observation(this.readonly),
+        new Requirement(this.readonly),
+      ],
+      onBlur: () => {
+        this.focused = false
+      },
+      onFocus: () => {
+        this.focused = true
+      },
+      onUpdate: ({ getJSON }) => {
+        this.currentValue = getJSON()
+        this.$emit('input', this.currentValue)
+      }
+    })
     return {
-      editor: new Editor({
-        content: currentValue,
-        editable: !this.readonly,
-        autoFocus: this.autofocus,
-        injectCSS: false,
-        extensions: [
-          new History(),
-          new Observation(this.readonly),
-          new Requirement(this.readonly),
-        ],
-        onUpdate: ({ getJSON }) => {
-          this.currentValue = getJSON()
-          this.$emit('input', this.currentValue)
-        }
-      }),
-      currentValue: currentValue
+      editor: editor,
+      currentValue: this.value ?? editor.options.emptyDocument,
+      focused: false,
     }
   },
   computed: {
     formValue() {
       return JSON.stringify(this.currentValue)
+    },
+    getEmptyParagraph() {
+      return () => cloneDeep(this.editor.options.emptyDocument.content[0])
+    }
+  },
+  methods: {
+    isRequirementWithIdNotIn(node, requirementIds) {
+      return node.type === 'requirement' && !requirementIds.includes(node.attrs.id)
+    },
+    updateContentWithRequirementIds(newIds) {
+      if (this.qualiRequirements === null) return
+      const oldIds = this.currentValue.content.filter(node => node.type === 'requirement').map(node => node.attrs.id)
+      if (!isEqual(sortBy(newIds), sortBy(oldIds))) {
+        const missingIds = newIds.filter(id => !oldIds.includes(id))
+        this.currentValue = {
+          ...this.currentValue,
+          content: this.currentValue.content
+            // remove empty paragraphs after old requirements
+            .filter((node, idx, array) => idx === 0 || !isEqual(node, this.getEmptyParagraph()) || !this.isRequirementWithIdNotIn(array[idx - 1], newIds))
+            // remove old requirements
+            .filter(node => !this.isRequirementWithIdNotIn(node, newIds))
+            // add new requirements with paragraph after them
+            .concat(missingIds.flatMap(id => [{ type: 'requirement', attrs: { id: id, passed: null } }, this.getEmptyParagraph()]))
+        }
+        this.editor.setContent(this.currentValue)
+        this.$emit('input', this.currentValue)
+      }
+    }
+  },
+  watch: {
+    qualiRequirements(newIds) {
+      this.updateContentWithRequirementIds(newIds)
     }
   },
   provide() {
@@ -69,6 +105,8 @@ export default {
     }
   },
   mounted() {
+    this.updateContentWithRequirementIds(this.qualiRequirements)
+
     // Necessary in case we have oldInput that the outside world doesn't know about
     if (this.currentValue !== this.value) this.$emit('input', this.currentValue)
   },

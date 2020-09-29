@@ -118,8 +118,8 @@ class Quali extends Model {
         return $this->getTiptapFormatter()->toTiptap();
     }
 
-    public function setContentsAttribute(array $contents) {
-        $this->getTiptapFormatter()->applyToQuali($contents);
+    public function setContentsAttribute(array $contents, bool $checkRequirements = true) {
+        $this->getTiptapFormatter()->applyToQuali($contents, $checkRequirements);
     }
 
     public function appendRequirements(Collection $requirements) {

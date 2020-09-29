@@ -10,14 +10,7 @@
             :participants="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
             :requirements="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
             :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}"
-            quali-notes-template
-            back-url="{{ \Illuminate\Support\Facades\URL::route('admin.qualis', ['course' => $course->id]) }}">
-
-            <input-textarea name="quali_notes_template" label="{{__('t.views.admin.qualis.quali_notes_template')}}">
-
-                @component('components.help-text', ['id' => 'qualiNotesTemplateHelp', 'key' => 't.views.admin.qualis.quali_notes_template_description'])@endcomponent
-
-            </input-textarea>
+            quali-notes-template>
 
             <template #submit>
                 <button-submit label="{{__('t.views.admin.qualis.create')}}">

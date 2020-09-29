@@ -21,7 +21,24 @@
       display-field="content"
       multiple></input-multi-select>
 
-    <slot></slot>
+
+    <template v-if="qualiNotesTemplate">
+      <row-text>
+        <b-button variant="link" class="px-0" v-b-toggle.collapse-quali-notes-template>
+          {{ $t('t.views.admin.qualis.quali_notes_template') }} <i class="fas fa-caret-down"></i>
+        </b-button>
+      </row-text>
+
+      <b-collapse id="collapse-quali-notes-template" :visible="false">
+        <input-quali-editor
+          ref="qualiNotesTemplate"
+          name="quali_notes_template"
+          :requirements="requirements"
+          :selected-requirements="requirementsFormValue"
+          label=""
+        ></input-quali-editor>
+      </b-collapse>
+    </template>
 
     <row-text>
       <b-button variant="link" class="px-0" v-b-toggle.collapse-trainer-assignments>
@@ -29,7 +46,7 @@
       </b-button>
     </row-text>
 
-    <b-collapse id="collapse-trainer-assignments" v-model="trainerAssignmentsVisible">
+    <b-collapse id="collapse-trainer-assignments" :visible="false">
       <input-multi-select
         v-for="assignment in trainerAssignments"
         :key="assignment.participantId"
@@ -58,14 +75,13 @@ export default {
     participants: { type: Array, required: true },
     requirements: { type: Array, requried: true },
     trainers: { type: Array, required: true },
-    hideTrainerAssignments: { type: Boolean, default: true }
+    qualiNotesTemplate: { type: Boolean, default: false },
   },
   data() {
     return {
       currentName: this.name,
       participantsFormValue: this.qualis ? this.qualis.map(q => q.participant.id).join() : this.participants.map(p => p.id).join(),
       requirementsFormValue: this.qualis ? [...new Set(this.qualis.flatMap(q => q.requirements.map(r => r.id)))].join() : this.requirements.map(r => r.id).join(),
-      trainerAssignmentsVisible: !this.hideTrainerAssignments,
       trainerAssignments: this.participants
         .sort((a, b) => a.scout_name.localeCompare(b.scout_name))
         .map(p => {

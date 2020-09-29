@@ -11,9 +11,7 @@
             :qualis="{{ json_encode($quali_data->qualis) }}"
             :participants="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
             :requirements="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
-            :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}"
-            :hide-trainer-assignments="{{ $hideTrainerAssignments ? 'true' : 'false' }}"
-            back-url="">
+            :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}">
 
             <template #submit>
                 <button-submit>

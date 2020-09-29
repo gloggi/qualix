@@ -21,12 +21,7 @@ class QualiContentRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'qualiContents' => 'required|array',
-            'qualiContents.type' => 'required|in:doc',
-            'qualiContents.content' => 'present|array',
-            'qualiContents.content.*.type' => 'required|in:paragraph,observation,requirement',
-            'qualiContents.content.*.attrs.passed' => 'nullable|in:0,1,null',
-            'qualiContents.content.*.attrs.id' => 'nullable|numeric',
+            'qualiContents' => 'required|validQualiContent',
         ];
     }
 

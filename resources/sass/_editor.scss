@@ -6,7 +6,7 @@
 
     &__floating-menu {
         position: absolute;
-        right: 0;
+        right: 0.75rem;
         z-index: 1;
         margin-top: -0.25rem;
         visibility: hidden;
@@ -15,6 +15,16 @@
         &.is-active {
             opacity: 1;
             visibility: visible;
+        }
+    }
+
+    &.form-control {
+        height: unset;
+
+        .focus {
+            border-color: #a1cbef;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
         }
     }
 }

@@ -278,4 +278,42 @@ class TiptapFormatter {
             ]))->all();
         })));
     }
+
+    /**
+     * Checks whether the given tiptap formatted content is valid and only contains known requirements and observations.
+     *
+     * @param array $contents
+     * @param Collection $requirements
+     * @param Collection $observations
+     * @return bool
+     */
+    public static function isValid($contents, Collection $requirements, Collection $observations) {
+        if (!is_array($contents)) return false;
+        if (!Arr::has($contents, 'type')) return false;
+        if ($contents['type'] !== 'doc') return false;
+        if (!Arr::has($contents, 'content')) return false;
+        if (!is_array($contents['content'])) return false;
+        foreach($contents['content'] as $node) {
+            if (!Arr::has($node, 'type')) return false;
+            switch($node['type']) {
+                case 'observation':
+                    if (!Arr::has($node, 'attrs')) return false;
+                    if (!is_array($node['attrs'])) return false;
+                    if (!Arr::has($node,'attrs.id')) return false;
+                    if (!$observations->contains($node['attrs']['id'])) return false;
+                    break;
+                case 'requirement':
+                    if (!Arr::has($node, 'attrs')) return false;
+                    if (!is_array($node['attrs'])) return false;
+                    if (!Arr::has($node, 'attrs.id')) return false;
+                    if (!$requirements->contains($node['attrs']['id'])) return false;
+                    if (!Arr::has($node, 'attrs.passed')) return false;
+                    if (!collect([0, 1, null])->contains($node['attrs']['passed'])) return false;
+                    break;
+                default:
+                    break;
+            }
+        }
+        return true;
+    }
 }

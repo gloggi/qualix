@@ -9,7 +9,7 @@
       <button type="submit" class="btn btn-primary">{{ $t('t.global.save')}}</button>
     </div>
 
-    <quali-editor
+    <input-quali-editor-large
       ref="qualiContents"
       name="qualiContents"
       :course-id="courseId"
@@ -17,7 +17,7 @@
       v-model="json"
       :observations="observations"
       :requirements="requirements"
-      :categories="categories"></quali-editor>
+      :categories="categories"></input-quali-editor-large>
   </form-basic>
 </template>
 

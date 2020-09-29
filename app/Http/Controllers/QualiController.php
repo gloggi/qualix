@@ -44,20 +44,12 @@ class QualiController extends Controller {
             );
 
             $qualis->each(function(Quali $quali) use($data, $course) {
-                $quali->appendContentNodes(collect(explode("\n", $data['quali_notes_template']))
-                    ->map(function($line) { return trim($line); })
-                );
-                $quali->appendRequirements(
-                    $course->requirements()
-                        ->whereIn('id', collect(array_filter(explode(',', $data['requirements']))))
-                        ->get()
-                );
+                $quali->setContentsAttribute($data['quali_notes_template'], false);
             });
 
             $this->setTrainerAssignments($qualis, $data);
 
             $request->session()->flash('alert-success', __('t.views.admin.qualis.create_success', ['name' => $qualiData->name]));
-            $request->session()->flash('hideTrainerAssignments', false);
             return Redirect::route('admin.qualis', ['course' => $course->id]);
         });
     }
@@ -70,7 +62,7 @@ class QualiController extends Controller {
      * @return Response
      */
     public function edit(Course $course, QualiData $quali_data) {
-        return view('admin.qualis.edit', ['quali_data' => $quali_data, 'hideTrainerAssignments' => session('hideTrainerAssignments', true)]);
+        return view('admin.qualis.edit', ['quali_data' => $quali_data]);
     }
 
     /**

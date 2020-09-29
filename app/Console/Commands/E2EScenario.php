@@ -27,6 +27,7 @@ class E2EScenario extends Command
      * Execute the console command.
      *
      * @return int
+     * @throws \Exception
      */
     public function handle()
     {
@@ -35,7 +36,21 @@ class E2EScenario extends Command
             return 1;
         }
 
-        $userId = $this->option('user-id') ?? User::firstOrFail();
+        $userId = null;
+
+        if ($this->option('user-id')) {
+            $userId = $this->option('user-id');
+            if (!User::where('id', $userId)->exists()) {
+                $this->error('Specified user ' . $this->option('user-id') . ' not found in database.');
+                return 1;
+            }
+        } else {
+            if (!User::exists()) {
+                $this->error('No user found in database, please create a user first.');
+                return 1;
+            }
+            $userId = User::first()->id;
+        }
 
         /** @var Course $course */
         $course = factory(Course::class)->create();
