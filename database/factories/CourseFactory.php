@@ -26,7 +26,7 @@ $factory->afterCreating(Course::class, function (Course $course, Faker $faker) {
     $course->users()->saveMany(factory(User::class, 3)->make());
     $blocks = $course->blocks()->pluck('id')->all();
     $requirements = $course->requirements()->pluck('id')->all();
-    $participants = $course->requirements()->pluck('id')->all();
+    $participants = $course->participants()->pluck('id')->all();
     $course->users->each(function(User $user) use($course, $blocks, $faker) {
         $course->participants->each(function(Participant $participant) use($user, $blocks, $faker) {
             $participant->observations()->saveMany(factory(Observation::class, $faker->biasedNumberBetween(0, 5))
