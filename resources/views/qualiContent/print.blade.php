@@ -1,5 +1,7 @@
 @extends('layouts.print')
 
+@section('pagetitle'){{ $quali->name }} {{ $participant->scout_name }}@endsection
+
 @section('content')
 
     <div class="row mb-5">

@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('pagetitle'){{__('t.global.page_title')}}@endsection
+
 @section('layout')
 
     <b-container id="app" v-cloak>
