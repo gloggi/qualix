@@ -25,8 +25,8 @@ class QualiContentController extends Controller {
      * @param Quali $quali
      * @return View
      */
-    public function index(Request $request, Course $course, Participant $participant, Quali $quali) {
-        return view('qualiContent.index', [
+    public function print(Request $request, Course $course, Participant $participant, Quali $quali) {
+        return view('qualiContent.print', [
             'participant' => $participant,
             'quali' => $quali,
             'observations' => $participant->observations()->with(['block', 'participants'])->withPivot('id')->get(),
@@ -60,7 +60,7 @@ class QualiContentController extends Controller {
         return DB::transaction(function() use($course, $participant, $quali, $data) {
             try {
                 $quali->contents = $data;
-                return Redirect::route('qualiContent.detail', ['course' => $course->id, 'participant' => $participant->id, 'quali' => $quali->id]);
+                return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]);
             } catch (RequirementsOutdatedException $e) {
                 // Edit the original request in order to change the old_input that is displayed to the user after
                 // the validation error

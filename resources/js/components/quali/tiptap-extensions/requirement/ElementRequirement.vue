@@ -1,5 +1,5 @@
 <template>
-  <div class="requirement py-1 mb-2 d-flex" :class="selected ? 'selected' : ''">
+  <div class="requirement d-flex" :class="selected ? 'selected' : ''">
     <requirement-menu :editable="editor.options.editable" :name="`requirements[${node.attrs.id}]`" :value="node.attrs.passed" @input="onChange" class="mr-2 my-auto"></requirement-menu>
     <h5 class="flex-grow-1 my-auto">{{ requirement.content | ucfirst }}</h5>
   </div>

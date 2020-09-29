@@ -23,14 +23,19 @@
           <td v-if="showActions" class="actions">
             <template v-for="(action, name) in actions">
               <template v-if="name === 'delete'">
-                <a v-if="name === 'delete'" class="text-danger" @click="$bvModal.show(modalId(row))" :title="$t('t.global.delete')">
+                <a class="text-danger" @click="$bvModal.show(modalId(row))" :title="$t('t.global.delete')">
                   <i class="fas fa-minus-circle"></i>
                 </a>
                 <modal-delete :id="modalId(row)" v-bind="call(action, row)"></modal-delete>
               </template>
+              <template v-else-if="name === 'print'">
+                <a :href="call(action, row)" target="_blank" :title="$t('t.global.print')">
+                  <i class="fas fa-print"></i>
+                </a>
+              </template>
               <template v-else>
-                <a :href="call(action, row)">
-                  <i :class="`fas fa-${name}`" :title="actionTitle(name)"></i>
+                <a :href="call(action, row)" :title="actionTitle(name)">
+                  <i :class="`fas fa-${name}`"></i>
                 </a>
               </template>
             </template>

@@ -46,12 +46,12 @@
             <responsive-table
                 :data="{{ json_encode($participant->qualis) }}"
                 :fields="[
-                    { label: $t('t.models.quali.name'), value: quali => quali.name, href: quali => routeUri('qualiContent.detail', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}) },
+                    { label: $t('t.models.quali.name'), value: quali => quali.name, href: quali => routeUri('qualiContent.edit', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}) },
                     @if($participant->qualis()->whereHas('requirements')->exists()){ label: $t('t.models.quali.requirement_progress'), slot: 'requirement-progress'},@endif
                     @if($participant->qualis()->whereNotNull('user_id')->exists()){ label: $t('t.models.quali.user'), value: quali => quali.user ? quali.user.name : '' },@endif
                 ]"
                 :actions="{
-                    eye: quali => routeUri('qualiContent.detail', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}),
+                    print: quali => routeUri('qualiContent.print', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}),
                     edit: quali => routeUri('qualiContent.edit', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}),
                 }">
 

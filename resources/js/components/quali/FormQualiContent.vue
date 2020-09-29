@@ -5,7 +5,8 @@
       <requirement-progress :requirements="localRequirements"></requirement-progress>
     </div>
 
-    <div class="mb-2">
+    <div class="d-flex justify-content-between mb-2">
+      <slot></slot>
       <button type="submit" class="btn btn-primary">{{ $t('t.global.save')}}</button>
     </div>
 

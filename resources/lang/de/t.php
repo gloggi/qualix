@@ -34,6 +34,7 @@ return array(
 		"or" => "oder",
 		"page_title" => "Qualix",
 		"positive" => "Positiv",
+		"print" => "Drucken",
 		"really_delete" => "Wirklich löschen?",
 		"save" => "Speichern",
 		"total" => "Total",
@@ -410,7 +411,7 @@ return array(
 			"title" => "TN Details",
 		),
 		"quali_content" => array(
-			"back_to_participant" => "Zurück zu :name",
+			"back_to_participant" => "Abbrechen",
 			"error_observation_not_found" => "Eine der eingefügten Beobachtungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirements_changed" => "Die Änderungen konnten nicht gespeichert werden, weil die Anforderungen im Quali inzwischen geändert wurden. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirement_not_found" => "Eine der eingefügten Anforderungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",
