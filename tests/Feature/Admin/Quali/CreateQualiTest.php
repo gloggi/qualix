@@ -55,6 +55,24 @@ class CreateQualiTest extends TestCaseWithBasicData {
         $response->assertSee($this->payload['name']);
     }
 
+    public function test_shouldCreateQuali_usesTiptapFormatter_forSettingQualiContent() {
+        // given
+        $payload = $this->payload;
+        $mock = Mockery::mock(TiptapFormatter::class, function ($mock) {
+            $mock->shouldReceive('applyToQuali')
+                ->once()
+                ->with(json_decode($this->payload['quali_contents_template'], true));
+        })->makePartial();
+        $this->app->extend(TiptapFormatter::class, function() use ($mock) { return $mock; });
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/qualis', $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/qualis');
+    }
+
     public function test_shouldValidateNewQualiData_noName() {
         // given
         $payload = $this->payload;

@@ -5,8 +5,11 @@ namespace Tests\Feature\Admin\Quali;
 use App\Models\Course;
 use App\Models\Quali;
 use App\Models\QualiData;
+use App\Services\TiptapFormatter;
+use Illuminate\Support\Collection;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
+use Mockery;
 use Tests\TestCaseWithBasicData;
 
 class UpdateQualiTest extends TestCaseWithBasicData {
@@ -42,7 +45,7 @@ class UpdateQualiTest extends TestCaseWithBasicData {
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldCreateAndDisplayQuali() {
+    public function test_shouldUpdateAndDisplayQuali() {
         // given
 
         // when
@@ -54,6 +57,26 @@ class UpdateQualiTest extends TestCaseWithBasicData {
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee($this->payload['name']);
+    }
+
+    public function test_shouldUpdateQuali_usesTiptapFormatter_forUpdatingQualiContent_whenRequirementsChanged() {
+        // given
+        $payload = $this->payload;
+        $requirementId = $this->createRequirement('Zusätzliche Anforderung');
+        $payload['requirements'] = implode(',', array_filter([$payload['requirements'], $requirementId]));
+        $mock = Mockery::mock(TiptapFormatter::class, function ($mock) {
+            $mock->shouldReceive('appendRequirementsToQuali')
+                ->once()
+                ->with(Mockery::type(Collection::class));
+        })->makePartial();
+        $this->app->extend(TiptapFormatter::class, function() use ($mock) { return $mock; });
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/qualis/' . $this->qualiDataId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/qualis');
     }
 
     public function test_shouldValidateNewQualiData_noName() {
