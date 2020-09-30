@@ -177,7 +177,7 @@ class TiptapFormatter {
      * @param string $paragraphText
      * @return string
      */
-    public static function createContentNodeJSON($paragraphText) {
+    protected static function createContentNodeJSON($paragraphText) {
         $content = $paragraphText ? ['content' =>  [[ 'type' => 'text', 'text' => $paragraphText ]]] : [];
         return json_encode(array_merge(['type' => 'paragraph'], $content));
     }
@@ -243,40 +243,13 @@ class TiptapFormatter {
      * @param Collection $requirements
      * @return Collection
      */
-    public static function appendRequirements(Collection $contents, Collection $requirements) {
+    protected static function appendRequirements(Collection $contents, Collection $requirements) {
         return $contents->merge($requirements->flatMap(function(Requirement $requirement) {
             return self::removeOrderField(self::modelsToContents(collect([
                 $requirement,
                 new QualiContentNode([ 'json' => self::createContentNodeJSON('') ]),
             ])));
         }));
-    }
-
-    /**
-     * Appends the given list of lines as paragraphs to the quali.
-     *
-     * @param Collection $lines
-     * @throws RequirementsOutdatedException
-     */
-    public function appendContentNodesToQuali(Collection $lines) {
-        $this->applyToQuali(self::wrapInDocument(
-            self::appendContentNodes(self::tiptapToContents($this->toTiptap()), $lines)
-        ));
-    }
-
-    /**
-     * Appends the given list of lines as paragraphs to the given contents.
-     *
-     * @param Collection $contents
-     * @param Collection $lines
-     * @return Collection
-     */
-    public static function appendContentNodes(Collection $contents, Collection $lines) {
-        return self::removeOrderField($contents->merge($lines->flatMap(function($line) {
-            return self::modelsToContents(collect([
-                new QualiContentNode([ 'json' => self::createContentNodeJSON($line) ])
-            ]))->all();
-        })));
     }
 
     /**
@@ -295,6 +268,7 @@ class TiptapFormatter {
         if (!is_array($contents['content'])) return false;
         foreach($contents['content'] as $node) {
             if (!Arr::has($node, 'type')) return false;
+            if (!is_string($node['type'])) return false;
             switch($node['type']) {
                 case 'observation':
                     if (!Arr::has($node, 'attrs')) return false;
@@ -311,6 +285,7 @@ class TiptapFormatter {
                     if (!collect([0, 1, null])->contains($node['attrs']['passed'])) return false;
                     break;
                 default:
+                    if (json_encode($node) === false) return false;
                     break;
             }
         }

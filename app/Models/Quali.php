@@ -126,10 +126,6 @@ class Quali extends Model {
         $this->getTiptapFormatter()->appendRequirementsToQuali($requirements);
     }
 
-    public function appendContentNodes(Collection $lines) {
-        $this->getTiptapFormatter()->appendContentNodesToQuali($lines);
-    }
-
     protected $tiptapFormatter = null;
 
     /**
