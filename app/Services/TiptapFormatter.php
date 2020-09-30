@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\ParticipantObservationNotFoundException;
 use App\Exceptions\RequirementNotFoundException;
-use App\Exceptions\RequirementsOutdatedException;
+use App\Exceptions\RequirementsMismatchException;
 use App\Models\ParticipantObservation;
 use App\Models\Quali;
 use App\Models\QualiContentNode;
@@ -63,7 +63,7 @@ class TiptapFormatter {
      *
      * @param array $tiptap editor description of new quali contents
      * @param bool $checkRequirements whether to check that the requirements in the contents match the requirements in the quali
-     * @throws RequirementsOutdatedException
+     * @throws RequirementsMismatchException
      */
     public function applyToQuali(array $tiptap, $checkRequirements = true) {
         $contents = $this->tiptapToContents($tiptap);
@@ -193,7 +193,7 @@ class TiptapFormatter {
      * there is a mismatch.
      *
      * @param Collection $contents
-     * @throws RequirementsOutdatedException
+     * @throws RequirementsMismatchException
      */
     protected function checkRequirementsAreUpToDate(Collection $contents) {
         $tiptapRequirementIds = $contents
@@ -211,7 +211,7 @@ class TiptapFormatter {
 
             $missingRequirements = $this->quali->requirements()->whereNotIn('requirements.id', $tiptapRequirementIds)->get();
             $correctedContents = self::appendRequirements($stillValid, $missingRequirements);
-            throw new RequirementsOutdatedException(collect(self::wrapInDocument($correctedContents))->toJson());
+            throw new RequirementsMismatchException(collect(self::wrapInDocument($correctedContents))->toJson());
         }
     }
 
@@ -219,7 +219,7 @@ class TiptapFormatter {
      * Appends the given set of requirements to the quali, separated by empty paragraphs.
      *
      * @param Collection $requirements
-     * @throws RequirementsOutdatedException
+     * @throws RequirementsMismatchException
      */
     public function appendRequirementsToQuali(Collection $requirements) {
         $this->applyToQuali(self::wrapInDocument(
@@ -259,6 +259,7 @@ class TiptapFormatter {
         if (!Arr::has($contents, 'content')) return false;
         if (!is_array($contents['content'])) return false;
         foreach($contents['content'] as $node) {
+            if (!is_array($node)) return false;
             if (!Arr::has($node, 'type')) return false;
             if (!is_string($node['type'])) return false;
             switch($node['type']) {

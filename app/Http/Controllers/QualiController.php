@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\QualiRequest;
+use App\Exceptions\RequirementsMismatchException;
+use App\Http\Requests\QualiCreateRequest;
+use App\Http\Requests\QualiUpdateRequest;
 use App\Models\Course;
 use App\Models\Quali;
 use App\Models\QualiData;
-use App\Services\TiptapFormatter;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 
 class QualiController extends Controller {
     /**
@@ -29,11 +31,11 @@ class QualiController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param QualiRequest $request
+     * @param QualiCreateRequest $request
      * @param Course $course
      * @return RedirectResponse
      */
-    public function store(QualiRequest $request, Course $course) {
+    public function store(QualiCreateRequest $request, Course $course) {
         $data = $request->validated();
         return DB::transaction(function () use ($request, $course, $data) {
             $qualiData = QualiData::create(array_merge($data, ['course_id' => $course->id]));
@@ -44,7 +46,19 @@ class QualiController extends Controller {
             );
 
             $qualis->each(function(Quali $quali) use($data, $course) {
-                $quali->setContentsAttribute($data['quali_notes_template'], false);
+                $quali->requirements()->sync(collect(array_filter(explode(',', $data['requirements'])))
+                    ->mapWithKeys(function ($requirementId) { return [$requirementId => ['order' => 0, 'passed' => null]]; })
+                );
+                $quali->unsetRelation('requirements');
+
+                try {
+                    $quali->contents = $data['quali_notes_template'];
+                } catch(RequirementsMismatchException $e) {
+                    // Edit the original request in order to change the old_input that is displayed to the user after
+                    // the validation error
+                    app(Request::class)->offsetSet('quali_notes_template', $e->getCorrectedContents());
+                    throw ValidationException::withMessages(['requirements' => trans('t.views.admin.qualis.error_requirements_dont_match')]);
+                }
             });
 
             $this->setTrainerAssignments($qualis, $data);
@@ -68,12 +82,12 @@ class QualiController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param QualiRequest $request
+     * @param QualiUpdateRequest $request
      * @param Course $course
      * @param QualiData $qualiData
      * @return RedirectResponse
      */
-    public function update(QualiRequest $request, Course $course, QualiData $qualiData) {
+    public function update(QualiUpdateRequest $request, Course $course, QualiData $qualiData) {
         $data = $request->validated();
         return DB::transaction(function() use($request, $course, $qualiData, $data) {
             $qualiData->update($data);

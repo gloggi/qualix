@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ParticipantObservationNotFoundException;
 use App\Exceptions\RequirementNotFoundException;
-use App\Exceptions\RequirementsOutdatedException;
+use App\Exceptions\RequirementsMismatchException;
 use App\Http\Requests\QualiContentRequest;
 use App\Models\Course;
 use App\Models\Participant;
@@ -61,7 +61,7 @@ class QualiContentController extends Controller {
             try {
                 $quali->contents = $data;
                 return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]);
-            } catch (RequirementsOutdatedException $e) {
+            } catch (RequirementsMismatchException $e) {
                 // Edit the original request in order to change the old_input that is displayed to the user after
                 // the validation error
                 app(Request::class)->offsetSet('qualiContents', $e->getCorrectedContents());

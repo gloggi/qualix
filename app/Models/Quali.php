@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\RequirementsMismatchException;
 use App\Services\TiptapFormatter;
 use Illuminate\Support\Collection;
 
@@ -118,8 +119,12 @@ class Quali extends Model {
         return $this->getTiptapFormatter()->toTiptap();
     }
 
-    public function setContentsAttribute(array $contents, bool $checkRequirements = true) {
-        $this->getTiptapFormatter()->applyToQuali($contents, $checkRequirements);
+    /**
+     * @param array $contents
+     * @throws RequirementsMismatchException
+     */
+    public function setContentsAttribute(array $contents) {
+        $this->getTiptapFormatter()->applyToQuali($contents);
     }
 
     public function appendRequirements(Collection $requirements) {

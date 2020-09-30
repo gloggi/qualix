@@ -3,9 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Lang;
 
-class QualiRequest extends FormRequest {
+class QualiUpdateRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -32,7 +33,11 @@ class QualiRequest extends FormRequest {
     }
 
     public function attributes() {
-        return Lang::get('t.models.quali');
+        /** @var Collection $participantNames */
+        $participantNames = $this->route('course')->participants->mapWithKeys(function ($participant) {
+            return ['qualis.'.$participant->id.'.user' => trans('t.models.quali.trainer_assignment', ['participant' => $participant->scout_name])];
+        });
+        return array_merge(Lang::get('t.models.quali'), $participantNames->all());
     }
 
     /**

@@ -52,11 +52,11 @@ class ReadRequirementTest extends TestCaseWithCourse {
 
     public function test_shouldNotDisplayMA_fromOtherUser() {
         // given
-        $otherKursId = $this->createCourse('Zweiter Kurs', '', false);
-        $otherRequirementId = Requirement::create(['course_id' => $otherKursId, 'content' => 'Mindestanforderung 1', 'mandatory' => '1'])->id;
+        $otherCourseId = $this->createCourse('Zweiter Kurs', '', false);
+        $otherRequirementId = Requirement::create(['course_id' => $otherCourseId, 'content' => 'Mindestanforderung 1', 'mandatory' => '1'])->id;
 
         // when
-        $response = $this->get('/course/' . $otherKursId . '/admin/requirement/' . $otherRequirementId);
+        $response = $this->get('/course/' . $otherCourseId . '/admin/requirement/' . $otherRequirementId);
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Services;
 
-use App\Exceptions\RequirementsOutdatedException;
+use App\Exceptions\RequirementsMismatchException;
 use App\Models\Course;
 use App\Models\Observation;
 use App\Models\ParticipantObservation;
@@ -124,7 +124,7 @@ class TiptapFormatterTest extends TestCase {
     }
 
     /**
-     * @throws \App\Exceptions\RequirementsOutdatedException
+     * @throws \App\Exceptions\RequirementsMismatchException
      */
     public function test_applyToQuali_shouldApplyEmpty() {
         // given
@@ -142,7 +142,7 @@ class TiptapFormatterTest extends TestCase {
     }
 
     /**
-     * @throws \App\Exceptions\RequirementsOutdatedException
+     * @throws \App\Exceptions\RequirementsMismatchException
      */
     public function test_applyToQuali_shouldApplyDefaultDocument() {
         // given
@@ -163,7 +163,7 @@ class TiptapFormatterTest extends TestCase {
     }
 
     /**
-     * @throws \App\Exceptions\RequirementsOutdatedException
+     * @throws \App\Exceptions\RequirementsMismatchException
      */
     public function test_applyToQuali_shouldApplyTextNodes() {
         // given
@@ -192,7 +192,7 @@ class TiptapFormatterTest extends TestCase {
     }
 
     /**
-     * @throws \App\Exceptions\RequirementsOutdatedException
+     * @throws \App\Exceptions\RequirementsMismatchException
      */
     public function test_applyToQuali_shouldApplyObservationNode() {
         // given
@@ -217,7 +217,7 @@ class TiptapFormatterTest extends TestCase {
     }
 
     /**
-     * @throws \App\Exceptions\RequirementsOutdatedException
+     * @throws \App\Exceptions\RequirementsMismatchException
      */
     public function test_applyToQuali_shouldApplyRequirementNode() {
         // given
@@ -261,7 +261,7 @@ class TiptapFormatterTest extends TestCase {
         }
 
         // then
-        catch(RequirementsOutdatedException $e) {
+        catch(RequirementsMismatchException $e) {
             $quali = Quali::find($quali->id);
             $this->assertEquals(0, $quali->contentNodes()->count());
             $this->assertEquals(0, $quali->participant_observations()->count());
@@ -270,7 +270,7 @@ class TiptapFormatterTest extends TestCase {
     }
 
     /**
-     * @throws \App\Exceptions\RequirementsOutdatedException
+     * @throws \App\Exceptions\RequirementsMismatchException
      */
     public function test_applyToQuali_shouldApplyMixedNodes() {
         // given
@@ -311,7 +311,7 @@ class TiptapFormatterTest extends TestCase {
     }
 
     /**
-     * @throws \App\Exceptions\RequirementsOutdatedException
+     * @throws \App\Exceptions\RequirementsMismatchException
      */
     public function test_applyToQuali_shouldReorderNodes() {
         // given
@@ -359,7 +359,7 @@ class TiptapFormatterTest extends TestCase {
     }
 
     /**
-     * @throws \App\Exceptions\RequirementsOutdatedException
+     * @throws \App\Exceptions\RequirementsMismatchException
      */
     public function test_appendRequirementsToQuali_shouldWork_andAppendAnEmptyParagraphAfterEachAppendedRequirement() {
         // given
@@ -414,7 +414,7 @@ class TiptapFormatterTest extends TestCase {
     }
 
     /**
-     * @throws \App\Exceptions\RequirementsOutdatedException
+     * @throws \App\Exceptions\RequirementsMismatchException
      */
     public function test_appendRequirementsToQuali_shouldDoNothingWork_whenPassedSomethingOtherThanRequirements() {
         // given

@@ -164,6 +164,11 @@ abstract class TestCase extends BaseTestCase {
         return $user;
     }
 
+    /**
+     * @param array $attrs
+     * @param bool $actAsNewUser
+     * @return User
+     */
     protected function createUser($attrs = [], $actAsNewUser = false) {
         $user = factory(NativeUser::class)->create($attrs);
         if ($actAsNewUser) {

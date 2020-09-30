@@ -25,7 +25,7 @@
     <template v-if="qualiNotesTemplate">
       <row-text>
         <b-button variant="link" class="px-0 mr-2" v-b-toggle.collapse-quali-notes-template @click="focusQualiNotesTemplate">
-          {{ $t('t.views.admin.qualis.quali_notes_template') }} <i class="fas fa-caret-down"></i>
+          {{ $t('t.models.quali.quali_notes_template') }} <i class="fas fa-caret-down"></i>
         </b-button>
         <help-text id="qualiNotesTemplateHelp" trans="t.views.admin.qualis.quali_notes_template_description"></help-text>
       </row-text>

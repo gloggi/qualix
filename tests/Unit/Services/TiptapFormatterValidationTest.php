@@ -131,9 +131,20 @@ class TiptapFormatterValidationTest extends TestCase {
         $this->assertFalse($result);
     }
 
+    public function test_isValid_shouldNotAcceptDocument_withWrongContentListType() {
+        // given
+        $input = ['type' => 'doc', 'content' => (object)['type' => 'paragraph']];
+
+        // when
+        $result = TiptapFormatter::isValid($input, collect([]), collect([]));
+
+        // then
+        $this->assertFalse($result);
+    }
+
     public function test_isValid_shouldNotAcceptDocument_withWrongContentType() {
         // given
-        $input = ['type' => 'doc', 'content' => (object)['a' => 'b']];
+        $input = ['type' => 'doc', 'content' => ['type' => 'paragraph']];
 
         // when
         $result = TiptapFormatter::isValid($input, collect([]), collect([]));

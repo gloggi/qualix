@@ -153,7 +153,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $this->assertEquals('Blöcke Format ist ungültig.', $exception->validator->errors()->first('blocks'));
     }
 
-    public function test_shouldValidateNewRequirementData_oneValidRequirementId() {
+    public function test_shouldValidateNewRequirementData_oneValidBlockId() {
         // given
         $payload = $this->payload;
         $blockId = $this->createBlock();

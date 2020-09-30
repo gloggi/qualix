@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-class RequirementsOutdatedException extends \Exception {
+class RequirementsMismatchException extends \Exception {
 
     protected $correctedContents;
 

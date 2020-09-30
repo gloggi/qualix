@@ -103,8 +103,10 @@ return array(
 			"name" => "Titel",
 			"participant" => "TN",
 			"participants" => "TN",
+			"quali_notes_template" => "Vorlage für Quali-Text",
 			"requirement_progress" => "Anforderungen",
 			"requirements" => "Relevante Anforderungen",
+			"trainer_assignment" => "Zuständig für :participant",
 			"user" => "Zuständig",
 		),
 		"requirement" => array(
@@ -285,6 +287,7 @@ return array(
 				"delete_success" => "Das Quali \":name\" wurde erfolgreich gelöscht.",
 				"edit" => "Quali bearbeiten",
 				"edit_success" => "Das Quali \":name\" wurde erfolgreich gespeichert.",
+				"error_requirements_dont_match" => "Die Anforderungen in der Vorlage stimmten nicht mit den relevanten Anforderungen überein. Wir haben das automatisch korrigiert. Kontrolliere ob jetzt alles stimmt und speichere erneut.",
 				"existing" => "Qualis :courseName",
 				"trainer_assignment" => "Zuordnung der TN zu den Equipenmitgliedern",
 				"menu_name" => "Qualis",
@@ -292,7 +295,6 @@ return array(
 				"no_qualis" => "Bisher sind keine Qualis erfasst.",
 				"select_all_participants" => "Alle auswählen",
 				"select_all_requirements" => "Alle auswählen",
-				"quali_notes_template" => "Vorlage für Quali-Text",
 				"quali_notes_template_description" => array(
 					"answer" => "Der Quali-Text wird bei allen TN vorausgefüllt mit dem Text den du hier eingibst. So kannst du zum Beispiel vorgeben, welche Abschnitte jedes Quali haben sollte. Aber Achtung: Nachdem das Quali erstellt ist kannst du den Quali-Text nur noch ändern indem du ihn bei allen TN einzeln von Hand bearbeitest!",
 					"question" => "Wofür ist dieses Feld?",
