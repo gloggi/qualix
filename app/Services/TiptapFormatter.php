@@ -59,15 +59,6 @@ class TiptapFormatter {
     }
 
     /**
-     * Returns the highest order value stored in the database in any content of the quali.
-     *
-     * @return array quali contents in tiptap format
-     */
-    public function getHighestOrderNumber() {
-        return $this->getAllQualiContents()->max->get('order');
-    }
-
-    /**
      * Updates the quali model with the contents from a tiptap editor.
      *
      * @param array $tiptap editor description of new quali contents
@@ -103,7 +94,7 @@ class TiptapFormatter {
      * @param bool $onlyRequirementsFromQuali
      * @return array
      */
-    public function contentsToModels(Collection $contents, $onlyRequirementsFromQuali = true) {
+    protected function contentsToModels(Collection $contents, $onlyRequirementsFromQuali = true) {
         $order = 0;
         $requirements = [];
         $participantObservations = [];
@@ -244,7 +235,8 @@ class TiptapFormatter {
      * @return Collection
      */
     protected static function appendRequirements(Collection $contents, Collection $requirements) {
-        return $contents->merge($requirements->flatMap(function(Requirement $requirement) {
+        return $contents->merge($requirements->flatMap(function($requirement) {
+            if (!($requirement instanceof Requirement)) return collect([]);
             return self::removeOrderField(self::modelsToContents(collect([
                 $requirement,
                 new QualiContentNode([ 'json' => self::createContentNodeJSON('') ]),
