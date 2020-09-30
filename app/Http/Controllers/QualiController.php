@@ -52,11 +52,11 @@ class QualiController extends Controller {
                 $quali->unsetRelation('requirements');
 
                 try {
-                    $quali->contents = $data['quali_notes_template'];
+                    $quali->contents = $data['quali_contents_template'];
                 } catch(RequirementsMismatchException $e) {
                     // Edit the original request in order to change the old_input that is displayed to the user after
                     // the validation error
-                    app(Request::class)->offsetSet('quali_notes_template', $e->getCorrectedContents());
+                    app(Request::class)->offsetSet('quali_contents_template', $e->getCorrectedContents());
                     throw ValidationException::withMessages(['requirements' => trans('t.views.admin.qualis.error_requirements_dont_match')]);
                 }
             });

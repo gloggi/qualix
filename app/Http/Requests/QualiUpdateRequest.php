@@ -26,7 +26,7 @@ class QualiUpdateRequest extends FormRequest {
             'name' => 'required|max:255',
             'participants' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
             'requirements' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
-            'quali_notes_template' => 'nullable|validQualiContentWithoutObservations',
+            'quali_contents_template' => 'nullable|validQualiContentWithoutObservations',
             'qualis' => 'nullable|array',
             'qualis.*.user' => 'nullable|regex:/^\d+$/|existsInCourse:trainers,user_id',
         ];
@@ -46,6 +46,6 @@ class QualiUpdateRequest extends FormRequest {
      * @return void
      */
     protected function prepareForValidation() {
-        $this->merge(['quali_notes_template' => json_decode($this->get('quali_notes_template'), true)]);
+        $this->merge(['quali_contents_template' => json_decode($this->get('quali_contents_template'), true)]);
     }
 }

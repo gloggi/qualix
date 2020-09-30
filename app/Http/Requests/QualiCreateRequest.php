@@ -11,7 +11,7 @@ class QualiCreateRequest extends QualiUpdateRequest {
      */
     public function rules() {
         return array_merge(parent::rules(),
-            ['quali_notes_template' => 'required|validQualiContentWithoutObservations']
+            ['quali_contents_template' => 'required|validQualiContentWithoutObservations']
         );
     }
 }

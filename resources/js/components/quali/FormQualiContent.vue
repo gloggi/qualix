@@ -11,8 +11,7 @@
     </div>
 
     <input-quali-editor-large
-      ref="qualiContents"
-      name="qualiContents"
+      name="quali_contents"
       :course-id="courseId"
       autofocus
       v-model="json"

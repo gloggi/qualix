@@ -103,7 +103,8 @@ return array(
 			"name" => "Titel",
 			"participant" => "TN",
 			"participants" => "TN",
-			"quali_notes_template" => "Vorlage für Quali-Text",
+			"quali_contents_template" => "Vorlage für Quali-Text",
+			"quali_contents" => "Quali-Text",
 			"requirement_progress" => "Anforderungen",
 			"requirements" => "Relevante Anforderungen",
 			"trainer_assignment" => "Zuständig für :participant",
@@ -295,7 +296,7 @@ return array(
 				"no_qualis" => "Bisher sind keine Qualis erfasst.",
 				"select_all_participants" => "Alle auswählen",
 				"select_all_requirements" => "Alle auswählen",
-				"quali_notes_template_description" => array(
+				"quali_contents_template_description" => array(
 					"answer" => "Der Quali-Text wird bei allen TN vorausgefüllt mit dem Text den du hier eingibst. So kannst du zum Beispiel vorgeben, welche Abschnitte jedes Quali haben sollte. Aber Achtung: Nachdem das Quali erstellt ist kannst du den Quali-Text nur noch ändern indem du ihn bei allen TN einzeln von Hand bearbeitest!",
 					"question" => "Wofür ist dieses Feld?",
 				),

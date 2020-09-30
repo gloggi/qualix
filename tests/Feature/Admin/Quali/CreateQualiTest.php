@@ -9,6 +9,7 @@ use App\Services\TiptapFormatter;
 use Illuminate\Support\Collection;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
+use Mockery;
 use Tests\TestCaseWithBasicData;
 
 class CreateQualiTest extends TestCaseWithBasicData {
@@ -24,7 +25,7 @@ class CreateQualiTest extends TestCaseWithBasicData {
             'name' => 'Zwischenquali',
             'participants' => $this->course->participants()->pluck('id')->implode(','),
             'requirements' => $this->course->requirements()->pluck('id')->implode(','),
-            'quali_notes_template' => json_encode(['type' => 'doc', 'content' => [['type' => 'paragraph']]]),
+            'quali_contents_template' => json_encode(['type' => 'doc', 'content' => [['type' => 'paragraph']]]),
         ];
     }
 
@@ -226,7 +227,7 @@ class CreateQualiTest extends TestCaseWithBasicData {
         $payload = $this->payload;
         $requirementId = $this->createRequirement();
         $payload['requirements'] = $requirementId;
-        $payload['quali_notes_template'] = json_encode(['type' => 'doc', 'content' => [
+        $payload['quali_contents_template'] = json_encode(['type' => 'doc', 'content' => [
             ['type' => 'requirement', 'attrs' => ['id' => $requirementId, 'passed' => 1]],
         ]]);
 
@@ -244,7 +245,7 @@ class CreateQualiTest extends TestCaseWithBasicData {
         $payload = $this->payload;
         $requirementIds = [$this->createRequirement(), $this->createRequirement()];
         $payload['requirements'] = implode(',', $requirementIds);
-        $payload['quali_notes_template'] = json_encode(['type' => 'doc', 'content' => [
+        $payload['quali_contents_template'] = json_encode(['type' => 'doc', 'content' => [
             ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[0], 'passed' => null]],
             ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[1], 'passed' => 0]],
         ]]);
@@ -263,7 +264,7 @@ class CreateQualiTest extends TestCaseWithBasicData {
         $payload = $this->payload;
         $requirementIds = [$this->createRequirement(), 999999, $this->createRequirement()];
         $payload['requirements'] = implode(',', $requirementIds);
-        $payload['quali_notes_template'] = json_encode(['type' => 'doc', 'content' => [
+        $payload['quali_contents_template'] = json_encode(['type' => 'doc', 'content' => [
             ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[0], 'passed' => null]],
             ['type' => 'requirement', 'attrs' => ['id' => 999999, 'passed' => null]],
             ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[1], 'passed' => 0]],
@@ -284,7 +285,7 @@ class CreateQualiTest extends TestCaseWithBasicData {
         $payload = $this->payload;
         $requirementIds = [$this->createRequirement(), 'abc', $this->createRequirement()];
         $payload['requirements'] = implode(',', $requirementIds);
-        $payload['quali_notes_template'] = json_encode(['type' => 'doc', 'content' => [
+        $payload['quali_contents_template'] = json_encode(['type' => 'doc', 'content' => [
             ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[0], 'passed' => null]],
             ['type' => 'requirement', 'attrs' => ['id' => 'abc', 'passed' => null]],
             ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[1], 'passed' => 0]],
@@ -303,7 +304,7 @@ class CreateQualiTest extends TestCaseWithBasicData {
     public function test_shouldValidateNewQualiData_noQualiNotesTemplate() {
         // given
         $payload = $this->payload;
-        unset($payload['quali_notes_template']);
+        unset($payload['quali_contents_template']);
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/qualis', $payload);
@@ -312,24 +313,22 @@ class CreateQualiTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Vorlage für Quali-Text muss ausgefüllt sein.', $exception->validator->errors()->first('quali_notes_template'));
+        $this->assertEquals('Vorlage für Quali-Text muss ausgefüllt sein.', $exception->validator->errors()->first('quali_contents_template'));
     }
 
     public function test_shouldValidateNewQualiData_usesTiptapFormatter_forValidationOfQualiNotesTemplate() {
         // given
         $payload = $this->payload;
-        $tiptapFormatterMock = \Mockery::mock('overload:' . TiptapFormatter::class);
-
-        // then
-        $tiptapFormatterMock->shouldReceive('isValid')
-            ->once()
-            ->with(
-                json_decode($this->payload['quali_notes_template'], true),
-                \Mockery::type(Collection::class),
-                \Mockery::on(function ($observations) { return $observations instanceof Collection && $observations->isEmpty(); })
-            )
-            ->andReturnFalse();
-        $tiptapFormatterMock->shouldReceive('applyToQuali')->andReturn();
+        $this->instance(TiptapFormatter::class, Mockery::mock(TiptapFormatter::class, function ($mock) {
+            $mock->shouldReceive('isValid')
+                ->once()
+                ->with(
+                    json_decode($this->payload['quali_contents_template'], true),
+                    Mockery::type(Collection::class),
+                    Mockery::on(function ($observations) { return $observations instanceof Collection && $observations->isEmpty(); })
+                )
+                ->andReturnFalse();
+        })->makePartial());
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/qualis', $payload);
@@ -338,7 +337,7 @@ class CreateQualiTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Der gewählte Wert für Vorlage für Quali-Text ist ungültig.', $exception->validator->errors()->first('quali_notes_template'));
+        $this->assertEquals('Der gewählte Wert für Vorlage für Quali-Text ist ungültig.', $exception->validator->errors()->first('quali_contents_template'));
     }
 
     public function test_shouldValidateNewQualiData_invalidTrainerAssignment() {

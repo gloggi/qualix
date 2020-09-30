@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Lang;
 
 class QualiContentRequest extends FormRequest {
     /**
@@ -21,8 +22,12 @@ class QualiContentRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'qualiContents' => 'required|validQualiContent',
+            'quali_contents' => 'required|validQualiContent',
         ];
+    }
+
+    public function attributes() {
+        return Lang::get('t.models.quali');
     }
 
     /**
@@ -31,6 +36,6 @@ class QualiContentRequest extends FormRequest {
      * @return void
      */
     protected function prepareForValidation() {
-        $this->merge(['qualiContents' => json_decode($this->get('qualiContents'), true)]);
+        $this->merge(['quali_contents' => json_decode($this->get('quali_contents'), true)]);
     }
 }

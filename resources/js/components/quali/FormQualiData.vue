@@ -25,15 +25,15 @@
     <template v-if="qualiNotesTemplate">
       <row-text>
         <b-button variant="link" class="px-0 mr-2" v-b-toggle.collapse-quali-notes-template @click="focusQualiNotesTemplate">
-          {{ $t('t.models.quali.quali_notes_template') }} <i class="fas fa-caret-down"></i>
+          {{ $t('t.models.quali.quali_contents_template') }} <i class="fas fa-caret-down"></i>
         </b-button>
-        <help-text id="qualiNotesTemplateHelp" trans="t.views.admin.qualis.quali_notes_template_description"></help-text>
+        <help-text id="qualiNotesTemplateHelp" trans="t.views.admin.qualis.quali_contents_template_description"></help-text>
       </row-text>
 
       <b-collapse id="collapse-quali-notes-template" v-model="qualiNotesTemplateVisible">
         <input-quali-editor
           ref="qualiNotesTemplate"
-          name="quali_notes_template"
+          name="quali_contents_template"
           :requirements="requirements"
           :selected-requirements="requirementsFormValue"
           label=""

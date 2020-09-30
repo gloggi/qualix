@@ -56,7 +56,7 @@ class QualiContentController extends Controller {
      * @return RedirectResponse
      */
     public function update(QualiContentRequest $request, Course $course, Participant $participant, Quali $quali) {
-        $data = $request->validated()['qualiContents'];
+        $data = $request->validated()['quali_contents'];
         return DB::transaction(function() use($course, $participant, $quali, $data) {
             try {
                 $quali->contents = $data;
@@ -64,12 +64,12 @@ class QualiContentController extends Controller {
             } catch (RequirementsMismatchException $e) {
                 // Edit the original request in order to change the old_input that is displayed to the user after
                 // the validation error
-                app(Request::class)->offsetSet('qualiContents', $e->getCorrectedContents());
-                throw ValidationException::withMessages(['qualiContents' => trans('t.views.quali_content.error_requirements_changed')]);
+                app(Request::class)->offsetSet('quali_contents', $e->getCorrectedContents());
+                throw ValidationException::withMessages(['quali_contents' => trans('t.views.quali_content.error_requirements_changed')]);
             } catch (RequirementNotFoundException $e) {
-                throw ValidationException::withMessages(['qualiContents' => trans('t.views.quali_content.error_requirement_not_found')]);
+                throw ValidationException::withMessages(['quali_contents' => trans('t.views.quali_content.error_requirement_not_found')]);
             } catch (ParticipantObservationNotFoundException $e) {
-                throw ValidationException::withMessages(['qualiContents' => trans('t.views.quali_content.error_observation_not_found')]);
+                throw ValidationException::withMessages(['quali_contents' => trans('t.views.quali_content.error_observation_not_found')]);
             }
         });
     }

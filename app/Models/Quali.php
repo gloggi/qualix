@@ -124,7 +124,8 @@ class Quali extends Model {
      * @throws RequirementsMismatchException
      */
     public function setContentsAttribute(array $contents) {
-        $this->getTiptapFormatter()->applyToQuali($contents);
+        $tiptapFormatter = $this->getTiptapFormatter();
+        $tiptapFormatter->applyToQuali($contents);
     }
 
     public function appendRequirements(Collection $requirements) {
@@ -137,6 +138,6 @@ class Quali extends Model {
      * @return TiptapFormatter
      */
     protected function getTiptapFormatter() {
-        return new TiptapFormatter($this);
+        return app()->makeWith(TiptapFormatter::class, ['quali' => $this]);
     }
 }

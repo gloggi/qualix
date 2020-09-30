@@ -43,7 +43,7 @@ class ValidQualiContent {
         $requirements = $this->getRequirements();
         $observations = $this->getObservations();
 
-        return TiptapFormatter::isValid($value, $requirements, $observations);
+        return app(TiptapFormatter::class)::isValid($value, $requirements, $observations);
     }
 
 }
