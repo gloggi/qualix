@@ -76,6 +76,7 @@ class E2EScenarioTest extends TestCase
         $this->artisan('e2e:scenario')
 
             // then
+            ->expectsOutput('Created a new course:')
             ->assertExitCode(0);
         $user = User::find($user->id);
         $this->assertEquals(1, $user->courses->count());
@@ -101,6 +102,7 @@ class E2EScenarioTest extends TestCase
         $this->artisan('e2e:scenario --user-id=' . $user->id)
 
             // then
+            ->expectsOutput('Created a new course:')
             ->assertExitCode(0);
         $user = User::find($user->id);
         $this->assertEquals(1, $user->courses->count());

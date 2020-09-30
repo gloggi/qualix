@@ -57,6 +57,9 @@ class E2EScenario extends Command
 
         $course->users()->attach($userId);
 
+        $this->info('Created a new course:');
+        $this->info('Id ' . $course->id);
+
         return 0;
     }
 }
