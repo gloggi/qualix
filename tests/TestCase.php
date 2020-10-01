@@ -25,6 +25,7 @@ abstract class TestCase extends BaseTestCase {
 
     public function setUp(): void {
         Dotenv::createImmutable(__DIR__.'/../', '.env.testing')->load();
+        ini_set('memory_limit', '-1');
 
         parent::setUp();
 
