@@ -24,7 +24,7 @@ class ObservationAssignmentRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'order_name' => 'required|max:1023',
+            'name' => 'required|max:1023',
             'blocks' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
             'participants' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
             'users' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse:' . Trainer::class . ',user_id'

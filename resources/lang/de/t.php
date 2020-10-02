@@ -95,7 +95,7 @@ return array(
 		),
 		"observation_assignment" => array(
 			"blocks" => "Blöcke",
-			"order_name" => "Beobachtungsauftrag",
+			"name" => "Beobachtungsauftrag",
 			"participants" => "TN",
 			"users" => "Equipe",
 		),
@@ -249,7 +249,7 @@ return array(
 				"menu_name" => "Beobachtungsaufträge",
 				"new" => "Neuer Beobachtungsauftrag",
 				"no_observation_assignment" => "Bisher sind keine Beobachtungsaufträge erfasst.",
-				"really_delete" => "Willst du den Beobachtungsauftrag \":order_name\" wirklich löschen?",
+				"really_delete" => "Willst du den Beobachtungsauftrag \":name\" wirklich löschen?",
 				"what_are_observation_assignments" => array(
 					"answer" => "Viele Equipen definieren, wer wann wen beobachten sollte. Diese Aufträge könnt ihr hier definieren und seht diese (und ob sie schon erfüllt sind) z.Bsp. beim Spick.",
 					"question" => "Was sind Beobachtungsaufträge?",

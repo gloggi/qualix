@@ -7,7 +7,7 @@
 
         <form-basic :action="['admin.observationAssignments.update', {course: {{ $course->id }}, observationAssignment: {{ $observationAssignment->id }}}]">
 
-            <input-text name="order_name" value="{{ $observationAssignment->order_name }}" label="{{__('t.models.observation_assignment.order_name')}}" required autofocus></input-text>
+            <input-text name="name" value="{{ $observationAssignment->name }}" label="{{__('t.models.observation_assignment.name')}}" required autofocus></input-text>
 
             <input-multi-select
                 name="users"

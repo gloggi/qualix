@@ -6,7 +6,7 @@
         <template #header>{{__('t.views.admin.observation_assignments.new')}}</template>
 
         <form-basic :action="['admin.observationAssignments.store', {course: {{ $course->id }}}]">
-            <input-text name="order_name" label="{{__('t.models.observation_assignment.order_name')}}" required autofocus></input-text>
+            <input-text name="name" label="{{__('t.models.observation_assignment.name')}}" required autofocus></input-text>
 
             <input-multi-select
                 name="users"
@@ -59,7 +59,7 @@
             <responsive-table
                 :data="{{ json_encode($course->observationAssignments()->with('users', 'participants', 'blocks')->get()) }}"
                 :fields="[
-                    { label: $t('t.models.observation_assignment.order_name'), value: observationAssignment => observationAssignment.order_name },
+                    { label: $t('t.models.observation_assignment.name'), value: observationAssignment => observationAssignment.name },
                     { label: $t('t.models.observation_assignment.users'), value: observationAssignment => observationAssignment.users.map(user => user.name).join(', ') },
                     { label: $t('t.models.observation_assignment.participants'), value: observationAssignment => observationAssignment.participants.map(participant => participant.name_and_group).join(', ') },
                     { label: $t('t.models.observation_assignment.blocks'), value: observationAssignment => observationAssignment.blocks.map(block => block.blockname_and_number).join(', ') },

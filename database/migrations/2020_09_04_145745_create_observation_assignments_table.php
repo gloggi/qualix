@@ -16,7 +16,7 @@ class CreateObservationAssignmentsTable extends Migration
         Schema::create('observation_assignments', function (Blueprint $table) {
             $table->integer('id', true);
             $table->integer('course_id')->nullable(false);
-            $table->string('order_name')->nullable(false);
+            $table->string('name')->nullable(false);
             $table->timestamps();
         });
         Schema::table('observation_assignments', function(Blueprint $table)

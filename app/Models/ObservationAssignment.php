@@ -17,7 +17,7 @@ class ObservationAssignment extends Model
     /**
      * @var array
      */
-    protected $fillable = ['order_name', 'course_id'];
+    protected $fillable = ['name', 'course_id'];
 
 
     /**
