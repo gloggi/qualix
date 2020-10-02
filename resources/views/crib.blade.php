@@ -17,7 +17,7 @@
                     use $trainerId to change the crib for other trainers
                 */
                 $trainerId = Auth::id();
-                $trainerObservationOrders = $course->observationOrdersPerUserAndPerBlock()[$trainerId];
+                $trainerObservationOrders = $course->observationOrdersPerUserAndPerBlock()[$trainerId] ?? [];
                 $neededObs =1;
             @endphp
 

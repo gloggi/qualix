@@ -5,43 +5,41 @@
     <b-card>
         <template #header>{{__('t.views.admin.observation_orders.new')}}</template>
 
-        @component('components.form', ['route' => ['admin.observationOrders.store', ['course' => $course->id]]])
-            <input-text @forminput('order_name') label="{{__('t.models.observation_order.order_name')}}" required autofocus></input-text>
+        <form-basic :action="['admin.observationOrders.store', {course: {{ $course->id }}}]">
+            <input-text name="order_name" label="{{__('t.models.observation_order.order_name')}}" required autofocus></input-text>
 
             <input-multi-select
-                @forminput('user')
-            label="{{__('t.models.observation_order.user')}}"
-            :options="{{ json_encode($course->users->map->only('id', 'name')) }}"
+                name="user"
+                label="{{__('t.models.observation_order.user')}}"
+                :options="{{ json_encode($course->users->map->only('id', 'name')) }}"
+                display-field="name"
+                multiple
+                required
+                :autofocus="true"></input-multi-select>
 
-            display-field="name"
-            multiple
-            required
-            :autofocus="true"></input-multi-select>
             <input-multi-select
-                @forminput('participants')
-            label="{{__('t.models.observation_order.participants')}}"
-            :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
-
-            :groups="{{json_encode(
+                name="participants"
+                label="{{__('t.models.observation_order.participants')}}"
+                :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
+                :groups="{{json_encode(
                     $course->participantGroups->mapWithKeys(function ($group) {
                         return [$group['group_name'] => $group->participants->pluck('id')->join(',')];
-                    }))}}"
-
-            display-field="scout_name"
-            multiple
-            required
-            :autofocus="true"></input-multi-select>
+                    }), JSON_FORCE_OBJECT)}}"
+                display-field="scout_name"
+                multiple
+                required
+                :autofocus="true"></input-multi-select>
 
             <input-multi-select
-                @forminput('block')
-            label="{{__('t.models.observation_order.block')}}"
-            required
-            :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number')) }}"
-            :autofocus="true"
-            display-field="blockname_and_number"
-            multiple
-            :autofocus="true"
-            ></input-multi-select>
+                name="block"
+                label="{{__('t.models.observation_order.block')}}"
+                required
+                :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number')) }}"
+                :autofocus="true"
+                display-field="blockname_and_number"
+                multiple
+                :autofocus="true"
+                ></input-multi-select>
 
             <button-submit label="{{__('t.global.add')}}">
 
@@ -49,7 +47,7 @@
 
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 
@@ -57,48 +55,22 @@
         <template #header>{{__('t.views.admin.observation_orders.existing', ['courseName' => $course->name])}}</template>
 
         @if (count($course->observationOrders))
-            @php
-                $fields = [
-                    __('t.models.observation_order.order_name') => function(\App\Models\ObservationOrder $observationOrder) { return $observationOrder->order_name; },
-                    __('t.models.observation_order.user') => function(\App\Models\ObservationOrder $observationOrder) {
-                        return $observationOrder->users->map(function ($item){ return $item['name'];
-                        })->implode(', ');
 
-                    },
-                    __('t.models.observation_order.participants') => function(\App\Models\ObservationOrder $observationOrder) {
-                        return $observationOrder->participants->map(function ($item){
-                            $scout_name = $item['scout_name'];
-                            $group = $item['group'];
-                            return $group ? "$scout_name ($group)" : $scout_name;
-                        })->implode(', ');
-
-                    },
-                    __('t.models.observation_order.block') => function(\App\Models\ObservationOrder $observationOrder) {
-                        return $observationOrder->blocks->map(function ($item){
-                            $block_name = $item['name'];
-                            $block_number = $item['block_number'];
-                            $day_number = $item['day_number'];
-                            $number = ($day_number && $block_number) ? "($day_number.$block_number) " : "";
-                            return $number.$block_name;
-                        })->implode(', ');
-
-                    },
-                ];
-
-            @endphp
-            @component('components.responsive-table', [
-                'data' => $course->observationOrders,
-                'fields' => $fields,
-                'actions' => [
-                    'edit' => function(\App\Models\ObservationOrder $observationOrder) use ($course) { return route('admin.observationOrders.edit', ['course' => $course->id, 'observationOrder' => $observationOrder->id]); },
-                    'delete' => function(\App\Models\ObservationOrder $observationOrder) use ($course) { return [
-                        'text' => __('t.views.admin.observation_orders.really_delete', [ 'name' => $observationOrder->order_name]),
-                        'route' => ['admin.observationOrders.destroy', ['course' => $course->id, 'observationOrder' => $observationOrder->id]],
-                     ];},
-                ]
-            ])@endcomponent
-
-
+            <responsive-table
+                :data="{{ json_encode($course->observationOrders()->with('users', 'participants', 'blocks')->get()) }}"
+                :fields="[
+                    { label: $t('t.models.observation_order.order_name'), value: observationOrder => observationOrder.order_name },
+                    { label: $t('t.models.observation_order.user'), value: observationOrder => observationOrder.users.map(user => user.name).join(', ') },
+                    { label: $t('t.models.observation_order.participants'), value: observationOrder => observationOrder.participants.map(participant => participant.name_and_group).join(', ') },
+                    { label: $t('t.models.observation_order.block'), value: observationOrder => observationOrder.blocks.map(block => block.blockname_and_number).join(', ') },
+                ]"
+                :actions="{
+                    edit: observationOrder => routeUri('admin.observationOrders.edit', {course: {{ $course->id }}, observationOrder: observationOrder.id}),
+                    delete: observationOrder => ({
+                        text: $t('t.views.admin.observation_orders.really_delete', observationOrder),
+                        route: ['admin.observationOrders.delete', {course: {{ $course->id }}, observationOrder: observationOrder.id}]
+                    })
+                }"></responsive-table>
 
         @else
 

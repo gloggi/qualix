@@ -20,7 +20,7 @@ class ObservationOrderController extends Controller
      */
     public function index()
     {
-        return view('admin.observationOrders');
+        return view('admin.observationOrders.index');
     }
 
 
@@ -47,7 +47,7 @@ class ObservationOrderController extends Controller
             $request->session()->flash('alert-success', __('t.views.admin.observation_orders.create_success'));
         });
 
-        return Redirect::route('admin.observationOrders.index', ['course' => $course->id]);
+        return Redirect::route('admin.observationOrders', ['course' => $course->id]);
 
     }
 
@@ -86,7 +86,7 @@ class ObservationOrderController extends Controller
             $observationOrder->users()->attach(array_filter(explode(',', $data['user'])));
             $request->session()->flash('alert-success', __('t.views.admin.observation_orders.edit_success'));
         });
-        return Redirect::route('admin.observationOrders.index', ['course' => $course->id]);
+        return Redirect::route('admin.observationOrders', ['course' => $course->id]);
 
     }
 

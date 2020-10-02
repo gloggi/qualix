@@ -91,7 +91,7 @@ class Course extends Model {
                     $join->on('observations.block_id', 'observation_order_blocks.block_id');
                     $join->on('observations.user_id', 'users.id');
                 })
-                ->join('trainers', 'users.id', 'trainers.course_id')
+                ->join('trainers', 'users.id', 'trainers.user_id')
                 ->mergeConstraintsFrom($this->users()->getQuery())
                 ->groupBy('user_id', 'block_id', 'participant_id');
 

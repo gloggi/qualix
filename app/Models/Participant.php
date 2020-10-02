@@ -36,7 +36,7 @@ class Participant extends Model {
      *
      * @var array
      */
-    protected $appends = ['num_observations', 'image_path'];
+    protected $appends = ['num_observations', 'image_path', 'name_and_group'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -92,6 +92,10 @@ class Participant extends Model {
 
     public function getNegativeAttribute() {
         return $this->observations()->where('impression', '=', '0');
+    }
+
+    public function getNameAndGroupAttribute() {
+        return $this->group ? $this->scout_name . ' (' . $this->group . ')' : $this->scout_name;
     }
 
     /**

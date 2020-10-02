@@ -99,7 +99,6 @@ return array(
 			"participant" => "TN",
 			"participants" => "TN",
 			"user" => "Equipe",
-
 		),
 		"participant" => array(
 			"group" => "Abteilung",
@@ -240,7 +239,7 @@ return array(
 			),
 			"observation_orders" => array(
 				"are_observation_orders_required" => array(
-					"answer" => "Nein, aber sie sind ein nützliches Tool beim RQF (Rückmelde-, Qualifizierungs-, Förderungs-') Prozess.",
+					"answer" => "Nein, aber sie sind ein nützliches Tool beim RQF (Rückmelde-, Qualifizierungs-, Förderungs-) Prozess.",
 					"question" => "Muss ich Beobachtungsaufträge für meinen Kurs erfassen?",
 				),
 				"create_success" => "Beobachtungsauftrag wurde erfolgreich erstellt.",
@@ -251,7 +250,7 @@ return array(
 				"menu_name" => "Beobachtungsaufträge",
 				"new" => "Neuer Beobachtungsauftrag",
 				"no_observation_order" => "Bisher sind keine Beobachtungsaufträge erfasst.",
-				"really_delete" => "Willst du den Beobachtungsauftrag wirklich löschen?",
+				"really_delete" => "Willst du den Beobachtungsauftrag \":order_name\" wirklich löschen?",
 				"what_are_observation_orders" => array(
 					"answer" => "Viele Equipen definieren, wer wann wen beobachten sollte. Diese Aufträge könnt ihr hier definieren und seht diese (und ob sie schon erfüllt sind) z.Bsp. beim Spick.",
 					"question" => "Was sind Beobachtungsaufträge?",
