@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateObservationOrdersTable extends Migration
+class CreateObservationAssignmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateObservationOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('observation_orders', function (Blueprint $table) {
+        Schema::create('observation_assignments', function (Blueprint $table) {
             $table->integer('id', true);
             $table->integer('course_id')->nullable(false);
             $table->string('order_name')->nullable(false);
             $table->timestamps();
         });
-        Schema::table('observation_orders', function(Blueprint $table)
+        Schema::table('observation_assignments', function(Blueprint $table)
         {
-            $table->foreign('course_id', 'fk_course_observation_order')->references('id')->on('courses')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('course_id', 'fk_course_observation_assignment')->references('id')->on('courses')->onUpdate('CASCADE')->onDelete('CASCADE');
 
         });
     }
@@ -33,11 +33,11 @@ class CreateObservationOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::table('observation_orders', function(Blueprint $table)
+        Schema::table('observation_assignments', function(Blueprint $table)
         {
-            $table->dropForeign('fk_course_observation_order');
+            $table->dropForeign('fk_course_observation_assignment');
 
         });
-        Schema::dropIfExists('observation_orders');
+        Schema::dropIfExists('observation_assignments');
     }
 }

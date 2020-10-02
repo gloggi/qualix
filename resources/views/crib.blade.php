@@ -57,9 +57,9 @@
                                         @endif
                                     </b-list-group-item>
                                     <b-list-group-item tag="h5" class="border-0 mb-0 col-sm-12 col-md-6">
-                                        @if(isset($trainerObservationOrders[$block->id]))
+                                        @if(isset($trainerObservationAssignments[$block->id]))
                                             <div class="row">
-                                                @foreach($trainerObservationOrders[$block->id] as $participant)
+                                                @foreach($trainerObservationAssignments[$block->id] as $participant)
                                                     <div class="col-6 col-sm-4 col-md-4 col-lg-3 mb-1 text-center">
                                                         <a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id, 'block' => $block->id, 'crib' => true]) }}">
                                                             <div class="card rounded-circle mb-0 position-relative">

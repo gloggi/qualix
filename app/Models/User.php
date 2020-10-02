@@ -73,9 +73,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function observationOrders()
+    public function observationAssignments()
     {
-        return $this->belongsToMany('App\Models\ObservationOrder', 'observation_order_users');
+        return $this->belongsToMany('App\Models\ObservationAssignment', 'observation_assignment_users');
     }
 
 

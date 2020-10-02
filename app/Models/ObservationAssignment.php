@@ -4,14 +4,14 @@ namespace App\Models;
 
 
 
-class ObservationOrder extends Model
+class ObservationAssignment extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'observation_orders';
+    protected $table = 'observation_assignments';
 
 
     /**
@@ -25,7 +25,7 @@ class ObservationOrder extends Model
      */
     public function blocks()
     {
-        return $this->belongsToMany('App\Models\Block', 'observation_order_blocks');
+        return $this->belongsToMany('App\Models\Block', 'observation_assignment_blocks');
     }
 
     /**
@@ -33,7 +33,7 @@ class ObservationOrder extends Model
      */
     public function participants()
     {
-        return $this->belongsToMany('App\Models\Participant', 'observation_order_participants');
+        return $this->belongsToMany('App\Models\Participant', 'observation_assignment_participants');
     }
 
     /**
@@ -41,6 +41,6 @@ class ObservationOrder extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\Models\User', 'observation_order_users');
+        return $this->belongsToMany('App\Models\User', 'observation_assignment_users');
     }
 }

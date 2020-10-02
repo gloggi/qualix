@@ -34,7 +34,7 @@ class BlockListController extends Controller
         return view('crib', [
             'blockManagementLink' => $this->blockManagementLink($course, 't.views.crib.here'),
             'userId' => $userId,
-            'trainerObservationOrders' => $course->observationOrdersPerUserAndPerBlock()[$userId] ?? [],
+            'trainerObservationAssignments' => $course->observationAssignmentsPerUserAndPerBlock()[$userId] ?? [],
             'neededObservations' => 1,
         ]);
     }

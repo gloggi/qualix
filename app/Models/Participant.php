@@ -69,9 +69,9 @@ class Participant extends Model {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function observationOrders()
+    public function observationAssignments()
     {
-        return $this->hasMany('App\Models\ObservationOrder');
+        return $this->hasMany('App\Models\ObservationAssignment');
     }
 
     /**

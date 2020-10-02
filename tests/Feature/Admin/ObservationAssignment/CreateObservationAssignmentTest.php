@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Feature\Admin\ObservationOrder;
+namespace Tests\Feature\Admin\ObservationAssignment;
 
 use App\Models\Course;
-use App\Models\ObservationOrder;
+use App\Models\ObservationAssignment;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithCourse;
 
-class CreateObservationOrderTest extends TestCaseWithCourse
+class CreateObservationAssignmentTest extends TestCaseWithCourse
 {
 
     private $payload;
@@ -22,7 +22,7 @@ class CreateObservationOrderTest extends TestCaseWithCourse
 
         $this->participantId = $this->createParticipant('Pflock');
         $this->blockId = $this->createBlock('Einstieg', '1.1');
-        $this->userId = $this->createUser('')
+        $this->userId = $this->createUser('');
         $this->payload = ['group_name' => 'Unternehmungsgruppe 1', 'participants' => '' . $this->participantId];
     }
 

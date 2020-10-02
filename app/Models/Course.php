@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -67,28 +66,28 @@ class Course extends Model {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function observationOrders()
+    public function observationAssignments()
     {
-        return $this->hasMany('App\Models\ObservationOrder', 'course_id');
+        return $this->hasMany('App\Models\ObservationAssignment', 'course_id');
     }
 
-    public function observationOrdersPerUserAndPerBlock() {
+    public function observationAssignmentsPerUserAndPerBlock() {
         if (!$this->observationAssignments) {
-            $observationAssignmentsQuery = ObservationOrder::select([
+            $observationAssignmentsQuery = ObservationAssignment::select([
                 'users.id as user_id',
-                'observation_order_blocks.block_id as block_id',
+                'observation_assignment_blocks.block_id as block_id',
                 DB::raw('COUNT(DISTINCT observations.id) as observation_count'),
                 'participants.id as participant_id'
             ])->distinct()
-                ->join('observation_order_participants', 'observation_orders.id', 'observation_order_participants.observation_order_id')
-                ->join('observation_order_users', 'observation_orders.id', 'observation_order_users.observation_order_id')
-                ->join('observation_order_blocks', 'observation_orders.id', 'observation_order_blocks.observation_order_id')
-                ->join('users', 'users.id', 'observation_order_users.user_id')
-                ->join('participants', 'participants.id', 'observation_order_participants.participant_id')
+                ->join('observation_assignment_participants', 'observation_assignments.id', 'observation_assignment_participants.observation_assignment_id')
+                ->join('observation_assignment_users', 'observation_assignments.id', 'observation_assignment_users.observation_assignment_id')
+                ->join('observation_assignment_blocks', 'observation_assignments.id', 'observation_assignment_blocks.observation_assignment_id')
+                ->join('users', 'users.id', 'observation_assignment_users.user_id')
+                ->join('participants', 'participants.id', 'observation_assignment_participants.participant_id')
                 ->leftJoin('observations_participants', 'participants.id', 'observations_participants.participant_id')
                 ->leftJoin('observations', function($join) {
                     $join->on('observations.id', 'observations_participants.observation_id');
-                    $join->on('observations.block_id', 'observation_order_blocks.block_id');
+                    $join->on('observations.block_id', 'observation_assignment_blocks.block_id');
                     $join->on('observations.user_id', 'users.id');
                 })
                 ->join('trainers', 'users.id', 'trainers.user_id')

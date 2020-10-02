@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Trainer;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Lang;
-use App\Models\Trainer;
 
 
-class ObservationOrderRequest extends FormRequest {
+class ObservationAssignmentRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -32,6 +32,6 @@ class ObservationOrderRequest extends FormRequest {
 
 
     public function attributes() {
-        return Lang::get('t.models.observation_order');
+        return Lang::get('t.models.observation_assignment');
     }
 }
