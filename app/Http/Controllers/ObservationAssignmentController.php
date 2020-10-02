@@ -55,10 +55,10 @@ class ObservationAssignmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      * @param Course $course
-     * @param  \App\Models\ObservationAssignment  $observationAssignment
+     * @param ObservationAssignment $observationAssignment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Course $course ,ObservationAssignment $observationAssignment)
+    public function edit(Course $course, ObservationAssignment $observationAssignment)
     {
         return view('admin.observationAssignments.edit', ['observationAssignment' => $observationAssignment]);
     }
@@ -69,7 +69,7 @@ class ObservationAssignmentController extends Controller
      *
      * @param  ObservationAssignmentRequest  $request
      * @param  Course $course
-     * @param  \App\Models\ObservationAssignment  $observationAssignment
+     * @param ObservationAssignment $observationAssignment
      * @return RedirectResponse
      */
     public function update(ObservationAssignmentRequest $request, Course $course, ObservationAssignment $observationAssignment)
