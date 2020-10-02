@@ -10,9 +10,9 @@
             <input-text name="order_name" value="{{ $observationAssignment->order_name }}" label="{{__('t.models.observation_assignment.order_name')}}" required autofocus></input-text>
 
             <input-multi-select
-                name="user"
+                name="users"
                 value="{{ $observationAssignment->users->pluck('id')->join(',') }}"
-                label="{{__('t.models.observation_assignment.user')}}"
+                label="{{__('t.models.observation_assignment.users')}}"
                 required
                 :options="{{ json_encode($course->users->map->only('id', 'name')) }}"
                 display-field="name"
@@ -32,9 +32,9 @@
                 multiple></input-multi-select>
 
             <input-multi-select
-                name="block"
+                name="blocks"
                 value="{{ $observationAssignment->blocks->pluck('id')->join(',') }}"
-                label="{{__('t.models.observation_assignment.block')}}"
+                label="{{__('t.models.observation_assignment.blocks')}}"
                 required
                 :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number')) }}"
                 display-field="blockname_and_number"

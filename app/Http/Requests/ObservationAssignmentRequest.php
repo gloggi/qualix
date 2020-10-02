@@ -25,9 +25,10 @@ class ObservationAssignmentRequest extends FormRequest {
     public function rules() {
         return [
             'order_name' => 'required|max:1023',
-            'block' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
+            'blocks' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
             'participants' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
-            'user' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse:' . Trainer::class . ',user_id'        ];
+            'users' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse:' . Trainer::class . ',user_id'
+        ];
     }
 
 

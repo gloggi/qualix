@@ -94,11 +94,10 @@ return array(
 			"user" => "Beobachter",
 		),
 		"observation_assignment" => array(
-			"block" => "Blöcke",
+			"blocks" => "Blöcke",
 			"order_name" => "Beobachtungsauftrag",
-			"participant" => "TN",
 			"participants" => "TN",
-			"user" => "Equipe",
+			"users" => "Equipe",
 		),
 		"participant" => array(
 			"group" => "Abteilung",

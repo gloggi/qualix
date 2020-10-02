@@ -41,8 +41,8 @@ class ObservationAssignmentController extends Controller
             $observationAssignment = ObservationAssignment::create(array_merge($data, ['course_id' => $course->id]));
 
             $observationAssignment->participants()->attach(array_filter(explode(',', $data['participants'])));
-            $observationAssignment->blocks()->attach(array_filter(explode(',', $data['block'])));
-            $observationAssignment->users()->attach(array_filter(explode(',', $data['user'])));
+            $observationAssignment->blocks()->attach(array_filter(explode(',', $data['blocks'])));
+            $observationAssignment->users()->attach(array_filter(explode(',', $data['users'])));
 
             $request->session()->flash('alert-success', __('t.views.admin.observation_assignments.create_success'));
         });
@@ -81,9 +81,9 @@ class ObservationAssignmentController extends Controller
             $observationAssignment->participants()->detach(null);
             $observationAssignment->participants()->attach(array_filter(explode(',', $data['participants'])));
             $observationAssignment->blocks()->detach(null);
-            $observationAssignment->blocks()->attach(array_filter(explode(',', $data['block'])));
+            $observationAssignment->blocks()->attach(array_filter(explode(',', $data['blocks'])));
             $observationAssignment->users()->detach(null);
-            $observationAssignment->users()->attach(array_filter(explode(',', $data['user'])));
+            $observationAssignment->users()->attach(array_filter(explode(',', $data['users'])));
             $request->session()->flash('alert-success', __('t.views.admin.observation_assignments.edit_success'));
         });
         return Redirect::route('admin.observationAssignments', ['course' => $course->id]);
