@@ -12,14 +12,19 @@
                 foreach($course->blocks as $block) {
                     $days[$block->block_date->timestamp][] = $block;
                 }
-
-                /*
-                    use $trainerId to change the crib for other trainers
-                */
-                $trainerId = Auth::id();
-                $trainerObservationOrders = $course->observationOrdersPerUserAndPerBlock()[$trainerId] ?? [];
-                $neededObs =1;
             @endphp
+
+            <div class="d-flex justify-content-end mb-2">
+                <label for="user" class="col-form-label text-md-right mr-2">{{ __('t.views.crib.view_as') }}</label>
+                <multi-select
+                    name="user"
+                    :value="{{ json_encode("$userId") }}"
+                    class=""
+                    required
+                    :options="{{ json_encode($course->users->map->only('id', 'name')) }}"
+                    display-field="name"
+                    @update:selected="selected => $window.location = routeUri('crib', {course: {{ $course->id }}, user: selected.id})"></multi-select>
+            </div>
 
             @foreach($days as $day)
             <b-card no-body>
@@ -60,8 +65,7 @@
                                                             <div class="card rounded-circle mb-0 position-relative">
                                                                 <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
                                                                 <div class="card-img-overlay w-100 p-0 d-flex flex-column ">
-                                                                    <div class="btn {{$participant->observation_count >= $neededObs ? 'btn-success' : 'btn-danger'}} pt-0 pb-0 mt-1 w-100 mt-auto text-overflow-ellipsis">{{$participant->scout_name }}</div>
-
+                                                                    <b-button variant="{{$participant->observation_count >= $neededObservations ? 'outline-success' : 'outline-danger'}}" class="bg-white py-0 mt-1 w-100 mt-auto text-overflow-ellipsis">{{$participant->scout_name}}</b-button>
                                                                 </div>
                                                             </div>
 

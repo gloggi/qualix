@@ -1,7 +1,7 @@
 <template>
   <form :method="formMethod" :action="routeUri(...arrayAction)" :enctype="enctype">
-    <input-hidden name="_method" :value="method"></input-hidden>
-    <input-hidden name="_token" :value="csrfToken"></input-hidden>
+    <input-hidden v-if="methodIsNotGet" name="_method" :value="method"></input-hidden>
+    <input-hidden v-if="methodIsNotGet" name="_token" :value="csrfToken"></input-hidden>
     <slot></slot>
   </form>
 </template>
@@ -27,8 +27,11 @@ export default {
     method() {
       return this.routeMethod(...this.arrayAction)
     },
+    methodIsNotGet() {
+      return this.method !== 'GET'
+    },
     formMethod() {
-      return (this.method && this.method === 'GET') ? 'GET' : 'POST'
+      return this.methodIsNotGet ? 'POST' : 'GET'
     },
   }
 }

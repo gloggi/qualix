@@ -374,6 +374,7 @@ return array(
 				"question" => "Siehst du nur leere Blöcke ohne Anforderungen?",
 			),
 			"title" => "Welche Anforderungen können in welchen Blöcken beobachtet werden",
+			"view_as" => "Aus Sicht von",
 		),
 		"error_form" => array(
 			"back" => "Zurück zu wo ich gerade noch war...",

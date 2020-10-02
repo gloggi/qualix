@@ -112,6 +112,14 @@
     background-color: #f9d6d5;
 }
 
+.btn-outline-danger.bg-white:hover {
+    background-color: $danger !important;
+}
+
+.btn-outline-success.bg-white:hover {
+    background-color: $success !important;
+}
+
 .hr-label {
     width: 100%;
     text-align: center;
