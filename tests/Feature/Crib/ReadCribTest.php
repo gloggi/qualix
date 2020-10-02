@@ -2,8 +2,11 @@
 
 namespace Tests\Feature\Crib;
 
+use App\Models\Observation;
+use App\Models\ObservationAssignment;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCaseWithCourse;
 
 class ReadCribTest extends TestCaseWithCourse {
@@ -109,5 +112,59 @@ class ReadCribTest extends TestCaseWithCourse {
 
         // then
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
+    }
+
+    public function test_shouldCalculateObservationAssignmentsCorrectly() {
+        // given
+        $block1 = $this->createBlock('Block 1', '1.1', '01.01.2019');
+        $block2 = $this->createBlock('Block 2', '1.2', '01.01.2019');
+        $participant1 = $this->createParticipant('One');
+        $participant2 = $this->createParticipant('Two');
+        $observation = Observation::create(['content' => 'test', 'block' => $block1, 'user_id' => Auth::id()]);
+        $observation->participants()->attach($participant1);
+
+        $observationAssignment = ObservationAssignment::create(['name' => 'Assignment', 'course_id' => $this->courseId]);
+        $observationAssignment->blocks()->attach([$block1, $block2]);
+        $observationAssignment->participants()->attach([$participant1, $participant2]);
+        $observationAssignment->users()->attach(Auth::id());
+
+        $participant1Data = Participant::find($participant1)->attributesToArray();
+        $participant2Data = Participant::find($participant2)->attributesToArray();
+        $userId = Auth::id();
+        $courseId = $this->courseId;
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/crib');
+
+        // then
+        $response->assertOk();
+        $response->assertSee('Block 1');
+        $response->assertSee('Block 2');
+        $data = $response->getOriginalContent()->getData()['trainerObservationAssignments'];
+        $this->assertEquals([$block2, $block1], array_keys($data->all()));
+        $block1Participant1 = collect($data[$block1])->first(function ($entry) use($participant1) { return $entry['id'] === $participant1; });
+        $this->assertEquals($block1Participant1['user_id'], $userId);
+        $this->assertEquals($block1Participant1['block_id'], $block1);
+        $this->assertEquals($block1Participant1['observation_count'], 1);
+        $this->assertEquals($block1Participant1['id'], $participant1);
+        $this->assertEquals($block1Participant1['scout_name'], 'One');
+        $block1Participant2 = collect($data[$block1])->first(function ($entry) use($participant2) { return $entry['id'] === $participant2; });
+        $this->assertEquals($block1Participant2['user_id'], $userId);
+        $this->assertEquals($block1Participant2['block_id'], $block1);
+        $this->assertEquals($block1Participant2['observation_count'], 0);
+        $this->assertEquals($block1Participant2['id'], $participant2);
+        $this->assertEquals($block1Participant2['scout_name'], 'Two');
+        $block2Participant1 = collect($data[$block2])->first(function ($entry) use($participant1) { return $entry['id'] === $participant1; });
+        $this->assertEquals($block2Participant1['user_id'], $userId);
+        $this->assertEquals($block2Participant1['block_id'], $block2);
+        $this->assertEquals($block2Participant1['observation_count'], 0);
+        $this->assertEquals($block2Participant1['id'], $participant1);
+        $this->assertEquals($block2Participant1['scout_name'], 'One');
+        $block2Participant2 = collect($data[$block2])->first(function ($entry) use($participant2) { return $entry['id'] === $participant2; });
+        $this->assertEquals($block2Participant2['user_id'], $userId);
+        $this->assertEquals($block2Participant2['block_id'], $block2);
+        $this->assertEquals($block2Participant2['observation_count'], 0);
+        $this->assertEquals($block2Participant2['id'], $participant2);
+        $this->assertEquals($block2Participant2['scout_name'], 'Two');
     }
 }
