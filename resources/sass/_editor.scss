@@ -30,7 +30,7 @@
 }
 
 .editor-content {
-    margin-left: 3.8rem;
+    margin-left: 1.5rem;
 
     :focus {
         outline: none;
@@ -47,11 +47,15 @@
 
     .observation {
         border-left: 2px solid $gray-500;
-        background-color: $gray-200;
         cursor: move;
+        white-space: initial;
 
         p {
             user-select: none;
+        }
+
+        &:hover {
+            background-color: $gray-200;
         }
 
         &.selected {
@@ -59,17 +63,22 @@
         }
 
         .delete-button {
-            visibility: hidden;
             cursor: pointer;
         }
 
-        &.selected .delete-button, &:hover .delete-button {
-            visibility: visible;
+        .delete-button, .observation-author {
+            visibility: hidden;
+        }
+
+        &.selected, &:hover {
+            .delete-button, .observation-author {
+                visibility: visible;
+            }
         }
     }
 
     .requirement {
-        margin-left: -3.8rem;
+        margin-left: -1.5rem;
         cursor: move;
 
         &:hover {
@@ -86,6 +95,10 @@
 
         .requirement-menu {
             visibility: hidden;
+
+            .dropdown-menu.show {
+                visibility: visible;
+            }
         }
 
         &.selected .requirement-menu, &:hover .requirement-menu {
@@ -94,14 +107,16 @@
     }
 
     &.readonly {
-        margin-left: 1.5rem;
 
         .observation {
             cursor: unset;
+
+            .observation-author {
+                display: none;
+            }
         }
 
         .requirement {
-            margin-left: -1.5rem;
             cursor: unset;
         }
 

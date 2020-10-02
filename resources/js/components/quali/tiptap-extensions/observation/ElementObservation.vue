@@ -1,13 +1,17 @@
 <template>
-  <div class="observation px-3 py-1 mb-2 d-flex" :class="selected ? 'selected' : ''">
-    <blockquote class="flex-grow-1 mb-0">
-      <observation-content :observation="observation"></observation-content><p class="mb-0">
-        <small class="text-muted">{{ observation.block.name }}, {{ date }}</small>
-      </p>
-    </blockquote>
-    <a v-if="editor.options.editable !== false" class="text-danger delete-button" :title="$t('t.global.delete')" @click="remove">
-      <i class="fas fa-minus-circle"></i>
-    </a>
+  <div class="observation px-3 py-1 mb-2">
+    <div class="py-1 d-flex" :class="selected ? 'selected' : ''">
+      <blockquote class="flex-grow-1 mb-0">
+        <observation-content :observation="observation"></observation-content>
+      </blockquote>
+      <a v-if="editor.options.editable !== false" class="text-danger delete-button" :title="$t('t.global.delete')" @click="remove">
+        <i class="fas fa-minus-circle"></i>
+      </a>
+    </div>
+    <div class="mb-0 mt-1 d-flex justify-content-between">
+      <small class="text-muted">{{ observation.block.name }}, {{ date }}</small>
+      <small class="text-muted observation-author">{{ $t('t.views.quali_content.observed_by', observation.user) }}</small>
+    </div>
   </div>
 </template>
 
