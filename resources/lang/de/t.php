@@ -26,7 +26,11 @@ return array(
 		"date_format" => "%A %d.%m.%Y",
 		"delete" => "Löschen",
 		"edit" => "Bearbeiten",
-		"heading" => "Titel",
+		"editor" => array(
+			"heading_large" => "Titel L",
+			"heading_normal" => "Titel M",
+			"heading_small" => "Titel S"
+		),
 		"negative" => "Negativ",
 		"neutral" => "Neutral",
 		"no" => "Nein",

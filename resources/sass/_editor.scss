@@ -31,6 +31,7 @@
 
 .editor-content {
     margin-left: 1.5rem;
+    line-height: 1.4;
 
     :focus {
         outline: none;
@@ -40,9 +41,20 @@
         margin-bottom: 0.5rem;
     }
 
-    h5, .requirement {
+    h3, h5, .requirement {
         margin-top: 1.25rem;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .requirement h5 {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    h6 {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
     }
 
     .observation {

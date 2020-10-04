@@ -40,7 +40,7 @@ export default {
       injectCSS: false,
       extensions: [
         new History(),
-        new Heading({ levels: [ 5 ] }),
+        new Heading({ levels: [ 3, 5, 6 ] }),
         new Observation(this.readonly),
         new Requirement(this.readonly),
       ],

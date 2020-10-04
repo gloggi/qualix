@@ -1,6 +1,8 @@
 <template>
   <div ref="menu" class="editor__floating-menu" :class="{ 'is-active': menu.isActive }">
-    <button-add @click="commands.heading({ level: 5 })">{{ $t('t.global.heading') }}</button-add>
+    <button-add @click="commands.heading({ level: 3 })">{{ $t('t.global.editor.heading_large') }}</button-add>
+    <button-add @click="commands.heading({ level: 5 })">{{ $t('t.global.editor.heading_normal') }}</button-add>
+    <button-add @click="commands.heading({ level: 6 })">{{ $t('t.global.editor.heading_small') }}</button-add>
     <button-add v-if="observations.length" @click="$emit('addObservation')">{{ $t('t.models.observation.one') }}</button-add>
   </div>
 </template>
