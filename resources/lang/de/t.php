@@ -407,7 +407,7 @@ return array(
 		),
 		"observations" => array(
 			"add_success" => "Beobachtung erfasst. Mässi!",
-			"back_to_participant" => "Zurück zu :name",
+			"go_to_participant" => "Zu :name",
 			"edit" => "Beobachtung bearbeiten",
 			"edit_success" => "Beobachtung aktualisiert.",
 			"new" => "Beobachtung erfassen",

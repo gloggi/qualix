@@ -130,10 +130,7 @@ class ReadCribTest extends TestCaseWithCourse {
         $observationAssignment->participants()->attach([$participant1, $participant2]);
         $observationAssignment->users()->attach(Auth::id());
 
-        $participant1Data = Participant::find($participant1)->attributesToArray();
-        $participant2Data = Participant::find($participant2)->attributesToArray();
         $userId = Auth::id();
-        $courseId = $this->courseId;
 
         // when
         $response = $this->get('/course/' . $this->courseId . '/crib');
@@ -168,5 +165,58 @@ class ReadCribTest extends TestCaseWithCourse {
         $this->assertEquals($block2Participant2['observation_count'], 0);
         $this->assertEquals($block2Participant2['id'], $participant2);
         $this->assertEquals($block2Participant2['scout_name'], 'Two');
+    }
+
+    public function test_shouldReturnToCrib_afterAddingObservationInAssignment() {
+        // given
+        $block1 = $this->createBlock('Block 1', '1.1', '01.01.2019');
+        $block2 = $this->createBlock('Block 2', '1.2', '01.01.2019');
+        $participant1 = $this->createParticipant('One');
+        $participant2 = $this->createParticipant('Two');
+
+        $observationAssignment = ObservationAssignment::create(['name' => 'Assignment', 'course_id' => $this->courseId]);
+        $observationAssignment->blocks()->attach([$block1, $block2]);
+        $observationAssignment->participants()->attach([$participant1, $participant2]);
+        $observationAssignment->users()->attach(Auth::id());
+
+        $this->get('/course/' . $this->courseId . '/crib');
+
+        // when
+        $this->get('/course/' . $this->courseId . '/observation/new?participant=' . $participant1 . '&block=' . $block1);
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', [
+            'participants' => '' . $participant1,
+            'content' => 'hat gut mitgemacht',
+            'impression' => '1',
+            'block' => '' . $block1,
+            'requirements' => '',
+            'categories' => ''
+        ]);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/crib');
+    }
+
+    public function test_shouldReturnToCrib_afterAddingObservationInBlock() {
+        // given
+        $block1 = $this->createBlock('Block 1', '1.1', '01.01.2019');
+        $participant1 = $this->createParticipant('One');
+
+        $this->get('/course/' . $this->courseId . '/crib');
+
+        // when
+        $this->get('/course/' . $this->courseId . '/observation/new');
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', [
+            'participants' => '' . $participant1,
+            'content' => 'hat gut mitgemacht',
+            'impression' => '1',
+            'block' => '' . $block1,
+            'requirements' => '',
+            'categories' => ''
+        ]);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/crib');
     }
 }

@@ -291,7 +291,7 @@ return array(
 		),
 		"observations" => array(
 			"add_success" => "Observation saisie. Merci!",
-			"back_to_participant" => "Revenir à :name",
+			"go_to_participant" => "Venir à :name",
 			"edit" => "Modifier l'observation",
 			"edit_success" => "Observation actualisée",
 			"new" => "Créer une observation",
