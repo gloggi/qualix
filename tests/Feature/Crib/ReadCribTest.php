@@ -122,6 +122,8 @@ class ReadCribTest extends TestCaseWithCourse {
         $participant2 = $this->createParticipant('Two');
         $observation = Observation::create(['content' => 'test', 'block' => $block1, 'user_id' => Auth::id()]);
         $observation->participants()->attach($participant1);
+        $multiObservation = Observation::create(['content' => 'haben die ganze Zeit nur geschnädert', 'block' => $block1, 'user_id' => Auth::id()]);
+        $multiObservation->participants()->attach([$participant1, $participant2]);
 
         $observationAssignment = ObservationAssignment::create(['name' => 'Assignment', 'course_id' => $this->courseId]);
         $observationAssignment->blocks()->attach([$block1, $block2]);
@@ -145,13 +147,13 @@ class ReadCribTest extends TestCaseWithCourse {
         $block1Participant1 = collect($data[$block1])->first(function ($entry) use($participant1) { return $entry['id'] === $participant1; });
         $this->assertEquals($block1Participant1['user_id'], $userId);
         $this->assertEquals($block1Participant1['block_id'], $block1);
-        $this->assertEquals($block1Participant1['observation_count'], 1);
+        $this->assertEquals($block1Participant1['observation_count'], 2);
         $this->assertEquals($block1Participant1['id'], $participant1);
         $this->assertEquals($block1Participant1['scout_name'], 'One');
         $block1Participant2 = collect($data[$block1])->first(function ($entry) use($participant2) { return $entry['id'] === $participant2; });
         $this->assertEquals($block1Participant2['user_id'], $userId);
         $this->assertEquals($block1Participant2['block_id'], $block1);
-        $this->assertEquals($block1Participant2['observation_count'], 0);
+        $this->assertEquals($block1Participant2['observation_count'], 1);
         $this->assertEquals($block1Participant2['id'], $participant2);
         $this->assertEquals($block1Participant2['scout_name'], 'Two');
         $block2Participant1 = collect($data[$block2])->first(function ($entry) use($participant1) { return $entry['id'] === $participant1; });
