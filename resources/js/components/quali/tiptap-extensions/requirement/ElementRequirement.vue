@@ -56,8 +56,14 @@ export default {
       storage[this.courseId].selectedRequirement = this.node.attrs.id;
       localStorage.courses = JSON.stringify(storage)
     },
+    setCursorAfterRequirement() {
+      const pos = this.getPos() + this.node.nodeSize
+      this.editor.setSelection(pos, pos)
+      this.view.focus()
+    },
     selectObservation() {
       this.setObservationFilter()
+      this.setCursorAfterRequirement()
       this.addObservation()
     },
   }
