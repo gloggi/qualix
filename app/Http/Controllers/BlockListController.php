@@ -33,6 +33,7 @@ class BlockListController extends Controller
         $userId = $user->id ?? Auth::id();
         return view('crib', [
             'blockManagementLink' => $this->blockManagementLink($course, 't.views.crib.here'),
+            'showObservationAssignments' => $course->observationAssignments()->count(),
             'userId' => $userId,
             'trainerObservationAssignments' => $course->observationAssignmentsPerUserAndPerBlock()[$userId] ?? [],
             'neededObservations' => 1,
