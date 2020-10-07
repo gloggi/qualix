@@ -506,10 +506,10 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertStatus(404);
     }
 
-    public function test_shouldRedirectBackToParticipantPage_includingFilters() {
+    public function test_shouldRedirectBackToParticipantPage() {
         // given
-        // visiting the edit observation form from the participant detail view with filters activated
-        $previous = '/course/' . $this->courseId . '/participants/' . $this->participantId . '?requirement=3';
+        // visiting the edit observation form from the participant detail view
+        $previous = '/course/' . $this->courseId . '/participants/' . $this->participantId;
         $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
 
         // when
@@ -520,10 +520,10 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertRedirect($previous);
     }
 
-    public function test_shouldRedirectBackToParticipantPage_includingFilters_evenWhenValidationErrorsOccur() {
+    public function test_shouldRedirectBackToParticipantPage_evenWhenValidationErrorsOccur() {
         // given
-        // visiting the edit observation form from the participant detail view with filters activated
-        $previous = '/course/' . $this->courseId . '/participants/' . $this->participantId . '?requirement=3';
+        // visiting the edit observation form from the participant detail view
+        $previous = '/course/' . $this->courseId . '/participants/' . $this->participantId;
         $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId, [], ['referer' => $previous]);
 
         // send something which will trigger validation errors

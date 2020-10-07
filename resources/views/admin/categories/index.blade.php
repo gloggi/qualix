@@ -5,9 +5,9 @@
     <b-card>
         <template #header>{{__('t.views.admin.categories.new')}}</template>
 
-        @component('components.form', ['route' => ['admin.categories.store', ['course' => $course->id]]])
+        <form-basic :action="['admin.categories.store', { course: {{ $course->id }} }]">
 
-            <input-text @forminput('name') label="{{__('t.models.category.name')}}" required autofocus></input-text>
+            <input-text name="name" label="{{__('t.models.category.name')}}" required autofocus></input-text>
 
             <button-submit label="{{__('t.global.add')}}">
 
@@ -15,7 +15,7 @@
 
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 
@@ -24,26 +24,19 @@
 
         @if (count($course->categories))
 
-            @php
-                $fields = [
-                    __('t.models.category.name') => function(\App\Models\Category $category) { return $category->name; },
-                    __('t.models.category.num_observations') => function(\App\Models\Category $category) { return count($category->observations); },
-                ];
-                if ($course->archived) {
-                    unset($fields[__('t.models.category.num_observations')]);
-                }
-            @endphp
-            @component('components.responsive-table', [
-                'data' => $course->categories,
-                'fields' => $fields,
-                'actions' => [
-                    'edit' => function(\App\Models\Category $category) use ($course) { return route('admin.categories.edit', ['course' => $course->id, 'category' => $category->id]); },
-                    'delete' => function(\App\Models\Category $category) use ($course) { return [
-                        'text' => __('t.views.admin.categories.really_delete', ['name' => $category->name]) . ($course->archived ? '' : ' ' . trans_choice('t.views.admin.categories.observations_on_category', $category->observations)),
-                        'route' => ['admin.categories.delete', ['course' => $course->id, 'category' => $category->id]],
-                     ];},
-                ]
-            ])@endcomponent
+            <responsive-table
+                :data="{{ json_encode($course->categories) }}"
+                :fields="[
+                    { label: $t('t.models.category.name'), value: category => category.name },
+                    @if(!$course->archived){ label: $t('t.models.category.num_observations'), value: category => category.num_observations },@endif
+                ]"
+                :actions="{
+                    edit: category => routeUri('admin.categories.edit', {course: {{ $course->id }}, category: category.id}),
+                    delete: category => ({
+                        text: $t('t.views.admin.categories.really_delete', category) @if(!$course->archived) + ' ' + $tc('t.views.admin.categories.observations_on_category', category.num_observations)@endif,
+                        route: ['admin.categories.delete', {course: {{ $course->id }}, category: category.id}]
+                    })
+                }"></responsive-table>
 
         @else
 

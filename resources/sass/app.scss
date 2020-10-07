@@ -19,6 +19,8 @@
 
 @import 'forms';
 @import 'responsive-table';
+@import 'editor';
+@import 'print';
 
 @include media-breakpoint-up(lg) {
     .align-items-center-lg {
@@ -133,6 +135,7 @@
 
 .progress {
     border: 1px solid rgba(0, 0, 0, 0.125);
+    height: 1.5rem;
 }
 
 .multiline {
@@ -145,4 +148,26 @@
 
 .white-space-normal {
     white-space: normal;
+}
+
+.element-text-container {
+    margin: 0.5rem -15px;
+    padding: 7px 15px 15px;
+    @extend .bg-light;
+
+    textarea {
+        padding: 1.25rem;
+    }
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.min-vh-50 {
+    min-height: 50vh;
+}
+
+.observation-content {
+    line-height: 1.3;
 }

@@ -66,8 +66,8 @@ class ReadOverviewTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $this->assertSeeAllInOrder('table.table-responsive-cards th', [ 'TN', 'Total', $this->user()->name, '' ]);
-        $this->assertSeeAllInOrder('table.table-responsive-cards td', [ 'Pflock', '9', '9', '' ]);
+        $response->assertSeeInOrder([ 'TN', $this->user()->name ]);
+        $response->assertSeeInOrder([ 'Pflock', '9' ]);
     }
 
     public function test_shouldDisplayUeberblick_observationsByMultiplePeople_andMultipleParticipants() {
@@ -80,7 +80,7 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $this->createObservation(Block::find($this->blockIds[0])->name, 1, [], [], $this->blockIds[0], $participantId2);
         $this->createObservation(Block::find($this->blockIds[1])->name, 1, [], [], $this->blockIds[1], $participantId2);
 
-        // create another leader in the course
+        // create another trainer in the course
         $user2 = $this->createUser(['name' => 'Lindo']);
         $user2->courses()->attach($this->courseId);
 
@@ -92,8 +92,8 @@ class ReadOverviewTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $this->assertSeeAllInOrder('table.table-responsive-cards th', [ 'TN',     'Total', $name, 'Lindo', '' ]);
-        $this->assertSeeAllInOrder('table.table-responsive-cards td', [ 'Pflock', '11',    '9',         '2',     '', 'Pfnörch', '2',    '2',         '0',     '' ]);
+        $response->assertSeeInOrder([ 'TN', $name, 'Lindo' ]);
+        $response->assertSeeInOrder([ 'Pflock', '9', '2', 'Pfn\u00f6rch', '2', '0' ]);
     }
 
     public function test_shouldDisplayMessage_whenNoParticipantsInKurs() {
@@ -134,8 +134,8 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         // then
         $response->assertOk();
         $response->assertDontSee($participantName, false);
-        $response->assertSee(htmlspecialchars($participantName, ENT_QUOTES), false);
+        $response->assertSee('&quot;&lt;b&gt;Bar&lt;\/b&gt;i&#039;\&quot;&quot;', false);
         $response->assertDontSee($userName, false);
-        $response->assertSee(htmlspecialchars($userName, ENT_QUOTES), false);
+        $response->assertSee('&quot;Co&lt;i&gt;si&lt;\/i&gt;nus&#039;\&quot;&quot;', false);
     }
 }

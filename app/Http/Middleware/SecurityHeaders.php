@@ -55,20 +55,19 @@ class SecurityHeaders {
     }
 
     protected function getCSPDefaultSrc() {
+        if (env('MIX_SENTRY_VUE_DSN')) {
+            $parsed = parse_url(env('MIX_SENTRY_VUE_DSN'));
+            $sentryUrl = $parsed['scheme'] . '://' . $parsed['host'] . (isset($parsed['port']) ? ':' . $parsed['port'] : '');
+            return "default-src 'self' $sentryUrl";
+        }
         return "default-src 'self'";
     }
 
     protected function getCSPScriptSrc() {
-        // Outside of production, allow inline scripts (Vue dev tools)
-        if (App::environment() !== 'production') return "script-src 'self' 'unsafe-inline' 'unsafe-eval'";
-
         return "script-src 'self' 'unsafe-eval'";
     }
 
     protected function getCSPStyleSrc() {
-        // Outside of production, allow inline styles
-        if (App::environment() !== 'production') return "style-src 'self' 'unsafe-inline'";
-
         return "style-src 'self'";
     }
 

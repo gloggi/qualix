@@ -35,9 +35,9 @@ class EquipeController extends Controller {
 
             DB::transaction(function () use ($course, $user) {
 
-                Course::find($course->id)->users()->detach($user->id);
+                $course->users()->detach($user->id);
 
-                if (!Course::find($course->id)->users()->exists()) {
+                if (!$course->users()->exists()) {
                     throw new \LogicException(__('t.views.admin.equipe.cannot_delete_last_leiter'));
                 }
 

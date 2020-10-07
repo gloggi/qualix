@@ -142,4 +142,6 @@ return array(
 	"uploaded" => ":attribute konnte nicht hochgeladen werden.",
 	"url" => ":attribute muss eine URL sein.",
 	"uuid" => "The :attribute must be a valid UUID.",
+	"valid_quali_content_without_observations" => "Der gewählte Wert für :attribute ist ungültig.",
+	"valid_quali_content" => "Der gewählte Wert für :attribute ist ungültig.",
 );

@@ -32,9 +32,7 @@ class RequirementController extends Controller {
         DB::transaction(function () use ($request, $course) {
             $data = $request->validated();
             $requirement = Requirement::create(array_merge($data, ['course_id' => $course->id]));
-
-            $requirement->blocks()->attach(array_filter(explode(',', $data['blocks'])));
-
+            $requirement->blocks()->sync(array_filter(explode(',', $data['blocks'])));
             $request->session()->flash('alert-success', __('t.views.admin.requirements.create_success'));
         });
         return Redirect::route('admin.requirements', ['course' => $course->id]);
@@ -64,9 +62,7 @@ class RequirementController extends Controller {
         DB::transaction(function () use ($request, $course, $requirement) {
             $data = $request->validated();
             $requirement->update($data);
-
-            $requirement->blocks()->detach(null);
-            $requirement->blocks()->attach(array_filter(explode(',', $data['blocks'])));
+            $requirement->blocks()->sync(array_filter(explode(',', $data['blocks'])));
             $request->session()->flash('alert-success', __('t.views.admin.requirements.edit_success'));
         });
         return Redirect::route('admin.requirements', ['course' => $course->id]);

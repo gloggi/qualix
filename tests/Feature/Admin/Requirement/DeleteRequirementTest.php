@@ -27,7 +27,7 @@ class DeleteRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldDeleteMA() {
+    public function test_shouldDeleteRequirement() {
         // given
 
         // when
@@ -41,7 +41,7 @@ class DeleteRequirementTest extends TestCaseWithCourse {
         $response->assertDontSee('Mindestanforderung 1');
     }
 
-    public function test_shouldValidateDeletedMAUrl_wrongId() {
+    public function test_shouldValidateDeletedRequirementUrl_wrongId() {
         // given
 
         // when

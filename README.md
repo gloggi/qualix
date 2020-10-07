@@ -27,9 +27,29 @@ Wenn du E-Mails in deiner Qualix-Kopie auslöst (zum Beispiel beim Passwort-Rese
 Da alles was mit Qualix zu tun hat, inklusive PHP, Composer, artisan, etc. nur im Container läuft, musst du entsprechende Befehle auch in den Container hinein absetzen. Hier ein Paar Beispiele:
 
 ```
-docker exec -it qualix-app composer update
-docker exec -it qualix-app php artisan tinker
-docker exec -it qualix-app php -v
+docker-compose exec qualix composer update
+docker-compose exec qualix php artisan tinker
+docker-compose exec qualix php -v
+```
+
+### End-to-end Tests
+
+Um die E2E-Tests laufen zu lassen, müssen zuerst die Container laufen (`docker-compose up`).
+Du kannst die E2E-Tests mit Cypress headless laufen lassen:
+```
+docker-compose run e2e run
+```
+
+Oder du kannst das grafische Tool von Cypress vom Container aus auf deinem Mac- oder Linux-Computer öffnen:
+```
+# Nur auf Mac OS: xhost installieren, danach den Computer neu starten
+brew cask install xquartz
+
+# Dem Container erlauben, auf dem Host Fenster zu öffnen (nur einmal pro Computer-Neustart nötig)
+xhost local:root
+
+# Cypress öffnen
+docker-compose run e2e open
 ```
 
 ## Produktive Installation
@@ -75,11 +95,12 @@ HITOBITO_CALLBACK_URI=https://qualix.flamberg.ch/login/hitobito/callback
 SENTRY_LARAVEL_DSN=<snip>
 SENTRY_USER_FEEDBACK_URL=<snip>
 SENTRY_CSP_REPORT_URI=<snip>
+MIX_SENTRY_VUE_DSN=<snip>
 ```
-3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker-compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" app`
+3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker-compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" qualix`
 4. **Frontend-Code builden**: `docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod'" node`
-5. **Optimierung (optional)**: `docker-compose run --entrypoint "composer install --optimize-autoloader --no-dev" app`
-6. **Auf den Webhost hochladen**: Z.B. mit FTP alles (Ordner und Dateien) ausser .git, node_modules und tests hochladen
+5. **Optimierung (optional)**: `docker-compose run --entrypoint "composer install --optimize-autoloader --no-dev" qualix`
+6. **Auf den Webhost hochladen**: Z.B. mit FTP alles (Ordner und Dateien) ausser .git, cypress, node_modules und tests hochladen
 7. **Mit SSH auf den Server einloggen**, da die folgenden Befehle in der finalen Umgebung ausgeführt werden müssen
 8. **Optimierung (optional)**: `php artisan config:cache && php artisan route:cache`
 9. **Datenbank-Tabellen einrichten**: `php artisan migrate`

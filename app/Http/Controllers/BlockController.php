@@ -40,13 +40,8 @@ class BlockController extends Controller {
         DB::transaction(function () use ($request, $course) {
             $data = $request->validated();
             $block = Block::create(array_merge($data, ['course_id' => $course->id]));
-
-            $block->requirements()->attach(array_filter(explode(',', $data['requirements'])));
-
-            /** @var User $user */
-            $user = Auth::user();
-            $user->setLastUsedBlockDate($data['block_date'], $course);
-
+            $block->requirements()->sync(array_filter(explode(',', $data['requirements'])));
+            $this->rememberBlockDate($data['block_date'], $course);
             $request->session()->flash('alert-success', __('t.views.admin.blocks.create_success', ['name' => $block->name]));
         });
 
@@ -118,14 +113,8 @@ class BlockController extends Controller {
         DB::transaction(function () use ($request, $course, $block) {
             $data = $request->validated();
             $block->update($data);
-
-            $block->requirements()->detach(null);
-            $block->requirements()->attach(array_filter(explode(',', $data['requirements'])));
-
-            /** @var User $user */
-            $user = Auth::user();
-            $user->setLastUsedBlockDate($data['block_date'], $course);
-
+            $block->requirements()->sync(array_filter(explode(',', $data['requirements'])));
+            $this->rememberBlockDate($data['block_date'], $course);
             $request->session()->flash('alert-success', __('t.views.admin.blocks.edit_success', ['name' => $block->name]));
         });
         return Redirect::route('admin.blocks', ['course' => $course->id]);
@@ -143,5 +132,11 @@ class BlockController extends Controller {
         $block->delete();
         $request->session()->flash('alert-success', __('t.views.admin.blocks.delete_success', ['name' => $block->name]));
         return Redirect::route('admin.blocks', ['course' => $course->id]);
+    }
+
+    protected function rememberBlockDate($date, $course) {
+        /** @var User $user */
+        $user = Auth::user();
+        $user->setLastUsedBlockDate($date, $course);
     }
 }

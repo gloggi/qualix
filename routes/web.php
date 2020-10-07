@@ -30,6 +30,10 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
         Route::get('/course/{course}/participants', 'ParticipantListController@index')->name('participants');
         Route::get('/course/{course}/participants/{participant}', 'ParticipantDetailController@index')->name('participants.detail');
 
+        Route::get('/course/{course}/participants/{participant}/qualis/{quali}/print', 'QualiContentController@print')->name('qualiContent.print');
+        Route::get('/course/{course}/participants/{participant}/qualis/{quali}/edit', 'QualiContentController@edit')->name('qualiContent.edit');
+        Route::post('/course/{course}/participants/{participant}/qualis/{quali}', 'QualiContentController@update')->name('qualiContent.update');
+
         Route::get('/course/{course}/overview', 'ObservationController@overview')->name('overview');
 
         Route::get('/course/{course}/observation/new', 'ObservationController@create')->name('observation.new');
@@ -62,7 +66,11 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
         Route::post('/course/{course}/admin/participants/{participant}', 'ParticipantController@update')->name('admin.participants.update');
         Route::delete('/course/{course}/admin/participants/{participant}', 'ParticipantController@destroy')->name('admin.participants.delete');
 
-        Route::resource('/course/{course}/admin/participantGroups', 'ParticipantGroupController',  ['as' => 'admin'])->except('show', 'create');
+        Route::get('/course/{course}/admin/participantGroups', 'ParticipantGroupController@index')->name('admin.participantGroups');
+        Route::post('/course/{course}/admin/participantGroups', 'ParticipantGroupController@store')->name('admin.participantGroups.store');
+        Route::get('/course/{course}/admin/participantGroups/{participantGroup}', 'ParticipantGroupController@edit')->name('admin.participantGroups.edit');
+        Route::post('/course/{course}/admin/participantGroups/{participantGroup}', 'ParticipantGroupController@update')->name('admin.participantGroups.update');
+        Route::delete('/course/{course}/admin/participantGroups/{participantGroup}', 'ParticipantGroupController@destroy')->name('admin.participantGroups.delete');
 
     });
 
@@ -87,6 +95,12 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::get('/course/{course}/admin/category/{category}', 'CategoryController@edit')->name('admin.categories.edit');
     Route::post('/course/{course}/admin/category/{category}', 'CategoryController@update')->name('admin.categories.update');
     Route::delete('/course/{course}/admin/category/{category}', 'CategoryController@destroy')->name('admin.categories.delete');
+
+    Route::get('/course/{course}/admin/qualis', 'QualiController@index')->name('admin.qualis');
+    Route::post('/course/{course}/admin/qualis', 'QualiController@store')->name('admin.qualis.store');
+    Route::get('/course/{course}/admin/qualis/{quali_data}', 'QualiController@edit')->name('admin.qualis.edit');
+    Route::post('/course/{course}/admin/qualis/{quali_data}', 'QualiController@update')->name('admin.qualis.update');
+    Route::delete('/course/{course}/admin/qualis/{quali_data}', 'QualiController@destroy')->name('admin.qualis.delete');
 
     Route::get('/newcourse', 'CourseController@create')->name('admin.newcourse');
     Route::post('/newcourse', 'CourseController@store')->name('admin.newcourse.store');

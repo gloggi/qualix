@@ -25,6 +25,7 @@ abstract class TestCase extends BaseTestCase {
 
     public function setUp(): void {
         Dotenv::createImmutable(__DIR__.'/../', '.env.testing')->load();
+        ini_set('memory_limit', '-1');
 
         parent::setUp();
 
@@ -164,6 +165,11 @@ abstract class TestCase extends BaseTestCase {
         return $user;
     }
 
+    /**
+     * @param array $attrs
+     * @param bool $actAsNewUser
+     * @return User
+     */
     protected function createUser($attrs = [], $actAsNewUser = false) {
         $user = factory(NativeUser::class)->create($attrs);
         if ($actAsNewUser) {

@@ -86,8 +86,8 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('>Nein<', false);
-        $response->assertDontSee('>Ja<', false);
+        $response->assertSee('"mandatory":false');
+        $response->assertDontSee('"mandatory":true');
     }
 
     public function test_shouldValidateNewRequirementData_mandatoryFalse_shouldWork() {
@@ -103,8 +103,8 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('>Nein<', false);
-        $response->assertDontSee('>Ja<', false);
+        $response->assertSee('"mandatory":false');
+        $response->assertDontSee('"mandatory":true');
     }
 
     public function test_shouldValidateNewRequirementData_mandatoryTrue_shouldWork() {
@@ -120,8 +120,8 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('>Ja<', false);
-        $response->assertDontSee('>Nein<', false);
+        $response->assertSee('"mandatory":true');
+        $response->assertDontSee('"mandatory":false');
     }
 
     public function test_shouldValidateNewRequirementData_noBlockIds() {
@@ -153,7 +153,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $this->assertEquals('Blöcke Format ist ungültig.', $exception->validator->errors()->first('blocks'));
     }
 
-    public function test_shouldValidateNewRequirementData_oneValidRequirementId() {
+    public function test_shouldValidateNewRequirementData_oneValidBlockId() {
         // given
         $payload = $this->payload;
         $blockId = $this->createBlock();

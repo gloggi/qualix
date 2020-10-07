@@ -5,14 +5,14 @@
     <b-card>
         <template #header>{{__('t.views.admin.requirements.new')}}</template>
 
-        @component('components.form', ['route' => ['admin.requirements.store', ['course' => $course->id]]])
+        <form-basic :action="['admin.requirements.store', { course: {{ $course->id }} }]">
 
-            <input-text @forminput('content') label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
+            <input-text name="content" label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
 
-            <input-checkbox @forminput('mandatory', false) label="{{__('t.models.requirement.mandatory')}}"></input-checkbox>
+            <input-checkbox name="mandatory" label="{{__('t.models.requirement.mandatory')}}"></input-checkbox>
 
             <input-multi-select
-                @forminput('blocks')
+                name="blocks"
                 label="{{__('t.models.requirement.blocks')}}"
                 :options="{{ json_encode($course->blocks->map->only('id', 'name')) }}"
                 display-field="name"
@@ -24,7 +24,7 @@
 
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 
@@ -33,27 +33,20 @@
 
         @if (count($course->requirements))
 
-            @php
-                $fields = [
-                    __('t.models.requirement.content') => function(\App\Models\Requirement $requirement) { return $requirement->content; },
-                    __('t.models.requirement.mandatory') => function(\App\Models\Requirement $requirement) { return $requirement->mandatory ? __('t.global.yes') : __('t.global.no'); },
-                    __('t.models.requirement.num_observations') => function(\App\Models\Requirement $requirement) { return count($requirement->observations); },
-                ];
-                if ($course->archived) {
-                    unset($fields[__('t.models.requirement.num_observations')]);
-                }
-            @endphp
-            @component('components.responsive-table', [
-                'data' => $course->requirements,
-                'fields' => $fields,
-                'actions' => [
-                    'edit' => function(\App\Models\Requirement $requirement) use ($course) { return route('admin.requirements.edit', ['course' => $course->id, 'requirement' => $requirement->id]); },
-                    'delete' => function(\App\Models\Requirement $requirement) use ($course) { return [
-                        'text' => __('t.views.admin.requirements.really_delete') . ($course->archived ? '' : ' ' . trans_choice('t.views.admin.requirements.observations_on_requirement', $requirement->observations)),
-                        'route' => ['admin.requirements.delete', ['course' => $course->id, 'requirement' => $requirement->id]],
-                     ];},
-                ]
-            ])@endcomponent
+            <responsive-table
+                :data="{{ json_encode($course->requirements) }}"
+                :fields="[
+                    { label: $t('t.models.requirement.content'), value: requirement => requirement.content },
+                    { label: $t('t.models.requirement.mandatory'), value: requirement => requirement.mandatory ? $t('t.global.yes') : $t('t.global.no') },
+                    @if(!$course->archived){ label: $t('t.models.requirement.num_observations'), value: requirement => requirement.num_observations },@endif
+                ]"
+                :actions="{
+                    edit: requirement => routeUri('admin.requirements.edit', {course: {{ $course->id }}, requirement: requirement.id}),
+                    delete: requirement => ({
+                        text: $t('t.views.admin.requirements.really_delete', requirement) @if(!$course->archived) + ' ' + $tc('t.views.admin.requirements.observations_on_requirement', requirement.num_observations)@endif,
+                        route: ['admin.requirements.delete', {course: {{ $course->id }}, requirement: requirement.id}]
+                    })
+                }"></responsive-table>
 
         @else
 

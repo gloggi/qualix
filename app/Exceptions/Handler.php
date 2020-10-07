@@ -2,12 +2,16 @@
 
 namespace App\Exceptions;
 
+use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RestoreFormDataFromExpiredSession;
-use Throwable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -55,11 +59,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof AuthenticationException && $request->method() != 'GET') {
-            $this->preserveSubmittedFormData($request);
+        if ($exception instanceof TokenMismatchException && !Auth::check() && $request->method() != 'GET') {
+            return $this->preserveSubmittedFormData($request);
         }
-        if ($exception instanceof ValidationException) {
+        if ($exception instanceof ValidationException || $exception instanceof AuthenticationException) {
             // needed for remembering the active filters while editing an observation
+            // and for displaying a flash message when the session expired
             session()->reflash();
         }
         return parent::render($request, $exception);
@@ -70,6 +75,7 @@ class Handler extends ExceptionHandler
      * Preserve the form data so it can be restored once the user logs back in.
      *
      * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function preserveSubmittedFormData($request) {
         session()->put(RestoreFormDataFromExpiredSession::KEY, array_filter($request->except($this->dontFlash), function($input) {
@@ -77,5 +83,7 @@ class Handler extends ExceptionHandler
             return !($input instanceof UploadedFile);
         }));
         session()->flash('alert-warning', __('t.errors.session_expired_try_again'));
+
+        return Redirect::back(302, [], app(Authenticate::class)->redirectTo($request));
     }
 }

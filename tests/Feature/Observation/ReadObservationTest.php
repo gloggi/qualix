@@ -90,7 +90,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertSee("Mehrzeilige Beobachtungen\n- nützlich\n- wichtig\n- erlauben Strukturierung");
+        $response->assertSee('Mehrzeilige Beobachtungen\n- n\u00fctzlich\n- wichtig\n- erlauben Strukturierung');
     }
 
     public function test_shouldRenderParticipants_whenMultipleAreAssigned() {
@@ -103,14 +103,16 @@ class ReadObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertSee('>Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt', false);
+        $response->assertSee('&quot;Zweiter TN&lt;em&gt;yay!&lt;\/em&gt;&quot;', false);
+        $response->assertSee('"Wird auf allen TN angezeigt"');
 
         // when
         $response = $this->get('/course/' . $this->courseId . '/participants/' . $otherParticipantId);
 
         // then
         $response->assertOk();
-        $response->assertSee('>Zweiter TN&lt;em&gt;yay!&lt;/em&gt;</a></div>Wird auf allen TN angezeigt', false);
+        $response->assertSee('&quot;Zweiter TN&lt;em&gt;yay!&lt;\/em&gt;&quot;', false);
+        $response->assertSee('"Wird auf allen TN angezeigt"');
     }
 
     public function test_shouldOrderObservationsByBlockOrder() {
@@ -136,7 +138,7 @@ class ReadObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $this->assertSeeAllInOrder('table.table-responsive-cards td[data-label="Beobachtung"]', [
+        $response->assertSeeInOrder([
           'earlier date',
           'earlier day number',
           'earlier block number',

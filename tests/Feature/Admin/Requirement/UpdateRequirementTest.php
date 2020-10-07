@@ -43,10 +43,10 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee($this->payload['content']);
+        $response->assertSee('Ge\u00e4nderte Anforderung');
         $response->assertDontSee('Mindestanforderung 1');
-        $response->assertSee('Ja');
-        $response->assertDontSee('Nein');
+        $response->assertSee('"mandatory":true');
+        $response->assertDontSee('"mandatory":false');
     }
 
     public function test_shouldValidateNewRequirementData_noName() {
@@ -92,8 +92,8 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('>Ja<', false);
-        $response->assertDontSee('>Nein<', false);
+        $response->assertSee('"mandatory":true');
+        $response->assertDontSee('"mandatory":false');
     }
 
     public function test_shouldValidateNewRequirementData_mandatoryFalse_shouldWork() {
@@ -109,8 +109,8 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('>Nein<', false);
-        $response->assertDontSee('>Ja<', false);
+        $response->assertSee('"mandatory":false');
+        $response->assertDontSee('"mandatory":true');
     }
 
     public function test_shouldValidateNewRequirementData_mandatoryTrue_shouldWork() {
@@ -126,8 +126,8 @@ class UpdateRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/requirement');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('>Ja<', false);
-        $response->assertDontSee('>Nein<', false);
+        $response->assertSee('"mandatory":true');
+        $response->assertDontSee('"mandatory":false');
     }
 
     public function test_shouldValidateNewRequirementData_noBlockIds() {

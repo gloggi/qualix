@@ -1,0 +1,143 @@
+// Import TipTap styles here rather than letting them be automatically injected, to satisfy CSP constraints
+@import '~tiptap/src/style.css';
+
+.editor {
+    position: relative;
+
+    &__floating-menu {
+        position: absolute;
+        right: 0.75rem;
+        z-index: 1;
+        margin-top: -0.25rem;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s, visibility 0.2s;
+        &.is-active {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    &.form-control {
+        height: unset;
+
+        .focus {
+            border-color: #a1cbef;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
+        }
+    }
+}
+
+.editor-content {
+    margin-left: 1.5rem;
+    line-height: 1.4;
+
+    :focus {
+        outline: none;
+    }
+
+    p {
+        margin-bottom: 0.5rem;
+    }
+
+    h3, h5, .requirement {
+        margin-top: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .requirement h5 {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    h6 {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .observation {
+        border-left: 2px solid $gray-500;
+        cursor: move;
+        white-space: initial;
+
+        p {
+            user-select: none;
+        }
+
+        &:hover {
+            background-color: $gray-200;
+        }
+
+        &.selected {
+            outline: 1px dashed $gray-500;
+        }
+
+        .delete-button {
+            cursor: pointer;
+        }
+
+        .delete-button, .observation-author {
+            visibility: hidden;
+        }
+
+        &.selected, &:hover {
+            .delete-button, .observation-author {
+                visibility: visible;
+            }
+        }
+    }
+
+    .requirement {
+        margin-left: -1.5rem;
+        cursor: move;
+
+        &:hover {
+            background-color: $gray-200;
+        }
+
+        &.selected {
+            outline: 1px dashed $gray-500;
+        }
+
+        h5 {
+            user-select: none;
+        }
+
+        .requirement-menu {
+            visibility: hidden;
+
+            .dropdown-menu.show {
+                visibility: visible;
+            }
+        }
+
+        &.selected .requirement-menu, &:hover .requirement-menu {
+            visibility: visible;
+        }
+    }
+
+    &.readonly {
+
+        .observation {
+            cursor: unset;
+
+            .observation-author {
+                display: none;
+            }
+        }
+
+        .requirement {
+            cursor: unset;
+        }
+
+        .requirement:hover {
+            background-color: unset;
+        }
+
+        .ProseMirror-gapcursor:after {
+            display: none;
+        }
+    }
+}

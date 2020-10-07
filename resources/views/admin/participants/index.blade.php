@@ -5,13 +5,13 @@
     <b-card>
         <template #header>{{__('t.views.admin.participants.new')}}</template>
 
-        @component('components.form', ['route' => ['admin.participants.store', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
+        <form-basic :action="['admin.participants.store', { course: {{ $course->id }} }]" enctype="multipart/form-data">
 
-            <input-text @forminput('scout_name') label="{{__('t.models.participant.scout_name')}}" required autofocus></input-text>
+            <input-text name="scout_name" label="{{__('t.models.participant.scout_name')}}" required autofocus></input-text>
 
-            <input-text @forminput('group') label="{{__('t.models.participant.group')}}"></input-text>
+            <input-text name="group" label="{{__('t.models.participant.group')}}"></input-text>
 
-            <input-file @forminput('image') label="{{__('t.models.participant.image')}}" accept="image/*"></input-file>
+            <input-file name="image" label="{{__('t.models.participant.image')}}" accept="image/*"></input-file>
 
             <button-submit label="{{__('t.global.add')}}">
                 <a class="btn btn-link mb-1" href="{{ route('admin.participants.import', ['course' => $course]) }}">
@@ -19,7 +19,7 @@
                 </a>
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 
@@ -28,23 +28,21 @@
 
         @if (count($course->participants))
 
-            @component('components.responsive-table', [
-                'data' => $course->participants,
-                'image' => [
-                    __('t.models.participant.image') => function(\App\Models\Participant $participant) { return ($participant->image_url!=null) ? (new App\Util\HtmlString)->s(view('components.img',  ['src' => asset(Storage::url($participant->image_url)), 'classes' => ['avatar-small']])) : ''; },
-                ],
-                'fields' => [
-                    __('t.models.participant.scout_name') => function(\App\Models\Participant $participant) { return $participant->scout_name; },
-                    __('t.models.participant.group') => function(\App\Models\Participant $participant) { return $participant->group; },
-                ],
-                'actions' => [
-                    'edit' => function(\App\Models\Participant $participant) use ($course) { return route('admin.participants.edit', ['course' => $course->id, 'participant' => $participant->id]); },
-                    'delete' => function(\App\Models\Participant $participant) use ($course) { return [
-                        'text' => __('t.views.admin.participants.really_remove', ['name' => $participant->scout_name]) . ($course->archived ? '' : ' ' . trans_choice('t.views.admin.participants.observations_on_participant', $participant->observations)),
-                        'route' => ['admin.participants.delete', ['course' => $course->id, 'participant' => $participant->id]],
-                     ];},
-                ]
-            ])@endcomponent
+            <responsive-table
+                :data="{{ json_encode($course->participants) }}"
+                :fields="[
+                    { label: $t('t.models.participant.image'), value: participant => participant.image_path, type: 'image' },
+                    { label: $t('t.models.participant.scout_name'), value: participant => participant.scout_name },
+                    { label: $t('t.models.participant.group'), value: participant => participant.group },
+                ]"
+                :actions="{
+                    edit: participant => routeUri('admin.participants.edit', {course: {{ $course->id }}, participant: participant.id}),
+                    delete: participant => ({
+                        text: $t('t.views.admin.participants.really_remove', participant) @if(!$course->archived) + ' ' + $tc('t.views.admin.participants.observations_on_participant', participant.num_observations)@endif,
+                        route: ['admin.participants.delete', {course: {{ $course->id }}, participant: participant.id}]
+                    })
+                }"
+            ></responsive-table>
 
         @else
 

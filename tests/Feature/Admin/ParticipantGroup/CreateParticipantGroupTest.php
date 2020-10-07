@@ -244,7 +244,7 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
 
         // then
         $response->assertDontSee($participantName, false);
-        $response->assertSee(htmlspecialchars($participantName, ENT_QUOTES), false);
+        $response->assertSee('&lt;b&gt;Participant name&lt;\/b&gt; with &#039;some\&quot; formatting', false);
     }
 
     public function test_shouldNotAllowCreatingParticipantGroup_withParticipantFromADifferentCourse()

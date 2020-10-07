@@ -11,6 +11,7 @@ return array(
 		"add" => "Ajouter",
 		"add_observation" => "Saisir une observation",
 		"close" => "Fermer",
+		"date_format" => "%A %d.%m.%Y",
 		"delete" => "Supprimer",
 		"edit" => "Modifier",
 		"negative" => "Négatif",
@@ -78,6 +79,9 @@ return array(
 			"image" => "Image",
 			"scout_name" => "Nom",
 		),
+		"quali" => array(
+			"display_name" => ":quali_name de :participant_name",
+		),
 		"requirement" => array(
 			"blocks" => "Points de cours",
 			"content" => "Exigence",
@@ -138,7 +142,7 @@ return array(
 					"question" => "Dois-je créer des catégories pour mon cours?",
 				),
 				"create_success" => "La catégorie \":name\" a été créée avec succès.",
-				"delete_success" => "La catégorie \":name\" a été créée avec succès.",
+				"delete_success" => "La catégorie \":name\" a été supprimé avec succès.",
 				"edit" => "Modifier la catégorie",
 				"edit_success" => "La catégorie \":name\" a été sauvegardée avec succès.",
 				"existing" => "Catégories :courseName",
@@ -203,7 +207,7 @@ return array(
 				"new" => "Nouveaux/nouvelles participant-e-s",
 				"no_participants" => "Pour l'instant, aucun-e participant-e saisi-e",
 				"observations_on_participant" => "{0}Aucune observation n'est liée.|{1}Une observation qui sera également supprimée est liée.|[2,*]:count observations qui seront également supprimées sont liées.",
-				"really_remove" => "Souhaites-tu réellement supprimer :name du cours?",
+				"really_remove" => "Souhaites-tu réellement supprimer :scout_name du cours?",
 				"remove_success" => "Le/la participant-e \":name\" a été supprimée du cours avec succès.",
 			),
 			"participant_import" => array(

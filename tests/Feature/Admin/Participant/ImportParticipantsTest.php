@@ -64,11 +64,11 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/participants');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSeeTextInOrder([
+        $response->assertSeeInOrder([
             'In der importierten Datei wurden 3 Teilnehmende gefunden.',
             'Consequuntur', 'Pfadibewegung Schweiz',
             'Testliwoelfi', 'Helveter',
-            'Ungültig Mail Dude', 'Pfadibewegung Schweiz'
+            'Ung\u00fcltig Mail Dude', 'Pfadibewegung Schweiz'
         ]);
     }
 
@@ -84,11 +84,11 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/participants');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSeeTextInOrder([
+        $response->assertSeeInOrder([
             'In der importierten Datei wurden 3 Teilnehmende gefunden.',
             'Consequuntur', 'Pfadibewegung Schweiz',
             'Testliwoelfi', 'Helveter',
-            'Ungültig', 'Pfadibewegung Schweiz'
+            'Ung\u00fcltig', 'Pfadibewegung Schweiz'
         ]);
     }
 
@@ -104,8 +104,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/participants');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSeeText('Consequuntur hat einen extrem langen Pfadinamen der auf jeden Fall die erlaubte Länge der Datenbankspalte sprengt und somit hoffentlich einfach von Qualix abgeschnitten wird da sowieso kein Mensch mit so einem langen Namen etwas anfangen kann, könnte das ');
-        $response->assertSeeText('Ohne Pfadiname hat einen extrem langen Nachnamen der auf jeden Fall die erlaubte Länge der Datenbankspalte sprengt und somit hoffentlich einfach von Qualix abgeschnitten wird da sowieso kein Mensch mit so einem langen Namen etwas anfangen kann, könnte das');
+        $response->assertSee('Consequuntur hat einen extrem langen Pfadinamen der auf jeden Fall die erlaubte L\u00e4nge der Datenbankspalte sprengt und somit hoffentlich einfach von Qualix abgeschnitten wird da sowieso kein Mensch mit so einem langen Namen etwas anfangen kann, k\u00f6nnte das "');
+        $response->assertSee('Ohne Pfadiname hat einen extrem langen Nachnamen der auf jeden Fall die erlaubte L\u00e4nge der Datenbankspalte sprengt und somit hoffentlich einfach von Qualix abgeschnitten wird da sowieso kein Mensch mit so einem langen Namen etwas anfangen kann, k\u00f6nnte das"');
     }
 
     public function test_shouldShowMessage_whenNoParticipantsInImportedFile() {
@@ -158,11 +158,11 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/participants');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSeeTextInOrder([
+        $response->assertSeeInOrder([
             'In der importierten Datei wurden 3 Teilnehmende gefunden.',
             'Consequuntur', 'Pfadibewegung Schweiz',
             'Testliwoelfi', 'Helveter',
-            'Ungültig Mail Dude', 'Pfadibewegung Schweiz'
+            'Ung\u00fcltig Mail Dude', 'Pfadibewegung Schweiz'
         ]);
     }
 
@@ -178,11 +178,11 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/participants');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSeeTextInOrder([
+        $response->assertSeeInOrder([
             'In der importierten Datei wurden 3 Teilnehmende gefunden.',
             'Consequuntur', 'Pfadibewegung Schweiz',
             'Testliwoelfi', 'Helveter',
-            'Ungültig Mail Dude', 'Pfadibewegung Schweiz'
+            'Ung\u00fcltig Mail Dude', 'Pfadibewegung Schweiz'
         ]);
     }
 

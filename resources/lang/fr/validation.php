@@ -142,4 +142,6 @@ return array(
 	"uploaded" => "Le fichier du champ :attribute n'a pu être téléversé.",
 	"url" => "Le format de l'URL de :attribute n'est pas valide.",
 	"uuid" => "Le champ :attribute doit être un UUID valide",
+	"valid_quali_content_without_observations" => "Le champ :attribute sélectionné est invalide.",
+	"valid_quali_content" => "Le champ :attribute sélectionné est invalide.",
 );

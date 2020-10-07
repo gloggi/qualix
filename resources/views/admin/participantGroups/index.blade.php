@@ -5,12 +5,12 @@
     <b-card>
         <template #header>{{__('t.views.admin.participant_groups.new')}}</template>
 
-        @component('components.form', ['route' => ['admin.participantGroups.store', ['course' => $course->id]]])
+        <form-basic :action="['admin.participantGroups.store', { course: {{ $course->id }} }]">
 
-            <input-text @forminput('group_name') label="{{__('t.models.participant_group.group_name')}}" required autofocus></input-text>
+            <input-text name="group_name" label="{{__('t.models.participant_group.group_name')}}" required autofocus></input-text>
 
             <input-multi-select
-                @forminput('participants')
+                name="participants"
                 label="{{__('t.models.participant_group.participants')}}"
                 :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
                 display-field="scout_name"
@@ -24,7 +24,7 @@
 
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 
@@ -33,32 +33,20 @@
 
         @if (count($course->participantGroups))
 
-            @php
-                $fields = [
-                    __('t.models.participant_group.group_name') => function(\App\Models\ParticipantGroup $participantGroup) { return $participantGroup->group_name; },
-                    __('t.models.participant_group.participants') => function(\App\Models\ParticipantGroup $participantGroup) {
-                        return $participantGroup->participants->map(function ($item){
-                            $scout_name = $item['scout_name'];
-                            $group = $item['group'];
-                            return $group ? "$scout_name ($group)" : $scout_name;
-                        })->implode(', ');
-                    },
-                ];
-
-            @endphp
-            @component('components.responsive-table', [
-                'data' => $course->participantGroups,
-                'fields' => $fields,
-                'actions' => [
-                    'edit' => function(\App\Models\ParticipantGroup $participantGroup) use ($course) { return route('admin.participantGroups.edit', ['course' => $course->id, 'participantGroup' => $participantGroup->id]); },
-                    'delete' => function(\App\Models\ParticipantGroup $participantGroup) use ($course) { return [
-                        'text' => __('t.views.admin.participant_groups.really_delete', [ 'name' => $participantGroup->group_name]),
-                        'route' => ['admin.participantGroups.destroy', ['course' => $course->id, 'participantGroup' => $participantGroup->id]],
-                     ];},
-                ]
-            ])@endcomponent
-
-
+            <responsive-table
+                :data="{{ json_encode($course->participantGroups) }}"
+                :fields="[
+                    { label: $t('t.models.participant_group.group_name'), value: participantGroup => participantGroup.group_name },
+                    { label: $t('t.models.participant_group.group_name'), value: participantGroup => participantGroup.participant_names },
+                ]"
+                :actions="{
+                    edit: participantGroup => routeUri('admin.participantGroups.edit', {course: {{ $course->id }}, participantGroup: participantGroup.id}),
+                    delete: participantGroup => ({
+                        text: $t('t.views.admin.participant_groups.really_delete', participantGroup),
+                        route: ['admin.participantGroups.delete', {course: {{ $course->id }}, participantGroup: participantGroup.id}]
+                    })
+                }"
+            ></responsive-table>
 
         @else
 

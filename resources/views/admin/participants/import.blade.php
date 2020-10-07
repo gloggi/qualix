@@ -5,11 +5,11 @@
     <b-card>
         <template #header>{{__('t.views.admin.participant_import.import_from', ['source' => __('t.views.admin.participant_import.MiData.name')])}}</template>
 
-        @component('components.form', ['route' => ['admin.participants.import', ['course' => $course->id]], 'enctype' => 'multipart/form-data'])
+        <form-basic :action="['admin.participants.import', { course: {{ $course->id }} }]" enctype="multipart/form-data">
 
-            <input-file @forminput('file') label="{{__('t.views.admin.participant_import.MiData.participant_list')}}" required accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"></input-file>
+            <input-file name="file" label="{{__('t.views.admin.participant_import.MiData.participant_list')}}" required accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"></input-file>
 
-            <input-hidden @forminput('source', 'MiDataParticipantList')></input-hidden>
+            <input-hidden name="source" value="MiDataParticipantList"></input-hidden>
 
             <button-submit label="{{__('t.views.admin.participant_import.import')}}">
 
@@ -21,7 +21,7 @@
 
             </button-submit>
 
-        @endcomponent
+        </form-basic>
 
     </b-card>
 
