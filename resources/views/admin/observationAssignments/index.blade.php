@@ -30,11 +30,20 @@
                 required
                 :autofocus="true"></input-multi-select>
 
+            @php
+                $days = $course->blocks->mapToGroups(function($block) {
+                    return [$block->block_date->formatLocalized(__('t.global.date_format')) => $block->id];
+                })->map(function($ids, $date) {
+                    return implode(',', $ids->all());
+                });
+            @endphp
+
             <input-multi-select
                 name="blocks"
                 label="{{__('t.models.observation_assignment.blocks')}}"
                 required
                 :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number')) }}"
+                :groups="{{ json_encode($days, JSON_FORCE_OBJECT) }}"
                 :autofocus="true"
                 display-field="blockname_and_number"
                 multiple

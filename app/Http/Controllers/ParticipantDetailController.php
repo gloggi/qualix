@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Course;
 use App\Models\Observation;
 use App\Models\Participant;
-use App\Models\Quali;
-use App\Models\Requirement;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
