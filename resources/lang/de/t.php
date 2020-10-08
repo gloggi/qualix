@@ -93,6 +93,12 @@ return array(
 			"requirements" => "Anforderungen",
 			"user" => "Beobachter",
 		),
+		"observation_assignment" => array(
+			"blocks" => "Blöcke",
+			"name" => "Beobachtungsauftrag",
+			"participants" => "TN",
+			"users" => "Equipe",
+		),
 		"participant" => array(
 			"group" => "Abteilung",
 			"image" => "Bild",
@@ -230,6 +236,25 @@ return array(
 				"menu_name" => "Neuen Kurs erstellen",
 				"title" => "Neuen Kurs erstellen",
 			),
+			"observation_assignments" => array(
+				"are_observation_assignments_required" => array(
+					"answer" => "Nein, aber sie sind ein nützliches Tool beim RQF (Rückmelde-, Qualifizierungs-, Förderungs-) Prozess.",
+					"question" => "Muss ich Beobachtungsaufträge für meinen Kurs erfassen?",
+				),
+				"create_success" => "Beobachtungsauftrag wurde erfolgreich erstellt.",
+				"delete_success" => "Beobachtungsauftrag wurde erfolgreich gelöscht.",
+				"edit" => "Beobachtungsauftrag bearbeiten",
+				"edit_success" => "Beobachtungsauftrag wurde erfolgreich geändert.",
+				"existing" => "Beobachtungsaufträge :courseName",
+				"menu_name" => "Beobachtungsaufträge",
+				"new" => "Neuer Beobachtungsauftrag",
+				"no_observation_assignment" => "Bisher sind keine Beobachtungsaufträge erfasst.",
+				"really_delete" => "Willst du den Beobachtungsauftrag \":name\" wirklich löschen?",
+				"what_are_observation_assignments" => array(
+					"answer" => "Viele Equipen definieren, wer wann wen beobachten sollte. Diese Aufträge könnt ihr hier definieren und seht diese (und ob sie schon erfüllt sind) z.Bsp. beim Spick.",
+					"question" => "Was sind Beobachtungsaufträge?",
+				),
+			),
 			"participants" => array(
 				"add_success" => "TN \":name\" erfolgreich erfasst.",
 				"edit" => "TN ändern",
@@ -348,6 +373,7 @@ return array(
 				"question" => "Siehst du nur leere Blöcke ohne Anforderungen?",
 			),
 			"title" => "Welche Anforderungen können in welchen Blöcken beobachtet werden",
+			"view_as" => "Aus Sicht von",
 		),
 		"error_form" => array(
 			"back" => "Zurück zu wo ich gerade noch war...",
@@ -381,7 +407,7 @@ return array(
 		),
 		"observations" => array(
 			"add_success" => "Beobachtung erfasst. Mässi!",
-			"back_to_participant" => "Zurück zu :name",
+			"go_to_participant" => "Zu :name",
 			"edit" => "Beobachtung bearbeiten",
 			"edit_success" => "Beobachtung aktualisiert.",
 			"new" => "Beobachtung erfassen",

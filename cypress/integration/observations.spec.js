@@ -36,7 +36,7 @@ describe('observation form', () => {
     cy.contains('Speichern').click()
 
     cy.contains('Beobachtung erfasst.')
-    cy.contains('Zurück zu').click()
+    cy.contains('Zu ').click()
 
     cy.contains('hat sich mehrmals gut eingebracht')
   })

@@ -25,6 +25,7 @@ class ObservationController extends Controller {
      * @return Response
      */
     public function create(Request $request) {
+        $this->rememberPreviouslyActiveView($request);
         return view('observation.new', ['participants' => $request->input('participant'), 'block' => $request->input('block')]);
     }
 
@@ -51,13 +52,14 @@ class ObservationController extends Controller {
                 $participant = $observation->participants()->first();
                 $route = route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]);
                 $flash->s(" <a href=\"{$route}\">")
-                      ->__('t.views.observations.back_to_participant', ['name' => $participant->scout_name])
+                      ->__('t.views.observations.go_to_participant', ['name' => $participant->scout_name])
                       ->s(' <i class="fas fa-arrow-right"></i></a>');
             }
+
             $request->session()->flash('alert-success', $flash);
         });
 
-        return Redirect::route('observation.new', ['course' => $course->id, 'participant' => $data['participants'], 'block' => $data['block']]);
+        return $this->redirectToPreviouslyActiveView($request, $course, collect([]), route('observation.new', ['course' => $course->id, 'participant' => $data['participants'], 'block' => $data['block']]));
     }
 
     /**
@@ -80,6 +82,7 @@ class ObservationController extends Controller {
      */
     protected function rememberPreviouslyActiveView(Request $request) {
         $returnTo = $this->extractPathParameter(URL::previous(), 'participants.detail', 'participant');
+        $request->session()->keep(['return_url']);
         $request->session()->flash('participant_before_edit', $request->session()->get('participant_before_edit', $returnTo));
     }
 
@@ -90,15 +93,19 @@ class ObservationController extends Controller {
      * @param Request $request
      * @param Course $course
      * @param Collection $returnOptions a collection of participant ids that are legal to be viewed
+     * @param string|null $fallback
      * @return RedirectResponse
      */
-    protected function redirectToPreviouslyActiveView(Request $request, Course $course, Collection $returnOptions) {
+    protected function redirectToPreviouslyActiveView(Request $request, Course $course, Collection $returnOptions, $fallback = null) {
+        if ($request->session()->has('return_url')) return Redirect::to($request->session()->get('return_url'));
+
         $returnTo = $request->session()->get('participant_before_edit');
         if (!$returnOptions->contains($returnTo)) {
             $returnTo = $returnOptions->first();
         }
 
-        return Redirect::to(route('participants.detail', ['course' => $course->id, 'participant' => $returnTo]));
+        if ($returnTo) return Redirect::to(route('participants.detail', ['course' => $course->id, 'participant' => $returnTo]));
+        return Redirect::to($fallback ?? URL::previous());
     }
 
     /**

@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Collection;
  * @property Collection $requirement_ids
  * @property Course $course
  * @property Observation[] $observations
+ * @property ObservationAssignment[] $observationAssignments
+ * @property Collection $requirements
  * @property Collection $requirementIds
  * @property int $num_observations
  */
@@ -60,6 +62,52 @@ class Block extends Model {
      */
     public function observations() {
         return $this->hasMany('App\Models\Observation');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function observationsWithParticipants(){
+
+        return $this->hasMany('App\Models\Observation')->with('participants');
+
+    }
+
+
+    public function observationsMultipleParticipantsId(){
+
+        return $this->hasMany('App\Models\Observation')->with('participants:id');
+
+
+    }
+    public function observationsMultipleParticipants(){
+        return $this->observationsMultipleParticipantsId();
+
+        foreach ($o as $obs){
+            $obj=array_push($obs->participants->map(function ($o){
+                return $o->pluck('id');
+            }));
+        }
+        return $obj;
+   $obj->participants->map(function ($participant){return $participant->pluck('id');});
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function observationAssignments() {
+        return $this->belongsToMany('App\Models\ObservationAssignment', 'observation_assignment_blocks')->with('users', 'participants');
+    }
+
+
+    public function observationAssignmentsPerUser() {
+        return $this->course->participants()->select(['users.id as user_id', 'participants.*'])->distinct()
+            ->join('observation_assignment_participants', 'participants.id', 'observation_assignment_participants.participant_id')
+            ->join('observation_assignment_users', 'observation_assignment_participants.observation_assignment_id', 'observation_assignment_users.observation_assignment_id')
+            ->join('observation_assignment_blocks', 'observation_assignment_participants.observation_assignment_id', 'observation_assignment_blocks.observation_assignment_id')
+            ->join('users', 'users.id', 'observation_assignment_users.user_id')
+            ->join('trainers', 'users.id', 'trainers.user_id')
+            ->mergeConstraintsFrom($this->course->users()->getQuery())
+            ->where('observation_assignment_blocks.block_id', $this->id)->get()
+            ->groupBy('user_id');
     }
 
     /**

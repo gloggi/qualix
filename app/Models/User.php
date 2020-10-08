@@ -73,6 +73,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
+    public function observationAssignments()
+    {
+        return $this->belongsToMany('App\Models\ObservationAssignment', 'observation_assignment_users');
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function courses()
     {
         return $this->belongsToMany('App\Models\Course', 'trainers', null, 'course_id')->withPivot('last_accessed')->orderByDesc('trainers.last_accessed');
@@ -121,4 +130,5 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function setLastUsedBlockDate($value, Course $course) {
         $this->courses()->updateExistingPivot($course->id, ['last_used_block_date' => Carbon::parse($value)]);
     }
+
 }

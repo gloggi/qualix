@@ -58,6 +58,8 @@
                         @if(!$course->archived)
                             <b-dropdown-item dropdown-item{{ Route::currentRouteName() == 'admin.participantGroups' ? ' active' : '' }}
                                              href="{{ route('admin.participantGroups', ['course' => $course->id]) }}">{{__('t.views.admin.participant_groups.menu_name')}}</b-dropdown-item>
+                            <b-dropdown-item dropdown-item{{ Route::currentRouteName() == 'admin.observationAssignments' ? ' active' : '' }}
+                                             href="{{ route('admin.observationAssignments', ['course' => $course->id]) }}">{{__('t.views.admin.observation_assignments.menu_name')}}</b-dropdown-item>
                         @endif
                         <b-dropdown-item {{ Route::currentRouteName() == 'admin.qualis' ? ' active' : '' }}
                            href="{{ route('admin.qualis', ['course' => $course->id]) }}">{{__('t.views.admin.qualis.menu_name')}}</b-dropdown-item>

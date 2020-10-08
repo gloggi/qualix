@@ -24,7 +24,7 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::get('/course/{course}', 'HomeController@index')->name('index');
 
     Route::get('/course/{course}/blocks', 'BlockListController@index')->name('blocks');
-    Route::get('/course/{course}/crib', 'BlockListController@crib')->name('crib');
+    Route::get('/course/{course}/crib/{user?}', 'BlockListController@crib')->name('crib');
 
     Route::middleware('courseNotArchived')->group(function () {
         Route::get('/course/{course}/participants', 'ParticipantListController@index')->name('participants');
@@ -72,9 +72,12 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
         Route::post('/course/{course}/admin/participantGroups/{participantGroup}', 'ParticipantGroupController@update')->name('admin.participantGroups.update');
         Route::delete('/course/{course}/admin/participantGroups/{participantGroup}', 'ParticipantGroupController@destroy')->name('admin.participantGroups.delete');
 
+        Route::get('/course/{course}/admin/observationAssignments', 'ObservationAssignmentController@index')->name('admin.observationAssignments');
+        Route::post('/course/{course}/admin/observationAssignments', 'ObservationAssignmentController@store')->name('admin.observationAssignments.store');
+        Route::get('/course/{course}/admin/observationAssignments/{observationAssignment}', 'ObservationAssignmentController@edit')->name('admin.observationAssignments.edit');
+        Route::post('/course/{course}/admin/observationAssignments/{observationAssignment}', 'ObservationAssignmentController@update')->name('admin.observationAssignments.update');
+        Route::delete('/course/{course}/admin/observationAssignments/{observationAssignment}', 'ObservationAssignmentController@destroy')->name('admin.observationAssignments.delete');
     });
-
-
 
     Route::get('/course/{course}/admin/blocks', 'BlockController@index')->name('admin.blocks');
     Route::post('/course/{course}/admin/blocks', 'BlockController@store')->name('admin.block.store');

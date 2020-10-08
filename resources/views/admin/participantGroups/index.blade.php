@@ -37,7 +37,7 @@
                 :data="{{ json_encode($course->participantGroups) }}"
                 :fields="[
                     { label: $t('t.models.participant_group.group_name'), value: participantGroup => participantGroup.group_name },
-                    { label: $t('t.models.participant_group.group_name'), value: participantGroup => participantGroup.participant_names },
+                    { label: $t('t.models.participant_group.participants'), value: participantGroup => participantGroup.participant_names },
                 ]"
                 :actions="{
                     edit: participantGroup => routeUri('admin.participantGroups.edit', {course: {{ $course->id }}, participantGroup: participantGroup.id}),

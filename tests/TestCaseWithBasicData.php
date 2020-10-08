@@ -3,8 +3,10 @@
 namespace Tests;
 
 use App\Models\Observation;
+use App\Models\ObservationAssignment;
 use App\Models\ParticipantGroup;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 abstract class TestCaseWithBasicData extends TestCaseWithCourse
 {
@@ -30,6 +32,13 @@ abstract class TestCaseWithBasicData extends TestCaseWithCourse
         $participant_group = ParticipantGroup::create(['course_id' => ($courseId !== null ? $courseId : $this->courseId), 'group_name' => $group_name]);
         $participant_group->participants()->attach(($participantIds !== null ? Arr::wrap($participantIds) : [$this->participantId]));
         return $participant_group->id;
+    }
 
+    protected function createObservationAssignment($name = "Test Auftrag", $participantIds = null, $blockIds = null, $userIds = null, $courseId = null) {
+        $observation_assignment = ObservationAssignment::create(['course_id' => ($courseId !== null ? $courseId : $this->courseId), 'name' => $name]);
+        $observation_assignment->participants()->attach(($participantIds !== null ? Arr::wrap($participantIds) : [$this->participantId]));
+        $observation_assignment->blocks()->attach(($blockIds !== null ? Arr::wrap($blockIds) : [$this->blockId]));
+        $observation_assignment->users()->attach(($userIds !== null ? Arr::wrap($userIds) : [Auth::id()]));
+        return $observation_assignment->id;
     }
 }
