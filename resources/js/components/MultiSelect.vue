@@ -9,7 +9,7 @@
       :track-by="valueField"
       :multiple="multiple"
       :options="allOptions"
-      :close-on-select="true"
+      :close-on-select="!multiple"
       :show-labels="false"
       :placeholder="placeholder"
       :no-options="$t('t.global.no_options')">

@@ -21,6 +21,9 @@ describe('observation form', () => {
     cy.get('#participants').click()
     cy.get('#participants .multiselect__option').first().click()
 
+    // Click outside the multiselect to close the dropdown menu
+    cy.get('.card-body').click('right')
+
     cy.get('#content').type('hat sich mehrmals gut eingebracht')
 
     cy.get('#block').click()
