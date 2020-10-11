@@ -10,7 +10,7 @@
       :track-by="valueField"
       :multiple="multiple"
       :options="allOptions"
-      :close-on-select="!multiple"
+      :close-on-select="true"
       :show-labels="false"
       :placeholder="placeholder"
       :no-options="$t('t.global.no_options')">
@@ -81,13 +81,6 @@ export default {
         return value ? (this.options.find(el => '' + el[this.valueField] === value)) : null
       }
     },
-    selection(selected) {
-      if (this.multiple) {
-
-      } else {
-        return
-      }
-    },
     onSelect(option, id) {
       if (this.isGroup(option)) {
         // Right after this select event there will be an input event which includes the group in the selected elements.
@@ -101,8 +94,10 @@ export default {
     onInput(val, id) {
       this.$emit('input', this.formValue, id)
       this.$emit('update:selected', this.localValue, id)
-      // Fix bug that only appears on production: Not focused after typing and pressing enter to select an entry
-      this.$refs.multiselect.activate()
+
+      // Work around :close-on-select=false not working correctly
+      if (this.multiple) this.$nextTick(() => this.$refs.multiselect.activate())
+
       // Don't auto-submit if a group was selected.
       // One tick later there will be another input event which will include the group contents.
       if (this.submitOnInput && !this.isGroup(val)) {
