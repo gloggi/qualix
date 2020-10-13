@@ -8,7 +8,7 @@
       :label="$t('t.models.quali.participants')"
       required
       :options="participants"
-      :groups="participantGroups"
+      :groups="allParticipantGroups"
       display-field="scout_name"
       multiple></input-multi-select>
 
@@ -76,6 +76,7 @@ export default {
     name: { type: String, required: false },
     qualis: { type: Array, default: undefined },
     participants: { type: Array, required: true },
+    participantGroups: { type: Object, default: () => ({}) },
     requirements: { type: Array, requried: true },
     trainers: { type: Array, required: true },
     qualiNotesTemplate: { type: Boolean, default: false },
@@ -95,8 +96,9 @@ export default {
     }
   },
   computed: {
-    participantGroups() {
+    allParticipantGroups() {
       return {
+        ...this.participantGroups,
         [this.$t('t.views.admin.qualis.select_all_participants')]: this.participants.map(p => p.id).join()
       }
     },

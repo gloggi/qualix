@@ -10,6 +10,10 @@
             name="{{ $quali_data->name }}"
             :qualis="{{ json_encode($quali_data->qualis) }}"
             :participants="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
+            :participant-groups="{{json_encode(
+                $course->participantGroups->mapWithKeys(function ($group) {
+                    return [$group['group_name'] => $group->participants->pluck('id')->join(',')];
+                }), JSON_FORCE_OBJECT)}}"
             :requirements="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
             :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}">
 
