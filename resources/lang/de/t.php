@@ -91,7 +91,7 @@ return array(
 			"participant" => "TN",
 			"participants" => "TN",
 			"requirements" => "Anforderungen",
-			"user" => "Beobachter",
+			"user" => "Beobachtet von",
 		),
 		"observation_assignment" => array(
 			"blocks" => "Blöcke",
