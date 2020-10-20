@@ -2,18 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Lang;
 
 class QualiContentRequest extends FormRequest {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize() {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -36,6 +27,7 @@ class QualiContentRequest extends FormRequest {
      * @return void
      */
     protected function prepareForValidation() {
+        parent::prepareForValidation();
         $this->merge(['quali_contents' => json_decode($this->get('quali_contents'), true)]);
     }
 }
