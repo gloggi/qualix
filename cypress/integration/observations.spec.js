@@ -31,7 +31,6 @@ describe('observation form', () => {
 
     cy.get('#requirements').click()
     cy.get('#requirements .multiselect__option').first().click()
-    cy.get('#requirements').click('right')
     cy.get('#requirements .multiselect__option').eq(2).click()
 
     cy.contains('Positiv').click()
