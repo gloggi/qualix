@@ -4,7 +4,7 @@
 - Changelog eingeführt [#167](https://github.com/gloggi/qualix/pull/167)
 
 ##### Oktober 2020
-- Beobachtungsäufträge [#147](https://github.com/gloggi/qualix/pull/147)
+- Beobachtungsaufträge [#147](https://github.com/gloggi/qualix/pull/147)
 - Qualis erfassen und ausdrucken [#146](https://github.com/gloggi/qualix/pull/146)
 
 ##### September 2020
