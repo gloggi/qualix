@@ -108,7 +108,7 @@ const app = new Vue({
 })
 
 
-if (process.env.MIX_SENTRY_VUE_DSN) {
+if (process.env.MIX_SENTRY_VUE_DSN && process.env.MIX_SENTRY_VUE_DSN !== 'null') {
   Sentry.init({
     dsn: process.env.MIX_SENTRY_VUE_DSN,
     integrations: [
