@@ -1,0 +1,145 @@
+name: Deploy
+description: Deploy Qualix
+inputs:
+
+  ssh-username:
+    description: 'The SSH username that will be used to log in to the server'
+    required: false
+    default: root
+
+  ssh-host:
+    description: 'The SSH server where to deploy'
+    required: true
+
+  ssh-directory:
+    description: 'The directory on the SSH server where to deploy'
+    required: false
+    default: .
+
+  app-env:
+    description: 'The environment type that will be deployed'
+    required: false
+    default: production
+
+  app-key:
+    description: 'The application encryption key'
+    required: true
+
+  app-debug:
+    description: 'Whether to activate debug mode on the deployed environment'
+    required: false
+    default: 'false'
+
+  app-url:
+    description: 'The url under which the application will be available'
+    required: true
+
+  db-host:
+    description: 'The URL of the database server'
+    required: false
+    default: localhost
+
+  db-database:
+    description: 'The database name in the database server'
+    required: false
+    default: qualix
+
+  db-username:
+    description: 'The username that will be used to log in to the database'
+    required: true
+
+  db-password:
+    description: 'The password that will be used to log in to the database'
+    required: true
+
+  mail-host:
+    description: 'The location of the SMTP server to send emails'
+    required: false
+    default: localhost
+
+  mail-port:
+    description: 'The port on which the SMTP server listens'
+    required: false
+    default: '1025'
+
+  mail-username:
+    description: 'The username used to sign in to the SMTP server'
+    required: true
+
+  mail-password:
+    description: 'The username used to sign in to the SMTP server'
+    required: true
+
+  mail-encryption:
+    description: 'The encryption used for sending emails'
+    required: false
+    default: SSL
+
+  mail-from-address:
+    description: 'The sender address that will be used for outgoing emails'
+    required: true
+
+  hitobito-base-url:
+    description: 'The url of the hitobito instance for hitobito login'
+    required: false
+    default: 'https://pbs.puzzle.ch'
+
+  hitobito-client-uid:
+    description: 'The UId of the hitobito OAuth application'
+    required: true
+
+  hitobito-client-secret:
+    description: 'The Secret of the hitobito OAuth application'
+    required: true
+
+  sentry-laravel-dsn:
+    description: 'DSN for reporting backend errors to sentry'
+    required: false
+    default: ''
+
+  sentry-user-feedback-url:
+    description: 'URL for submitting user feedback to sentry'
+    required: false
+    default: ''
+
+  sentry-csp-report-uri:
+    description: 'URI for reporting CSP violations to sentry'
+    required: false
+    default: ''
+
+  sentry-vue-dsn:
+    description: 'DSN for reporting frontend errors to sentry'
+    required: false
+    default: ''
+
+runs:
+  using: "composite"
+  steps:
+
+    - run: .github/actions/deploy/deploy.sh
+      shell: bash
+      env:
+        SSH_USERNAME: ${{ inputs.ssh-username }}
+        SSH_HOST: ${{ inputs.ssh-host }}
+        SSH_DIRECTORY: ${{ inputs.ssh-directory }}
+        APP_ENV: ${{ inputs.app-env }}
+        APP_KEY: ${{ inputs.app-key }}
+        APP_DEBUG: ${{ inputs.app-debug }}
+        APP_URL: ${{ inputs.app-url }}
+        DB_HOST: ${{ inputs.db-host }}
+        DB_DATABASE: ${{ inputs.db-database }}
+        DB_USERNAME: ${{ inputs.db-username }}
+        DB_PASSWORD: ${{ inputs.db-password }}
+        MAIL_HOST: ${{ inputs.mail-host }}
+        MAIL_PORT: ${{ inputs.mail-port }}
+        MAIL_USERNAME: ${{ inputs.mail-username }}
+        MAIL_PASSWORD: ${{ inputs.mail-password }}
+        MAIL_ENCRYPTION: ${{ inputs.mail-encryption }}
+        MAIL_FROM_ADDRESS: ${{ inputs.mail-from-address }}
+        HITOBITO_BASE_URL: ${{ inputs.hitobito-base-url }}
+        HITOBITO_CLIENT_ID: ${{ inputs.hitobito-client-id }}
+        HITOBITO_CLIENT_SECRET: ${{ inputs.hitobito-client-secret }}
+        SENTRY_LARAVEL_DSN: ${{ inputs.sentry-laravel-dsn }}
+        SENTRY_USER_FEEDBACK_URL: ${{ inputs.sentry-user-feedback-url }}
+        SENTRY_CSP_REPORT_URI: ${{ inputs.sentry-csp-report-uri }}
+        SENTRY_VUE_DSN: ${{ inputs.sentry-vue-dsn }}

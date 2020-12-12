@@ -1,0 +1,9 @@
+name: Wait for container startup
+description: Waits for the docker-compose containers to have started
+
+runs:
+  using: "composite"
+  steps:
+
+    - run: .github/actions/wait-for-container-startup/wait.sh
+      shell: bash
