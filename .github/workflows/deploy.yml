@@ -1,0 +1,87 @@
+name: Deploy
+
+on:
+  repository_dispatch:
+    types: [ ci-passed ]
+
+jobs:
+  only-on-deployment-branches:
+    name: Only on deployment branches
+    if: ${{ ('refs/heads/master' == github.event.client_payload.ref) || ('refs/heads/deploy-gryfensee' == github.event.client_payload.ref) || ('refs/heads/deploy-gloggi' == github.event.client_payload.ref) }}
+    runs-on: ubuntu-latest
+    steps:
+
+      - run: 'echo ${{ github.event.client_payload.ref }}'
+
+  deploy:
+    name: "Deploy"
+    needs: only-on-deployment-branches
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.client_payload.sha }}
+
+      - run: npm install
+        working-directory: .github/actions/set-target-secret-names
+
+      - uses: ./.github/actions/set-target-secret-names
+        with:
+          ref: ${{ github.event.client_payload.ref }}
+          target-mapping: '{ "master": "FLAM", "deploy-gryfensee": "GRY", "deploy-gloggi": "GLOGGI" }'
+          secrets: |
+            SSH_PRIVATE_KEY
+            SSH_KNOWN_HOSTS
+            SSH_USERNAME
+            SSH_HOST
+            SSH_DIRECTORY
+            APP_KEY
+            APP_URL
+            DB_HOST
+            DB_DATABASE
+            DB_USERNAME
+            DB_PASSWORD
+            MAIL_HOST
+            MAIL_PORT
+            MAIL_USERNAME
+            MAIL_PASSWORD
+            MAIL_FROM_ADDRESS
+            HITOBITO_BASE_URL
+            HITOBITO_CLIENT_UID
+            HITOBITO_CLIENT_SECRET
+            SENTRY_LARAVEL_DSN
+            SENTRY_USER_FEEDBACK_URL
+            SENTRY_CSP_REPORT_URI
+            SENTRY_VUE_DSN
+
+      - uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets[env.SSH_PRIVATE_KEY] }}
+          known_hosts: ${{ secrets[env.SSH_KNOWN_HOSTS] }}
+
+      - run: sudo apt-get update -y && sudo apt-get install -y lftp
+
+      - uses: ./.github/actions/deploy
+        with:
+          ssh-username: ${{ secrets[env.SSH_USERNAME] }}
+          ssh-host: ${{ secrets[env.SSH_HOST] }}
+          ssh-directory: ${{ secrets[env.SSH_DIRECTORY] }}
+          app-key: ${{ secrets[env.APP_KEY] }}
+          app-url: ${{ secrets[env.APP_URL] }}
+          db-host: ${{ secrets[env.DB_HOST] }}
+          db-database: ${{ secrets[env.DB_DATABASE] }}
+          db-username: ${{ secrets[env.DB_USERNAME] }}
+          db-password: ${{ secrets[env.DB_PASSWORD] }}
+          mail-host: ${{ secrets[env.MAIL_HOST] }}
+          mail-port: ${{ secrets[env.MAIL_PORT] }}
+          mail-username: ${{ secrets[env.MAIL_USERNAME] }}
+          mail-password: ${{ secrets[env.MAIL_PASSWORD] }}
+          mail-from-address: ${{ secrets[env.MAIL_FROM_ADDRESS] }}
+          hitobito-base-url: ${{ secrets[env.HITOBITO_BASE_URL] }}
+          hitobito-client-uid: ${{ secrets[env.HITOBITO_CLIENT_UID] }}
+          hitobito-client-secret: ${{ secrets[env.HITOBITO_CLIENT_SECRET] }}
+          sentry-laravel-dsn: ${{ secrets[env.SENTRY_LARAVEL_DSN] }}
+          sentry-user-feedback-url: ${{ secrets[env.SENTRY_USER_FEEDBACK_URL] }}
+          sentry-csp-report-uri: ${{ secrets[env.SENTRY_CSP_REPORT_URI] }}
+          sentry-vue-dsn: ${{ secrets[env.SENTRY_VUE_DSN] }}

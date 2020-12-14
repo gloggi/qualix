@@ -137,7 +137,7 @@ runs:
         MAIL_ENCRYPTION: ${{ inputs.mail-encryption }}
         MAIL_FROM_ADDRESS: ${{ inputs.mail-from-address }}
         HITOBITO_BASE_URL: ${{ inputs.hitobito-base-url }}
-        HITOBITO_CLIENT_ID: ${{ inputs.hitobito-client-id }}
+        HITOBITO_CLIENT_UID: ${{ inputs.hitobito-client-uid }}
         HITOBITO_CLIENT_SECRET: ${{ inputs.hitobito-client-secret }}
         SENTRY_LARAVEL_DSN: ${{ inputs.sentry-laravel-dsn }}
         SENTRY_USER_FEEDBACK_URL: ${{ inputs.sentry-user-feedback-url }}

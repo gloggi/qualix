@@ -1,0 +1,11 @@
+{
+  "name": "set-target-secret-names",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.6"
+  }
+}

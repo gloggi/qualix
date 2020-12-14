@@ -36,6 +36,8 @@ sed -ri "s~^MIX_SENTRY_VUE_DSN=.*$~MIX_SENTRY_VUE_DSN=$SENTRY_VUE_DSN~" .env
 docker-compose run --entrypoint "composer install --no-dev" qualix
 docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod --no-unsafe-inline'" node
 
+cat ~/.ssh/known_hosts
+
 echo "Checking PHP version"
 ssh -l $SSH_USERNAME -T $SSH_HOST -o StrictHostKeyChecking=no <<EOF
   set -e
@@ -43,6 +45,8 @@ ssh -l $SSH_USERNAME -T $SSH_HOST -o StrictHostKeyChecking=no <<EOF
   cd $SSH_DIRECTORY
   php -r "if((explode('.',PHP_VERSION)[0]*10000+explode('.',PHP_VERSION)[1]*100+explode('.',PHP_VERSION)[2])<${PHP_MIN_VERSION:-70205}){echo \"Your PHP version is too old\\n\";exit(1);}"
 EOF
+
+cat ~/.ssh/known_hosts
 
 echo "Uploading files to the server..."
 lftp <<EOF

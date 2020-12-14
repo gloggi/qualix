@@ -1,0 +1,16 @@
+name: Set target secret names
+description: Sets environment variables that contain the names of secrets, scoped to a given deployment target
+inputs:
+  ref:
+    description: The GitHub ref that is used to determine the deployment target
+    required: true
+  target-mapping:
+    description: A JSON object that maps from branch names to deployment target names
+    required: true
+  secrets:
+    description: The unscoped names of the secrets, separated by newlines
+    required: true
+
+runs:
+  using: node12
+  main: index.js
