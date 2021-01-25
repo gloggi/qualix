@@ -44,7 +44,17 @@ class QualiContentController extends Controller {
         return view('qualiContent.edit', [
             'participant' => $participant,
             'quali' => $quali,
-            'observations' => $participant->observations()->with(['block', 'participants'])->withPivot('id')->get(),
+            'observations' => $participant->observations()
+                ->with(['block', 'participants'])
+                ->withPivot('id')
+                ->join('blocks', 'blocks.id', 'observations.block_id')
+                ->orderBy('blocks.block_date')
+                ->orderBy('blocks.day_number')
+                ->orderBy('blocks.block_number')
+                ->orderBy('blocks.name')
+                ->orderBy('blocks.id')
+                ->orderBy('observations.created_at')
+                ->get(),
         ]);
     }
 
