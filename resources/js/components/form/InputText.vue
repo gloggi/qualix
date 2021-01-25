@@ -3,7 +3,26 @@
     <label :for="name | kebabCase" class="col-md-3 col-form-label text-md-right">{{ label }}</label>
 
     <div class="col-md-6">
+      <b-input-group v-if="$slots.append" :class="{ 'is-invalid': errorMessage }">
+
+        <b-form-input
+          :type="type"
+          :id="name | kebabCase"
+          :name="name"
+          :class="{ 'is-invalid': errorMessage }"
+          v-model="currentValue"
+          :required="required"
+          :autofocus="autofocus"
+          :v-focus="autofocus" />
+
+        <template #append>
+          <slot name="append"></slot>
+        </template>
+
+      </b-input-group>
+
       <input
+        v-else
         :type="type"
         :id="name | kebabCase"
         :name="name"

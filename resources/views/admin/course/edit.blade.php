@@ -11,6 +11,22 @@
 
             <input-text name="course_number" value="{{ $course->course_number }}" label="{{__('t.models.course.course_number')}}"></input-text>
 
+            <input-text name="observation_count_red_threshold" value="{{ $course->observation_count_red_threshold }}" label="{{__('t.models.course.observation_count_red_threshold')}}" required>
+                <template #append>
+                    <b-input-group-text>{{ __('t.views.admin.course_settings.per_equipe_and_tn') }}</b-input-group-text>
+                </template>
+            </input-text>
+
+            <input-text name="observation_count_green_threshold" value="{{ $course->observation_count_green_threshold }}" label="{{__('t.models.course.observation_count_green_threshold')}}" required>
+                <template #append>
+                    <b-input-group-text>{{ __('t.views.admin.course_settings.per_equipe_and_tn') }}</b-input-group-text>
+                </template>
+            </input-text>
+
+            <row-text>
+                @component('components.help-text', ['key' => 't.views.admin.course_settings.thresholds', 'id' => 'blockHelp'])@endcomponent
+            </row-text>
+
             <button-submit></button-submit>
 
         </form-basic>

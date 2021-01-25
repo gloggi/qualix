@@ -20,7 +20,9 @@
 
                 <table-observation-overview
                     :users="{{ json_encode($course->users) }}"
-                    :participants="{{ json_encode([ $participant->observationCountsByUser() ]) }}"></table-observation-overview>
+                    :participants="{{ json_encode([ $participant->observationCountsByUser() ]) }}"
+                    :red-threshold="{{ json_encode($course->observation_count_red_threshold) }}"
+                    :green-threshold="{{ json_encode($course->observation_count_green_threshold) }}"></table-observation-overview>
 
                 <a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id]) }}" class="btn btn-primary"><i class="fas fa-binoculars"></i> {{__('t.global.add_observation')}}</a>
             </div>

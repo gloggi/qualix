@@ -10,7 +10,9 @@
             <table-observation-overview
                 multiple
                 :users="{{ json_encode($course->users) }}"
-                :participants="{{ json_encode(collect($participants)->map->observationCountsByUser()) }}"></table-observation-overview>
+                :participants="{{ json_encode(collect($participants)->map->observationCountsByUser()) }}"
+                :red-threshold="{{ json_encode($course->observation_count_red_threshold) }}"
+                :green-threshold="{{ json_encode($course->observation_count_green_threshold) }}"></table-observation-overview>
 
         @else
 
