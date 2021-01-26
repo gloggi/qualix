@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import languageBundle
   from '@kirschbaum-development/laravel-translations-loader!@kirschbaum-development/laravel-translations-loader'
 import VueI18n from 'vue-i18n'
@@ -9,7 +10,7 @@ import { Integrations } from "@sentry/tracing";
 
 require('./bootstrap')
 
-window.Vue = require('vue')
+window.Vue = Vue
 
 var {BootstrapVue, IconsPlugin} = require('bootstrap-vue')
 Vue.use(BootstrapVue)
