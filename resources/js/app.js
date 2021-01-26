@@ -20,6 +20,8 @@ Vue.use(VueI18n)
 const element = document.getElementById('laravel-data')
 window.Laravel = JSON.parse(element.getAttribute('data-laravel'))
 element.remove()
+if (window.onEnvLoaded) window.onEnvLoaded()
+
 Vue.prototype.$window = window
 
 Vue.prototype.routeUri = function (name, parameters) {

@@ -2,6 +2,10 @@
 
 @section('pagetitle'){{__('t.global.page_title')}}@endsection
 
+@section('head')
+    <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
+@endsection
+
 @section('layout')
 
     <b-container id="app" v-cloak>

@@ -60,7 +60,7 @@
     .observation {
         border-left: 2px solid $gray-500;
         cursor: move;
-        white-space: initial;
+        white-space: pre-wrap;
 
         p {
             user-select: none;

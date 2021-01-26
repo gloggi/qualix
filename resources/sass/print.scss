@@ -1,0 +1,158 @@
+$page-height: 11in !default;
+$page-width: 8in !default;
+
+@import 'variables';
+@import '~bootstrap/scss/bootstrap';
+@import 'editor';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '~@fortawesome/fontawesome-free/scss/solid.scss';
+
+:root {
+    --color-background: whitesmoke;
+    --color-pageBox: #666;
+    --color-paper: white;
+    --color-marginBox: transparent;
+    --pagedjs-height-right: #{$page-height};
+    --pagedjs-height-left: #{$page-height};
+    --pagedjs-width-right: #{$page-width};
+    --pagedjs-width-left: #{$page-width};
+    --pagedjs-pagebox-height: #{$page-height};
+    --pagedjs-pagebox-width: #{$page-width};
+    --pagedjs-width: #{$page-width};
+    --pagedjs-height: #{$page-height};
+}
+
+@page {
+    size: A4;
+
+    @bottom-right-corner {
+        content: counter(page) ' / ' counter(pages)
+    }
+}
+
+@media screen {
+    body {
+        background-color: var(--color-background);
+    }
+
+    .pagedjs_pages {
+        display: flex;
+        flex: 0;
+        flex-wrap: wrap;
+        flex-direction: column;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .pagedjs_page {
+        background-color: var(--color-paper);
+        box-shadow: 0 0 0 1px var(--color-pageBox) !important;
+        flex-shrink: 0;
+        flex-grow: 0;
+        margin: 10mm auto 0;
+
+        &:last-child {
+            margin-bottom: 10mm;
+        }
+    }
+
+    .pagedjs_pagebox > .pagedjs_area {
+        // Compensate for browser printing functions narrowing the page... *rolling eyes*
+        width: 94% !important;
+    }
+}
+
+@media print {
+    a {
+        page-break-inside: avoid
+    }
+    blockquote {
+        page-break-inside: avoid;
+    }
+    p {
+        orphans: 3;
+        widows: 3;
+        line-height: 150%;
+    }
+    h1, h2, h3, h4, h5, h6, .requirement {
+        page-break-after: avoid;
+        page-break-inside: avoid
+    }
+    img {
+        page-break-inside: avoid;
+        page-break-after: avoid;
+    }
+    table, pre {
+        page-break-inside: avoid
+    }
+    ul, ol, dl {
+        page-break-before: avoid
+    }
+
+    body {
+        min-width: unset !important;
+    }
+
+    .pagedjs_pages {
+        .pagedjs_page {
+            height: var(--pagedjs-height-right) !important;
+            max-height: unset !important;
+            min-height: unset !important;
+        }
+    }
+}
+
+.print {
+    &.container, .container {
+        min-width: unset !important;
+    }
+
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+
+    .editor-content {
+
+        .observation {
+            background-color: unset;
+
+            blockquote {
+                border: none;
+            }
+
+            .badge {
+                color: black;
+                background-color: unset;
+                padding: 0;
+                border: none;
+
+                + .badge:before {
+                    content: ' ';
+                }
+            }
+
+            a:not(.btn) {
+                text-decoration: none;
+            }
+        }
+
+    }
+
+    .progress {
+
+        border: 1px solid black;
+
+        .progress-bar {
+            border-right: 1px solid black;
+            color: black;
+
+            &.bg-success {
+                background-color: rgba(40, 167, 69, 0.5) !important;
+            }
+
+            &.bg-danger {
+                background-color: rgba(220, 53, 69, 0.5) !important;;
+            }
+        }
+
+    }
+}

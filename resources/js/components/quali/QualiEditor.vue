@@ -119,6 +119,13 @@ export default {
 
     // Necessary in case we have oldInput that the outside world doesn't know about
     if (this.currentValue !== this.value) this.$emit('input', this.currentValue)
+
+    // Two ticks after mounted, the HTML is rendered correctly
+    this.$nextTick(() => {
+      this.$nextTick(() => {
+        this.$emit('content-ready')
+      })
+    })
   },
   beforeDestroy() {
     this.editor.destroy()
