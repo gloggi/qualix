@@ -16,8 +16,7 @@
                     $course->participantGroups->mapWithKeys(function ($group) {
                         return [$group['group_name'] => $group->participants->pluck('id')->join(',')];
                     }), JSON_FORCE_OBJECT)}}"
-
-            display-field="scout_name"
+                display-field="scout_name"
                 multiple
                 required
                 :autofocus="{{ $participants === null ? 'true' : 'false' }}"></input-multi-select>
