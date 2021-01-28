@@ -75,6 +75,8 @@ return array(
 		"course" => array(
 			"course_number" => "Kursnummer",
 			"name" => "Kursname",
+			"observation_count_red_threshold" => "Mindestanzahl Beobachtungen",
+			"observation_count_green_threshold" => "Gewünschte Anzahl Beobachtungen",
 		),
 		"invitation" => array(
 			"email" => "E-Mail",
@@ -213,8 +215,13 @@ return array(
 				"edit_success" => "Kursdetails erfolgreich gespeichert.",
 				"is_archived" => ":name ist archiviert, das heisst alle personenbezogenen Daten der Teilnehmenden wurden gelöscht.",
 				"menu_name" => "Kurseinstellungen",
+				"per_equipe_and_tn" => "pro Equipenmitglied und TN",
 				"really_archive" => "Kurs \":name\" wirklich archivieren?",
 				"really_delete" => "Kurs \":name\" wirklich löschen?",
+				"thresholds" => array(
+					"question" => "Wozu dienen diese Mindestanzahlen?",
+					"answer" => "Zur roten bzw. grünen Einfärbung der Anzahl Beobachtungen auf der Übersicht sowie auf der TN-Detailansicht.",
+				),
 			),
 			"equipe" => array(
 				"cannot_delete_last_leiter" => "Mindestens ein Equipenmitglied muss im Kurs bleiben.",

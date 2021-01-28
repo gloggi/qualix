@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
  * @property int $id
  * @property string $name
  * @property string $course_number
+ * @property int $observation_count_red_threshold
+ * @property int $observation_count_green_threshold
  * @property Block[] $blocks
  * @property Invitation[] $invitations
  * @property User[] $users
@@ -25,7 +27,7 @@ class Course extends Model {
     /**
      * @var array
      */
-    protected $fillable = ['name', 'course_number', 'archived'];
+    protected $fillable = ['name', 'course_number', 'archived', 'observation_count_red_threshold', 'observation_count_green_threshold'];
     protected $observationAssignments;
 
 

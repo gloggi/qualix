@@ -13,7 +13,7 @@ class UpdateCourseTest extends TestCaseWithCourse {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['name' => 'Geänderter Kursname', 'course_number' => 'CH 999-99'];
+        $this->payload = ['name' => 'Geänderter Kursname', 'course_number' => 'CH 999-99', 'observation_count_red_threshold' => 5, 'observation_count_green_threshold' => 10];
     }
 
     public function test_shouldRequireLogin() {
@@ -85,6 +85,111 @@ class UpdateCourseTest extends TestCaseWithCourse {
         /** @var ValidationException $exception */
         $exception = $response->exception;
         $this->assertEquals('Kursnummer darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('course_number'));
+    }
+
+    public function test_shouldValidateNewCourseData_noRedThreshold() {
+        // given
+        $payload = $this->payload;
+        unset($payload['observation_count_red_threshold']);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Mindestanzahl Beobachtungen muss ausgefüllt sein.', $exception->validator->errors()->first('observation_count_red_threshold'));
+    }
+
+    public function test_shouldValidateNewCourseData_nonIntegerRedThreshold() {
+        // given
+        $payload = $this->payload;
+        $payload['observation_count_red_threshold'] = '1.1';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Mindestanzahl Beobachtungen muss eine ganze Zahl sein.', $exception->validator->errors()->first('observation_count_red_threshold'));
+    }
+
+    public function test_shouldValidateNewCourseData_negativeRedThreshold() {
+        // given
+        $payload = $this->payload;
+        $payload['observation_count_red_threshold'] = '-10';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Mindestanzahl Beobachtungen muss mindestens 0 sein.', $exception->validator->errors()->first('observation_count_red_threshold'));
+    }
+
+    public function test_shouldValidateNewCourseData_noGreenThreshold() {
+        // given
+        $payload = $this->payload;
+        unset($payload['observation_count_green_threshold']);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Gewünschte Anzahl Beobachtungen muss ausgefüllt sein.', $exception->validator->errors()->first('observation_count_green_threshold'));
+    }
+
+    public function test_shouldValidateNewCourseData_nonIntegerGreenThreshold() {
+        // given
+        $payload = $this->payload;
+        $payload['observation_count_green_threshold'] = '1.1';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Gewünschte Anzahl Beobachtungen muss eine ganze Zahl sein.', $exception->validator->errors()->first('observation_count_green_threshold'));
+    }
+
+    public function test_shouldValidateNewCourseData_negativeGreenThreshold() {
+        // given
+        $payload = $this->payload;
+        $payload['observation_count_green_threshold'] = '-10';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Gewünschte Anzahl Beobachtungen muss mindestens 0 sein.', $exception->validator->errors()->first('observation_count_green_threshold'));
+    }
+
+    public function test_shouldValidateNewCourseData_greenThresholdSmallerThanRedThreshold() {
+        // given
+        $payload = $this->payload;
+        $payload['observation_count_green_threshold'] = '2';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Gewünschte Anzahl Beobachtungen muss grösser oder gleich 5 sein.', $exception->validator->errors()->first('observation_count_green_threshold'));
     }
 
     public function test_shouldValidateNewCourseData_wrongId() {

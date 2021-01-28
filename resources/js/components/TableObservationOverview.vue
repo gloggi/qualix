@@ -16,6 +16,8 @@ export default {
     users: { type: Array, required: true },
     participants: { type: Array, required: true },
     multiple: { type: Boolean, default: false },
+    redThreshold: { type: Number, default: 5 },
+    greenThreshold: { type: Number, default: 10 },
   },
   computed: {
     actions() {
@@ -50,8 +52,8 @@ export default {
     },
     cellClass({ cellValue, colIdx }) {
       if (colIdx === (this.multiple ? 1 : 0)) return ''
-      if (cellValue < 5) return 'bg-danger-light'
-      if (cellValue >= 10) return 'bg-success-light'
+      if (cellValue < this.redThreshold) return 'bg-danger-light'
+      if (cellValue >= this.greenThreshold) return 'bg-success-light'
       return ''
     }
   },

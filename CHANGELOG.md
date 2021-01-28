@@ -1,5 +1,8 @@
 # Changelog
 
+##### Januar 2021
+- Grenzwerte für die roten und grünen Markierungen sind jetzt pro Kurs einstellbar [#173](https://github.com/gloggi/qualix/pull/173)
+
 ##### Dezember 2020
 - Changelog eingeführt [#167](https://github.com/gloggi/qualix/pull/167)
 
