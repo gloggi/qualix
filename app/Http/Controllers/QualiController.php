@@ -138,15 +138,10 @@ class QualiController extends Controller {
      */
     protected function setTrainerAssignments($qualis, $data) {
         $qualis->each(function(Quali $quali) use($data) {
-            $key = 'qualis.'.$quali->participant->id.'.user';
-            $quali->update(['user' => Arr::get($data, $key)]);
-
-            // Bug in laravel-fillable-relations. Remove this once
-            // https://github.com/troelskn/laravel-fillable-relations/pull/27 is merged
-            if (Arr::has($data, $key) && Arr::get($data, $key) === null) {
-                $quali->user()->dissociate();
-                $quali->save();
-            }
+            $key = 'qualis.'.$quali->participant->id.'.users';
+            $user_ids = array_filter(explode(',', Arr::get($data, $key, '')));
+            $quali->users()->detach();
+            $quali->users()->attach($user_ids);
         });
     }
 }

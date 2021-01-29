@@ -50,7 +50,7 @@
                 :fields="[
                     { label: $t('t.models.quali.name'), value: quali => quali.name, href: quali => routeUri('qualiContent.edit', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}) },
                     @if($participant->qualis()->whereHas('requirements')->exists()){ label: $t('t.models.quali.requirement_progress'), slot: 'requirement-progress'},@endif
-                    @if($participant->qualis()->whereNotNull('user_id')->exists()){ label: $t('t.models.quali.user'), value: quali => quali.user ? quali.user.name : '' },@endif
+                    @if($participant->qualis()->whereHas('users')->exists()){ label: $t('t.models.quali.users'), value: quali => quali.users ? quali.users.map(u => u.name).join(', ') : '' },@endif
                 ]"
                 :actions="{
                     print: quali => routeUri('qualiContent.print', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}),

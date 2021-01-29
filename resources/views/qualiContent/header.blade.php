@@ -16,10 +16,10 @@
             <div>
                 <p class="font-weight-bold mb-0">{{ $course->name }}</p>
                 @if (isset($course->course_number))<p class="mb-0">{{ $course->course_number }}</p>@endif
-                @if($quali->user)
+                @if($quali->users)
                     <div class="my-2">
-                        <div>{{__('t.models.quali.user')}}:</div>
-                        <div>{{ $quali->user->name }}</div>
+                        <div>{{__('t.models.quali.users')}}:</div>
+                        <div>{{ $quali->users->map->name->join(', ') }}</div>
                     </div>
                 @endif
             </div>

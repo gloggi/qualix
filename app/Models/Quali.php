@@ -10,10 +10,9 @@ use Illuminate\Support\Collection;
  * @property int $id
  * @property int $quali_data_id
  * @property int $participant_id
- * @property int $user_id
  * @property QualiData $quali_data
  * @property Participant $participant
- * @property User|null $user
+ * @property User[] $users
  * @property Requirement[] $requirements
  * @property ParticipantObservation[] $participant_observations
  * @property QualiContentNode[] $contentNodes
@@ -33,13 +32,13 @@ class Quali extends Model {
      *
      * @var array
      */
-    protected $with = ['quali_data', 'requirements', 'user'];
+    protected $with = ['quali_data', 'requirements', 'users'];
 
     /**
      * @var array
      */
     protected $fillable = ['notes', 'participant_id'];
-    protected $fillable_relations = ['participant', 'user', 'notes'];
+    protected $fillable_relations = ['participant', 'notes'];
 
     /**
      * The accessors to append to the model's array form.
@@ -63,10 +62,10 @@ class Quali extends Model {
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function user() {
-        return $this->belongsTo(User::class);
+    public function users() {
+        return $this->belongsToMany(User::class, 'qualis_users');
     }
 
     /**

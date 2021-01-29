@@ -296,7 +296,7 @@ class UpdateQualiTest extends TestCaseWithBasicData {
         // given
         $payload = $this->payload;
         $participantId = $this->course->participants()->pluck('id')->first();
-        $payload['qualis'][$participantId]['user'] = 'abc';
+        $payload['qualis'][$participantId]['users'] = 'abc';
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/qualis/' . $this->qualiDataId, $payload);
@@ -305,14 +305,14 @@ class UpdateQualiTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Zuständig für Pflock Format ist ungültig.', $exception->validator->errors()->first("qualis.$participantId.user"));
+        $this->assertEquals('Zuständig für Pflock Format ist ungültig.', $exception->validator->errors()->first("qualis.$participantId.users"));
     }
 
     public function test_shouldValidateNewQualiData_nonexistentTrainerAssignment() {
         // given
         $payload = $this->payload;
         $participantId = $this->course->participants()->pluck('id')->first();
-        $payload['qualis'][$participantId]['user'] = 999999;
+        $payload['qualis'][$participantId]['users'] = 999999;
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/qualis/' . $this->qualiDataId, $payload);
@@ -321,7 +321,7 @@ class UpdateQualiTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Der gewählte Wert für Zuständig für Pflock ist ungültig.', $exception->validator->errors()->first("qualis.$participantId.user"));
+        $this->assertEquals('Der gewählte Wert für Zuständig für Pflock ist ungültig.', $exception->validator->errors()->first("qualis.$participantId.users"));
     }
 
     public function test_shouldValidateNewQualiData_assigningTrainerFromOtherCourse() {
@@ -331,7 +331,7 @@ class UpdateQualiTest extends TestCaseWithBasicData {
 
         $payload = $this->payload;
         $participantId = $this->course->participants()->pluck('id')->first();
-        $payload['qualis'][$participantId]['user'] = $user2->id;
+        $payload['qualis'][$participantId]['users'] = $user2->id;
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/qualis/' . $this->qualiDataId, $payload);
@@ -340,7 +340,7 @@ class UpdateQualiTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Der gewählte Wert für Zuständig für Pflock ist ungültig.', $exception->validator->errors()->first("qualis.$participantId.user"));
+        $this->assertEquals('Der gewählte Wert für Zuständig für Pflock ist ungültig.', $exception->validator->errors()->first("qualis.$participantId.users"));
     }
 
     public function test_shouldValidateNewQualiData_existingTrainerAssignment_shouldWork() {
@@ -348,7 +348,7 @@ class UpdateQualiTest extends TestCaseWithBasicData {
         $payload = $this->payload;
         $participantId = $this->course->participants()->pluck('id')->first();
         $userId = $this->course->users()->pluck('id')->first();
-        $payload['qualis'][$participantId]['user'] = $userId;
+        $payload['qualis'][$participantId]['users'] = $userId;
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/qualis/' . $this->qualiDataId, $payload);
@@ -356,7 +356,78 @@ class UpdateQualiTest extends TestCaseWithBasicData {
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/admin/qualis');
-        $this->assertEquals($userId, Quali::find($this->qualiId)->user_id);
+        $this->assertEquals($userId, Quali::find($this->qualiId)->users()->pluck('id')->join(','));
+    }
+
+    public function test_shouldValidateNewQualiData_multipleExistingTrainerAssignment_shouldWork() {
+        // given
+        $payload = $this->payload;
+        $participantId = $this->course->participants()->pluck('id')->first();
+        $user2 = $this->createUser();
+        $user2->courses()->attach($this->course);
+        $userIds = $this->course->users()->pluck('id')->first();
+        $payload['qualis'][$participantId]['users'] = $userIds;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/qualis/' . $this->qualiDataId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/qualis');
+        $this->assertEquals($userIds, Quali::find($this->qualiId)->users()->pluck('id')->join(','));
+    }
+
+    public function test_shouldValidateNewQualiData_someInvalidTrainerAssignments() {
+        // given
+        $payload = $this->payload;
+        $participantId = $this->course->participants()->pluck('id')->first();
+        $userIds = $this->course->users()->pluck('id')->first() . ',a';
+        $payload['qualis'][$participantId]['users'] = $userIds;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/qualis/' . $this->qualiDataId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Zuständig für Pflock Format ist ungültig.', $exception->validator->errors()->first("qualis.$participantId.users"));
+    }
+
+    public function test_shouldValidateNewQualiData_someNonexistentTrainerAssignments() {
+        // given
+        $payload = $this->payload;
+        $participantId = $this->course->participants()->pluck('id')->first();
+        $userIds = $this->course->users()->pluck('id')->first() . ',9999999';
+        $payload['qualis'][$participantId]['users'] = $userIds;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/qualis/' . $this->qualiDataId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Zuständig für Pflock ist ungültig.', $exception->validator->errors()->first("qualis.$participantId.users"));
+    }
+
+    public function test_shouldValidateNewQualiData_someForeignTrainerAssignments() {
+        // given
+        $payload = $this->payload;
+        $participantId = $this->course->participants()->pluck('id')->first();
+        $user2 = $this->createUser();
+        $user2->courses()->attach($this->createCourse('Other course'));
+        $userIds = $this->course->users()->pluck('id')->first() . ',' . $user2->id;
+        $payload['qualis'][$participantId]['users'] = $userIds;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/qualis/' . $this->qualiDataId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Zuständig für Pflock ist ungültig.', $exception->validator->errors()->first("qualis.$participantId.users"));
     }
 
     public function test_shouldValidateNewQualiData_removePreviousTrainerAssignment_shouldWork() {
@@ -364,8 +435,8 @@ class UpdateQualiTest extends TestCaseWithBasicData {
         $payload = $this->payload;
         $participantId = $this->course->participants()->pluck('id')->first();
         $userId = $this->course->users()->pluck('id')->first();
-        Quali::find($this->qualiId)->user()->associate($userId);
-        $payload['qualis'][$participantId]['user'] = null;
+        Quali::find($this->qualiId)->users()->attach($userId);
+        $payload['qualis'][$participantId]['users'] = null;
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/qualis/' . $this->qualiDataId, $payload);
@@ -373,6 +444,6 @@ class UpdateQualiTest extends TestCaseWithBasicData {
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/admin/qualis');
-        $this->assertEquals(null, Quali::find($this->qualiId)->user_id);
+        $this->assertEquals(null, Quali::find($this->qualiId)->users()->pluck('id')->join(','));
     }
 }

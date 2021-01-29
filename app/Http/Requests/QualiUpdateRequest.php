@@ -18,14 +18,14 @@ class QualiUpdateRequest extends FormRequest {
             'participants' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
             'requirements' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
             'qualis' => 'nullable|array',
-            'qualis.*.user' => 'nullable|regex:/^\d+$/|existsInCourse:trainers,user_id',
+            'qualis.*.users' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse:trainers,user_id',
         ];
     }
 
     public function attributes() {
         /** @var Collection $participantNames */
         $participantNames = $this->route('course')->participants->mapWithKeys(function ($participant) {
-            return ['qualis.'.$participant->id.'.user' => trans('t.models.quali.trainer_assignment', ['participant' => $participant->scout_name])];
+            return ['qualis.'.$participant->id.'.users' => trans('t.models.quali.trainer_assignment', ['participant' => $participant->scout_name])];
         });
         return array_merge(Lang::get('t.models.quali'), $participantNames->all());
     }
