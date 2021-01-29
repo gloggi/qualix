@@ -14,4 +14,14 @@ class QualiCreateRequest extends QualiUpdateRequest {
             ['quali_contents_template' => 'required|validQualiContentWithoutObservations']
         );
     }
+
+    /**
+     * Handle a passed validation attempt.
+     *
+     * @return void
+     */
+    protected function prepareForValidation() {
+        parent::prepareForValidation();
+        $this->merge(['quali_contents_template' => json_decode($this->get('quali_contents_template'), true)]);
+    }
 }
