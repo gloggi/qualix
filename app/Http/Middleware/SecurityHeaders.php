@@ -68,7 +68,8 @@ class SecurityHeaders {
     }
 
     protected function getCSPStyleSrc() {
-        return "style-src 'self'";
+        $nonce = app('csp-nonce');
+        return "style-src 'self' 'nonce-${nonce}'";
     }
 
     protected function getCSPImgSrc() {

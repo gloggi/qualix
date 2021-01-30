@@ -18,6 +18,7 @@
         name=""
         :value="{{ json_encode($quali->contents) }}"
         :observations="{{ json_encode($observations) }}"
-        :requirements="{{ json_encode($quali->requirements) }}"></quali-editor>
+        :requirements="{{ json_encode($quali->requirements) }}"
+        @content-ready="() => $window.PagedPolyfill.preview()"></quali-editor>
 
 @endsection
