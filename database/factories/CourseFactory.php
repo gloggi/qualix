@@ -1,49 +1,74 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Block;
 use App\Models\Course;
 use App\Models\Observation;
 use App\Models\Participant;
 use App\Models\Requirement;
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Course::class, function (Faker $faker) {
-    return [
-        'name' => $faker->randomElement([
-            'Basiskurs',
-            'Aufbaukurs',
-            'Pano',
-            'Topkurs'
-        ]) . ' ' . $faker->biasedNumberBetween(2018, 2030),
-    ];
-});
+class CourseFactory extends Factory {
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Course::class;
 
-$factory->afterCreating(Course::class, function (Course $course, Faker $faker) {
-    $course->participants()->saveMany(factory(Participant::class, 10)->make());
-    $course->requirements()->saveMany(factory(Requirement::class, 4)->make());
-    $course->blocks()->saveMany(factory(Block::class, 10)->make());
-    $course->users()->saveMany(factory(User::class, 3)->make());
-    $blocks = $course->blocks()->pluck('id')->all();
-    $requirements = $course->requirements()->pluck('id')->all();
-    $participants = $course->participants()->pluck('id')->all();
-    $course->users->each(function(User $user) use($course, $blocks, $faker) {
-        $course->participants->each(function(Participant $participant) use($user, $blocks, $faker) {
-            $participant->observations()->saveMany(factory(Observation::class, $faker->biasedNumberBetween(0, 5))
-                ->make([
-                    'block_id' => $faker->randomElement($blocks),
-                    'user_id' => $user->id,
-                ])
-            );
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition() {
+        return [
+            'name' => $this->faker->randomElement([
+                    'Basiskurs',
+                    'Aufbaukurs',
+                    'Pano',
+                    'Topkurs'
+                ]) . ' ' . $this->faker->biasedNumberBetween(2018, 2030),
+        ];
+    }
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (Course $course) {
+            $course->participants()->saveMany(Participant::factory()->count(10)->make());
+            $course->requirements()->saveMany(Requirement::factory()->count(4)->make());
+            $course->blocks()->saveMany(Block::factory()->count(10)->make());
+            $course->users()->saveMany(User::factory()->count(3)->make());
+            $blocks = $course->blocks()->pluck('id')->all();
+            $requirements = $course->requirements()->pluck('id')->all();
+            $participants = $course->participants()->pluck('id')->all();
+            $course->users->each(function (User $user) use ($course, $blocks) {
+                $course->participants->each(function (Participant $participant) use ($user, $blocks) {
+                    $participant->observations()->saveMany(Observation::factory()
+                        ->count($this->faker->biasedNumberBetween(0, 5))
+                        ->make([
+                            'block_id' => $this->faker->randomElement($blocks),
+                            'user_id' => $user->id,
+                        ])
+                    );
+                });
+            });
+            /** @var \Illuminate\Support\Collection $observations */
+            $observations = $course->observations;
+            $multiParticipantObservations = collect($this->faker->randomElements($observations->all(), floor($observations->count() * 0.2)));
+            $multiParticipantObservations->each(function (Observation $observation) use ($participants) {
+                $observation->participants()->sync($this->faker->randomElements($participants, $this->faker->biasedNumberBetween(2, 4)));
+            });
+            $observations->each(function (Observation $observation) use ($requirements) {
+                $observation->requirements()->attach($this->faker->randomElements($requirements, $this->faker->biasedNumberBetween(0, 3)));
+            });
         });
-    });
-    /** @var \Illuminate\Support\Collection $observations */
-    $observations = $course->observations;
-    $multiParticipantObservations = collect($faker->randomElements($observations->all(), floor($observations->count() * 0.2)));
-    $multiParticipantObservations->each(function(Observation $observation) use($participants, $faker) {
-        $observation->participants()->sync($faker->randomElements($participants, $faker->biasedNumberBetween(2, 4)));
-    });
-    $observations->each(function(Observation $observation) use($requirements, $faker) {
-        $observation->requirements()->attach($faker->randomElements($requirements, $faker->biasedNumberBetween(0, 3)));
-    });
-});
+    }
+}

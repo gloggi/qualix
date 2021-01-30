@@ -79,7 +79,7 @@ describe('register page', () => {
     })
 
     it('validates existing email when registering', () => {
-      cy.create('App\\Models\\User', {name: 'Test Account'}).then(user => {
+      cy.create('App\\Models\\User', 1, {name: 'Test Account'}).then(user => {
         cy.get('#name').type('Bari')
         cy.get('#email').type(user.email)
         cy.get('#password').type('password')

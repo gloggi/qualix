@@ -5,20 +5,18 @@ namespace Tests\Feature\ErrorReports;
 use App\Http\Requests\UserRequest;
 use Illuminate\Validation\ValidationException;
 use Mockery;
+use Sentry\SentrySdk;
 use Tests\TestCase;
 
 class SentryTest extends TestCase {
 
-    public function setUp(): void {
-        parent::setUp();
-        // Turn off debug mode just in this test, because in debug mode Sentry isn't called (not even our mock)
-        $_ENV['APP_DEBUG'] = false;
-    }
-
     public function test_shouldReportErrorToSentry_andDisplayErrorForm_when500ErrorOccurs() {
         // given
         $sentryMock = Mockery::mock(app('sentry'));
-        $sentryMock->shouldReceive('captureException')->once();
+        // Stupid fix because mockery ->passthru() doesn't work here for some reason
+        $sentryMock->shouldReceive('captureException')->once()->andReturnUsing(function(...$args) {
+            SentrySdk::getCurrentHub()->captureException(...$args);
+        });
         $this->instance('sentry', $sentryMock);
 
         // Force an exception

@@ -21,10 +21,9 @@ class CypressController extends LaravelCypressController {
         Artisan::call("snapshot:cleanup --keep=0");
     }
 
-    public function generate(Request $request)
-    {
-        return factory($request->input('model'))
-            ->times($request->input('times'))
+    public function generate(Request $request) {
+        return $request->input('model')::factory()
+            ->count($request->input('times'))
             ->make($request->input('attributes'));
     }
 

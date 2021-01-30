@@ -115,6 +115,7 @@ return array(
 		"numeric" => ":attribute muss mindestens :min sein.",
 		"string" => ":attribute muss mindestens :min Zeichen lang sein.",
 	),
+	'multiple_of' => ':attribute muss ein Vielfaches von :value sein.',
 	"not_in" => "Der gewählte Wert für :attribute ist ungültig.",
 	"not_regex" => ":attribute hat ein ungültiges Format.",
 	"numeric" => ":attribute muss eine Zahl sein.",

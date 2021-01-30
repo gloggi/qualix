@@ -71,7 +71,7 @@ class HitobitoOAuthTest extends TestCase {
         $email = 'cosinus@hitobito.com';
         $hitobitoId = 123;
         $name = 'Cosinus';
-        $existingUser = factory(HitobitoUser::class)->create(['hitobito_id' => $hitobitoId, 'name' => $name, 'email' => $email]);
+        $existingUser = HitobitoUser::factory()->create(['hitobito_id' => $hitobitoId, 'name' => $name, 'email' => $email]);
         $this->mockHitobitoResponses($hitobitoId, $email, 'Cosinuss');
         $this->withSession(['url.intended' => '/some/redirect']);
 
@@ -93,7 +93,7 @@ class HitobitoOAuthTest extends TestCase {
         $email = 'cosinus@hitobito.com';
         $newEmail = 'changed@hitobito.com';
         $hitobitoId = 123;
-        $existingUser = factory(HitobitoUser::class)->create(['hitobito_id' => $hitobitoId, 'name' => 'Cosinus', 'email' => $email]);
+        $existingUser = HitobitoUser::factory()->create(['hitobito_id' => $hitobitoId, 'name' => 'Cosinus', 'email' => $email]);
         $this->mockHitobitoResponses($hitobitoId, $newEmail, 'Cosinuss');
         $this->withSession(['url.intended' => '/some/redirect']);
 
@@ -114,8 +114,8 @@ class HitobitoOAuthTest extends TestCase {
         $oldEmail = 'cosinus@hitobito.com';
         $newEmail = 'changed@hitobito.com';
         $hitobitoId = 123;
-        $existingUser = factory(HitobitoUser::class)->create(['hitobito_id' => $hitobitoId, 'name' => 'Cosinus', 'email' => $oldEmail]);
-        $otherUser = factory(NativeUser::class)->create(['email' => $newEmail, 'name' => 'Bari']);
+        $existingUser = HitobitoUser::factory()->create(['hitobito_id' => $hitobitoId, 'name' => 'Cosinus', 'email' => $oldEmail]);
+        $otherUser = NativeUser::factory()->create(['email' => $newEmail, 'name' => 'Bari']);
         $this->mockHitobitoResponses($hitobitoId, $newEmail, 'Cosinuss');
         $this->withSession(['url.intended' => '/some/redirect']);
 
@@ -160,7 +160,7 @@ class HitobitoOAuthTest extends TestCase {
     public function test_registerOrLoginWithMiData_shouldFail_whenEmailBelongsToNativeUser() {
         // given
         $email = 'cosinus@qualix.flamberg.ch';
-        factory(NativeUser::class)->create(['name' => 'Cosinus', 'email' => $email]);
+        NativeUser::factory()->create(['name' => 'Cosinus', 'email' => $email]);
         $this->mockHitobitoResponses(123, $email, 'Cosinus');
         $this->withSession(['url.intended' => '/some/redirect']);
 
@@ -176,7 +176,7 @@ class HitobitoOAuthTest extends TestCase {
     public function test_nativeLogin_shouldFail_whenEmailBelongsToHitobitoUser() {
         // given
         $email = 'cosinus@hitobito.com';
-        factory(HitobitoUser::class)->create(['name' => 'Cosinus', 'email' => $email]);
+        HitobitoUser::factory()->create(['name' => 'Cosinus', 'email' => $email]);
         $this->get('/login');
 
         // when
@@ -190,7 +190,7 @@ class HitobitoOAuthTest extends TestCase {
     public function test_passwordReset_shouldFail_whenEmailBelongsToHitobitoUser() {
         // given
         $email = 'cosinus@hitobito.com';
-        factory(HitobitoUser::class)->create(['name' => 'Cosinus', 'email' => $email]);
+        HitobitoUser::factory()->create(['name' => 'Cosinus', 'email' => $email]);
         $this->get('/password/reset');
 
         // when

@@ -39,7 +39,7 @@ class UpdateCourseTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $this->assertRegExp("%<b-form-select-option value=\"[^\"]*\">{$this->payload['name']}</b-form-select-option>%", $response->content());
+        $this->assertMatchesRegularExpression("%<b-form-select-option value=\"[^\"]*\">{$this->payload['name']}</b-form-select-option>%", $response->content());
     }
 
     public function test_shouldValidateNewCourseData_noName() {

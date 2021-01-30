@@ -76,7 +76,7 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
     }
 
     public function test_shouldRestoreSubmittedFormData_whenLoggingInViaHitobito() {
-        $otherUser = factory(HitobitoUser::class)->create(['hitobito_id' => 123, 'name' => 'Cosinus', 'email' => 'cosinus@hitobito.com']);
+        $otherUser = HitobitoUser::factory()->create(['hitobito_id' => 123, 'name' => 'Cosinus', 'email' => 'cosinus@hitobito.com']);
         HitobitoOAuthTest::mockHitobitoResponses(123, 'cosinus@hitobito.com', 'Cosinus');
         $otherUser->courses()->attach($this->courseId);
 
