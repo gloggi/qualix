@@ -50,7 +50,6 @@ export default {
     showClear: { type: Boolean, default: false },
     placeholder: { type: String, default: '' },
     autofocus: { type: Boolean, default: false },
-    id: { type: String, required: false },
   },
   data() {
     return {
