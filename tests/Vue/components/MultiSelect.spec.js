@@ -9,10 +9,7 @@ describe('autofocus', () => {
         options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         autofocus: true,
       },
-      mocks: {
-        '$t': () => {
-        }
-      }
+      mocks: { '$t': () => {} }
     })
 
     await waitFor(() => {
@@ -26,10 +23,7 @@ describe('autofocus', () => {
       props: {
         options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
       },
-      mocks: {
-        '$t': () => {
-        }
-      }
+      mocks: { '$t': () => {} }
     })
 
     // The select options should never become visible
@@ -79,6 +73,31 @@ it('should display the placeholder initially', async () => {
   expect(multiSelect.container).toHaveVisibleTextContent('Select one')
 })
 
+it('should display the initial value', async () => {
+  const multiSelect = render(MultiSelect, {
+    props: {
+      options: [{ id: 1, label: 'Foo'}, { id: 2, label: 'Bar' }],
+      value: '2'
+    },
+    mocks: { '$t': () => {} }
+  })
+
+  expect(multiSelect.container).toHaveVisibleTextContent('Bar')
+})
+
+it('should prefer to display the initial value over the placeholder', async () => {
+  const multiSelect = render(MultiSelect, {
+    props: {
+      options: [{ id: 1, label: 'Foo'}, { id: 2, label: 'Bar' }],
+      placeholder: 'Select one',
+      value: '2'
+    },
+    mocks: { '$t': () => {} }
+  })
+
+  expect(multiSelect.container).toHaveVisibleTextContent('Bar')
+})
+
 it('should display the selected option', async () => {
   const multiSelect = render(MultiSelect, {
     props: {
@@ -110,10 +129,7 @@ describe('with name prop', () => {
         options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         name: 'my-input',
       },
-      mocks: {
-        '$t': () => {
-        }
-      }
+      mocks: { '$t': () => {} }
     })
 
     expect(multiSelect.container).not.toHaveVisibleTextContent()
@@ -126,10 +142,7 @@ describe('with name prop', () => {
         options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         name: 'my-input',
       },
-      mocks: {
-        '$t': () => {
-        }
-      }
+      mocks: { '$t': () => {} }
     })
 
     userEvent.click(screen.getByRole('combobox'))

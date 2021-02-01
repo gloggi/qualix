@@ -1,5 +1,4 @@
-import {checkHtmlElement, getMessage, matches, normalize, compareArraysAsSet} from '@testing-library/jest-dom/dist/utils'
-import isEqualWith from 'lodash/isEqualWith'
+import {checkHtmlElement, getMessage, matches, normalize} from '@testing-library/jest-dom/dist/utils'
 
 function isStyleVisible(element) {
   const {getComputedStyle} = element.ownerDocument.defaultView
