@@ -1,7 +1,7 @@
 import { render } from '@testing-library/vue'
 import TableObservationOverview from "../../../resources/js/components/TableObservationOverview"
 
-test('should display the correct color classes', () => {
+it('should display the correct color classes', () => {
   const table = render(TableObservationOverview, {
     props: {
       users: [{ id: 1, name: 'Bari' }, { id: 2, name: 'Lindo' }, { id: 3, name: 'Cosinus' },
