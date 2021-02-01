@@ -14,7 +14,7 @@
       :show-labels="false"
       :placeholder="placeholder"
       :no-options="$t('t.global.no_options')"
-      :data-testid="dataTestid">
+      role="combobox">
 
       <template slot="clear">
         <div v-if="showClearButton" @mousedown.prevent.stop="clear" class="multiselect__clear"></div>
@@ -51,7 +51,6 @@ export default {
     placeholder: { type: String, default: '' },
     autofocus: { type: Boolean, default: false },
     id: { type: String, required: false },
-    dataTestid: { type: String, required: false },
   },
   data() {
     return {

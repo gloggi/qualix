@@ -44,12 +44,11 @@ it('should open when clicked', async () => {
   const multiSelect = render(MultiSelect, {
     props: {
       options: [{ id: 1, label: 'Foo'}, { id: 2, label: 'Bar' }],
-      'data-testid': 'multiselect-under-test',
     },
     mocks: { '$t': () => {} }
   })
 
-  userEvent.click(screen.getByTestId('multiselect-under-test'))
+  userEvent.click(screen.getByRole('combobox'))
 
   await waitFor(() => {
     expect(screen.getByText('Foo')).toBeVisible()
@@ -84,12 +83,11 @@ it('should display the selected option', async () => {
   const multiSelect = render(MultiSelect, {
     props: {
       options: [{ id: 1, label: 'Foo'}, { id: 2, label: 'Bar' }],
-      'data-testid': 'multiselect-under-test',
     },
     mocks: { '$t': () => {} }
   })
 
-  userEvent.click(screen.getByTestId('multiselect-under-test'))
+  userEvent.click(screen.getByRole('combobox'))
 
   await waitFor(() => {
     expect(screen.getByText('Foo')).toBeVisible()
@@ -127,7 +125,6 @@ describe('with name prop', () => {
       props: {
         options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         name: 'my-input',
-        'data-testid': 'multiselect-under-test',
       },
       mocks: {
         '$t': () => {
@@ -135,7 +132,7 @@ describe('with name prop', () => {
       }
     })
 
-    userEvent.click(screen.getByTestId('multiselect-under-test'))
+    userEvent.click(screen.getByRole('combobox'))
 
     await waitFor(() => {
       expect(screen.getByText('Foo')).toBeVisible()
