@@ -47,7 +47,8 @@ export default {
     groups: { type: Object, default: () => ({}) },
     submitOnInput: { type: String, required: false },
     showClear: { type: Boolean, default: false },
-    placeholder: { type: String, default: '' }
+    placeholder: { type: String, default: '' },
+    autofocus: { type: Boolean, default: false }
   },
   data() {
     return {
@@ -124,6 +125,10 @@ export default {
   },
   mounted () {
     this.$emit('input', this.formValue, this.$attrs['id'])
+
+    if (this.autofocus) {
+      this.$refs.multiselect.activate()
+    }
   }
 }
 </script>
