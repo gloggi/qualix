@@ -1,5 +1,8 @@
 # Changelog
 
+##### Februar 2021
+- Neu kann ein Quali eines TN mehreren Equipenmitgliedern zugewiesen werden [#178](https://github.com/gloggi/qualix/pull/178)
+
 ##### Januar 2021
 - Grenzwerte für die roten und grünen Markierungen sind jetzt pro Kurs einstellbar [#173](https://github.com/gloggi/qualix/pull/173)
 

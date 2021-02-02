@@ -27,10 +27,12 @@
         <b-button variant="link" class="px-0 mr-2" v-b-toggle.collapse-quali-notes-template @click="focusQualiNotesTemplate">
           {{ $t('t.models.quali.quali_contents_template') }} <i class="fas fa-caret-down"></i>
         </b-button>
-        <help-text id="qualiNotesTemplateHelp" trans="t.views.admin.qualis.quali_contents_template_description"></help-text>
       </row-text>
 
       <b-collapse id="collapse-quali-notes-template" v-model="qualiNotesTemplateVisible">
+        <row-text>
+          <help-text id="qualiNotesTemplateHelp" trans="t.views.admin.qualis.quali_contents_template_description"></help-text>
+        </row-text>
         <input-quali-editor
           ref="qualiNotesTemplate"
           name="quali_contents_template"
@@ -52,11 +54,12 @@
         v-for="assignment in trainerAssignments"
         :key="assignment.participantId"
         v-if="displayTrainerAssignment(assignment.participantId)"
-        :name="`qualis[${assignment.participantId}][user]`"
-        v-model="assignment.trainerId"
+        :name="`qualis[${assignment.participantId}][users]`"
+        v-model="assignment.trainerIds"
         :label="scoutName(assignment.participantId)"
         :options="trainers"
         display-field="name"
+        multiple
         :show-clear="true"></input-multi-select>
     </b-collapse>
 
@@ -90,7 +93,7 @@ export default {
         .sort((a, b) => a.scout_name.localeCompare(b.scout_name))
         .map(p => {
           const quali = this.qualis ? this.qualis.find(q => q.participant.id === p.id) : undefined
-          return { participantId: p.id, trainerId: '' + (quali && quali.user ? quali.user.id : null) }
+          return { participantId: p.id, trainerIds: '' + (quali && quali.users ? quali.users.map(u => u.id).join(',') : '') }
         }),
       qualiNotesTemplateVisible: false,
     }

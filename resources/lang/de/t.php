@@ -120,7 +120,7 @@ return array(
 			"requirement_progress" => "Anforderungen",
 			"requirements" => "Relevante Anforderungen",
 			"trainer_assignment" => "Zuständig für :participant",
-			"user" => "Zuständig",
+			"users" => "Zuständig",
 		),
 		"requirement" => array(
 			"blocks" => "Blöcke",

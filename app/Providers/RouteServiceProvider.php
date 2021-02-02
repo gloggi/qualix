@@ -79,7 +79,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->with('qualis')
                 ->with('qualis.participant')
                 ->with('qualis.requirements')
-                ->with('qualis.user')
+                ->with('qualis.users')
                 ->findOrFail($id);
         });
         Route::bind('quali', function($id, \Illuminate\Routing\Route $route) {
