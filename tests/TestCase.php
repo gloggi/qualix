@@ -149,7 +149,7 @@ abstract class TestCase extends BaseTestCase {
         return $this;
     }
 
-    protected function user(): User {
+    protected function user(): ?User {
         /** @var User $user */
         $user = Auth::user();
         if ($user) {
@@ -171,7 +171,7 @@ abstract class TestCase extends BaseTestCase {
      * @return User
      */
     protected function createUser($attrs = [], $actAsNewUser = false) {
-        $user = factory(NativeUser::class)->create($attrs);
+        $user = NativeUser::factory()->create($attrs);
         if ($actAsNewUser) {
             $this->be($user);
         }

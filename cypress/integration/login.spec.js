@@ -49,7 +49,7 @@ describe('login page', () => {
     useDatabaseResets();
 
     it('logs in successfully', () => {
-      cy.create('App\\Models\\User', {name: 'Test Account'}).then(user => {
+      cy.create('App\\Models\\User', 1, {name: 'Test Account'}).then(user => {
         cy.get('#email')
           .type(user.email)
         cy.get('#password')

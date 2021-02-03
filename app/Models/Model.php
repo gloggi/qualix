@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use LaravelFillableRelations\Eloquent\Concerns\HasFillableRelations;
@@ -12,6 +13,7 @@ use LaravelFillableRelations\Eloquent\Concerns\HasFillableRelations;
  */
 abstract class Model extends BaseModel {
     use HasFillableRelations;
+    use HasFactory;
 
     protected $fillable_relations = [];
 

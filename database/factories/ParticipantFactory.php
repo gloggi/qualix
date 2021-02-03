@@ -1,11 +1,27 @@
 <?php
 
-use App\Models\Participant;
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(Participant::class, function (Faker $faker) {
-    return [
-        'scout_name' => ucfirst($faker->unique()->word),
-        'group' => $faker->parse('{{lastName}} {{city}}'),
-    ];
-});
+use App\Models\Participant;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class ParticipantFactory extends Factory {
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Participant::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition() {
+        return [
+            'scout_name' => ucfirst($this->faker->unique()->word),
+            'group' => $this->faker->parse('{{lastName}} {{city}}'),
+        ];
+    }
+}

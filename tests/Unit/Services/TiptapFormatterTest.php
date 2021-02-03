@@ -467,7 +467,7 @@ class TiptapFormatterTest extends TestCase {
      */
     protected function createQuali() {
         /** @var Course $course */
-        $course = factory(Course::class)->create();
+        $course = Course::factory()->create();
         /** @var QualiData $qualiData */
         $qualiData = $course->quali_datas()->create(['name' => 'Testquali']);
         /** @var Quali $quali */

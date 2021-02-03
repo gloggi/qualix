@@ -53,7 +53,7 @@ class E2EScenario extends Command
         }
 
         /** @var Course $course */
-        $course = factory(Course::class)->create();
+        $course = Course::factory()->create();
 
         $course->users()->attach($userId);
 
