@@ -13,7 +13,8 @@
       :close-on-select="true"
       :show-labels="false"
       :placeholder="placeholder"
-      :no-options="$t('t.global.no_options')">
+      :no-options="$t('t.global.no_options')"
+      role="combobox">
 
       <template slot="clear">
         <div v-if="showClearButton" @mousedown.prevent.stop="clear" class="multiselect__clear"></div>
@@ -23,7 +24,7 @@
       </template>
 
     </vue-multiselect>
-    <input v-if="name" type="hidden" :name="name" :value="formValue">
+    <input v-if="name" type="hidden" :name="name" :value="formValue" data-testid="formValue">
   </span>
 </template>
 
@@ -48,7 +49,7 @@ export default {
     submitOnInput: { type: String, required: false },
     showClear: { type: Boolean, default: false },
     placeholder: { type: String, default: '' },
-    autofocus: { type: Boolean, default: false }
+    autofocus: { type: Boolean, default: false },
   },
   data() {
     return {
