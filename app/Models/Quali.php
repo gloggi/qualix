@@ -16,7 +16,6 @@ use Illuminate\Support\Collection;
  * @property Requirement[] $requirements
  * @property ParticipantObservation[] $participant_observations
  * @property QualiContentNode[] $contentNodes
- * @property int $highest_order_number
  * @property Collection $contents
  */
 class Quali extends Model {

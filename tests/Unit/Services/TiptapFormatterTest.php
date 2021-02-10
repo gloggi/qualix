@@ -481,12 +481,13 @@ class TiptapFormatterTest extends TestCase {
                     ->maybeMultiParticipant()
                 )
             )
+            ->has(QualiData::factory()
+                ->has(Quali::factory()
+                    ->forParticipants()
+                ), 'quali_datas'
+            )
             ->create();
-        /** @var QualiData $qualiData */
-        $qualiData = $course->quali_datas()->create(['name' => 'Testquali']);
-        /** @var Quali $quali */
-        $quali = $qualiData->qualis()->create(['participant_id' => $course->participants()->first()->id]);
-        return $quali;
+        return $course->qualis()->first();
     }
 
     /**
