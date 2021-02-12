@@ -11,7 +11,7 @@
 
 <script>
 import {sortBy, isEqual, cloneDeep} from 'lodash'
-import {Editor, EditorContent, EditorFloatingMenu} from 'tiptap'
+import {Editor, EditorContent, EditorFloatingMenu, TextSelection} from 'tiptap'
 import {History, Heading} from 'tiptap-extensions'
 import Observation from './tiptap-extensions/observation/NodeObservation'
 import Requirement from './tiptap-extensions/requirement/NodeRequirement'
@@ -92,9 +92,19 @@ export default {
             // add new requirements with paragraph after them
             .concat(missingIds.flatMap(id => [{ type: 'requirement', attrs: { id: id, passed: null } }, this.getEmptyParagraph()]))
         }
-        this.editor.setContent(this.currentValue)
+        this.setEditorContent(this.currentValue)
         this.$emit('input', this.currentValue)
       }
+    },
+    setEditorContent(content = {}) {
+      const {
+        doc,
+        tr
+      } = this.editor.state;
+      const document = this.editor.createDocument(content);
+      const selection = TextSelection.create(doc, 0, doc.content.size);
+      const transaction = tr.setSelection(selection).replaceSelectionWith(document, false).setMeta('allowChangingRequirements', true);
+      this.editor.view.dispatch(transaction);
     },
     focus() {
       this.editor.focus(0)
