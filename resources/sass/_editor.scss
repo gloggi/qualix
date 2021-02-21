@@ -62,10 +62,6 @@
         cursor: move;
         white-space: pre-wrap;
 
-        p {
-            user-select: none;
-        }
-
         &:hover {
             background-color: $gray-200;
         }
@@ -99,10 +95,6 @@
 
         &.selected {
             outline: 1px dashed $gray-500;
-        }
-
-        h5 {
-            user-select: none;
         }
 
         .requirement-menu {
