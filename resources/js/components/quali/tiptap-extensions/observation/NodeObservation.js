@@ -1,4 +1,4 @@
-import {Node} from 'tiptap'
+import {Node, TextSelection} from 'tiptap'
 import ElementObservation from "./ElementObservation"
 
 export default class NodeObservation extends Node {
@@ -38,12 +38,17 @@ export default class NodeObservation extends Node {
 
   commands({ type }) {
     return attrs => (state, dispatch) => {
-      const { selection } = state;
-      const position = selection.$cursor ? selection.$cursor.pos : selection.$to.pos;
       const node = type.create(attrs);
       node.attrs.id = attrs.id
-      const transaction = state.tr.insert(position, node);
-      dispatch(transaction);
+
+      const insertion = state.tr.replaceSelectionWith(node);
+
+      const previousCursorPosition = state.selection.$cursor ? state.selection.$cursor.pos : state.selection.$head.pos;
+      const cursorPosition = insertion.mapping.map(previousCursorPosition);
+      const newSelection = TextSelection.create(insertion.doc, cursorPosition, cursorPosition);
+      const insertionWithCursorPosition = insertion.setSelection(newSelection);
+
+      dispatch(insertionWithCursorPosition);
     };
   }
 

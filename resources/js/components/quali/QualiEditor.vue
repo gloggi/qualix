@@ -1,10 +1,10 @@
 <template>
   <div class="editor" :class="{ 'focus': focused }">
     <editor-floating-menu v-if="!readonly" :editor="editor" v-slot="{ commands, menu }">
-      <floating-menu :observations="observations" :commands="commands" :menu="menu" @addObservation="addObservation = commands.observation"/>
+      <floating-menu :observations="observations" :commands="commands" :menu="menu" @addObservation="showObservationSelectionModal"/>
     </editor-floating-menu>
     <editor-content class="editor-content" :class="{ readonly }" :editor="editor" />
-    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation"></modal-add-observation>
+    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation" :return-focus="{ $el: { focus: () => editor.focus() } }"></modal-add-observation>
     <input-hidden v-if="name" :value="formValue" :name="name"></input-hidden>
   </div>
 </template>
@@ -71,7 +71,7 @@ export default {
     }
   },
   methods: {
-    addObservationFromEditor() {
+    showObservationSelectionModal() {
       this.addObservation = this.editor.commands.observation
     },
     isRequirementWithIdNotIn(node, requirementIds) {
@@ -121,7 +121,7 @@ export default {
       requirements: this.requirements,
       categories: this.categories,
       courseId: this.courseId,
-      addObservation: this.addObservationFromEditor
+      showObservationSelectionModal: this.showObservationSelectionModal
     }
   },
   mounted() {
