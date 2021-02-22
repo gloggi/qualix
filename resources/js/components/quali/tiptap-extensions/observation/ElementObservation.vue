@@ -1,6 +1,6 @@
 <template>
-  <div class="observation px-3 pb-1 mb-2">
-    <div class="py-1 d-flex" :class="selected ? 'selected' : ''">
+  <div class="observation px-3 pb-1 mb-2" :class="selected ? 'selected' : ''">
+    <div class="py-1 d-flex">
       <blockquote class="flex-grow-1 mb-0">
         <observation-content :observation="observation"></observation-content>
       </blockquote>
