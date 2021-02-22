@@ -4,7 +4,7 @@
       <floating-menu :observations="observations" :commands="commands" :menu="menu" @addObservation="showObservationSelectionModal"/>
     </editor-floating-menu>
     <editor-content class="editor-content" :class="{ readonly }" :editor="editor" />
-    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation" :return-focus="{ $el: { focus: () => editor.focus() } }"></modal-add-observation>
+    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation" :return-focus="{ $el: { focus: () => focus(editor.state.selection.$head.pos) } }"></modal-add-observation>
     <input-hidden v-if="name" :value="formValue" :name="name"></input-hidden>
   </div>
 </template>
@@ -13,7 +13,7 @@
 import {sortBy, isEqual, cloneDeep} from 'lodash'
 import {Editor, EditorContent, EditorFloatingMenu, TextSelection} from 'tiptap'
 import {History, Heading} from 'tiptap-extensions'
-import {gapCursor} from 'prosemirror-gapcursor'
+import {GapCursor, gapCursor} from 'prosemirror-gapcursor'
 import Observation from './tiptap-extensions/observation/NodeObservation'
 import Requirement from './tiptap-extensions/requirement/NodeRequirement'
 import InputHidden from "../form/InputHidden"
@@ -59,6 +59,16 @@ export default {
     })
 
     const gapCursorPlugin = gapCursor()
+    // Patch the handleClick function so we can call it ourselves when autofocusing
+    gapCursorPlugin.props.handleClick = (view, pos, event) => {
+      if (!view.editable) return false
+      let $pos = view.state.doc.resolve(pos)
+      if (!GapCursor.valid($pos)) return false
+      const calculatedPos = view.posAtCoords({left: event.clientX, top: event.clientY})
+      if (calculatedPos && calculatedPos.inside > -1 && NodeSelection.isSelectable(view.state.doc.nodeAt(calculatedPos.inside))) return false
+      view.dispatch(view.state.tr.setSelection(new GapCursor($pos)))
+      return true
+    }
     editor.registerPlugin(gapCursorPlugin)
 
     return {
@@ -123,7 +133,7 @@ export default {
 
       // Activate the gapCursor if appropriate
       const coords = view.coordsAtPos(pos)
-      this.gapCursor.props.handleClick(this.editor.view, position, { clientX: coords.left, clientY: coords.top })
+      this.gapCursor.props.handleClick(this.editor.view, pos, { clientX: -10000, clientY: -10000 })
     },
   },
   watch: {
