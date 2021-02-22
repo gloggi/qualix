@@ -36,7 +36,6 @@ export default {
     const editor = new Editor({
       content: this.value ?? null,
       editable: !this.readonly,
-      autoFocus: this.autofocus,
       injectCSS: false,
       extensions: [
         new History(),
@@ -53,7 +52,7 @@ export default {
       onUpdate: ({ getJSON }) => {
         this.currentValue = getJSON()
         this.$emit('input', this.currentValue)
-      }
+      },
     })
     return {
       editor: editor,
@@ -106,8 +105,15 @@ export default {
       const transaction = tr.setSelection(selection).replaceSelectionWith(document, false).setMeta('allowChangingRequirements', true);
       this.editor.view.dispatch(transaction);
     },
-    focus() {
-      this.editor.focus(0)
+    focus(position = 0) {
+      const { view } = this.editor, { state } = view
+      const selection = TextSelection.near(state.doc.resolve(position))
+
+      // If the node at that position is not text, avoid selecting it
+      if (!(selection instanceof TextSelection)) return this.editor.focus(position)
+
+      view.dispatch(state.tr.setSelection(selection))
+      this.editor.focus()
     },
   },
   watch: {
@@ -129,6 +135,10 @@ export default {
 
     // Necessary in case we have oldInput that the outside world doesn't know about
     if (this.currentValue !== this.value) this.$emit('input', this.currentValue)
+
+    if (this.autofocus) {
+      this.focus()
+    }
 
     // Two ticks after mounted, the HTML is rendered correctly
     this.$nextTick(() => {
