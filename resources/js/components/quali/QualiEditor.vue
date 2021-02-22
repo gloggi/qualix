@@ -13,6 +13,7 @@
 import {sortBy, isEqual, cloneDeep} from 'lodash'
 import {Editor, EditorContent, EditorFloatingMenu, TextSelection} from 'tiptap'
 import {History, Heading} from 'tiptap-extensions'
+import {gapCursor} from 'prosemirror-gapcursor'
 import Observation from './tiptap-extensions/observation/NodeObservation'
 import Requirement from './tiptap-extensions/requirement/NodeRequirement'
 import InputHidden from "../form/InputHidden"
@@ -37,6 +38,8 @@ export default {
       content: this.value ?? null,
       editable: !this.readonly,
       injectCSS: false,
+      // We manually add gapCursor, in order to customize it
+      enableGapCursor: false,
       extensions: [
         new History(),
         new Heading({ levels: [ 3, 5, 6 ] }),
@@ -54,11 +57,16 @@ export default {
         this.$emit('input', this.currentValue)
       },
     })
+
+    const gapCursorPlugin = gapCursor()
+    editor.registerPlugin(gapCursorPlugin)
+
     return {
       editor: editor,
       currentValue: this.value ?? editor.options.emptyDocument,
       focused: false,
       addObservation: null,
+      gapCursor: gapCursorPlugin,
     }
   },
   computed: {
@@ -110,10 +118,12 @@ export default {
       const selection = TextSelection.near(state.doc.resolve(position))
 
       // If the node at that position is not text, avoid selecting it
-      if (!(selection instanceof TextSelection)) return this.editor.focus(position)
+      const pos = (selection instanceof TextSelection) ? selection.$anchor.pos : position
+      this.editor.focus(pos)
 
-      view.dispatch(state.tr.setSelection(selection))
-      this.editor.focus()
+      // Activate the gapCursor if appropriate
+      const coords = view.coordsAtPos(pos)
+      this.gapCursor.props.handleClick(this.editor.view, position, { clientX: coords.left, clientY: coords.top })
     },
   },
   watch: {
