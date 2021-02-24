@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ObservationRequest;
+use App\Models\Block;
 use App\Models\Course;
 use App\Models\Observation;
 use App\Util\HtmlString;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,9 +26,18 @@ class ObservationController extends Controller {
      * @param Request $request
      * @return Response
      */
-    public function create(Request $request) {
+    public function create(Request $request, Course $course) {
         $this->rememberPreviouslyActiveView($request);
-        return view('observation.new', ['participants' => $request->input('participant'), 'block' => $request->input('block')]);
+        return view('observation.new', [
+            'participants' => $request->input('participant'),
+            'block' => $request->input('block'),
+            'blocks' => $this->prioritize($course->blocks, function(Block $block) { return $block->block_date->gt(Carbon::now()->subDays(2)); })
+        ]);
+    }
+
+    private function prioritize(Collection $collection, callable $callable): Collection {
+        $nonPrioritized = $collection->reject($callable);
+        return $collection->filter($callable)->union($nonPrioritized)->values();
     }
 
     /**

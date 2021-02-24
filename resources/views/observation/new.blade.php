@@ -37,7 +37,7 @@
                     value="{{ $block }}"
                     label="{{__('t.models.observation.block')}}"
                     required
-                    :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number', 'requirement_ids')) }}"
+                    :options="{{ json_encode($blocks->map->only('id', 'blockname_and_number', 'requirement_ids')) }}"
                     display-field="blockname_and_number"
                     @input="onBlockUpdate"></input-multi-select>
 
