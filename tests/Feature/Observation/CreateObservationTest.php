@@ -220,19 +220,29 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertEquals('Beobachtung darf maximal 1023 Zeichen haben.', $exception->validator->errors()->first('content'));
     }
 
-    public function test_shouldValidateNewObservationData_noImpression() {
+    public function test_shouldValidateNewObservationData_noImpression_shouldSetImpressionToNeutral() {
         // given
+        $this->createObservation('test observation to check impression', 2);
+        $previousObservation = Course::find($this->courseId)->observations()->latest()->first();
+        $this->assertEquals('test observation to check impression', $previousObservation->content);
+        $this->assertEquals(2, $previousObservation->impression);
         $payload = $this->payload;
         unset($payload['impression']);
+        $payload['content'] = 'test_shouldValidateNewObservationData_noImpression_shouldSetImpressionToNeutral';
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
-        $this->assertInstanceOf(ValidationException::class, $response->exception);
-        /** @var ValidationException $exception */
-        $exception = $response->exception;
-        $this->assertEquals('Eindruck muss ausgefüllt sein.', $exception->validator->errors()->first('impression'));
+        $response->assertStatus(302);
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertStatus(200);
+        $this->assertNull($response->exception);
+        $createdObservation = Course::find($this->courseId)->observations()
+            ->where('content', 'test_shouldValidateNewObservationData_noImpression_shouldSetImpressionToNeutral')
+            ->latest()->first();
+        $this->assertEquals(1, $createdObservation->impression);
     }
 
     public function test_shouldValidateNewObservationData_invalidImpression() {

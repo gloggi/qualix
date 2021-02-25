@@ -207,19 +207,22 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertEquals('Beobachtung darf maximal 1023 Zeichen haben.', $exception->validator->errors()->first('content'));
     }
 
-    public function test_shouldValidateNewObservationData_noImpression() {
+    public function test_shouldValidateNewObservationData_noImpression_shouldLeavePreviousImpression() {
         // given
         $payload = $this->payload;
         unset($payload['impression']);
+        Observation::find($this->observationId)->update(['impression' => 2]);
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
 
         // then
-        $this->assertInstanceOf(ValidationException::class, $response->exception);
-        /** @var ValidationException $exception */
-        $exception = $response->exception;
-        $this->assertEquals('Eindruck muss ausgefüllt sein.', $exception->validator->errors()->first('impression'));
+        $response->assertStatus(302);
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertStatus(200);
+        $this->assertNull($response->exception);
+        $this->assertEquals(2, Observation::find($this->observationId)->toArray()['impression']);
     }
 
     public function test_shouldValidateNewObservationData_invalidImpression() {
