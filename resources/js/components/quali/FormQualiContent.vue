@@ -17,7 +17,10 @@
       v-model="json"
       :observations="observations"
       :requirements="requirements"
-      :categories="categories"></input-quali-editor-large>
+      :categories="categories"
+      :show-requirements="showRequirements"
+      :show-categories="showCategories"
+      :show-impression="showImpression"></input-quali-editor-large>
   </form-basic>
 </template>
 
@@ -36,6 +39,9 @@ export default {
     observations: { type: Array, default: () => [] },
     requirements: { type: Array, default: () => [] },
     categories: { type: Array, default: () => [] },
+    showRequirements: { type: Boolean, default: false },
+    showCategories: { type: Boolean, default: false },
+    showImpression: { type: Boolean, default: false },
   },
   data() {
     return {

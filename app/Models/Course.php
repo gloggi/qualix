@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\DB;
  * @property string $course_number
  * @property int $observation_count_red_threshold
  * @property int $observation_count_green_threshold
+ * @property boolean $uses_impressions
+ * @property boolean $uses_requirements
+ * @property boolean $uses_categories
  * @property Block[] $blocks
  * @property Invitation[] $invitations
  * @property User[] $users
@@ -27,9 +30,8 @@ class Course extends Model {
     /**
      * @var array
      */
-    protected $fillable = ['name', 'course_number', 'archived', 'observation_count_red_threshold', 'observation_count_green_threshold'];
+    protected $fillable = ['name', 'course_number', 'archived', 'observation_count_red_threshold', 'observation_count_green_threshold', 'uses_impressions'];
     protected $observationAssignments;
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -160,5 +162,23 @@ class Course extends Model {
             ->mapToGroups(function(Quali $quali) {
                 return [$quali->observation_id => $quali->display_name];
             })->all();
+    }
+
+    /**
+     * Indicates whether there are any requirements in the course.
+     *
+     * @return bool
+     */
+    public function getUsesRequirementsAttribute() {
+        return $this->requirements()->exists();
+    }
+
+    /**
+     * Indicates whether there are any categories in the course.
+     *
+     * @return bool
+     */
+    public function getUsesCategoriesAttribute() {
+        return $this->categories()->exists();
     }
 }

@@ -11,21 +11,33 @@
 
             <input-text name="course_number" value="{{ $course->course_number }}" label="{{__('t.models.course.course_number')}}"></input-text>
 
-            <input-text name="observation_count_red_threshold" value="{{ $course->observation_count_red_threshold }}" label="{{__('t.models.course.observation_count_red_threshold')}}" required>
-                <template #append>
-                    <b-input-group-text>{{ __('t.views.admin.course_settings.per_equipe_and_tn') }}</b-input-group-text>
-                </template>
-            </input-text>
-
-            <input-text name="observation_count_green_threshold" value="{{ $course->observation_count_green_threshold }}" label="{{__('t.models.course.observation_count_green_threshold')}}" required>
-                <template #append>
-                    <b-input-group-text>{{ __('t.views.admin.course_settings.per_equipe_and_tn') }}</b-input-group-text>
-                </template>
-            </input-text>
-
             <row-text>
-                @component('components.help-text', ['key' => 't.views.admin.course_settings.thresholds', 'id' => 'blockHelp'])@endcomponent
+                <b-button variant="link" class="px-0" v-b-toggle.collapse-course-settings>
+                    {{ __('t.views.admin.new_course.more_settings') }} <i class="fas fa-caret-down"></i>
+                </b-button>
             </row-text>
+
+            <b-collapse id="collapse-course-settings" :visible="false">
+
+                <input-checkbox name="uses_impressions" label="{{__('t.models.course.uses_impressions')}}" value="{{ $course->uses_impressions }}" switch size="lg"></input-checkbox>
+
+                <input-text name="observation_count_red_threshold" value="{{ $course->observation_count_red_threshold }}" label="{{__('t.models.course.observation_count_red_threshold')}}" required>
+                    <template #append>
+                        <b-input-group-text>{{ __('t.views.admin.course_settings.per_equipe_and_tn') }}</b-input-group-text>
+                    </template>
+                </input-text>
+
+                <input-text name="observation_count_green_threshold" value="{{ $course->observation_count_green_threshold }}" label="{{__('t.models.course.observation_count_green_threshold')}}" required>
+                    <template #append>
+                        <b-input-group-text>{{ __('t.views.admin.course_settings.per_equipe_and_tn') }}</b-input-group-text>
+                    </template>
+                </input-text>
+
+                <row-text>
+                    @component('components.help-text', ['key' => 't.views.admin.course_settings.thresholds', 'id' => 'blockHelp'])@endcomponent
+                </row-text>
+
+            </b-collapse>
 
             <button-submit></button-submit>
 

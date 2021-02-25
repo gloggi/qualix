@@ -1,14 +1,14 @@
 <template>
   <div>
 
-    <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse>
+    <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse v-if="anyRequirements || anyCategories">
       <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
     </b-button>
 
-    <b-collapse id="filters-collapse" :visible="filtersVisibleInitially">
+    <b-collapse id="filters-collapse" :visible="filtersVisibleInitially" v-if="anyRequirements || anyCategories">
       <b-row>
 
-        <b-col cols="12" md="6">
+        <b-col cols="12" md="6" v-if="anyRequirements">
           <multi-select
             id="filter-requirements"
             name="filter-requirements"
@@ -24,7 +24,7 @@
             display-field="content"></multi-select>
         </b-col>
 
-        <b-col cols="12" md="6">
+        <b-col cols="12" md="6" v-if="anyCategories">
           <multi-select
             id="filter-categories"
             name="filter-categories"
@@ -61,6 +61,12 @@
         </template>
       </template>
 
+      <template v-slot:categories="{ row: observation }">
+        <template v-for="category in observation.categories">
+          <span class="white-space-normal badge badge-primary">{{ category.name }}</span>
+        </template>
+      </template>
+
       <template v-slot:impression="{ row: observation }">
         <span v-if="observation.impression === 0" class="badge badge-danger">{{ $t('t.global.negative') }}</span>
         <span v-else-if="observation.impression === 2" class="badge badge-success">{{ $t('t.global.positive') }}</span>
@@ -90,6 +96,7 @@ export default {
     showContent: { type: Boolean, default: false },
     showBlock: { type: Boolean, default: false },
     showRequirements: { type: Boolean, default: false },
+    showCategories: { type: Boolean, default: false },
     showImpression: { type: Boolean, default: false },
     showUser: { type: Boolean, default: false },
     pointerCursor: { type: Boolean, default: false },
@@ -106,6 +113,7 @@ export default {
       if (this.showContent) fields.push({ label: this.$t('t.models.observation.content'), slot: 'observation-content' })
       if (this.showBlock) fields.push({ label: this.$t('t.models.observation.block'), value: observation => observation.block.blockname_and_number })
       if (this.showRequirements) fields.push({ label: this.$t('t.models.observation.requirements'), slot: 'requirements' })
+      if (this.showCategories) fields.push({ label: this.$t('t.models.observation.categories'), slot: 'categories' })
       if (this.showImpression) fields.push({ label: this.$t('t.models.observation.impression'), slot: 'impression' })
       if (this.showUser) fields.push({ label: this.$t('t.models.observation.user'), value: observation => observation.user.name })
       return fields
@@ -136,6 +144,12 @@ export default {
           (this.selectedCategory.id === 0 && isEmpty(observation.categories)) ||
           observation.categories.map(category => category.id).includes(this.selectedCategory.id))
     },
+    anyRequirements() {
+      return this.requirements.length > 0
+    },
+    anyCategories() {
+      return this.categories.length > 0
+    },
   },
   methods: {
     persistFilters() {
@@ -156,15 +170,20 @@ export default {
     let storage = JSON.parse(localStorage.courses ?? '{}')
     if (!storage[this.courseId]) return
 
-    const storedRequirement = storage[this.courseId].selectedRequirement
-    if (storedRequirement !== null) {
-      if (storedRequirement === 0) this.selectedRequirement = this.noRequirementOption
-      else this.selectedRequirement = this.requirements.find(req => req.id === storedRequirement) ?? null;
+    if (this.anyRequirements) {
+      const storedRequirement = storage[this.courseId].selectedRequirement
+      if (storedRequirement !== null) {
+        if (storedRequirement === 0) this.selectedRequirement = this.noRequirementOption
+        else this.selectedRequirement = this.requirements.find(req => req.id === storedRequirement) ?? null;
+      }
     }
-    const storedCategory = storage[this.courseId].selectedCategory
-    if (storedCategory !== null) {
-      if (storedCategory === 0) this.selectedCategory = this.noCategoryOption
-      else this.selectedCategory = this.categories.find(cat => cat.id === storage[this.courseId].selectedCategory) ?? null;
+
+    if (this.anyCategories) {
+      const storedCategory = storage[this.courseId].selectedCategory
+      if (storedCategory !== null) {
+        if (storedCategory === 0) this.selectedCategory = this.noCategoryOption
+        else this.selectedCategory = this.categories.find(cat => cat.id === storage[this.courseId].selectedCategory) ?? null;
+      }
     }
   },
   watch: {

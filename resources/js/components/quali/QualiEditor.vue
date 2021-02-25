@@ -4,7 +4,7 @@
       <floating-menu :observations="observations" :commands="commands" :menu="menu" @addObservation="addObservation = commands.observation"/>
     </editor-floating-menu>
     <editor-content class="editor-content" :class="{ readonly }" :editor="editor" />
-    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation"></modal-add-observation>
+    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation" :show-requirements="showRequirements" :show-categories="showCategories" :show-impression="showImpression"></modal-add-observation>
     <input-hidden v-if="name" :value="formValue" :name="name"></input-hidden>
   </div>
 </template>
@@ -31,6 +31,9 @@ export default {
     categories: { type: Array, default: () => [] },
     readonly: { type: Boolean, default: false },
     autofocus: { type: Boolean, default: false },
+    showRequirements: { type: Boolean, default: false },
+    showCategories: { type: Boolean, default: false },
+    showImpression: { type: Boolean, default: false },
   },
   data() {
     const editor = new Editor({

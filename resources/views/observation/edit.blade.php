@@ -36,6 +36,7 @@
                 display-field="blockname_and_number"></input-multi-select>
 
             <input-multi-select
+                v-if="{{ $course->uses_requirements }}"
                 name="requirements"
                 value="{{ $observation->requirements->pluck('id')->join(',') }}"
                 label="{{__('t.models.observation.requirements')}}"
@@ -44,6 +45,7 @@
                 multiple></input-multi-select>
 
             <input-radio-button
+                v-if="{{ $course->uses_impressions }}"
                 name="impression"
                 value="{{ $observation->impression }}"
                 label="{{__('t.models.observation.impression')}}"
@@ -51,6 +53,7 @@
                 :options="{{ json_encode([ '2' => __('t.global.positive'), '1' => __('t.global.neutral'), '0' => __('t.global.negative')]) }}"></input-radio-button>
 
             <input-multi-select
+                v-if="{{ $course->uses_categories }}"
                 name="categories"
                 value="{{ $observation->categories->pluck('id')->join(',') }}"
                 label="{{__('t.models.observation.categories')}}"

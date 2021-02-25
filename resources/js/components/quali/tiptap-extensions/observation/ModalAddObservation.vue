@@ -14,6 +14,9 @@
       show-content
       show-block
       show-user
+      :show-requirements="showRequirements"
+      :show-categories="showCategories"
+      :show-impression="showImpression"
       pointer-cursor
       @clickObservation="observation => select(observation.pivot.id)"></observation-list>
 
@@ -29,6 +32,9 @@
     props: {
       value: { type: Function, required: false },
       observations: { type: Array, required: true },
+      showRequirements: { type: Boolean, default: false },
+      showCategories: { type: Boolean, default: false },
+      showImpression: { type: Boolean, default: false },
     },
     inject: [ 'courseId', 'requirements', 'categories' ],
     computed: {

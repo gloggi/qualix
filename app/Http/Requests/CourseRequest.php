@@ -17,6 +17,7 @@ class CourseRequest extends FormRequest {
             'course_number' => 'max:255',
             'observation_count_red_threshold' => 'required|integer|min:0',
             'observation_count_green_threshold' => 'required|integer|min:0|gte:observation_count_red_threshold',
+            'uses_impressions' => 'boolean',
         ];
     }
 

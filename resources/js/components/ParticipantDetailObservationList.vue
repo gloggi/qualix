@@ -2,7 +2,10 @@
   <observation-list
     v-bind="$attrs"
     :course-id="courseId"
-    :actions="actions"></observation-list>
+    :actions="actions"
+    :show-requirements="showRequirements"
+    :show-categories="showCategories"
+    :show-impression="showImpression"></observation-list>
 </template>
 
 <script>
@@ -14,7 +17,10 @@ export default {
   components: {ObservationList},
   props: {
     courseId: { type: String },
-    qualisUsingObservations: { type: Object, required: true }
+    qualisUsingObservations: { type: Object, required: true },
+    showRequirements: { type: Boolean, default: false },
+    showCategories: { type: Boolean, default: false },
+    showImpression: { type: Boolean, default: false },
   },
   computed: {
     actions() {

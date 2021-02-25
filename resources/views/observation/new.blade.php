@@ -42,6 +42,7 @@
                     @input="onBlockUpdate"></input-multi-select>
 
                 <input-multi-select
+                    v-if="{{ $course->uses_requirements }}"
                     name="requirements"
                     :value="requirementsValue"
                     error-message="{{ $errors->first('requirements') }}"
@@ -53,6 +54,7 @@
             </block-and-requirements-input-wrapper>
 
             <input-radio-button
+                v-if="{{ $course->uses_impressions }}"
                 name="impression"
                 value="1"
                 label="{{__('t.models.observation.impression')}}"
@@ -60,6 +62,7 @@
                 :options="{{ json_encode([ '2' => __('t.global.positive'), '1' => __('t.global.neutral'), '0' => __('t.global.negative')]) }}"></input-radio-button>
 
             <input-multi-select
+                v-if="{{ $course->uses_categories }}"
                 name="categories"
                 label="{{__('t.models.observation.categories')}}"
                 :options="{{ json_encode($course->categories->map->only('id', 'name')) }}"

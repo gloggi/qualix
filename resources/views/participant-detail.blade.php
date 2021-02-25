@@ -80,8 +80,9 @@
                 :categories="{{ json_encode($course->categories) }}"
                 show-content
                 show-block
-                show-requirements
-                show-impression
+                :show-requirements="{{ $course->uses_requirements ? 'true' : 'false' }}"
+                :show-categories="{{ $course->uses_categories ? 'true' : 'false' }}"
+                :show-impression="{{ $course->uses_impressions ? 'true' : 'false' }}"
                 show-user></participant-detail-observation-list>
 
         @else

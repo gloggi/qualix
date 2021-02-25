@@ -257,7 +257,7 @@ return array(
 				"answer" => "Jusqu'à présent, aucun point de cours n'est relié à des exigences minimales. Merci de relier les points de cours :here aux exigences minimales.",
 				"question" => "Est-ce que tu vois uniquement des points de cours vides sans exigences minimales?",
 			),
-			"title" => "Quelles exigences minimales peuvent être observées dans quels points de cours",
+			"title_with_requirements" => "Que puis-je observer aujourd'hui?",
 		),
 		"error_form" => array(
 			"back" => "Retour à ce que j'étais il y a une minute...",
