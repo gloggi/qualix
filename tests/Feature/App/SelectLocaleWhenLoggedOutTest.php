@@ -102,7 +102,7 @@ class SelectLocaleWhenLoggedOutTest extends TestCase {
         $response = $this->get('/login', [], $headers);
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertSeeAllInOrder('#navbar-locale-select', [$expected], function($domElement) { return $domElement->getAttribute('text'); });
         $this->assertSeeAllInOrder('#navbar-locale-select b-dropdown-item', $unselected);
         $response->assertSessionHas('locale', $expected);

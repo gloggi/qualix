@@ -131,7 +131,7 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/participants/import');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('In deinem Kurs sind bereits Teilnehmende erfasst. Diese bleiben bestehen und durch den Import werden neue zusätzliche erfasst.');
     }
 
@@ -142,7 +142,7 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/participants/import');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertDontSee('In deinem Kurs sind bereits Teilnehmende erfasst. Diese bleiben bestehen und durch den Import werden neue zusätzliche erfasst.');
     }
 

@@ -79,7 +79,7 @@ class CreateCategoryTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/category');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('Bisher sind keine Kategorien erfasst.');
     }
 
@@ -91,7 +91,7 @@ class CreateCategoryTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/category');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertDontSee('Bisher sind keine Kategorien erfasst.');
     }
 }

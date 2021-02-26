@@ -52,6 +52,55 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
 
+    public function test_shouldDisplayOptionalFields_whenActivated() {
+        // given
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee('label="Anforderungen"', false);
+        $response->assertSee('label="Eindruck"', false);
+        $response->assertSee('label="Kategorien"', false);
+    }
+
+    public function test_shouldNotDisplayRequirementsSelect_whenNoRequirementsInCourse() {
+        // given
+        Course::find($this->courseId)->requirements()->delete();
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId);
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('label="Anforderungen"', false);
+    }
+
+    public function test_shouldNotDisplayImpressionInput_whenDeactivatedInCourse() {
+        // given
+        Course::find($this->courseId)->update(['uses_impressions' => false]);
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId);
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('label="Eindruck"', false);
+    }
+
+    public function test_shouldNotDisplayCategorySelect_whenNoCategoriesInCourse() {
+        // given
+        Course::find($this->courseId)->categories()->delete();
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/observation/' . $this->observationId);
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('label="Kategorien"', false);
+    }
+
     public function test_shouldUpdateObservation() {
         // given
 
@@ -220,7 +269,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertStatus(302);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertNull($response->exception);
         $this->assertEquals(2, Observation::find($this->observationId)->toArray()['impression']);
     }

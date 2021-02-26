@@ -84,9 +84,10 @@
 
 import { isEmpty } from 'lodash'
 import ResponsiveTable from "./ResponsiveTable"
+import ObservationContent from "./ObservationContent"
 export default {
   name: 'ObservationList',
-  components: {ResponsiveTable},
+  components: {ResponsiveTable, ObservationContent},
   props: {
     courseId: { type: String },
     observations: { type: Array, default: () => [] },

@@ -48,7 +48,7 @@ class SelectCourseTest extends TestCase {
         $response = $this->get('/course/' . $course1->id);
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertMatchesRegularExpression("%<b-form-select[^>]*id=\"global-course-select\"[^>]*value=\"([^\"]*)\"((?!</b-form-select>).)*<b-form-select-option value=\"\\1\">" . $course1->name . "</b-form-select-option>%s", $response->content());
         $this->assertMatchesRegularExpression("%<b-form-select-option value=\"[^\"]*\">{$course2->name}</b-form-select-option>%", $response->content());
     }

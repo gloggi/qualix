@@ -30,7 +30,7 @@ class Course extends Model {
     /**
      * @var array
      */
-    protected $fillable = ['name', 'course_number', 'archived', 'observation_count_red_threshold', 'observation_count_green_threshold', 'uses_impressions'];
+    protected $fillable = ['name', 'course_number', 'archived', 'uses_impressions', 'observation_count_red_threshold', 'observation_count_green_threshold'];
     protected $observationAssignments;
 
     /**

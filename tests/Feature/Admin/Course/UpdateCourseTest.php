@@ -13,7 +13,7 @@ class UpdateCourseTest extends TestCaseWithCourse {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['name' => 'Geänderter Kursname', 'course_number' => 'CH 999-99', 'observation_count_red_threshold' => 5, 'observation_count_green_threshold' => 10];
+        $this->payload = ['name' => 'Geänderter Kursname', 'course_number' => 'CH 999-99', 'uses_impressions' => '1', 'observation_count_red_threshold' => 5, 'observation_count_green_threshold' => 10];
     }
 
     public function test_shouldRequireLogin() {
@@ -85,6 +85,21 @@ class UpdateCourseTest extends TestCaseWithCourse {
         /** @var ValidationException $exception */
         $exception = $response->exception;
         $this->assertEquals('Kursnummer darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('course_number'));
+    }
+
+    public function test_shouldValidateNewCourseData_invalidImpression() {
+        // given
+        $payload = $this->payload;
+        $payload['uses_impressions'] = '3';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Eindruck auf Beobachtungen aktivieren muss entweder \'true\' oder \'false\' sein.', $exception->validator->errors()->first('uses_impressions'));
     }
 
     public function test_shouldValidateNewCourseData_noRedThreshold() {

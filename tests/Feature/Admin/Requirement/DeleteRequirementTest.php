@@ -27,6 +27,18 @@ class DeleteRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/login');
     }
 
+    public function test_shouldDisplayWarningWithNumberOfObservationsAndQualis() {
+        // given
+        $this->requirementId = $this->createRequirement('Mindestanforderung 1', true);
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/admin/requirement');
+
+        // then
+        $response->assertSee('"num_quali_datas":0');
+        $response->assertSee('"num_observations":0');
+    }
+
     public function test_shouldDeleteRequirement() {
         // given
 

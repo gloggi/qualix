@@ -63,7 +63,7 @@ class SentryTest extends TestCase {
         $response = $this->get('/');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertDontSeeText('Es sieht so aus als hätten wir ein Problem.');
     }
 }
