@@ -2,7 +2,7 @@
 
     <div class="col-2 mb-3">
         <div class="square-container">
-            <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
+            <img class="card-img-top img img-responsive full-width not-selectable" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
         </div>
     </div>
 
@@ -16,7 +16,7 @@
             <div>
                 <p class="font-weight-bold mb-0">{{ $course->name }}</p>
                 @if (isset($course->course_number))<p class="mb-0">{{ $course->course_number }}</p>@endif
-                @if($quali->users)
+                @if($quali->users->count())
                     <div class="my-2">
                         <div>{{__('t.models.quali.users')}}:</div>
                         <div>{{ $quali->users->map->name->join(', ') }}</div>

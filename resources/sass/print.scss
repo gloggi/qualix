@@ -155,4 +155,8 @@ $page-width: 8in !default;
         }
 
     }
+
+    .not-selectable {
+        user-select: none !important;
+    }
 }

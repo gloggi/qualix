@@ -4,7 +4,8 @@
     :title="$t('t.views.quali_content.select_observation')"
     size="xl"
     scrollable
-    hide-footer>
+    hide-footer
+    :return-focus="returnFocus">
 
     <observation-list
       :course-id="courseId"
@@ -29,6 +30,7 @@
     props: {
       value: { type: Function, required: false },
       observations: { type: Array, required: true },
+      returnFocus: { type: Object, required: false }
     },
     inject: [ 'courseId', 'requirements', 'categories' ],
     computed: {

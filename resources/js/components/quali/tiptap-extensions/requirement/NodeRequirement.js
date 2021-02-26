@@ -1,4 +1,5 @@
-import {Node} from 'tiptap'
+import {Node, Plugin} from 'tiptap'
+import { isEqual } from 'lodash'
 import ElementRequirement from "./ElementRequirement"
 
 export default class NodeRequirement extends Node {
@@ -47,6 +48,38 @@ export default class NodeRequirement extends Node {
       const transaction = state.tr.insert(position, node);
       dispatch(transaction);
     };
+  }
+
+  requirementsInNode(node) {
+    const requirements = []
+    node.descendants(child => {
+      if (child.type.name === 'requirement') requirements.push(child.attrs.id)
+    })
+    return requirements
+  }
+
+  get plugins() {
+    return [
+      new Plugin({
+        filterTransaction: (transaction, state) => {
+          // Allow programmatic change of requirements
+          if (transaction.getMeta('allowChangingRequirements') === true) return true
+
+          // Avoid endless recursion when simulating the effects of the transaction
+          if (transaction.getMeta('filteringRequirementDeletion') === true) return true
+          transaction.setMeta('filteringRequirementDeletion', true)
+
+          // Simulate the transaction
+          const newState = state.apply(transaction)
+
+          // Check that the same requirements are still present in any order after the transaction
+          return isEqual(
+            this.requirementsInNode(state.doc.content).sort(),
+            this.requirementsInNode(newState.doc.content).sort()
+          )
+        }
+      }),
+    ]
   }
 
   get view() {

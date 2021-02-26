@@ -1,18 +1,19 @@
 <template>
   <div class="editor" :class="{ 'focus': focused }">
     <editor-floating-menu v-if="!readonly" :editor="editor" v-slot="{ commands, menu }">
-      <floating-menu :observations="observations" :commands="commands" :menu="menu" @addObservation="addObservation = commands.observation"/>
+      <floating-menu :observations="observations" :commands="commands" :menu="menu" @addObservation="showObservationSelectionModal"/>
     </editor-floating-menu>
     <editor-content class="editor-content" :class="{ readonly }" :editor="editor" />
-    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation"></modal-add-observation>
+    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation" :return-focus="{ $el: { focus: () => focus(editor.state.selection.$head.pos) } }"></modal-add-observation>
     <input-hidden v-if="name" :value="formValue" :name="name"></input-hidden>
   </div>
 </template>
 
 <script>
 import {sortBy, isEqual, cloneDeep} from 'lodash'
-import {Editor, EditorContent, EditorFloatingMenu} from 'tiptap'
+import {Editor, EditorContent, EditorFloatingMenu, TextSelection} from 'tiptap'
 import {History, Heading} from 'tiptap-extensions'
+import {GapCursor, gapCursor} from 'prosemirror-gapcursor'
 import Observation from './tiptap-extensions/observation/NodeObservation'
 import Requirement from './tiptap-extensions/requirement/NodeRequirement'
 import InputHidden from "../form/InputHidden"
@@ -36,8 +37,9 @@ export default {
     const editor = new Editor({
       content: this.value ?? null,
       editable: !this.readonly,
-      autoFocus: this.autofocus,
       injectCSS: false,
+      // We manually add gapCursor, in order to customize it
+      enableGapCursor: false,
       extensions: [
         new History(),
         new Heading({ levels: [ 3, 5, 6 ] }),
@@ -53,13 +55,28 @@ export default {
       onUpdate: ({ getJSON }) => {
         this.currentValue = getJSON()
         this.$emit('input', this.currentValue)
-      }
+      },
     })
+
+    const gapCursorPlugin = gapCursor()
+    // Patch the handleClick function so we can call it ourselves when autofocusing
+    gapCursorPlugin.props.handleClick = (view, pos, event) => {
+      if (!view.editable) return false
+      let $pos = view.state.doc.resolve(pos)
+      if (!GapCursor.valid($pos)) return false
+      const calculatedPos = view.posAtCoords({left: event.clientX, top: event.clientY})
+      if (calculatedPos && calculatedPos.inside > -1 && NodeSelection.isSelectable(view.state.doc.nodeAt(calculatedPos.inside))) return false
+      view.dispatch(view.state.tr.setSelection(new GapCursor($pos)))
+      return true
+    }
+    editor.registerPlugin(gapCursorPlugin)
+
     return {
       editor: editor,
       currentValue: this.value ?? editor.options.emptyDocument,
       focused: false,
       addObservation: null,
+      gapCursor: gapCursorPlugin,
     }
   },
   computed: {
@@ -71,7 +88,7 @@ export default {
     }
   },
   methods: {
-    addObservationFromEditor() {
+    showObservationSelectionModal() {
       this.addObservation = this.editor.commands.observation
     },
     isRequirementWithIdNotIn(node, requirementIds) {
@@ -92,12 +109,31 @@ export default {
             // add new requirements with paragraph after them
             .concat(missingIds.flatMap(id => [{ type: 'requirement', attrs: { id: id, passed: null } }, this.getEmptyParagraph()]))
         }
-        this.editor.setContent(this.currentValue)
+        this.setEditorContent(this.currentValue)
         this.$emit('input', this.currentValue)
       }
     },
-    focus() {
-      this.editor.focus(0)
+    setEditorContent(content = {}) {
+      const {
+        doc,
+        tr
+      } = this.editor.state;
+      const document = this.editor.createDocument(content);
+      const selection = TextSelection.create(doc, 0, doc.content.size);
+      const transaction = tr.setSelection(selection).replaceSelectionWith(document, false).setMeta('allowChangingRequirements', true);
+      this.editor.view.dispatch(transaction);
+    },
+    focus(position = 0) {
+      const { view } = this.editor, { state } = view
+      const selection = TextSelection.near(state.doc.resolve(position))
+
+      // If the node at that position is not text, avoid selecting it
+      const pos = (selection instanceof TextSelection) ? selection.$anchor.pos : position
+      this.editor.focus(pos)
+
+      // Activate the gapCursor if appropriate
+      const coords = view.coordsAtPos(pos)
+      this.gapCursor.props.handleClick(this.editor.view, pos, { clientX: -10000, clientY: -10000 })
     },
   },
   watch: {
@@ -111,7 +147,7 @@ export default {
       requirements: this.requirements,
       categories: this.categories,
       courseId: this.courseId,
-      addObservation: this.addObservationFromEditor
+      showObservationSelectionModal: this.showObservationSelectionModal
     }
   },
   mounted() {
@@ -119,6 +155,10 @@ export default {
 
     // Necessary in case we have oldInput that the outside world doesn't know about
     if (this.currentValue !== this.value) this.$emit('input', this.currentValue)
+
+    if (this.autofocus) {
+      this.focus()
+    }
 
     // Two ticks after mounted, the HTML is rendered correctly
     this.$nextTick(() => {
