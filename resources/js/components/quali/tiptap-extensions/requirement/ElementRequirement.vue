@@ -23,7 +23,7 @@ export default {
   // `getPos` is a function to retrieve the start position of the node
   // `decorations` is an array of decorations around the node
   props: [ 'node', 'updateAttrs', 'view', 'options', 'selected', 'editor', 'getPos', 'decorations'],
-  inject: [ 'requirements', 'addObservation', 'observations', 'courseId' ],
+  inject: [ 'requirements', 'showObservationSelectionModal', 'observations', 'courseId' ],
   computed: {
     requirement() {
       const requirement = this.requirements.find(requirement => requirement.id === this.node.attrs.id)
@@ -59,13 +59,12 @@ export default {
     },
     setCursorAfterRequirement() {
       const pos = this.getPos() + this.node.nodeSize
-      this.editor.setSelection(pos, pos)
-      this.view.focus()
+      this.editor.focus(pos)
     },
     selectObservation() {
       this.setObservationFilter()
       this.setCursorAfterRequirement()
-      this.addObservation()
+      this.showObservationSelectionModal()
     },
   }
 }

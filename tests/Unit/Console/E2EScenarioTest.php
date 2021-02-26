@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Console;
 
+use App\Models\Course;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -80,10 +81,13 @@ class E2EScenarioTest extends TestCase
             ->assertExitCode(0);
         $user = User::find($user->id);
         $this->assertEquals(1, $user->courses->count());
+        /** @var Course $course */
         $course = $user->courses->first();
         $this->assertNotEmpty($course->requirements);
         $this->assertNotEmpty($course->participants);
         $this->assertNotEmpty($course->blocks);
+        $this->assertNotEmpty($course->quali_datas);
+        $this->assertNotEmpty($course->qualis);
         $this->assertGreaterThanOrEqual(2, $course->users->count());
     }
 

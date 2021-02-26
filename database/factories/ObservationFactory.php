@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Block;
 use App\Models\Observation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -114,5 +115,42 @@ class ObservationFactory extends Factory {
             'content' => $this->faker->randomElement($contents),
             'impression' => $this->faker->randomElement([0, 1, 2]),
         ];
+    }
+
+    public function fromRandomUser() {
+        return $this->state(function (array $state, Block $block) {
+            return [
+                'user_id' => $this->faker->randomElement($block->course->users->map->id),
+            ];
+        });
+    }
+
+    public function withRequirements() {
+        return $this->afterCreating(function (Observation $observation) {
+            if (!($block = $observation->block)) return;
+            if (!($course = $block->course)) return;
+            if ($course->requirements()->count() == 0) return;
+
+            $observation->requirements()->attach(
+                $this->faker->randomElements($course->requirements->map->id, $this->faker->biasedNumberBetween(0, 3))
+            );
+        });
+    }
+
+    public function maybeMultiParticipant($percentage = 20) {
+        return $this->afterCreating(function (Observation $observation) use ($percentage) {
+            if (!($block = $observation->block)) return;
+            if (!($course = $block->course)) return;
+            $numParticipants = $course->participants()->count();
+            if ($numParticipants <= 1) return;
+
+            $numParticipants = 1;
+            // Only a fraction of observations are multi-participant
+            if ($this->faker->randomNumber(2) < $percentage) $numParticipants = $this->faker->biasedNumberBetween(2, min($numParticipants, 4));
+
+            $observation->participants()->sync(
+                $this->faker->randomElements($course->participants->map->id->all(), $numParticipants)
+            );
+        });
     }
 }

@@ -2,7 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Block;
 use App\Models\Course;
+use App\Models\Observation;
+use App\Models\Quali;
+use App\Models\QualiData;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
@@ -53,7 +57,29 @@ class E2EScenario extends Command
         }
 
         /** @var Course $course */
-        $course = Course::factory()->create();
+        $course = Course::factory()
+            ->hasUsers(3)
+            ->hasRequirements(4)
+            ->hasParticipants(10)
+            ->has(Block::factory()
+                ->count(10)
+                ->has(Observation::factory()
+                    ->count(5)
+                    ->fromRandomUser()
+                    ->withRequirements()
+                    ->maybeMultiParticipant()
+                )
+            )
+            ->has(QualiData::factory()
+                ->has(Quali::factory()
+                    ->count(10)
+                    ->forParticipants()
+                    ->withContents()
+                    ->withRequirements()
+                    ->withObservations()
+                ), 'quali_datas'
+            )
+            ->create();
 
         $course->users()->attach($userId);
 

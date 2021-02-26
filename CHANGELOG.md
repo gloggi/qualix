@@ -2,6 +2,7 @@
 
 ##### Februar 2021
 - Neu kann ein Quali eines TN mehreren Equipenmitgliedern zugewiesen werden [#178](https://github.com/gloggi/qualix/pull/178)
+- Diverse Verbesserungen am Quali-Editor [#186](https://github.com/gloggi/qualix/pull/186)
 - Die Blöcke in der Auswahl beim Beobachtung Erfassen werden jetzt nach unten geschoben, wenn sie länger als am Vortag her sind [#188](https://github.com/gloggi/qualix/pull/188)
 
 ##### Januar 2021
