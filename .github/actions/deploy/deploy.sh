@@ -33,8 +33,8 @@ sed -ri "s~^SENTRY_USER_FEEDBACK_URL=.*$~SENTRY_USER_FEEDBACK_URL=$SENTRY_USER_F
 sed -ri "s~^SENTRY_CSP_REPORT_URI=.*$~SENTRY_CSP_REPORT_URI=$SENTRY_CSP_REPORT_URI~" .env
 sed -ri "s~^MIX_SENTRY_VUE_DSN=.*$~MIX_SENTRY_VUE_DSN=$SENTRY_VUE_DSN~" .env
 
-docker-compose run --entrypoint "composer install --no-dev" qualix
 docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod --no-unsafe-inline'" node
+docker-compose run --entrypoint "composer install --no-dev" qualix
 
 cat ~/.ssh/known_hosts
 

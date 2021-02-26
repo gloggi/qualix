@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services;
 
 use App\Exceptions\RequirementsMismatchException;
+use App\Models\Block;
 use App\Models\Course;
 use App\Models\Observation;
 use App\Models\ParticipantObservation;
@@ -82,7 +83,7 @@ class TiptapFormatterTest extends TestCase {
         $course = $quali->participant->course;
         $requirement = $course->requirements()->first();
         $quali->requirements()->attach([$requirement->id => ['order' => 0, 'passed' => 1]]);
-        $formatter = new TiptapFormatter($quali);
+        $formatter = new TiptapFormatter($quali->fresh());
 
         // when
         $result = $formatter->toTiptap();
@@ -108,7 +109,7 @@ class TiptapFormatterTest extends TestCase {
         $requirement = $course->requirements()->first();
         $quali->requirements()->attach([$requirement->id => ['order' => 3, 'passed' => 0]]);
 
-        $formatter = new TiptapFormatter($quali);
+        $formatter = new TiptapFormatter($quali->fresh());
 
         // when
         $result = $formatter->toTiptap();
@@ -467,12 +468,26 @@ class TiptapFormatterTest extends TestCase {
      */
     protected function createQuali() {
         /** @var Course $course */
-        $course = Course::factory()->create();
-        /** @var QualiData $qualiData */
-        $qualiData = $course->quali_datas()->create(['name' => 'Testquali']);
-        /** @var Quali $quali */
-        $quali = $qualiData->qualis()->create(['participant_id' => $course->participants()->first()->id]);
-        return $quali;
+        $course = Course::factory()
+            ->hasUsers(3)
+            ->hasRequirements(4)
+            ->hasParticipants(10)
+            ->has(Block::factory()
+                ->count(10)
+                ->has(Observation::factory()
+                    ->count(5)
+                    ->fromRandomUser()
+                    ->withRequirements()
+                    ->maybeMultiParticipant()
+                )
+            )
+            ->has(QualiData::factory()
+                ->has(Quali::factory()
+                    ->forParticipants()
+                ), 'quali_datas'
+            )
+            ->create();
+        return $course->qualis()->first();
     }
 
     /**
