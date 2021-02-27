@@ -4,6 +4,7 @@ namespace Tests\Feature\Observation;
 
 use App\Models\Course;
 use App\Models\Observation;
+use Carbon\Carbon;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithBasicData;
@@ -46,6 +47,20 @@ class CreateObservationTest extends TestCaseWithBasicData {
         // then
         $response->assertStatus(302);
         $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
+    }
+  
+    public function test_shouldDisplayOldBlocksOnBottom() {
+        // given
+        $this->createBlock('old block', 1.1, Carbon::now()->subDays(2)->format('d.m.Y'));
+        $this->createBlock('yesterday', 1.1, Carbon::now()->subDay()->format('d.m.Y'));
+        $this->createBlock('today', 1.1, Carbon::now()->format('d.m.Y'));
+        $this->createBlock('tomorrow', 1.1, Carbon::now()->addDay()->format('d.m.Y'));
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/observation/new?participant=' . $this->participantId);
+
+        // then
+        $response->assertSeeInOrder(['yesterday', 'today', 'tomorrow', 'old block']);
     }
 
     public function test_shouldDisplayOptionalFields_whenActivated() {
