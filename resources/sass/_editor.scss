@@ -60,7 +60,11 @@
     .observation {
         border-left: 2px solid $gray-500;
         cursor: move;
-        white-space: pre-wrap;
+        white-space: normal;
+
+        blockquote {
+            white-space: pre-wrap;
+        }
 
         &:hover {
             background-color: $gray-200;
