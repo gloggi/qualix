@@ -13,7 +13,7 @@ class CreateCourseTest extends TestCase {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['name' => 'Kursname', 'course_number' => 'CH 123-00', 'observation_count_red_threshold' => 5, 'observation_count_green_threshold' => 10];
+        $this->payload = ['name' => 'Kursname', 'course_number' => 'CH 123-00', 'uses_impressions' => '1', 'observation_count_red_threshold' => 5, 'observation_count_green_threshold' => 10];
     }
 
     public function test_shouldRequireLogin() {
@@ -82,5 +82,20 @@ class CreateCourseTest extends TestCase {
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
+    public function test_shouldValidateNewCourseData_invalidImpression() {
+        // given
+        $payload = $this->payload;
+        $payload['uses_impressions'] = '3';
+
+        // when
+        $response = $this->post('/newcourse', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Eindruck auf Beobachtungen aktivieren muss entweder \'true\' oder \'false\' sein.', $exception->validator->errors()->first('uses_impressions'));
     }
 }

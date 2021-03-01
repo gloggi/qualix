@@ -12,7 +12,7 @@ require('./bootstrap')
 
 window.Vue = Vue
 
-var {BootstrapVue, IconsPlugin} = require('bootstrap-vue')
+const {BootstrapVue, IconsPlugin} = require('bootstrap-vue')
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueI18n)

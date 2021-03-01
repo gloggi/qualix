@@ -138,7 +138,7 @@ class ImportBlocksTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/blocks/import');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('In deinem Kurs sind bereits Blöcke definiert. Wenn beim Import eine Blocknummer schon existiert, wird der bestehende Block durch den Import aktualisiert.');
     }
 
@@ -149,7 +149,7 @@ class ImportBlocksTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/blocks/import');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertDontSee('In deinem Kurs sind bereits Blöcke definiert. Wenn beim Import eine Blocknummer schon existiert, wird der bestehende Block durch den Import aktualisiert.');
     }
 

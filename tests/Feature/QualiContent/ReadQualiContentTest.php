@@ -45,7 +45,7 @@ class ReadQualiContentTest extends TestCaseWithBasicData {
         $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId . '/qualis/' . $this->qualiId . '/edit');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_shouldOrderObservationsByBlock() {

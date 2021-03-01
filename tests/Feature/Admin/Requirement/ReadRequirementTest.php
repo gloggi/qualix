@@ -28,7 +28,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldDisplayMA() {
+    public function test_shouldDisplayRequirement() {
         // given
 
         // when
@@ -39,7 +39,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
         $response->assertSee('Mindestanforderung 1');
     }
 
-    public function test_shouldNotDisplayMA_fromOtherCourseOfSameUser() {
+    public function test_shouldNotDisplayRequirement_fromOtherCourseOfSameUser() {
         // given
         $otherKursId = $this->createCourse('Zweiter Kurs', '');
 
@@ -50,7 +50,7 @@ class ReadRequirementTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ModelNotFoundException::class, $response->exception);
     }
 
-    public function test_shouldNotDisplayMA_fromOtherUser() {
+    public function test_shouldNotDisplayRequirement_fromOtherUser() {
         // given
         $otherCourseId = $this->createCourse('Zweiter Kurs', '', false);
         $otherRequirementId = Requirement::create(['course_id' => $otherCourseId, 'content' => 'Mindestanforderung 1', 'mandatory' => '1'])->id;

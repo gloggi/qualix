@@ -77,6 +77,7 @@ return array(
 			"name" => "Kursname",
 			"observation_count_red_threshold" => "Mindestanzahl Beobachtungen",
 			"observation_count_green_threshold" => "Gewünschte Anzahl Beobachtungen",
+			"uses_impressions" => "Eindruck auf Beobachtungen aktivieren",
 		),
 		"invitation" => array(
 			"email" => "E-Mail",
@@ -238,6 +239,7 @@ return array(
 				"really_delete_invitation" => "Willst du die Einladung für :email wirklich entfernen?",
 			),
 			"new_course" => array(
+				"more_settings" => "Weitere Einstellungen",
 				"create" => "Kurs eröffnen",
 				"create_success" => "Kurs \":name\" wurde erfolgreich erstellt.",
 				"menu_name" => "Neuen Kurs erstellen",
@@ -356,6 +358,7 @@ return array(
 				"new" => "Neue Anforderung",
 				"no_requirements" => "Bisher sind keine Anforderungen erfasst.",
 				"observations_on_requirement" => "{0}Es ist keine Beobachtung damit verbunden.|{1}Damit verbunden ist eine Beobachtung, diese wird aber nicht gelöscht.|[2,*]Damit verbunden sind :count Beobachtungen, diese werden aber nicht gelöscht.",
+				"qualis_using_requirement" => "{0}Die Anforderung ist in keinem Quali eingesetzt.|{1}Die Anforderung wird aus einem Quali entfernt.|[2,*]Die Anforderung wird aus :count Qualis entfernt.",
 				"really_delete" => "Willst du diese Anforderung wirklich löschen?",
 				"what_are_requirements" => array(
 					"answer" => "Anforderungen sind klare Voraussetzungen und Kriterien, die alle Teilnehmenden während dem Kurs erfüllen sollen. Anhand der Anforderungen wird beurteilt, wer den Kurs besteht und wer nicht. Du kannst Anforderungen als Mindestanforderungen markieren wenn du willst, aber es hat momentan keine Auswirkungen in Qualix selber (bis auf eine etwas andere Farbgebung).",
@@ -379,7 +382,7 @@ return array(
 				"answer" => "Dann sind bisher keine Blöcke mit Anforderungen verbunden. Bitte verbinde die Blöcke :here mit Anforderungen.",
 				"question" => "Siehst du nur leere Blöcke ohne Anforderungen?",
 			),
-			"title" => "Welche Anforderungen können in welchen Blöcken beobachtet werden",
+			"title" => "Was kann ich heute beobachten?",
 			"view_as" => "Aus Sicht von",
 		),
 		"error_form" => array(

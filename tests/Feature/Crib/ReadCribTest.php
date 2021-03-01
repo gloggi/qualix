@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Crib;
 
+use App\Models\Course;
 use App\Models\Observation;
 use App\Models\ObservationAssignment;
 use App\Models\Participant;
@@ -90,7 +91,7 @@ class ReadCribTest extends TestCaseWithCourse {
         $this->assertSeeAllInOrder('span.badge.badge-info', ['Nett sein']);
     }
 
-    public function test_shouldDisplayMessage_whenBlocksInCourse() {
+    public function test_shouldDisplayMessage_whenBlocksAndRequirementsInCourse() {
         // given
         $this->createBlock('Block 1', '1.1', '01.01.2019');
 
@@ -100,6 +101,19 @@ class ReadCribTest extends TestCaseWithCourse {
         // then
         $response->assertOk();
         $response->assertSee('Siehst du nur leere Blöcke ohne Anforderungen?');
+    }
+
+    public function test_shouldNotDisplayMessage_whenNoRequirementsInCourse() {
+        // given
+        $this->createBlock('Block 1', '1.1', '01.01.2019');
+        Course::find($this->courseId)->requirements()->delete();
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/crib');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('Siehst du nur leere Blöcke ohne Anforderungen?');
     }
 
     public function test_shouldNotDisplayCrib_toOtherUser() {

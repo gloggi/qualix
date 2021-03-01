@@ -1,5 +1,8 @@
 # Changelog
 
+##### März 2021
+- Der subjektive Eindruck auf Beobachtungen kann in den Kurseinstellungen deaktiviert werden. Optionale Felder (Eindruck, Anforderungen, Kategorien) werden nicht mehr angezeigt, wenn sie im Kurs nicht eingesetzt werden. [#189](https://github.com/gloggi/qualix/pull/189)
+
 ##### Februar 2021
 - Neu kann ein Quali eines TN mehreren Equipenmitgliedern zugewiesen werden [#178](https://github.com/gloggi/qualix/pull/178)
 - Diverse Verbesserungen am Quali-Editor [#186](https://github.com/gloggi/qualix/pull/186)

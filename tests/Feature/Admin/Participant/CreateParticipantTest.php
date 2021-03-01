@@ -107,7 +107,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/participants');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('Bisher sind keine Teilnehmende erfasst.');
     }
 
@@ -119,7 +119,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/participants');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertDontSee('Bisher sind keine Teilnehmende erfasst.');
     }
 }

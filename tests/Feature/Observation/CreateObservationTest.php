@@ -48,7 +48,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $response->assertStatus(302);
         $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
-
+  
     public function test_shouldDisplayOldBlocksOnBottom() {
         // given
         $this->createBlock('old block', 1.1, Carbon::now()->subDays(2)->format('d.m.Y'));
@@ -61,6 +61,55 @@ class CreateObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertSeeInOrder(['yesterday', 'today', 'tomorrow', 'old block']);
+    }
+
+    public function test_shouldDisplayOptionalFields_whenActivated() {
+        // given
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/observation/new');
+
+        // then
+        $response->assertOk();
+        $response->assertSee('label="Anforderungen"', false);
+        $response->assertSee('label="Eindruck"', false);
+        $response->assertSee('label="Kategorien"', false);
+    }
+
+    public function test_shouldNotDisplayRequirementsSelect_whenNoRequirementsInCourse() {
+        // given
+        Course::find($this->courseId)->requirements()->delete();
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/observation/new');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('label="Anforderungen"', false);
+    }
+
+    public function test_shouldNotDisplayImpressionInput_whenDeactivatedInCourse() {
+        // given
+        Course::find($this->courseId)->update(['uses_impressions' => false]);
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/observation/new');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('label="Eindruck"', false);
+    }
+
+    public function test_shouldNotDisplayCategorySelect_whenNoCategoriesInCourse() {
+        // given
+        Course::find($this->courseId)->categories()->delete();
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/observation/new');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('label="Kategorien"', false);
     }
 
     public function test_shouldCreateAndDisplayObservation() {
@@ -235,19 +284,29 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertEquals('Beobachtung darf maximal 1023 Zeichen haben.', $exception->validator->errors()->first('content'));
     }
 
-    public function test_shouldValidateNewObservationData_noImpression() {
+    public function test_shouldValidateNewObservationData_noImpression_shouldSetImpressionToNeutral() {
         // given
+        $this->createObservation('test observation to check impression', 2);
+        $previousObservation = Course::find($this->courseId)->observations()->latest()->first();
+        $this->assertEquals('test observation to check impression', $previousObservation->content);
+        $this->assertEquals(2, $previousObservation->impression);
         $payload = $this->payload;
         unset($payload['impression']);
+        $payload['content'] = 'test_shouldValidateNewObservationData_noImpression_shouldSetImpressionToNeutral';
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/observation/new', $payload);
 
         // then
-        $this->assertInstanceOf(ValidationException::class, $response->exception);
-        /** @var ValidationException $exception */
-        $exception = $response->exception;
-        $this->assertEquals('Eindruck muss ausgefüllt sein.', $exception->validator->errors()->first('impression'));
+        $response->assertStatus(302);
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertOk();
+        $this->assertNull($response->exception);
+        $createdObservation = Course::find($this->courseId)->observations()
+            ->where('content', 'test_shouldValidateNewObservationData_noImpression_shouldSetImpressionToNeutral')
+            ->latest()->first();
+        $this->assertEquals(1, $createdObservation->impression);
     }
 
     public function test_shouldValidateNewObservationData_invalidImpression() {

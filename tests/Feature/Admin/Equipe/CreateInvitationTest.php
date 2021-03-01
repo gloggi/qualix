@@ -126,7 +126,7 @@ class CreateInvitationTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/equipe');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('Momentan sind keine Einladungen offen.');
     }
 
@@ -138,7 +138,7 @@ class CreateInvitationTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/equipe');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertDontSee('Momentan sind keine Einladungen offen.');
     }
 }

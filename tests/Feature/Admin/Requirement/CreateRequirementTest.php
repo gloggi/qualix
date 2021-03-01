@@ -222,7 +222,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/requirement');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('Bisher sind keine Anforderungen erfasst.');
     }
 
@@ -234,7 +234,7 @@ class CreateRequirementTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/requirement');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertDontSee('Bisher sind keine Anforderungen erfasst.');
     }
 }

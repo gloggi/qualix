@@ -42,7 +42,7 @@ class AcceptInvitationTest extends TestCaseWithCourse {
         $response = $this->get('/invitation/' . $this->token);
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('Du bist schon in der Equipe von Kursname. Du kannst diese Einladung nicht annehmen.');
     }
 
@@ -54,7 +54,7 @@ class AcceptInvitationTest extends TestCaseWithCourse {
         $response = $this->get('/invitation/' . $this->token);
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee($this->token);
         $response->assertSeeText($this->email);
     }

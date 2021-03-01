@@ -11,9 +11,21 @@
 
             <input-text name="course_number" label="{{__('t.models.course.course_number')}}"></input-text>
 
-            <input-hidden name="observation_count_red_threshold" value="5"></input-hidden>
+            <row-text>
+                <b-button variant="link" class="px-0" v-b-toggle.collapse-course-settings>
+                    {{ __('t.views.admin.new_course.more_settings') }} <i class="fas fa-caret-down"></i>
+                </b-button>
+            </row-text>
 
-            <input-hidden name="observation_count_green_threshold" value="10"></input-hidden>
+            <b-collapse id="collapse-course-settings" :visible="false">
+
+                <input-checkbox name="uses_impressions" label="{{__('t.models.course.uses_impressions')}}" value="1" switch size="lg"></input-checkbox>
+
+                <input-hidden name="observation_count_red_threshold" value="5"></input-hidden>
+
+                <input-hidden name="observation_count_green_threshold" value="10"></input-hidden>
+
+            </b-collapse>
 
             <button-submit label="{{__('t.views.admin.new_course.create')}}"></button-submit>
 

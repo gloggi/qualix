@@ -503,7 +503,7 @@ class CreateQualiTest extends TestCaseWithBasicData {
         $response = $this->get('/course/' . $this->courseId . '/admin/qualis');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('Bisher sind keine Qualis erfasst.');
     }
 
@@ -515,7 +515,7 @@ class CreateQualiTest extends TestCaseWithBasicData {
         $response = $this->get('/course/' . $this->courseId . '/admin/qualis');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertDontSee('Bisher sind keine Qualis erfasst.');
     }
 }

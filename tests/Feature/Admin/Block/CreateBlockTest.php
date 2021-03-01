@@ -219,7 +219,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/blocks');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('Bisher sind keine Blöcke erfasst.');
     }
 
@@ -231,7 +231,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/blocks');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertDontSee('Bisher sind keine Blöcke erfasst.');
     }
 
@@ -242,7 +242,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/blocks');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee(Carbon::today()->format('Y-m-d'));
     }
 
@@ -254,7 +254,7 @@ class CreateBlockTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/blocks');
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertDontSee('value="' . Carbon::today()->format('Y-m-d') . '"');
         $this->assertMatchesRegularExpression('/<input-date.*value="2019-01-01"/s', $response->content());
     }

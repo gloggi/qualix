@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * @property int $id
  * @property int $course_id
@@ -39,7 +41,7 @@ class Requirement extends Model
      *
      * @var array
      */
-    protected $appends = ['num_observations'];
+    protected $appends = ['num_observations', 'num_quali_datas'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -80,5 +82,17 @@ class Requirement extends Model
      */
     public function getNumObservationsAttribute() {
         return $this->observations()->count();
+    }
+
+    /**
+     * Get the number of observations connected to this category.
+     *
+     * @return integer
+     */
+    public function getNumQualiDatasAttribute() {
+        $requirementId = $this->id;
+        return $this->course->quali_datas()->whereHas('qualis.requirements', function (Builder $query) use($requirementId) {
+            $query->where('requirements.id', $requirementId);
+        })->count();
     }
 }

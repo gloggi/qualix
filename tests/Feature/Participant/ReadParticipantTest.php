@@ -74,7 +74,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('Keine Beobachtungen gefunden.');
     }
 
@@ -86,7 +86,7 @@ class ReadParticipantTest extends TestCaseWithBasicData {
         $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
 
         // then
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertDontSee('Keine Beobachtungen gefunden.');
     }
 
