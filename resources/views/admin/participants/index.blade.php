@@ -13,6 +13,8 @@
 
             <input-file name="image" label="{{__('t.models.participant.image')}}" accept="image/*"></input-file>
 
+            <input-textarea name="freetext" label="{{__('t.models.participant.freetext')}}"></input-textarea>
+
             <button-submit label="{{__('t.global.add')}}">
                 <a class="btn btn-link mb-1" href="{{ route('admin.participants.import', ['course' => $course]) }}">
                     {{ __('t.views.admin.participants.import') }}

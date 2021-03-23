@@ -15,8 +15,12 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\RouteCollectionInterface;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -100,9 +104,54 @@ class ParticipantController extends Controller
      * @param Participant $participant
      * @return Response
      */
-    public function edit(Course $course, Participant $participant)
+    public function edit(Request $request, Course $course, Participant $participant)
     {
+        $this->rememberPreviouslyActiveView($request);
         return view('admin.participants.edit', ['participant' => $participant]);
+    }
+
+    /**
+     * Stores the participant which the user was just looking at into the session, for restoring the same view later.
+     *
+     * @param Request $request
+     */
+    protected function rememberPreviouslyActiveView(Request $request) {
+        $returnTo = $this->extractPathParameter(URL::previous(), 'participants.detail', 'participant');
+        $request->session()->keep(['return_url']);
+        $request->session()->flash('participant_before_edit', $request->session()->get('participant_before_edit', $returnTo));
+    }
+
+    /**
+     * Redirects the user back to the view that was remembered in the session previously. If the previously viewed
+     * participant is not in the passed options, falls back to the first viable option.
+     *
+     * @param Request $request
+     * @param Course $course
+     * @param Collection $returnOptions a collection of participant ids that are legal to be viewed
+     * @param string|null $fallback
+     * @return RedirectResponse
+     */
+    protected function redirectToPreviouslyActiveView(Request $request, Course $course) {
+        if ($request->session()->has('return_url')) return Redirect::to($request->session()->get('return_url'));
+
+        $returnTo = $request->session()->get('participant_before_edit');
+        if ($returnTo) return Redirect::to(route('participants.detail', ['course' => $course->id, 'participant' => $returnTo]));
+
+        return Redirect::route('admin.participants', ['course' => $course->id]);
+    }
+
+    /**
+     * Parse a URL, interpret it as a route in our app and extract one of the parameters values.
+     *
+     * @param $url
+     * @param $routeName
+     * @param $parameterName
+     * @return string|object|null
+     */
+    protected function extractPathParameter($url, $routeName, $parameterName) {
+        /** @var RouteCollectionInterface $routes */
+        $routes = Route::getRoutes();
+        return $routes->getByName($routeName)->bind(new Request([], [], [], [], [], ['REQUEST_URI' => $url]))->parameter($parameterName);
     }
 
     /**
@@ -122,7 +171,8 @@ class ParticipantController extends Controller
         $participant->update($request->validated());
 
         $request->session()->flash('alert-success', __('t.views.admin.participants.edit_success', ['name' => $participant->scout_name]));
-        return Redirect::route('admin.participants', ['course' => $course->id]);
+        //return Redirect::route('admin.participants', ['course' => $course->id]);
+        return $this->redirectToPreviouslyActiveView($request, $course);
     }
 
     /**
