@@ -171,7 +171,6 @@ class ParticipantController extends Controller
         $participant->update($request->validated());
 
         $request->session()->flash('alert-success', __('t.views.admin.participants.edit_success', ['name' => $participant->scout_name]));
-        //return Redirect::route('admin.participants', ['course' => $course->id]);
         return $this->redirectToPreviouslyActiveView($request, $course);
     }
 

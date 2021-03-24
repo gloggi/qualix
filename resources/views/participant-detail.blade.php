@@ -16,10 +16,11 @@
             <div class="col">
                 <h3>{{ $participant->scout_name }}</h3>
                 @if (isset($participant->group))<h5>{{ $participant->group }}</h5>@endif
-                @if (isset($participant->freetext))<p>{{ $participant->freetext }}</p>@endif
-                <a href="{{route('admin.participants.edit', ['course' => $course->id, 'participant' => $participant->id])}}">
-                    <i class="fas fa-edit"></i>
-                </a>
+                <p class="multiline">@if (isset($participant->freetext)){{ $participant->freetext }}<br>@endif
+                    <a href="{{route('admin.participants.edit', ['course' => $course->id, 'participant' => $participant->id])}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </p>
 
                 <p>{{ trans_choice('t.views.participant_details.num_observations', $participant->observations, ['positive' => $participant->positive->count(), 'neutral' => $participant->neutral->count(), 'negative' => $participant->negative->count()])}}</p>
 
