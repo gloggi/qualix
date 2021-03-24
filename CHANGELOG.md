@@ -1,5 +1,8 @@
 # Changelog
 
+##### Mai 2021
+- Fix: Der Login via hitobito klappt jetzt auch, wenn man auf der MiData keinen Pfadinamen eingetragen hat [#199](https://github.com/gloggi/qualix/pull/199)
+
 ##### April 2021
 - Alle TN haben jetzt ein optionales Freitextfeld, das z.B. für Förderpunkte eingesetzt werden kann. Der Freitext wird auf der TN-Detailseite angezeigt. [#191](https://github.com/gloggi/qualix/pull/191)
 - Die Imports von Blöcken und TN akzeptieren jetzt eine breitere Pallette an Dateiformaten. Bei CSV wird das Encoding automatisch erraten, sodass Umlaute und andere Sonderzeichen zuverlässiger importiert werden. [#192](https://github.com/gloggi/qualix/pull/192)
