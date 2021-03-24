@@ -14,7 +14,7 @@ class CreateParticipantTest extends TestCaseWithCourse {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['scout_name' => 'Pflock'];
+        $this->payload = ['scout_name' => 'Pflock', 'freetext' => 'De Pflock chunnt i jedem Biispiel vo de Pfadi vor, egal öb bi PSA, Pfaditechnik oder Krisemanagment'];
     }
 
     public function test_shouldRequireLogin() {
@@ -99,6 +99,22 @@ class CreateParticipantTest extends TestCaseWithCourse {
         $exception = $response->exception;
         $this->assertEquals('Abteilung darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('group'));
     }
+
+    public function test_shouldValidateNewParticipantData_longFreetext() {
+        // given
+        $payload = $this->payload;
+        $payload['freetext'] = 'Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Freitext darf maximal 1023 Zeichen haben.', $exception->validator->errors()->first('freetext'));
+    }
+
 
     public function test_shouldShowMessage_whenNoParticipantInCourse() {
         // given
