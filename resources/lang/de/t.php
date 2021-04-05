@@ -106,6 +106,7 @@ return array(
 			"group" => "Abteilung",
 			"image" => "Bild",
 			"scout_name" => "Pfadiname",
+			"freetext" => "Freitext"
 		),
 		"participant_group" => array(
 			"group_name" => "Gruppe",

@@ -13,6 +13,8 @@
 
             <input-file name="image" label="{{__('t.models.participant.image')}}" accept="image/*"></input-file>
 
+            <input-textarea name="freetext" value="{{ $participant->freetext }}" label="{{__('t.models.participant.freetext')}}"></input-textarea>
+
             <button-submit></button-submit>
 
         </form-basic>

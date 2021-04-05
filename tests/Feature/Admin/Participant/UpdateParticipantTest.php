@@ -17,7 +17,7 @@ class UpdateParticipantTest extends TestCaseWithCourse {
 
         $this->participantId = $this->createParticipant('Qualm');
 
-        $this->payload = ['scout_name' => 'Räuchli'];
+        $this->payload = ['scout_name' => 'Räuchli', 'freetext' => 'No nie het de Räuchli eppis gseit, da mümmer gnauer anneluege o_O'];
     }
 
     public function test_shouldRequireLogin() {
@@ -74,6 +74,23 @@ class UpdateParticipantTest extends TestCaseWithCourse {
         $this->assertEquals('Pfadiname muss ausgefüllt sein.', $exception->validator->errors()->first('scout_name'));
     }
 
+    public function test_shouldValidateNewParticipantData_noFreetext() {
+        // given
+        $payload = $this->payload;
+        unset($payload['freetext']);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->participantId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/participants');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee($this->payload['scout_name']);
+        $response->assertDontSee('Qualm');
+    }
+
     public function test_shouldValidateNewParticipantData_longScoutName() {
         // given
         $payload = $this->payload;
@@ -102,6 +119,21 @@ class UpdateParticipantTest extends TestCaseWithCourse {
         /** @var ValidationException $exception */
         $exception = $response->exception;
         $this->assertEquals('Abteilung darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('group'));
+    }
+
+    public function test_shouldValidateNewParticipantData_longFreetext() {
+        // given
+        $payload = $this->payload;
+        $payload['freetext'] = 'Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Freitext darf maximal 1023 Zeichen haben.', $exception->validator->errors()->first('freetext'));
     }
 
     public function test_shouldValidateNewParticipantData_wrongId() {

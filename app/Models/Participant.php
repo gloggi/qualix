@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
  * @property string $scout_name
  * @property string $group
  * @property string $image_url
+ * @property string $freetext
  * @property Observation[] $positive
  * @property Observation[] $neutral
  * @property Observation[] $negative
@@ -29,7 +30,7 @@ class Participant extends Model {
     /**
      * @var array
      */
-    protected $fillable = ['course_id', 'scout_name', 'group', 'image_url'];
+    protected $fillable = ['course_id', 'scout_name', 'group', 'image_url', 'freetext'];
 
     /**
      * The accessors to append to the model's array form.
