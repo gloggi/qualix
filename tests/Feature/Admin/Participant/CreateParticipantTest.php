@@ -70,6 +70,22 @@ class CreateParticipantTest extends TestCaseWithCourse {
         $this->assertEquals('Pfadiname muss ausgefüllt sein.', $exception->validator->errors()->first('scout_name'));
     }
 
+    public function test_shouldValidateNewParticipantData_noFreetext() {
+        // given
+        $payload = $this->payload;
+        unset($payload['freetext']);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants', $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/participants');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee($this->payload['scout_name']);
+    }
+
     public function test_shouldValidateNewParticipantData_longScoutName() {
         // given
         $payload = $this->payload;
