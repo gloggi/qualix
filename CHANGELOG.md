@@ -1,5 +1,8 @@
 # Changelog
 
+##### April 2021
+- Alle TN haben jetzt ein optionales Freitextfeld, das z.B. für Förderpunkte eingesetzt werden kann. Der Freitext wird auf der TN-Detailseite angezeigt. [#191](https://github.com/gloggi/qualix/pull/191)
+
 ##### März 2021
 - Der subjektive Eindruck auf Beobachtungen kann in den Kurseinstellungen deaktiviert werden. Optionale Felder (Eindruck, Anforderungen, Kategorien) werden nicht mehr angezeigt, wenn sie im Kurs nicht eingesetzt werden. [#189](https://github.com/gloggi/qualix/pull/189)
 
