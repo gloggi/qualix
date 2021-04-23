@@ -7,12 +7,14 @@ use App\Services\DateCalculator;
 use App\Services\Import\Blocks\ECamp2\ECamp2BlockOverviewParser;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Mockery;
-use PhpOffice\PhpSpreadsheet\Reader\Xls;
+use Tests\ReadsSpreadsheets;
 use Tests\TestCase;
 
 class ECamp2BlockOverviewParserTest extends TestCase {
 
+    use ReadsSpreadsheets;
+
+    /** @var ECamp2BlockOverviewParser */
     protected $parser;
 
     public function test_shouldParseECamp2BlockOverview() {
@@ -20,7 +22,9 @@ class ECamp2BlockOverviewParserTest extends TestCase {
         $this->mock(DateCalculator::class, function ($mock) {
             $mock->shouldReceive('calculateYearFromWeekdayAndDate')->andReturn(2020, 2020, 2021);
         });
-        $this->prepareImportFile('Blockuebersicht.xls');
+        $this->setUpInputFile('Blockuebersicht.xls');
+        /** @var ECamp2BlockOverviewParser $parser */
+        $this->parser = app()->make(ECamp2BlockOverviewParser::class);
 
         // when
         /** @var Collection $result */
@@ -40,7 +44,9 @@ class ECamp2BlockOverviewParserTest extends TestCase {
         $this->mock(DateCalculator::class, function ($mock) {
             $mock->shouldReceive('calculateYearFromWeekdayAndDate')->andReturn(2020, 2020, 2021);
         });
-        $this->prepareImportFile('Blockuebersicht-empty.xls');
+        $this->setUpInputFile('Blockuebersicht-empty.xls');
+        /** @var ECamp2BlockOverviewParser $parser */
+        $this->parser = app()->make(ECamp2BlockOverviewParser::class);
 
         // when
         /** @var Collection $result */
@@ -55,7 +61,9 @@ class ECamp2BlockOverviewParserTest extends TestCase {
         $this->mock(DateCalculator::class, function ($mock) {
             $mock->shouldReceive('calculateYearFromWeekdayAndDate')->andReturn(2020, 2020, 2021);
         });
-        $this->prepareImportFile('Blockuebersicht-cutOff.xls');
+        $this->setUpInputFile('Blockuebersicht-cutOff.xls');
+        /** @var ECamp2BlockOverviewParser $parser */
+        $this->parser = app()->make(ECamp2BlockOverviewParser::class);
 
         // then
         $this->expectException(ECamp2BlockOverviewParsingException::class);
@@ -69,7 +77,9 @@ class ECamp2BlockOverviewParserTest extends TestCase {
         $this->mock(DateCalculator::class, function ($mock) {
             $mock->shouldReceive('calculateYearFromWeekdayAndDate')->andReturn(2020);
         });
-        $this->prepareImportFile('Blockuebersicht-badBezeichnung.xls');
+        $this->setUpInputFile('Blockuebersicht-badBezeichnung.xls');
+        /** @var ECamp2BlockOverviewParser $parser */
+        $this->parser = app()->make(ECamp2BlockOverviewParser::class);
 
         // then
         $this->expectException(ECamp2BlockOverviewParsingException::class);
@@ -83,22 +93,15 @@ class ECamp2BlockOverviewParserTest extends TestCase {
         $this->mock(DateCalculator::class, function ($mock) {
             $mock->shouldReceive('calculateYearFromWeekdayAndDate')->andReturn(2020);
         });
-        $this->prepareImportFile('Blockuebersicht-badDatumUndZeit.xls');
+        $this->setUpInputFile('Blockuebersicht-badDatumUndZeit.xls');
+        /** @var ECamp2BlockOverviewParser $parser */
+        $this->parser = app()->make(ECamp2BlockOverviewParser::class);
 
         // then
         $this->expectException(ECamp2BlockOverviewParsingException::class);
 
         // when
         $this->parser->parse('path/to/file/doesnt/matter/we/are/using/mocks');
-    }
-
-    protected function prepareImportFile($filename) {
-        $this->instance(Xls::class, Mockery::mock(Xls::class, function ($mock) use ($filename) {
-            $mock->shouldReceive('load')->andReturn((new Xls())->load(__DIR__.'/../../../../../resources/' . $filename));
-        })->makePartial());
-
-        /** @var ECamp2BlockOverviewParser $parser */
-        $this->parser = app()->make(ECamp2BlockOverviewParser::class);
     }
 
 }

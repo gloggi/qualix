@@ -2,9 +2,9 @@
 
 namespace App\Services\Import\Participants;
 
+use App\Exceptions\UnsupportedFormatException;
 use App\Models\Course;
 use App\Models\Participant;
-use App\Services\Import\Participants\ParticipantListParser;
 use Illuminate\Support\Collection;
 
 abstract class ParticipantListImporter {
@@ -23,6 +23,7 @@ abstract class ParticipantListImporter {
      * @param string $filePath path to input file containing participants
      * @param Course $course course into which the participants are imported
      * @return Collection list of participants that were imported to the database
+     * @throws UnsupportedFormatException
      */
     public function import(string $filePath, Course $course) {
         $parsedParticipants = $this->parser->parse($filePath);
