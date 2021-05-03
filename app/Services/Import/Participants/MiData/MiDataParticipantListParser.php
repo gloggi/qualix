@@ -5,13 +5,14 @@ namespace App\Services\Import\Participants\MiData;
 use App\Exceptions\MiDataParticipantsListsParsingException;
 use App\Exceptions\UnsupportedFormatException;
 use App\Services\Import\Participants\ParticipantListParser;
+use App\Services\Import\SpreadsheetReaderFactory;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
 class MiDataParticipantListParser implements ParticipantListParser {
-    /** @var PhpSpreadsheet\Reader\BaseReader[] */
-    protected $readers;
+    /** @var SpreadsheetReaderFactory */
+    protected $readerFactory;
 
     protected $firstRowWithData = 2;
     protected $lastRowWithData = 0;
@@ -21,13 +22,8 @@ class MiDataParticipantListParser implements ParticipantListParser {
     protected $scoutNameCol;
     protected $groupCol;
 
-    public function __construct(PhpSpreadsheet\Reader\Xlsx $xlsxReader, PhpSpreadsheet\Reader\Xls $xlsReader, PhpSpreadsheet\Reader\Csv $csvReader) {
-        $this->readers[] = $xlsxReader;
-        $this->readers[] = $xlsReader;
-        $this->readers[] = $csvReader;
-        collect($this->readers)->each(function (PhpSpreadsheet\Reader\BaseReader $reader) {
-            $reader->setReadDataOnly(true);
-        });
+    public function __construct(SpreadsheetReaderFactory $readerFactory) {
+        $this->readerFactory = $readerFactory;
     }
 
     /**
@@ -35,8 +31,7 @@ class MiDataParticipantListParser implements ParticipantListParser {
      *
      * @param string $filePath
      * @return Collection
-     * @throws PhpSpreadsheet\Reader\Exception
-     * @throws PhpSpreadsheet\Exception
+     * @throws UnsupportedFormatException
      */
     public function parse(string $filePath) {
         return $this->readRows($filePath)->map(function (Row $row) {
@@ -51,34 +46,17 @@ class MiDataParticipantListParser implements ParticipantListParser {
     }
 
     /**
-     * Dynamically select the correct reader to read the given spreadsheet file.
-     *
-     * @param $filePath
-     * @return PhpSpreadsheet\Worksheet\Worksheet
-     */
-    protected function readActiveSheet($filePath) {
-        foreach ($this->readers as $reader) {
-            try {
-                return $reader->load($filePath)->getActiveSheet();
-            } catch (PhpSpreadsheet\Exception | \ErrorException $e) {
-                // Not the right reader, try the next one
-            }
-        }
-        throw new UnsupportedFormatException(trans('t.views.admin.participant_import.error_unsupported_format'));
-    }
-
-    /**
      * Read the rows in the given participants list from MiData.
      * Dynamically set COLUMNS
      *
      * @param $filePath
      * @return Collection of rows
-     * @throws PhpSpreadsheet\Exception
-     * @throws PhpSpreadsheet\Reader\Exception
+     * @throws UnsupportedFormatException
      * @throws MiDataParticipantsListsParsingException if no names are found
      */
     protected function readRows($filePath) {
-        $worksheet = $this->readActiveSheet($filePath);
+        $reader = $this->readerFactory->getReader($filePath);
+        $worksheet = $reader->load($filePath)->getActiveSheet();
         $row = $worksheet->getRowIterator(1,1);
         $colIterator = $row->current()->getCellIterator();
         foreach ($colIterator as $col){

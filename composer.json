@@ -19,7 +19,7 @@
     "laravel/socialite": "^5.0",
     "laravel/tinker": "^2.0",
     "laravel/ui": "^3.2.0",
-    "phpoffice/phpspreadsheet": "^1.10",
+    "phpoffice/phpspreadsheet": "^1.16",
     "sentry/sentry-laravel": "^1.9.0",
     "troelskn/laravel-fillable-relations": "master"
   },

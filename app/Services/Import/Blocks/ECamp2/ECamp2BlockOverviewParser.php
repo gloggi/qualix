@@ -3,8 +3,10 @@
 namespace App\Services\Import\Blocks\ECamp2;
 
 use App\Exceptions\ECamp2BlockOverviewParsingException;
+use App\Exceptions\UnsupportedFormatException;
 use App\Services\DateCalculator;
 use App\Services\Import\Blocks\BlockListParser;
+use App\Services\Import\SpreadsheetReaderFactory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -12,8 +14,8 @@ use PhpOffice\PhpSpreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
 class ECamp2BlockOverviewParser implements BlockListParser {
-    /** @var PhpSpreadsheet\Reader\Xls */
-    protected $reader;
+    /** @var SpreadsheetReaderFactory */
+    protected $readerFactory = null;
     /** @var DateCalculator */
     protected $dateCalculator;
 
@@ -25,9 +27,8 @@ class ECamp2BlockOverviewParser implements BlockListParser {
 
     protected static $WEEKDAYS = ['Mo' => 0, 'Di' => 1, 'Mi' => 2, 'Do' => 3, 'Fr' => 4, 'Sa' => 5, 'So' => 6];
 
-    public function __construct(PhpSpreadsheet\Reader\Xls $reader, DateCalculator $dateCalculator) {
-        $this->reader = $reader;
-        $this->reader->setReadDataOnly(true);
+    public function __construct(SpreadsheetReaderFactory $readerFactory, DateCalculator $dateCalculator) {
+        $this->readerFactory = $readerFactory;
 
         // Since the eCamp2 block overview doesn't mention the year, we have to guess it using the
         // weekdays and dates and the fact that the blocks are exported in chronological order.
@@ -42,8 +43,7 @@ class ECamp2BlockOverviewParser implements BlockListParser {
      *
      * @param string $filePath
      * @return Collection
-     * @throws PhpSpreadsheet\Reader\Exception
-     * @throws PhpSpreadsheet\Exception
+     * @throws UnsupportedFormatException
      */
     public function parse(string $filePath) {
         return $this->readRows($filePath)->map(function (Row $row) {
@@ -62,11 +62,11 @@ class ECamp2BlockOverviewParser implements BlockListParser {
      *
      * @param $filePath
      * @return Collection of rows
-     * @throws PhpSpreadsheet\Exception
-     * @throws PhpSpreadsheet\Reader\Exception
+     * @throws UnsupportedFormatException
      */
     protected function readRows($filePath) {
-        $worksheet = $this->reader->load($filePath)->getActiveSheet();
+        $reader = $this->readerFactory->getReader($filePath);
+        $worksheet = $reader->load($filePath)->getActiveSheet();
         if ($worksheet->getHighestRow() < self::$FIRST_ROW_WITH_DATA) {
             return Collection::make();
         }

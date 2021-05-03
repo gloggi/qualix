@@ -2,15 +2,23 @@
 
 namespace Tests\Feature\Admin\Block;
 
+use App\Exceptions\ECamp2BlockOverviewParsingException;
+use App\Exceptions\Handler;
+use App\Exceptions\UnsupportedFormatException;
 use App\Models\Block;
 use App\Models\Observation;
+use App\Services\Import\SpreadsheetReaderFactory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Testing\TestResponse;
 use Mockery;
-use PhpOffice\PhpSpreadsheet\Reader\Xls;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use Tests\ReadsSpreadsheets;
 use Tests\TestCaseWithCourse;
 
 class ImportBlocksTest extends TestCaseWithCourse {
+
+    use ReadsSpreadsheets;
 
     private $payload;
 
@@ -153,9 +161,113 @@ class ImportBlocksTest extends TestCaseWithCourse {
         $response->assertDontSee('In deinem Kurs sind bereits Blöcke definiert. Wenn beim Import eine Blocknummer schon existiert, wird der bestehende Block durch den Import aktualisiert.');
     }
 
-    protected function setUpInputFile($filename) {
-        $this->instance(Xls::class, Mockery::mock(Xls::class, function ($mock) use($filename) {
-            $mock->shouldReceive('load')->andReturn((new Xls())->load(__DIR__.'/../../../resources/' . $filename));
-        })->makePartial());
+    public function test_shouldSupportXLSX() {
+        // given
+        $this->setUpInputFile('Blockuebersicht.xlsx', new Xlsx());
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSeeInOrder([
+            'In der importierten Datei wurden 4 Blöcke gefunden.',
+            'Samstag 21.03.2020',
+            '1.1', 'Erster Block',
+            '1.2', 'Zweiter Block am gleichen Tag',
+            'Sonntag 22.03.2020',
+            '2.1', 'Dritter Block am n\u00e4chsten Tag',
+            '10.10', 'Mehrstellige Blocknummer'
+        ]);
+    }
+
+    public function test_shouldSupportCSV() {
+        // given
+        $csvReader = (new Csv())->setInputEncoding('CP1252');
+        $this->setUpInputFile('Blockuebersicht.csv', $csvReader);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSeeInOrder([
+            'In der importierten Datei wurden 4 Blöcke gefunden.',
+            'Samstag 21.03.2020',
+            '1.1', 'Erster Block',
+            '1.2', 'Zweiter Block am gleichen Tag',
+            'Sonntag 22.03.2020',
+            '2.1', 'Dritter Block am n\u00e4chsten Tag',
+            '10.10', 'Mehrstellige Blocknummer'
+        ]);
+    }
+
+    public function test_shouldReportInvalidFormatToTheUser() {
+        // given
+        $this->get('/course/' . $this->courseId . '/admin/blocks/import');
+        $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
+            $mock->shouldReceive('getReader')->andThrow(new UnsupportedFormatException());
+        });
+
+        $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks/import');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee('Das Dateiformat der Block\u00fcbersicht ist nicht unterst\u00fctzt.');
+    }
+
+    public function test_shouldReportParsingErrorToTheUser() {
+        // given
+        $this->get('/course/' . $this->courseId . '/admin/blocks/import');
+        $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
+            $mock->shouldReceive('getReader')->andThrow(new ECamp2BlockOverviewParsingException('test exception'));
+        });
+
+        $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks/import');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee('test exception');
+    }
+
+    public function test_shouldReportUnknownErrorToTheUserAndToSentry() {
+        // given
+        $this->get('/course/' . $this->courseId . '/admin/blocks/import');
+        $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
+            $mock->shouldReceive('getReader')->andThrow(new \RuntimeException('test runtime exception'));
+        });
+
+        $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
+        $this->mock(Handler::class, function ($mock) {
+            $mock->shouldReceive('report')->once();
+        });
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/blocks/import');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee('Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Blöcke manuell.');
     }
 }

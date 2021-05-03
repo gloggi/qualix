@@ -2,9 +2,9 @@
 
 namespace App\Services\Import\Blocks;
 
+use App\Exceptions\UnsupportedFormatException;
 use App\Models\Block;
 use App\Models\Course;
-use App\Services\Import\Blocks\BlockListParser;
 use Illuminate\Support\Collection;
 
 abstract class BlockListImporter {
@@ -23,6 +23,7 @@ abstract class BlockListImporter {
      * @param string $filePath path to input file containing a description of some blocks
      * @param Course $course course into which the blocks are imported
      * @return Collection list of blocks that were imported to the database
+     * @throws UnsupportedFormatException
      */
     public function import(string $filePath, Course $course) {
         $parsedBlocks = $this->parser->parse($filePath);

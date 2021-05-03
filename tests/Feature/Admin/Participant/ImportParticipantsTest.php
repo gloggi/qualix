@@ -2,16 +2,21 @@
 
 namespace Tests\Feature\Admin\Participant;
 
+use App\Exceptions\Handler;
+use App\Exceptions\MiDataParticipantsListsParsingException;
+use App\Exceptions\UnsupportedFormatException;
+use App\Services\Import\SpreadsheetReaderFactory;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Mockery;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
-use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use Tests\ReadsSpreadsheets;
 use Tests\TestCaseWithCourse;
 
 class ImportParticipantsTest extends TestCaseWithCourse {
+
+    use ReadsSpreadsheets;
 
     private $payload;
 
@@ -42,7 +47,7 @@ class ImportParticipantsTest extends TestCaseWithCourse {
     public function test_importingParticipants_shouldRequireLogin() {
         // given
         auth()->logout();
-        $this->setUpInputFile('event_participation_export.xlsx');
+        $this->setUpInputFile('event_participation_export.xlsx', new Xlsx());
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -54,7 +59,7 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldImportParticipants() {
         // given
-        $this->setUpInputFile('event_participation_export.xlsx');
+        $this->setUpInputFile('event_participation_export.xlsx', new Xlsx());
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -74,7 +79,7 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldConstructNames_whenLastNameColumnIsEntirelyMissing() {
         // given
-        $this->setUpInputFile('event_participation_export-noScoutNameColumn.xlsx');
+        $this->setUpInputFile('event_participation_export-noScoutNameColumn.xlsx', new Xlsx());
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -94,7 +99,7 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldCropOverlyLongParticipantNames() {
         // given
-        $this->setUpInputFile('event_participation_export-longParticipantName.xlsx');
+        $this->setUpInputFile('event_participation_export-longParticipantName.xlsx', new Xlsx());
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -110,7 +115,7 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldShowMessage_whenNoParticipantsInImportedFile() {
         // given
-        $this->setUpInputFile('event_participation_export-empty.xlsx');
+        $this->setUpInputFile('event_participation_export-empty.xlsx', new Xlsx());
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -168,7 +173,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldSupportCSV() {
         // given
-        $this->setUpInputFile('event_participation_export.csv');
+        $csvReader = (new Csv())->setInputEncoding('CP1252');
+        $this->setUpInputFile('event_participation_export.csv', $csvReader);
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -186,17 +192,66 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         ]);
     }
 
-    protected function setUpInputFile($filename) {
-        $fileExtensionMapping = collect([ 'xlsx' => Xlsx::class, 'xls' => Xls::class, 'csv' => Csv::class ]);
-
-        $fileExtensionMapping->each(function ($readerClass, $fileExtension) use ($filename) {
-            $this->instance($readerClass, Mockery::mock($readerClass, function ($mock) use ($filename, $fileExtension, $readerClass) {
-                if (Str::endsWith($filename, '.' . $fileExtension)) {
-                    $mock->shouldReceive('load')->andReturn($this->app->get($readerClass)->load(__DIR__ . '/../../../resources/' . $filename));
-                } else {
-                    $mock->shouldReceive('load')->andThrow(new \ErrorException('Thrown by test'));
-                }
-            })->makePartial());
+    public function test_shouldReportInvalidFormatToTheUser() {
+        // given
+        $this->get('/course/' . $this->courseId . '/admin/participants/import');
+        $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
+            $mock->shouldReceive('getReader')->andThrow(new UnsupportedFormatException());
         });
+
+        $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/participants/import');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee('Das Dateiformat der TN-Liste ist nicht unterst\u00fctzt.');
+    }
+
+    public function test_shouldReportParsingErrorToTheUser() {
+        // given
+        $this->get('/course/' . $this->courseId . '/admin/participants/import');
+        $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
+            $mock->shouldReceive('getReader')->andThrow(new MiDataParticipantsListsParsingException('test exception'));
+        });
+
+        $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/participants/import');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee('test exception');
+    }
+
+    public function test_shouldReportUnknownErrorToTheUserAndToSentry() {
+        // given
+        $this->get('/course/' . $this->courseId . '/admin/participants/import');
+        $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
+            $mock->shouldReceive('getReader')->andThrow(new \RuntimeException('test runtime exception'));
+        });
+
+        $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
+        $this->mock(Handler::class, function ($mock) {
+            $mock->shouldReceive('report')->once();
+        });
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/participants/import');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee('Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Teilnehmenden manuell.');
     }
 }
