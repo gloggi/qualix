@@ -28,7 +28,7 @@
         "cross-env": "^7.0.2",
         "jest": "^26.6.3",
         "laravel-mix": "^6.0.11",
-        "lodash": "^4.17.20",
+        "lodash": "^4.17.21",
         "popper.js": "^1.16.1",
         "postcss": "^8.2.4",
         "prosemirror-gapcursor": "^1.1.5",
