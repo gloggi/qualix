@@ -89,7 +89,10 @@ class HitobitoProvider extends AbstractProvider implements ProviderInterface
     {
         return (new User)->setRaw($user)->map([
             'id' => $user['id'],
-            'nickname' => Arr::get($user, 'nickname'),
+            'nickname' => Arr::get($user, 'nickname') ??
+                Arr::get($user, 'first_name') ??
+                Arr::get($user, 'last_name') ??
+                Arr::first(explode('@', Arr::get($user, 'email'))),
             'name' => Arr::get($user, 'first_name'),
             'email' => Arr::get($user, 'email'),
             'avatar' => Arr::get($user, 'picture'),

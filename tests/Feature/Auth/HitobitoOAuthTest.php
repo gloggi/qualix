@@ -35,12 +35,13 @@ class HitobitoOAuthTest extends TestCase {
         return $result;
     }
 
-    public static function mockHitobitoResponses($hitobitoId, $email, $nickname) {
+    public static function mockHitobitoResponses($hitobitoId, $email, $nickname, $firstName = null, $lastName = null) {
+        $profileResponse = ['id' => $hitobitoId, 'email' => $email, 'nickname' => $nickname, 'first_name' => $firstName, 'last_name' => $lastName];
         $hitobitoMock = new MockHandler([
             // Respond to the authorization_token request
             new Response(200, [], '{"access_token": "abcd"}'),
             // Respond to the profile request
-            new Response(200, [], '{"id": ' . $hitobitoId . ', "email": "' . $email . '", "nickname": "' . $nickname . '"}'),
+            new Response(200, [], json_encode($profileResponse)),
         ]);
         config()->set('services.hitobito.guzzle.handler', $hitobitoMock);
     }
@@ -64,6 +65,69 @@ class HitobitoOAuthTest extends TestCase {
         $this->assertEquals($hitobitoId, $registeredUser->hitobito_id);
         $this->assertEquals($email, $registeredUser->email);
         $this->assertEquals($name, $registeredUser->name);
+    }
+
+    public function test_registerWithMiData_shouldWork_whenNoNicknameSet() {
+        // given
+        $hitobitoId = 123;
+        $email = 'test@hitobito.com';
+        $name = null;
+        $this->mockHitobitoResponses($hitobitoId, $email, $name, 'Firstname', 'Lastname');
+        $this->withSession(['url.intended' => '/some/redirect']);
+
+        // when
+        $state = $this->extractRedirectQueryParams($this->get('/login/hitobito'))['state'];
+        $response = $this->get('/login/hitobito/callback?code=1234&state=' . $state);
+
+        // then
+        $response->assertRedirect('/some/redirect');
+        $registeredUser = HitobitoUser::latest()->first();
+        $this->assertAuthenticatedAs($registeredUser);
+        $this->assertEquals($hitobitoId, $registeredUser->hitobito_id);
+        $this->assertEquals($email, $registeredUser->email);
+        $this->assertEquals('Firstname', $registeredUser->name);
+    }
+
+    public function test_registerWithMiData_shouldWork_whenNoNicknameAndFirstnameSet() {
+        // given
+        $hitobitoId = 123;
+        $email = 'test@hitobito.com';
+        $name = null;
+        $this->mockHitobitoResponses($hitobitoId, $email, $name, null, 'Lastname');
+        $this->withSession(['url.intended' => '/some/redirect']);
+
+        // when
+        $state = $this->extractRedirectQueryParams($this->get('/login/hitobito'))['state'];
+        $response = $this->get('/login/hitobito/callback?code=1234&state=' . $state);
+
+        // then
+        $response->assertRedirect('/some/redirect');
+        $registeredUser = HitobitoUser::latest()->first();
+        $this->assertAuthenticatedAs($registeredUser);
+        $this->assertEquals($hitobitoId, $registeredUser->hitobito_id);
+        $this->assertEquals($email, $registeredUser->email);
+        $this->assertEquals('Lastname', $registeredUser->name);
+    }
+
+    public function test_registerWithMiData_shouldWork_whenNoNicknameAndFirstnameAndLastnameSet() {
+        // given
+        $hitobitoId = 123;
+        $email = 'test@hitobito.com';
+        $name = null;
+        $this->mockHitobitoResponses($hitobitoId, $email, $name, null, null);
+        $this->withSession(['url.intended' => '/some/redirect']);
+
+        // when
+        $state = $this->extractRedirectQueryParams($this->get('/login/hitobito'))['state'];
+        $response = $this->get('/login/hitobito/callback?code=1234&state=' . $state);
+
+        // then
+        $response->assertRedirect('/some/redirect');
+        $registeredUser = HitobitoUser::latest()->first();
+        $this->assertAuthenticatedAs($registeredUser);
+        $this->assertEquals($hitobitoId, $registeredUser->hitobito_id);
+        $this->assertEquals($email, $registeredUser->email);
+        $this->assertEquals('test', $registeredUser->name);
     }
 
     public function test_loginWithMiData_shouldWork() {
