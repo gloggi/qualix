@@ -22,7 +22,6 @@
         "@testing-library/user-event": "^13.1.9",
         "@testing-library/vue": "^5.6.2",
         "axios": "^0.21.1",
-        "babel-core": "^7.0.0-bridge.0",
         "bootstrap": "^4.6.0",
         "bootstrap-vue": "^2.21.2",
         "cross-env": "^7.0.3",
