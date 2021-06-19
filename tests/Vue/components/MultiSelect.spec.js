@@ -385,6 +385,133 @@ describe('single select', () => {
       })
     })
   })
+
+  it('should display the no-options text', async () => {
+    const multiSelect = render(MultiSelect, {
+      props: {
+        options: [],
+        'no-options': 'Test text',
+      },
+      mocks: { '$t': () => {} }
+    })
+
+    expect(multiSelect.container).toHaveTextContent('Test text')
+  })
+
+  it('should be able to submit a form on input', async () => {
+    const formSubmitted = jest.fn()
+    render({
+        template: `
+          <div>
+            <form id="myform" @submit.prevent="formSubmitted"></form>
+            <multi-select :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
+                          submit-on-input="myform"></multi-select>
+          </div>`,
+        components: {MultiSelect},
+        methods: { formSubmitted }
+      }, { mocks: { '$t': () => {} } }
+    )
+
+    userEvent.click(screen.getByRole('combobox'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Foo')).toBeVisible()
+      expect(screen.getByText('Bar')).toBeVisible()
+    })
+
+    userEvent.click(screen.getByText('Bar'))
+
+    await waitFor(() => {
+      expect(formSubmitted).toHaveBeenCalled()
+    })
+
+  })
+
+  it('should emit an input event when mounted', async () => {
+    const onInput = jest.fn()
+    const multiSelect = render({
+        template: `
+          <multi-select :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
+                        @input="onInput" value="2"></multi-select>`,
+        components: { MultiSelect },
+        methods: { onInput }
+      }, { mocks: { '$t': () => {} } }
+    )
+
+    await waitFor(() => {
+      expect(onInput).toHaveBeenCalledWith("2", undefined)
+    })
+
+  })
+
+  it('should emit an input event when an option is selected', async () => {
+    const onInput = jest.fn()
+    const multiSelect = render({
+        template: `
+          <multi-select :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
+                        @input="onInput" value="2"></multi-select>`,
+        components: { MultiSelect },
+        methods: { onInput }
+      }, { mocks: { '$t': () => {} } }
+    )
+
+    await waitFor(() => {
+      expect(onInput).toHaveBeenCalled()
+    })
+
+    onInput.mockClear()
+
+    userEvent.click(screen.getByRole('combobox'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Foo')).toBeVisible()
+      expect(screen.getByText('Bar')).toBeVisible()
+    })
+
+    userEvent.click(screen.getByText('Foo'))
+
+    expect(onInput).toHaveBeenCalledWith("1", null)
+  })
+
+  it('should not emit an update:selected event when mounted', async () => {
+    const onUpdateSelected = jest.fn()
+    const multiSelect = render({
+        template: `
+          <multi-select :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
+                        @update:selected="onUpdateSelected" value="2"></multi-select>`,
+        components: { MultiSelect },
+        methods: { onUpdateSelected }
+      }, { mocks: { '$t': () => {} } }
+    )
+
+    // onUpdateSelected should never be called
+    return expect(waitFor(() => {
+      expect(onUpdateSelected).toHaveBeenCalled()
+    })).rejects.toThrow(/toHaveBeenCalled/)
+  })
+
+  it('should emit an update:selected event when an option is selected', async () => {
+    const onUpdateSelected = jest.fn()
+    const multiSelect = render({
+        template: `
+          <multi-select :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
+                        @update:selected="onUpdateSelected" value="2"></multi-select>`,
+        components: { MultiSelect },
+        methods: { onUpdateSelected }
+      }, { mocks: { '$t': () => {} } }
+    )
+
+    userEvent.click(screen.getByRole('combobox'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Foo')).toBeVisible()
+      expect(screen.getByText('Bar')).toBeVisible()
+    })
+
+    userEvent.click(screen.getByText('Foo'))
+
+    expect(onUpdateSelected).toHaveBeenCalledWith({"id": 1, "label": "Foo"}, null)
+  })
 })
 
 describe('multiple select', () => {
@@ -950,6 +1077,207 @@ describe('multiple select', () => {
       await waitFor(() => {
         expect(multiSelect.container).not.toHaveVisibleTextContent()
         expect(screen.getByTestId('formValue')).toHaveValue('')
+      })
+    })
+  })
+
+  it('should display the no-options text', async () => {
+    const multiSelect = render(MultiSelect, {
+      props: {
+        multiple: true,
+        options: [],
+        'no-options': 'Test text',
+      },
+      mocks: { '$t': () => {} }
+    })
+
+    expect(multiSelect.container).toHaveTextContent('Test text')
+  })
+
+  it('should be able to submit a form on input', async () => {
+    const formSubmitted = jest.fn()
+    render({
+        template: `
+          <div>
+            <form id="myform" @submit.prevent="formSubmitted"></form>
+            <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
+                          submit-on-input="myform"></multi-select>
+          </div>`,
+        components: {MultiSelect},
+        methods: { formSubmitted }
+      }, { mocks: { '$t': () => {} } }
+    )
+
+    userEvent.click(screen.getByRole('combobox'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Foo')).toBeVisible()
+      expect(screen.getByText('Bar')).toBeVisible()
+    })
+
+    userEvent.click(screen.getByText('Bar'))
+
+    await waitFor(() => {
+      expect(formSubmitted).toHaveBeenCalled()
+    })
+
+  })
+
+  it('should emit an input event when mounted', async () => {
+    const onInput = jest.fn()
+    const multiSelect = render({
+        template: `
+          <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
+                        @input="onInput" value="2"></multi-select>`,
+        components: { MultiSelect },
+        methods: { onInput }
+      }, { mocks: { '$t': () => {} } }
+    )
+
+    await waitFor(() => {
+      expect(onInput).toHaveBeenCalledWith("2", undefined)
+    })
+
+  })
+
+  it('should emit an input event when an option is selected', async () => {
+    const onInput = jest.fn()
+    const multiSelect = render({
+        template: `
+          <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
+                        @input="onInput"></multi-select>`,
+        components: { MultiSelect },
+        methods: { onInput }
+      }, { mocks: { '$t': () => {} } }
+    )
+
+    await waitFor(() => {
+      expect(onInput).toHaveBeenCalled()
+    })
+
+    onInput.mockClear()
+
+    userEvent.click(screen.getByRole('combobox'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Foo')).toBeVisible()
+      expect(screen.getByText('Bar')).toBeVisible()
+    })
+
+    userEvent.click(screen.getByText('Foo'))
+
+    await waitFor(() => {
+      expect(onInput).toHaveBeenCalledWith("1", null)
+    })
+  })
+
+  it('should not emit an update:selected event when mounted', async () => {
+    const onUpdateSelected = jest.fn()
+    const multiSelect = render({
+        template: `
+          <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
+                        @update:selected="onUpdateSelected" value="2"></multi-select>`,
+        components: { MultiSelect },
+        methods: { onUpdateSelected }
+      }, { mocks: { '$t': () => {} } }
+    )
+
+    // onUpdateSelected should never be called
+    return expect(waitFor(() => {
+      expect(onUpdateSelected).toHaveBeenCalled()
+    })).rejects.toThrow(/toHaveBeenCalled/)
+  })
+
+  it('should emit an update:selected event when an option is selected', async () => {
+    const onUpdateSelected = jest.fn()
+    const multiSelect = render({
+        template: `
+          <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
+                        @update:selected="onUpdateSelected"></multi-select>`,
+        components: { MultiSelect },
+        methods: { onUpdateSelected }
+      }, { mocks: { '$t': () => {} } }
+    )
+
+    userEvent.click(screen.getByRole('combobox'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Foo')).toBeVisible()
+      expect(screen.getByText('Bar')).toBeVisible()
+    })
+
+    userEvent.click(screen.getByText('Foo'))
+
+    await waitFor(() => {
+      expect(onUpdateSelected).toHaveBeenCalledWith([{"id": 1, "label": "Foo"}], null)
+    })
+  })
+
+  describe('groups', () => {
+    it('should select and display the options from the selected group', async () => {
+      const multiSelect = render(MultiSelect, {
+        props: {
+          multiple: true,
+          options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}, {id: 3, label: 'Baz'}],
+          groups: { Group1: '2,1' }
+        },
+        mocks: { '$t': () => {} }
+      })
+
+      userEvent.click(screen.getByRole('combobox'))
+
+      await waitFor(() => {
+        expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Foo Bar Baz Group1')
+      })
+
+      userEvent.click(screen.getByText('Group1'))
+      await waitFor(() => {
+        expect(screen.getByText('Bar', { selector: '.multiselect__tag span' })).toBeInTheDocument()
+        expect(screen.getByText('Foo', { selector: '.multiselect__tag span' })).toBeInTheDocument()
+      })
+
+      expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Foo Bar Foo Bar Baz Group1')
+
+      userEvent.click(screen.getByText('', { selector: '.multiselect__select' }))
+
+      await waitFor(() => {
+        expect(multiSelect.container).not.toHaveVisibleTextContent('Baz')
+      })
+
+      expect(multiSelect.container).toHaveVisibleTextContent('Foo')
+      expect(multiSelect.container).toHaveVisibleTextContent('Bar')
+    })
+
+    it('should submit a form only after the group values have been auto-selected', async () => {
+      const formSubmitted = jest.fn()
+      render({
+          template: `
+          <div>
+            <form id="myform" @submit.prevent="formSubmitted">
+              <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
+                            :groups="{ Group1: '2,1' }" name="multiselect" submit-on-input="myform"></multi-select>
+            </form>
+          </div>`,
+          components: {MultiSelect},
+          methods: {
+            formSubmitted () {
+              formSubmitted(event.target.elements.multiselect.value)
+            }
+          }
+        }, { mocks: { '$t': () => {} } }
+      )
+
+      userEvent.click(screen.getByRole('combobox'))
+
+      await waitFor(() => {
+        expect(screen.getByText('Foo')).toBeVisible()
+        expect(screen.getByText('Bar')).toBeVisible()
+      })
+
+      userEvent.click(screen.getByText('Group1'))
+
+      await waitFor(() => {
+        expect(formSubmitted).toHaveBeenCalledWith('1,2')
       })
     })
   })
