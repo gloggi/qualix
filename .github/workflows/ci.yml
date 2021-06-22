@@ -60,3 +60,62 @@ jobs:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           event-type: ci-passed
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+
+  get-environment-name:
+    name: "Extract environment name"
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.extract.outputs.environment }}
+    steps:
+      - id: extract
+        run: echo "::set-output name=environment::$(echo $GITHUB_REF | sed -e '/^refs\/heads\/deploy-\(.*\)$/!d;s//\1/')"
+      - env:
+          EXTRACTED: ${{ steps.extract.outputs.environment }}
+        run: 'echo "Extracted environment name: $EXTRACTED"'
+
+  deploy:
+    name: "Deploy"
+    if: ${{ github.event_name == 'push' && needs.get-environment-name.outputs.environment }}
+    needs:
+      - unit-tests
+      - frontend-tests
+      - e2e-tests
+      - get-environment-name
+    environment: ${{ needs.get-environment-name.outputs.environment }}
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - run: sudo apt-get update -y && sudo apt-get install -y lftp
+
+      - uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+
+      - run: sudo apt-get update -y && sudo apt-get install -y lftp
+
+      - uses: ./.github/actions/deploy
+        with:
+          ssh-username: ${{ secrets.SSH_USERNAME }}
+          ssh-host: ${{ secrets.SSH_HOST }}
+          ssh-directory: ${{ secrets.SSH_DIRECTORY }}
+          app-key: ${{ secrets.APP_KEY }}
+          app-url: ${{ secrets.APP_URL }}
+          db-host: ${{ secrets.DB_HOST }}
+          db-database: ${{ secrets.DB_DATABASE }}
+          db-username: ${{ secrets.DB_USERNAME }}
+          db-password: ${{ secrets.DB_PASSWORD }}
+          mail-host: ${{ secrets.MAIL_HOST }}
+          mail-port: ${{ secrets.MAIL_PORT }}
+          mail-username: ${{ secrets.MAIL_USERNAME }}
+          mail-password: ${{ secrets.MAIL_PASSWORD }}
+          mail-from-address: ${{ secrets.MAIL_FROM_ADDRESS }}
+          hitobito-base-url: ${{ secrets.HITOBITO_BASE_URL }}
+          hitobito-client-uid: ${{ secrets.HITOBITO_CLIENT_UID }}
+          hitobito-client-secret: ${{ secrets.HITOBITO_CLIENT_SECRET }}
+          sentry-laravel-dsn: ${{ secrets.SENTRY_LARAVEL_DSN }}
+          sentry-user-feedback-url: ${{ secrets.SENTRY_USER_FEEDBACK_URL }}
+          sentry-csp-report-uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
+          sentry-vue-dsn: ${{ secrets.SENTRY_VUE_DSN }}
