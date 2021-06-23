@@ -2,7 +2,8 @@ name: Nightly
 
 on:
   schedule:
-    - cron: '0 5 * * *'
+    # 03:30 UTC is either 04:30 or 05:30 in CET (swiss time), depending on daylight savings time
+    - cron: '30 3 * * *'
 
 jobs:
   sync-deploy-branch:

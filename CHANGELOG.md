@@ -1,5 +1,8 @@
 # Changelog
 
+##### Juni 2021
+- Updates auf https://qualix.flamberg.ch werden jetzt, ausser in Notfällen, jeweils nur noch in der Nacht eingespielt, damit laufende Kurse nicht tangiert werden [#149](https://github.com/gloggi/qualix/issues/149)
+
 ##### Mai 2021
 - Fix: Der Login via hitobito klappt jetzt auch, wenn man auf der MiData keinen Pfadinamen eingetragen hat [#199](https://github.com/gloggi/qualix/pull/199)
 
@@ -47,7 +50,7 @@
 - Killerkriterien zu Mindestanforderungen umbenannt [#123](https://github.com/gloggi/qualix/pull/123)
 
 ##### Februar 2020
-- Die aktuellsten Features von Qualix werden automatisch auf qualix.flamberg.ch ausgerollt [#113](https://github.com/gloggi/qualix/pull/113)
+- Die aktuellsten Features von Qualix werden automatisch auf https://qualix.flamberg.ch ausgerollt [#113](https://github.com/gloggi/qualix/pull/113)
 
 ##### Januar 2020
 - Multi TN Beobachtungen [#106](https://github.com/gloggi/qualix/pull/106)
