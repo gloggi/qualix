@@ -460,6 +460,7 @@ return array(
 			"error_observation_not_found" => "Eine der eingefügten Beobachtungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirements_changed" => "Die Änderungen konnten nicht gespeichert werden, weil die Anforderungen im Quali inzwischen geändert wurden. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirement_not_found" => "Eine der eingefügten Anforderungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",
+			"form_restored" => "Deine vormalig eingegebenen Änderungen wurden wiederhergestellt, sie sind aber noch nicht gespeichert.",
 			"observed_by" => "Beobachtet von :name",
 			"participant_quali" => ":quali: :participant",
 			"requirements" => [

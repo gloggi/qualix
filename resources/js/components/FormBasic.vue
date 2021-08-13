@@ -1,5 +1,5 @@
 <template>
-  <form :method="formMethod" :action="routeUri(...arrayAction)" :enctype="enctype">
+  <form :method="formMethod" :action="routeUri(...arrayAction)" :enctype="enctype" v-on="$listeners">
     <input-hidden v-if="methodIsNotGet" name="_method" :value="method"></input-hidden>
     <input-hidden v-if="methodIsNotGet" name="_token" :value="csrfToken"></input-hidden>
     <slot></slot>

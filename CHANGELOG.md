@@ -1,5 +1,8 @@
 # Changelog
 
+##### August 2021
+- Wenn das Quali-Formular offen gelassen wird und man sich in der Zwischenzeit in einem anderen Tab wieder anmeldet, kann der Quali-Text jetzt wiederhergestellt werden. [#159](https://github.com/gloggi/qualix/issues/159)
+
 ##### Juni 2021
 - Updates auf https://qualix.flamberg.ch werden jetzt, ausser in Notfällen, jeweils nur noch in der Nacht eingespielt, damit laufende Kurse nicht tangiert werden [#149](https://github.com/gloggi/qualix/issues/149)
 

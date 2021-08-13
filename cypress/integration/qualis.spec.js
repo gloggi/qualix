@@ -4,10 +4,12 @@ describe('quali editor', () => {
   useDatabaseResets()
 
   let courseId
+  let userId
 
   beforeEach(() => {
     cy.then(() => {
       cy.login().then(user => {
+        userId = user.id
         cy.artisan('e2e:scenario', { '--user-id': user.id })
       })
     })
@@ -37,5 +39,27 @@ describe('quali editor', () => {
       });
 
     cy.contains('Text from end-to-end test')
+  })
+
+  it('restores edits to a quali after logging out and back in in another tab', () => {
+    const random = Math.floor(Math.random() * 1000000)
+    const text = 'This text should be restored ' + random
+    cy.visit(`/course/${courseId}/participants`)
+    cy.get('img.card-img-top').first().click()
+    cy.get('td[data-label=Titel] a').first().click()
+    cy.contains('Quali Details')
+
+    cy.get('div.editor.form-control [contenteditable]').first().type(text).type("\n")
+
+    cy.expireSession()
+    cy.login({ id: userId })
+
+    cy.get('.btn-primary').click()
+    cy.contains('419')
+    cy.contains('Seite ist abgelaufen')
+
+    cy.go('back')
+    cy.contains('Deine vormalig eingegebenen Änderungen wurden wiederhergestellt, sie sind aber noch nicht gespeichert.')
+    cy.contains(text)
   })
 })

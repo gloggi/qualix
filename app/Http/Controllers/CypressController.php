@@ -27,4 +27,8 @@ class CypressController extends LaravelCypressController {
             ->make($request->input('attributes'));
     }
 
+    public function expireSession(Request $request) {
+        $request->session()->flush();
+    }
+
 }

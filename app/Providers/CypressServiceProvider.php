@@ -38,6 +38,7 @@ class CypressServiceProvider extends ServiceProvider
                 Route::get('/__cypress__/restore-snapshot/{name?}', 'CypressController@restoreSnapshot');
                 Route::get('/__cypress__/cleanup-snapshots', 'CypressController@cleanupSnapshots');
                 Route::post('/__cypress__/generate', 'CypressController@generate');
+                Route::post('/__cypress__/expire-session', 'CypressController@expireSession');
             });
     }
 }
