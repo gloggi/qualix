@@ -9,6 +9,7 @@
             id="equipe"
             :data="{{ json_encode($course->users) }}"
             :fields="[
+                { label: $t('t.models.user.image'), value: user => user.image_path, type: 'image' },
                 { label: $t('t.models.user.name'), value: user => user.name },
                 { label: $t('t.models.user.email'), value: user => user.email },
             ]"

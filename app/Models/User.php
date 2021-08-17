@@ -13,6 +13,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Parental\HasChildren;
 
 /**
@@ -44,6 +45,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['image_path'];
 
     /**
      * Name of the database column holding the login provider name
@@ -129,6 +137,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function setLastUsedBlockDate($value, Course $course) {
         $this->courses()->updateExistingPivot($course->id, ['last_used_block_date' => Carbon::parse($value)]);
+    }
+
+    /**
+     * Get the linkable relative URL to the participant image.
+     *
+     * @return integer
+     */
+    public function getImagePathAttribute() {
+        return $this->image_url ? asset(Storage::url($this->image_url)) : asset('images/was-gaffsch.svg');
     }
 
 }
