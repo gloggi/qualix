@@ -41,8 +41,6 @@ export default {
       content: this.value ?? null,
       editable: !this.readonly,
       injectCSS: false,
-      // We manually add gapCursor, in order to customize it
-      enableGapCursor: false,
       extensions: [
         new History(),
         new Heading({ levels: [ 3, 5, 6 ] }),
@@ -61,25 +59,11 @@ export default {
       },
     })
 
-    const gapCursorPlugin = gapCursor()
-    // Patch the handleClick function so we can call it ourselves when autofocusing
-    gapCursorPlugin.props.handleClick = (view, pos, event) => {
-      if (!view.editable) return false
-      let $pos = view.state.doc.resolve(pos)
-      if (!GapCursor.valid($pos)) return false
-      const calculatedPos = view.posAtCoords({left: event.clientX, top: event.clientY})
-      if (calculatedPos && calculatedPos.inside > -1 && NodeSelection.isSelectable(view.state.doc.nodeAt(calculatedPos.inside))) return false
-      view.dispatch(view.state.tr.setSelection(new GapCursor($pos)))
-      return true
-    }
-    editor.registerPlugin(gapCursorPlugin)
-
     return {
       editor: editor,
       currentValue: this.value ?? editor.options.emptyDocument,
       focused: false,
       addObservation: null,
-      gapCursor: gapCursorPlugin,
     }
   },
   computed: {
@@ -128,15 +112,18 @@ export default {
     },
     focus(position = 0) {
       const { view } = this.editor, { state } = view
-      const selection = TextSelection.near(state.doc.resolve(position))
+      const resolvedPos = state.doc.resolve(position)
+      const selection = TextSelection.near(resolvedPos)
 
       // If the node at that position is not text, avoid selecting it
       const pos = (selection instanceof TextSelection) ? selection.$anchor.pos : position
       this.editor.focus(pos)
 
       // Activate the gapCursor if appropriate
-      const coords = view.coordsAtPos(pos)
-      this.gapCursor.props.handleClick(this.editor.view, pos, { clientX: -10000, clientY: -10000 })
+      if (!GapCursor.valid(resolvedPos)) return
+      const {tr} = this.editor.state
+      const transaction = tr.setSelection(new GapCursor(resolvedPos))
+      this.editor.view.dispatch(transaction)
     },
   },
   watch: {
