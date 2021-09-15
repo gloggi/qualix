@@ -122,6 +122,6 @@ if (process.env.MIX_SENTRY_VUE_DSN && process.env.MIX_SENTRY_VUE_DSN !== 'null')
       }),
       new Integrations.BrowserTracing(),
     ],
-    tracesSampleRate: 1,
+    tracesSampleRate: 0.1,
   })
 }
