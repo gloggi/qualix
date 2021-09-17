@@ -13,14 +13,10 @@
 
 <script>
 import Input from '../../mixins/input'
-import {EditorContent, EditorFloatingMenu} from 'tiptap'
-import InputHidden from "../form/InputHidden"
-import FloatingMenu from "./FloatingMenu"
 import {get} from "lodash"
 
 export default {
   name: 'InputQualiEditorLarge',
-  components: {FloatingMenu, InputHidden, EditorContent, EditorFloatingMenu},
   mixins: [Input],
   props: {
     readonly: { type: Boolean, default: false },

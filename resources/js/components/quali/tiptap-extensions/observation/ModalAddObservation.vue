@@ -25,39 +25,39 @@
 </template>
 
 <script>
-  import ObservationContent from "../../../ObservationContent"
+import ObservationContent from '../../../ObservationContent'
 
-  export default {
-    name: 'ModalAddObservation',
-    components: {ObservationContent},
-    props: {
-      value: { type: Function, required: false },
-      observations: { type: Array, required: true },
-      returnFocus: { type: Object, required: false },
-      showRequirements: { type: Boolean, default: false },
-      showCategories: { type: Boolean, default: false },
-      showImpression: { type: Boolean, default: false },
-    },
-    inject: [ 'courseId', 'requirements', 'categories' ],
-    computed: {
-      addingObservation: {
-        get() {
-          return !!this.value
-        },
-        set(newValue) {
-          if(newValue === false) {
-            this.$emit('input', null)
-          }
+export default {
+  name: 'ModalAddObservation',
+  components: {ObservationContent},
+  props: {
+    value: {type: Function, required: false},
+    observations: {type: Array, required: true},
+    returnFocus: {type: Object, required: false},
+    showRequirements: {type: Boolean, default: false},
+    showCategories: {type: Boolean, default: false},
+    showImpression: {type: Boolean, default: false},
+  },
+  inject: ['courseId', 'requirements', 'categories'],
+  computed: {
+    addingObservation: {
+      get() {
+        return !!this.value
+      },
+      set(newValue) {
+        if (newValue === false) {
+          this.$emit('input', null)
         }
       }
-    },
-    methods: {
-      select(id) {
-        this.value({ id })
-        this.addingObservation = false
-      }
+    }
+  },
+  methods: {
+    select(id) {
+      this.value({id})
+      this.addingObservation = false
     }
   }
+}
 </script>
 
 <style scoped>

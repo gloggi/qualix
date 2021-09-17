@@ -1,64 +1,47 @@
-import {Node, Plugin} from 'tiptap'
-import { isEqual } from 'lodash'
-import ElementRequirement from "./ElementRequirement"
+import {mergeAttributes, Node} from '@tiptap/core'
+import {VueNodeViewRenderer} from '@tiptap/vue-2'
+import {Plugin} from 'prosemirror-state'
+import {isEqual} from 'lodash'
+import ElementRequirement from './ElementRequirement'
 
-export default class NodeRequirement extends Node {
+const NodeRequirement = ({ readonly }) => Node.create({
+  name: 'requirement',
+  group: 'block',
+  selectable: !readonly,
+  draggable: !readonly,
 
-  constructor(readonly) {
-    super();
-    this.readonly = readonly;
-  }
+  defaultOptions: {
+    readonly: readonly,
+  },
 
-  get name() {
-    return 'requirement'
-  }
-
-  get schema() {
+  addAttributes() {
     return {
-      // here you have to specify all values that can be stored in this node
-      attrs: {
-        id: { default: null },
-        passed: { default: null },
+      id: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-id'),
+        renderHTML: attributes => ({'data-id': attributes.id})
       },
-      group: 'block',
-      selectable: !this.readonly,
-      draggable: !this.readonly,
-      // parseDOM and toDOM is still required to make copy and paste work
-      parseDOM: [{
-        tag: 'element-requirement',
-        getAttrs: dom => ({
-          id: dom.getAttribute('data-id'),
-          passed: dom.getAttribute('data-passed'),
-        }),
-      }],
-      toDOM: node => ['element-requirement', {
-        'data-id': node.attrs.id,
-        'data-passed': node.attrs.passed,
-      }],
+      passed: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-passed'),
+        renderHTML: attributes => ({'data-passed': attributes.passed})
+      },
     }
-  }
+  },
 
-  commands({ type }) {
-    return attrs => (state, dispatch) => {
-      const { selection } = state;
-      const position = selection.$cursor ? selection.$cursor.pos : selection.$to.pos;
-      const node = type.create(attrs);
-      node.attrs.id = attrs.id
-      node.attrs.passed = attrs.passed
-      const transaction = state.tr.insert(position, node);
-      dispatch(transaction);
-    };
-  }
+  parseHTML() {
+    return [{tag: 'element-requirement'}]
+  },
 
-  requirementsInNode(node) {
-    const requirements = []
-    node.descendants(child => {
-      if (child.type.name === 'requirement') requirements.push(child.attrs.id)
-    })
-    return requirements
-  }
+  renderHTML({HTMLAttributes}) {
+    return ['element-requirement', mergeAttributes(HTMLAttributes)]
+  },
 
-  get plugins() {
+  addNodeView() {
+    return VueNodeViewRenderer(ElementRequirement)
+  },
+
+  addProseMirrorPlugins() {
     return [
       new Plugin({
         filterTransaction: (transaction, state) => {
@@ -74,16 +57,30 @@ export default class NodeRequirement extends Node {
 
           // Check that the same requirements are still present in any order after the transaction
           return isEqual(
-            this.requirementsInNode(state.doc.content).sort(),
-            this.requirementsInNode(newState.doc.content).sort()
+            requirementsInNode(state.doc.content).sort(),
+            requirementsInNode(newState.doc.content).sort()
           )
         }
       }),
     ]
-  }
+  },
 
-  get view() {
-    return ElementRequirement;
+  addCommands() {
+    return {
+      allowChangingRequirements: () => ({ tr }) => {
+        tr.setMeta('allowChangingRequirements', true)
+        return true
+      }
+    }
   }
+})
 
+const requirementsInNode = function (node) {
+  const requirements = []
+  node.descendants(child => {
+    if (child.type.name === 'requirement') requirements.push(child.attrs.id)
+  })
+  return requirements
 }
+
+export default NodeRequirement

@@ -24,7 +24,7 @@
 
 <script>
 import Input from '../../mixins/input'
-import {get} from "lodash"
+import {get} from 'lodash'
 
 export default {
   name: 'InputQualiEditor',
@@ -33,7 +33,6 @@ export default {
     label: { type: String, required: true },
     required: { type: Boolean, default: false },
     readonly: { type: Boolean, default: false },
-    autofocus: { type: Boolean, default: false },
     value: { type: Object, default: () => {} },
     requirements: { type: Array, required: true },
     selectedRequirements: { type: String, default: '' }
