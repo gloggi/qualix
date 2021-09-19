@@ -1,7 +1,6 @@
 # Changelog
 
 ##### August 2021
-- Wenn das Quali-Formular offen gelassen wird und man sich in der Zwischenzeit in einem anderen Tab wieder anmeldet, kann der Quali-Text jetzt wiederhergestellt werden. [#159](https://github.com/gloggi/qualix/issues/159)
 - Die Profilbilder der Equipenmitglieder werden jetzt im Kursadministrationsbereich angezeigt
 
 ##### Juni 2021
