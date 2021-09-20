@@ -23,4 +23,5 @@ mix.vue()
    .js('resources/js/print.js', 'public/js')
    .sass('resources/sass/print.scss', 'public/css')
    .copyDirectory('resources/images', 'public/images')
+   .options({ legacyNodePolyfills: false })
    .version();

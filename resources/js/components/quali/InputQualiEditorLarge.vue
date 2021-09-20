@@ -6,8 +6,11 @@
     <quali-editor
       :name="name"
       :class="{ 'form-control': !readonly, 'is-invalid': errorMessage }"
+      :username="username"
+      :signaling-servers="signalingServers"
       v-model="currentValue"
-      v-bind="$attrs"></quali-editor>
+      v-bind="$attrs"
+      @localinput="$emit('localinput')"></quali-editor>
   </div>
 </template>
 
@@ -27,6 +30,14 @@ export default {
       currentValue: JSON.parse(get(window.Laravel.oldInput, this.name, 'null')) ?? this.value
     }
   },
+  computed: {
+    username () {
+      return window.Laravel.username
+    },
+    signalingServers () {
+      return window.Laravel.signalingServers
+    },
+  }
 }
 </script>
 

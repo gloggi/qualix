@@ -29,7 +29,9 @@ describe('quali editor', () => {
     cy.contains('Quali Details')
 
     cy.get('div.editor.form-control [contenteditable]').first().type("Text from end-to-end test\n")
-    cy.get('.btn-primary').click()
+    cy.contains('Speichern...')
+    cy.contains('Automatisch gespeichert')
+    cy.get('a.btn-link').click()
 
     cy.get('[href$="/print"]')
       .then(link => {

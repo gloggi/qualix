@@ -92,6 +92,10 @@ HITOBITO_CLIENT_UID=<snip>
 HITOBITO_CLIENT_SECRET=<snip>
 HITOBITO_CALLBACK_URI=https://qualix.flamberg.ch/login/hitobito/callback
 
+# Collaboration in the quali editor via WebRTC
+COLLABORATION_ENABLED=true
+COLLABORATION_SIGNALING_SERVERS="wss://signaling.yjs.dev wss://y-webrtc-signaling-eu.herokuapp.com wss://y-webrtc-signaling-us.herokuapp.com"
+
 SENTRY_LARAVEL_DSN=<snip>
 SENTRY_USER_FEEDBACK_URL=<snip>
 SENTRY_CSP_REPORT_URI=<snip>

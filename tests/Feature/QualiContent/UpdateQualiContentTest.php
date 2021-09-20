@@ -50,8 +50,7 @@ class UpdateQualiContentTest extends TestCaseWithBasicData {
         $response = $this->post('/course/' . $this->courseId . '/participants/' . $this->participantId . '/qualis/' . $this->qualiId, $this->payload);
 
         // then
-        $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/participants/' . $this->participantId);
+        $response->assertOk();
     }
 
     public function test_shouldUseTiptapFormatterForUpdating() {
@@ -68,8 +67,7 @@ class UpdateQualiContentTest extends TestCaseWithBasicData {
         $response = $this->post('/course/' . $this->courseId . '/participants/' . $this->participantId . '/qualis/' . $this->qualiId, $payload);
 
         // then
-        $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/participants/' . $this->participantId);
+        $response->assertOk();
     }
 
     public function test_shouldValidateNewQualiData_requirementsMismatch() {

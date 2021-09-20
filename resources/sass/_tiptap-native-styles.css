@@ -57,3 +57,64 @@ img.ProseMirror-separator {
 .tippy-box[data-animation=fade][data-state=hidden] {
     opacity: 0
 }
+
+/* Give a remote user a caret */
+.collaboration-cursor__caret {
+    position: relative;
+    margin-left: -1px;
+    margin-right: -1px;
+    border-left: 1px solid #0D0D0D;
+    border-right: 1px solid #0D0D0D;
+    word-break: normal;
+    pointer-events: none;
+}
+
+/* Render the username above the caret */
+.collaboration-cursor__label {
+    position: absolute;
+    top: -1.4em;
+    left: -1px;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    user-select: none;
+    color: white;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px 3px 3px 0;
+    white-space: nowrap;
+}
+
+.bg-0 { background-color: #FFA500 }
+.bg-1 { background-color: #508217 }
+.bg-2 { background-color: #207975 }
+.bg-3 { background-color: #3E1DE2 }
+.bg-4 { background-color: #E6322E }
+.bg-5 { background-color: #A0870B }
+.bg-6 { background-color: #01A017 }
+.bg-7 { background-color: #096FDB }
+.bg-8 { background-color: #D102F2 }
+.bg-9 { background-color: #E85602 }
+.bg-a { background-color: #827C12 }
+.bg-b { background-color: #09C15F }
+.bg-c { background-color: #0025DB }
+.bg-d { background-color: #F20CA2 }
+.bg-e { background-color: #E8830C }
+.bg-f { background-color: #888888 }
+
+.border-0 { border-color: #FFA500 }
+.border-1 { border-color: #508217 }
+.border-2 { border-color: #207975 }
+.border-3 { border-color: #3E1DE2 }
+.border-4 { border-color: #E6322E }
+.border-5 { border-color: #A0870B }
+.border-6 { border-color: #01A017 }
+.border-7 { border-color: #096FDB }
+.border-8 { border-color: #D102F2 }
+.border-9 { border-color: #E85602 }
+.border-a { border-color: #827C12 }
+.border-b { border-color: #09C15F }
+.border-c { border-color: #0025DB }
+.border-d { border-color: #F20CA2 }
+.border-e { border-color: #E8830C }
+.border-f { border-color: #888888 }

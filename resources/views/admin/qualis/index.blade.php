@@ -7,6 +7,7 @@
 
         <form-quali-data
             :action="['admin.qualis.store', { course: {{ $course->id }} }]"
+            course-id="{{ $course->id }}"
             :participants="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
             :participant-groups="{{json_encode(
                 $course->participantGroups->mapWithKeys(function ($group) {

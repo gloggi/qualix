@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      currentValue: get(window.Laravel.oldInput, this.name, this.value)
+      currentValue: JSON.parse(get(window.Laravel.oldInput, this.name, 'false')) || this.value
     }
   },
   computed: {

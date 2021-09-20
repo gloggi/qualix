@@ -10,6 +10,8 @@ return array(
 	"global" => array(
 		"add" => "Hinzufügen",
 		"add_observation" => "Beobachtung erfassen",
+		"autosaved" => "Automatisch gespeichert",
+		"autosaving" => "Speichern...",
 		"close" => "Schliessen",
 		"datepicker" => array(
 			"calendar" => "Kalender",
@@ -456,7 +458,7 @@ return array(
 			"title" => "TN Details",
 		),
 		"quali_content" => array(
-			"back_to_participant" => "Abbrechen",
+			"back_to_participant" => "Zurück zu :name",
 			"error_observation_not_found" => "Eine der eingefügten Beobachtungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirements_changed" => "Die Änderungen konnten nicht gespeichert werden, weil die Anforderungen im Quali inzwischen geändert wurden. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirement_not_found" => "Eine der eingefügten Anforderungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",

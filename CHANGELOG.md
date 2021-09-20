@@ -1,5 +1,8 @@
 # Changelog
 
+##### September 2021
+- Die Inhalte des Quali-Editors werden jetzt automatisch gespeichert, sobald 2 Sekunden lang keine Eingabe getätigt wird. Damit das nicht zu Konflikten mit anderen Nutzenden führt, wird ausserdem der Inhalt des Quali-Editors zwischen allen Browsern synchronisiert, welche dasselbe Quali offen haben. Die Synchronisierung läuft über eine end-to-end-verschlüsselte Direktverbindung zwischen den Browsern [#221](https://github.com/gloggi/qualix/issues/221)
+
 ##### August 2021
 - Die Profilbilder der Equipenmitglieder werden jetzt im Kursadministrationsbereich angezeigt
 

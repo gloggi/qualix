@@ -19,6 +19,11 @@ import Heading from '@tiptap/extension-heading'
 import History from '@tiptap/extension-history'
 import GapCursor from '@tiptap/extension-gapcursor'
 import DropCursor from '@tiptap/extension-dropcursor'
+import Collaboration from '@tiptap/extension-collaboration'
+import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import * as Y from 'yjs'
+import {WebrtcProvider} from 'y-webrtc'
+import {IndexeddbPersistence} from 'y-indexeddb'
 import NodeObservation from './tiptap-extensions/observation/NodeObservation.js'
 import NodeRequirement from './tiptap-extensions/requirement/NodeRequirement.js'
 import GapCursorFocus from './tiptap-extensions/GapCursorFocus'
@@ -30,7 +35,7 @@ export default {
   components: {FloatingMenu, InputHidden, EditorContent, EditorFloatingMenu},
   props: {
     name: { type: String },
-    courseId: { type: String },
+    courseId: { type: String, required: true },
     value: { type: Object, default: null },
     observations: { type: Array, default: () => [] },
     requirements: { type: Array, required: true },
@@ -41,34 +46,40 @@ export default {
     showRequirements: { type: Boolean, default: false },
     showCategories: { type: Boolean, default: false },
     showImpression: { type: Boolean, default: false },
+    username: { type: String, default: null },
+    collaborationKey: { type: String, default: null },
+    signalingServers: { type: Array, default: null },
   },
   data() {
+    const extensions = [
+      Document,
+      Paragraph,
+      Text,
+      Heading.configure({ levels: [ 3, 5, 6 ] }),
+      NodeObservation({ readonly: this.readonly }).configure({ readonly: this.readonly }),
+      NodeRequirement({ readonly: this.readonly }).configure({ readonly: this.readonly }),
+      GapCursor,
+      GapCursorFocus,
+      DropCursor,
+    ]
     const editor = new Editor({
       content: this.value ?? null,
       editable: !this.readonly,
       injectCSS: false,
       autofocus: this.autofocus,
-      extensions: [
-        Document,
-        Paragraph,
-        Text,
-        Heading.configure({ levels: [ 3, 5, 6 ] }),
-        NodeObservation({ readonly: this.readonly }).configure({ readonly: this.readonly }),
-        NodeRequirement({ readonly: this.readonly }).configure({ readonly: this.readonly }),
-        History,
-        GapCursor,
-        GapCursorFocus,
-        DropCursor,
-      ],
+      extensions: this.collaborationKey ? this.withCollaboration(extensions) : this.withHistory(extensions),
       onBlur: () => {
         this.focused = false
       },
       onFocus: () => {
         this.focused = true
       },
-      onUpdate: ({ editor }) => {
+      onUpdate: ({ editor, transaction }) => {
         this.currentValue = editor.getJSON()
         this.$emit('input', this.currentValue)
+        if (!this.isRemoteChange(transaction)) {
+          this.$emit('localinput', this.currentValue)
+        }
       },
     })
     const emptyDocument = editor.getJSON()
@@ -90,6 +101,44 @@ export default {
     }
   },
   methods: {
+    withCollaboration (extensions) {
+      const ydoc = new Y.Doc()
+      const qualiKey = 'qualix-quali-' + this.courseId + '-' + this.collaborationKey.substr(0, 8)
+      const provider = new WebrtcProvider(qualiKey, ydoc, {
+        password: this.collaborationKey.substr(8),
+        ...(this.signalingServers ? { signaling: this.signalingServers } : {})
+      })
+      const offlineSupport = new IndexeddbPersistence(qualiKey, ydoc)
+      return extensions.concat([
+        Collaboration.configure({ document: ydoc }),
+        CollaborationCursor.configure({
+          provider: provider,
+          user: { name: this.username || 'Anonymous', color: null },
+          render: user => {
+            const colorIdentifier = hashCode(user.name).charAt(0)
+
+            const cursor = document.createElement('span')
+            cursor.classList.add('collaboration-cursor__caret')
+            cursor.classList.add('border-' + colorIdentifier)
+
+            const label = document.createElement('div')
+            label.classList.add('collaboration-cursor__label')
+            label.classList.add('bg-' + colorIdentifier)
+
+            label.insertBefore(document.createTextNode(user.name), null)
+            cursor.insertBefore(label, null)
+
+            return cursor
+          },
+        }),
+      ])
+    },
+    withHistory (extensions) {
+      return extensions.concat([ History ])
+    },
+    isRemoteChange(transaction) {
+      return transaction?.meta && Object.hasOwnProperty.apply(transaction.meta, ['y-sync$'])
+    },
     showObservationSelectionModal(insertBeforeCurrentPosition = false) {
       this.addObservation = (attrs) => this.editor.commands.addObservation({ side: insertBeforeCurrentPosition ? -1 : 1, ...attrs })
     },
@@ -113,6 +162,7 @@ export default {
         }
         this.setEditorContent(this.currentValue)
         this.$emit('input', this.currentValue)
+        this.$emit('localinput', this.currentValue)
       }
     },
     setEditorContent(content = {}) {
@@ -155,6 +205,17 @@ export default {
   beforeDestroy() {
     this.editor.destroy()
   },
+}
+
+const hashCode = function (string) {
+  var hash = 0, i, chr
+  if (string.length === 0) return hash
+  for (i = 0; i < string.length; i++) {
+    chr = string.charCodeAt(i)
+    hash = ((hash << 5) - hash) + chr
+    hash |= 0 // Convert to 32bit integer
+  }
+  return Math.abs(hash).toString(16)
 }
 </script>
 

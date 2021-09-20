@@ -31,6 +31,7 @@ class SecurityHeaders {
             $this->getCSPScriptSrc(),
             $this->getCSPStyleSrc(),
             $this->getCSPImgSrc(),
+            $this->getCSPConnectSrc(),
             $this->getCSPReportUri(),
         ]));
     }
@@ -76,10 +77,15 @@ class SecurityHeaders {
         return "img-src 'self' data:";
     }
 
+    protected function getCSPConnectSrc() {
+        if (!env('COLLABORATION_ENABLED')) return '';
+
+        return "connect-src 'self' " . env('COLLABORATION_SIGNALING_SERVERS');
+    }
+
     protected function getCSPReportUri() {
         $reportUri = env('SENTRY_CSP_REPORT_URI', false);
         if ($reportUri) return "report-uri $reportUri&sentry_environment=" . App::environment();
         return '';
     }
-
 }

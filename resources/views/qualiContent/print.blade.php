@@ -16,6 +16,7 @@
     <quali-editor
         readonly
         name=""
+        course-id="{{ $course->id }}"
         :value="{{ json_encode($quali->contents) }}"
         :observations="{{ json_encode($observations) }}"
         :requirements="{{ json_encode($quali->requirements) }}"

@@ -22,6 +22,8 @@
         "@testing-library/user-event": "^13.1.9",
         "@testing-library/vue": "^5.6.2",
         "@tiptap/core": "^2.0.0-beta.106",
+        "@tiptap/extension-collaboration": "^2.0.0-beta.20",
+        "@tiptap/extension-collaboration-cursor": "^2.0.0-beta.21",
         "@tiptap/extension-document": "^2.0.0-beta.13",
         "@tiptap/extension-dropcursor": "^2.0.0-beta.19",
         "@tiptap/extension-gapcursor": "^2.0.0-beta.19",
@@ -50,6 +52,9 @@
         "vue-jest": "^3.0.7",
         "vue-loader": "^15.9.7",
         "vue-multiselect": "^2.1.6",
-        "vue-template-compiler": "^2.6.14"
+        "vue-template-compiler": "^2.6.14",
+        "y-indexeddb": "^9.0.6",
+        "y-webrtc": "^10.2.0",
+        "yjs": "^13.5.12"
     }
 }
