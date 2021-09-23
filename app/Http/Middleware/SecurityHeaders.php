@@ -56,11 +56,6 @@ class SecurityHeaders {
     }
 
     protected function getCSPDefaultSrc() {
-        if (env('MIX_SENTRY_VUE_DSN')) {
-            $parsed = parse_url(env('MIX_SENTRY_VUE_DSN'));
-            $sentryUrl = $parsed['scheme'] . '://' . $parsed['host'] . (isset($parsed['port']) ? ':' . $parsed['port'] : '');
-            return "default-src 'self' $sentryUrl";
-        }
         return "default-src 'self'";
     }
 
@@ -80,7 +75,12 @@ class SecurityHeaders {
     protected function getCSPConnectSrc() {
         if (!env('COLLABORATION_ENABLED')) return '';
 
-        return "connect-src 'self' " . env('COLLABORATION_SIGNALING_SERVERS');
+        $sentryUrl = '';
+        if (env('MIX_SENTRY_VUE_DSN')) {
+            $parsed = parse_url(env('MIX_SENTRY_VUE_DSN'));
+            $sentryUrl = $parsed['scheme'] . '://' . $parsed['host'] . (isset($parsed['port']) ? ':' . $parsed['port'] : '');
+        }
+        return "connect-src 'self' $sentryUrl " . env('COLLABORATION_SIGNALING_SERVERS');
     }
 
     protected function getCSPReportUri() {
