@@ -7,7 +7,10 @@
 
     <div class="d-flex justify-content-between mb-2">
       <slot></slot>
-      <span class="text-secondary btn">{{ autosaveText }} <i class="fas" :class="autosaveIcon"></i></span>
+      <span v-if="!offline" class="text-secondary btn">{{ autosaveText }} <i class="fas" :class="autosaveIcon"></i></span>
+      <help-text v-else id="quali-editor-offline-help" class="text-right w-50" trans="t.views.quali_content.offline_help">
+        <template #question><i class="fas fa-exclamation-triangle mr-2 text-danger"></i></template>
+      </help-text>
     </div>
 
     <input-quali-editor-large
@@ -27,14 +30,10 @@
 </template>
 
 <script>
-import RequirementProgress from './RequirementProgress'
-import QualiEditor from './QualiEditor'
-import FormBasic from '../FormBasic'
 import {debounce} from 'lodash'
 
 export default {
   name: 'FormQualiContent',
-  components: {FormBasic, RequirementProgress, QualiEditor},
   props: {
     action: {},
     courseId: { type: String, required: true },
@@ -51,12 +50,18 @@ export default {
     return {
       json: this.qualiContents,
       saving: false,
+      offline: false,
       debouncedAutosave: debounce(() => {
         this.saving = true
+        this.offline = false
         this.$refs.form.xhrSubmit().then(() => {
           this.saving = false
-        }).catch(() => {
-          window.location.reload()
+        }).catch(err => {
+          if (!err.response && err.request) {
+            this.offline = true
+          } else {
+            window.location.reload()
+          }
         })
       }, 2000)
     }
