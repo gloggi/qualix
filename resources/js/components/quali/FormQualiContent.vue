@@ -7,10 +7,14 @@
 
     <div class="d-flex justify-content-between mb-2">
       <slot></slot>
-      <span v-if="!offline" class="text-secondary btn">{{ autosaveText }} <i class="fas" :class="autosaveIcon"></i></span>
-      <help-text v-else id="quali-editor-offline-help" class="text-right w-50" trans="t.views.quali_content.offline_help">
+      <help-text v-if="offline" id="quali-editor-offline-help" class="text-right w-50" trans="t.views.quali_content.offline_help">
         <template #question><i class="fas fa-exclamation-triangle mr-2 text-danger"></i></template>
       </help-text>
+      <help-text v-else-if="loggedOut" id="quali-editor-logged-out-help" class="text-right w-50" trans="t.views.quali_content.logged_out_help">
+        <template #question><i class="fas fa-exclamation-triangle mr-2 text-danger"></i></template>
+        {{ $t('t.views.quali_content.logged_out_help.answer') }} <a href="#" @click.prevent="refreshCsrf">{{ $t('t.views.quali_content.logged_out_help.click_here_to_log_back_in') }}</a>
+      </help-text>
+      <span v-else class="text-secondary btn">{{ autosaveText }} <i class="fas" :class="autosaveIcon"></i></span>
     </div>
 
     <input-quali-editor-large
@@ -25,6 +29,7 @@
       :show-categories="showCategories"
       :show-impression="showImpression"
       :collaboration-key="collaborationKey"
+      :mark-invalid="offline || loggedOut"
       @localinput="debouncedAutosave()"></input-quali-editor-large>
   </form-basic>
 </template>
@@ -51,19 +56,8 @@ export default {
       json: this.qualiContents,
       saving: false,
       offline: false,
-      debouncedAutosave: debounce(() => {
-        this.saving = true
-        this.offline = false
-        this.$refs.form.xhrSubmit().then(() => {
-          this.saving = false
-        }).catch(err => {
-          if (!err.response && err.request) {
-            this.offline = true
-          } else {
-            window.location.reload()
-          }
-        })
-      }, 2000)
+      loggedOut: false,
+      debouncedAutosave: debounce(this.autosave, 2000)
     }
   },
   computed: {
@@ -78,6 +72,33 @@ export default {
     autosaveIcon() {
       return this.saving ? 'fa-spinner' : 'fa-check'
     },
+  },
+  methods: {
+    refreshCsrf () {
+      window.updateCsrf = csrf => {
+        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf;
+        // No need to debounce this, we want immediate saving here
+        this.autosave()
+        window.updateCsrf = undefined
+      }
+      window.open(this.routeUri('refreshCsrf'))
+    },
+    autosave () {
+      this.saving = true
+      this.offline = false
+      this.loggedOut = false
+      this.$refs.form.xhrSubmit().then(() => {
+        this.saving = false
+      }).catch(err => {
+        if (!err.response && err.request) {
+          this.offline = true
+        } else if (err.response && err.response.status === 419) {
+          this.loggedOut = true
+        } else {
+          window.location.reload()
+        }
+      })
+    }
   }
 }
 </script>

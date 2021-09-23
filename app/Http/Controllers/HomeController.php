@@ -56,4 +56,13 @@ class HomeController extends Controller
         return Redirect::route('home');
     }
 
+    /**
+     * Show a page for refreshing the CSRF token on an expired form.
+     *
+     * @return View
+     */
+    public function refreshCsrf() {
+        return view('pages.refreshCsrf');
+    }
+
 }

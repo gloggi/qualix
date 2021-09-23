@@ -126,6 +126,8 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
 
     Route::get('/newcourse', [CourseController::class, 'create'])->name('admin.newcourse');
     Route::post('/newcourse', [CourseController::class, 'store'])->name('admin.newcourse.store');
+
+    Route::get('/refreshCsrf', [HomeController::class, 'refreshCsrf'])->name('refreshCsrf');
 });
 
 Auth::routes(['verify' => true]);

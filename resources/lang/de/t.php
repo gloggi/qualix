@@ -462,9 +462,14 @@ return array(
 			"error_observation_not_found" => "Eine der eingefügten Beobachtungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirements_changed" => "Die Änderungen konnten nicht gespeichert werden, weil die Anforderungen im Quali inzwischen geändert wurden. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirement_not_found" => "Eine der eingefügten Anforderungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",
+			"logged_out_help" => array(
+				"answer" => "Du bist inzwischen nicht mehr eingeloggt.",
+				"click_here_to_log_back_in" => "Klicke hier um dich wieder einzuloggen und weiterzuarbeiten.",
+				"question" => "Nicht mehr eingeloggt!",
+			),
 			"observed_by" => "Beobachtet von :name",
 			"offline_help" => array(
-				"answer" => "Aktuell ist keine Verbindung zum Qualix-Server möglich. Behalte diese Seite offen. Wenn du wieder online bist, bis dann noch eingeloggt bist und weiterbearbeitest, werden deine Änderungen gespeichert.",
+				"answer" => "Aktuell ist keine Verbindung zum Qualix-Server möglich. Behalte diese Seite offen. Du kannst normal weiterarbeiten, und wenn du wieder online bist werden deine Änderungen gespeichert.",
 				"question" => "Keine Internetverbindung!",
 			),
 			"participant_quali" => ":quali: :participant",

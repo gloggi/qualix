@@ -37,6 +37,7 @@ export default {
   methods: {
     xhrSubmit() {
       const formData = new FormData(this.$refs.form)
+      formData.delete('_token')
       return window.axios({
         method: this.formMethod,
         url: this.routeUri(...this.arrayAction),

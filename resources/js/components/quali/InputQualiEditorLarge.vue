@@ -5,7 +5,7 @@
     </div>
     <quali-editor
       :name="name"
-      :class="{ 'form-control': !readonly, 'is-invalid': errorMessage }"
+      :class="{ 'form-control': !readonly, 'is-invalid': errorMessage || markInvalid }"
       :username="username"
       :signaling-servers="signalingServers"
       v-model="currentValue"
@@ -24,6 +24,7 @@ export default {
   props: {
     readonly: { type: Boolean, default: false },
     value: { type: Object },
+    markInvalid: { type: Boolean, default: false },
   },
   data() {
     return {
