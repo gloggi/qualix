@@ -74,13 +74,18 @@ export default {
       onFocus: () => {
         this.focused = true
       },
-      onUpdate: ({ editor, transaction }) => {
-        this.currentValue = editor.getJSON()
-        this.$emit('input', this.currentValue)
-        if (!this.isRemoteChange(transaction)) {
-          this.$emit('localinput', this.currentValue)
-        }
-      },
+      onCreate: ({ editor }) => {
+        let creating = true
+        editor.on('update', ({editor, transaction}) => {
+          this.currentValue = editor.getJSON()
+          this.$emit('input', this.currentValue)
+          // onUpdate is also called while creating the editor, so filter that call out
+          if (!this.isRemoteChange(transaction) && !creating) {
+            this.$emit('localinput', this.currentValue)
+          }
+          creating = false
+        })
+      }
     })
     const emptyDocument = editor.getJSON()
 
@@ -191,9 +196,6 @@ export default {
   },
   mounted() {
     this.updateContentWithRequirementIds(this.qualiRequirements)
-
-    // Necessary in case we have oldInput that the outside world doesn't know about
-    if (this.currentValue !== this.value) this.$emit('input', this.currentValue)
 
     // Two ticks after mounted, the HTML is rendered correctly
     this.$nextTick(() => {
