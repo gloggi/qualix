@@ -3,7 +3,7 @@
 @section('content')
     <b-card>
         <template #header>{{__('Register')}}</template>
-        @if (!empty(config('HITOBITO_BASE_URL')))
+        @if (!empty(env('HITOBITO_BASE_URL')))
             <div class="form-group row required">
                 <div class="col-md-6 offset-md-3">
                     <a
