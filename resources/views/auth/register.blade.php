@@ -3,21 +3,23 @@
 @section('content')
     <b-card>
         <template #header>{{__('Register')}}</template>
-        <div class="form-group row required">
-            <div class="col-md-6 offset-md-3">
-                <a
-                    class="w-100 btn btn-hitobito form-control{{ $errors->has('hitobito') ? ' is-invalid' : '' }}"
-                    href="{{ route('login.hitobito') }}">
-                    {{ __('t.views.register.via_midata') }}
-                </a>
-                @if ($errors->has('hitobito'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('hitobito') }}</strong>
-                    </span>
-                @endif
+        @if (!empty(env('HITOBITO_BASE_URL')))
+            <div class="form-group row required">
+                <div class="col-md-6 offset-md-3">
+                    <a
+                        class="w-100 btn btn-hitobito form-control{{ $errors->has('hitobito') ? ' is-invalid' : '' }}"
+                        href="{{ route('login.hitobito') }}">
+                        {{ __('t.views.register.via_midata') }}
+                    </a>
+                    @if ($errors->has('hitobito'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('hitobito') }}</strong>
+                        </span>
+                    @endif
+                </div>
             </div>
-        </div>
-        <div class="hr-label">{{ __('t.global.or') }}</div>
+            <div class="hr-label">{{ __('t.global.or') }}</div>
+        @endif
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
