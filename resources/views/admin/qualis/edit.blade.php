@@ -7,7 +7,8 @@
 
         <form-quali-data
             :action="['admin.qualis.update', { course: {{ $course->id }}, quali_data: {{ $quali_data->id }} }]"
-            name="{{ $quali_data->name }}"
+            course-id="{{ $course->id }}"
+            :name="{{ json_encode($quali_data->name) }}"
             :qualis="{{ json_encode($quali_data->qualis) }}"
             :participants="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
             :participant-groups="{{json_encode(

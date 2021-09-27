@@ -39,6 +39,7 @@
           :requirements="requirements"
           :selected-requirements="requirementsFormValue"
           label=""
+          :course-id="courseId"
         ></input-quali-editor>
       </b-collapse>
     </template>
@@ -76,6 +77,7 @@ export default {
   components: {HelpText},
   props: {
     action: {},
+    courseId: { type: String, required: true },
     name: { type: String, required: false },
     qualis: { type: Array, default: undefined },
     participants: { type: Array, required: true },

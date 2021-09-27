@@ -1,5 +1,5 @@
 <template>
-  <form :method="formMethod" :action="routeUri(...arrayAction)" :enctype="enctype" v-on="$listeners">
+  <form :method="formMethod" :action="routeUri(...arrayAction)" :enctype="enctype" ref="form">
     <input-hidden v-if="methodIsNotGet" name="_method" :value="method"></input-hidden>
     <input-hidden v-if="methodIsNotGet" name="_token" :value="csrfToken"></input-hidden>
     <slot></slot>
@@ -33,6 +33,17 @@ export default {
     formMethod() {
       return this.methodIsNotGet ? 'POST' : 'GET'
     },
+  },
+  methods: {
+    xhrSubmit() {
+      const formData = new FormData(this.$refs.form)
+      formData.delete('_token')
+      return window.axios({
+        method: this.formMethod,
+        url: this.routeUri(...this.arrayAction),
+        data: formData
+      })
+    }
   }
 }
 </script>

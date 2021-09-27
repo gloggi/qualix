@@ -1,7 +1,9 @@
 # Changelog
 
+##### September 2021
+- Die Inhalte des Quali-Editors werden jetzt automatisch gespeichert, sobald 2 Sekunden lang keine Eingabe getätigt wird. Damit das nicht zu Konflikten mit anderen Nutzenden führt, wird ausserdem der Inhalt des Quali-Editors zwischen allen Browsern synchronisiert, welche dasselbe Quali offen haben. Die Synchronisierung läuft über eine end-to-end-verschlüsselte Direktverbindung zwischen den Browsern [#221](https://github.com/gloggi/qualix/issues/221)
+
 ##### August 2021
-- Wenn das Quali-Formular offen gelassen wird und man sich in der Zwischenzeit in einem anderen Tab wieder anmeldet, kann der Quali-Text jetzt wiederhergestellt werden. [#159](https://github.com/gloggi/qualix/issues/159)
 - Die Profilbilder der Equipenmitglieder werden jetzt im Kursadministrationsbereich angezeigt
 
 ##### Juni 2021

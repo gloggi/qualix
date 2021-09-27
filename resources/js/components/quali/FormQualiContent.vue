@@ -1,9 +1,5 @@
 <template>
-  <form-basic :action="action" @submit.prevent="onSubmit">
-    <b-alert v-if="restoreWarning" variant="warning" show dismissible fade>
-      {{ restoreWarning }}
-    </b-alert>
-
+  <form-basic :action="action" ref="form">
     <div class="mb-3" v-if="localRequirements.length">
       <h5>{{ $t('t.views.quali_content.requirements_status') }}</h5>
       <requirement-progress :requirements="localRequirements"></requirement-progress>
@@ -11,7 +7,14 @@
 
     <div class="d-flex justify-content-between mb-2">
       <slot></slot>
-      <button type="submit" class="btn btn-primary">{{ $t('t.global.save')}}</button>
+      <help-text v-if="offline" id="quali-editor-offline-help" class="text-right w-50" trans="t.views.quali_content.offline_help">
+        <template #question><i class="fas fa-exclamation-triangle mr-2 text-danger"></i></template>
+      </help-text>
+      <help-text v-else-if="loggedOut" id="quali-editor-logged-out-help" class="text-right w-50" trans="t.views.quali_content.logged_out_help">
+        <template #question><i class="fas fa-exclamation-triangle mr-2 text-danger"></i></template>
+        {{ $t('t.views.quali_content.logged_out_help.answer') }} <a href="#" @click.prevent="refreshCsrf">{{ $t('t.views.quali_content.logged_out_help.click_here_to_log_back_in') }}</a>
+      </help-text>
+      <span v-else class="text-secondary btn">{{ autosaveText }} <i class="fas" :class="autosaveIcon"></i></span>
     </div>
 
     <input-quali-editor-large
@@ -25,23 +28,20 @@
       :show-requirements="showRequirements"
       :show-categories="showCategories"
       :show-impression="showImpression"
-      @input="onInput"></input-quali-editor-large>
+      :collaboration-key="collaborationKey"
+      :mark-invalid="offline || loggedOut"
+      @localinput="debouncedAutosave()"></input-quali-editor-large>
   </form-basic>
 </template>
 
 <script>
-import RequirementProgress from './RequirementProgress'
-import QualiEditor from './QualiEditor'
-import FormBasic from '../FormBasic'
-import {get, isEqual} from 'lodash'
+import {debounce} from 'lodash'
 
 export default {
   name: 'FormQualiContent',
-  components: {FormBasic, RequirementProgress, QualiEditor},
   props: {
     action: {},
-    courseId: { type: String },
-    qualiId: { type: String },
+    courseId: { type: String, required: true },
     qualiContents: { type: Object, required: true },
     observations: { type: Array, default: () => [] },
     requirements: { type: Array, default: () => [] },
@@ -49,11 +49,15 @@ export default {
     showRequirements: { type: Boolean, default: false },
     showCategories: { type: Boolean, default: false },
     showImpression: { type: Boolean, default: false },
+    collaborationKey: { type: String, default: null },
   },
   data() {
     return {
       json: this.qualiContents,
-      restoreWarning: undefined,
+      saving: false,
+      offline: false,
+      loggedOut: false,
+      debouncedAutosave: debounce(this.autosave, 2000)
     }
   },
   computed: {
@@ -62,60 +66,38 @@ export default {
         .filter(node => node.type === 'requirement')
         .map(node => ({ pivot: node.attrs }))
     },
-    storageKey() {
-      return 'quali' + this.qualiId
-    }
+    autosaveText() {
+      return this.saving ? this.$t('t.global.autosaving') : this.$t('t.global.autosaved')
+    },
+    autosaveIcon() {
+      return this.saving ? 'fa-spinner' : 'fa-check'
+    },
   },
   methods: {
-    onInput() {
-      this.saveToLocalStorage()
+    refreshCsrf () {
+      window.updateCsrf = csrf => {
+        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf;
+        // No need to debounce this, we want immediate saving here
+        this.autosave()
+        window.updateCsrf = undefined
+      }
+      window.open(this.routeUri('refreshCsrf'))
     },
-    async onSubmit({ target: form }) {
-      this.saveToLocalStorage()
-      await window.axios.post(window.Laravel.routes['csrf.check'].uri).then(() => {}).catch((error) => {
-        if (error.response.status === 419) {
-          // Don't clear the stored form value when the request fails with 419 Page Expired.
-          // This is the case when the CSRF token expired or the user logged out and back in
-          // in another tab. This is the exact case when we need the stored form value.
-          this.disableAutoClearLocalStorage()
+    autosave () {
+      this.saving = true
+      this.offline = false
+      this.loggedOut = false
+      this.$refs.form.xhrSubmit().then(() => {
+        this.saving = false
+      }).catch(err => {
+        if (!err.response && err.request) {
+          this.offline = true
+        } else if (err.response && err.response.status === 419) {
+          this.loggedOut = true
+        } else {
+          window.location.reload()
         }
       })
-      form.submit()
-    },
-    saveToLocalStorage() {
-      localStorage.setItem(this.storageKey, JSON.stringify(this.json))
-    },
-    clearLocalStorage() {
-      localStorage.removeItem(this.storageKey)
-    },
-    loadFromLocalStorage() {
-      const stored = localStorage.getItem(this.storageKey)
-      if (!stored) return
-
-      const value = JSON.parse(stored)
-      // Avoid showing the warning when nothing really changed
-      if (isEqual(this.json, value)) return
-
-      this.json = JSON.parse(stored)
-      this.restoreWarning = this.$t('t.views.quali_content.form_restored')
-    },
-    enableAutoClearLocalStorage() {
-      window.onbeforeunload = this.clearLocalStorage
-    },
-    disableAutoClearLocalStorage() {
-      window.onbeforeunload = undefined
-    }
-  },
-  mounted () {
-    this.enableAutoClearLocalStorage()
-
-    if (JSON.parse(get(window.Laravel.oldInput, 'quali_contents', 'false'))) {
-      // If there is old input, keep it, it might be more up to date because it must have come
-      // directly from the user submitting a form
-      this.saveToLocalStorage()
-    } else {
-      // Otherwise if there is a locally stored value, load that
-      this.loadFromLocalStorage()
     }
   }
 }

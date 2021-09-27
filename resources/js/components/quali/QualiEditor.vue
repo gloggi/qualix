@@ -1,30 +1,41 @@
 <template>
   <div class="editor" :class="{ 'focus': focused }">
-    <editor-floating-menu v-if="!readonly" :editor="editor" v-slot="{ commands, menu }">
-      <floating-menu :observations="observations" :commands="commands" :menu="menu" @addObservation="showObservationSelectionModal"/>
+    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation" :return-focus="{ $el: { focus: () => editor.commands.focus() } }" :show-requirements="showRequirements" :show-categories="showCategories" :show-impression="showImpression"></modal-add-observation>
+    <input-hidden v-if="name" :value="formValue" :name="name"></input-hidden>
+    <editor-floating-menu v-if="!readonly && editor" :editor="editor" :tippy-options="{ zIndex: 1 }">
+      <floating-menu :observations="observations" :editor="editor" @addObservation="showObservationSelectionModal(true)"/>
     </editor-floating-menu>
     <editor-content class="editor-content" :class="{ readonly }" :editor="editor" />
-    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation" :return-focus="{ $el: { focus: () => focus(editor.state.selection.$head.pos) } }" :show-requirements="showRequirements" :show-categories="showCategories" :show-impression="showImpression"></modal-add-observation>
-    <input-hidden v-if="name" :value="formValue" :name="name"></input-hidden>
   </div>
 </template>
 
 <script>
-import {sortBy, isEqual, cloneDeep} from 'lodash'
-import {Editor, EditorContent, EditorFloatingMenu, TextSelection} from 'tiptap'
-import {History, Heading} from 'tiptap-extensions'
-import {GapCursor, gapCursor} from 'prosemirror-gapcursor'
-import Observation from './tiptap-extensions/observation/NodeObservation'
-import Requirement from './tiptap-extensions/requirement/NodeRequirement'
-import InputHidden from "../form/InputHidden"
-import FloatingMenu from "./FloatingMenu"
+import {cloneDeep, isEqual, sortBy} from 'lodash'
+import {Editor, EditorContent, FloatingMenu as EditorFloatingMenu} from '@tiptap/vue-2'
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
+import Heading from '@tiptap/extension-heading'
+import History from '@tiptap/extension-history'
+import GapCursor from '@tiptap/extension-gapcursor'
+import DropCursor from '@tiptap/extension-dropcursor'
+import Collaboration from '@tiptap/extension-collaboration'
+import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import * as Y from 'yjs'
+import {WebrtcProvider} from 'y-webrtc'
+import {IndexeddbPersistence} from 'y-indexeddb'
+import NodeObservation from './tiptap-extensions/observation/NodeObservation.js'
+import NodeRequirement from './tiptap-extensions/requirement/NodeRequirement.js'
+import GapCursorFocus from './tiptap-extensions/GapCursorFocus'
+import InputHidden from '../form/InputHidden'
+import FloatingMenu from './FloatingMenu'
 
 export default {
   name: 'QualiEditor',
   components: {FloatingMenu, InputHidden, EditorContent, EditorFloatingMenu},
   props: {
     name: { type: String },
-    courseId: { type: String },
+    courseId: { type: String, required: true },
     value: { type: Object, default: null },
     observations: { type: Array, default: () => [] },
     requirements: { type: Array, required: true },
@@ -35,51 +46,55 @@ export default {
     showRequirements: { type: Boolean, default: false },
     showCategories: { type: Boolean, default: false },
     showImpression: { type: Boolean, default: false },
+    username: { type: String, default: null },
+    collaborationKey: { type: String, default: null },
+    signalingServers: { type: Array, default: null },
   },
   data() {
+    const extensions = [
+      Document,
+      Paragraph,
+      Text,
+      Heading.configure({ levels: [ 3, 5, 6 ] }),
+      NodeObservation({ readonly: this.readonly }).configure({ readonly: this.readonly }),
+      NodeRequirement({ readonly: this.readonly }).configure({ readonly: this.readonly }),
+      GapCursor,
+      GapCursorFocus,
+      DropCursor,
+    ]
     const editor = new Editor({
       content: this.value ?? null,
       editable: !this.readonly,
       injectCSS: false,
-      // We manually add gapCursor, in order to customize it
-      enableGapCursor: false,
-      extensions: [
-        new History(),
-        new Heading({ levels: [ 3, 5, 6 ] }),
-        new Observation(this.readonly),
-        new Requirement(this.readonly),
-      ],
+      autofocus: this.autofocus,
+      extensions: this.collaborationKey ? this.withCollaboration(extensions) : this.withHistory(extensions),
       onBlur: () => {
         this.focused = false
       },
       onFocus: () => {
         this.focused = true
       },
-      onUpdate: ({ getJSON }) => {
-        this.currentValue = getJSON()
-        this.$emit('input', this.currentValue)
-      },
+      onCreate: ({ editor }) => {
+        let creating = true
+        editor.on('update', ({editor, transaction}) => {
+          this.currentValue = editor.getJSON()
+          this.$emit('input', this.currentValue)
+          // onUpdate is also called while creating the editor, so filter that call out
+          if (!this.isRemoteChange(transaction) && !creating) {
+            this.$emit('localinput', this.currentValue)
+          }
+          creating = false
+        })
+      }
     })
-
-    const gapCursorPlugin = gapCursor()
-    // Patch the handleClick function so we can call it ourselves when autofocusing
-    gapCursorPlugin.props.handleClick = (view, pos, event) => {
-      if (!view.editable) return false
-      let $pos = view.state.doc.resolve(pos)
-      if (!GapCursor.valid($pos)) return false
-      const calculatedPos = view.posAtCoords({left: event.clientX, top: event.clientY})
-      if (calculatedPos && calculatedPos.inside > -1 && NodeSelection.isSelectable(view.state.doc.nodeAt(calculatedPos.inside))) return false
-      view.dispatch(view.state.tr.setSelection(new GapCursor($pos)))
-      return true
-    }
-    editor.registerPlugin(gapCursorPlugin)
+    const emptyDocument = editor.getJSON()
 
     return {
       editor: editor,
-      currentValue: this.value ?? editor.options.emptyDocument,
+      currentValue: this.value ?? emptyDocument,
+      emptyDocument,
       focused: false,
       addObservation: null,
-      gapCursor: gapCursorPlugin,
     }
   },
   computed: {
@@ -87,12 +102,50 @@ export default {
       return JSON.stringify(this.currentValue)
     },
     getEmptyParagraph() {
-      return () => cloneDeep(this.editor.options.emptyDocument.content[0])
+      return () => cloneDeep(this.emptyDocument.content[0])
     }
   },
   methods: {
-    showObservationSelectionModal() {
-      this.addObservation = this.editor.commands.observation
+    withCollaboration (extensions) {
+      const ydoc = new Y.Doc()
+      const qualiKey = 'qualix-quali-' + this.courseId + '-' + this.collaborationKey.substr(0, 8)
+      const provider = new WebrtcProvider(qualiKey, ydoc, {
+        password: this.collaborationKey.substr(8),
+        ...(this.signalingServers ? { signaling: this.signalingServers } : {})
+      })
+      const offlineSupport = new IndexeddbPersistence(qualiKey, ydoc)
+      return extensions.concat([
+        Collaboration.configure({ document: ydoc }),
+        CollaborationCursor.configure({
+          provider: provider,
+          user: { name: this.username || 'Anonymous', color: null },
+          render: user => {
+            const colorIdentifier = hashCode(user.name).charAt(0)
+
+            const cursor = document.createElement('span')
+            cursor.classList.add('collaboration-cursor__caret')
+            cursor.classList.add('border-' + colorIdentifier)
+
+            const label = document.createElement('div')
+            label.classList.add('collaboration-cursor__label')
+            label.classList.add('bg-' + colorIdentifier)
+
+            label.insertBefore(document.createTextNode(user.name), null)
+            cursor.insertBefore(label, null)
+
+            return cursor
+          },
+        }),
+      ])
+    },
+    withHistory (extensions) {
+      return extensions.concat([ History ])
+    },
+    isRemoteChange(transaction) {
+      return transaction?.meta && Object.hasOwnProperty.apply(transaction.meta, ['y-sync$'])
+    },
+    showObservationSelectionModal(insertBeforeCurrentPosition = false) {
+      this.addObservation = (attrs) => this.editor.commands.addObservation({ side: insertBeforeCurrentPosition ? -1 : 1, ...attrs })
     },
     isRequirementWithIdNotIn(node, requirementIds) {
       return node.type === 'requirement' && !requirementIds.includes(node.attrs.id)
@@ -114,29 +167,17 @@ export default {
         }
         this.setEditorContent(this.currentValue)
         this.$emit('input', this.currentValue)
+        this.$emit('localinput', this.currentValue)
       }
     },
     setEditorContent(content = {}) {
-      const {
-        doc,
-        tr
-      } = this.editor.state;
-      const document = this.editor.createDocument(content);
-      const selection = TextSelection.create(doc, 0, doc.content.size);
-      const transaction = tr.setSelection(selection).replaceSelectionWith(document, false).setMeta('allowChangingRequirements', true);
-      this.editor.view.dispatch(transaction);
+      this.editor.chain()
+        .allowChangingRequirements()
+        .setContent(content)
+        .run()
     },
     focus(position = 0) {
-      const { view } = this.editor, { state } = view
-      const selection = TextSelection.near(state.doc.resolve(position))
-
-      // If the node at that position is not text, avoid selecting it
-      const pos = (selection instanceof TextSelection) ? selection.$anchor.pos : position
-      this.editor.focus(pos)
-
-      // Activate the gapCursor if appropriate
-      const coords = view.coordsAtPos(pos)
-      this.gapCursor.props.handleClick(this.editor.view, pos, { clientX: -10000, clientY: -10000 })
+      this.editor.commands.focus(position)
     },
   },
   watch: {
@@ -156,13 +197,6 @@ export default {
   mounted() {
     this.updateContentWithRequirementIds(this.qualiRequirements)
 
-    // Necessary in case we have oldInput that the outside world doesn't know about
-    if (this.currentValue !== this.value) this.$emit('input', this.currentValue)
-
-    if (this.autofocus) {
-      this.focus()
-    }
-
     // Two ticks after mounted, the HTML is rendered correctly
     this.$nextTick(() => {
       this.$nextTick(() => {
@@ -173,6 +207,17 @@ export default {
   beforeDestroy() {
     this.editor.destroy()
   },
+}
+
+const hashCode = function (string) {
+  var hash = 0, i, chr
+  if (string.length === 0) return hash
+  for (i = 0; i < string.length; i++) {
+    chr = string.charCodeAt(i)
+    hash = ((hash << 5) - hash) + chr
+    hash |= 0 // Convert to 32bit integer
+  }
+  return Math.abs(hash).toString(16)
 }
 </script>
 

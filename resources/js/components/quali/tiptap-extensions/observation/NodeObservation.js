@@ -1,59 +1,51 @@
-import {Node, TextSelection} from 'tiptap'
-import ElementObservation from "./ElementObservation"
+import {mergeAttributes, Node} from '@tiptap/core'
+import {VueNodeViewRenderer} from '@tiptap/vue-2'
+import ElementObservation from './ElementObservation'
 
-export default class NodeObservation extends Node {
+const NodeObservation = ({ readonly }) => Node.create({
+  name: 'observation',
+  group: 'block',
+  selectable: !readonly,
+  draggable: !readonly,
 
-  constructor(readonly) {
-    super();
-    this.readonly = readonly;
-  }
+  defaultOptions: {
+    readonly: readonly,
+  },
 
-  get name() {
-    return 'observation'
-  }
-
-  get schema() {
+  addAttributes() {
     return {
-      // here you have to specify all values that can be stored in this node
-      attrs: {
-        id: {
-          default: null,
-        },
-      },
-      group: 'block',
-      selectable: !this.readonly,
-      draggable: !this.readonly,
-      // parseDOM and toDOM is still required to make copy and paste work
-      parseDOM: [{
-        tag: 'element-observation',
-        getAttrs: dom => ({
-          id: dom.getAttribute('data-id'),
-        }),
-      }],
-      toDOM: node => ['element-observation', {
-        'data-id': node.attrs.id
-      }],
+      id: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-id'),
+        renderHTML: attributes => ({'data-id': attributes.id})
+      }
+    }
+  },
+
+  parseHTML() {
+    return [{tag: 'element-observation'}]
+  },
+
+  renderHTML({HTMLAttributes}) {
+    return ['element-observation', mergeAttributes(HTMLAttributes)]
+  },
+
+  addNodeView() {
+    return VueNodeViewRenderer(ElementObservation)
+  },
+
+  addCommands() {
+    return {
+      addObservation: attrs => ({ chain, tr }) => {
+        // Insert before or after the current position (paragraph or heading), depending on side
+        const position = attrs.side === -1 ? tr.selection.from - 1 : tr.selection.from
+        return chain()
+          .insertContentAt(position, { type: this.name, attrs }, {})
+          .focus(position + 1)
+          .run()
+      }
     }
   }
+})
 
-  commands({ type }) {
-    return attrs => (state, dispatch) => {
-      const node = type.create(attrs);
-      node.attrs.id = attrs.id
-
-      const insertion = state.tr.replaceSelectionWith(node);
-
-      const previousCursorPosition = state.selection.$cursor ? state.selection.$cursor.pos : state.selection.$head.pos;
-      const cursorPosition = insertion.mapping.map(previousCursorPosition);
-      const newSelection = TextSelection.create(insertion.doc, cursorPosition, cursorPosition);
-      const insertionWithCursorPosition = insertion.setSelection(newSelection);
-
-      dispatch(insertionWithCursorPosition);
-    };
-  }
-
-  get view() {
-    return ElementObservation;
-  }
-
-}
+export default NodeObservation

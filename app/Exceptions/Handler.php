@@ -59,7 +59,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof TokenMismatchException && !Auth::check() && $request->method() != 'GET') {
+        if ($exception instanceof TokenMismatchException && !Auth::check() && $request->method() != 'GET' && !$request->get('noFormRestoring')) {
             return $this->preserveSubmittedFormData($request);
         }
         if ($exception instanceof ValidationException || $exception instanceof AuthenticationException) {

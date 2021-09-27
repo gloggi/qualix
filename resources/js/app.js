@@ -4,9 +4,7 @@ import languageBundle
 import VueI18n from 'vue-i18n'
 import {kebabCase} from 'lodash'
 import LaravelTranslationFormatter from './laravel-translation-formatter'
-import * as Sentry from "@sentry/browser";
-import { Vue as VueIntegration } from "@sentry/integrations";
-import { Integrations } from "@sentry/tracing";
+import * as Sentry from "@sentry/vue";
 
 require('./bootstrap')
 
@@ -113,15 +111,8 @@ const app = new Vue({
 
 if (process.env.MIX_SENTRY_VUE_DSN && process.env.MIX_SENTRY_VUE_DSN !== 'null') {
   Sentry.init({
+    Vue: Vue,
     dsn: process.env.MIX_SENTRY_VUE_DSN,
-    integrations: [
-      new VueIntegration({
-        Vue,
-        tracing: true,
-        logErrors: true,
-      }),
-      new Integrations.BrowserTracing(),
-    ],
-    tracesSampleRate: 0.1,
+    logErrors: true,
   })
 }

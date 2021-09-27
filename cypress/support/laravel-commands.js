@@ -46,26 +46,6 @@ Cypress.Commands.add('logout', () => {
 })
 
 /**
- * Simulate the session expiring, so it doesn't contain anything anymore.
- *
- * @example cy.expireSession();
- */
-Cypress.Commands.add('expireSession', () => {
-  return cy.csrfToken()
-    .then(token => {
-      return cy.request({
-        method: 'POST',
-        url: '/__cypress__/expire-session',
-        body: {_token: token},
-        log: false
-      })
-    })
-    .then(() => {
-      Cypress.log({name: 'expireSession', message: ''})
-    })
-})
-
-/**
  * Fetch a CSRF token.
  *
  * @example cy.csrfToken();

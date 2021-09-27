@@ -5,32 +5,40 @@
     </div>
     <quali-editor
       :name="name"
-      :class="{ 'form-control': !readonly, 'is-invalid': errorMessage }"
+      :class="{ 'form-control': !readonly, 'is-invalid': errorMessage || markInvalid }"
+      :username="username"
+      :signaling-servers="signalingServers"
       v-model="currentValue"
-      v-bind="$attrs"></quali-editor>
+      v-bind="$attrs"
+      @localinput="$emit('localinput')"></quali-editor>
   </div>
 </template>
 
 <script>
 import Input from '../../mixins/input'
-import {EditorContent, EditorFloatingMenu} from 'tiptap'
-import InputHidden from "../form/InputHidden"
-import FloatingMenu from "./FloatingMenu"
 import {get} from "lodash"
 
 export default {
   name: 'InputQualiEditorLarge',
-  components: {FloatingMenu, InputHidden, EditorContent, EditorFloatingMenu},
   mixins: [Input],
   props: {
     readonly: { type: Boolean, default: false },
     value: { type: Object },
+    markInvalid: { type: Boolean, default: false },
   },
   data() {
     return {
       currentValue: JSON.parse(get(window.Laravel.oldInput, this.name, 'null')) ?? this.value
     }
   },
+  computed: {
+    username () {
+      return window.Laravel.username
+    },
+    signalingServers () {
+      return window.Laravel.signalingServers
+    },
+  }
 }
 </script>
 

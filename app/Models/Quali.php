@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Exceptions\RequirementsMismatchException;
 use App\Services\TiptapFormatter;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * @property int $id
@@ -45,6 +46,12 @@ class Quali extends Model {
      * @var array
      */
     protected $appends = ['name', 'contents', 'display_name'];
+
+    protected static function booted() {
+        static::creating(function ($quali) {
+            $quali->collaborationKey = Str::random(32);
+        });
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

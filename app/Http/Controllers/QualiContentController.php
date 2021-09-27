@@ -11,6 +11,7 @@ use App\Models\Participant;
 use App\Models\Quali;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
@@ -63,14 +64,14 @@ class QualiContentController extends Controller {
      *
      * @param QualiContentRequest $request
      * @param Quali $quali
-     * @return RedirectResponse
+     * @return Response
      */
     public function update(QualiContentRequest $request, Course $course, Participant $participant, Quali $quali) {
         $data = $request->validated()['quali_contents'];
         return DB::transaction(function() use($course, $participant, $quali, $data) {
             try {
                 $quali->contents = $data;
-                return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]);
+                return response()->json(['status' => 'ok']);
             } catch (RequirementsMismatchException $e) {
                 // Edit the original request in order to change the old_input that is displayed to the user after
                 // the validation error

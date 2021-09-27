@@ -1,7 +1,7 @@
 <template>
   <span>
     <b-button variant="link" href="#" @click="toggleOpen" class="text-secondary px-0">
-        {{ $t(trans + '.question', params) }} <i class="fas fa-question-circle"></i>
+        <slot name="question"></slot>{{ $t(trans + '.question', params) }} <i class="fas fa-question-circle"></i>
     </b-button>
 
     <b-collapse :id="id | kebabCase" v-model="visible" class="text-secondary">

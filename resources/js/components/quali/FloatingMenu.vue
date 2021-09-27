@@ -1,30 +1,22 @@
 <template>
-  <div ref="menu" class="editor__floating-menu" :class="{ 'is-active': menu.isActive }">
-    <button-add @click="commands.heading({ level: 3 })">{{ $t('t.global.editor.heading_large') }}</button-add>
-    <button-add @click="commands.heading({ level: 5 })">{{ $t('t.global.editor.heading_normal') }}</button-add>
-    <button-add @click="commands.heading({ level: 6 })">{{ $t('t.global.editor.heading_small') }}</button-add>
+  <div ref="menu" class="editor__floating-menu">
+    <button-add @click="editor.chain().focus().toggleHeading({ level: 3 }).run()">{{ $t('t.global.editor.heading_large') }}</button-add>
+    <button-add @click="editor.chain().focus().toggleHeading({ level: 5 }).run()">{{ $t('t.global.editor.heading_normal') }}</button-add>
+    <button-add @click="editor.chain().focus().toggleHeading({ level: 6 }).run()">{{ $t('t.global.editor.heading_small') }}</button-add>
     <button-add v-if="observations.length" @click="$emit('addObservation')">{{ $t('t.models.observation.one') }}</button-add>
   </div>
 </template>
 
 <script>
-import ModalAddObservation from "./tiptap-extensions/observation/ModalAddObservation"
-import ButtonAdd from "./ButtonAdd"
+import ModalAddObservation from './tiptap-extensions/observation/ModalAddObservation'
+import ButtonAdd from './ButtonAdd'
 
 export default {
   name: 'floating-menu',
   components: {ModalAddObservation, ButtonAdd},
   props: {
     observations: { type: Array, default: [] },
-    commands: { type: Object, required: true },
-    menu: { type: Object, required: true },
-  },
-  watch: {
-    'menu.top': function(val) {
-      // Work around CSP inline style limitation, by applying the dynamic CSS here in code instead of
-      // a dynamic inline style attribute
-      this.$refs.menu.style.top = val + 'px'
-    }
+    editor: { type: Object, required: true },
   }
 }
 </script>

@@ -16,7 +16,6 @@ use App\Http\Controllers\BlockController;
 use App\Http\Controllers\BlockListController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\CsrfController;
 use App\Http\Controllers\EquipeController;
 use App\Http\Controllers\ErrorReportController;
 use App\Http\Controllers\HomeController;
@@ -128,7 +127,7 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::get('/newcourse', [CourseController::class, 'create'])->name('admin.newcourse');
     Route::post('/newcourse', [CourseController::class, 'store'])->name('admin.newcourse.store');
 
-    Route::post('/csrf/check', [CsrfController::class, 'check'])->name('csrf.check');
+    Route::get('/refreshCsrf', [HomeController::class, 'refreshCsrf'])->name('refreshCsrf');
 });
 
 Auth::routes(['verify' => true]);
