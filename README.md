@@ -32,10 +32,40 @@ docker-compose exec qualix php artisan tinker
 docker-compose exec qualix php -v
 ```
 
-### End-to-end Tests
+### Tests laufen lassen
 
-Um die E2E-Tests laufen zu lassen, müssen zuerst die Container laufen (`docker-compose up`).
-Du kannst die E2E-Tests mit Cypress headless laufen lassen:
+Für sämtliche Tests müssen zuerst die Container laufen (`docker-compose up`).
+
+#### PHP Unit Tests
+
+Vor den Unit Tests musst du einmalig die gecachete Config löschen:
+```
+docker-compose exec qualix php artisan config:clear --env=testing
+```
+
+Danach kannst du die Unit Tests mit PHPUnit laufen lassen:
+```
+# Alle Unit Tests
+docker-compose exec qualix vendor/bin/phpunit
+
+# Nur Unit Tests die "Course" im Namen haben
+docker-compose exec qualix vendor/bin/phpunit --filter=Course
+```
+
+#### Frontend Tests
+
+Die Frontend Tests kannst du wie folgt laufen lassen:
+```
+# Alle Frontend Tests
+docker-compose exec node npm run test
+
+# Ein spezifischer Test
+docker-compose exec node npm run test -- ObservationList
+```
+
+#### End-to-end Tests
+
+Du kannst die E2E-Tests mit Cypress headless (ohne sichtbares Browserfenster) laufen lassen:
 ```
 docker-compose run e2e run
 ```
