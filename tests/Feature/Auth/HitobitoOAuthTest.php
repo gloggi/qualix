@@ -31,7 +31,7 @@ class HitobitoOAuthTest extends TestCase {
 
     public static function extractRedirectQueryParams($response) {
         $response->assertRedirect();
-        parse_str( parse_url( $response->headers->get('Location'), PHP_URL_QUERY), $result );
+        parse_str(parse_url($response->headers->get('Location'), PHP_URL_QUERY), $result);
         return $result;
     }
 

@@ -17,6 +17,8 @@ jobs:
 
       - uses: ./.github/actions/wait-for-container-startup
 
+      - run: docker-compose exec -T qualix php artisan config:clear --env=testing
+
       - run: docker-compose exec -T qualix vendor/bin/phpunit
 
   frontend-tests:
