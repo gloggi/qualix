@@ -5,6 +5,7 @@ namespace Tests\Feature\ErrorReports;
 use App\Http\Requests\UserRequest;
 use Illuminate\Validation\ValidationException;
 use Mockery;
+use Sentry\EventId;
 use Sentry\SentrySdk;
 use Tests\TestCase;
 
@@ -14,8 +15,9 @@ class SentryTest extends TestCase {
         // given
         $sentryMock = Mockery::mock(app('sentry'));
         // Stupid fix because mockery ->passthru() doesn't work here for some reason
-        $sentryMock->shouldReceive('captureException')->once()->andReturnUsing(function(...$args) {
+        $sentryMock->shouldReceive('captureException')->once()->andReturnUsing(function(...$args) use($sentryMock) {
             SentrySdk::getCurrentHub()->captureException(...$args);
+            $sentryMock->shouldReceive('getLastEventId')->andReturn(new EventId('12341234123412341234123412341234'));
         });
         $this->instance('sentry', $sentryMock);
 
