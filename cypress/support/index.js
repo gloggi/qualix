@@ -17,12 +17,16 @@ import './commands'
 import './mail'
 import './midata-oauth'
 import './laravel-commands'
+import './qualix-laravel-commands'
+import './laravel-routes'
 import './assertions'
 
 before(() => {
   cy.task('activateCypressEnvFile', {}, {log: false})
   cy.artisan('config:clear', {}, {log: false})
   cy.artisan('cache:clear', {}, {log: false})
+
+  cy.refreshRoutes();
 })
 
 after(() => {

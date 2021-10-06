@@ -81,7 +81,7 @@ describe('login page', () => {
     it('logs in successfully', () => {
       cy.mockMiDataOAuth()
 
-      cy.create('App\\Models\\HitobitoUser', {hitobito_id: '1234', email: 'oauther@email.com'}).then(user => {
+      cy.create('App\\Models\\HitobitoUser', 1, {hitobito_id: '1234', email: 'oauther@email.com'}).then(user => {
 
         // Visit the URL that the MiData login button leads to, in order to get the the state token from the backend
         cy.request({

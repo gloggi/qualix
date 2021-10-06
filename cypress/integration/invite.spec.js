@@ -46,7 +46,7 @@ describe('invitation flow', () => {
 
     cy.logout()
 
-    cy.login()
+    cy.login({ email: 'some-email@example.org' })
 
     cy.lastSentMail()
       .then(mail => {
