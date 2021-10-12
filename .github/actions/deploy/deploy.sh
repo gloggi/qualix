@@ -33,8 +33,9 @@ sed -ri "s~^SENTRY_USER_FEEDBACK_URL=.*$~SENTRY_USER_FEEDBACK_URL=$SENTRY_USER_F
 sed -ri "s~^SENTRY_CSP_REPORT_URI=.*$~SENTRY_CSP_REPORT_URI=$SENTRY_CSP_REPORT_URI~" .env
 sed -ri "s~^MIX_SENTRY_VUE_DSN=.*$~MIX_SENTRY_VUE_DSN=$SENTRY_VUE_DSN~" .env
 
-docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod --no-unsafe-inline'" node
-docker-compose run --entrypoint "composer install --no-dev" qualix
+docker-compose run --no-deps --entrypoint "/bin/sh -c 'npm install && npm run prod --no-unsafe-inline'" node
+docker-compose run --no-deps --entrypoint "composer install --no-dev" qualix
+PHP_MIN_VERSION_ID=$(grep -Po '(?<=\(PHP_VERSION_ID >= )[0-9]+(?=\))' vendor/composer/platform_check.php)
 
 cat ~/.ssh/known_hosts
 
@@ -43,7 +44,7 @@ ssh -l $SSH_USERNAME -T $SSH_HOST -o StrictHostKeyChecking=no <<EOF
   set -e
   php -v
   cd $SSH_DIRECTORY
-  php -r "if((explode('.',PHP_VERSION)[0]*10000+explode('.',PHP_VERSION)[1]*100+explode('.',PHP_VERSION)[2])<${PHP_MIN_VERSION:-70205}){echo \"Your PHP version is too old\\n\";exit(1);}"
+  php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-70400}){echo \"Your PHP version is too old\\n\";exit(1);}"
 EOF
 
 cat ~/.ssh/known_hosts
