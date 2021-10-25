@@ -51,7 +51,6 @@
         "vue-loader": "^15.9.7",
         "vue-multiselect": "^2.1.6",
         "vue-template-compiler": "^2.6.14",
-        "y-indexeddb": "^9.0.6",
         "y-webrtc": "^10.2.0",
         "yjs": "^13.5.12"
     }

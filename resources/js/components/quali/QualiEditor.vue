@@ -23,7 +23,6 @@ import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 import * as Y from 'yjs'
 import {WebrtcProvider} from 'y-webrtc'
-import {IndexeddbPersistence} from 'y-indexeddb'
 import NodeObservation from './tiptap-extensions/observation/NodeObservation.js'
 import NodeRequirement from './tiptap-extensions/requirement/NodeRequirement.js'
 import GapCursorFocus from './tiptap-extensions/GapCursorFocus'
@@ -113,7 +112,6 @@ export default {
         password: this.collaborationKey.substr(8),
         ...(this.signalingServers ? { signaling: this.signalingServers } : {})
       })
-      const offlineSupport = new IndexeddbPersistence(qualiKey, ydoc)
       return extensions.concat([
         Collaboration.configure({ document: ydoc }),
         CollaborationCursor.configure({

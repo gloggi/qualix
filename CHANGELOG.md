@@ -1,5 +1,8 @@
 # Changelog
 
+##### Oktober 2021
+- Bugfix im Quali-Editor: In Qualis welche keine Anforderungen enthalten wird der Editor-Inhalt beim erneuten Öffnen nicht mehr dupliziert (merci für die Meldung @Tschet1) [#223](https://github.com/gloggi/qualix/issues/229)
+
 ##### September 2021
 - Die Inhalte des Quali-Editors werden jetzt automatisch gespeichert, sobald 2 Sekunden lang keine Eingabe getätigt wird. Damit das nicht zu Konflikten mit anderen Nutzenden führt, wird ausserdem der Inhalt des Quali-Editors zwischen allen Browsern synchronisiert, welche dasselbe Quali offen haben. Die Synchronisierung läuft über eine end-to-end-verschlüsselte Direktverbindung zwischen den Browsern [#221](https://github.com/gloggi/qualix/issues/221)
 

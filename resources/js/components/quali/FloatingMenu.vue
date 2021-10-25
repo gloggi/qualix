@@ -12,7 +12,7 @@ import ModalAddObservation from './tiptap-extensions/observation/ModalAddObserva
 import ButtonAdd from './ButtonAdd'
 
 export default {
-  name: 'floating-menu',
+  name: 'FloatingMenu',
   components: {ModalAddObservation, ButtonAdd},
   props: {
     observations: { type: Array, default: [] },
