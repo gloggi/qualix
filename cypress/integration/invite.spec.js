@@ -81,8 +81,7 @@ describe('invitation flow', () => {
 
     cy.contains('Willst du die Einladung für some-email@example.org wirklich entfernen?')
 
-    cy.contains('Löschen')
-      .click()
+    cy.contains('Löschen').click({ force: true })
 
     cy.contains('Die Einladung für some-email@example.org wurde erfolgreich gelöscht.')
 
