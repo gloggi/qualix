@@ -38,7 +38,7 @@
                 :actions="{
                     delete: invitation => ({
                         text: $t('t.views.admin.equipe.really_delete_invitation', invitation),
-                        route: ['admin.invitation.delete', {course: {{ $course->id }}, invitation: invitation.id}]
+                        route: ['admin.invitation.delete', {course: {{ $course->id }}, email: invitation.email}]
                     })
                 }"
             ></responsive-table>

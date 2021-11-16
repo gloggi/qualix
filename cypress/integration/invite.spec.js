@@ -69,4 +69,24 @@ describe('invitation flow', () => {
       })
   })
 
+  it('deletes an invitation', () => {
+    cy.get('#email')
+      .type('some-email@example.org')
+    cy.contains('Einladen')
+      .click()
+
+    cy.contains('Wir haben eine Einladung an some-email@example.org gesendet.')
+
+    cy.contains('Einladungen').parent('.card').find('[title="Löschen"]').click()
+
+    cy.contains('Willst du die Einladung für some-email@example.org wirklich entfernen?')
+
+    cy.contains('Löschen')
+      .click()
+
+    cy.contains('Die Einladung für some-email@example.org wurde erfolgreich gelöscht.')
+
+    cy.contains('Momentan sind keine Einladungen offen.')
+  })
+
 })

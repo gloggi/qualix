@@ -1,5 +1,8 @@
 # Changelog
 
+##### November 2021
+- Bugfix bei der Equipe: Einladungen können jetzt wieder gelöscht werden (merci für die Meldung @mario-zelger) [#232](https://github.com/gloggi/qualix/issues/232)
+
 ##### Oktober 2021
 - Bugfix im Quali-Editor: In Qualis welche keine Anforderungen enthalten wird der Editor-Inhalt beim erneuten Öffnen nicht mehr dupliziert (merci für die Meldung @Tschet1) [#223](https://github.com/gloggi/qualix/issues/229)
 
