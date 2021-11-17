@@ -47,6 +47,14 @@ jobs:
 
       - run: docker-compose run e2e run
 
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: cypress-output
+          path: |
+            ./cypress/screenshots
+            ./cypress/videos
+
   ci-passed-event:
     name: "Send out CI success event"
     if: ${{ github.event_name == 'push' }}
