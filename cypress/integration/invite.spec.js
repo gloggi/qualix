@@ -80,8 +80,9 @@ describe('invitation flow', () => {
     cy.contains('Einladungen').parent('.card').find('[title="Löschen"]').click()
 
     cy.contains('Willst du die Einladung für some-email@example.org wirklich entfernen?')
-
-    cy.contains('Löschen').click()
+      .parent()
+      .contains('Löschen')
+      .click()
 
     cy.contains('Die Einladung für some-email@example.org wurde erfolgreich gelöscht.')
 

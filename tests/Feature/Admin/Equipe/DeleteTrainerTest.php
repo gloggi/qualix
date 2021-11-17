@@ -45,7 +45,8 @@ class DeleteTrainerTest extends TestCaseWithCourse {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/equipe');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertDontSee($this->otherUser->name);
+        $response->assertSee("{$this->otherUser->name} wurde aus der Equipe entfernt.");
+        $response->assertDontSee(">{$this->otherUser->name}</td>", false);
     }
 
     public function test_shouldValidateDeletedEquipeMemberUrl_wrongId() {

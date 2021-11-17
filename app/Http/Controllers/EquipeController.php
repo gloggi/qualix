@@ -43,7 +43,7 @@ class EquipeController extends Controller {
 
             });
 
-            $request->session()->flash('alert-success', __('t.views.admin.equipe.delete_success'));
+            $request->session()->flash('alert-success', __('t.views.admin.equipe.delete_success', ['name' => $user->name]));
 
             if ($user->id === Auth::user()->getAuthIdentifier()) {
                 return Redirect::route('home');

@@ -231,7 +231,7 @@ return array(
 			"equipe" => array(
 				"cannot_delete_last_leiter" => "Mindestens ein Equipenmitglied muss im Kurs bleiben.",
 				"delete_invitation_success" => "Die Einladung für :email wurde erfolgreich gelöscht.",
-				"delete_success" => "Leiterrole erfolgreich entfernt.",
+				"delete_success" => ":name wurde aus der Equipe entfernt.",
 				"existing" => "Equipe :courseName",
 				"existing_invitations" => "Einladungen",
 				"invitation_email_sent" => "Wir haben eine Einladung an :email gesendet.",
