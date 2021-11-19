@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueCompositionAPI from '@vue/composition-api'
 import languageBundle
   from '@kirschbaum-development/laravel-translations-loader!@kirschbaum-development/laravel-translations-loader'
 import VueI18n from 'vue-i18n'
@@ -14,6 +15,7 @@ window.Vue = Vue
 const {BootstrapVue, IconsPlugin} = require('bootstrap-vue')
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(VueCompositionAPI)
 Vue.use(VueI18n)
 
 const element = document.getElementById('laravel-data')

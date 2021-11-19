@@ -1,5 +1,6 @@
 <template>
   <span>
+    <!--
     <vue-multiselect
       ref="multiselect"
       v-bind="$attrs"
@@ -30,19 +31,33 @@
       <template #singleLabel="props">
         <slot name="single-label" v-bind="props"></slot>
       </template>
+    </vue-multiselect>-->
 
-    </vue-multiselect>
+    <vueform-multiselect
+      v-model="localValue"
+      :mode="multiple ? 'tags' : 'single'"
+      :options="allOptions"
+      :searchable="true"
+      :value-prop="valueField"
+      :label="displayField"
+      :track-by="displayField"
+      :placeholder="placeholder"
+      :no-options-text="$t('t.global.no_options')"
+      :close-on-select="!multiple"
+      :strict="false"
+      role="combobox"
+      ref="multiselect"></vueform-multiselect>
     <input v-if="name" type="hidden" :name="name" :value="formValue" data-testid="formValue">
   </span>
 </template>
 
 <script>
-import { Multiselect as VueMultiselect } from 'vue-multiselect'
+import VueformMultiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 export default {
   name: 'MultiSelect',
   components: {
-    VueMultiselect
+    VueformMultiselect,
   },
   props: {
     name: { type: String, required: false },
@@ -74,10 +89,10 @@ export default {
     },
     formValue() {
       if (this.multiple) {
-        return this.localValue.map(option => option[this.valueField]).join()
+        return this.localValue.join()
       } else {
         if (this.localValue == null) return ''
-        return '' + this.localValue[this.valueField]
+        return '' + this.localValue
       }
     },
     showClearButton() {
@@ -87,9 +102,9 @@ export default {
   methods: {
     parse(value) {
       if (this.multiple) {
-        return value ? this.options.filter(el => value.split(',').includes('' + el[this.valueField])) : []
+        return value ? value.split(',') : []
       } else {
-        return value ? (this.options.find(el => '' + el[this.valueField] === value)) : null
+        return value ? value : null
       }
     },
     onSelect(option, id) {
@@ -105,9 +120,6 @@ export default {
     onInput(val, id) {
       this.$emit('input', this.formValue, id)
       this.$emit('update:selected', this.localValue, id)
-
-      // Work around :close-on-select=false not working correctly
-      if (this.multiple) this.$nextTick(() => this.$refs.multiselect.activate())
 
       // Don't auto-submit if a group was selected.
       // One tick later there will be another input event which will include the group contents.
@@ -137,7 +149,7 @@ export default {
     this.$emit('input', this.formValue, this.$attrs['id'])
 
     if (this.autofocus) {
-      this.$refs.multiselect.activate()
+      this.$refs.multiselect.$el.focus()
     }
   }
 }

@@ -1,0 +1,47 @@
+:root {
+    --ms-font-size: 0.9rem;
+    --ms-tag-bg: #f8f9fa;
+    --ms-tag-color: #343a40;
+    --ms-tag-font-weight: 400;
+    --ms-tag-font-size: 0.9rem;
+    --ms-ring-color: rgba(52, 144, 220, 0.25);
+    --ms-option-bg-pointed: #3490dc;
+    --ms-option-color-pointed: #fff;
+    --ms-option-bg-selected: #f3f3f3;
+    --ms-option-color-selected: #212529;
+    --ms-option-bg-selected-pointed: #6c757d;
+    --ms-option-color-selected-pointed: #fff;
+}
+
+.multiselect-clear {
+    padding-left: 0.6rem;
+}
+
+.multiselect-caret {
+    padding: 1.1rem;
+    margin-right: calc(var(--ms-px, 0.875rem) - 1.1rem + 5px);
+    mask-size: 10px 18px;
+}
+
+.multiselect-option.is-selected {
+    font-weight: bold;
+}
+
+.multiselect-single-label {
+    color: rgb(73, 80, 87);
+}
+
+.multiselect-tags {
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+.multiselect-tag {
+    max-width: 100%;
+}
+
+// TODO open a PR on vueform/multiselect that adds a span around the tag text, so the following actually works...
+.multiselect-tag > * {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
