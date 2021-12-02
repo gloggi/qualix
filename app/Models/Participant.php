@@ -50,7 +50,7 @@ class Participant extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function observations() {
-        return $this->belongsToMany(Observation::class, 'observations_participants');
+        return $this->belongsToMany(Observation::class, 'observations_participants')->leftJoin('blocks AS order_block', 'observations.block_id', 'order_block.id')->orderBy('order_block.block_date')->orderBy('order_block.day_number')->orderBy('order_block.block_number')->orderBy('order_block.name')->orderBy('order_block.id');
     }
 
     /**

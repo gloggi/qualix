@@ -121,8 +121,10 @@ class ReadObservationTest extends TestCaseWithBasicData {
         $this->createBlock('earlier date', '1.1', '31.12.2018');
         $this->createBlock('later day number', '2.1', '01.01.2019');
         $this->createBlock('earlier day number', '0.1', '01.01.2019');
+        $this->createBlock('two-digit day number', '11.1', '01.01.2019');
         $this->createBlock('later block number', '1.2', '01.01.2019');
         $this->createBlock('earlier block number', '1.0', '01.01.2019');
+        $this->createBlock('two-digit block number', '1.12', '01.01.2019');
         $this->createBlock('Block 2 later block name', '1.1', '01.01.2019');
         $this->createBlock('Block 0 earlier block name', '1.1', '01.01.2019');
         /** @var Collection $blockIds */
@@ -146,7 +148,9 @@ class ReadObservationTest extends TestCaseWithBasicData {
           'hat gut mitgemacht',
           'Block 2 later block name',
           'later block number',
+          'two-digit block number',
           'later day number',
+          'two-digit day number',
           'later date',
         ]);
     }

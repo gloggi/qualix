@@ -1,5 +1,8 @@
 # Changelog
 
+##### Dezember 2021
+- Bugfix: Beobachtungen werden jetzt überall in der richtigen Reihenfolge nach Block sortiert, auch bei zweistelligen Blocknummern / Tagesnummern [#214](https://github.com/gloggi/qualix/issues/214)
+
 ##### November 2021
 - Bugfix bei der Equipe: Einladungen können jetzt wieder gelöscht werden (merci für die Meldung @mario-zelger) [#232](https://github.com/gloggi/qualix/issues/232)
 

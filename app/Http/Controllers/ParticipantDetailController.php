@@ -18,9 +18,7 @@ class ParticipantDetailController extends Controller {
      * @return Response
      */
     public function index(Request $request, Course $course, Participant $participant) {
-        $observations = $participant->observations->sortBy(function (Observation $observation) {
-            return $observation->block->block_date->timestamp . '.' . $observation->block->day_number . '.' . $observation->block->block_number . '.' . $observation->block->name . '.' . $observation->block->id;
-        })->values();
+        $observations = $participant->observations->values();
 
         return view('participant-detail', ['participant' => $participant, 'observations' => $observations, 'qualis_using_observations' => $course->qualis_using_observations]);
     }
