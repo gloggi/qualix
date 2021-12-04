@@ -109,7 +109,7 @@ class Participant extends Model {
             'id' => $this->id,
             'scout_name' => $this->scout_name,
             'course_id' => $this->course_id,
-            'observation_counts_by_user' => $this->observations()
+            'observation_counts_by_user' => $this->observations()->reorder()
                 ->select('user_id')
                 ->selectRaw('count(*) as total')
                 ->groupBy('user_id')
