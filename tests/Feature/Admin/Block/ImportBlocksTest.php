@@ -73,10 +73,10 @@ class ImportBlocksTest extends TestCaseWithCourse {
         $response = $response->followRedirects();
         $response->assertSeeInOrder([
             'In der importierten Datei wurden 4 Blöcke gefunden.',
-            'Samstag 21.03.2020',
+            'Samstag 21.03.2026',
             '1.1', 'Erster Block',
             '1.2', 'Zweiter Block am gleichen Tag',
-            'Sonntag 22.03.2020',
+            'Sonntag 22.03.2026',
             '2.1', 'Dritter Block am n\u00e4chsten Tag',
             '10.10', 'Mehrstellige Blocknummer'
         ]);
@@ -129,7 +129,7 @@ class ImportBlocksTest extends TestCaseWithCourse {
         $response = $response->followRedirects();
         $response->assertDontSee('Existierender Block');
         $response->assertDontSee('09.09.2009');
-        $response->assertSeeInOrder(['Samstag 21.03.2020', '1.1', 'Erster Block', '1', '1.2', 'Zweiter Block am gleichen Tag', '0']);
+        $response->assertSeeInOrder(['Samstag 21.03.2026', '1.1', 'Erster Block', '1', '1.2', 'Zweiter Block am gleichen Tag', '0']);
         $connectedObservations = Block::where('day_number', '=', '1')
             ->where('block_number', '=', '1')
             ->where('course_id', '=', $this->courseId)
@@ -175,10 +175,10 @@ class ImportBlocksTest extends TestCaseWithCourse {
         $response = $response->followRedirects();
         $response->assertSeeInOrder([
             'In der importierten Datei wurden 4 Blöcke gefunden.',
-            'Samstag 21.03.2020',
+            'Samstag 21.03.2026',
             '1.1', 'Erster Block',
             '1.2', 'Zweiter Block am gleichen Tag',
-            'Sonntag 22.03.2020',
+            'Sonntag 22.03.2026',
             '2.1', 'Dritter Block am n\u00e4chsten Tag',
             '10.10', 'Mehrstellige Blocknummer'
         ]);
@@ -199,10 +199,10 @@ class ImportBlocksTest extends TestCaseWithCourse {
         $response = $response->followRedirects();
         $response->assertSeeInOrder([
             'In der importierten Datei wurden 4 Blöcke gefunden.',
-            'Samstag 21.03.2020',
+            'Samstag 21.03.2026',
             '1.1', 'Erster Block',
             '1.2', 'Zweiter Block am gleichen Tag',
-            'Sonntag 22.03.2020',
+            'Sonntag 22.03.2026',
             '2.1', 'Dritter Block am n\u00e4chsten Tag',
             '10.10', 'Mehrstellige Blocknummer'
         ]);
