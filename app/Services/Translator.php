@@ -29,22 +29,20 @@ class Translator extends LaravelTranslator
             return parent::makeReplacements($line, $replace);
         }
 
-        $replace = $this->sortReplacements($replace);
+        $shouldReplace = [];
 
         $line = (new HtmlString)->e($line);
 
         foreach ($replace as $key => $value) {
             if ($value instanceof \Illuminate\Support\HtmlString) {
-                $line->replace(':' . $key, $value);
+                $shouldReplace[':' . $key] = $value;
             } else if (is_string($value)) {
-                $line->replace(
-                    [':' . $key, ':' . Str::upper($key), ':' . Str::ucfirst($key)],
-                    [$value, Str::upper($value), Str::ucfirst($value)],
-                    $line
-                );
+                $shouldReplace[':' . Str::ucfirst($key)] = Str::ucfirst($value);
+                $shouldReplace[':' . Str::upper($key)] = Str::upper($value);
+                $shouldReplace[':' . $key] = $value;
             }
         }
 
-        return $line;
+        return $line->replace($shouldReplace);
     }
 }

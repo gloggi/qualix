@@ -161,10 +161,10 @@ class HtmlStringTest extends TestCase {
     public function test_replace_shouldEscapeReplacement() {
         // given
         $htmlString = (new HtmlString)->s('test:search123');
-        $replace = '<div>replacement</div>';
+        $replace = [':search' => '<div>replacement</div>'];
 
         // when
-        $result = $htmlString->replace(':search', $replace)->__toString();
+        $result = $htmlString->replace($replace)->__toString();
 
         // then
         $this->assertEquals('test&lt;div&gt;replacement&lt;/div&gt;123', $result);
@@ -173,10 +173,10 @@ class HtmlStringTest extends TestCase {
     public function test_replace_shouldDoMultipleReplacements() {
         // given
         $htmlString = (new HtmlString)->s('test:search1:search23');
-        $replace = 'replacement';
+        $replace = [':search' => 'replacement'];
 
         // when
-        $result = $htmlString->replace(':search', $replace)->__toString();
+        $result = $htmlString->replace($replace)->__toString();
 
         // then
         $this->assertEquals('testreplacement1replacement23', $result);
@@ -185,10 +185,10 @@ class HtmlStringTest extends TestCase {
     public function test_replace_shouldNotDoOverlappingReplacement() {
         // given
         $htmlString = (new HtmlString)->s('test:searcharch123');
-        $replace = 'replacement:se';
+        $replace = [':search' => 'replacement:se'];
 
         // when
-        $result = $htmlString->replace(':search', $replace)->__toString();
+        $result = $htmlString->replace($replace)->__toString();
 
         // then
         $this->assertEquals('testreplacement:search123', $result);
@@ -197,10 +197,10 @@ class HtmlStringTest extends TestCase {
     public function test_replace_shouldNotEscapeHtmlStringReplacement() {
         // given
         $htmlString = (new HtmlString)->s('test:search123');
-        $replace = (new HtmlString)->s('<div>replacement</div>');
+        $replace = [':search' => (new HtmlString)->s('<div>replacement</div>')];
 
         // when
-        $result = $htmlString->replace(':search', $replace)->__toString();
+        $result = $htmlString->replace($replace)->__toString();
 
         // then
         $this->assertEquals('test<div>replacement</div>123', $result);
