@@ -126,16 +126,14 @@ class HtmlString extends LaravelHtmlString implements Htmlable {
      * Replace one or more search strings with corresponding replace strings. The replacements will be escaped
      * (except if they're HtmlStrings themselves).
      *
-     * @param $search
-     * @param string|Htmlable $replace
+     * @param array $replacements
      * @return $this
      */
-    public function replace($search, $replace) {
-        $search = Arr::wrap($search);
-        $replace = array_map(function ($r) {
-            return e($r);
-        }, Arr::wrap($replace));
-        $this->html = str_replace($search, $replace, $this->html);
+    public function replace($replacements) {
+        $replacements = collect($replacements)->mapWithKeys(function ($replace, $search) {
+            return [$search => e($replace)];
+        })->all();
+        $this->html = strtr($this->html, $replacements);
         return $this;
     }
 }
