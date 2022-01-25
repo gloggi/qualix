@@ -2,22 +2,34 @@
 
 @section('pagetitle'){{__('t.global.page_title')}}@endsection
 
+@section('wideLayout'){{ json_encode(false) }}@endsection
+
 @section('head')
     <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
 @endsection
 
 @section('layout')
 
-    <b-container id="app" v-cloak>
+    <div id="app" v-cloak>
+        <b-container>
 
-        @include('includes.header', ['navigation' => true])
+            @include('includes.header', ['navigation' => true])
 
-        @include('includes.alerts')
+            @include('includes.alerts')
 
-        @yield('content')
+        </b-container>
 
-        @include('includes.footer')
+        <b-container :fluid="@yield('wideLayout')">
 
-    </b-container>
+            @yield('content')
+
+        </b-container>
+
+        <b-container>
+
+            @include('includes.footer')
+
+        </b-container>
+    </div>
 
 @endsection
