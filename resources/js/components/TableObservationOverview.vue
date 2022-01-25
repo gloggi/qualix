@@ -6,7 +6,7 @@
     :cell-class="cellClass">
     <template #quali="{ row }">
       <a v-if="qualiFor(row)"
-         :href="routeUri('qualiContent.edit', {course: qualiData.course_id, participant: qualiFor(row).participant_id, quali: qualiFor(row).id})"
+         :href="routeUri('qualiContent.edit', {course: qualiData.course_id, participant: row.id, quali: qualiFor(row).id})"
          target="_blank" class="text-decoration-none">
         <requirement-progress :requirements="qualiFor(row).requirements"></requirement-progress>
       </a>
