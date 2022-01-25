@@ -1,5 +1,9 @@
 # Changelog
 
+##### Januar 2021
+- Auf der Überblick-Seite können jetzt Qualis angezeigt werden [#242](https://github.com/gloggi/qualix/pull/242)
+- Security Updates
+
 ##### Dezember 2021
 - Bugfix: Beobachtungen werden jetzt überall in der richtigen Reihenfolge nach Block sortiert, auch bei zweistelligen Blocknummern / Tagesnummern [#214](https://github.com/gloggi/qualix/issues/214)
 
