@@ -36,7 +36,7 @@
         "bootstrap-vue": "^2.21.2",
         "cross-env": "^7.0.3",
         "jest": "^27.0.4",
-        "laravel-mix": "^6.0.19",
+        "laravel-mix": "^6.0.41",
         "lodash": "^4.17.21",
         "popper.js": "^1.16.1",
         "postcss": "^8.3.0",
