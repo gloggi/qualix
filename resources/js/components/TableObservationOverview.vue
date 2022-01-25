@@ -3,18 +3,28 @@
     :data="participants"
     :actions="actions"
     :fields="fields"
-    :cell-class="cellClass"></responsive-table>
+    :cell-class="cellClass">
+    <template #quali="{ row }">
+      <a v-if="qualiFor(row)"
+         :href="routeUri('qualiContent.edit', {course: qualiData.course_id, participant: qualiFor(row).participant_id, quali: qualiFor(row).id})"
+         target="_blank" class="text-decoration-none">
+        <requirement-progress :requirements="qualiFor(row).requirements"></requirement-progress>
+      </a>
+    </template>
+  </responsive-table>
 </template>
 
 <script>
 
 import ResponsiveTable from "./ResponsiveTable"
+import RequirementProgress from './quali/RequirementProgress'
 export default {
   name: 'TableObservationOverview',
-  components: {ResponsiveTable},
+  components: {RequirementProgress, ResponsiveTable},
   props: {
     users: { type: Array, required: true },
     participants: { type: Array, required: true },
+    qualiData: { type: Object, default: null },
     multiple: { type: Boolean, default: false },
     redThreshold: { type: Number, default: 5 },
     greenThreshold: { type: Number, default: 10 },
@@ -35,6 +45,10 @@ export default {
       if (!this.multiple) {
         return totalColumn.concat(observationColumns)
       }
+      const qualiColumn = this.qualiData ? [{
+        label: this.qualiData.name,
+        slot: 'quali',
+      }] : []
       return [
         {
           label: this.$t('t.models.observation.participants'),
@@ -43,6 +57,7 @@ export default {
         },
         ...totalColumn,
         ...observationColumns,
+        ...qualiColumn,
       ]
     }
   },
@@ -55,7 +70,10 @@ export default {
       if (cellValue < this.redThreshold) return 'bg-danger-light'
       if (cellValue >= this.greenThreshold) return 'bg-success-light'
       return ''
-    }
+    },
+    qualiFor({ id }) {
+      return this.qualiData?.qualis?.find(quali => quali.participant_id === id)
+    },
   },
 }
 </script>

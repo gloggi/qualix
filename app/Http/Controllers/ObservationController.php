@@ -6,8 +6,10 @@ use App\Http\Requests\ObservationRequest;
 use App\Models\Block;
 use App\Models\Course;
 use App\Models\Observation;
+use App\Models\QualiData;
 use App\Util\HtmlString;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -176,10 +178,18 @@ class ObservationController extends Controller {
      *
      * @param Request $request
      * @param Course $course
-     * @return Response
+     * @param QualiData $qualiData
+     * @return View
      */
-    public function overview(Request $request, Course $course) {
-        return view('overview', ['participants' => $course->participants->all(), 'participantManagementLink' => $this->participantManagementLink($course, 't.views.overview.here')]);
+    public function overview(Request $request, Course $course, QualiData $qualiData) {
+        $qualiOptions = collect([['id' => 0, 'name' => __('t.views.overview.no_quali')]])->concat($course->quali_datas->map->only('id', 'name'));
+        return view('overview', [
+            'participants' => $course->participants->all(),
+            'participantManagementLink' => $this->participantManagementLink($course, 't.views.overview.here'),
+            'showQualis' => $course->quali_datas()->count(),
+            'qualiOptions' => $qualiOptions,
+            'qualiData' => $qualiData->id ? $qualiData : null,
+        ]);
     }
 
     /**
