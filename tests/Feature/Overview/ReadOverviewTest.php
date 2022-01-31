@@ -5,6 +5,7 @@ namespace Tests\Feature\Overview;
 use App\Models\Block;
 use App\Models\Course;
 use App\Models\Participant;
+use App\Models\Quali;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Tests\TestCaseWithBasicData;
@@ -139,5 +140,100 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $response->assertSee('&quot;&lt;b&gt;Bar&lt;\/b&gt;i&#039;\&quot;&quot;', false);
         $response->assertDontSee($userName, false);
         $response->assertSee('&quot;Co&lt;i&gt;si&lt;\/i&gt;nus&#039;\&quot;&quot;', false);
+    }
+
+    public function test_shouldNotShowQualiDropdown_whenNoQualisInCourse() {
+        // given
+        Course::find($this->courseId)->quali_datas()->delete();
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('Quali anzeigen:');
+        $response->assertDontSee('keines');
+    }
+
+    public function test_shouldSelectNoQualiByDefault() {
+        // given
+        $qualiDataId = Quali::find($this->createQuali('Zwischenquali'))->quali_data_id;
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview');
+
+        // then
+        $response->assertOk();
+        $response->assertSee('Quali anzeigen:');
+        $response->assertSee('keines');
+        $response->assertSee(':value="&quot;0&quot;"', false);
+        $response->assertSee('Zwischenquali');
+        $response->assertDontSee(':value="&quot;'. $qualiDataId .'&quot;"', false);
+    }
+
+    public function test_shouldNotUseWideLayout_whenNoQualiIsSelected() {
+        // given
+        $qualiDataId = Quali::find($this->createQuali())->quali_data_id;
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('<b-container :fluid="true">', false);
+    }
+
+    public function test_shouldNotPassQualiToOverviewTable_whenNoQualiIsSelected() {
+        // given
+        $qualiDataId = Quali::find($this->createQuali())->quali_data_id;
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee(':quali-data="{', false);
+        $response->assertSee(':quali-data="null"', false);
+    }
+
+    public function test_shouldShowSelectedQuali_whenQualiIsSelected() {
+        // given
+        $qualiDataId = Quali::find($this->createQuali('Zwischenquali'))->quali_data_id;
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview/' . $qualiDataId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee('Quali anzeigen:');
+        $response->assertSee('keines');
+        $response->assertDontSee(':value="&quot;0&quot;"', false);
+        $response->assertSee('Zwischenquali');
+        $response->assertSee(':value="&quot;'. $qualiDataId .'&quot;"', false);
+    }
+
+    public function test_shouldUseWideLayout_whenQualiIsSelected() {
+        // given
+        $qualiDataId = Quali::find($this->createQuali())->quali_data_id;
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview/' . $qualiDataId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee('<b-container :fluid="true">', false);
+    }
+
+    public function test_shouldPassQualiToOverviewTable_whenQualiIsSelected() {
+        // given
+        $qualiDataId = Quali::find($this->createQuali())->quali_data_id;
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview/' . $qualiDataId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee(':quali-data="{', false);
+        $response->assertDontSee(':quali-data="null"', false);
     }
 }

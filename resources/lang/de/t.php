@@ -430,7 +430,9 @@ return array(
 			"here" => "hier",
 			"menu_name" => "Überblick",
 			"no_participants" => "Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie :here.",
+			"no_quali" => "keines",
 			"title" => "Beobachtungs-Überblick",
+			"show_qualis" => "Quali anzeigen:",
 		),
 		"participants" => array(
 			"here" => "hier",

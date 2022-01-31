@@ -53,7 +53,7 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
         Route::get('/course/{course}/participants/{participant}/qualis/{quali}/edit', [QualiContentController::class, 'edit'])->name('qualiContent.edit');
         Route::post('/course/{course}/participants/{participant}/qualis/{quali}', [QualiContentController::class, 'update'])->name('qualiContent.update');
 
-        Route::get('/course/{course}/overview', [ObservationController::class, 'overview'])->name('overview');
+        Route::get('/course/{course}/overview/{quali_data?}', [ObservationController::class, 'overview'])->name('overview');
 
         Route::get('/course/{course}/observation/new', [ObservationController::class, 'create'])->name('observation.new');
         Route::post('/course/{course}/observation/new', [ObservationController::class, 'store'])->name('observation.store');
