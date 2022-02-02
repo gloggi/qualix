@@ -2,6 +2,7 @@
 
 ##### Januar 2021
 - Auf der Überblick-Seite können jetzt Qualis angezeigt werden [#242](https://github.com/gloggi/qualix/pull/242)
+- Die Checkbox "Mindestanforderung" bei neuen Anforderungen ist standardmässig aktiviert, um harte Kriterien als best practice zu ermutigen.
 - Security Updates
 
 ##### Dezember 2021

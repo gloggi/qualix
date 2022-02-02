@@ -9,7 +9,7 @@
 
             <input-text name="content" label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
 
-            <input-checkbox name="mandatory" label="{{__('t.models.requirement.mandatory')}}"></input-checkbox>
+            <input-checkbox name="mandatory" label="{{__('t.models.requirement.mandatory')}}" value="1"></input-checkbox>
 
             <input-multi-select
                 name="blocks"
