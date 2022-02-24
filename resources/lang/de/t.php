@@ -296,7 +296,7 @@ return array(
 						"group" => "Hauptebene",
 					),
 				),
-				"error_while_parsing" => "Die TN-Liste konnte nicht korrekt gelesen werden - hat deine Datei mindestens eine Spalte mit der Überschrift \"Pfadiname\", \"Vorname\" oder \"Nachname\"?",
+				"error_while_parsing" => "Die TN-Liste konnte nicht korrekt gelesen werden - hat deine Datei mindestens eine Spalte mit der Überschrift \":scout_name\", \":first_name\" oder \":last_name\"?",
 				"error_unsupported_format" => "Das Dateiformat der TN-Liste ist nicht unterstützt.",
 				"import" => "Importieren",
 				"import_from" => "Teilnehmende aus :source importieren",

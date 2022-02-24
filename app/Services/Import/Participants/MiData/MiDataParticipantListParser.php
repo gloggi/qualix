@@ -61,24 +61,28 @@ class MiDataParticipantListParser implements ParticipantListParser {
         $worksheet = $reader->load($filePath)->getActiveSheet();
         $row = $worksheet->getRowIterator(1,1);
         $colIterator = $row->current()->getCellIterator();
+        $scoutNameColName = trans('t.views.admin.participant_import.MiData.column_names.scout_name');
+        $firstNameColName = trans('t.views.admin.participant_import.MiData.column_names.first_name');
+        $lastNameColName = trans('t.views.admin.participant_import.MiData.column_names.last_name');
+        $groupColName = trans('t.views.admin.participant_import.MiData.column_names.group');
         foreach ($colIterator as $col){
             $name = $col->getValue() . '';
-            if(empty($this->scoutNameCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.scout_name')){
+            if(empty($this->scoutNameCol) && $name === $scoutNameColName){
                 $this->scoutNameCol = $col->getColumn();
                 $this->firstRelevantCol ??= $col->getColumn();
                 $this->lastRelevantCol = $col->getColumn();
             }
-            if(empty($this->firstNameCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.first_name')){
+            if(empty($this->firstNameCol) && $name === $firstNameColName){
                 $this->firstNameCol = $col->getColumn();
                 $this->firstRelevantCol ??= $col->getColumn();
                 $this->lastRelevantCol = $col->getColumn();
             }
-            if(empty($this->lastNameCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.last_name')){
+            if(empty($this->lastNameCol) && $name === $lastNameColName){
                 $this->lastNameCol = $col->getColumn();
                 $this->firstRelevantCol ??= $col->getColumn();
                 $this->lastRelevantCol = $col->getColumn();
             }
-            if(empty($this->groupCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.group')){
+            if(empty($this->groupCol) && $name === $groupColName){
                 $this->groupCol = $col->getColumn();
                 $this->firstRelevantCol ??= $col->getColumn();
                 $this->lastRelevantCol = $col->getColumn();
@@ -86,7 +90,11 @@ class MiDataParticipantListParser implements ParticipantListParser {
         }
 
         if (empty($this->scoutNameCol) && empty($this->firstNameCol) && empty($this->lastNameCol)) {
-            throw new MiDataParticipantsListsParsingException(trans('t.views.admin.participant_import.error_while_parsing'));
+            throw new MiDataParticipantsListsParsingException(trans('t.views.admin.participant_import.error_while_parsing', [
+                'scout_name' => $scoutNameColName,
+                'first_name' => $firstNameColName,
+                'last_name' => $lastNameColName
+            ]));
         }
 
         $this->lastRowWithData = max(
