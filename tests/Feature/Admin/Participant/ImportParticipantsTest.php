@@ -8,6 +8,7 @@ use App\Exceptions\UnsupportedFormatException;
 use App\Services\Import\SpreadsheetReaderFactory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Testing\TestResponse;
+use Illuminate\Validation\ValidationException;
 use Mockery;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
@@ -77,7 +78,7 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         ]);
     }
 
-    public function test_shouldConstructNames_whenLastNameColumnIsEntirelyMissing() {
+    public function test_shouldConstructNames_whenScoutNameColumnIsEntirelyMissing() {
         // given
         $this->setUpInputFile('event_participation_export-noScoutNameColumn.xlsx', new Xlsx());
 
@@ -230,6 +231,42 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('test exception');
+    }
+
+    public function test_shouldReportMissingNameColumnsToTheUser() {
+        // given
+        $this->setUpInputFile('event_participation_export-noNameColumns.xlsx', new Xlsx());
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Die TN-Liste konnte nicht korrekt gelesen werden - hat deine Datei mindestens eine Spalte mit der Überschrift "Pfadiname", "Vorname" oder "Nachname"?', $exception->validator->errors()->first('file'));
+    }
+
+    public function test_shouldIgnoreMissingGroupColumn() {
+        // given
+        $this->setUpInputFile('event_participation_export-noGroupColumn.xlsx', new Xlsx());
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/participants');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSeeInOrder([
+            'In der importierten Datei wurden 3 Teilnehmende gefunden.',
+            'Consequuntur',
+            'Testliwoelfi',
+            'Ung\u00fcltig Mail Dude'
+        ]);
+        $response->assertDontSee('Pfadibewegung Schweiz');
+        $response->assertDontSee('Helveter');
     }
 
     public function test_shouldReportUnknownErrorToTheUserAndToSentry() {

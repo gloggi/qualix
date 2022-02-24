@@ -21,6 +21,8 @@ class MiDataParticipantListParser implements ParticipantListParser {
     protected $lastNameCol;
     protected $scoutNameCol;
     protected $groupCol;
+    protected $firstRelevantCol = null;
+    protected $lastRelevantCol = null;
 
     public function __construct(SpreadsheetReaderFactory $readerFactory) {
         $this->readerFactory = $readerFactory;
@@ -36,9 +38,9 @@ class MiDataParticipantListParser implements ParticipantListParser {
     public function parse(string $filePath) {
         return $this->readRows($filePath)->map(function (Row $row) {
 
-            [$scoutName, $group] = $this->readCellsInRow($row);
+            [$scoutName, $firstName, $lastName, $group] = $this->readCellsInRow($row);
             return array_merge(
-                $this->parseName($scoutName, $row),
+                $this->parseName($scoutName, $firstName, $lastName),
                 $this->parseGroup($group)
             );
 
@@ -63,19 +65,27 @@ class MiDataParticipantListParser implements ParticipantListParser {
             $name = $col->getValue() . '';
             if(empty($this->scoutNameCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.scout_name')){
                 $this->scoutNameCol = $col->getColumn();
+                $this->firstRelevantCol ??= $col->getColumn();
+                $this->lastRelevantCol = $col->getColumn();
             }
             if(empty($this->firstNameCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.first_name')){
                 $this->firstNameCol = $col->getColumn();
+                $this->firstRelevantCol ??= $col->getColumn();
+                $this->lastRelevantCol = $col->getColumn();
             }
             if(empty($this->lastNameCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.last_name')){
                 $this->lastNameCol = $col->getColumn();
+                $this->firstRelevantCol ??= $col->getColumn();
+                $this->lastRelevantCol = $col->getColumn();
             }
             if(empty($this->groupCol) && $name === trans('t.views.admin.participant_import.MiData.column_names.group')){
                 $this->groupCol = $col->getColumn();
+                $this->firstRelevantCol ??= $col->getColumn();
+                $this->lastRelevantCol = $col->getColumn();
             }
         }
 
-        if(empty($this->scoutNameCol) && empty($this->firstNameCol) && empty($this->lastNameCol)){
+        if (empty($this->scoutNameCol) && empty($this->firstNameCol) && empty($this->lastNameCol)) {
             throw new MiDataParticipantsListsParsingException(trans('t.views.admin.participant_import.error_while_parsing'));
         }
 
@@ -99,23 +109,29 @@ class MiDataParticipantListParser implements ParticipantListParser {
      * @return array
      */
     protected function readCellsInRow(Row $row) {
-        $cells = Collection::make($row->getCellIterator($this->scoutNameCol, $this->groupCol));
+        $cells = Collection::make($row->getCellIterator($this->firstRelevantCol, $this->lastRelevantCol));
 
-        return [$cells[$this->scoutNameCol], $cells[$this->groupCol]];
+        return [
+            $cells[$this->scoutNameCol] ?? null,
+            $cells[$this->firstNameCol] ?? null,
+            $cells[$this->lastNameCol] ?? null,
+            $cells[$this->groupCol] ?? null
+        ];
     }
 
     /**
-     * Parse the data in the "Pfadiname" column, if empty: concat first and last name
+     * Parse the data in the "Pfadiname", "Vorname" and "Nachname" columns
      *
-     * @param PhpSpreadsheet\Cell\Cell $cell
-     * @param Row $row
+     * @param PhpSpreadsheet\Cell\Cell|null $scoutName
+     * @param PhpSpreadsheet\Cell\Cell|null $firstName
+     * @param PhpSpreadsheet\Cell\Cell|null $lastName
      * @return array containing the extracted data
      */
-    protected function parseName(PhpSpreadsheet\Cell\Cell $cell, Row $row) {
-        $name = $cell->getValue() . '';
+    protected function parseName(?PhpSpreadsheet\Cell\Cell $scoutName, ?PhpSpreadsheet\Cell\Cell $firstName, ?PhpSpreadsheet\Cell\Cell $lastName) {
+        $name = $scoutName ? $scoutName->getValue() . '' : '';
         if(empty($name)){
-            $firstName = $this->extractCellFromRow($row, $this->firstNameCol);
-            $lastName = $this->extractCellFromRow($row, $this->lastNameCol);
+            $firstName = $firstName ? $firstName->getValue() . '' : '';
+            $lastName = $lastName ? $lastName->getValue() . '' : '';
             $name = implode(' ', array_filter([$firstName, $lastName]));
         }
         return [
@@ -123,19 +139,15 @@ class MiDataParticipantListParser implements ParticipantListParser {
         ];
     }
 
-    protected function extractCellFromRow(Row $row, $colName = null) {
-        return $colName === null ? null : '' . $row->getCellIterator($colName, $colName)->current()->getValue();
-    }
-
     /**
      * Parse the data in the "Hauptebene" column.
      *
-     * @param PhpSpreadsheet\Cell\Cell $cell
+     * @param PhpSpreadsheet\Cell\Cell|null $cell
      * @return array containing the extracted block date
      */
-    protected function parseGroup(PhpSpreadsheet\Cell\Cell $cell) {
+    protected function parseGroup(?PhpSpreadsheet\Cell\Cell $cell) {
         return [
-            'group' => $cell->getValue() . ''
+            'group' => $cell ? $cell->getValue() . '' : ''
         ];
     }
 }
