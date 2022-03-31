@@ -1,9 +1,12 @@
 # Changelog
 
-##### Februar 2021
+##### März 2022
+- Im Freitext auf TN können jetzt bis zu 65535 Zeichen eingetragen werden. Grund ist, dass in der MiData die TN-Empfehlung ebenfalls maximal so lange werden kann [#247](https://github.com/gloggi/qualix/issues/247)
+
+##### Februar 2022
 - Der TN-Import kommt jetzt besser damit zurecht, wenn Spalten fehlen oder in einer anderen Reihenfolge sind als erwartet, und gibt genauere Rückmeldungen was genau falsch ist.
 
-##### Januar 2021
+##### Januar 2022
 - Auf der Überblick-Seite können jetzt Qualis angezeigt werden [#242](https://github.com/gloggi/qualix/pull/242)
 - Die Checkbox "Mindestanforderung" bei neuen Anforderungen ist standardmässig aktiviert, um harte Kriterien als best practice zu ermutigen.
 - Security Updates

@@ -119,7 +119,12 @@ class CreateParticipantTest extends TestCaseWithCourse {
     public function test_shouldValidateNewParticipantData_longFreetext() {
         // given
         $payload = $this->payload;
-        $payload['freetext'] = 'Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext Unglaublich langer Freitext';
+        $tooLong = 'a';
+        for ($i = 0; $i < 16; $i++) {
+            $tooLong = $tooLong . $tooLong;
+        }
+        // $tooLong is now 65536 characters long
+        $payload['freetext'] = $tooLong;
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants', $payload);
@@ -128,9 +133,8 @@ class CreateParticipantTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Freitext darf maximal 1023 Zeichen haben.', $exception->validator->errors()->first('freetext'));
+        $this->assertEquals('Freitext darf maximal 65535 Zeichen haben.', $exception->validator->errors()->first('freetext'));
     }
-
 
     public function test_shouldShowMessage_whenNoParticipantInCourse() {
         // given

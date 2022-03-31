@@ -16,7 +16,7 @@ class ParticipantRequest extends FormRequest {
             'scout_name' => 'required|max:255',
             'group' => 'max:255',
             'image' => 'nullable|image|max:2000',
-            'freetext' => 'nullable|max:1023',
+            'freetext' => 'nullable|max:65535',
         ];
     }
 
