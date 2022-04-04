@@ -94,6 +94,8 @@ APP_ENV=production
 APP_KEY=
 APP_DEBUG=false
 APP_URL=https://qualix.flamberg.ch
+APP_CONTACT_LINK=mailto:info@qualix.flamberg.ch
+APP_CONTACT_TEXT="Kontaktiere Qualix"
 
 LOG_CHANNEL=stack
 

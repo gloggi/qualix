@@ -28,4 +28,14 @@ class ReadWelcomePageTest extends TestCaseWithBasicData {
         $response->assertOk();
         $response->assertSee('Willkommä bim Qualix');
     }
+
+    public function test_shouldDisplayContact(){
+        // given
+
+        // when
+        $response = $this->get('/course/' . $this->courseId);
+        //then
+        $response->assertOk();
+        $response->assertSee(env('APP_CONTACT_TEXT'));
+    }
 }
