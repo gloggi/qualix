@@ -52,7 +52,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertStatus(302);
         $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
-  
+
     public function test_shouldDisplayAllBlocksInChronologicalOrder() {
         // given
         $this->createBlock('old block', 1.1, Carbon::now()->subDays(2)->format('d.m.Y'));
@@ -268,7 +268,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Beobachtung darf maximal 1023 Zeichen haben.', $exception->validator->errors()->first('content'));
+        $this->assertEquals('Beobachtung darf maximal '.Observation::$char_limit.' Zeichen haben.', $exception->validator->errors()->first('content'));
     }
 
     public function test_shouldValidateNewObservationData_noImpression_shouldLeavePreviousImpression() {
