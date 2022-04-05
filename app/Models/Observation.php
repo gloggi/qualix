@@ -38,6 +38,11 @@ class Observation extends Model
     protected $fillable_relations = ['block'];
 
     /**
+     * @var number
+     */
+    public static $char_limit = 1023;
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function block()

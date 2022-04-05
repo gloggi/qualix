@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Observation;
 use Illuminate\Support\Facades\Lang;
 
 class ObservationRequest extends FormRequest {
@@ -14,7 +15,7 @@ class ObservationRequest extends FormRequest {
     public function rules() {
         return [
             'participants' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
-            'content' => 'required|max:1023',
+            'content' => 'required|max:'.Observation::$char_limit,
             'impression' => 'in:0,1,2',
             'block' => 'required|regex:/^\d+$/|existsInCourse',
             'requirements' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
