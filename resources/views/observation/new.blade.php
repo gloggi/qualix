@@ -83,12 +83,4 @@
     </b-card>
 
 @endsection
-<script>
-    import InputFile from "../../js/components/form/InputFile";
-    import InputHidden from "../../js/components/form/InputHidden";
-    import InputText from "../../js/components/form/InputText";
-    import CharLimit from "../../js/components/CharLimit";
-    export default {
-        components: {CharLimit, InputText, InputHidden, InputFile}
-    }
-</script>
+
