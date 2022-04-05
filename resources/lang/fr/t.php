@@ -295,6 +295,8 @@ return array(
 			"edit" => "Modifier l'observation",
 			"edit_success" => "Observation actualisée",
 			"new" => "Créer une observation",
+			"char_limit" => "Lettres utilisées:",
+
 		),
 		"overview" => array(
 			"here" => "ici",

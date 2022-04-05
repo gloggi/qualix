@@ -25,7 +25,11 @@
                 name="content"
                 label="{{__('t.models.observation.content')}}"
                 required
-                :autofocus="{{ ($participants !== null) ? 'true' : 'false' }}"></input-textarea>
+                :autofocus="{{ ($participants !== null) ? 'true' : 'false' }}"
+                :limit="1023"
+                v-slot="slotProps">
+            <char-limit :current-value="slotProps.currentValue" :limit="slotProps.limit"></char-limit>
+            </input-textarea>
 
             <block-and-requirements-input-wrapper
                 v-slot="{ onBlockUpdate, requirementsValue }"
@@ -79,3 +83,12 @@
     </b-card>
 
 @endsection
+<script>
+    import InputFile from "../../js/components/form/InputFile";
+    import InputHidden from "../../js/components/form/InputHidden";
+    import InputText from "../../js/components/form/InputText";
+    import CharLimit from "../../js/components/CharLimit";
+    export default {
+        components: {CharLimit, InputText, InputHidden, InputFile}
+    }
+</script>

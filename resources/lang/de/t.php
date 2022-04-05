@@ -425,6 +425,8 @@ return array(
 			"edit" => "Beobachtung bearbeiten",
 			"edit_success" => "Beobachtung aktualisiert.",
 			"new" => "Beobachtung erfassen",
+			"char_limit" => "Zeichen genutzt:",
+
 		),
 		"overview" => array(
 			"here" => "hier",

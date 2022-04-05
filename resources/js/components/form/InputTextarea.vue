@@ -11,13 +11,14 @@
           :required="required"
           :autofocus="autofocus"
           :v-focus="autofocus"
+          :maxlength="limit"
           v-model="currentValue"></textarea>
 
       <span v-if="errorMessage" class="invalid-feedback" role="alert">
         <strong>{{ errorMessage }}</strong>
       </span>
 
-      <slot></slot>
+      <slot v-bind:currentValue="currentValue" v-bind:limit="limit"></slot>
     </div>
   </div>
 </template>
@@ -31,7 +32,8 @@ export default {
     required: { type: Boolean, default: false },
     label: { type: String, required: true },
     autofocus: { type: Boolean, default: false },
-    placeholder: { type: String, required: false }
+    placeholder: { type: String, required: false },
+    limit: {type: Number, required: false}
   },
 }
 </script>

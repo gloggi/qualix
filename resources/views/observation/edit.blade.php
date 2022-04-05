@@ -25,7 +25,11 @@
                 value="{{ $observation->content }}"
                 label="{{__('t.models.observation.content')}}"
                 required
-                autofocus></input-textarea>
+                autofocus
+                :limit="1023"
+                v-slot="slotProps">
+                <char-limit :current-value="slotProps.currentValue" :limit="slotProps.limit"></char-limit>
+            </input-textarea>
 
             <input-multi-select
                 name="block"
