@@ -36,6 +36,8 @@ class ReadWelcomePageTest extends TestCaseWithBasicData {
         $response = $this->get('/course/' . $this->courseId);
         //then
         $response->assertOk();
-        $response->assertSee(env('APP_CONTACT_TEXT'));
+        //$response->assertSee(env('APP_CONTACT_TEXT'));
+        $response->assertSee(env('APP_CONTACT_TEXT', __('t.footer.contact_text')));
+
     }
 }

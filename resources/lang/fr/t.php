@@ -6,6 +6,7 @@ return array(
 	),
 	"footer" => array(
 		"slogan" => "Qualix. Qu'as-tu vu?",
+		"contact_text" => "Contacte Qualix"
 	),
 	"global" => array(
 		"add" => "Ajouter",
