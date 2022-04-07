@@ -78,11 +78,11 @@ class Course extends Model {
     public function observationAssignmentsPerUserAndPerBlock() {
         if (!$this->observationAssignments) {
             $observationAssignmentsQuery = ObservationAssignment::select([
-                'observation_assignments.name as name',
                 'users.id as user_id',
                 'observation_assignment_blocks.block_id as block_id',
                 DB::raw('COUNT(DISTINCT observations.id) as observation_count'),
-                'participants.id as participant_id'
+                'participants.id as participant_id',
+                DB::raw('GROUP_CONCAT(DISTINCT observation_assignments.name SEPARATOR ", ") as name')
             ])->distinct()
                 ->join('observation_assignment_participants', 'observation_assignments.id', 'observation_assignment_participants.observation_assignment_id')
                 ->join('observation_assignment_users', 'observation_assignments.id', 'observation_assignment_users.observation_assignment_id')
@@ -97,7 +97,7 @@ class Course extends Model {
                 })
                 ->join('trainers', 'users.id', 'trainers.user_id')
                 ->mergeConstraintsFrom($this->users()->getQuery())
-                ->groupBy('user_id', 'block_id', 'participant_id', 'name');
+                ->groupBy('user_id', 'block_id', 'participant_id');
 
             $this->observationAssignments = $this->participants()->select([
                 'query.user_id as user_id',
