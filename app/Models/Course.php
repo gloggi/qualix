@@ -104,7 +104,7 @@ class Course extends Model {
                 'query.block_id as block_id',
                 'query.observation_count as observation_count',
                 'participants.*',
-                'query.name as observation_assignment_name'
+                'query.name as observation_assignment_names'
             ])->joinSub($observationAssignmentsQuery, 'query', function ($join) {
                 $join->on('participants.id', 'query.participant_id');
             })->get()

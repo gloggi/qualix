@@ -61,7 +61,7 @@
                                         <b-list-group-item class="border-0 mb-0 col-sm-12 col-md-6">
                                                 <div class="row">
                                                     @foreach($trainerObservationAssignments[$block->id] as $participant)
-                                                        <div class="col-4 col-sm-3 col-md-4 col-lg-3 mb-1 text-center" v-b-tooltip.hover title="{{$participant->observation_assignment_name}}">
+                                                        <div class="col-4 col-sm-3 col-md-4 col-lg-3 mb-1 text-center" v-b-tooltip.hover title="{{$participant->observation_assignment_names}}">
                                                             <a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id, 'block' => $block->id]) }}">
                                                                 <div class="mb-0 position-relative">
                                                                     <img class="card-img-top rounded-circle img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
