@@ -26,7 +26,7 @@
                 label="{{__('t.models.observation.content')}}"
                 required
                 autofocus
-                :limit="{{App\Models\Observation::$char_limit}}"
+                :limit="{{App\Models\Observation::CHAR_LIMIT}}"
                 v-slot="slotProps">
                 <char-limit :current-value="slotProps.currentValue" :limit="slotProps.limit"></char-limit>
             </input-textarea>

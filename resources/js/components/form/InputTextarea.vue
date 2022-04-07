@@ -18,7 +18,7 @@
         <strong>{{ errorMessage }}</strong>
       </span>
 
-      <slot v-bind:currentValue="currentValue" v-bind:limit="limit"></slot>
+      <slot :currentValue="currentValue" :limit="limit"></slot>
     </div>
   </div>
 </template>

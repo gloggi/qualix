@@ -1,11 +1,8 @@
 <template>
-  <div>
-    <div class="progress position-relative">
-      <div class="progress-bar" role="progressbar" v-bind:style="progressBarStyles" :aria-valuenow="percentage" aria-valuemin="0" :aria-valuemax="limit"></div>
-      <span class="justify-content-center align-self-center d-flex position-absolute w-100">{{this.$t('t.views.observations.char_limit')}} <strong class="ml-1"> {{ this.currentValue.length.toFixed(0) }} / {{ limit }}</strong></span>
-    </div>
-
-  </div>
+  <b-progress class="position-relative" :max="limit" >
+    <span class="justify-content-center align-self-center d-flex position-absolute w-100"><strong class="ml-1"> {{ this.currentValue.length.toFixed(0) }} / {{ limit }}</strong></span>
+    <b-progress-bar :value="this.currentValue.length" :style="progressBarStyles"></b-progress-bar>
+  </b-progress>
 </template>
 
 <script>
@@ -33,7 +30,6 @@ export default {
     progressBarStyles() {
       return {
         'background-color': this.progressBarColor,
-        width: this.percentage + '%'
       }
     },
 

@@ -40,7 +40,7 @@ class Observation extends Model
     /**
      * @var number
      */
-    public static $char_limit = 1023;
+    const CHAR_LIMIT = 1023;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

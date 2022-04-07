@@ -281,7 +281,7 @@ class CreateObservationTest extends TestCaseWithBasicData {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Beobachtung darf maximal '.Observation::$char_limit.' Zeichen haben.', $exception->validator->errors()->first('content'));
+        $this->assertEquals('Beobachtung darf maximal '.Observation::CHAR_LIMIT.' Zeichen haben.', $exception->validator->errors()->first('content'));
     }
 
     public function test_shouldValidateNewObservationData_noImpression_shouldSetImpressionToNeutral() {
