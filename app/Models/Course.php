@@ -81,7 +81,8 @@ class Course extends Model {
                 'users.id as user_id',
                 'observation_assignment_blocks.block_id as block_id',
                 DB::raw('COUNT(DISTINCT observations.id) as observation_count'),
-                'participants.id as participant_id'
+                'participants.id as participant_id',
+                DB::raw('GROUP_CONCAT(DISTINCT observation_assignments.name SEPARATOR ", ") as name')
             ])->distinct()
                 ->join('observation_assignment_participants', 'observation_assignments.id', 'observation_assignment_participants.observation_assignment_id')
                 ->join('observation_assignment_users', 'observation_assignments.id', 'observation_assignment_users.observation_assignment_id')
@@ -102,7 +103,8 @@ class Course extends Model {
                 'query.user_id as user_id',
                 'query.block_id as block_id',
                 'query.observation_count as observation_count',
-                'participants.*'
+                'participants.*',
+                'query.name as observation_assignment_names'
             ])->joinSub($observationAssignmentsQuery, 'query', function ($join) {
                 $join->on('participants.id', 'query.participant_id');
             })->get()

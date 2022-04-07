@@ -6,6 +6,7 @@ return array(
 	),
 	"footer" => array(
 		"slogan" => "Qualix. was gaffsch?",
+		"contact_text" => "Kontaktiere das Qualix-Team"
 	),
 	"global" => array(
 		"add" => "Hinzufügen",
@@ -425,6 +426,8 @@ return array(
 			"edit" => "Beobachtung bearbeiten",
 			"edit_success" => "Beobachtung aktualisiert.",
 			"new" => "Beobachtung erfassen",
+			"char_limit" => "Zeichen genutzt:",
+
 		),
 		"overview" => array(
 			"here" => "hier",

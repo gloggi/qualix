@@ -6,6 +6,7 @@ return array(
 	),
 	"footer" => array(
 		"slogan" => "Qualix. Qu'as-tu vu?",
+		"contact_text" => "Contacte l'équipe Qualix"
 	),
 	"global" => array(
 		"add" => "Ajouter",
@@ -295,6 +296,8 @@ return array(
 			"edit" => "Modifier l'observation",
 			"edit_success" => "Observation actualisée",
 			"new" => "Créer une observation",
+			"char_limit" => "Lettres utilisées:",
+
 		),
 		"overview" => array(
 			"here" => "ici",

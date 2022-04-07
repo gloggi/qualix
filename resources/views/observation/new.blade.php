@@ -25,7 +25,11 @@
                 name="content"
                 label="{{__('t.models.observation.content')}}"
                 required
-                :autofocus="{{ ($participants !== null) ? 'true' : 'false' }}"></input-textarea>
+                :autofocus="{{ ($participants !== null) ? 'true' : 'false' }}"
+                :limit="{{App\Models\Observation::CHAR_LIMIT}}"
+                v-slot="slotProps">
+            <char-limit :current-value="slotProps.currentValue" :limit="slotProps.limit"></char-limit>
+            </input-textarea>
 
             <block-and-requirements-input-wrapper
                 v-slot="{ onBlockUpdate, requirementsValue }"
@@ -79,3 +83,4 @@
     </b-card>
 
 @endsection
+

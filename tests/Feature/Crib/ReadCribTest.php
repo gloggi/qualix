@@ -139,10 +139,15 @@ class ReadCribTest extends TestCaseWithCourse {
         $multiObservation = Observation::create(['content' => 'haben die ganze Zeit nur geschnädert', 'block' => $block1, 'user_id' => Auth::id()]);
         $multiObservation->participants()->attach([$participant1, $participant2]);
 
-        $observationAssignment = ObservationAssignment::create(['name' => 'Assignment', 'course_id' => $this->courseId]);
-        $observationAssignment->blocks()->attach([$block1, $block2]);
-        $observationAssignment->participants()->attach([$participant1, $participant2]);
-        $observationAssignment->users()->attach(Auth::id());
+        $observationAssignment1 = ObservationAssignment::create(['name' => 'Assignment 1', 'course_id' => $this->courseId]);
+        $observationAssignment1->blocks()->attach([$block1, $block2]);
+        $observationAssignment1->participants()->attach([$participant1, $participant2]);
+        $observationAssignment1->users()->attach(Auth::id());
+
+        $observationAssignment2 = ObservationAssignment::create(['name' => 'Assignment 2', 'course_id' => $this->courseId]);
+        $observationAssignment2->blocks()->attach([$block2]);
+        $observationAssignment2->participants()->attach([$participant2]);
+        $observationAssignment2->users()->attach(Auth::id());
 
         $userId = Auth::id();
 
@@ -154,31 +159,36 @@ class ReadCribTest extends TestCaseWithCourse {
         $response->assertSee('Block 1');
         $response->assertSee('Block 2');
         $data = $response->getOriginalContent()->getData()['trainerObservationAssignments'];
-        $this->assertEquals([$block2, $block1], array_keys($data->all()));
+        $this->assertEqualsCanonicalizing([$block2, $block1], array_keys($data->all()));
         $block1Participant1 = collect($data[$block1])->first(function ($entry) use($participant1) { return $entry['id'] === $participant1; });
         $this->assertEquals($block1Participant1['user_id'], $userId);
         $this->assertEquals($block1Participant1['block_id'], $block1);
         $this->assertEquals($block1Participant1['observation_count'], 2);
         $this->assertEquals($block1Participant1['id'], $participant1);
         $this->assertEquals($block1Participant1['scout_name'], 'One');
+        $this->assertEquals($block1Participant1['observation_assignment_names'], $observationAssignment1['name']);
         $block1Participant2 = collect($data[$block1])->first(function ($entry) use($participant2) { return $entry['id'] === $participant2; });
         $this->assertEquals($block1Participant2['user_id'], $userId);
         $this->assertEquals($block1Participant2['block_id'], $block1);
         $this->assertEquals($block1Participant2['observation_count'], 1);
         $this->assertEquals($block1Participant2['id'], $participant2);
         $this->assertEquals($block1Participant2['scout_name'], 'Two');
+        $this->assertEquals($block1Participant2['observation_assignment_names'], $observationAssignment1['name']);
         $block2Participant1 = collect($data[$block2])->first(function ($entry) use($participant1) { return $entry['id'] === $participant1; });
         $this->assertEquals($block2Participant1['user_id'], $userId);
         $this->assertEquals($block2Participant1['block_id'], $block2);
         $this->assertEquals($block2Participant1['observation_count'], 0);
         $this->assertEquals($block2Participant1['id'], $participant1);
         $this->assertEquals($block2Participant1['scout_name'], 'One');
+        $this->assertEquals($block2Participant1['observation_assignment_names'], $observationAssignment1['name']);
         $block2Participant2 = collect($data[$block2])->first(function ($entry) use($participant2) { return $entry['id'] === $participant2; });
         $this->assertEquals($block2Participant2['user_id'], $userId);
         $this->assertEquals($block2Participant2['block_id'], $block2);
         $this->assertEquals($block2Participant2['observation_count'], 0);
         $this->assertEquals($block2Participant2['id'], $participant2);
         $this->assertEquals($block2Participant2['scout_name'], 'Two');
+        $this->assertEquals($block2Participant2['observation_assignment_names'], $observationAssignment1['name'].", ".$observationAssignment2['name']);
+
     }
 
     public function test_shouldReturnToCrib_afterAddingObservationInAssignment() {
