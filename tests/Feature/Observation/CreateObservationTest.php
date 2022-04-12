@@ -4,6 +4,7 @@ namespace Tests\Feature\Observation;
 
 use App\Models\Course;
 use App\Models\Observation;
+use App\Models\Participant;
 use Carbon\Carbon;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
@@ -124,6 +125,26 @@ class CreateObservationTest extends TestCaseWithBasicData {
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $response->assertSee('Beobachtung erfasst.');
+    }
+
+    public function test_shouldShowLinksToObservedParticipants() {
+        // given
+        $payload = $this->payload;
+        $participantIds = [$this->createParticipant(), $this->createParticipant()];
+        $payload['participants'] = implode(',', $participantIds);
+        $participants = Participant::where(['id' => $participantIds]);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/new', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/observation/new?participant=' . $this->participantId . '&block=' . $this->blockId);
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        foreach ($participants as $participant) {
+            $response->assertSee('Zu '. $participant->scout_name);
+        }
     }
 
     public function test_shouldValidateNewObservationData_noParticipantIds() {

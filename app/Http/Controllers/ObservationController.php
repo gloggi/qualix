@@ -61,12 +61,12 @@ class ObservationController extends Controller {
             $observation->categories()->attach(array_filter(explode(',', $data['categories'])));
 
             $flash = (new HtmlString)->__('t.views.observations.add_success');
-            if (count($participantIds) == 1) {
-                $participant = $observation->participants()->first();
+            foreach ($participantIds as $participantId) {
+                $participant = $observation->participants()->firstWhere([ 'participants.id' => $participantId ]);
                 $route = route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]);
-                $flash->s(" <a href=\"{$route}\">")
+                $flash->s(" <a href=\"{$route}\"><i class=\"fas fa-arrow-right\"></i> ")
                       ->__('t.views.observations.go_to_participant', ['name' => $participant->scout_name])
-                      ->s(' <i class="fas fa-arrow-right"></i></a>');
+                      ->s('</a>');
             }
 
             $request->session()->flash('alert-success', $flash);

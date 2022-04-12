@@ -4,6 +4,7 @@
 - Kontaktlink im Footer hinzugefügt [#233](https://github.com/gloggi/qualix/issues/233)
 - Beim Eintragen von Beobachtungen wird das bisherige Zeichenlimit neu sichtbar gemacht [#223](https://github.com/gloggi/qualix/issues/223)
 - Im Spick werden die Namen der Beobachtungsaufträge angezeigt, wenn man über ein TN-Bild fährt [#210](https://github.com/gloggi/qualix/issues/210)
+- Nach dem Erstellen von Beobachtungen für mehrere TN gleichzeitig werden neu Links zu allen beobachteten TN angezeigt [#217](https://github.com/gloggi/qualix/issues/217)
 
 ##### März 2022
 - Im Freitext auf TN können jetzt bis zu 65535 Zeichen eingetragen werden. Grund ist, dass in der MiData die TN-Empfehlung ebenfalls maximal so lange werden kann [#247](https://github.com/gloggi/qualix/issues/247)
