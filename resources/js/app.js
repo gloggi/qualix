@@ -4,6 +4,7 @@ import languageBundle
 import VueI18n from 'vue-i18n'
 import {kebabCase} from 'lodash'
 import LaravelTranslationFormatter from './laravel-translation-formatter'
+import './svg.js'
 import * as Sentry from "@sentry/vue";
 
 require('./bootstrap')
