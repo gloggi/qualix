@@ -113,6 +113,7 @@ jobs:
           ssh-directory: ${{ secrets.SSH_DIRECTORY }}
           app-key: ${{ secrets.APP_KEY }}
           app-url: ${{ secrets.APP_URL }}
+          app-contact-link: ${{ secrets.APP_CONTACT_LINK }}
           db-host: ${{ secrets.DB_HOST }}
           db-database: ${{ secrets.DB_DATABASE }}
           db-username: ${{ secrets.DB_USERNAME }}

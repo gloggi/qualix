@@ -8,6 +8,7 @@ sed -ri "s~^APP_ENV=.*$~APP_ENV=$APP_ENV~" .env
 sed -ri "s~^APP_KEY=.*$~APP_KEY=$APP_KEY~" .env
 sed -ri "s~^APP_DEBUG=.*$~APP_DEBUG=$APP_DEBUG~" .env
 sed -ri "s~^APP_URL=.*$~APP_URL=$APP_URL~" .env
+sed -ri "s~^APP_CONTACT_LINK=.*$~APP_CONTACT_LINK=$APP_CONTACT_LINK~" .env
 
 sed -ri "s~^DB_HOST=.*$~DB_HOST=$DB_HOST~" .env
 sed -ri "s~^DB_DATABASE=.*$~DB_DATABASE=$DB_DATABASE~" .env

@@ -34,6 +34,11 @@ inputs:
     description: 'The url under which the application will be available'
     required: true
 
+  app-contact-link:
+    description: 'The URL or mailto: link where the footer contact link should lead'
+    required: false
+    default: ''
+
   db-host:
     description: 'The URL of the database server'
     required: false
@@ -126,6 +131,7 @@ runs:
         APP_KEY: ${{ inputs.app-key }}
         APP_DEBUG: ${{ inputs.app-debug }}
         APP_URL: ${{ inputs.app-url }}
+        APP_CONTACT_LINK: ${{ inputs.app-contact-link }}
         DB_HOST: ${{ inputs.db-host }}
         DB_DATABASE: ${{ inputs.db-database }}
         DB_USERNAME: ${{ inputs.db-username }}
