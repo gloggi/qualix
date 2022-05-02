@@ -1,5 +1,8 @@
 # Changelog
 
+##### Mai 2022
+- Wenn mit dem Back-Button zurück auf ein Quali navigiert wird, wird jetzt der wirklich aktuellste Quali-Inhalt angezeigt [#250](https://github.com/gloggi/qualix/issues/250)
+
 ##### April 2022
 - Kontaktlink im Footer hinzugefügt [#233](https://github.com/gloggi/qualix/issues/233)
 - Beim Eintragen von Beobachtungen wird das bisherige Zeichenlimit neu sichtbar gemacht [#223](https://github.com/gloggi/qualix/issues/223)

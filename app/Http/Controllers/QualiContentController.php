@@ -42,7 +42,7 @@ class QualiContentController extends Controller {
      * @return View
      */
     public function edit(Request $request, Course $course, Participant $participant, Quali $quali) {
-        return view('qualiContent.edit', [
+        return response()->view('qualiContent.edit', [
             'participant' => $participant,
             'quali' => $quali,
             'observations' => $participant->observations()
@@ -56,6 +56,9 @@ class QualiContentController extends Controller {
                 ->orderBy('blocks.id')
                 ->orderBy('observations.created_at')
                 ->get(),
+        ])->withHeaders([
+            'Cache-Control' => 'max-age=0, s-maxage=0, no-cache, must-revalidate, proxy-revalidate, no-store',
+            'Pragma' => 'no-cache'
         ]);
     }
 
