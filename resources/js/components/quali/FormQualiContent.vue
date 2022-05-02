@@ -30,7 +30,7 @@
       :show-impression="showImpression"
       :collaboration-key="collaborationKey"
       :mark-invalid="offline || loggedOut"
-      @localinput="debouncedAutosave()"></input-quali-editor-large>
+      @localinput="onLocalInput()"></input-quali-editor-large>
   </form-basic>
 </template>
 
@@ -57,6 +57,7 @@ export default {
       saving: false,
       offline: false,
       loggedOut: false,
+      dirty: false,
       debouncedAutosave: debounce(this.autosave, 2000)
     }
   },
@@ -67,10 +68,10 @@ export default {
         .map(node => ({ pivot: node.attrs }))
     },
     autosaveText() {
-      return this.saving ? this.$t('t.global.autosaving') : this.$t('t.global.autosaved')
+      return this.dirty ? this.$t('t.global.autosave_paused') : this.saving ? this.$t('t.global.autosaving') : this.$t('t.global.autosaved')
     },
     autosaveIcon() {
-      return this.saving ? 'fa-spinner' : 'fa-check'
+      return this.dirty ? 'fa-pause' : this.saving ? 'fa-spinner' : 'fa-check'
     },
   },
   methods: {
@@ -83,10 +84,15 @@ export default {
       }
       window.open(this.routeUri('refreshCsrf'))
     },
+    onLocalInput () {
+      this.dirty = true
+      this.debouncedAutosave()
+    },
     autosave () {
       this.saving = true
       this.offline = false
       this.loggedOut = false
+      this.dirty = false
       this.$refs.form.xhrSubmit().then(() => {
         this.saving = false
       }).catch(err => {

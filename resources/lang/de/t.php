@@ -13,6 +13,7 @@ return array(
 		"add_observation" => "Beobachtung erfassen",
 		"autosaved" => "Automatisch gespeichert",
 		"autosaving" => "Speichern...",
+		"autosave_paused" => "Warte bis fertig getippt...",
 		"close" => "Schliessen",
 		"datepicker" => array(
 			"calendar" => "Kalender",
