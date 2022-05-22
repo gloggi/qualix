@@ -1,60 +1,63 @@
 <template>
   <div>
+    <template v-if="anyRequirements || anyCategories || null !== usedObservations">
 
-    <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse v-if="anyRequirements || anyCategories">
-      <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
-    </b-button>
+      <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse>
+        <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
+      </b-button>
 
-    <b-collapse id="filters-collapse" :visible="filtersVisibleInitially" v-if="anyRequirements || anyCategories || null !== usedObservations">
-      <b-row>
+      <b-collapse id="filters-collapse" :visible="filtersVisibleInitially">
+        <b-row>
 
-        <b-col cols="12" md="6" v-if="anyRequirements">
-          <multi-select
-            id="filter-requirements"
-            name="filter-requirements"
-            class="form-control-multiselect"
-            :selected.sync="selectedRequirement"
-            :allow-empty="true"
-            :placeholder="$t('t.views.participant_details.filter_by_requirement')"
-            :options="requirementOptions"
-            :multiple="false"
-            :close-on-select="true"
-            :show-labels="false"
-            :show-clear="true"
-            display-field="content"></multi-select>
-        </b-col>
+          <b-col cols="12" md="6" v-if="anyRequirements">
+            <multi-select
+              id="filter-requirements"
+              name="filter-requirements"
+              class="form-control-multiselect"
+              :selected.sync="selectedRequirement"
+              :allow-empty="true"
+              :placeholder="$t('t.views.participant_details.filter_by_requirement')"
+              :options="requirementOptions"
+              :multiple="false"
+              :close-on-select="true"
+              :show-labels="false"
+              :show-clear="true"
+              display-field="content"></multi-select>
+          </b-col>
 
-        <b-col cols="12" md="6" v-if="anyCategories">
-          <multi-select
-            id="filter-categories"
-            name="filter-categories"
-            class="form-control-multiselect"
-            :selected.sync="selectedCategory"
-            :allow-empty="true"
-            :placeholder="$t('t.views.participant_details.filter_by_category')"
-            :options="categoryOptions"
-            :multiple="false"
-            :close-on-select="true"
-            :show-labels="false"
-            :show-clear="true"
-            display-field="name"></multi-select>
-        </b-col>
+          <b-col cols="12" md="6" v-if="anyCategories">
+            <multi-select
+              id="filter-categories"
+              name="filter-categories"
+              class="form-control-multiselect"
+              :selected.sync="selectedCategory"
+              :allow-empty="true"
+              :placeholder="$t('t.views.participant_details.filter_by_category')"
+              :options="categoryOptions"
+              :multiple="false"
+              :close-on-select="true"
+              :show-labels="false"
+              :show-clear="true"
+              display-field="name"></multi-select>
+          </b-col>
 
-        <b-col cols="12" md="6" v-if="null !== usedObservations">
-          <label for="hide-already-used-observations" class="d-flex w-100 h-100 align-items-center">
-            <b-form-checkbox
-              type="checkbox"
-              id="hide-already-used-observations"
-              v-model="hideUsedObservations"
-              :switch="true"
-              size="xl"
-            ></b-form-checkbox>
-            <span>{{ $t('t.views.participant_details.hide_already_used_observations') }}</span>
-          </label>
-        </b-col>
+          <b-col cols="12" md="6" v-if="null !== usedObservations">
+            <label for="hide-already-used-observations" class="d-flex w-100 h-100 align-items-center">
+              <b-form-checkbox
+                type="checkbox"
+                id="hide-already-used-observations"
+                v-model="hideUsedObservations"
+                :switch="true"
+                size="xl"
+              ></b-form-checkbox>
+              <span>{{ $t('t.views.participant_details.hide_already_used_observations') }}</span>
+            </label>
+          </b-col>
 
-      </b-row>
-    </b-collapse>
+        </b-row>
+      </b-collapse>
+
+    </template>
 
     <responsive-table
       class="mt-3 mt-lg-0"
