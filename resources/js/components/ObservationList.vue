@@ -184,7 +184,7 @@ export default {
   methods: {
     persistFilter(key, value) {
       if (!this.courseId) return
-      this.storage[key] = value ? value : null;
+      this.storage[key] = value != null ? value : null;
       const alteredStorage = this.allStorage
       alteredStorage[this.courseId] = this.storage
       localStorage.courses = JSON.stringify(alteredStorage)
@@ -205,11 +205,15 @@ export default {
     }
 
     if (this.anyCategories) {
-      const storedCategory = storage.selectedCategory
+      const storedCategory = this.storage.selectedCategory
       if (storedCategory !== null) {
         if (storedCategory === 0) this.selectedCategory = this.noCategoryOption
-        else this.selectedCategory = this.categories.find(cat => cat.id === storage.selectedCategory) ?? null;
+        else this.selectedCategory = this.categories.find(cat => cat.id === storedCategory) ?? null;
       }
+    }
+
+    if (this.usedObservations !== null) {
+      this.hideUsedObservations = !!this.storage.hideUsedObservations
     }
   },
   watch: {
