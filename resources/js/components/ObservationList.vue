@@ -5,7 +5,7 @@
       <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
     </b-button>
 
-    <b-collapse id="filters-collapse" :visible="filtersVisibleInitially" v-if="anyRequirements || anyCategories">
+    <b-collapse id="filters-collapse" :visible="filtersVisibleInitially" v-if="anyRequirements || anyCategories || null !== usedObservations">
       <b-row>
 
         <b-col cols="12" md="6" v-if="anyRequirements">
@@ -38,6 +38,19 @@
             :show-labels="false"
             :show-clear="true"
             display-field="name"></multi-select>
+        </b-col>
+
+        <b-col cols="12" md="6" v-if="null !== usedObservations">
+          <label for="hide-already-used-observations" class="d-flex w-100 h-100 align-items-center">
+            <b-form-checkbox
+              type="checkbox"
+              id="hide-already-used-observations"
+              v-model="hideUsedObservations"
+              :switch="true"
+              size="xl"
+            ></b-form-checkbox>
+            <span>{{ $t('t.views.participant_details.hide_already_used_observations') }}</span>
+          </label>
         </b-col>
 
       </b-row>
@@ -94,6 +107,7 @@ export default {
     actions: { type: Object, default: () => {} },
     requirements: { type: Array, default: () => [] },
     categories: { type: Array, default: () => [] },
+    usedObservations: { type: Array, default: null },
     showContent: { type: Boolean, default: false },
     showBlock: { type: Boolean, default: false },
     showRequirements: { type: Boolean, default: false },
@@ -106,6 +120,7 @@ export default {
     return {
       selectedRequirement: null,
       selectedCategory: null,
+      hideUsedObservations: false,
     }
   },
   computed: {
@@ -144,6 +159,10 @@ export default {
           this.selectedCategory === null ||
           (this.selectedCategory.id === 0 && isEmpty(observation.categories)) ||
           observation.categories.map(category => category.id).includes(this.selectedCategory.id))
+        .filter(observation =>
+          this.usedObservations === null ||
+          !this.hideUsedObservations ||
+          !this.usedObservations.includes(observation.pivot.id))
     },
     anyRequirements() {
       return this.requirements.length > 0
@@ -151,28 +170,31 @@ export default {
     anyCategories() {
       return this.categories.length > 0
     },
+    allStorage() {
+      return JSON.parse(localStorage.courses ?? '{}') || {}
+    },
+    storage() {
+      if (!this.courseId) return {}
+      return this.allStorage[this.courseId] || {}
+    }
   },
   methods: {
-    persistFilters() {
+    persistFilter(key, value) {
       if (!this.courseId) return
-      let storage = JSON.parse(localStorage.courses ?? '{}')
-      if (!storage) storage = {}
-      if (!storage[this.courseId]) storage[this.courseId] = {}
-      storage[this.courseId].selectedRequirement = this.selectedRequirement ? this.selectedRequirement.id : null;
-      storage[this.courseId].selectedCategory = this.selectedCategory ? this.selectedCategory.id : null;
-      localStorage.courses = JSON.stringify(storage)
+      this.storage[key] = value ? value : null;
+      const alteredStorage = this.allStorage
+      alteredStorage[this.courseId] = this.storage
+      localStorage.courses = JSON.stringify(alteredStorage)
     },
     onClickObservation(...args) {
       this.$emit('clickObservation', ...args)
-    }
+    },
   },
   mounted() {
     if (!this.courseId || !localStorage.courses) return
-    let storage = JSON.parse(localStorage.courses ?? '{}')
-    if (!storage[this.courseId]) return
 
     if (this.anyRequirements) {
-      const storedRequirement = storage[this.courseId].selectedRequirement
+      const storedRequirement = this.storage.selectedRequirement
       if (storedRequirement !== null) {
         if (storedRequirement === 0) this.selectedRequirement = this.noRequirementOption
         else this.selectedRequirement = this.requirements.find(req => req.id === storedRequirement) ?? null;
@@ -180,20 +202,23 @@ export default {
     }
 
     if (this.anyCategories) {
-      const storedCategory = storage[this.courseId].selectedCategory
+      const storedCategory = storage.selectedCategory
       if (storedCategory !== null) {
         if (storedCategory === 0) this.selectedCategory = this.noCategoryOption
-        else this.selectedCategory = this.categories.find(cat => cat.id === storage[this.courseId].selectedCategory) ?? null;
+        else this.selectedCategory = this.categories.find(cat => cat.id === storage.selectedCategory) ?? null;
       }
     }
   },
   watch: {
     selectedRequirement() {
-      this.persistFilters()
+      this.persistFilter('selectedRequirement', this.selectedRequirement?.id)
     },
     selectedCategory() {
-      this.persistFilters()
-    }
+      this.persistFilter('selectedCategory', this.selectedCategory?.id)
+    },
+    hideUsedObservations() {
+      this.persistFilter('hideUsedObservations', this.hideUsedObservations)
+    },
   },
 }
 </script>

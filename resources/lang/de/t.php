@@ -450,6 +450,7 @@ return array(
 			"filter" => "Beobachtungen filtern",
 			"filter_by_category" => "Kategorie",
 			"filter_by_requirement" => "Anforderung",
+			"hide_already_used_observations" => "Beobachtungen ausblenden, wenn sie schon in diesem Quali eingesetzt wurden",
 			"no_observations" => "Keine Beobachtungen gefunden.",
 			"num_observations" => "{0}Bisher keine Beobachtungen.|{1}Erst eine Beobachtung. Da geht noch mehr!|[2,*]:count Beobachtungen, davon :positive mit positivem, :neutral mit neutralem und :negative mit negativem Eindruck.",
 			"observations_without_category" => "Beobachtungen ohne Kategorie",

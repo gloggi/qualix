@@ -12,6 +12,7 @@
       :observations="observations"
       :requirements="requirements"
       :categories="categories"
+      :used-observations="usedObservations"
       show-content
       show-block
       show-user
@@ -34,6 +35,7 @@ export default {
     value: {type: Function, required: false},
     observations: {type: Array, required: true},
     returnFocus: {type: Object, required: false},
+    usedObservations: {type: Array, default: null},
     showRequirements: {type: Boolean, default: false},
     showCategories: {type: Boolean, default: false},
     showImpression: {type: Boolean, default: false},
