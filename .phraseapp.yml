@@ -3,36 +3,36 @@ phraseapp:
   project_id: cbb16e012c455b7caf0b0bf893a816c7
   push:
     sources:
-    - file: ./resources/lang/<locale_code>/<tag>.php
+    - file: ./lang/<locale_code>/<tag>.php
       params:
         file_format: laravel
-    - file: ./resources/lang/<locale_code>.json
+    - file: ./lang/<locale_code>.json
       params:
         file_format: simple_json
         tags: override
   pull:
     targets:
-      - file: ./resources/lang/<locale_code>/auth.php
+      - file: ./lang/<locale_code>/auth.php
         params:
           file_format: laravel
           tag: auth
-      - file: ./resources/lang/<locale_code>/pagination.php
+      - file: ./lang/<locale_code>/pagination.php
         params:
           file_format: laravel
           tag: pagination
-      - file: ./resources/lang/<locale_code>/passwords.php
+      - file: ./lang/<locale_code>/passwords.php
         params:
           file_format: laravel
           tag: passwords
-      - file: ./resources/lang/<locale_code>/t.php
+      - file: ./lang/<locale_code>/t.php
         params:
           file_format: laravel
           tag: t
-      - file: ./resources/lang/<locale_code>/validation.php
+      - file: ./lang/<locale_code>/validation.php
         params:
           file_format: laravel
           tag: validation
-      - file: ./resources/lang/<locale_code>.json
+      - file: ./lang/<locale_code>.json
         params:
           file_format: simple_json
           tag: override

@@ -11,7 +11,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 class EventServiceProvider extends ServiceProvider
 {
     /**
-     * The event listener mappings for the application.
+     * The event to listener mappings for the application.
      *
      * @var array
      */
@@ -31,5 +31,15 @@ class EventServiceProvider extends ServiceProvider
         parent::boot();
 
         Participant::observe(DeleteOrphanObservationsOnParticipantDelete::class);
+    }
+
+    /**
+     * Determine if events and listeners should be automatically discovered.
+     *
+     * @return bool
+     */
+    public function shouldDiscoverEvents()
+    {
+        return false;
     }
 }

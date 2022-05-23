@@ -45,7 +45,7 @@ ssh -l $SSH_USERNAME -T $SSH_HOST -o StrictHostKeyChecking=no <<EOF
   set -e
   php -v
   cd $SSH_DIRECTORY
-  php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-70400}){echo \"Your PHP version is too old\\n\";exit(1);}"
+  php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80002}){echo \"Your PHP version is too old\\n\";exit(1);}"
 EOF
 
 cat ~/.ssh/known_hosts

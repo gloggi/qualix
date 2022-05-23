@@ -14,7 +14,7 @@ trim_trailing_whitespace = false
 [*.{yml,yaml,json}]
 indent_size = 2
 
-[resources/lang/**.php]
+[lang/**.php]
 insert_final_newline = false
 indent_style = tab
 tab_width = 4

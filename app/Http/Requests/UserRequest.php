@@ -22,10 +22,12 @@ class UserRequest extends FormRequest {
     /**
      * Get the validated data from the request.
      *
+     * @param null $key
+     * @param null $default
      * @return array
      */
-    public function validated() {
-        $validated = parent::validated();
+    public function validated($key = null, $default = null) {
+        $validated = parent::validated($key, $default);
         if (isset($validated['image'])) {
             $validated['image_url'] = $validated['image']->store('public/images');
             unset($validated['image']);
