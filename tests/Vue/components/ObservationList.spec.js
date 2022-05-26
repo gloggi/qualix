@@ -196,7 +196,7 @@ describe('visible columns', () => {
 })
 
 describe('filters', () => {
-  it('should display both filters when there are requirements and categories', () => {
+  it('should display all filters when there are requirements and categories and used observations', () => {
     const list = render(ObservationList, {
       props: {
         courseId: '1',
@@ -209,6 +209,7 @@ describe('filters', () => {
         categories: [{
           name: 'my category'
         }],
+        usedObservations: [ 1 ],
       },
       mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
@@ -233,6 +234,7 @@ describe('filters', () => {
         categories: [{
           name: 'my category'
         }],
+        usedObservations: [ 1 ],
       },
       mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
@@ -257,6 +259,7 @@ describe('filters', () => {
           content: 'some requirement'
         }],
         categories: [],
+        usedObservations: [ 1 ],
       },
       mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
@@ -268,6 +271,32 @@ describe('filters', () => {
     expect(list.getByText('t.views.participant_details.filter')).toBeInTheDocument()
     expect(list.getByPlaceholderText('t.views.participant_details.filter_by_requirement')).toBeInTheDocument()
     expect(list.queryByPlaceholderText('t.views.participant_details.filter_by_category')).toBeNull()
+  })
+
+  it('should not display the used observation filter when no used observations are passed in', () => {
+    const list = render(ObservationList, {
+      props: {
+        courseId: '1',
+        showContent: true,
+        showUser: true,
+        observations,
+        requirements: [{
+          content: 'some requirement'
+        }],
+        categories: [{
+          name: 'my category'
+        }],
+      },
+      mocks: {'$t': (key) => key},
+      stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+      directives: {
+        bToggle: () => {}
+      }
+    })
+
+    expect(list.getByText('t.views.participant_details.filter')).toBeInTheDocument()
+    expect(list.getByPlaceholderText('t.views.participant_details.filter_by_requirement')).toBeInTheDocument()
+    expect(list.getByPlaceholderText('t.views.participant_details.filter_by_category')).toBeInTheDocument()
   })
 
   it('should not display the filters at all when there are no requirements and no categories', () => {
@@ -290,5 +319,28 @@ describe('filters', () => {
     expect(list.queryByText('t.views.participant_details.filter')).toBeNull()
     expect(list.queryByPlaceholderText('t.views.participant_details.filter_by_requirement')).toBeNull()
     expect(list.queryByPlaceholderText('t.views.participant_details.filter_by_category')).toBeNull()
+    expect(list.queryByText('t.views.participant_details.hide_already_used_observations')).toBeNull()
+  })
+
+  it('should display the used observation filter when used observations are passed in', () => {
+    const list = render(ObservationList, {
+      props: {
+        courseId: '1',
+        showContent: true,
+        showUser: true,
+        observations,
+        requirements: [],
+        categories: [],
+        usedObservations: [],
+      },
+      mocks: {'$t': (key) => key},
+      stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+      directives: {
+        bToggle: () => {}
+      }
+    })
+
+    expect(list.queryByText('t.views.participant_details.filter')).toBeInTheDocument()
+    expect(list.queryByText('t.views.participant_details.hide_already_used_observations')).toBeInTheDocument()
   })
 })

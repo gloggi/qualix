@@ -1,6 +1,6 @@
 <template>
   <div class="editor" :class="{ 'focus': focused }">
-    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation" :return-focus="{ $el: { focus: () => editor.commands.focus() } }" :show-requirements="showRequirements" :show-categories="showCategories" :show-impression="showImpression"></modal-add-observation>
+    <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation" :return-focus="{ $el: { focus: () => editor.commands.focus() } }" :used-observations="usedObservationIds" :show-requirements="showRequirements" :show-categories="showCategories" :show-impression="showImpression"></modal-add-observation>
     <input-hidden v-if="name" :value="formValue" :name="name"></input-hidden>
     <editor-floating-menu v-if="!readonly && editor" :editor="editor" :tippy-options="{ zIndex: 1 }">
       <floating-menu :observations="observations" :editor="editor" @addObservation="showObservationSelectionModal(true)"/>
@@ -28,10 +28,11 @@ import NodeRequirement from './tiptap-extensions/requirement/NodeRequirement.js'
 import GapCursorFocus from './tiptap-extensions/GapCursorFocus'
 import InputHidden from '../form/InputHidden'
 import FloatingMenu from './FloatingMenu'
+import ModalAddObservation from './tiptap-extensions/observation/ModalAddObservation'
 
 export default {
   name: 'QualiEditor',
-  components: {FloatingMenu, InputHidden, EditorContent, EditorFloatingMenu},
+  components: {FloatingMenu, InputHidden, EditorContent, EditorFloatingMenu, ModalAddObservation},
   props: {
     name: { type: String },
     courseId: { type: String, required: true },
@@ -102,7 +103,12 @@ export default {
     },
     getEmptyParagraph() {
       return () => cloneDeep(this.emptyDocument.content[0])
-    }
+    },
+    usedObservationIds() {
+      return this.currentValue.content
+        .filter(node => node.type === 'observation')
+        .map(node => node.attrs.id)
+    },
   },
   methods: {
     withCollaboration (extensions) {
@@ -219,6 +225,3 @@ const hashCode = function (string) {
 }
 </script>
 
-<style scoped>
-
-</style>
