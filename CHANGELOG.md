@@ -5,6 +5,7 @@
 
 ##### Mai 2022
 - Wenn mit dem Back-Button zurück auf ein Quali navigiert wird, wird jetzt der wirklich aktuellste Quali-Inhalt angezeigt [#250](https://github.com/gloggi/qualix/issues/250)
+- Beim Einfügen von Beobachtungen in ein Quali können jetzt optional diejenigen Beobachtungen herausgefiltert werden, die bereits im Quali eingesetzt wurden (merci für die Idee @Tschet1) [#230](https://github.com/gloggi/qualix/issues/230)
 
 ##### April 2022
 - Kontaktlink im Footer hinzugefügt [#233](https://github.com/gloggi/qualix/issues/233)
