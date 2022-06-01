@@ -204,7 +204,7 @@ class UpdateCourseTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Gewünschte Anzahl Beobachtungen muss grösser oder gleich 5 sein.', $exception->validator->errors()->first('observation_count_green_threshold'));
+        $this->assertEquals('Gewünschte Anzahl Beobachtungen muss mindestens 5 sein.', $exception->validator->errors()->first('observation_count_green_threshold'));
     }
 
     public function test_shouldValidateNewCourseData_wrongId() {

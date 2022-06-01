@@ -71,6 +71,7 @@ services:
     image: mockserver/mockserver
     ports:
       - '1090:1080'
+    #command: -logLevel WARN -serverPort 1090
 
   docker-host:
     image: qoomon/docker-host

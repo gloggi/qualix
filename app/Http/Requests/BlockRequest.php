@@ -14,7 +14,7 @@ class BlockRequest extends FormRequest {
     public function rules() {
         return [
             'name' => 'required|max:255',
-            'full_block_number' => 'regex:/^\d+\.\d+$/|nullable',
+            'full_block_number' => 'nullable|regex:/^\d+\.\d+$/',
             'block_date' => 'date|required',
             'requirements' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
         ];
