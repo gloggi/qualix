@@ -100,6 +100,18 @@ class DeleteCourseTest extends TestCaseWithBasicData {
         // then
     }
 
+    public function test_shouldHandleNullParticipantImageGracefully() {
+        // given
+        Participant::find($this->participantId)->update(['image_url' => null]);
+        Storage::fake();
+        Storage::shouldReceive('delete')->never();
+
+        // when
+        $this->delete('/course/' . $this->courseId . '/admin');
+
+        // then
+    }
+
     public function test_shouldShowEscapedNotice_afterDeletingCourse() {
         // given
         $courseName = '<b>Course name</b> with \'some" formatting';

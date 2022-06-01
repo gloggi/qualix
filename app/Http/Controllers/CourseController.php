@@ -84,9 +84,7 @@ class CourseController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function delete(Request $request, Course $course) {
-        $participantImageUrls = $course->participants->map(function (Participant $participant) {
-            return $participant->image_url;
-        });
+        $participantImageUrls = $this->participantImageUrlsFor($course);
         // Because of the ON DELETE CASCADE on database constraints, this will also delete all related data
         $course->delete();
         // Perform the image deletion after database deletion, so that a failing image doesn't prevent the whole deletion operation.
@@ -107,9 +105,7 @@ class CourseController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function archive(Request $request, Course $course) {
-        $participantImageUrls = $course->participants->map(function (Participant $participant) {
-            return $participant->image_url;
-        });
+        $participantImageUrls = $this->participantImageUrlsFor($course);
         // Because of the ON DELETE CASCADE on database constraints, this will also delete all directly associated related data like blocks
         DB::transaction(function() use ($course) {
             $course->participants()->delete();
@@ -123,5 +119,13 @@ class CourseController extends Controller {
         }
         $request->session()->flash('alert-success', __('t.views.admin.course_settings.archive_success', ['name' => $course->name]));
         return Redirect::route('home');
+    }
+
+    /**
+     * @param Course $course
+     * @return \Illuminate\Support\Collection
+     */
+    private function participantImageUrlsFor(Course $course) {
+        return $course->participants()->whereNotNull('image_url')->pluck('image_url');
     }
 }
