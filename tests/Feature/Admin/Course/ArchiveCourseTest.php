@@ -116,6 +116,18 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         // then
     }
 
+    public function test_shouldHandleNullParticipantImageGracefully() {
+        // given
+        Participant::find($this->participantId)->update(['image_url' => null]);
+        Storage::fake();
+        Storage::shouldReceive('delete')->never();
+
+        // when
+        $this->post('/course/' . $this->courseId . '/admin/archive');
+
+        // then
+    }
+
     public function test_shouldShowEscapedNotice_afterArchivingCourse() {
         // given
         $courseName = '<b>Course name</b> with \'some" formatting';
