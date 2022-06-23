@@ -1,3 +1,0 @@
-FROM cypress/included:5.2.0
-
-RUN npm install quoted-printable
