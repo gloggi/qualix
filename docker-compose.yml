@@ -26,7 +26,7 @@ services:
       - MYSQL_PASSWORD=qualix
 
   mail:
-    image: schickling/mailcatcher:latest
+    image: schickling/mailcatcher@sha256:994aba62ace1a4442e796041b6c6c96aed5eca9de4a6584f3d5d716f1d7549ed
     container_name: 'qualix-mail'
     ports:
       - '1080:1080'
