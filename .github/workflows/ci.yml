@@ -130,3 +130,13 @@ jobs:
           sentry-user-feedback-url: ${{ secrets.SENTRY_USER_FEEDBACK_URL }}
           sentry-csp-report-uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
           sentry-vue-dsn: ${{ secrets.SENTRY_VUE_DSN }}
+
+      - uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_RELEASE_TRACKING_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+        with:
+          environment: ${{ needs.get-environment-name.outputs.environment }}
+          projects: ${{ secrets.SENTRY_PROJECTS }}
+          ignore_missing: true
+          ignore_empty: true
