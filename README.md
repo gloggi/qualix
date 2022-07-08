@@ -1,7 +1,7 @@
 # Qualix
 > was gaffsch?
 
-Webapp zur Erfassung und Verwaltung von qualifikationsrelevanten Beobachtungen in J+S-Ausbildungskursen der Pfadi.
+Webapp zur Erfassung und Verwaltung von qualifikationsrelevanten Beobachtungen und Rückmeldungen in J+S-Ausbildungskursen der Pfadi.
 
 Eine Live-Version ist unter <https://qualix.flamberg.ch> verfügbar.
 
@@ -125,7 +125,7 @@ HITOBITO_CLIENT_UID=<snip>
 HITOBITO_CLIENT_SECRET=<snip>
 HITOBITO_CALLBACK_URI=https://qualix.flamberg.ch/login/hitobito/callback
 
-# Collaboration in the quali editor via WebRTC
+# Collaboration in the feedback editor via WebRTC
 COLLABORATION_ENABLED=true
 COLLABORATION_SIGNALING_SERVERS="wss://signaling.yjs.dev wss://y-webrtc-signaling-eu.herokuapp.com wss://y-webrtc-signaling-us.herokuapp.com"
 

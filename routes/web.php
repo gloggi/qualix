@@ -18,6 +18,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EquipeController;
 use App\Http\Controllers\ErrorReportController;
+use App\Http\Controllers\FeedbackContentController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LocalizationController;
@@ -27,8 +29,6 @@ use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\ParticipantDetailController;
 use App\Http\Controllers\ParticipantGroupController;
 use App\Http\Controllers\ParticipantListController;
-use App\Http\Controllers\QualiContentController;
-use App\Http\Controllers\QualiController;
 use App\Http\Controllers\RequirementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -49,11 +49,11 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
         Route::get('/course/{course}/participants', [ParticipantListController::class, 'index'])->name('participants');
         Route::get('/course/{course}/participants/{participant}', [ParticipantDetailController::class, 'index'])->name('participants.detail');
 
-        Route::get('/course/{course}/participants/{participant}/qualis/{quali}/print', [QualiContentController::class, 'print'])->name('qualiContent.print');
-        Route::get('/course/{course}/participants/{participant}/qualis/{quali}/edit', [QualiContentController::class, 'edit'])->name('qualiContent.edit');
-        Route::post('/course/{course}/participants/{participant}/qualis/{quali}', [QualiContentController::class, 'update'])->name('qualiContent.update');
+        Route::get('/course/{course}/participants/{participant}/feedbacks/{feedback}/print', [FeedbackContentController::class, 'print'])->name('feedbackContent.print');
+        Route::get('/course/{course}/participants/{participant}/feedbacks/{feedback}/edit', [FeedbackContentController::class, 'edit'])->name('feedbackContent.edit');
+        Route::post('/course/{course}/participants/{participant}/feedbacks/{feedback}', [FeedbackContentController::class, 'update'])->name('feedbackContent.update');
 
-        Route::get('/course/{course}/overview/{quali_data?}', [ObservationController::class, 'overview'])->name('overview');
+        Route::get('/course/{course}/overview/{feedback_data?}', [ObservationController::class, 'overview'])->name('overview');
 
         Route::get('/course/{course}/observation/new', [ObservationController::class, 'create'])->name('observation.new');
         Route::post('/course/{course}/observation/new', [ObservationController::class, 'store'])->name('observation.store');
@@ -118,11 +118,11 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::post('/course/{course}/admin/category/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
     Route::delete('/course/{course}/admin/category/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.delete');
 
-    Route::get('/course/{course}/admin/qualis', [QualiController::class, 'index'])->name('admin.qualis');
-    Route::post('/course/{course}/admin/qualis', [QualiController::class, 'store'])->name('admin.qualis.store');
-    Route::get('/course/{course}/admin/qualis/{quali_data}', [QualiController::class, 'edit'])->name('admin.qualis.edit');
-    Route::post('/course/{course}/admin/qualis/{quali_data}', [QualiController::class, 'update'])->name('admin.qualis.update');
-    Route::delete('/course/{course}/admin/qualis/{quali_data}', [QualiController::class, 'destroy'])->name('admin.qualis.delete');
+    Route::get('/course/{course}/admin/feedbacks', [FeedbackController::class, 'index'])->name('admin.feedbacks');
+    Route::post('/course/{course}/admin/feedbacks', [FeedbackController::class, 'store'])->name('admin.feedbacks.store');
+    Route::get('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'edit'])->name('admin.feedbacks.edit');
+    Route::post('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'update'])->name('admin.feedbacks.update');
+    Route::delete('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'destroy'])->name('admin.feedbacks.delete');
 
     Route::get('/newcourse', [CourseController::class, 'create'])->name('admin.newcourse');
     Route::post('/newcourse', [CourseController::class, 'store'])->name('admin.newcourse.store');

@@ -4,27 +4,27 @@
     :actions="actions"
     :fields="fields"
     :cell-class="cellClass">
-    <template #quali="{ row }">
-      <a v-if="qualiFor(row)"
-         :href="routeUri('qualiContent.edit', {course: qualiData.course_id, participant: row.id, quali: qualiFor(row).id})"
+    <template #feedback="{ row }">
+      <a v-if="feedbackFor(row)"
+         :href="routeUri('feedbackContent.edit', {course: feedbackData.course_id, participant: row.id, feedback: feedbackFor(row).id})"
          target="_blank" class="text-decoration-none">
-        <requirement-progress :requirements="qualiFor(row).requirements"></requirement-progress>
+        <requirement-progress :requirements="feedbackFor(row).requirements"></requirement-progress>
       </a>
     </template>
   </responsive-table>
 </template>
 
 <script>
-
 import ResponsiveTable from "./ResponsiveTable"
-import RequirementProgress from './quali/RequirementProgress'
+import RequirementProgress from './feedback/RequirementProgress'
+
 export default {
   name: 'TableObservationOverview',
   components: {RequirementProgress, ResponsiveTable},
   props: {
     users: { type: Array, required: true },
     participants: { type: Array, required: true },
-    qualiData: { type: Object, default: null },
+    feedbackData: { type: Object, default: null },
     multiple: { type: Boolean, default: false },
     redThreshold: { type: Number, default: 5 },
     greenThreshold: { type: Number, default: 10 },
@@ -45,9 +45,9 @@ export default {
       if (!this.multiple) {
         return totalColumn.concat(observationColumns)
       }
-      const qualiColumn = this.qualiData ? [{
-        label: this.qualiData.name,
-        slot: 'quali',
+      const feedbackColumn = this.feedbackData ? [{
+        label: this.feedbackData.name,
+        slot: 'feedback',
       }] : []
       return [
         {
@@ -57,7 +57,7 @@ export default {
         },
         ...totalColumn,
         ...observationColumns,
-        ...qualiColumn,
+        ...feedbackColumn,
       ]
     }
   },
@@ -71,8 +71,8 @@ export default {
       if (cellValue >= this.greenThreshold) return 'bg-success-light'
       return ''
     },
-    qualiFor({ id }) {
-      return this.qualiData?.qualis?.find(quali => quali.participant_id === id)
+    feedbackFor({ id }) {
+      return this.feedbackData?.feedbacks?.find(feedback => feedback.participant_id === id)
     },
   },
 }

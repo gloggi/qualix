@@ -5,9 +5,8 @@ namespace Tests;
 use App\Models\Block;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\FeedbackData;
 use App\Models\Participant;
-use App\Models\Quali;
-use App\Models\QualiData;
 use App\Models\Requirement;
 
 abstract class TestCaseWithCourse extends TestCase
@@ -38,10 +37,10 @@ abstract class TestCaseWithCourse extends TestCase
         return Requirement::create(['course_id' => ($courseId !== null ? $courseId : $this->courseId), 'content' => $content, 'mandatory' => $mandatory])->id;
     }
 
-    protected function createQuali($name = 'Zwischenquali', $courseId = null) {
+    protected function createFeedback($name = 'Zwischenquali', $courseId = null) {
         $course = Course::find($courseId === null ? $this->courseId : $courseId);
-        if (!$course->participants()->exists()) $this->createParticipant('Quali-TN', $course->id);
-        $qualiData = QualiData::create(['name' => $name, 'course_id' => $course->id]);
-        return $qualiData->qualis()->create(['participant_id' => $course->participants()->first()->id])->id;
+        if (!$course->participants()->exists()) $this->createParticipant('Feedback-TN', $course->id);
+        $feedbackData = FeedbackData::create(['name' => $name, 'course_id' => $course->id]);
+        return $feedbackData->feedbacks()->create(['participant_id' => $course->participants()->first()->id])->id;
     }
 }

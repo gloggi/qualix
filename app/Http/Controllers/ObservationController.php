@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ObservationRequest;
 use App\Models\Block;
 use App\Models\Course;
+use App\Models\FeedbackData;
 use App\Models\Observation;
-use App\Models\QualiData;
 use App\Util\HtmlString;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -178,17 +178,17 @@ class ObservationController extends Controller {
      *
      * @param Request $request
      * @param Course $course
-     * @param QualiData $qualiData
+     * @param FeedbackData $feedbackData
      * @return View
      */
-    public function overview(Request $request, Course $course, QualiData $qualiData) {
-        $qualiOptions = collect([['id' => 0, 'name' => __('t.views.overview.no_quali')]])->concat($course->quali_datas->map->only('id', 'name'));
+    public function overview(Request $request, Course $course, FeedbackData $feedbackData) {
+        $feedbackOptions = collect([['id' => 0, 'name' => __('t.views.overview.no_feedback')]])->concat($course->feedback_datas->map->only('id', 'name'));
         return view('overview', [
             'participants' => $course->participants->all(),
             'participantManagementLink' => $this->participantManagementLink($course, 't.views.overview.here'),
-            'showQualis' => $course->quali_datas()->count(),
-            'qualiOptions' => $qualiOptions,
-            'qualiData' => $qualiData->id ? $qualiData : null,
+            'showFeedbacks' => $course->feedback_datas()->count(),
+            'feedbackOptions' => $feedbackOptions,
+            'feedbackData' => $feedbackData->id ? $feedbackData : null,
         ]);
     }
 

@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('wideLayout'){{ json_encode(!!$qualiData) }}@endsection
+@section('wideLayout'){{ json_encode(!!$feedbackData) }}@endsection
 
 @section('content')
 
@@ -9,17 +9,17 @@
 
         @if (count($participants))
 
-            @if($showQualis)
+            @if($showFeedbacks)
                 <div class="d-flex justify-content-end mb-2">
-                    <label for="user" class="col-form-label text-md-right mr-2">{{ __('t.views.overview.show_qualis') }}</label>
+                    <label for="user" class="col-form-label text-md-right mr-2">{{ __('t.views.overview.show_feedbacks') }}</label>
                     <multi-select
-                        name="quali_data"
-                        :value="{{ $qualiData ? json_encode("{$qualiData->id}") : json_encode("0") }}"
+                        name="feedback_data"
+                        :value="{{ $feedbackData ? json_encode("{$feedbackData->id}") : json_encode("0") }}"
                         class=""
                         required
-                        :options="{{ json_encode($qualiOptions) }}"
+                        :options="{{ json_encode($feedbackOptions) }}"
                         display-field="name"
-                        @update:selected="selected => $window.location = routeUri('overview', {course: {{ $course->id }}, quali_data: selected.id || ''})"></multi-select>
+                        @update:selected="selected => $window.location = routeUri('overview', {course: {{ $course->id }}, feedback_data: selected.id || ''})"></multi-select>
                 </div>
             @endif
 
@@ -27,7 +27,7 @@
                 multiple
                 :users="{{ json_encode($course->users) }}"
                 :participants="{{ json_encode(collect($participants)->map->observationCountsByUser()) }}"
-                :quali-data="{{ json_encode($qualiData) }}"
+                :feedback-data="{{ json_encode($feedbackData) }}"
                 :red-threshold="{{ json_encode($course->observation_count_red_threshold) }}"
                 :green-threshold="{{ json_encode($course->observation_count_green_threshold) }}"></table-observation-overview>
 

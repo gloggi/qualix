@@ -46,25 +46,25 @@
     </b-card>
 
 
-    @if ($participant->qualis()->count())
+    @if ($participant->feedbacks()->count())
 
         <b-card>
-            <template #header>{{__('t.views.participant_details.qualis.title')}}</template>
+            <template #header>{{__('t.views.participant_details.feedbacks.title')}}</template>
 
             <responsive-table
-                :data="{{ json_encode($participant->qualis) }}"
+                :data="{{ json_encode($participant->feedbacks) }}"
                 :fields="[
-                    { label: $t('t.models.quali.name'), value: quali => quali.name, href: quali => routeUri('qualiContent.edit', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}) },
-                    @if($participant->qualis()->whereHas('requirements')->exists()){ label: $t('t.models.quali.requirement_progress'), slot: 'requirement-progress'},@endif
-                    @if($participant->qualis()->whereHas('users')->exists()){ label: $t('t.models.quali.users'), value: quali => quali.users ? quali.users.map(u => u.name).join(', ') : '' },@endif
+                    { label: $t('t.models.feedback.name'), value: feedback => feedback.name, href: feedback => routeUri('feedbackContent.edit', {course: {{ $course->id }}, participant: {{ $participant->id }}, feedback: feedback.id}) },
+                    @if($participant->feedbacks()->whereHas('requirements')->exists()){ label: $t('t.models.feedback.requirement_progress'), slot: 'requirement-progress'},@endif
+                    @if($participant->feedbacks()->whereHas('users')->exists()){ label: $t('t.models.feedback.users'), value: feedback => feedback.users ? feedback.users.map(u => u.name).join(', ') : '' },@endif
                 ]"
                 :actions="{
-                    print: quali => routeUri('qualiContent.print', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}),
-                    edit: quali => routeUri('qualiContent.edit', {course: {{ $course->id }}, participant: {{ $participant->id }}, quali: quali.id}),
+                    print: feedback => routeUri('feedbackContent.print', {course: {{ $course->id }}, participant: {{ $participant->id }}, feedback: feedback.id}),
+                    edit: feedback => routeUri('feedbackContent.edit', {course: {{ $course->id }}, participant: {{ $participant->id }}, feedback: feedback.id}),
                 }">
 
-                <template v-slot:requirement-progress="{ row: quali }">
-                    <requirement-progress v-if="quali.requirements.length" :requirements="quali.requirements"></requirement-progress>
+                <template v-slot:requirement-progress="{ row: feedback }">
+                    <requirement-progress v-if="feedback.requirements.length" :requirements="feedback.requirements"></requirement-progress>
                 </template>
 
             </responsive-table>
@@ -79,7 +79,7 @@
         @if (count($observations))
 
             <participant-detail-observation-list
-                :qualis-using-observations="{{ json_encode($qualis_using_observations, JSON_FORCE_OBJECT) }}"
+                :feedbacks-using-observations="{{ json_encode($feedbacks_using_observations, JSON_FORCE_OBJECT) }}"
                 course-id="{{ $course->id }}"
                 :observations="{{ json_encode($observations) }}"
                 :requirements="{{ json_encode($course->requirements) }}"

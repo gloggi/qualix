@@ -78,20 +78,20 @@ class RouteServiceProvider extends ServiceProvider
             $course = $route->parameter('course');
             return $course->observationAssignments()->findOrFail($id);
         });
-        Route::bind('quali_data', function($id, \Illuminate\Routing\Route $route) {
+        Route::bind('feedback_data', function($id, \Illuminate\Routing\Route $route) {
             /** @var Course $course */
             $course = $route->parameter('course');
-            return $course->quali_datas()
-                ->with('qualis')
-                ->with('qualis.participant')
-                ->with('qualis.requirements')
-                ->with('qualis.users')
+            return $course->feedback_datas()
+                ->with('feedbacks')
+                ->with('feedbacks.participant')
+                ->with('feedbacks.requirements')
+                ->with('feedbacks.users')
                 ->findOrFail($id);
         });
-        Route::bind('quali', function($id, \Illuminate\Routing\Route $route) {
+        Route::bind('feedback', function($id, \Illuminate\Routing\Route $route) {
             /** @var Participant $participant */
             $participant = $route->parameter('participant');
-            return $participant->qualis()->findOrFail($id);
+            return $participant->feedbacks()->findOrFail($id);
         });
 
         parent::boot();

@@ -27,7 +27,7 @@ class DeleteRequirementTest extends TestCaseWithCourse {
         $response->assertRedirect('/login');
     }
 
-    public function test_shouldDisplayWarningWithNumberOfObservationsAndQualis() {
+    public function test_shouldDisplayWarningWithNumberOfObservationsAndFeedbacks() {
         // given
         $this->requirementId = $this->createRequirement('Mindestanforderung 1', true);
 
@@ -35,7 +35,7 @@ class DeleteRequirementTest extends TestCaseWithCourse {
         $response = $this->get('/course/' . $this->courseId . '/admin/requirement');
 
         // then
-        $response->assertSee('"num_quali_datas":0');
+        $response->assertSee('"num_feedback_datas":0');
         $response->assertSee('"num_observations":0');
     }
 
