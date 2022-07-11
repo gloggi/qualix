@@ -43,7 +43,6 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
 
     Route::get('/course/{course}', [HomeController::class, 'index'])->name('index');
 
-    Route::get('/course/{course}/blocks', [BlockListController::class, 'index'])->name('blocks');
     Route::get('/course/{course}/crib/{user?}', [BlockListController::class, 'crib'])->name('crib');
 
     Route::middleware('courseNotArchived')->group(function () {

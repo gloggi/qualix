@@ -403,16 +403,10 @@ return array(
 				),
 			),
 		),
-		"blocks" => array(
-			"here" => "hier",
-			"menu_name" => "Blöcke",
-			"no_blocks" => "Bisher sind keine Blöcke erfasst. Bitte erfasse sie :here.",
-			"title" => "Beobachtung in Block erfassen",
-		),
 		"crib" => array(
 			"here" => "hier",
 			"mandatory_requirements" => "Mindestanforderungen",
-			"menu_name" => "Spick",
+			"menu_name" => "Blöcke",
 			"non_mandatory_requirements" => "Weitere Anforderungen",
 			"no_blocks" => "Bisher sind keine Blöcke erfasst. Bitte erfasse und verbinde sie :here mit Anforderungen.",
 			"see_only_empty_blocks" => array(

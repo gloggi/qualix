@@ -12,17 +12,6 @@ use Illuminate\Support\Facades\Auth;
 class BlockListController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @param Course $course
-     * @return Response
-     */
-    public function index(Course $course)
-    {
-        return view('blocks', ['blockManagementLink' => $this->blockManagementLink($course, 't.views.blocks.here')]);
-    }
-
-    /**
      * Display the crib page which visualizes connections between blocks and requirements, as well as observation assignments.
      *
      * @param Request $request

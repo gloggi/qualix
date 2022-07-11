@@ -242,16 +242,10 @@ return array(
 				),
 			),
 		),
-		"blocks" => array(
-			"here" => "ici",
-			"menu_name" => "Points de cours",
-			"no_blocks" => "Actuellement, aucun point de cours n'est créé. Merci de les créer :here.",
-			"title" => "Créer une observation dans le point de cours",
-		),
 		"crib" => array(
 			"here" => "ici",
 			"mandatory_requirements" => "Éliminatoire",
-			"menu_name" => "À observer",
+			"menu_name" => "Points de cours",
 			"non_mandatory_requirements" => "Non-éliminatoire",
 			"no_blocks" => "Actuellement, aucun point de cours n'est créé. Merci d'en créer un et de le lier :here à des exigences minimales.",
 			"see_only_empty_blocks" => array(
