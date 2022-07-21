@@ -63,8 +63,8 @@ class Participant extends Model {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function qualis() {
-        return $this->hasMany(Quali::class);
+    public function feedbacks() {
+        return $this->hasMany(Feedback::class);
     }
 
     /**

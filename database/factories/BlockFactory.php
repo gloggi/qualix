@@ -79,7 +79,6 @@ class BlockFactory extends Factory {
             'Quali-Höcks',
             'Gruppenstunde',
             'Abschlussabend',
-            'Quali-Höcks',
             'Kursauswertung',
             'Heim putzen',
             'Quali-Gespräche',

@@ -1,12 +1,15 @@
 # Changelog
 
+##### Juli 2022
+- Qualis wurden zu Rückmeldungen umbenannt, um besser zu kommunizieren wofür sie gedacht sind, und damit klarer wird dass Beobachtungen nicht für die Erfassung von Rückmeldungen optimiert sind [#261](https://github.com/gloggi/qualix/issues/261) 
+
 ##### Juni 2022
 - Upgrade auf Laravel 9 und PHP >= 8.0.2 [#254](https://github.com/gloggi/qualix/pull/254)
 - Bugfix: Es tritt jetzt kein Fehler mehr auf wenn man einen Kurs archiviert oder löscht der TN ohne Bild enthält
 
 ##### Mai 2022
-- Wenn mit dem Back-Button zurück auf ein Quali navigiert wird, wird jetzt der wirklich aktuellste Quali-Inhalt angezeigt [#250](https://github.com/gloggi/qualix/issues/250)
-- Beim Einfügen von Beobachtungen in ein Quali können jetzt optional diejenigen Beobachtungen herausgefiltert werden, die bereits im Quali eingesetzt wurden (merci für die Idee @Tschet1) [#230](https://github.com/gloggi/qualix/issues/230)
+- Wenn mit dem Back-Button zurück auf eine Rückmeldung navigiert wird, wird jetzt der wirklich aktuellste Rückmeldungs-Inhalt angezeigt [#250](https://github.com/gloggi/qualix/issues/250)
+- Beim Einfügen von Beobachtungen in eine Rückmeldung können jetzt optional diejenigen Beobachtungen herausgefiltert werden, die bereits in der Rückmeldung eingesetzt wurden (merci für die Idee @Tschet1) [#230](https://github.com/gloggi/qualix/issues/230)
 
 ##### April 2022
 - Kontaktlink im Footer hinzugefügt [#233](https://github.com/gloggi/qualix/issues/233)
@@ -21,7 +24,7 @@
 - Der TN-Import kommt jetzt besser damit zurecht, wenn Spalten fehlen oder in einer anderen Reihenfolge sind als erwartet, und gibt genauere Rückmeldungen was genau falsch ist.
 
 ##### Januar 2022
-- Auf der Überblick-Seite können jetzt Qualis angezeigt werden [#242](https://github.com/gloggi/qualix/pull/242)
+- Auf der Überblick-Seite können jetzt Rückmeldungen angezeigt werden [#242](https://github.com/gloggi/qualix/pull/242)
 - Die Checkbox "Mindestanforderung" bei neuen Anforderungen ist standardmässig aktiviert, um harte Kriterien als best practice zu ermutigen.
 - Security Updates
 
@@ -32,10 +35,10 @@
 - Bugfix bei der Equipe: Einladungen können jetzt wieder gelöscht werden (merci für die Meldung @mario-zelger) [#232](https://github.com/gloggi/qualix/issues/232)
 
 ##### Oktober 2021
-- Bugfix im Quali-Editor: In Qualis welche keine Anforderungen enthalten wird der Editor-Inhalt beim erneuten Öffnen nicht mehr dupliziert (merci für die Meldung @Tschet1) [#223](https://github.com/gloggi/qualix/issues/229)
+- Bugfix im Rückmeldungs-Editor: In Rückmeldungen welche keine Anforderungen enthalten wird der Editor-Inhalt beim erneuten Öffnen nicht mehr dupliziert (merci für die Meldung @Tschet1) [#223](https://github.com/gloggi/qualix/issues/229)
 
 ##### September 2021
-- Die Inhalte des Quali-Editors werden jetzt automatisch gespeichert, sobald 2 Sekunden lang keine Eingabe getätigt wird. Damit das nicht zu Konflikten mit anderen Nutzenden führt, wird ausserdem der Inhalt des Quali-Editors zwischen allen Browsern synchronisiert, welche dasselbe Quali offen haben. Die Synchronisierung läuft über eine end-to-end-verschlüsselte Direktverbindung zwischen den Browsern [#221](https://github.com/gloggi/qualix/issues/221)
+- Die Inhalte des Rückmeldungs-Editors werden jetzt automatisch gespeichert, sobald 2 Sekunden lang keine Eingabe getätigt wird. Damit das nicht zu Konflikten mit anderen Nutzenden führt, wird ausserdem der Inhalt des Rückmeldungs-Editors zwischen allen Browsern synchronisiert, welche dieselbe Rückmeldung offen haben. Die Synchronisierung läuft über eine end-to-end-verschlüsselte Direktverbindung zwischen den Browsern [#221](https://github.com/gloggi/qualix/issues/221)
 
 ##### August 2021
 - Die Profilbilder der Equipenmitglieder werden jetzt im Kursadministrationsbereich angezeigt
@@ -54,8 +57,8 @@
 - Der subjektive Eindruck auf Beobachtungen kann in den Kurseinstellungen deaktiviert werden. Optionale Felder (Eindruck, Anforderungen, Kategorien) werden nicht mehr angezeigt, wenn sie im Kurs nicht eingesetzt werden. [#189](https://github.com/gloggi/qualix/pull/189)
 
 ##### Februar 2021
-- Neu kann ein Quali eines TN mehreren Equipenmitgliedern zugewiesen werden [#178](https://github.com/gloggi/qualix/pull/178)
-- Diverse Verbesserungen am Quali-Editor [#186](https://github.com/gloggi/qualix/pull/186)
+- Neu kann eine Rückmeldung eines TN mehreren Equipenmitgliedern zugewiesen werden [#178](https://github.com/gloggi/qualix/pull/178)
+- Diverse Verbesserungen am Rückmeldungs-Editor [#186](https://github.com/gloggi/qualix/pull/186)
 - Die Blöcke in der Auswahl beim Beobachtung Erfassen werden jetzt nach unten geschoben, wenn sie älter als vom Vortag sind [#188](https://github.com/gloggi/qualix/pull/188)
 
 ##### Januar 2021
@@ -66,7 +69,7 @@
 
 ##### Oktober 2020
 - Beobachtungsaufträge [#147](https://github.com/gloggi/qualix/pull/147)
-- Qualis erfassen und ausdrucken [#146](https://github.com/gloggi/qualix/pull/146)
+- Rückmeldungen erfassen und ausdrucken [#146](https://github.com/gloggi/qualix/pull/146)
 
 ##### September 2020
 - Security Updates [#143](https://github.com/gloggi/qualix/pull/143) [#144](https://github.com/gloggi/qualix/pull/144)

@@ -21,10 +21,10 @@ use Illuminate\Support\Facades\DB;
  * @property Category[] $categories
  * @property Observation[] $observations
  * @property Collection $participants
- * @property QualiData[] $quali_datas
- * @property Quali[] $qualis
+ * @property FeedbackData[] $feedback_datas
+ * @property Feedback[] $feedbacks
  * @property boolean $archived
- * @property array $qualis_using_observations
+ * @property array $feedbacks_using_observations
  */
 class Course extends Model {
     /**
@@ -138,31 +138,31 @@ class Course extends Model {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function quali_datas() {
-        return $this->hasMany(QualiData::class)->orderBy('name');
+    public function feedback_datas() {
+        return $this->hasMany(FeedbackData::class)->orderBy('name');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function qualis() {
-        return $this->hasManyThrough(Quali::class, QualiData::class);
+    public function feedbacks() {
+        return $this->hasManyThrough(Feedback::class, FeedbackData::class);
     }
 
     /**
-     * Get the names of all Qualis that contain this observation.
+     * Get the names of all Feedbacks that contain this observation.
      *
      * @return array
      */
-    public function getQualisUsingObservationsAttribute() {
-        return $this->qualis()
-            ->select(['qualis.*', 'observations_participants.observation_id as observation_id'])
+    public function getFeedbacksUsingObservationsAttribute() {
+        return $this->feedbacks()
+            ->select(['feedbacks.*', 'observations_participants.observation_id as observation_id'])
             ->distinct()
-            ->join('quali_observations_participants', 'qualis.id', 'quali_observations_participants.quali_id')
-            ->join('observations_participants', 'observations_participants.id', 'quali_observations_participants.participant_observation_id')
+            ->join('feedback_observations_participants', 'feedbacks.id', 'feedback_observations_participants.feedback_id')
+            ->join('observations_participants', 'observations_participants.id', 'feedback_observations_participants.participant_observation_id')
             ->get()
-            ->mapToGroups(function(Quali $quali) {
-                return [$quali->observation_id => $quali->display_name];
+            ->mapToGroups(function(Feedback $feedback) {
+                return [$feedback->observation_id => $feedback->display_name];
             })->all();
     }
 

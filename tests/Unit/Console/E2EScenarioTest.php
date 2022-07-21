@@ -86,8 +86,8 @@ class E2EScenarioTest extends TestCase
         $this->assertNotEmpty($course->requirements);
         $this->assertNotEmpty($course->participants);
         $this->assertNotEmpty($course->blocks);
-        $this->assertNotEmpty($course->quali_datas);
-        $this->assertNotEmpty($course->qualis);
+        $this->assertNotEmpty($course->feedback_datas);
+        $this->assertNotEmpty($course->feedbacks);
         $this->assertGreaterThanOrEqual(2, $course->users->count());
     }
 

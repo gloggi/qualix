@@ -30,12 +30,12 @@ it('should display the correct color classes', () => {
   expect(table.getByText('2')).not.toHaveClass('bg-success-light')
 })
 
-it('should not display the quali column when qualiData is null', () => {
+it('should not display the feedback column when feedbackData is null', () => {
   const table = render(TableObservationOverview, {
     props: {
       users: [{ id: 1, name: 'Bari' }, { id: 2, name: 'Lindo' }, { id: 3, name: 'Cosinus' }],
       participants: [{ id: 101, scout_name: 'Pflock', course_id: 7, observation_counts_by_user: { 1: 30, 2: 20, 3: 19 } }],
-      qualiData: null,
+      feedbackData: null,
       multiple: true,
       redThreshold: 7,
       greenThreshold: 20,
@@ -47,14 +47,14 @@ it('should not display the quali column when qualiData is null', () => {
   expect(table.queryAllByText('Zwischenquali')).toHaveLength(0)
 })
 
-it('should display the quali column when qualiData is passed', () => {
+it('should display the feedback column when feedbackData is passed', () => {
   const table = render(TableObservationOverview, {
     props: {
       users: [{ id: 1, name: 'Bari' }, { id: 2, name: 'Lindo' }, { id: 3, name: 'Cosinus' }],
       participants: [{ id: 101, scout_name: 'Pflock', course_id: 7, observation_counts_by_user: { 1: 30, 2: 20, 3: 19 } }],
-      qualiData: {
+      feedbackData: {
         name: 'Zwischenquali',
-        qualis: [],
+        feedbacks: [],
       },
       multiple: true,
       redThreshold: 7,
@@ -67,16 +67,16 @@ it('should display the quali column when qualiData is passed', () => {
   expect(table.queryAllByText('Zwischenquali')).toHaveLength(1)
 })
 
-it('should generate the correct link to the quali of a participant', () => {
+it('should generate the correct link to the feedback of a participant', () => {
   let passedRouteParams = null
   render(TableObservationOverview, {
     props: {
       users: [{ id: 1, name: 'Bari' }, { id: 2, name: 'Lindo' }, { id: 3, name: 'Cosinus' }],
       participants: [{ id: 101, scout_name: 'Pflock', course_id: 7, observation_counts_by_user: { 1: 30, 2: 20, 3: 19 } }],
-      qualiData: {
+      feedbackData: {
         name: 'Zwischenquali',
         course_id: 42,
-        qualis: [{
+        feedbacks: [{
           id: 123,
           participant_id: 101,
           requirements: [],
@@ -87,12 +87,12 @@ it('should generate the correct link to the quali of a participant', () => {
       greenThreshold: 20,
     },
     mocks: { '$t': () => {}, '$te': () => {}, '$tc': () => {}, 'routeUri': (...params) => {
-        if (params[0] === 'qualiContent.edit') passedRouteParams = params
+        if (params[0] === 'feedbackContent.edit') passedRouteParams = params
       } },
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-progress', 'b-progress-bar' ],
   })
 
-  expect(passedRouteParams).toEqual(['qualiContent.edit', {course: 42, participant: 101, quali: 123}])
+  expect(passedRouteParams).toEqual(['feedbackContent.edit', {course: 42, participant: 101, feedback: 123}])
 })
 
 it('should display the requirements progress bar of a participant', () => {
@@ -101,10 +101,10 @@ it('should display the requirements progress bar of a participant', () => {
     props: {
       users: [{ id: 1, name: 'Bari' }, { id: 2, name: 'Lindo' }, { id: 3, name: 'Cosinus' }],
       participants: [{ id: 101, scout_name: 'Pflock', course_id: 7, observation_counts_by_user: { 1: 30, 2: 20, 3: 19 } }],
-      qualiData: {
+      feedbackData: {
         name: 'Zwischenquali',
         course_id: 42,
-        qualis: [{
+        feedbacks: [{
           id: 123,
           participant_id: 101,
           requirements: [
@@ -120,11 +120,11 @@ it('should display the requirements progress bar of a participant', () => {
       greenThreshold: 20,
     },
     mocks: { '$t': () => {}, '$te': () => {}, '$tc': (key, count) => `${key} ${count}`, 'routeUri': (...params) => {
-        if (params[0] === 'qualiContent.edit') passedRouteParams = params
+        if (params[0] === 'feedbackContent.edit') passedRouteParams = params
       } },
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-progress', 'b-progress-bar' ],
   })
 
-  expect(table.queryAllByText('t.views.participant_details.qualis.requirements_passed 2')).toHaveLength(1)
-  expect(table.queryAllByText('t.views.participant_details.qualis.requirements_failed 1')).toHaveLength(1)
+  expect(table.queryAllByText('t.views.participant_details.feedbacks.requirements_passed 2')).toHaveLength(1)
+  expect(table.queryAllByText('t.views.participant_details.feedbacks.requirements_failed 1')).toHaveLength(1)
 })

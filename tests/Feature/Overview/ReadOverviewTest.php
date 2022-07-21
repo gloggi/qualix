@@ -4,8 +4,8 @@ namespace Tests\Feature\Overview;
 
 use App\Models\Block;
 use App\Models\Course;
+use App\Models\Feedback;
 use App\Models\Participant;
-use App\Models\Quali;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Tests\TestCaseWithBasicData;
@@ -142,38 +142,38 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $response->assertSee('&quot;Co&lt;i&gt;si&lt;\/i&gt;nus&#039;\&quot;&quot;', false);
     }
 
-    public function test_shouldNotShowQualiDropdown_whenNoQualisInCourse() {
+    public function test_shouldNotShowFeedbackDropdown_whenNoFeedbacksInCourse() {
         // given
-        Course::find($this->courseId)->quali_datas()->delete();
+        Course::find($this->courseId)->feedback_datas()->delete();
 
         // when
         $response = $this->get('/course/' . $this->courseId . '/overview');
 
         // then
         $response->assertOk();
-        $response->assertDontSee('Quali anzeigen:');
+        $response->assertDontSee('Rückmeldung anzeigen:');
         $response->assertDontSee('keines');
     }
 
-    public function test_shouldSelectNoQualiByDefault() {
+    public function test_shouldSelectNoFeedbackByDefault() {
         // given
-        $qualiDataId = Quali::find($this->createQuali('Zwischenquali'))->quali_data_id;
+        $feedbackDataId = Feedback::find($this->createFeedback('Zwischenquali'))->feedback_data_id;
 
         // when
         $response = $this->get('/course/' . $this->courseId . '/overview');
 
         // then
         $response->assertOk();
-        $response->assertSee('Quali anzeigen:');
+        $response->assertSee('Rückmeldung anzeigen:');
         $response->assertSee('keines');
         $response->assertSee(':value="&quot;0&quot;"', false);
         $response->assertSee('Zwischenquali');
-        $response->assertDontSee(':value="&quot;'. $qualiDataId .'&quot;"', false);
+        $response->assertDontSee(':value="&quot;'. $feedbackDataId .'&quot;"', false);
     }
 
-    public function test_shouldNotUseWideLayout_whenNoQualiIsSelected() {
+    public function test_shouldNotUseWideLayout_whenNoFeedbackIsSelected() {
         // given
-        $qualiDataId = Quali::find($this->createQuali())->quali_data_id;
+        $feedbackDataId = Feedback::find($this->createFeedback())->feedback_data_id;
 
         // when
         $response = $this->get('/course/' . $this->courseId . '/overview');
@@ -183,57 +183,57 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $response->assertDontSee('<b-container :fluid="true">', false);
     }
 
-    public function test_shouldNotPassQualiToOverviewTable_whenNoQualiIsSelected() {
+    public function test_shouldNotPassFeedbackToOverviewTable_whenNoFeedbackIsSelected() {
         // given
-        $qualiDataId = Quali::find($this->createQuali())->quali_data_id;
+        $feedbackDataId = Feedback::find($this->createFeedback())->feedback_data_id;
 
         // when
         $response = $this->get('/course/' . $this->courseId . '/overview');
 
         // then
         $response->assertOk();
-        $response->assertDontSee(':quali-data="{', false);
-        $response->assertSee(':quali-data="null"', false);
+        $response->assertDontSee(':feedback-data="{', false);
+        $response->assertSee(':feedback-data="null"', false);
     }
 
-    public function test_shouldShowSelectedQuali_whenQualiIsSelected() {
+    public function test_shouldShowSelectedFeedback_whenFeedbackIsSelected() {
         // given
-        $qualiDataId = Quali::find($this->createQuali('Zwischenquali'))->quali_data_id;
+        $feedbackDataId = Feedback::find($this->createFeedback('Zwischenquali'))->feedback_data_id;
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/overview/' . $qualiDataId);
+        $response = $this->get('/course/' . $this->courseId . '/overview/' . $feedbackDataId);
 
         // then
         $response->assertOk();
-        $response->assertSee('Quali anzeigen:');
+        $response->assertSee('Rückmeldung anzeigen:');
         $response->assertSee('keines');
         $response->assertDontSee(':value="&quot;0&quot;"', false);
         $response->assertSee('Zwischenquali');
-        $response->assertSee(':value="&quot;'. $qualiDataId .'&quot;"', false);
+        $response->assertSee(':value="&quot;'. $feedbackDataId .'&quot;"', false);
     }
 
-    public function test_shouldUseWideLayout_whenQualiIsSelected() {
+    public function test_shouldUseWideLayout_whenFeedbackIsSelected() {
         // given
-        $qualiDataId = Quali::find($this->createQuali())->quali_data_id;
+        $feedbackDataId = Feedback::find($this->createFeedback())->feedback_data_id;
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/overview/' . $qualiDataId);
+        $response = $this->get('/course/' . $this->courseId . '/overview/' . $feedbackDataId);
 
         // then
         $response->assertOk();
         $response->assertSee('<b-container :fluid="true">', false);
     }
 
-    public function test_shouldPassQualiToOverviewTable_whenQualiIsSelected() {
+    public function test_shouldPassFeedbackToOverviewTable_whenFeedbackIsSelected() {
         // given
-        $qualiDataId = Quali::find($this->createQuali())->quali_data_id;
+        $feedbackDataId = Feedback::find($this->createFeedback())->feedback_data_id;
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/overview/' . $qualiDataId);
+        $response = $this->get('/course/' . $this->courseId . '/overview/' . $feedbackDataId);
 
         // then
         $response->assertOk();
-        $response->assertSee(':quali-data="{', false);
-        $response->assertDontSee(':quali-data="null"', false);
+        $response->assertSee(':feedback-data="{', false);
+        $response->assertDontSee(':feedback-data="null"', false);
     }
 }

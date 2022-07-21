@@ -5,39 +5,39 @@ namespace App\Services;
 use App\Exceptions\ParticipantObservationNotFoundException;
 use App\Exceptions\RequirementNotFoundException;
 use App\Exceptions\RequirementsMismatchException;
+use App\Models\Feedback;
+use App\Models\FeedbackContentNode;
 use App\Models\ParticipantObservation;
-use App\Models\Quali;
-use App\Models\QualiContentNode;
 use App\Models\Requirement;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class TiptapFormatter {
 
-    /** @var Quali */
-    protected $quali;
+    /** @var Feedback */
+    protected $feedback;
 
     /** @var Collection */
     protected $allContents;
 
-    public function __construct(Quali $quali) {
-        $this->quali = $quali;
+    public function __construct(Feedback $feedback) {
+        $this->feedback = $feedback;
     }
 
     /**
-     * Converts the quali contents from the quali model to the format used by the tiptap editor.
+     * Converts the feedback contents from the feedback model to the format used by the tiptap editor.
      *
-     * @return array quali contents in tiptap format
+     * @return array feedback contents in tiptap format
      */
     public function toTiptap() {
-        return self::wrapInDocument(self::removeOrderField($this->getAllQualiContents()->sortBy->get('order')));
+        return self::wrapInDocument(self::removeOrderField($this->getAllFeedbackContents()->sortBy->get('order')));
     }
 
     /**
-     * Converts the quali contents from the quali model to the format used by the tiptap editor.
+     * Converts the feedback contents from the feedback model to the format used by the tiptap editor.
      *
      * @param Collection $contents
-     * @return Collection quali contents in tiptap format
+     * @return Collection feedback contents in tiptap format
      */
     protected static function removeOrderField(Collection $contents) {
         return $contents->map(function($entry) { return Arr::except($entry, 'order'); })->values();
@@ -59,13 +59,13 @@ class TiptapFormatter {
     }
 
     /**
-     * Updates the quali model with the contents from a tiptap editor.
+     * Updates the feedback model with the contents from a tiptap editor.
      *
-     * @param array $tiptap editor description of new quali contents
-     * @param bool $checkRequirements whether to check that the requirements in the contents match the requirements in the quali
+     * @param array $tiptap editor description of new feedback contents
+     * @param bool $checkRequirements whether to check that the requirements in the contents match the requirements in the feedback
      * @throws RequirementsMismatchException
      */
-    public function applyToQuali(array $tiptap, $checkRequirements = true) {
+    public function applyToFeedback(array $tiptap, $checkRequirements = true) {
         $contents = $this->tiptapToContents($tiptap);
         if ($checkRequirements) $this->checkRequirementsAreUpToDate($contents);
 
@@ -74,35 +74,35 @@ class TiptapFormatter {
             return [$requirement->id => ['passed' => $requirement->passed, 'order' => $requirement->order]];
         });
 
-        $this->quali->requirements()->sync($requirements);
-        $this->quali->participant_observations()->detach();
+        $this->feedback->requirements()->sync($requirements);
+        $this->feedback->participant_observations()->detach();
         $participantObservations->each(function(ParticipantObservation $participantObservation) {
-            $this->quali->participant_observations()->attach($participantObservation->id, ['order' => $participantObservation->order]);
+            $this->feedback->participant_observations()->attach($participantObservation->id, ['order' => $participantObservation->order]);
         });
-        $this->quali->contentNodes()->delete();
-        $this->quali->contentNodes()->createMany($contentNodes);
+        $this->feedback->contentNodes()->delete();
+        $this->feedback->contentNodes()->createMany($contentNodes);
 
-        // clear outdated caches on the quali and on the formatter
-        $this->quali->unsetRelation('requirements');
-        $this->quali->unsetRelation('participant_observations');
-        $this->quali->unsetRelation('contentNodes');
+        // clear outdated caches on the feedback and on the formatter
+        $this->feedback->unsetRelation('requirements');
+        $this->feedback->unsetRelation('participant_observations');
+        $this->feedback->unsetRelation('contentNodes');
         $this->allContents = null;
     }
 
     /**
      * @param Collection $contents
-     * @param bool $onlyRequirementsFromQuali
+     * @param bool $onlyRequirementsFromFeedback
      * @return array
      */
-    protected function contentsToModels(Collection $contents, $onlyRequirementsFromQuali = true) {
+    protected function contentsToModels(Collection $contents, $onlyRequirementsFromFeedback = true) {
         $order = 0;
         $requirements = [];
         $participantObservations = [];
         $contentNodes = [];
-        $contents->each(function($node) use($onlyRequirementsFromQuali, &$order, &$requirements, &$participantObservations, &$contentNodes) {
+        $contents->each(function($node) use($onlyRequirementsFromFeedback, &$order, &$requirements, &$participantObservations, &$contentNodes) {
             switch($node['type']) {
                 case 'requirement':
-                    $allRequirements = $onlyRequirementsFromQuali ? $this->quali->requirements() : $this->quali->quali_data->course->requirements;
+                    $allRequirements = $onlyRequirementsFromFeedback ? $this->feedback->requirements() : $this->feedback->feedback_data->course->requirements;
                     /** @var Requirement|null $requirement */
                     $requirement = $allRequirements->find(data_get($node, 'attrs.id'));
                     if (!$requirement) throw new RequirementNotFoundException();
@@ -111,7 +111,7 @@ class TiptapFormatter {
                     $requirements[] = $requirement;
                     break;
                 case 'observation':
-                    $participantObservation = $this->quali->participant->participant_observations()->find(data_get($node, 'attrs.id'));
+                    $participantObservation = $this->feedback->participant->participant_observations()->find(data_get($node, 'attrs.id'));
                     if (!$participantObservation) throw new ParticipantObservationNotFoundException();
                     $participantObservation->order = $order;
                     $participantObservations[] = $participantObservation;
@@ -152,7 +152,7 @@ class TiptapFormatter {
                     ]
                 ]);
             }
-            if ($model instanceof QualiContentNode) {
+            if ($model instanceof FeedbackContentNode) {
                 return collect(json_decode($model->json))
                     ->merge([
                         'order' => $model->order
@@ -176,12 +176,12 @@ class TiptapFormatter {
     /**
      * @return Collection
      */
-    protected function getAllQualiContents() {
+    protected function getAllFeedbackContents() {
         if (!$this->allContents) {
             $this->allContents = $this->modelsToContents(collect(array_merge(
-                $this->quali->requirements->all(),
-                $this->quali->participant_observations->all(),
-                $this->quali->contentNodes->all()
+                $this->feedback->requirements->all(),
+                $this->feedback->participant_observations->all(),
+                $this->feedback->contentNodes->all()
             )));
         }
         return $this->allContents;
@@ -189,7 +189,7 @@ class TiptapFormatter {
 
     /**
      * Checks whether the requirements in the given tiptap formatted contents are the same set of requirements that are
-     * assigned to the quali. Throws a RequirementsOutdatedException containing corrected tiptap formatted content if
+     * assigned to the feedback. Throws a RequirementsOutdatedException containing corrected tiptap formatted content if
      * there is a mismatch.
      *
      * @param Collection $contents
@@ -200,29 +200,29 @@ class TiptapFormatter {
             ->filter(function($node) { return data_get($node, 'type') === 'requirement'; })
             ->pluck('attrs.id');
 
-        /** @var Collection $qualiRequirements */
-        $qualiRequirements = $this->quali->requirements;
-        $qualiRequirementIds = $qualiRequirements->pluck('id');
+        /** @var Collection $feedbackRequirements */
+        $feedbackRequirements = $this->feedback->requirements;
+        $feedbackRequirementIds = $feedbackRequirements->pluck('id');
 
-        if ($tiptapRequirementIds->sort()->values()->all() !== $qualiRequirementIds->sort()->values()->all()) {
-            $stillValid = $contents->filter(function($node) use ($qualiRequirementIds) {
-                return (data_get($node, 'type') !== 'requirement') || $qualiRequirementIds->containsStrict(data_get($node, 'attrs.id'));
+        if ($tiptapRequirementIds->sort()->values()->all() !== $feedbackRequirementIds->sort()->values()->all()) {
+            $stillValid = $contents->filter(function($node) use ($feedbackRequirementIds) {
+                return (data_get($node, 'type') !== 'requirement') || $feedbackRequirementIds->containsStrict(data_get($node, 'attrs.id'));
             })->values();
 
-            $missingRequirements = $this->quali->requirements()->whereNotIn('requirements.id', $tiptapRequirementIds)->get();
+            $missingRequirements = $this->feedback->requirements()->whereNotIn('requirements.id', $tiptapRequirementIds)->get();
             $correctedContents = self::appendRequirements($stillValid, $missingRequirements);
             throw new RequirementsMismatchException(collect(self::wrapInDocument($correctedContents))->toJson());
         }
     }
 
     /**
-     * Appends the given set of requirements to the quali, separated by empty paragraphs.
+     * Appends the given set of requirements to the feedback, separated by empty paragraphs.
      *
      * @param Collection $requirements
      * @throws RequirementsMismatchException
      */
-    public function appendRequirementsToQuali(Collection $requirements) {
-        $this->applyToQuali(self::wrapInDocument(
+    public function appendRequirementsToFeedback(Collection $requirements) {
+        $this->applyToFeedback(self::wrapInDocument(
             self::appendRequirements(self::tiptapToContents($this->toTiptap()), $requirements)
         ), false);
     }
@@ -239,7 +239,7 @@ class TiptapFormatter {
             if (!($requirement instanceof Requirement)) return collect([]);
             return self::removeOrderField(self::modelsToContents(collect([
                 $requirement,
-                new QualiContentNode([ 'json' => self::createContentNodeJSON('') ]),
+                new FeedbackContentNode([ 'json' => self::createContentNodeJSON('') ]),
             ])));
         }));
     }

@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Quali;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class FillCollaborationKeys extends Migration {
@@ -11,7 +11,7 @@ class FillCollaborationKeys extends Migration {
      * @return void
      */
     public function up() {
-        Quali::each(function (Quali $quali) {
+        DB::table('qualis')->orderBy('id')->each(function ($quali) {
             $quali->collaborationKey = Str::random(32);
             $quali->save();
         });

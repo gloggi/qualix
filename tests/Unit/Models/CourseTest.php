@@ -3,26 +3,26 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Course;
+use App\Models\Feedback;
 use App\Models\Observation;
-use App\Models\Quali;
 use Tests\TestCaseWithBasicData;
 
 class CourseTest extends TestCaseWithBasicData {
 
-    public function test_qualisUsingObservations_worksAsExpected() {
+    public function test_feedbacksUsingObservations_worksAsExpected() {
         // given
         /** @var Observation $observation */
         $observation = Observation::find($this->createObservation());
         $participantObservationId = $observation->participants()->withPivot('id')->first()->pivot->id;
-        $quali = Quali::find($this->createQuali());
-        $quali->participant_observations()->sync([$participantObservationId => ['order' => 1]]);
+        $feedback = Feedback::find($this->createFeedback());
+        $feedback->participant_observations()->sync([$participantObservationId => ['order' => 1]]);
         $course = Course::find($this->courseId);
 
         // when
-        $qualisUsingObservations = $course->qualis_using_observations;
+        $feedbacksUsingObservations = $course->feedbacks_using_observations;
 
         // then
-        $this->assertEquals([$observation->id => [$quali->display_name]], collect($qualisUsingObservations)->toArray());
+        $this->assertEquals([$observation->id => [$feedback->display_name]], collect($feedbacksUsingObservations)->toArray());
     }
 
     public function test_usesRequirements_isTrueWhenCourseHasRequirements() {

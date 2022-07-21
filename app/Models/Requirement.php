@@ -41,7 +41,7 @@ class Requirement extends Model
      *
      * @var array
      */
-    protected $appends = ['num_observations', 'num_quali_datas'];
+    protected $appends = ['num_observations', 'num_feedback_datas'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -89,9 +89,9 @@ class Requirement extends Model
      *
      * @return integer
      */
-    public function getNumQualiDatasAttribute() {
+    public function getNumFeedbackDatasAttribute() {
         $requirementId = $this->id;
-        return $this->course->quali_datas()->whereHas('qualis.requirements', function (Builder $query) use($requirementId) {
+        return $this->course->feedback_datas()->whereHas('feedbacks.requirements', function (Builder $query) use($requirementId) {
             $query->where('requirements.id', $requirementId);
         })->count();
     }

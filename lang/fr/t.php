@@ -80,8 +80,8 @@ return array(
 			"image" => "Image",
 			"scout_name" => "Nom",
 		),
-		"quali" => array(
-			"display_name" => ":quali_name de :participant_name",
+		"feedback" => array(
+			"display_name" => ":feedback_name de :participant_name",
 		),
 		"requirement" => array(
 			"blocks" => "Points de cours",
