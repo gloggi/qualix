@@ -20,6 +20,7 @@ use App\Http\Controllers\EquipeController;
 use App\Http\Controllers\ErrorReportController;
 use App\Http\Controllers\FeedbackContentController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\FeedbackListController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LocalizationController;
@@ -44,6 +45,7 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::get('/course/{course}', [HomeController::class, 'index'])->name('index');
 
     Route::get('/course/{course}/crib/{user?}', [BlockListController::class, 'crib'])->name('crib');
+    Route::get('/course/{course}/feedbacks', [FeedbackListController::class, 'index'])->name('feedbacks');
 
     Route::middleware('courseNotArchived')->group(function () {
         Route::get('/course/{course}/participants', [ParticipantListController::class, 'index'])->name('participants');

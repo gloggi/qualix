@@ -20,9 +20,15 @@
             :show-impression="{{ $course->uses_impressions ? 'true' : 'false' }}"
             :collaboration-key="{{ json_encode(env('COLLABORATION_ENABLED') ? $feedback->collaborationKey : null) }}">
 
-            <b-button variant="link" class="px-0" href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}">
-                <i class="fas fa-arrow-left"></i> {{__('t.views.feedback_content.back_to_participant', ['name' => $participant->scout_name])}}
-            </b-button>
+            <div>
+                <b-button variant="link" class="px-0 mr-3" href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}">
+                    <i class="fas fa-arrow-left"></i> {{__('t.views.feedback_content.back_to_participant', ['name' => $participant->scout_name])}}
+                </b-button>
+
+                <b-button variant="link" class="px-0" href="{{ route('feedbacks', ['course' => $course->id]) }}">
+                    <i class="fas fa-arrow-left"></i> {{__('t.views.feedback_content.back_to_feedback_overview')}}
+                </b-button>
+            </div>
 
         </form-feedback-content>
 

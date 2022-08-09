@@ -165,7 +165,7 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         // then
         $response->assertOk();
         $response->assertSee('Rückmeldung anzeigen:');
-        $response->assertSee('keines');
+        $response->assertSee('keine');
         $response->assertSee(':value="&quot;0&quot;"', false);
         $response->assertSee('Zwischenquali');
         $response->assertDontSee(':value="&quot;'. $feedbackDataId .'&quot;"', false);
@@ -206,7 +206,7 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         // then
         $response->assertOk();
         $response->assertSee('Rückmeldung anzeigen:');
-        $response->assertSee('keines');
+        $response->assertSee('keine');
         $response->assertDontSee(':value="&quot;0&quot;"', false);
         $response->assertSee('Zwischenquali');
         $response->assertSee(':value="&quot;'. $feedbackDataId .'&quot;"', false);

@@ -17,7 +17,8 @@
                 }), JSON_FORCE_OBJECT)}}"
             :requirements="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
             :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"
-            :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}">
+            :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}"
+            :highlight-trainer-assignments="{{ json_encode($highlightTrainerAssignments) }}">
 
             <template #submit>
                 <button-submit>
