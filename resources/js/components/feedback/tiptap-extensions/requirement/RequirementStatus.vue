@@ -1,5 +1,5 @@
 <template>
-  <span class="mr-2" :class="'text-' + iconVariant"><i :class="iconClass"></i></span>
+  <span class="mr-2" :class="iconColor"><i :class="iconClass"></i></span>
 </template>
 
 <script>
@@ -8,27 +8,18 @@ export default {
   name: 'RequirementStatus',
   props: {
     name: { type: String, required: true },
-    value: { required: true, validator: prop => [null, 0, 1].includes(prop) },
+    value: { type: Number, required: true },
+    statuses: { type: Array, required: true },
   },
   computed: {
-    passed() {
-      return this.value === 1
-    },
-    failed() {
-      return this.value === 0
-    },
-    observing() {
-      return this.value === null
+    status() {
+      return this.statuses.find(status => String(status.id) === String(this.value))
     },
     iconClass() {
-      if (this.passed) return 'fas fa-check-circle'
-      if (this.failed) return 'fas fa-times-circle'
-      return 'fas fa-binoculars'
+      return `fas fa-${this.status.icon}`
     },
-    iconVariant() {
-      if (this.passed) return 'success'
-      if (this.failed) return 'danger'
-      return 'primary'
+    iconColor() {
+      return `text-${this.status.color}`
     }
   },
 }

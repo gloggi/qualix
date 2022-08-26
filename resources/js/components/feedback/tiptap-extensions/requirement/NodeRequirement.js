@@ -21,10 +21,10 @@ const NodeRequirement = ({ readonly }) => Node.create({
         parseHTML: element => element.getAttribute('data-id'),
         renderHTML: attributes => ({'data-id': attributes.id})
       },
-      passed: {
+      status_id: {
         default: null,
-        parseHTML: element => element.getAttribute('data-passed'),
-        renderHTML: attributes => ({'data-passed': attributes.passed})
+        parseHTML: element => element.getAttribute('data-status-id'),
+        renderHTML: attributes => ({'data-status-id': attributes.status_id})
       },
     }
   },

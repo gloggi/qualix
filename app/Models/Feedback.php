@@ -75,10 +75,20 @@ class Feedback extends Model {
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function requirements() {
-        return $this->belongsToMany(Requirement::class, 'feedback_requirements')->withPivot('order', 'passed')->orderBy('feedback_requirements.order');
+        return $this->hasManyThrough(Requirement::class, FeedbackRequirement::class, 'feedback_id', 'id', 'id', 'requirement_id')
+            ->join('requirement_statuses', 'requirement_statuses.id', '=', 'feedback_requirements.requirement_status_id')
+            ->select(['requirements.*', 'feedback_requirements.order as order', 'requirement_statuses.id as status_id'])
+            ->orderBy('feedback_requirements.order');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function feedback_requirements() {
+        return $this->hasMany(FeedbackRequirement::class);
     }
 
     /**

@@ -64,7 +64,7 @@
                 }">
 
                 <template v-slot:requirement-progress="{ row: feedback }">
-                    <requirement-progress v-if="feedback.requirements.length" :requirements="feedback.requirements"></requirement-progress>
+                    <requirement-progress v-if="feedback.requirements.length" :requirements="feedback.requirements" :statuses="{{ json_encode($course->requirement_statuses) }}"></requirement-progress>
                 </template>
 
             </responsive-table>

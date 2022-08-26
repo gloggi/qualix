@@ -15,6 +15,7 @@ class ReadFeedbackTest extends TestCaseWithBasicData {
 
         $feedback = Feedback::find($this->createFeedback('Zwischenquali'));
         $this->feedbackDataId = $feedback->feedback_data->id;
+        $this->createRequirementStatus();
     }
 
     public function test_shouldRequireLogin() {

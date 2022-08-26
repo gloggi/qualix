@@ -70,4 +70,19 @@ class CourseTest extends TestCaseWithBasicData {
         // then
         $this->assertEquals(false, $usesCategories);
     }
+
+    public function test_defaultRequirementStatusId_isTheFirstRequirementStatusIdInTheCourse() {
+        // given
+        $course = Course::find($this->courseId);
+        $course2 = $this->createCourse();
+        $this->createRequirementStatus('erfüllt', 'green', 'check-circle', $course2);
+        $expected = $this->createRequirementStatus('erfüllt', 'green', 'check-circle', $this->courseId);
+        $this->createRequirementStatus('nicht erfüllt', 'red', 'times-circle', $this->courseId);
+
+        // when
+        $defaultRequirementStatusId = $course->default_requirement_status_id;
+
+        // then
+        $this->assertEquals($expected, $defaultRequirementStatusId);
+    }
 }

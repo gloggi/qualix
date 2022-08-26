@@ -2,7 +2,7 @@
   <form-basic :action="action" ref="form">
     <div class="mb-3" v-if="localRequirements.length">
       <h5>{{ $t('t.views.feedback_content.requirements_status') }}</h5>
-      <requirement-progress :requirements="localRequirements"></requirement-progress>
+      <requirement-progress :requirements="localRequirements" :statuses="requirementStatuses"></requirement-progress>
     </div>
 
     <div class="d-flex justify-content-between mb-2">
@@ -25,6 +25,7 @@
       :observations="observations"
       :requirements="requirements"
       :categories="categories"
+      :requirement-statuses="requirementStatuses"
       :show-requirements="showRequirements"
       :show-categories="showCategories"
       :show-impression="showImpression"
@@ -46,6 +47,7 @@ export default {
     observations: { type: Array, default: () => [] },
     requirements: { type: Array, default: () => [] },
     categories: { type: Array, default: () => [] },
+    requirementStatuses: { type: Array, default: () => [] },
     showRequirements: { type: Boolean, default: false },
     showCategories: { type: Boolean, default: false },
     showImpression: { type: Boolean, default: false },
@@ -65,7 +67,7 @@ export default {
     localRequirements() {
       return this.json.content
         .filter(node => node.type === 'requirement')
-        .map(node => ({ pivot: node.attrs }))
+        .map(node => node.attrs)
     },
     autosaveText() {
       return this.dirty ? this.$t('t.global.autosave_paused') : this.saving ? this.$t('t.global.autosaving') : this.$t('t.global.autosaved')

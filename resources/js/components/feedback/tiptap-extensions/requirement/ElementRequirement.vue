@@ -1,12 +1,11 @@
 <template>
   <node-view-wrapper class="requirement d-flex" :class="selected ? 'selected' : ''" data-drag-handle>
-    <requirement-status :name="`requirements[${node.attrs.id}]`" :value="node.attrs.passed" @input="onChange"
-                        class="mr-2 my-auto"></requirement-status>
+    <requirement-status :name="`requirements[${node.attrs.id}]`" :value="node.attrs.status_id" @input="onChange" :statuses="requirementStatuses" class="mr-2 my-auto"></requirement-status>
     <h5 class="flex-grow-1 my-auto">{{ requirement.content | ucfirst }}</h5>
     <b-dropdown v-if="editor.options.editable" dropleft class="mr-2 requirement-menu" no-caret variant="link">
       <template v-slot:button-content>
         <i class="fas fa-ellipsis-v"></i>
-      </template><b-dropdown-item-button @click="onChange(1)"><i class="text-success fas fa-check-circle mr-3"></i> {{ $t('t.views.feedback_content.requirements.passed') }}</b-dropdown-item-button><b-dropdown-item-button @click="onChange(null)"><i class="text-primary fas fa-binoculars mr-3"></i> {{ $t('t.views.feedback_content.requirements.observing') }}</b-dropdown-item-button><b-dropdown-item-button @click="onChange(0)"><i class="text-danger fas fa-times-circle mr-3"></i> {{ $t('t.views.feedback_content.requirements.failed') }}</b-dropdown-item-button><b-dropdown-item-button v-if="observations.length" @click="selectObservation"><i class="text-primary fas fa-plus mr-3"></i> {{$t('t.models.observation.one')}}</b-dropdown-item-button></b-dropdown>
+      </template><b-dropdown-item-button v-for="status in requirementStatuses" :key="status.id" @click="onChange(status.id)"><i :class="[`text-${status.color}`, `fa-${status.icon}`]" class="fas mr-3"></i> {{ status.name }}</b-dropdown-item-button></b-dropdown>
   </node-view-wrapper>
 </template>
 
@@ -26,7 +25,7 @@ export default {
   // `updateAttributes` is a function to update attributes of the current node
   // `deleteNode` is a function to delete the current node
   props: nodeViewProps,
-  inject: ['requirements', 'showObservationSelectionModal', 'observations', 'courseId'],
+  inject: ['requirements', 'showObservationSelectionModal', 'observations', 'requirementStatuses', 'courseId'],
   computed: {
     requirement() {
       const requirement = this.requirements.find(requirement => requirement.id === this.node.attrs.id)
@@ -43,8 +42,8 @@ export default {
     }
   },
   methods: {
-    onChange(passed) {
-      this.updateAttributes({passed: passed})
+    onChange(status_id) {
+      this.updateAttributes({status_id: status_id})
     },
     setObservationFilter() {
       if (!this.courseId) return

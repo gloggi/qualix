@@ -35,6 +35,8 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         foreach ($this->blockIds as $blockId) {
             $this->createObservation(Block::find($blockId)->name, 1, [], [], $blockId);
         }
+
+        $this->createRequirementStatus();
     }
 
     public function test_shouldRequireLogin() {

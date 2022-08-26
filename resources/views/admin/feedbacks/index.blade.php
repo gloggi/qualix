@@ -14,6 +14,7 @@
                     return [$group['group_name'] => $group->participants->pluck('id')->join(',')];
                 }), JSON_FORCE_OBJECT)}}"
             :requirements="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
+            :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"
             :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}"
             feedback-contents-template>
 

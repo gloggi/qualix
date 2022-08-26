@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\FeedbackData;
 use App\Models\Participant;
 use App\Models\Requirement;
+use App\Models\RequirementStatus;
 
 abstract class TestCaseWithCourse extends TestCase
 {
@@ -42,5 +43,9 @@ abstract class TestCaseWithCourse extends TestCase
         if (!$course->participants()->exists()) $this->createParticipant('Feedback-TN', $course->id);
         $feedbackData = FeedbackData::create(['name' => $name, 'course_id' => $course->id]);
         return $feedbackData->feedbacks()->create(['participant_id' => $course->participants()->first()->id])->id;
+    }
+
+    protected function createRequirementStatus($name = 'erfüllt', $color = 'green', $icon = 'check-circle', $courseId = null) {
+        return RequirementStatus::create(['course_id' => $courseId ?? $this->courseId, 'name' => $name, 'color' => $color, 'icon' => $icon])->id;
     }
 }

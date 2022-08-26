@@ -76,6 +76,14 @@ class Requirement extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function feedback_requirements()
+    {
+        return $this->hasMany(FeedbackRequirement::class);
+    }
+
+    /**
      * Get the number of observations connected to this category.
      *
      * @return integer

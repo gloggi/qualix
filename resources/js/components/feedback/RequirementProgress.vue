@@ -1,36 +1,37 @@
 <template>
   <b-progress :max="100">
-    <b-progress-bar variant="success" :value="100. * passed / total">
-      {{ $tc('t.views.participant_details.feedbacks.requirements_passed', passed) }}
-    </b-progress-bar>
-    <b-progress-bar variant="danger" :value="100. * failed / total">
-      {{ $tc('t.views.participant_details.feedbacks.requirements_failed', failed) }}
+    <b-progress-bar v-for="(requirements, status_id) in groupedRequirements" :key="status_id" :variant="status(status_id).color" :value="100. * (requirements.length) / total">
+      {{ requirements.length }} {{ status(status_id).name }}
     </b-progress-bar>
   </b-progress>
 </template>
 
 <script>
+import {groupBy} from 'lodash'
 
-  export default {
-    name: 'RequirementProgress',
-    props: {
-      requirements: { type: Array, required: true }
+export default {
+  name: 'RequirementProgress',
+  props: {
+    requirements: { type: Array, required: true },
+    statuses: { type: Array, required: true },
+  },
+  data() {
+    return {}
+  },
+  computed: {
+    total() {
+      return this.requirements.length
     },
-    data() {
-      return {}
+    groupedRequirements() {
+      return groupBy(this.requirements, 'status_id')
     },
-    computed: {
-      total() {
-        return this.requirements.length
-      },
-      passed() {
-        return this.requirements.filter(r => r.pivot.passed === 1).length
-      },
-      failed() {
-        return this.requirements.filter(r => r.pivot.passed === 0).length
-      }
+  },
+  methods: {
+    status(id) {
+      return this.statuses.find(status => String(status.id) === String(id))
     }
   }
+}
 </script>
 
 <style scoped>

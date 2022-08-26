@@ -456,8 +456,6 @@ return array(
 			"observations_without_category" => "Beobachtungen ohne Kategorie",
 			"observations_without_requirement" => "Beobachtungen ohne Anforderung",
 			"feedbacks" => array(
-				"requirements_failed" => ":count nicht erfüllt",
-				"requirements_passed" => ":count erfüllt",
 				"title" => "Rückmeldungen",
 			),
 			"feedbacks_using_observation" => "{0}|{1} Folgende Rückmeldung verwendet diese Beobachtung: :feedbacks|[2,*] Die folgenden :count Rückmeldungen verwenden diese Beobachtung: :feedbacks",
@@ -480,11 +478,6 @@ return array(
 				"question" => "Keine Internetverbindung!",
 			),
 			"participant_feedback" => ":feedback: :participant",
-			"requirements" => [
-				"failed" => "Nicht erfüllt",
-				"observing" => "Unter Beobachtung",
-				"passed" => "Erfüllt",
-			],
 			"requirements_status" => "Anforderungen",
 			"select_observation" => "Beobachtung wählen",
 			"text_element" => "Text",

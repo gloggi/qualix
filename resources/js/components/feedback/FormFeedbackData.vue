@@ -37,6 +37,7 @@
           ref="feedbackContentsTemplate"
           name="feedback_contents_template"
           :requirements="requirements"
+          :requirement-statuses="requirementStatuses"
           :selected-requirements="requirementsFormValue"
           label=""
           :course-id="courseId"
@@ -82,7 +83,8 @@ export default {
     feedbacks: { type: Array, default: undefined },
     participants: { type: Array, required: true },
     participantGroups: { type: Object, default: () => ({}) },
-    requirements: { type: Array, requried: true },
+    requirements: { type: Array, default: () => [] },
+    requirementStatuses: { type: Array, default: () => [] },
     trainers: { type: Array, required: true },
     feedbackContentsTemplate: { type: Boolean, default: false },
   },

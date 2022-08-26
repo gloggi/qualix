@@ -81,8 +81,9 @@ class TiptapFormatterTest extends TestCase {
         // given
         $feedback = $this->createFeedback();
         $course = $feedback->participant->course;
+        $requirementStatusId = $course->default_requirement_status_id;
         $requirement = $course->requirements()->first();
-        $feedback->requirements()->attach([$requirement->id => ['order' => 0, 'passed' => 1]]);
+        $feedback->feedback_requirements()->create(['requirement_id' => $requirement->id, 'order' => 0, 'requirement_status_id' => $requirementStatusId]);
         $formatter = new TiptapFormatter($feedback->fresh());
 
         // when
@@ -90,7 +91,7 @@ class TiptapFormatterTest extends TestCase {
 
         // then
         $this->assertEquals(json_encode(['type' => 'doc', 'content' => [
-            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'passed' => 1]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId]],
         ]]), json_encode($result));
     }
 
@@ -98,6 +99,7 @@ class TiptapFormatterTest extends TestCase {
         // given
         $feedback = $this->createFeedback();
         $course = $feedback->participant->course;
+        $requirementStatusId = $course->default_requirement_status_id;
 
         $feedback->contentNodes()->create(['json' => json_encode(['type' => 'paragraph']), 'order' => 1]);
         $feedback->contentNodes()->create(['json' => json_encode(['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'hello']]]), 'order' => 4]);
@@ -107,7 +109,7 @@ class TiptapFormatterTest extends TestCase {
         $feedback->participant_observations()->attach([$participantObservation->id => ['order' => 2]]);
 
         $requirement = $course->requirements()->first();
-        $feedback->requirements()->attach([$requirement->id => ['order' => 3, 'passed' => 0]]);
+        $feedback->feedback_requirements()->create(['requirement_id' => $requirement->id, 'order' => 3, 'requirement_status_id' => $requirementStatusId]);
 
         $formatter = new TiptapFormatter($feedback->fresh());
 
@@ -119,7 +121,7 @@ class TiptapFormatterTest extends TestCase {
             ['type' => 'heading', 'attrs' => ['level' => 5], 'content' => [['type' => 'text', 'text' => 'hello']]],
             ['type' => 'paragraph'],
             ['type' => 'observation', 'attrs' => ['id' => $participantObservation->id]],
-            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'passed' => 0]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId]],
             ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'hello']]],
         ]]), json_encode($result));
     }
@@ -224,12 +226,13 @@ class TiptapFormatterTest extends TestCase {
         // given
         $feedback = $this->createFeedback();
         $course = $feedback->participant->course;
+        $requirementStatusId = $course->default_requirement_status_id;
         $requirement = $course->requirements()->first();
         $formatter = new TiptapFormatter($feedback);
 
         // when
         $formatter->applyToFeedback(['type' => 'doc', 'content' => [
-            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'passed' => 1]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId]],
         ]], false);
 
         // then
@@ -237,10 +240,10 @@ class TiptapFormatterTest extends TestCase {
         $this->assertEquals(0, $feedback->contentNodes()->count());
         $this->assertEquals(0, $feedback->participant_observations()->count());
         $this->assertEquals(1, $feedback->requirements()->count());
-        $feedbackRequirement = $feedback->requirements()->withPivot(['order', 'passed'])->first();
+        $feedbackRequirement = $feedback->requirements()->first();
         $this->assertEquals($requirement->id, $feedbackRequirement->id);
-        $this->assertEquals(0, $feedbackRequirement->pivot->order);
-        $this->assertEquals(1, $feedbackRequirement->pivot->passed);
+        $this->assertEquals(0, $feedbackRequirement->order);
+        $this->assertEquals($requirementStatusId, $feedbackRequirement->status_id);
     }
 
     /**
@@ -255,7 +258,7 @@ class TiptapFormatterTest extends TestCase {
         // when
         try {
             $formatter->applyToFeedback(['type' => 'doc', 'content' => [
-                ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'passed' => 1]],
+                ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => 1]],
             ]], true);
 
             $this->fail('expected RequirementsOutdatedException to be thrown');
@@ -277,6 +280,7 @@ class TiptapFormatterTest extends TestCase {
         // given
         $feedback = $this->createFeedback();
         $course = $feedback->participant->course;
+        $requirementStatusId = $course->default_requirement_status_id;
         $participantObservation = $this->createParticipantObservation($course, $feedback);
         $requirement = $course->requirements()->first();
         $formatter = new TiptapFormatter($feedback);
@@ -286,7 +290,7 @@ class TiptapFormatterTest extends TestCase {
             ['type' => 'heading', 'attrs' => ['level' => 5], 'content' => [['type' => 'text', 'text' => 'hello']]],
             ['type' => 'paragraph'],
             ['type' => 'observation', 'attrs' => ['id' => $participantObservation->id]],
-            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'passed' => null]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId]],
             ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'hello']]],
         ]], false);
 
@@ -302,10 +306,10 @@ class TiptapFormatterTest extends TestCase {
         $this->assertEquals(1, $nodes[1]->order);
         $this->assertEquals(json_encode(['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'hello']]]), $nodes[2]->json);
         $this->assertEquals(4, $nodes[2]->order);
-        $feedbackRequirement = $feedback->requirements()->withPivot(['order', 'passed'])->first();
+        $feedbackRequirement = $feedback->requirements()->first();
         $this->assertEquals($requirement->id, $feedbackRequirement->id);
-        $this->assertEquals(3, $feedbackRequirement->pivot->order);
-        $this->assertEquals(null, $feedbackRequirement->pivot->passed);
+        $this->assertEquals(3, $feedbackRequirement->order);
+        $this->assertEquals($requirementStatusId, $feedbackRequirement->status_id);
         $observation = $feedback->participant_observations()->withPivot(['order'])->first();
         $this->assertEquals($participantObservation->id, $observation->id);
         $this->assertEquals(2, $observation->pivot->order);
@@ -318,6 +322,8 @@ class TiptapFormatterTest extends TestCase {
         // given
         $feedback = $this->createFeedback();
         $course = $feedback->participant->course;
+        $requirementStatusId = $course->default_requirement_status_id;
+        $requirementStatusId2 = $course->requirement_statuses()->pluck('id')->last();
         $participantObservation = $this->createParticipantObservation($course, $feedback);
         $requirement = $course->requirements()->first();
         $formatter = new TiptapFormatter($feedback);
@@ -325,14 +331,14 @@ class TiptapFormatterTest extends TestCase {
             ['type' => 'heading', 'attrs' => ['level' => 5], 'content' => [['type' => 'text', 'text' => 'hello']]],
             ['type' => 'paragraph'],
             ['type' => 'observation', 'attrs' => ['id' => $participantObservation->id]],
-            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'passed' => null]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId2]],
             ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'hello']]],
         ]], false);
 
         // when
         $formatter->applyToFeedback(['type' => 'doc', 'content' => [
             ['type' => 'observation', 'attrs' => ['id' => $participantObservation->id]],
-            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'passed' => 0]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId]],
             ['type' => 'paragraph'],
             ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'hello']]],
             ['type' => 'heading', 'attrs' => ['level' => 5], 'content' => [['type' => 'text', 'text' => 'hello']]],
@@ -350,10 +356,10 @@ class TiptapFormatterTest extends TestCase {
         $this->assertEquals(3, $nodes[1]->order);
         $this->assertEquals(json_encode(['type' => 'heading', 'attrs' => ['level' => 5], 'content' => [['type' => 'text', 'text' => 'hello']]]), $nodes[2]->json);
         $this->assertEquals(4, $nodes[2]->order);
-        $feedbackRequirement = $feedback->requirements()->withPivot(['order', 'passed'])->first();
+        $feedbackRequirement = $feedback->requirements()->first();
         $this->assertEquals($requirement->id, $feedbackRequirement->id);
-        $this->assertEquals(1, $feedbackRequirement->pivot->order);
-        $this->assertEquals(null, $feedbackRequirement->pivot->passed);
+        $this->assertEquals(1, $feedbackRequirement->order);
+        $this->assertEquals($requirementStatusId, $feedbackRequirement->status_id);
         $observation = $feedback->participant_observations()->withPivot(['order'])->first();
         $this->assertEquals($participantObservation->id, $observation->id);
         $this->assertEquals(0, $observation->pivot->order);
@@ -371,12 +377,14 @@ class TiptapFormatterTest extends TestCase {
         $requirement = $requirements[0];
         $requirement2 = $requirements[1];
         $requirement3 = $requirements[2];
+        $requirementStatusId = $course->default_requirement_status_id;
+        $requirementStatusId2 = $course->requirement_statuses()->pluck('id')->last();
         $formatter = new TiptapFormatter($feedback);
         $formatter->applyToFeedback(['type' => 'doc', 'content' => [
             ['type' => 'heading', 'attrs' => ['level' => 5], 'content' => [['type' => 'text', 'text' => 'hello']]],
             ['type' => 'paragraph'],
             ['type' => 'observation', 'attrs' => ['id' => $participantObservation->id]],
-            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'passed' => 1]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId2]],
             ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'hello']]],
         ]], false);
 
@@ -399,16 +407,16 @@ class TiptapFormatterTest extends TestCase {
         $this->assertEquals(6, $nodes[3]->order);
         $this->assertEquals(json_encode(['type' => 'paragraph']), $nodes[4]->json);
         $this->assertEquals(8, $nodes[4]->order);
-        [$feedbackRequirement, $feedbackRequirement2, $feedbackRequirement3] = $feedback->requirements()->withPivot(['order', 'passed'])->get();
+        [$feedbackRequirement, $feedbackRequirement2, $feedbackRequirement3] = $feedback->requirements()->get();
         $this->assertEquals($requirement->id, $feedbackRequirement->id);
-        $this->assertEquals(3, $feedbackRequirement->pivot->order);
-        $this->assertEquals(1, $feedbackRequirement->pivot->passed);
+        $this->assertEquals(3, $feedbackRequirement->order);
+        $this->assertEquals($requirementStatusId2, $feedbackRequirement->status_id);
         $this->assertEquals($requirement2->id, $feedbackRequirement2->id);
-        $this->assertEquals(5, $feedbackRequirement2->pivot->order);
-        $this->assertEquals(null, $feedbackRequirement2->pivot->passed);
+        $this->assertEquals(5, $feedbackRequirement2->order);
+        $this->assertEquals($requirementStatusId, $feedbackRequirement2->status_id);
         $this->assertEquals($requirement3->id, $feedbackRequirement3->id);
-        $this->assertEquals(7, $feedbackRequirement3->pivot->order);
-        $this->assertEquals(null, $feedbackRequirement3->pivot->passed);
+        $this->assertEquals(7, $feedbackRequirement3->order);
+        $this->assertEquals($requirementStatusId, $feedbackRequirement3->status_id);
         $observation = $feedback->participant_observations()->withPivot(['order'])->first();
         $this->assertEquals($participantObservation->id, $observation->id);
         $this->assertEquals(2, $observation->pivot->order);
@@ -417,7 +425,7 @@ class TiptapFormatterTest extends TestCase {
     /**
      * @throws \App\Exceptions\RequirementsMismatchException
      */
-    public function test_appendRequirementsToFeedback_shouldDoNothingWork_whenPassedSomethingOtherThanRequirements() {
+    public function test_appendRequirementsToFeedback_shouldDoNothing_whenPassedSomethingOtherThanRequirements() {
         // given
         $feedback = $this->createFeedback();
         $course = $feedback->participant->course;
@@ -425,12 +433,14 @@ class TiptapFormatterTest extends TestCase {
         $requirements = $course->requirements;
         $requirement = $requirements[0];
         $requirement2 = $requirements[1];
+        $requirementStatusId = $course->default_requirement_status_id;
+        $requirementStatusId2 = $course->requirement_statuses()->pluck('id')->last();
         $formatter = new TiptapFormatter($feedback);
         $formatter->applyToFeedback(['type' => 'doc', 'content' => [
             ['type' => 'heading', 'attrs' => ['level' => 5], 'content' => [['type' => 'text', 'text' => 'hello']]],
             ['type' => 'paragraph'],
             ['type' => 'observation', 'attrs' => ['id' => $participantObservation->id]],
-            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'passed' => 1]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId2]],
             ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'hello']]],
         ]], false);
 
@@ -451,13 +461,13 @@ class TiptapFormatterTest extends TestCase {
         $this->assertEquals(4, $nodes[2]->order);
         $this->assertEquals(json_encode(['type' => 'paragraph']), $nodes[3]->json);
         $this->assertEquals(6, $nodes[3]->order);
-        [$feedbackRequirement, $feedbackRequirement2] = $feedback->requirements()->withPivot(['order', 'passed'])->get();
+        [$feedbackRequirement, $feedbackRequirement2] = $feedback->requirements()->get();
         $this->assertEquals($requirement->id, $feedbackRequirement->id);
-        $this->assertEquals(3, $feedbackRequirement->pivot->order);
-        $this->assertEquals(1, $feedbackRequirement->pivot->passed);
+        $this->assertEquals(3, $feedbackRequirement->order);
+        $this->assertEquals($requirementStatusId2, $feedbackRequirement->status_id);
         $this->assertEquals($requirement2->id, $feedbackRequirement2->id);
-        $this->assertEquals(5, $feedbackRequirement2->pivot->order);
-        $this->assertEquals(null, $feedbackRequirement2->pivot->passed);
+        $this->assertEquals(5, $feedbackRequirement2->order);
+        $this->assertEquals($requirementStatusId, $feedbackRequirement2->status_id);
         $observation = $feedback->participant_observations()->withPivot(['order'])->first();
         $this->assertEquals($participantObservation->id, $observation->id);
         $this->assertEquals(2, $observation->pivot->order);
@@ -471,6 +481,7 @@ class TiptapFormatterTest extends TestCase {
         $course = Course::factory()
             ->hasUsers(3)
             ->hasRequirements(4)
+            ->hasRequirementStatuses(3)
             ->hasParticipants(10)
             ->has(Block::factory()
                 ->count(10)

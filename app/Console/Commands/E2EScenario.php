@@ -60,6 +60,7 @@ class E2EScenario extends Command
         $course = Course::factory()
             ->hasUsers(3)
             ->hasRequirements(4)
+            ->hasRequirementStatuses(3)
             ->hasParticipants(10)
             ->has(Block::factory()
                 ->count(10)

@@ -18,7 +18,8 @@ class ReadFeedbackContentTest extends TestCaseWithBasicData {
         $this->feedbackId = $this->createFeedback('Zwischenquali');
         $feedback = Feedback::find($this->feedbackId);
         $this->requirementId = $this->createRequirement();
-        $feedback->requirements()->attach([$this->requirementId => ['passed' => null, 'order' => 10]]);
+        $requirementStatus = $this->createRequirementStatus();
+        $feedback->feedback_requirements()->create(['requirement_id' => $this->requirementId, 'requirement_status_id' => $requirementStatus, 'order' => 10]);
     }
 
     public function test_shouldRequireLogin() {

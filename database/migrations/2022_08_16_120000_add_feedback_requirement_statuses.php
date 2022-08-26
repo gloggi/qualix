@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Course;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -28,9 +27,9 @@ class AddFeedbackRequirementStatuses extends Migration
         });
         DB::table('courses')->orderBy('id')->chunk(100, function ($courses) {
            foreach ($courses as $course) {
-               $passed = DB::table('requirement_statuses')->insertGetId(['course_id' => $course->id, 'name' => 'erfüllt', 'color' => '#38c172', 'icon' => 'check-circle']);
-               $pending = DB::table('requirement_statuses')->insertGetId(['course_id' => $course->id, 'name' => 'unter Beobachtung', 'color' => '#3490dc', 'icon' => 'binoculars']);
-               $notPassed = DB::table('requirement_statuses')->insertGetId(['course_id' => $course->id, 'name' => 'nicht erfüllt', 'color' => '#e3342f', 'icon' => 'times-circle']);
+               $passed = DB::table('requirement_statuses')->insertGetId(['course_id' => $course->id, 'name' => 'erfüllt', 'color' => 'green', 'icon' => 'check-circle']);
+               $pending = DB::table('requirement_statuses')->insertGetId(['course_id' => $course->id, 'name' => 'unter Beobachtung', 'color' => 'gray-500', 'icon' => 'binoculars']);
+               $notPassed = DB::table('requirement_statuses')->insertGetId(['course_id' => $course->id, 'name' => 'nicht erfüllt', 'color' => 'red', 'icon' => 'times-circle']);
                DB::table('feedback_requirements')
                    ->join('requirements', 'feedback_requirements.requirement_id', '=', 'requirements.id')
                    ->where(['requirements.course_id' => $course->id, 'passed' => 1])

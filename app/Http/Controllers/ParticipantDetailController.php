@@ -19,6 +19,10 @@ class ParticipantDetailController extends Controller {
     public function index(Request $request, Course $course, Participant $participant) {
         $observations = $participant->observations->values();
 
-        return view('participant-detail', ['participant' => $participant, 'observations' => $observations, 'feedbacks_using_observations' => $course->feedbacks_using_observations]);
+        return view('participant-detail', [
+            'participant' => $participant,
+            'observations' => $observations,
+            'feedbacks_using_observations' => $course->feedbacks_using_observations
+        ]);
     }
 }

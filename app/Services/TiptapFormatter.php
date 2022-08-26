@@ -70,11 +70,12 @@ class TiptapFormatter {
         if ($checkRequirements) $this->checkRequirementsAreUpToDate($contents);
 
         [$requirements, $participantObservations, $contentNodes] = $this->contentsToModels($contents, $checkRequirements);
-        $requirements = $requirements->mapWithKeys(function(Requirement $requirement) {
-            return [$requirement->id => ['passed' => $requirement->passed, 'order' => $requirement->order]];
+        $feedbackRequirements = $requirements->map(function(Requirement $requirement) {
+            return ['requirement_id' => $requirement->id, 'requirement_status_id' => $requirement->status_id, 'order' => $requirement->order];
         });
 
-        $this->feedback->requirements()->sync($requirements);
+        $this->feedback->feedback_requirements()->delete();
+        $this->feedback->feedback_requirements()->createMany($feedbackRequirements);
         $this->feedback->participant_observations()->detach();
         $participantObservations->each(function(ParticipantObservation $participantObservation) {
             $this->feedback->participant_observations()->attach($participantObservation->id, ['order' => $participantObservation->order]);
@@ -107,7 +108,7 @@ class TiptapFormatter {
                     $requirement = $allRequirements->find(data_get($node, 'attrs.id'));
                     if (!$requirement) throw new RequirementNotFoundException();
                     $requirement->order = $order;
-                    $requirement->passed = data_get($node, 'attrs.passed', null);
+                    $requirement->status_id = data_get($node, 'attrs.status_id');
                     $requirements[] = $requirement;
                     break;
                 case 'observation':
@@ -129,16 +130,15 @@ class TiptapFormatter {
      * @param Collection $models
      * @return Collection
      */
-    protected static function modelsToContents(Collection $models) {
-        return $models->map(function ($model) {
+    protected static function modelsToContents(Collection $models, int $defaultRequirementStatusId) {
+        return $models->map(function ($model) use($defaultRequirementStatusId) {
             if ($model instanceof Requirement) {
-                $pivot = $model->pivot ?? (object) ['order' => 0, 'passed' => null];
                 return collect([
-                    'order' => $pivot->order,
+                    'order' => $model->order,
                     'type' => 'requirement',
                     'attrs' => [
                         'id' => $model->id,
-                        'passed' => $pivot->passed,
+                        'status_id' => $model->status_id ?? $defaultRequirementStatusId,
                     ]
                 ]);
             }
@@ -182,7 +182,7 @@ class TiptapFormatter {
                 $this->feedback->requirements->all(),
                 $this->feedback->participant_observations->all(),
                 $this->feedback->contentNodes->all()
-            )));
+            )), $this->getDefaultRequirementStatusId());
         }
         return $this->allContents;
     }
@@ -210,7 +210,7 @@ class TiptapFormatter {
             })->values();
 
             $missingRequirements = $this->feedback->requirements()->whereNotIn('requirements.id', $tiptapRequirementIds)->get();
-            $correctedContents = self::appendRequirements($stillValid, $missingRequirements);
+            $correctedContents = self::appendRequirements($stillValid, $missingRequirements, $this->getDefaultRequirementStatusId());
             throw new RequirementsMismatchException(collect(self::wrapInDocument($correctedContents))->toJson());
         }
     }
@@ -223,7 +223,7 @@ class TiptapFormatter {
      */
     public function appendRequirementsToFeedback(Collection $requirements) {
         $this->applyToFeedback(self::wrapInDocument(
-            self::appendRequirements(self::tiptapToContents($this->toTiptap()), $requirements)
+            self::appendRequirements(self::tiptapToContents($this->toTiptap()), $requirements, $this->getDefaultRequirementStatusId())
         ), false);
     }
 
@@ -232,15 +232,16 @@ class TiptapFormatter {
      *
      * @param Collection $contents
      * @param Collection $requirements
+     * @param int $fallbackRequirementStatusId
      * @return Collection
      */
-    protected static function appendRequirements(Collection $contents, Collection $requirements) {
-        return $contents->merge($requirements->flatMap(function($requirement) {
+    protected static function appendRequirements(Collection $contents, Collection $requirements, int $defaultRequirementStatusId) {
+        return $contents->merge($requirements->flatMap(function($requirement) use($defaultRequirementStatusId) {
             if (!($requirement instanceof Requirement)) return collect([]);
             return self::removeOrderField(self::modelsToContents(collect([
                 $requirement,
                 new FeedbackContentNode([ 'json' => self::createContentNodeJSON('') ]),
-            ])));
+            ]), $defaultRequirementStatusId));
         }));
     }
 
@@ -252,7 +253,7 @@ class TiptapFormatter {
      * @param Collection $observations
      * @return bool
      */
-    public static function isValid($contents, Collection $requirements, Collection $observations) {
+    public static function isValid($contents, Collection $requirements, Collection $observations, Collection $validRequirementStatusIds) {
         if (!is_array($contents)) return false;
         if (!Arr::has($contents, 'type')) return false;
         if ($contents['type'] !== 'doc') return false;
@@ -274,8 +275,8 @@ class TiptapFormatter {
                     if (!is_array($node['attrs'])) return false;
                     if (!Arr::has($node, 'attrs.id')) return false;
                     if (!$requirements->contains($node['attrs']['id'])) return false;
-                    if (!Arr::has($node, 'attrs.passed')) return false;
-                    if (!collect([0, 1, null])->contains($node['attrs']['passed'])) return false;
+                    if (!Arr::has($node, 'attrs.status_id')) return false;
+                    if (!$validRequirementStatusIds->contains($node['attrs']['status_id'])) return false;
                     break;
                 default:
                     if (json_encode($node) === false) return false;
@@ -283,5 +284,12 @@ class TiptapFormatter {
             }
         }
         return true;
+    }
+
+    /**
+     * @return int|null
+     */
+    protected function getDefaultRequirementStatusId() {
+        return $this->feedback->feedback_data->course->default_requirement_status_id;
     }
 }
