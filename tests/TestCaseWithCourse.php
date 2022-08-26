@@ -44,8 +44,4 @@ abstract class TestCaseWithCourse extends TestCase
         $feedbackData = FeedbackData::create(['name' => $name, 'course_id' => $course->id]);
         return $feedbackData->feedbacks()->create(['participant_id' => $course->participants()->first()->id])->id;
     }
-
-    protected function createRequirementStatus($name = 'erfüllt', $color = 'green', $icon = 'check-circle', $courseId = null) {
-        return RequirementStatus::create(['course_id' => $courseId ?? $this->courseId, 'name' => $name, 'color' => $color, 'icon' => $icon])->id;
-    }
 }

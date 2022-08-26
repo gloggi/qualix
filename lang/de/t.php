@@ -135,6 +135,16 @@ return array(
 			"num_observations" => "Anzahl Beobachtungen",
 			"one" => "Anforderung",
 		),
+		"requirement_status" => array(
+			"color" => "Farbe",
+			"icon" => "Icon",
+			"name" => "Name",
+			"defaults" => array(
+				"undecided" => "unter Beobachtung",
+				"passed" => "erfüllt",
+				"not_passed" => "nicht erfüllt",
+			),
+		),
 		"user" => array(
 			"email" => "E-Mail",
 			"group" => "Abteilung",

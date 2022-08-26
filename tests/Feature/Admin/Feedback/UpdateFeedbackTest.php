@@ -25,7 +25,6 @@ class UpdateFeedbackTest extends TestCaseWithBasicData {
         $this->course = Course::find($this->courseId);
         $this->feedbackId = $this->createFeedback('Zwischenquali');
         $this->feedbackDataId = Feedback::find($this->feedbackId)->feedback_data_id;
-        $this->createRequirementStatus();
 
         $this->payload = [
             'name' => 'Zwischenquali',

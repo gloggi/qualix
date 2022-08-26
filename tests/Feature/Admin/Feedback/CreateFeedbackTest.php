@@ -228,7 +228,6 @@ class CreateFeedbackTest extends TestCaseWithBasicData {
         // given
         $payload = $this->payload;
         $requirementId = $this->createRequirement();
-        $this->createRequirementStatus();
         $payload['requirements'] = $requirementId;
 
         // when

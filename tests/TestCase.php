@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\Models\Course;
 use App\Models\NativeUser;
+use App\Models\RequirementStatus;
 use App\Models\User;
 use Dotenv\Dotenv;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -185,6 +186,13 @@ abstract class TestCase extends BaseTestCase {
             // Laravel bug: The Auth::user used in the application is cached and will not get the updated course list during the test, unless we refresh it manually
             $this->refreshUser();
         }
+        $this->createRequirementStatus('unter Beobachtung', 'gray-500', 'binoculars', $id);
+        $this->createRequirementStatus('erfüllt', 'green', 'check-circle', $id);
+        $this->createRequirementStatus('nicht erfüllt', 'red', 'times-circle', $id);
         return $id;
+    }
+
+    protected function createRequirementStatus($name = 'erfüllt', $color = 'green', $icon = 'check-circle', $courseId = null) {
+        return RequirementStatus::create(['course_id' => $courseId ?? $this->courseId, 'name' => $name, 'color' => $color, 'icon' => $icon])->id;
     }
 }
