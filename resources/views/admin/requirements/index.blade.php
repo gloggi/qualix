@@ -20,6 +20,10 @@
 
             <button-submit label="{{__('t.global.add')}}">
 
+                <a class="btn btn-link mb-1" href="{{ route('admin.requirement_statuses', ['course' => $course]) }}">
+                    {{ __('t.views.admin.requirements.manage_statuses') }}
+                </a>
+
                 @component('components.help-text', ['id' => 'requirementsHelp', 'key' => 't.views.admin.requirements.what_are_requirements'])@endcomponent
 
             </button-submit>

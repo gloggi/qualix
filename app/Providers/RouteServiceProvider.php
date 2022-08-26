@@ -93,6 +93,11 @@ class RouteServiceProvider extends ServiceProvider
             $participant = $route->parameter('participant');
             return $participant->feedbacks()->findOrFail($id);
         });
+        Route::bind('requirementStatus', function($id, \Illuminate\Routing\Route $route) {
+            /** @var Course $course */
+            $course = $route->parameter('course');
+            return $course->requirementStatuses()->findOrFail($id);
+        });
 
         parent::boot();
     }

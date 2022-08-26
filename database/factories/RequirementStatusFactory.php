@@ -29,24 +29,11 @@ class RequirementStatusFactory extends Factory {
             'bestanden, Gespräch ausstehend',
             'nicht bestanden, Gespräch ausstehend',
         ];
-        $colors = [ // TODO read these from the validator
-            'blue',
-            'gray-500',
-            'red',
-            'green',
-            'orange',
-            'yellow',
-        ];
-        $icons = [ // TODO read these from the validator
-            'binoculars',
-            'check-circle',
-            'times-circle',
-        ];
 
         return [
             'name' => $this->faker->unique()->randomElement($names),
-            'color' => $this->faker->unique()->randomElement($colors),
-            'icon' => $this->faker->unique()->randomElement($icons),
+            'color' => $this->faker->unique()->randomElement(RequirementStatus::COLORS),
+            'icon' => $this->faker->unique()->randomElement(RequirementStatus::ICONS),
         ];
     }
 }

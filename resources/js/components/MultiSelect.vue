@@ -13,14 +13,22 @@
       :close-on-select="true"
       :show-labels="false"
       :placeholder="placeholder"
-      :no-options="$t('t.global.no_options')"
       role="combobox">
 
       <template slot="clear">
         <div v-if="showClearButton" @mousedown.prevent.stop="clear" class="multiselect__clear"></div>
       </template>
       <template slot="noOptions">
-        <div class="text-secondary">{{ noOptions }}</div>
+        <div class="text-secondary">{{ noOptions || $t('t.global.no_options') }}</div>
+      </template>
+      <template slot="noResult">
+        <div class="text-secondary">{{ noResult || $t('t.global.no_result') }}</div>
+      </template>
+      <template #option="props">
+        <slot name="option" v-bind="props"></slot>
+      </template>
+      <template #singleLabel="props">
+        <slot name="single-label" v-bind="props"></slot>
       </template>
 
     </vue-multiselect>
@@ -40,6 +48,7 @@ export default {
     name: { type: String, required: false },
     multiple: { type: Boolean, default: false },
     noOptions: { type: String, required: false },
+    noResult: { type: String, required: false },
     value: { type: String, default: '' },
     selected: { type: [Array,Object], default: null },
     valueField: { type: String, default: 'id' },
