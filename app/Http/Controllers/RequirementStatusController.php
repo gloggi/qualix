@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RequirementRequest;
 use App\Http\Requests\RequirementStatusRequest;
 use App\Models\Course;
 use App\Models\Requirement;
@@ -33,7 +32,7 @@ class RequirementStatusController extends Controller {
     public function store(RequirementStatusRequest $request, Course $course) {
         DB::transaction(function () use ($request, $course) {
             $data = $request->validated();
-            $requirement = RequirementStatus::create(array_merge($data, ['course_id' => $course->id]));
+            RequirementStatus::create(array_merge($data, ['course_id' => $course->id]));
             $request->session()->flash('alert-success', __('t.views.admin.requirement_statuses.create_success'));
         });
         return Redirect::route('admin.requirement_statuses', ['course' => $course->id]);
