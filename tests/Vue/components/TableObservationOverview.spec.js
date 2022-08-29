@@ -116,9 +116,9 @@ it('should display the requirements progress bar of a participant', () => {
         }],
       },
       requirementStatuses: [
-        { id: 1, name: 'erfüllt', color: 'blue', icon: 'check-circle' },
+        { id: 1, name: 'erfüllt', color: 'blue', icon: 'circle-check' },
         { id: 2, name: 'unter Beobachtung', color: 'grey-500', icon: 'binoculars' },
-        { id: 3, name: 'nicht erfüllt', color: 'red', icon: 'times-circle' },
+        { id: 3, name: 'nicht erfüllt', color: 'red', icon: 'circle-xmark' },
       ],
       multiple: true,
       redThreshold: 7,

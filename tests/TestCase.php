@@ -187,12 +187,12 @@ abstract class TestCase extends BaseTestCase {
             $this->refreshUser();
         }
         $this->createRequirementStatus('unter Beobachtung', 'gray-500', 'binoculars', $id);
-        $this->createRequirementStatus('erfüllt', 'green', 'check-circle', $id);
-        $this->createRequirementStatus('nicht erfüllt', 'red', 'times-circle', $id);
+        $this->createRequirementStatus('erfüllt', 'green', 'circle-check', $id);
+        $this->createRequirementStatus('nicht erfüllt', 'red', 'circle-xmark', $id);
         return $id;
     }
 
-    protected function createRequirementStatus($name = 'erfüllt', $color = 'green', $icon = 'check-circle', $courseId = null) {
+    protected function createRequirementStatus($name = 'erfüllt', $color = 'green', $icon = 'circle-check', $courseId = null) {
         return RequirementStatus::create(['course_id' => $courseId ?? $this->courseId, 'name' => $name, 'color' => $color, 'icon' => $icon])->id;
     }
 }

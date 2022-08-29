@@ -8,10 +8,10 @@
     <div class="d-flex justify-content-between mb-2">
       <slot></slot>
       <help-text v-if="offline" id="feedback-editor-offline-help" class="text-right w-50" trans="t.views.feedback_content.offline_help">
-        <template #question><i class="fas fa-exclamation-triangle mr-2 text-danger"></i></template>
+        <template #question><i class="fas fa-triangle-exclamation mr-2 text-danger"></i></template>
       </help-text>
       <help-text v-else-if="loggedOut" id="feedback-editor-logged-out-help" class="text-right w-50" trans="t.views.feedback_content.logged_out_help">
-        <template #question><i class="fas fa-exclamation-triangle mr-2 text-danger"></i></template>
+        <template #question><i class="fas fa-triangle-exclamation mr-2 text-danger"></i></template>
         {{ $t('t.views.feedback_content.logged_out_help.answer') }} <a href="#" @click.prevent="refreshCsrf">{{ $t('t.views.feedback_content.logged_out_help.click_here_to_log_back_in') }}</a>
       </help-text>
       <span v-else class="text-secondary btn">{{ autosaveText }} <i class="fas" :class="autosaveIcon"></i></span>

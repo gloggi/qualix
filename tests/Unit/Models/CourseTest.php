@@ -76,9 +76,9 @@ class CourseTest extends TestCaseWithBasicData {
         $course = Course::find($this->courseId);
         $course2 = $this->createCourse();
         $course->requirement_statuses()->delete();
-        $this->createRequirementStatus('erfüllt', 'green', 'check-circle', $course2);
-        $expected = $this->createRequirementStatus('erfüllt', 'green', 'check-circle', $this->courseId);
-        $this->createRequirementStatus('nicht erfüllt', 'red', 'times-circle', $this->courseId);
+        $this->createRequirementStatus('erfüllt', 'green', 'circle-check', $course2);
+        $expected = $this->createRequirementStatus('erfüllt', 'green', 'circle-check', $this->courseId);
+        $this->createRequirementStatus('nicht erfüllt', 'red', 'circle-xmark', $this->courseId);
 
         // when
         $defaultRequirementStatusId = $course->default_requirement_status_id;

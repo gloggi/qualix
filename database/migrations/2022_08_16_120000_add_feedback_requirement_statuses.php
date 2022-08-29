@@ -27,9 +27,9 @@ class AddFeedbackRequirementStatuses extends Migration
         });
         DB::table('courses')->orderBy('id')->chunk(100, function ($courses) {
            foreach ($courses as $course) {
-               $passed = DB::table('requirement_statuses')->insertGetId(['course_id' => $course->id, 'name' => 'erfüllt', 'color' => 'green', 'icon' => 'check-circle']);
+               $passed = DB::table('requirement_statuses')->insertGetId(['course_id' => $course->id, 'name' => 'erfüllt', 'color' => 'green', 'icon' => 'circle-check']);
                $pending = DB::table('requirement_statuses')->insertGetId(['course_id' => $course->id, 'name' => 'unter Beobachtung', 'color' => 'gray-500', 'icon' => 'binoculars']);
-               $notPassed = DB::table('requirement_statuses')->insertGetId(['course_id' => $course->id, 'name' => 'nicht erfüllt', 'color' => 'red', 'icon' => 'times-circle']);
+               $notPassed = DB::table('requirement_statuses')->insertGetId(['course_id' => $course->id, 'name' => 'nicht erfüllt', 'color' => 'red', 'icon' => 'circle-xmark']);
                DB::table('feedback_requirements')
                    ->join('requirements', 'feedback_requirements.requirement_id', '=', 'requirements.id')
                    ->where(['requirements.course_id' => $course->id, 'passed' => 1])

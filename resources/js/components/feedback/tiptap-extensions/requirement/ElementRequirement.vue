@@ -4,7 +4,7 @@
     <h5 class="flex-grow-1 my-auto">{{ requirement.content | ucfirst }}</h5>
     <b-dropdown v-if="editor.options.editable" dropleft class="mr-2 requirement-menu" no-caret variant="link">
       <template v-slot:button-content>
-        <i class="fas fa-ellipsis-v"></i>
+        <i class="fas fa-ellipsis-vertical"></i>
       </template><b-dropdown-item-button v-for="status in requirementStatuses" :key="status.id" @click="onChange(status.id)"><i :class="[`text-${status.color}`, `fa-${status.icon}`]" class="fas mr-3"></i> {{ status.name }}</b-dropdown-item-button></b-dropdown>
   </node-view-wrapper>
 </template>

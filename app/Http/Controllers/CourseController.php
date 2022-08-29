@@ -51,8 +51,8 @@ class CourseController extends Controller {
             $course->users()->attach(Auth::user()->getAuthIdentifier());
             $course->requirement_statuses()->createMany([
                 ['name' => __('t.models.requirement_status.defaults.undecided'), 'color' => 'gray-500', 'icon' => 'binoculars'],
-                ['name' => __('t.models.requirement_status.defaults.passed'), 'color' => 'green', 'icon' => 'check-circle'],
-                ['name' => __('t.models.requirement_status.defaults.not_passed'), 'color' => 'red', 'icon' => 'times-circle'],
+                ['name' => __('t.models.requirement_status.defaults.passed'), 'color' => 'green', 'icon' => 'circle-check'],
+                ['name' => __('t.models.requirement_status.defaults.not_passed'), 'color' => 'red', 'icon' => 'circle-xmark'],
             ]);
             $request->session()->flash('alert-success', __('t.views.admin.new_course.create_success', ['name' => $course->name]));
         });
