@@ -29,36 +29,3 @@ $gray-700: #495057;
 $gray-800: #343a40;
 $gray-900: #212529;
 $black: #000;
-
-$allColors:(
-    blue: $blue,
-    indigo: $indigo,
-    purple: $purple,
-    pink: $pink,
-    red: $red,
-    orange: $orange,
-    yellow: $yellow,
-    green: $green,
-    teal: $teal,
-    cyan: $cyan,
-    white: $white,
-    gray-100: $gray-100,
-    gray-200: $gray-200,
-    gray-300: $gray-300,
-    gray-400: $gray-400,
-    gray-500: $gray-500,
-    gray-600: $gray-600,
-    gray-700: $gray-700,
-    gray-800: $gray-800,
-    gray-900: $gray-900,
-    black: $black,
-);
-
-@each $color, $value in $allColors {
-    .bg-#{$color} {
-        background-color: #{$value} !important;
-    }
-    .text-#{$color} {
-        color: #{$value} !important;
-    }
-}
