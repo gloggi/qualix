@@ -8,7 +8,6 @@ use App\Models\Course;
 use App\Models\FeedbackData;
 use App\Models\Participant;
 use App\Models\Requirement;
-use App\Models\RequirementStatus;
 
 abstract class TestCaseWithCourse extends TestCase
 {
