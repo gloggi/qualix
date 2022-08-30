@@ -1,5 +1,5 @@
 <template>
-  <span class="mr-2" :class="iconColor"><i :class="iconClass"></i></span>
+  <span class="mr-2" :class="iconColor"><i :class="iconClass" :title="status.name"></i></span>
 </template>
 
 <script>
@@ -7,7 +7,6 @@
 export default {
   name: 'RequirementStatus',
   props: {
-    name: { type: String, required: true },
     value: { type: Number, required: true },
     statuses: { type: Array, required: true },
   },

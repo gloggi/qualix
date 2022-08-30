@@ -1,6 +1,6 @@
 <template>
   <node-view-wrapper class="requirement d-flex" :class="selected ? 'selected' : ''" data-drag-handle>
-    <requirement-status :name="`requirements[${node.attrs.id}]`" :value="node.attrs.status_id" @input="onChange" :statuses="requirementStatuses" class="mr-2 my-auto"></requirement-status>
+    <requirement-status :value="node.attrs.status_id" @input="onChange" :statuses="requirementStatuses" class="mr-2 my-auto"></requirement-status>
     <h5 class="flex-grow-1 my-auto">{{ requirement.content | ucfirst }}</h5>
     <b-dropdown v-if="editor.options.editable" dropleft class="mr-2 requirement-menu" no-caret variant="link">
       <template v-slot:button-content>
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     onChange(status_id) {
-      this.updateAttributes({status_id: status_id})
+      this.updateAttributes({ status_id: status_id })
     },
     setObservationFilter() {
       if (!this.courseId) return
