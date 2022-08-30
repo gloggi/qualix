@@ -8,7 +8,7 @@
       <a v-if="feedbackFor(row)"
          :href="routeUri('feedbackContent.edit', {course: feedbackData.course_id, participant: row.id, feedback: feedbackFor(row).id})"
          target="_blank" class="text-decoration-none">
-        <requirement-progress :requirements="feedbackFor(row).requirements"></requirement-progress>
+        <requirement-progress :requirements="feedbackFor(row).requirements" :statuses="requirementStatuses"></requirement-progress>
       </a>
     </template>
   </responsive-table>
@@ -25,6 +25,7 @@ export default {
     users: { type: Array, required: true },
     participants: { type: Array, required: true },
     feedbackData: { type: Object, default: null },
+    requirementStatuses: { type: Array, default: () => [] },
     multiple: { type: Boolean, default: false },
     redThreshold: { type: Number, default: 5 },
     greenThreshold: { type: Number, default: 10 },

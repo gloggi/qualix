@@ -12,7 +12,14 @@
         :v-focus="autofocus"
         v-model="currentValue"
         v-bind="$attrs"
-        v-on="$listeners"></multi-select>
+        v-on="$listeners">
+        <template #option="props">
+          <slot name="option" v-bind="props"></slot>
+        </template>
+        <template #single-label="props">
+          <slot name="single-label" v-bind="props"></slot>
+        </template>
+      </multi-select>
 
       <span v-if="errorMessage" class="invalid-feedback" role="alert">
         <strong>{{ errorMessage }}</strong>

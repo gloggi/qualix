@@ -54,11 +54,12 @@ class FeedbackFactory extends Factory {
             if (!($feedbackData = $feedback->feedback_data)) return;
             if (!($course = $feedbackData->course)) return;
 
-            $feedback->requirements()->sync($course->requirements->mapWithKeys(function (Requirement $requirement) {
-                return [$requirement->id => [
+            $feedback->feedback_requirements()->createMany($course->requirements->map(function (Requirement $requirement) use($course) {
+                return [
+                    'requirement_id' => $requirement->id,
                     'order' => $this->faker->biasedNumberBetween(0, 10),
-                    'passed' => $this->faker->randomElement([null, 0, 1]),
-                ]];
+                    'requirement_status_id' => $this->faker->randomElement($course->requirement_statuses->pluck('id')),
+                ];
             }));
         });
     }

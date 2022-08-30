@@ -43,7 +43,7 @@ class ValidFeedbackContent {
         $requirements = $this->getRequirements();
         $observations = $this->getObservations();
 
-        return app(TiptapFormatter::class)::isValid($value, $requirements, $observations);
+        return app(TiptapFormatter::class)::isValid($value, $requirements, $observations, $this->course->requirement_statuses()->pluck('id'));
     }
 
 }

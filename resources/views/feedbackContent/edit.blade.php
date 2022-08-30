@@ -14,6 +14,7 @@
             :observations="{{ json_encode($observations) }}"
             :requirements="{{ json_encode($course->requirements) }}"
             :categories="{{ json_encode($course->categories) }}"
+            :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"
             :show-requirements="{{ $course->uses_requirements ? 'true' : 'false' }}"
             :show-categories="{{ $course->uses_categories ? 'true' : 'false' }}"
             :show-impression="{{ $course->uses_impressions ? 'true' : 'false' }}"

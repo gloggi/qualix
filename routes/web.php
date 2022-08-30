@@ -30,6 +30,7 @@ use App\Http\Controllers\ParticipantDetailController;
 use App\Http\Controllers\ParticipantGroupController;
 use App\Http\Controllers\ParticipantListController;
 use App\Http\Controllers\RequirementController;
+use App\Http\Controllers\RequirementStatusController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -111,6 +112,12 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::get('/course/{course}/admin/requirement/{requirement}', [RequirementController::class, 'edit'])->name('admin.requirements.edit');
     Route::post('/course/{course}/admin/requirement/{requirement}', [RequirementController::class, 'update'])->name('admin.requirements.update');
     Route::delete('/course/{course}/admin/requirement/{requirement}', [RequirementController::class, 'destroy'])->name('admin.requirements.delete');
+
+    Route::get('/course/{course}/admin/requirement_status', [RequirementStatusController::class, 'index'])->name('admin.requirement_statuses');
+    Route::post('/course/{course}/admin/requirement_status', [RequirementStatusController::class, 'store'])->name('admin.requirement_statuses.store');
+    Route::get('/course/{course}/admin/requirement_status/{requirement_status}', [RequirementStatusController::class, 'edit'])->name('admin.requirement_statuses.edit');
+    Route::post('/course/{course}/admin/requirement_status/{requirement_status}', [RequirementStatusController::class, 'update'])->name('admin.requirement_statuses.update');
+    Route::delete('/course/{course}/admin/requirement_status/{requirement_status}', [RequirementStatusController::class, 'destroy'])->name('admin.requirement_statuses.delete');
 
     Route::get('/course/{course}/admin/category', [CategoryController::class, 'index'])->name('admin.categories');
     Route::post('/course/{course}/admin/category', [CategoryController::class, 'store'])->name('admin.categories.store');

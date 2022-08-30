@@ -41,6 +41,7 @@ export default {
     requirements: { type: Array, required: true },
     feedbackRequirements: { type: Array, default: null },
     categories: { type: Array, default: () => [] },
+    requirementStatuses: { type: Array, default: () => [] },
     readonly: { type: Boolean, default: false },
     autofocus: { type: Boolean, default: false },
     showRequirements: { type: Boolean, default: false },
@@ -109,6 +110,10 @@ export default {
         .filter(node => node.type === 'observation')
         .map(node => node.attrs.id)
     },
+    defaultRequirementStatusId() {
+      if (!this.requirementStatuses.length) return
+      return this.requirementStatuses[0].id
+    }
   },
   methods: {
     withCollaboration (extensions) {
@@ -167,7 +172,7 @@ export default {
             // remove old requirements
             .filter(node => !this.isRequirementWithIdNotIn(node, newIds))
             // add new requirements with paragraph after them
-            .concat(missingIds.flatMap(id => [{ type: 'requirement', attrs: { id: id, passed: null } }, this.getEmptyParagraph()]))
+            .concat(missingIds.flatMap(id => [{ type: 'requirement', attrs: { id: id, status_id: this.defaultRequirementStatusId } }, this.getEmptyParagraph()]))
         }
         this.setEditorContent(this.currentValue)
         this.$emit('input', this.currentValue)
@@ -194,6 +199,7 @@ export default {
       observations: this.observations,
       requirements: this.requirements,
       categories: this.categories,
+      requirementStatuses: this.requirementStatuses,
       courseId: this.courseId,
       showObservationSelectionModal: this.showObservationSelectionModal
     }

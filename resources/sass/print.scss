@@ -2,6 +2,7 @@ $page-height: 11in !default;
 $page-width: 8in !default;
 
 @import 'variables';
+@import 'colors';
 @import '~bootstrap/scss/bootstrap';
 @import 'editor';
 @import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
@@ -108,7 +109,7 @@ $page-width: 8in !default;
     }
 
     -webkit-print-color-adjust: exact !important;
-    color-adjust: exact !important;
+    print-color-adjust: exact !important;
 
     .editor-content {
 

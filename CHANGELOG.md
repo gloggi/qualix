@@ -1,5 +1,9 @@
 # Changelog
 
+##### August 2022
+- Es kann jetzt pro Kurs eingestellt werden, welchen Status die Anforderungen in einer Rückmeldung haben können. Die Stati können unter Kursadmin -> Anforderungen -> Stati verwalten... angepasst werden [#259](https://github.com/gloggi/qualix/issues/259)
+- Die Icons wurden geupdatet. Für Anforderungs-Stati kann jetzt aus einer grösseren Auswahl an Icons gewählt werden. Falls dir ein Icon fehlt, melde dich beim Qualix-Team. Wir können jedes gewünschte Icon von [dieser Liste](https://fontawesome.com/search?m=free&s=solid) aktivieren [#264](https://github.com/gloggi/qualix/pull/264)
+
 ##### Juli 2022
 - Qualis wurden zu Rückmeldungen umbenannt, um besser zu kommunizieren wofür sie gedacht sind, und damit klarer wird dass Beobachtungen nicht für die Erfassung von Rückmeldungen optimiert sind [#261](https://github.com/gloggi/qualix/issues/261) 
 

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property Observation[] $observations
  * @property Block[] $blocks
  * @property RequirementDetail[] $requirementDetails
+ * @property FeedbackRequirement[] $feedback_requirements
  * @property int $num_observations
  */
 class Requirement extends Model
@@ -73,6 +74,14 @@ class Requirement extends Model
     public function requirementDetails()
     {
         return $this->hasMany('App\Models\RequirementDetail');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function feedback_requirements()
+    {
+        return $this->hasMany(FeedbackRequirement::class);
     }
 
     /**

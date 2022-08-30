@@ -46,8 +46,9 @@ class FeedbackController extends Controller {
             );
 
             $feedbacks->each(function(Feedback $feedback) use($data, $course) {
-                $feedback->requirements()->sync(collect(array_filter(explode(',', $data['requirements'])))
-                    ->mapWithKeys(function ($requirementId) { return [$requirementId => ['order' => 0, 'passed' => null]]; })
+                $feedback->feedback_requirements()->delete();
+                $feedback->feedback_requirements()->createMany(collect(array_filter(explode(',', $data['requirements'])))
+                    ->map(function ($requirementId) use($course) { return ['requirement_id' => $requirementId, 'order' => 0, 'requirement_status_id' => $course->default_requirement_status_id]; })
                 );
                 $feedback->unsetRelation('requirements');
 
@@ -101,7 +102,7 @@ class FeedbackController extends Controller {
             });
 
             $feedbackData->feedbacks()->each(function (Feedback $feedback) use($requirements) {
-                $feedback->requirements()->wherePivotNotIn('requirement_id', $requirements)->detach();
+                $feedback->feedback_requirements()->whereNot('requirement_id', $requirements)->delete();
                 $feedback->unsetRelation('requirements');
                 $feedback->appendRequirements(
                     $feedback->feedback_data->course->requirements()

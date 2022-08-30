@@ -244,9 +244,10 @@ class CreateFeedbackTest extends TestCaseWithBasicData {
         // given
         $payload = $this->payload;
         $requirementId = $this->createRequirement();
+        $requirementStatusId = $this->createRequirementStatus();
         $payload['requirements'] = $requirementId;
         $payload['feedback_contents_template'] = json_encode(['type' => 'doc', 'content' => [
-            ['type' => 'requirement', 'attrs' => ['id' => $requirementId, 'passed' => 1]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirementId, 'status_id' => $requirementStatusId]],
         ]]);
 
         // when
@@ -262,10 +263,12 @@ class CreateFeedbackTest extends TestCaseWithBasicData {
         // given
         $payload = $this->payload;
         $requirementIds = [$this->createRequirement(), $this->createRequirement()];
+        $requirementStatusId1 = $this->createRequirementStatus();
+        $requirementStatusId2 = $this->createRequirementStatus();
         $payload['requirements'] = implode(',', $requirementIds);
         $payload['feedback_contents_template'] = json_encode(['type' => 'doc', 'content' => [
-            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[0], 'passed' => null]],
-            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[1], 'passed' => 0]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[0], 'status_id' => $requirementStatusId1]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[1], 'status_id' => $requirementStatusId2]],
         ]]);
 
         // when
@@ -281,11 +284,13 @@ class CreateFeedbackTest extends TestCaseWithBasicData {
         // given
         $payload = $this->payload;
         $requirementIds = [$this->createRequirement(), 999999, $this->createRequirement()];
+        $requirementStatusId1 = $this->createRequirementStatus();
+        $requirementStatusId2 = $this->createRequirementStatus();
         $payload['requirements'] = implode(',', $requirementIds);
         $payload['feedback_contents_template'] = json_encode(['type' => 'doc', 'content' => [
-            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[0], 'passed' => null]],
-            ['type' => 'requirement', 'attrs' => ['id' => 999999, 'passed' => null]],
-            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[1], 'passed' => 0]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[0], 'status_id' => $requirementStatusId1]],
+            ['type' => 'requirement', 'attrs' => ['id' => 999999, 'status_id' => $requirementStatusId1]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[1], 'status_id' => $requirementStatusId2]],
         ]]);
 
         // when
@@ -302,11 +307,13 @@ class CreateFeedbackTest extends TestCaseWithBasicData {
         // given
         $payload = $this->payload;
         $requirementIds = [$this->createRequirement(), 'abc', $this->createRequirement()];
+        $requirementStatusId1 = $this->createRequirementStatus();
+        $requirementStatusId2 = $this->createRequirementStatus();
         $payload['requirements'] = implode(',', $requirementIds);
         $payload['feedback_contents_template'] = json_encode(['type' => 'doc', 'content' => [
-            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[0], 'passed' => null]],
-            ['type' => 'requirement', 'attrs' => ['id' => 'abc', 'passed' => null]],
-            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[1], 'passed' => 0]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[0], 'status_id' => $requirementStatusId1]],
+            ['type' => 'requirement', 'attrs' => ['id' => 'abc', 'status_id' => $requirementStatusId1]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[1], 'status_id' => $requirementStatusId2]],
         ]]);
 
         // when
@@ -343,7 +350,8 @@ class CreateFeedbackTest extends TestCaseWithBasicData {
                 ->with(
                     json_decode($this->payload['feedback_contents_template'], true),
                     Mockery::type(Collection::class),
-                    Mockery::on(function ($observations) { return $observations instanceof Collection && $observations->isEmpty(); })
+                    Mockery::on(function ($observations) { return $observations instanceof Collection && $observations->isEmpty(); }),
+                    Mockery::type(Collection::class),
                 )
                 ->andReturnFalse();
         })->makePartial());

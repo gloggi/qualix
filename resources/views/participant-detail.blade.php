@@ -18,7 +18,7 @@
                 @if (isset($participant->group))<h5>{{ $participant->group }}</h5>@endif
                 <p class="multiline">@if (isset($participant->freetext)){{ $participant->freetext }}<br>@endif
                     <a href="{{route('admin.participants.edit', ['course' => $course->id, 'participant' => $participant->id])}}">
-                        <i class="fas fa-edit"></i>
+                        <i class="fas fa-pen-to-square"></i>
                     </a>
                 </p>
 
@@ -64,7 +64,7 @@
                 }">
 
                 <template v-slot:requirement-progress="{ row: feedback }">
-                    <requirement-progress v-if="feedback.requirements.length" :requirements="feedback.requirements"></requirement-progress>
+                    <requirement-progress v-if="feedback.requirements.length" :requirements="feedback.requirements" :statuses="{{ json_encode($course->requirement_statuses) }}"></requirement-progress>
                 </template>
 
             </responsive-table>

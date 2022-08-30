@@ -39,7 +39,7 @@ $vue-multiselect-arrow-padding : 8px !default;
 
 $vue-multiselect-spinner-size : 16px !default;
 $vue-multiselect-spinner-thickness : 2px !default;
-$vue-multiselect-spinner-margin : -$vue-multiselect-spinner-size/2 !default;
+$vue-multiselect-spinner-margin : -$vue-multiselect-spinner-size*0.5 !default;
 $vue-multiselect-spinner-color : $dark !default;
 
 // --------------------------------
@@ -419,7 +419,7 @@ fieldset[disabled] .multiselect {
 
 .multiselect__strong {
   margin-bottom  : $vue-multiselect-padding-y;
-  line-height    : $vue-multiselect-min-height/2;
+  line-height    : calc($vue-multiselect-min-height * 0.5);
   display        : inline-block;
   vertical-align : top;
 }
@@ -521,7 +521,7 @@ fieldset[disabled] .multiselect {
 
 .multiselect__clear {
   @extend .fas;
-  @extend .fa-times;
+  @extend .fa-xmark;
   position: absolute;
   right: 41px;
   height: 40px;

@@ -21,12 +21,13 @@ class UpdateFeedbackContentTest extends TestCaseWithBasicData {
         $this->feedbackId = $this->createFeedback('Zwischenquali');
         $feedback = Feedback::find($this->feedbackId);
         $this->requirementId = $this->createRequirement();
-        $feedback->requirements()->attach([$this->requirementId => ['passed' => null, 'order' => 10]]);
+        $requirementStatus = $this->createRequirementStatus();
+        $feedback->feedback_requirements()->create(['requirement_id' => $this->requirementId, 'requirement_status_id' => $requirementStatus, 'order' => 10]);
 
         $this->payload = [
             'feedback_contents' => json_encode(['type' => 'doc', 'content' => [
                 ['type' => 'paragraph'],
-                ['type' => 'requirement', 'attrs' => ['id' => $this->requirementId, 'passed' => null]]
+                ['type' => 'requirement', 'attrs' => ['id' => $this->requirementId, 'status_id' => $requirementStatus]]
             ]]),
         ];
     }
@@ -110,7 +111,8 @@ class UpdateFeedbackContentTest extends TestCaseWithBasicData {
                 ->with(
                     json_decode($this->payload['feedback_contents'], true),
                     Mockery::type(Collection::class),
-                    Mockery::on(function ($observations) { return $observations instanceof Collection && $observations->isEmpty(); })
+                    Mockery::on(function ($observations) { return $observations instanceof Collection && $observations->isEmpty(); }),
+                    Mockery::type(Collection::class),
                 )
                 ->andReturnFalse();
         })->makePartial());

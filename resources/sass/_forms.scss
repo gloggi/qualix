@@ -64,3 +64,11 @@
         transition: border-left-color 0.15s ease-in-out;
     }
 }
+
+.color-square {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 3px;
+    border: 1px solid black;
+}

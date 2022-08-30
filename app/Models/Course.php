@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
  * @property boolean $uses_impressions
  * @property boolean $uses_requirements
  * @property boolean $uses_categories
+ * @property int $default_requirement_status_id
  * @property Block[] $blocks
  * @property Invitation[] $invitations
  * @property User[] $users
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\DB;
  * @property Collection $participants
  * @property FeedbackData[] $feedback_datas
  * @property Feedback[] $feedbacks
+ * @property RequirementStatus[] $requirement_statuses
  * @property boolean $archived
  * @property array $feedbacks_using_observations
  */
@@ -150,6 +152,22 @@ class Course extends Model {
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function requirement_statuses() {
+        return $this->hasMany(RequirementStatus::class);
+    }
+
+    /**
+     * Needed for the factory method CourseFactory::hasRequirementStatuses()
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function requirementStatuses() {
+        return $this->requirement_statuses();
+    }
+
+    /**
      * Get the names of all Feedbacks that contain this observation.
      *
      * @return array
@@ -182,5 +200,9 @@ class Course extends Model {
      */
     public function getUsesCategoriesAttribute() {
         return $this->categories()->exists();
+    }
+
+    public function getDefaultRequirementStatusIdAttribute() {
+        return $this->requirement_statuses()->first('id')['id'] ?? null;
     }
 }

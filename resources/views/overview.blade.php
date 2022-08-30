@@ -28,6 +28,7 @@
                 :users="{{ json_encode($course->users) }}"
                 :participants="{{ json_encode(collect($participants)->map->observationCountsByUser()) }}"
                 :feedback-data="{{ json_encode($feedbackData) }}"
+                :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"
                 :red-threshold="{{ json_encode($course->observation_count_red_threshold) }}"
                 :green-threshold="{{ json_encode($course->observation_count_green_threshold) }}"></table-observation-overview>
 

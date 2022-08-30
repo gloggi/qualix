@@ -6,7 +6,7 @@
       </blockquote>
       <a v-if="editor.options.editable" class="text-danger delete-button" :title="$t('t.global.delete')"
          @click="deleteNode">
-        <i class="fas fa-minus-circle"></i>
+        <i class="fas fa-circle-minus"></i>
       </a>
     </div>
     <div class="mb-0 mt-1 d-flex justify-content-between">

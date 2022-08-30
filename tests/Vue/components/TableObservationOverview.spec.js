@@ -108,13 +108,18 @@ it('should display the requirements progress bar of a participant', () => {
           id: 123,
           participant_id: 101,
           requirements: [
-            { pivot: { passed: 1 } },
-            { pivot: { passed: 1 } },
-            { pivot: { passed: 0 } },
-            { pivot: { passed: null } },
+            { status_id: 1 },
+            { status_id: 1 },
+            { status_id: 3 },
+            { status_id: 2 },
           ],
         }],
       },
+      requirementStatuses: [
+        { id: 1, name: 'erfüllt', color: 'blue', icon: 'circle-check' },
+        { id: 2, name: 'unter Beobachtung', color: 'grey-500', icon: 'binoculars' },
+        { id: 3, name: 'nicht erfüllt', color: 'red', icon: 'circle-xmark' },
+      ],
       multiple: true,
       redThreshold: 7,
       greenThreshold: 20,
@@ -125,6 +130,6 @@ it('should display the requirements progress bar of a participant', () => {
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-progress', 'b-progress-bar' ],
   })
 
-  expect(table.queryAllByText('t.views.participant_details.feedbacks.requirements_passed 2')).toHaveLength(1)
-  expect(table.queryAllByText('t.views.participant_details.feedbacks.requirements_failed 1')).toHaveLength(1)
+  expect(table.queryAllByText('2 erfüllt')).toHaveLength(1)
+  expect(table.queryAllByText('1 nicht erfüllt')).toHaveLength(1)
 })
