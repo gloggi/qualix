@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property Observation[] $observations
  * @property Block[] $blocks
  * @property RequirementDetail[] $requirementDetails
+ * @property FeedbackRequirement[] $feedback_requirements
  * @property int $num_observations
  */
 class Requirement extends Model

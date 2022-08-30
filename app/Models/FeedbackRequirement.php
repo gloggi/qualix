@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $order
  * @property Feedback $feedback
  * @property Requirement $requirement
- * @property RequirementStatus $requirementStatus
+ * @property RequirementStatus $requirement_status
  */
 class FeedbackRequirement extends Pivot {
     /**
