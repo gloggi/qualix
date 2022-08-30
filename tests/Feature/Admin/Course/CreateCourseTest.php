@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Course;
 
+use App\Models\Course;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -40,6 +41,28 @@ class CreateCourseTest extends TestCase {
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         $this->assertMatchesRegularExpression("%<b-form-select[^>]*id=\"global-course-select\"[^>]*value=\"([^\"]*)\"((?!</b-form-select>).)*<b-form-select-option value=\"\\1\">" . $this->payload['name'] . "</b-form-select-option>%s", $response->content());
+    }
+
+    public function test_shouldCreateDefaultRequirementStatuses() {
+        // given
+
+        // when
+        $response = $this->post('/newcourse', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $course = Course::find($response->original->getData()['course']->id);
+
+        $this->assertEquals(Course::query()->orderBy('id', 'DESC')->limit(1)->get()->first(), $course);
+        $this->assertEquals(3, $course->requirement_statuses()->count());
+        $this->assertEquals(collect([
+            ['name' => 'unter Beobachtung', 'color' => 'gray-500', 'icon' => 'binoculars'],
+            ['name' => 'erfüllt', 'color' => 'green', 'icon' => 'circle-check'],
+            ['name' => 'nicht erfüllt', 'color' => 'red', 'icon' => 'circle-xmark'],
+        ]), $course->requirement_statuses->map->only('name', 'color', 'icon'));
     }
 
     public function test_shouldValidateNewCourseData_noName() {
