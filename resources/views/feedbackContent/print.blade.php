@@ -20,6 +20,7 @@
         :value="{{ json_encode($feedback->contents) }}"
         :observations="{{ json_encode($observations) }}"
         :requirements="{{ json_encode($feedback->requirements) }}"
+        :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"
         @content-ready="() => $window.PagedPolyfill.preview()"></feedback-editor>
 
 @endsection
