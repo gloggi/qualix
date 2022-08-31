@@ -102,7 +102,7 @@ class FeedbackController extends Controller {
             });
 
             $feedbackData->feedbacks()->each(function (Feedback $feedback) use($requirements) {
-                $feedback->feedback_requirements()->whereNot('requirement_id', $requirements)->delete();
+                $feedback->feedback_requirements()->whereNotIn('requirement_id', $requirements)->delete();
                 $feedback->unsetRelation('requirements');
                 $feedback->appendRequirements(
                     $feedback->feedback_data->course->requirements()
