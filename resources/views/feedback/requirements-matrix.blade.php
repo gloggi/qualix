@@ -1,0 +1,27 @@
+@extends('layouts.default')
+
+@section('wideLayout'){{ json_encode(true) }}@endsection
+
+@section('content')
+
+    <b-card>
+        <template #header>{{__('t.views.feedback.requirements_matrix.title', ['name' => $feedbackData->name])}}</template>
+
+        @if (count($feedbacks))
+
+            <table-feedback-requirements-matrix
+                :feedback-requirements="{{ json_encode($feedbackRequirements) }}"
+                :feedbacks="{{ json_encode($feedbacks) }}"
+                :all-requirements="{{ json_encode($allRequirements) }}"
+                :all-participants="{{ json_encode($allParticipants) }}"
+                :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"></table-feedback-requirements-matrix>
+
+        @else
+
+            {{__('t.views.overview.no_participants', ['here' => $participantManagementLink])}}
+
+        @endif
+
+    </b-card>
+
+@endsection

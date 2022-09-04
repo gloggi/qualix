@@ -5,7 +5,7 @@
     v-bind="$attrs">
     <b-thead>
       <b-tr>
-        <th v-for="col in fields">{{ col.label }}</th>
+        <th v-for="(col, idx) in fields" :class="calculateHeaderClass(col, idx)">{{ col.label }}</th>
         <th v-if="showActions" class="actions"></th>
       </b-tr>
     </b-thead>
@@ -14,7 +14,7 @@
         <th v-if="isHeaderRow(row)" :colspan="numCols"  @click="onClick(row, null, rowIdx, 0)">{{ row.text }}</th>
         <template v-else>
           <template v-for="(col, idx) in fields">
-            <td v-if="isSlotCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label" @click="onClick(row, col, rowIdx, idx)"><slot :name="col.slot" :row="row"></slot></td>
+            <td v-if="isSlotCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label" @click="onClick(row, col, rowIdx, idx)"><slot :name="col.slot" :row="row" :col="col"></slot></td>
             <td v-else-if="isImageCol(col) && isLinkCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label" @click="onClick(row, col, rowIdx, idx)"><a :href="call(col.href, row)"><img v-if="call(col.value, row)" :src="call(col.value, row)" class="avatar-small"/></a></td>
             <td v-else-if="isImageCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label" @click="onClick(row, col, rowIdx, idx)"><img v-if="call(col.value, row)" :src="call(col.value, row)" class="avatar-small"/></td>
             <td v-else-if="isLinkCol(col)" :class="calculateCellClass(call(col.value, row), row, col, rowIdx, idx)" :data-label="col.label" @click="onClick(row, col, rowIdx, idx)"><a :href="call(col.href, row)">{{ call(col.value, row) }}</a></td>
@@ -62,6 +62,7 @@ export default {
     fields: { type: Array, default: () => [] },
     image: { type: Array, default: () => [] },
     cellClass: { type: [String, Function], default: '' },
+    headerClass: { type: [String, Function], default: '' },
     imageCellClass: { type: [String, Function], default: '' },
   },
   computed: {
@@ -95,8 +96,11 @@ export default {
     actionTitle(name) {
       return this.$te(`t.global.${name}`) ? this.$t(`t.global.${name}`) : ''
     },
-    calculateCellClass(cellValue, row, colLabel, rowIdx, colIdx) {
-      return this.call(this.cellClass, { cellValue, row, colLabel, rowIdx, colIdx })
+    calculateCellClass(cellValue, row, col, rowIdx, colIdx) {
+      return this.call(this.cellClass, { cellValue, row, col, rowIdx, colIdx })
+    },
+    calculateHeaderClass(col, colIdx) {
+      return this.call(this.headerClass, { col, colIdx })
     },
     onClick(...args) {
       return this.$emit('clickCell', ...args)

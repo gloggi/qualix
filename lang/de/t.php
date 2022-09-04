@@ -428,8 +428,14 @@ return array(
 			"what_happened" => "Was ist passiert?",
 			"what_happened_example" => "Ich habe auf das \"X\" und dann auf \"Bestätigen\" geklickt.",
 		),
+		"feedback" => array(
+			"requirements_matrix" => array(
+				"title" => "Anforderungs-Matrix :name"
+			)
+		),
 		"feedbacks" => array(
 			"edit_responsibles" => "Zuordnung der TN zu den Equipenmitgliedern ändern",
+			"go_to_progress_overview" => "Anforderungs-Matrix",
 			"menu_name" => "Rückmeldungen",
 			"none_assigned_to_user" => ":user ist für keine TN verantwortlich. Du kannst oben die Perspektive wechseln, oder die",
 			"show_all" => "Alle TN anzeigen",

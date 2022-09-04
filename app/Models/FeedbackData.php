@@ -46,7 +46,7 @@ class FeedbackData extends Model {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function requirements() {
-        return $this->hasManyThrough(Requirement::class, Feedback::class, 'feedback_data_id', 'feedback_id', 'id', 'id');
+    public function feedback_requirements() {
+        return $this->hasManyThrough(FeedbackRequirement::class, Feedback::class, 'feedback_data_id', 'feedback_id', 'id', 'id');
     }
 }

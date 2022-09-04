@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\FeedbackData;
+use App\Models\Requirement;
 use App\Models\User;
 use App\Util\HtmlString;
 use Illuminate\Http\Request;
@@ -20,8 +22,7 @@ class FeedbackListController extends Controller
      * @param User $user
      * @return Response
      */
-    public function index(Request $request, Course $course)
-    {
+    public function index(Request $request, Course $course) {
         $userId = $request->input('view') ?? 'all';
         $feedbackDatas = $course->feedback_datas()
             ->with('feedbacks', function($feedbacks) use($userId) {
@@ -36,6 +37,23 @@ class FeedbackListController extends Controller
             'anyResponsibilities' => $anyResponsibilities,
             'user' => $course->users()->select('name')->findOr($userId, ['id'], fn() => null),
             'feedbacks' => $feedbackDatas,
+        ]);
+    }
+
+    /**
+     * Display the feedback progress page which lists all requirements versus all participants of a particular
+     * feedback in a large table.
+     * @param Request $request
+     * @param FeedbackData $feedbackData
+     */
+    public function progressOverview(Request $request, Course $course, FeedbackData $feedbackData) {
+        return view('feedback.requirements-matrix', [
+            'course' => $course,
+            'feedbackData' => $feedbackData,
+            'feedbackRequirements' => $feedbackData->feedback_requirements()->with('feedback')->get(),
+            'feedbacks' => $feedbackData->feedbacks,
+            'allRequirements' => $course->requirements,
+            'allParticipants' => $course->participants,
         ]);
     }
 }

@@ -232,7 +232,7 @@ class TiptapFormatter {
      *
      * @param Collection $contents
      * @param Collection $requirements
-     * @param int $fallbackRequirementStatusId
+     * @param int $defaultRequirementStatusId
      * @return Collection
      */
     protected static function appendRequirements(Collection $contents, Collection $requirements, int $defaultRequirementStatusId) {
