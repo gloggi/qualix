@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
-
 /**
  * @property int $id
  * @property int $feedback_id
@@ -14,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property Requirement $requirement
  * @property RequirementStatus $requirement_status
  */
-class FeedbackRequirement extends Pivot {
+class FeedbackRequirement extends Model {
     /**
      * The table associated with the model.
      *
@@ -22,7 +20,7 @@ class FeedbackRequirement extends Pivot {
      */
     protected $table = 'feedback_requirements';
 
-    protected $fillable_relations = ['feedback', 'requirement', 'requirementStatus'];
+    protected $fillable_relations = ['feedback', 'requirement', 'requirement_status'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -43,5 +41,13 @@ class FeedbackRequirement extends Pivot {
      */
     public function requirement_status() {
         return $this->belongsTo(RequirementStatus::class);
+    }
+
+    /**
+     * Needed for filling the relation
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function requirementStatus() {
+        return $this->requirement_status();
     }
 }

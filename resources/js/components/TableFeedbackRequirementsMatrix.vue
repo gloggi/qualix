@@ -5,9 +5,11 @@
       :data="feedbacksByParticipant"
       :fields="fields"
       :cell-class="cellClass"
-      header-class="text-lg-center">
+      header-class="text-lg-center"
+      @clickCell="cellClicked">
       <template #participant="{ row }"><img :src="participantFor(row).image_path" class="avatar-small" :alt="participantFor(row).scout_name"/> <strong>{{ participantFor(row).scout_name }}</strong></template>
-      <template #feedbackRequirement="{ row, col }"><i class="fas" :class="`fa-${requirementStatusFor(row, col).icon}`"></i></template>
+      <template #feedbackRequirement="{ row, col }"><requirement-matrix-cell :feedback-requirement="feedbackRequirementFor(row, col)" :requirement-statuses="requirementStatuses"></requirement-matrix-cell>
+      </template>
     </responsive-table>
   </div>
 </template>
@@ -75,10 +77,13 @@ export default {
     participantFor(row) {
       return this.allParticipants.find(participant => String(participant.id) === String(row[0]))
     },
-    requirementStatusFor(row, col) {
+    feedbackRequirementFor(row, col) {
       const participantId = String(row[0])
       const requirementId = String(col.requirement.id)
-      const statusId = this.feedbackRequirements.find(fr => String(fr.feedback.participant_id) === participantId && String(fr.requirement_id) === requirementId)?.requirement_status_id
+      return this.feedbackRequirements.find(fr => String(fr.feedback.participant_id) === participantId && String(fr.requirement_id) === requirementId)
+    },
+    requirementStatusFor(row, col) {
+      const statusId = this.feedbackRequirementFor(row, col)?.requirement_status_id
       return this.requirementStatuses.find(status => String(status.id) === String(statusId))
     },
     cellClass({ row, col, colIdx }) {
@@ -86,6 +91,10 @@ export default {
 
       const color = this.requirementStatusFor(row, col)?.color
       return `bg-${color} text-auto text-${color}-hover bg-auto-hover text-lg-center`
+    },
+    cellClicked(row, col) {
+      const feedbackRequirement = this.feedbackRequirementFor(row, col)
+      this.$bvModal.show(`requirement-matrix-cell-${feedbackRequirement.id}`)
     },
     ellipsis,
   },

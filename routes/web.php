@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::get('/course/{course}/crib/{user?}', [BlockListController::class, 'crib'])->name('crib');
     Route::get('/course/{course}/feedbacks', [FeedbackListController::class, 'index'])->name('feedbacks');
     Route::get('/course/{course}/feedbacks/{feedback_data}', [FeedbackListController::class, 'progressOverview'])->name('feedback.requirementMatrix');
+    Route::post('/course/{course}/feedbacks/{feedback_data}/{feedback_requirement}', [FeedbackListController::class, 'updateRequirementStatus'])->name('feedback.updateRequirementStatus');
 
     Route::middleware('courseNotArchived')->group(function () {
         Route::get('/course/{course}/participants', [ParticipantListController::class, 'index'])->name('participants');

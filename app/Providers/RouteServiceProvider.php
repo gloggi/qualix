@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Course;
+use App\Models\FeedbackData;
 use App\Models\Participant;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -97,6 +98,11 @@ class RouteServiceProvider extends ServiceProvider
             /** @var Course $course */
             $course = $route->parameter('course');
             return $course->requirement_statuses()->findOrFail($id);
+        });
+        Route::bind('feedback_requirement', function($id, \Illuminate\Routing\Route $route) {
+            /** @var FeedbackData $feedbackData */
+            $feedbackData = $route->parameter('feedback_data');
+            return $feedbackData->feedback_requirements()->findOrFail($id);
         });
 
         parent::boot();

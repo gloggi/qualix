@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('wideLayout'){{ json_encode(true) }}@endsection
+@section('wideLayout'){{ json_encode($feedbackRequirements->map->requirement_id->unique()->count() >= 6) }}@endsection
 
 @section('content')
 

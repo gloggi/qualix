@@ -84,6 +84,9 @@ return array(
 			"observation_count_green_threshold" => "Gewünschte Anzahl Beobachtungen",
 			"uses_impressions" => "Eindruck auf Beobachtungen aktivieren",
 		),
+		"feedback_requirement" => array(
+			"status" => "Status",
+		),
 		"invitation" => array(
 			"email" => "E-Mail",
 		),
