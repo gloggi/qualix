@@ -85,7 +85,7 @@ export default {
       if (colIdx === 0) return ''
 
       const color = this.requirementStatusFor(row, col)?.color
-      return `bg-${color} auto-text-color text-lg-center`
+      return `bg-${color} text-auto text-${color}-hover bg-auto-hover text-lg-center`
     },
     ellipsis,
   },
