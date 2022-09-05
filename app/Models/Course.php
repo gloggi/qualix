@@ -172,12 +172,14 @@ class Course extends Model {
      *
      * @return array
      */
-    public function getFeedbacksUsingObservationsAttribute() {
+    public function feedbacksUsingObservations($observations) {
+        $observationIds = collect($observations)->map->id;
         return $this->feedbacks()
             ->select(['feedbacks.*', 'observations_participants.observation_id as observation_id'])
             ->distinct()
             ->join('feedback_observations_participants', 'feedbacks.id', 'feedback_observations_participants.feedback_id')
             ->join('observations_participants', 'observations_participants.id', 'feedback_observations_participants.participant_observation_id')
+            ->whereIn('observations_participants.observation_id', $observationIds)
             ->get()
             ->mapToGroups(function(Feedback $feedback) {
                 return [$feedback->observation_id => $feedback->display_name];

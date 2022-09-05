@@ -394,7 +394,7 @@ return array(
 				"no_color_results" => "Keine Resultate gefunden. Probiers mal mit einem englischen Farbnamen wie \"red\".",
 				"no_icon_results" => "Keine Resultate gefunden. Probiers mit englischen Begriffen wie \"eye\".",
 				"num_uses" => "Anzahl Verwendungen",
-				"feedback_requirements_using_requirement_status" => "{0}Dieser Status wird in keiner Rückmeldung verwendet.|{1}Dieser Status wird noch in einer Rückmeldung verwendet. Er kann daher nicht gelöscht werden.|[2,*]Dieser Status wird noch in :count Rückmeldungen verwendet. Er kann daher nicht gelöscht werden.",
+				"feedback_requirements_using_requirement_status" => "{0}Dieser Status wird in keiner Rückmeldung verwendet.|{1}Dieser Status wird noch in einer Rückmeldung verwendet. Er kann daher nicht gelöscht werden.|[2,*]Dieser Status wird noch :count Mal in Rückmeldungen verwendet. Er kann daher nicht gelöscht werden.",
 				"really_delete" => "Willst du diesen Status wirklich löschen?",
 				"status" => "Status",
 				"what_are_requirement_statuses" => array(

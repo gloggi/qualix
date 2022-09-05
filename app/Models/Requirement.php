@@ -38,13 +38,6 @@ class Requirement extends Model
     protected $casts = ['mandatory' => 'bool'];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['num_observations', 'num_feedback_datas'];
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function course()

@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     feedbacksUsing(observation) {
-      return get(this.feedbacksUsingObservations, observation.id, [])
+      return Object.values(get(this.feedbacksUsingObservations, observation.id, {}))
     },
     feedbackMessage(observation) {
       if (!this.feedbacksUsing(observation).length) return ''

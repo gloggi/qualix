@@ -25,7 +25,7 @@
         @if (count($course->categories))
 
             <responsive-table
-                :data="{{ json_encode($course->categories) }}"
+                :data="{{ json_encode($course->categories->map->append('num_observations')) }}"
                 :fields="[
                     { label: $t('t.models.category.name'), value: category => category.name },
                     @if(!$course->archived){ label: $t('t.models.category.num_observations'), value: category => category.num_observations },@endif

@@ -45,7 +45,7 @@ class Feedback extends Model {
      *
      * @var array
      */
-    protected $appends = ['name', 'contents', 'display_name'];
+    protected $appends = ['name'];
 
     protected static function booted() {
         static::creating(function ($feedback) {

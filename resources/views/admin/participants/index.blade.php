@@ -31,7 +31,7 @@
         @if (count($course->participants))
 
             <responsive-table
-                :data="{{ json_encode($course->participants) }}"
+                :data="{{ json_encode($course->participants->map->append('num_observations')) }}"
                 :fields="[
                     { label: $t('t.models.participant.image'), value: participant => participant.image_path, type: 'image' },
                     { label: $t('t.models.participant.scout_name'), value: participant => participant.scout_name },

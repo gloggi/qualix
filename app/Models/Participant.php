@@ -37,7 +37,7 @@ class Participant extends Model {
      *
      * @var array
      */
-    protected $appends = ['num_observations', 'image_path', 'name_and_group'];
+    protected $appends = ['image_path', 'name_and_group'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

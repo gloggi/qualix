@@ -41,7 +41,7 @@
 
             @php
                 $days = [];
-                foreach($course->blocks as $block) {
+                foreach($course->blocks->map->append('num_observations') as $block) {
                     $days[$block->block_date->timestamp][] = $block;
                 }
                 $blocks = [];

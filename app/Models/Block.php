@@ -48,7 +48,7 @@ class Block extends Model {
      *
      * @var array
      */
-    protected $appends = ['blockname_and_number', 'full_block_number', 'num_observations'];
+    protected $appends = ['blockname_and_number', 'full_block_number'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -195,13 +195,6 @@ class RequirementStatus extends Model
     protected $fillable = ['course_id', 'name', 'color', 'icon'];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['num_feedback_requirements'];
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function course()
