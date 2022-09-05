@@ -7,7 +7,7 @@
       :cell-class="cellClass"
       header-class="text-lg-center"
       @clickCell="cellClicked">
-      <template #participant="{ row }"><img :src="participantFor(row).image_path" class="avatar-small" :alt="participantFor(row).scout_name"/> <strong>{{ participantFor(row).scout_name }}</strong></template>
+      <template #participant="{ row }"><requirements-matrix-row :feedback="feedbackFor(row)" :value="feedbackFor(row).content" @remoteinput="(update) => updateRequirements(update, row)"/></template>
       <template #feedbackRequirement="{ row, col }"><requirement-matrix-cell :feedback-requirement="feedbackRequirementFor(row, col)" :requirement-statuses="requirementStatuses"></requirement-matrix-cell>
       </template>
     </responsive-table>
@@ -16,8 +16,8 @@
 
 <script>
 import ResponsiveTable from "./ResponsiveTable"
-import RequirementProgress from './feedback/RequirementProgress'
-import { groupBy, sortBy } from 'lodash'
+import {groupBy, sortBy} from 'lodash'
+import RequirementsMatrixRow from './RequirementsMatrixRow'
 
 const ellipsis = function(text, max) {
   if (text.length <= max) {
@@ -39,7 +39,7 @@ const ellipsis = function(text, max) {
 
 export default {
   name: 'TableFeedbackRequirementsMatrix',
-  components: {RequirementProgress, ResponsiveTable},
+  components: {RequirementsMatrixRow, ResponsiveTable},
   props: {
     feedbackRequirements: { type: Array, required: true },
     feedbacks: { type: Array, required: true },
@@ -47,12 +47,17 @@ export default {
     allParticipants: { type: Array, required: true },
     requirementStatuses: { type: Array, default: () => [] },
   },
+  data: function() {
+    return {
+      currentFeedbackRequirements: this.feedbackRequirements,
+    }
+  },
   computed: {
     feedbacksByParticipant() {
       return sortBy(Object.entries(groupBy(this.feedbacks, 'participant_id')), entry => entry[1][0]?.participant?.scout_name)
     },
     requirements() {
-      return groupBy(this.feedbackRequirements, 'requirement_id')
+      return groupBy(this.currentFeedbackRequirements, 'requirement_id')
     },
     fields() {
       const requirementColumns = Object.keys(this.requirements).map(requirementId => {
@@ -67,20 +72,19 @@ export default {
         {
           label: '',
           slot: 'participant',
-          value: row => row[1][0]?.participant?.image_path,
         },
         ...requirementColumns,
       ]
     },
   },
   methods: {
-    participantFor(row) {
-      return this.allParticipants.find(participant => String(participant.id) === String(row[0]))
+    feedbackFor(row) {
+      return this.feedbacks.find(feedback => String(feedback.participant_id) === String(row[0]))
     },
     feedbackRequirementFor(row, col) {
       const participantId = String(row[0])
       const requirementId = String(col.requirement.id)
-      return this.feedbackRequirements.find(fr => String(fr.feedback.participant_id) === participantId && String(fr.requirement_id) === requirementId)
+      return this.currentFeedbackRequirements.find(fr => String(fr.feedback.participant_id) === participantId && String(fr.requirement_id) === requirementId)
     },
     requirementStatusFor(row, col) {
       const statusId = this.feedbackRequirementFor(row, col)?.requirement_status_id
@@ -90,17 +94,20 @@ export default {
       if (colIdx === 0) return ''
 
       const color = this.requirementStatusFor(row, col)?.color
-      return `bg-${color} text-auto text-${color}-hover bg-auto-hover text-lg-center`
+      return `bg-${color} text-auto text-${color}-hover bg-auto-hover text-lg-center cursor-pointer`
     },
     cellClicked(row, col) {
       const feedbackRequirement = this.feedbackRequirementFor(row, col)
       this.$bvModal.show(`requirement-matrix-cell-${feedbackRequirement.id}`)
+    },
+    updateRequirements(requirements, row) {
+      requirements.forEach(requirement => {
+        const feedbackRequirement = this.feedbackRequirementFor(row, { requirement })
+        feedbackRequirement.requirement_status_id = requirement.status_id
+      })
     },
     ellipsis,
   },
 }
 </script>
 
-<style scoped>
-
-</style>

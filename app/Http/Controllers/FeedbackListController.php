@@ -59,7 +59,7 @@ class FeedbackListController extends Controller
                 'feedback.participant',
                 'requirement'
             ])->get(),
-            'feedbacks' => $feedbackData->feedbacks,
+            'feedbacks' => $feedbackData->feedbacks->map->append('contents'),
             'allRequirements' => $course->requirements,
             'allParticipants' => $course->participants,
         ]);

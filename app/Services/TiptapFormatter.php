@@ -71,7 +71,7 @@ class TiptapFormatter {
 
         [$requirements, $participantObservations, $contentNodes] = $this->contentsToModels($contents, $checkRequirements);
         $feedbackRequirements = $requirements->map(function(Requirement $requirement) {
-            return ['requirement_id' => $requirement->id, 'requirement_status_id' => $requirement->status_id, 'order' => $requirement->order];
+            return ['requirement' => $requirement->id, 'requirement_status' => $requirement->status_id, 'order' => $requirement->order];
         });
 
         $this->feedback->feedback_requirements()->delete();

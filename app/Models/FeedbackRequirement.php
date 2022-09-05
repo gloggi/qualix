@@ -21,6 +21,7 @@ class FeedbackRequirement extends Model {
     protected $table = 'feedback_requirements';
 
     protected $fillable_relations = ['feedback', 'requirement', 'requirement_status'];
+    protected $fillable = ['order'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
