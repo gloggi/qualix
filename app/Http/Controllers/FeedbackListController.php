@@ -50,7 +50,7 @@ class FeedbackListController extends Controller
      * @return View
      */
     public function progressOverview(Request $request, Course $course, FeedbackData $feedbackData) {
-        return view('feedback.requirements-matrix', [
+        return response()->view('feedback.requirements-matrix', [
             'course' => $course,
             'feedbackData' => $feedbackData,
             'feedbackRequirements' => $feedbackData->feedback_requirements()->with([
@@ -61,6 +61,9 @@ class FeedbackListController extends Controller
             'feedbacks' => $feedbackData->feedbacks->map->append('contents'),
             'allRequirements' => $course->requirements,
             'allParticipants' => $course->participants,
+        ])->withHeaders([
+            'Cache-Control' => 'max-age=0, s-maxage=0, no-cache, must-revalidate, proxy-revalidate, no-store',
+            'Pragma' => 'no-cache'
         ]);
     }
 
