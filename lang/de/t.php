@@ -433,7 +433,16 @@ return array(
 		),
 		"feedback" => array(
 			"requirements_matrix" => array(
-				"title" => "Anforderungs-Matrix :name"
+				"logged_out_help" => array(
+					"answer" => "Du bist inzwischen nicht mehr eingeloggt.",
+					"click_here_to_log_back_in" => "Klicke hier um dich wieder einzuloggen und weiterzuarbeiten.",
+					"question" => "Nicht mehr eingeloggt!",
+				),
+				"offline_help" => array(
+					"answer" => "Aktuell ist keine Verbindung zum Qualix-Server möglich. Überprüfe ob du noch Internetverbindung hast, und probiere es dann nochmals.",
+					"question" => "Keine Internetverbindung!",
+				),
+				"title" => "Anforderungs-Matrix :name",
 			)
 		),
 		"feedbacks" => array(

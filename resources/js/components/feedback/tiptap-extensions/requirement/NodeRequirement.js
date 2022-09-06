@@ -70,6 +70,18 @@ const NodeRequirement = ({ readonly }) => Node.create({
       allowChangingRequirements: () => ({ tr }) => {
         tr.setMeta('allowChangingRequirements', true)
         return true
+      },
+      setRequirementStatus: ({ requirement_id, requirement_status_id }) => ({ tr, state }) => {
+        state.doc.descendants((node, pos)  => {
+          if ('requirement' !== node.type.name) return false
+          if (String(requirement_id) !== String(node.attrs.id)) return false
+
+          tr.setNodeMarkup(pos, undefined, {
+            ...node.attrs,
+            status_id: requirement_status_id,
+          })
+        })
+        return true
       }
     }
   }

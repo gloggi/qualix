@@ -90,3 +90,17 @@
   }
 
 }
+
+.requirements-matrix-cell {
+    transition: background-color 150ms linear;
+
+    > a {
+        color: inherit;
+
+        &:hover, &:focus {
+            color: inherit;
+            outline: none;
+            text-decoration: none;
+        }
+    }
+}

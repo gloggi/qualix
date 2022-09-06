@@ -19,7 +19,7 @@ export default {
   name: 'RequirementsMatrixRow',
   props: {
     feedback: {type: Object, required: true},
-    value: {type: Object, default: null},
+    feedbackRequirements: {type: Array, default: null},
   },
   data: function () {
     const editor = this.createEditor()
@@ -83,6 +83,29 @@ export default {
     isRemoteChange(transaction) {
       return transaction?.meta && Object.hasOwnProperty.apply(transaction.meta, ['y-sync$'])
     },
+  },
+  watch: {
+    feedbackRequirements: {
+      deep: true,
+      handler() {
+        // Since we cannot specify a watcher on all elements of an array, we instead have to filter out watcher
+        // calls without real changes on our own
+        const changes = this.feedbackRequirements.filter(feedbackRequirement => {
+          const fromEditor = this.currentValue.find(editorFR => String(editorFR.id) === String(feedbackRequirement.requirement_id))
+          return fromEditor && String(fromEditor.status_id) !== String(feedbackRequirement.requirement_status_id)
+        })
+        if (changes.length === 0) return
+
+        this.editor.state.doc.descendants(child => {
+          if (child.type.name !== 'requirement') return false
+          const changedFeedbackRequirement = changes.find(fr => String(fr.requirement_id) === String(child.attrs.id))
+          if (!changedFeedbackRequirement) return false
+          this.editor.commands.setRequirementStatus(changedFeedbackRequirement)
+          return false
+        })
+
+      },
+    }
   }
 }
 </script>

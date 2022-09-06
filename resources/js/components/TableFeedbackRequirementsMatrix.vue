@@ -7,9 +7,16 @@
       :cell-class="cellClass"
       header-class="text-lg-center"
       @clickCell="cellClicked">
-      <template #participant="{ row }"><requirements-matrix-row :feedback="feedbackFor(row)" :value="feedbackFor(row).content" @remoteinput="(update) => updateRequirements(update, row)"/></template>
-      <template #feedbackRequirement="{ row, col }"><requirement-matrix-cell :feedback-requirement="feedbackRequirementFor(row, col)" :requirement-statuses="requirementStatuses"></requirement-matrix-cell>
-      </template>
+      <template #participant="{ row }"><requirements-matrix-row
+        :feedback-requirements="feedbackRequirementsFor(row)"
+        :feedback="feedbackFor(row)"
+        @remoteinput="(fr) => updateFeedbackRequirements(fr, row)"
+      /></template>
+      <template #feedbackRequirement="{ row, col }"><a href="javascript:void(0)"><requirement-matrix-cell
+        :feedback-requirement="feedbackRequirementFor(row, col)"
+        :requirement-statuses="requirementStatuses"
+        @input="(update) => updateFeedbackRequirement(update, feedbackRequirementFor(row, col))"
+      /></a></template>
     </responsive-table>
   </div>
 </template>
@@ -81,10 +88,13 @@ export default {
     feedbackFor(row) {
       return this.feedbacks.find(feedback => String(feedback.participant_id) === String(row[0]))
     },
-    feedbackRequirementFor(row, col) {
+    feedbackRequirementsFor(row) {
       const participantId = String(row[0])
+      return this.currentFeedbackRequirements.filter(fr => String(fr.feedback.participant_id) === participantId)
+    },
+    feedbackRequirementFor(row, col) {
       const requirementId = String(col.requirement.id)
-      return this.currentFeedbackRequirements.find(fr => String(fr.feedback.participant_id) === participantId && String(fr.requirement_id) === requirementId)
+      return this.feedbackRequirementsFor(row).find(fr => String(fr.requirement_id) === requirementId)
     },
     requirementStatusFor(row, col) {
       const statusId = this.feedbackRequirementFor(row, col)?.requirement_status_id
@@ -94,20 +104,22 @@ export default {
       if (colIdx === 0) return ''
 
       const color = this.requirementStatusFor(row, col)?.color
-      return `bg-${color} text-auto text-${color}-hover bg-auto-hover text-lg-center cursor-pointer`
+      return `requirements-matrix-cell bg-${color} text-auto text-${color}-hover bg-auto-hover text-lg-center cursor-pointer`
     },
     cellClicked(row, col) {
       const feedbackRequirement = this.feedbackRequirementFor(row, col)
       this.$bvModal.show(`requirement-matrix-cell-${feedbackRequirement.id}`)
     },
-    updateRequirements(requirements, row) {
-      requirements.forEach(requirement => {
-        const feedbackRequirement = this.feedbackRequirementFor(row, { requirement })
-        feedbackRequirement.requirement_status_id = requirement.status_id
+    updateFeedbackRequirements(feedbackRequirements, row) {
+      feedbackRequirements.forEach(updatedFeedbackRequirement => {
+        const feedbackRequirement = this.feedbackRequirementFor(row, { requirement: updatedFeedbackRequirement })
+        this.updateFeedbackRequirement(updatedFeedbackRequirement, feedbackRequirement)
       })
+    },
+    updateFeedbackRequirement(newData, feedbackRequirement) {
+      feedbackRequirement.requirement_status_id = newData.status_id
     },
     ellipsis,
   },
 }
 </script>
-
