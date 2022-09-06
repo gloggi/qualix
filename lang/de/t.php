@@ -433,6 +433,7 @@ return array(
 		),
 		"feedback" => array(
 			"requirements_matrix" => array(
+				"edit_feedback" => "Rückmeldungstext bearbeiten",
 				"logged_out_help" => array(
 					"answer" => "Du bist inzwischen nicht mehr eingeloggt.",
 					"click_here_to_log_back_in" => "Klicke hier um dich wieder einzuloggen und weiterzuarbeiten.",

@@ -1,6 +1,15 @@
 <template>
-  <div>
-    <img :src="participant.image_path" class="avatar-small" :alt="participant.scout_name"/> <strong>{{ participant.scout_name }}</strong>
+  <div class="d-flex align-items-baseline">
+    <a :href="participantUrl"><img :src="participant.image_path" class="avatar-small" :alt="participant.scout_name"/></a>
+    <div class="d-flex flex-column flex-grow-1">
+      <div class="d-flex">
+        <a :href="participantUrl"><strong>{{ participant.scout_name }}</strong></a>
+        <span class="flex-grow-1"></span>
+        <a :href="feedbackEditUrl" target="_blank" :title="$t(`t.views.feedback.requirements_matrix.edit_feedback`)"><i class="fas fa-pen-to-square px-2"></i></a>
+        <a :href="feedbackPrintUrl" target="_blank" :title="$t('t.global.print')"><i class="fas fa-print pl-2"></i></a>
+      </div>
+      <div v-if="feedback.users.length > 0" class="mw-80">{{ $t('t.models.feedback.users') }}: {{ feedback.users.map(u => u.name).join(', ') }}</div>
+    </div>
   </div>
 </template>
 <script>
@@ -30,6 +39,26 @@ export default {
   computed: {
     participant() {
       return this.feedback.participant
+    },
+    participantUrl() {
+      return this.routeUri('participants.detail', {
+        course: this.feedback.feedback_data.course_id,
+        participant: this.participant.id
+      })
+    },
+    feedbackEditUrl() {
+      return this.routeUri('feedbackContent.edit', {
+        course: this.feedback.feedback_data.course_id,
+        participant: this.participant.id,
+        feedback: this.feedback.id
+      })
+    },
+    feedbackPrintUrl() {
+      return this.routeUri('feedbackContent.print', {
+        course: this.feedback.feedback_data.course_id,
+        participant: this.participant.id,
+        feedback: this.feedback.id
+      })
     },
     currentValue() {
       return this.editor.getJSON()
