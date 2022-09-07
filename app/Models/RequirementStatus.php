@@ -130,7 +130,6 @@ class RequirementStatus extends Model
         'spinner',
         'square',
         'square-check',
-        'square-exclamation',
         'square-minus',
         'square-plus',
         'square-xmark',

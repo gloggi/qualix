@@ -26,24 +26,6 @@ import ResponsiveTable from "./ResponsiveTable"
 import {groupBy, sortBy} from 'lodash'
 import RequirementsMatrixRow from './RequirementsMatrixRow'
 
-const ellipsis = function(text, max) {
-  if (text.length <= max) {
-    return text;
-  }
-  const dots = '…';
-  let i = dots.length;
-  text = text.split(' ').filter(function (word) {
-    i += word.length;
-    if (i > max) {
-      return false;
-    }
-    i += 1; // add a space character after a word
-    return true;
-  }).join(' ').replace(/(,|\n|\r\n|\.|\?|!)+$/, '');
-
-  return text + dots;
-}
-
 export default {
   name: 'TableFeedbackRequirementsMatrix',
   components: {RequirementsMatrixRow, ResponsiveTable},
@@ -118,8 +100,8 @@ export default {
     },
     updateFeedbackRequirement(newData, feedbackRequirement) {
       feedbackRequirement.requirement_status_id = newData.status_id
+      feedbackRequirement.comment = newData.comment
     },
-    ellipsis,
   },
 }
 </script>

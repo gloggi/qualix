@@ -26,6 +26,11 @@ const NodeRequirement = ({ readonly }) => Node.create({
         parseHTML: element => element.getAttribute('data-status-id'),
         renderHTML: attributes => ({'data-status-id': attributes.status_id})
       },
+      comment: {
+        default: '',
+        parseHTML: element => element.getAttribute('data-comment'),
+        renderHTML: attributes => ({'data-comment': attributes.comment})
+      },
     }
   },
 
@@ -71,7 +76,7 @@ const NodeRequirement = ({ readonly }) => Node.create({
         tr.setMeta('allowChangingRequirements', true)
         return true
       },
-      setRequirementStatus: ({ requirement_id, requirement_status_id }) => ({ tr, state }) => {
+      setRequirementStatus: ({ requirement_id, requirement_status_id, comment }) => ({ tr, state }) => {
         state.doc.descendants((node, pos)  => {
           if ('requirement' !== node.type.name) return false
           if (String(requirement_id) !== String(node.attrs.id)) return false
@@ -79,6 +84,7 @@ const NodeRequirement = ({ readonly }) => Node.create({
           tr.setNodeMarkup(pos, undefined, {
             ...node.attrs,
             status_id: requirement_status_id,
+            comment: comment,
           })
         })
         return true

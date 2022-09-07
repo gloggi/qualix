@@ -12,7 +12,8 @@
           :autofocus="autofocus"
           :v-focus="autofocus"
           :maxlength="limit"
-          v-model="currentValue"></textarea>
+          v-model="currentValue"
+          v-bind="$attrs"></textarea>
 
       <span v-if="errorMessage" class="invalid-feedback" role="alert">
         <strong>{{ errorMessage }}</strong>

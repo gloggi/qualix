@@ -13,6 +13,7 @@
     <input-feedback-editor-large
       name="feedback_contents"
       :course-id="courseId"
+      :feedback-data-id="feedbackDataId"
       autofocus
       v-model="json"
       :observations="observations"
@@ -37,6 +38,7 @@ export default {
   props: {
     action: {},
     courseId: { type: String, required: true },
+    feedbackDataId: { type: String, required: false },
     feedbackContents: { type: Object, required: true },
     observations: { type: Array, default: () => [] },
     requirements: { type: Array, default: () => [] },

@@ -10,6 +10,7 @@
         <form-feedback-content
             :action="['feedbackContent.update', { course: {{ $course->id }}, participant: {{ $participant->id }}, feedback: {{ $feedback->id }}, noFormRestoring: 1 }]"
             course-id="{{ $course->id }}"
+            feedback-data-id="{{ $feedback->feedback_data_id }}"
             :feedback-contents="{{ json_encode($feedback->contents) }}"
             :observations="{{ json_encode($observations) }}"
             :requirements="{{ json_encode($course->requirements) }}"

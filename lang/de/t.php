@@ -86,6 +86,7 @@ return array(
 		),
 		"feedback_requirement" => array(
 			"status" => "Status",
+			"comment" => "Notizen"
 		),
 		"invitation" => array(
 			"email" => "E-Mail",
@@ -517,6 +518,7 @@ return array(
 		"feedback_content" => array(
 			"back_to_participant" => "Zurück zu :name",
 			"back_to_feedback_overview" => "Zurück zur Rückmeldungs-Übersicht",
+			"comments_are_internal_and_will_not_be_printed" => "Interne Notizen von der Anforderungs-Matrix, werden nicht gedruckt.",
 			"error_observation_not_found" => "Eine der eingefügten Beobachtungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirements_changed" => "Die Änderungen konnten nicht gespeichert werden, weil die Anforderungen in der Rückmeldung inzwischen geändert wurden. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirement_not_found" => "Eine der eingefügten Anforderungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",

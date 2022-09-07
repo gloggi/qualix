@@ -28,7 +28,7 @@
                 :autofocus="{{ ($participants !== null) ? 'true' : 'false' }}"
                 :limit="{{App\Models\Observation::CHAR_LIMIT}}"
                 v-slot="slotProps">
-            <char-limit :current-value="slotProps.currentValue" :limit="slotProps.limit"></char-limit>
+              <char-limit :current-value="slotProps.currentValue" :limit="slotProps.limit"></char-limit>
             </input-textarea>
 
             <block-and-requirements-input-wrapper

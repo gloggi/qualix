@@ -65,7 +65,7 @@ export default {
         .content
         .filter(node => node.type === 'requirement')
         .map(node => node.attrs)
-    }
+    },
   },
   methods: {
     onlyRequirements(editorContent) {
@@ -121,7 +121,10 @@ export default {
         // calls without real changes on our own
         const changes = this.feedbackRequirements.filter(feedbackRequirement => {
           const fromEditor = this.currentValue.find(editorFR => String(editorFR.id) === String(feedbackRequirement.requirement_id))
-          return fromEditor && String(fromEditor.status_id) !== String(feedbackRequirement.requirement_status_id)
+          return fromEditor && (
+            (String(fromEditor.status_id) !== String(feedbackRequirement.requirement_status_id)) ||
+            (fromEditor.comment !== feedbackRequirement.comment)
+          )
         })
         if (changes.length === 0) return
 

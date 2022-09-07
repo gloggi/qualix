@@ -7,6 +7,7 @@ use App\Exceptions\RequirementNotFoundException;
 use App\Exceptions\RequirementsMismatchException;
 use App\Models\Feedback;
 use App\Models\FeedbackContentNode;
+use App\Models\FeedbackRequirement;
 use App\Models\ParticipantObservation;
 use App\Models\Requirement;
 use Illuminate\Support\Arr;
@@ -70,8 +71,13 @@ class TiptapFormatter {
         if ($checkRequirements) $this->checkRequirementsAreUpToDate($contents);
 
         [$requirements, $participantObservations, $contentNodes] = $this->contentsToModels($contents, $checkRequirements);
-        $feedbackRequirements = $requirements->map(function(Requirement $requirement) {
-            return ['requirement' => $requirement->id, 'requirement_status' => $requirement->status_id, 'order' => $requirement->order];
+        $feedbackRequirements = $requirements->map(function(FeedbackRequirement $requirement) {
+            return [
+                'requirement' => $requirement->requirement_id,
+                'requirement_status' => $requirement->requirement_status_id,
+                'order' => $requirement->order,
+                'comment' => $requirement->comment
+            ];
         });
 
         $this->feedback->feedback_requirements()->delete();
@@ -97,19 +103,22 @@ class TiptapFormatter {
      */
     protected function contentsToModels(Collection $contents, $onlyRequirementsFromFeedback = true) {
         $order = 0;
-        $requirements = [];
+        $feedbackRequirements = [];
         $participantObservations = [];
         $contentNodes = [];
-        $contents->each(function($node) use($onlyRequirementsFromFeedback, &$order, &$requirements, &$participantObservations, &$contentNodes) {
+        $contents->each(function($node) use($onlyRequirementsFromFeedback, &$order, &$feedbackRequirements, &$participantObservations, &$contentNodes) {
             switch($node['type']) {
                 case 'requirement':
                     $allRequirements = $onlyRequirementsFromFeedback ? $this->feedback->requirements() : $this->feedback->feedback_data->course->requirements;
                     /** @var Requirement|null $requirement */
                     $requirement = $allRequirements->find(data_get($node, 'attrs.id'));
                     if (!$requirement) throw new RequirementNotFoundException();
-                    $requirement->order = $order;
-                    $requirement->status_id = data_get($node, 'attrs.status_id');
-                    $requirements[] = $requirement;
+                    $feedbackRequirement = new FeedbackRequirement();
+                    $feedbackRequirement->requirement_id = $requirement->id;
+                    $feedbackRequirement->order = $order;
+                    $feedbackRequirement->requirement_status_id = data_get($node, 'attrs.status_id');
+                    $feedbackRequirement->comment = data_get($node, 'attrs.comment');
+                    $feedbackRequirements[] = $feedbackRequirement;
                     break;
                 case 'observation':
                     $participantObservation = $this->feedback->participant->participant_observations()->find(data_get($node, 'attrs.id'));
@@ -123,7 +132,7 @@ class TiptapFormatter {
             }
             $order++;
         });
-        return [collect($requirements), collect($participantObservations), collect($contentNodes)];
+        return [collect($feedbackRequirements), collect($participantObservations), collect($contentNodes)];
     }
 
     /**
@@ -139,7 +148,8 @@ class TiptapFormatter {
                     'attrs' => [
                         'id' => $model->id,
                         'status_id' => $model->status_id ?? $defaultRequirementStatusId,
-                    ]
+                        'comment' => $model->comment ?? '',
+                    ],
                 ]);
             }
             if ($model instanceof ParticipantObservation) {
@@ -149,13 +159,13 @@ class TiptapFormatter {
                     'type' => 'observation',
                     'attrs' => [
                         'id' => $model->id,
-                    ]
+                    ],
                 ]);
             }
             if ($model instanceof FeedbackContentNode) {
                 return collect(json_decode($model->json))
                     ->merge([
-                        'order' => $model->order
+                        'order' => $model->order,
                     ]);
             }
             return null;
@@ -277,6 +287,8 @@ class TiptapFormatter {
                     if (!$requirements->contains($node['attrs']['id'])) return false;
                     if (!Arr::has($node, 'attrs.status_id')) return false;
                     if (!$validRequirementStatusIds->contains($node['attrs']['status_id'])) return false;
+                    if (!Arr::has($node, 'attrs.comment')) return false;
+                    if (!is_string($node['attrs']['comment'])) return false;
                     break;
                 default:
                     if (json_encode($node) === false) return false;

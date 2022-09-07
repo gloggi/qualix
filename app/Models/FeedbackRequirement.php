@@ -8,6 +8,7 @@ namespace App\Models;
  * @property int $requirement_id
  * @property int $requirement_status_id
  * @property int $order
+ * @property string $comment
  * @property Feedback $feedback
  * @property Requirement $requirement
  * @property RequirementStatus $requirement_status
@@ -21,7 +22,7 @@ class FeedbackRequirement extends Model {
     protected $table = 'feedback_requirements';
 
     protected $fillable_relations = ['feedback', 'requirement', 'requirement_status'];
-    protected $fillable = ['order'];
+    protected $fillable = ['order', 'comment'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
