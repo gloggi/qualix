@@ -76,7 +76,7 @@ class TiptapFormatter {
                 'requirement' => $requirement->requirement_id,
                 'requirement_status' => $requirement->requirement_status_id,
                 'order' => $requirement->order,
-                'comment' => $requirement->comment
+                'comment' => $requirement->comment ?? '',
             ];
         });
 

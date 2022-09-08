@@ -22,7 +22,7 @@ class FeedbackRequirement extends Model {
     protected $table = 'feedback_requirements';
 
     protected $fillable_relations = ['feedback', 'requirement', 'requirement_status'];
-    protected $fillable = ['order', 'comment'];
+    protected $fillable = ['order', 'comment', 'requirement_id', 'requirement_status_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
