@@ -27,7 +27,7 @@ class UpdateFeedbackContentTest extends TestCaseWithBasicData {
         $this->payload = [
             'feedback_contents' => json_encode(['type' => 'doc', 'content' => [
                 ['type' => 'paragraph'],
-                ['type' => 'requirement', 'attrs' => ['id' => $this->requirementId, 'status_id' => $requirementStatus]]
+                ['type' => 'requirement', 'attrs' => ['id' => $this->requirementId, 'status_id' => $requirementStatus, 'comment' => 'hello world!']]
             ]]),
         ];
     }

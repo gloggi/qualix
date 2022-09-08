@@ -25,10 +25,9 @@
                             @endif
                         </b-form-select>
                     </b-nav-form>
-                    <b-nav-item href="{{ route('blocks', ['course' => $course->id]) }}" {{ Route::currentRouteName() == 'blocks' ? ' active' : '' }}>
-                        {{__('t.views.blocks.menu_name')}}
+                    <b-nav-item href="{{ route('crib', ['course' => $course->id]) }}" {{ Route::currentRouteName() == 'crib' ? ' active' : '' }}>
+                        {{__('t.views.crib.menu_name')}}
                     </b-nav-item>
-
                     @if(!$course->archived)
                         <b-nav-item href="{{ route('participants', ['course' => $course->id]) }}" {{ Route::currentRouteName() == 'participants' ? ' active' : '' }}>
                             {{__('t.views.participants.menu_name')}}
@@ -36,10 +35,12 @@
                         <b-nav-item href="{{ route('overview', ['course' => $course->id]) }}" {{ Route::currentRouteName() == 'overview' ? ' active' : '' }}>
                             {{__('t.views.overview.menu_name')}}
                         </b-nav-item>
+                        @if(!$course->feedback_datas->isEmpty())
+                            <b-nav-item href="{{ route('feedbacks', ['course' => $course->id, 'view' => $course->feedback_datas()->has('feedbacks.users')->exists() ? Auth::user()->id : 'all']) }}" {{ Route::currentRouteName() == 'feedbacks' ? ' active' : '' }}>
+                                {{__('t.views.feedbacks.menu_name')}}
+                            </b-nav-item>
+                        @endif
                     @endif
-                    <b-nav-item href="{{ route('crib', ['course' => $course->id]) }}" {{ Route::currentRouteName() == 'crib' ? ' active' : '' }}>
-                        {{__('t.views.crib.menu_name')}}
-                    </b-nav-item>
                     <b-nav-item-dropdown text="{{__('t.header.course_admin')}}" {{ substr( Route::currentRouteName(), 0, 5 ) == 'admin' ? ' active' : '' }}>
                         <b-dropdown-item {{ Route::currentRouteName() == 'admin.course' ? ' active' : '' }}
                            href="{{ route('admin.course', ['course' => $course->id]) }}">{{__('t.views.admin.course_settings.menu_name')}}</b-dropdown-item>

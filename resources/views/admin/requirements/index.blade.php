@@ -38,7 +38,7 @@
         @if (count($course->requirements))
 
             <responsive-table
-                :data="{{ json_encode($course->requirements) }}"
+                :data="{{ json_encode($course->requirements->map->append(['num_observations', 'num_feedback_datas'])) }}"
                 :fields="[
                     { label: $t('t.models.requirement.content'), value: requirement => requirement.content },
                     { label: $t('t.models.requirement.mandatory'), value: requirement => requirement.mandatory ? $t('t.global.yes') : $t('t.global.no') },

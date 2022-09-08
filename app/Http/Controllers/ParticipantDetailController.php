@@ -22,7 +22,7 @@ class ParticipantDetailController extends Controller {
         return view('participant-detail', [
             'participant' => $participant,
             'observations' => $observations,
-            'feedbacks_using_observations' => $course->feedbacks_using_observations
+            'feedbacks_using_observations' => $course->feedbacksUsingObservations($observations)
         ]);
     }
 }

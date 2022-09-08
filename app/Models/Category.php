@@ -25,13 +25,6 @@ class Category extends Model
     protected $fillable = ['course_id', 'name'];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['num_observations'];
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function course()

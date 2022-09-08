@@ -247,7 +247,7 @@ class CreateFeedbackTest extends TestCaseWithBasicData {
         $requirementStatusId = $this->createRequirementStatus();
         $payload['requirements'] = $requirementId;
         $payload['feedback_contents_template'] = json_encode(['type' => 'doc', 'content' => [
-            ['type' => 'requirement', 'attrs' => ['id' => $requirementId, 'status_id' => $requirementStatusId]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirementId, 'status_id' => $requirementStatusId, 'comment' => '']],
         ]]);
 
         // when
@@ -267,8 +267,8 @@ class CreateFeedbackTest extends TestCaseWithBasicData {
         $requirementStatusId2 = $this->createRequirementStatus();
         $payload['requirements'] = implode(',', $requirementIds);
         $payload['feedback_contents_template'] = json_encode(['type' => 'doc', 'content' => [
-            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[0], 'status_id' => $requirementStatusId1]],
-            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[1], 'status_id' => $requirementStatusId2]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[0], 'status_id' => $requirementStatusId1, 'comment' => 'something']],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirementIds[1], 'status_id' => $requirementStatusId2, 'comment' => '']],
         ]]);
 
         // when

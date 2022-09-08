@@ -45,7 +45,7 @@ class Feedback extends Model {
      *
      * @var array
      */
-    protected $appends = ['name', 'contents', 'display_name'];
+    protected $appends = ['name'];
 
     protected static function booted() {
         static::creating(function ($feedback) {
@@ -80,7 +80,7 @@ class Feedback extends Model {
     public function requirements() {
         return $this->hasManyThrough(Requirement::class, FeedbackRequirement::class, 'feedback_id', 'id', 'id', 'requirement_id')
             ->join('requirement_statuses', 'requirement_statuses.id', '=', 'feedback_requirements.requirement_status_id')
-            ->select(['requirements.*', 'feedback_requirements.order as order', 'requirement_statuses.id as status_id'])
+            ->select(['requirements.*', 'feedback_requirements.order as order', 'requirement_statuses.id as status_id', 'feedback_requirements.comment as comment'])
             ->orderBy('feedback_requirements.order');
     }
 

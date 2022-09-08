@@ -1,11 +1,20 @@
 <template>
-  <node-view-wrapper class="requirement d-flex" :class="selected ? 'selected' : ''" data-drag-handle>
-    <requirement-status :value="node.attrs.status_id" @input="onChange" :statuses="requirementStatuses" class="mr-2 my-auto"></requirement-status>
-    <h5 class="flex-grow-1 my-auto">{{ requirement.content | ucfirst }}</h5>
-    <b-dropdown v-if="editor.options.editable" dropleft class="mr-2 requirement-menu" no-caret variant="link">
-      <template v-slot:button-content>
-        <i class="fas fa-ellipsis-vertical"></i>
-      </template><b-dropdown-item-button v-for="status in requirementStatuses" :key="status.id" @click="onChange(status.id)"><i :class="[`text-${status.color}`, `fa-${status.icon}`]" class="fas mr-3"></i> {{ status.name }}</b-dropdown-item-button></b-dropdown>
+  <node-view-wrapper>
+    <div  class="requirement d-flex" :class="selected ? 'selected' : ''" data-drag-handle>
+      <requirement-status :value="node.attrs.status_id" @input="onChange" :statuses="requirementStatuses" class="mr-2 my-auto"></requirement-status>
+      <h5 class="flex-grow-1 my-auto">{{ requirement.content | ucfirst }}</h5>
+      <b-button v-if="editor.options.editable" v-b-toggle="`requirement-comment-${node.attrs.id}`" variant="link"><i class="fas fa-comment" :class="node.attrs.comment.length ? 'text-primary' : 'text-secondary'"></i></b-button>
+      <b-dropdown v-if="editor.options.editable" dropleft class="mr-2 requirement-menu" no-caret variant="link">
+        <template v-slot:button-content>
+          <i class="fas fa-ellipsis-vertical"></i>
+        </template><b-dropdown-item-button v-for="status in requirementStatuses" :key="status.id" @click="onChange(status.id)"><i :class="[`text-${status.color}`, `fa-${status.icon}`]" class="fas mr-3"></i> {{ status.name }}</b-dropdown-item-button></b-dropdown>
+    </div>
+    <b-collapse v-if="editor.options.editable" :id="`requirement-comment-${node.attrs.id}`">
+      <div class="feedback-requirement-comment">
+        <a :href="routeUri('feedback.requirementMatrix', {course: courseId, feedback_data: feedbackDataId})" class="float-right mr-2"><i class="fas fa-pen-to-square" /></a>
+        <div class="mh-1em multiline" :class="{ 'text-muted': node.attrs.comment.length === 0 }">{{ node.attrs.comment || $t('t.views.feedback_content.comments_are_internal_and_will_not_be_printed') }}</div>
+      </div>
+    </b-collapse>
   </node-view-wrapper>
 </template>
 
@@ -25,7 +34,7 @@ export default {
   // `updateAttributes` is a function to update attributes of the current node
   // `deleteNode` is a function to delete the current node
   props: nodeViewProps,
-  inject: ['requirements', 'showObservationSelectionModal', 'observations', 'requirementStatuses', 'courseId'],
+  inject: ['requirements', 'showObservationSelectionModal', 'observations', 'requirementStatuses', 'courseId', 'feedbackDataId'],
   computed: {
     requirement() {
       const requirement = this.requirements.find(requirement => requirement.id === this.node.attrs.id)
@@ -62,7 +71,7 @@ export default {
       this.setCursorAfterRequirement()
       this.showObservationSelectionModal()
     },
-  }
+  },
 }
 </script>
 

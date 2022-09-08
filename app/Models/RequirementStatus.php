@@ -16,15 +16,25 @@ class RequirementStatus extends Model
 {
     public const COLORS = [
         'blue',
+        'blue-light',
         'indigo',
+        'indigo-light',
         'purple',
+        'purple-light',
         'pink',
+        'pink-light',
         'red',
+        'red-light',
         'orange',
+        'orange-light',
         'yellow',
+        'yellow-light',
         'green',
+        'green-light',
         'teal',
+        'teal-light',
         'cyan',
+        'cyan-light',
         'white',
         'gray-100',
         'gray-200',
@@ -122,6 +132,7 @@ class RequirementStatus extends Model
         'square-check',
         'square-minus',
         'square-plus',
+        'square-xmark',
         'star',
         'star-half-alt',
         'sun',
@@ -193,13 +204,6 @@ class RequirementStatus extends Model
      * @var array
      */
     protected $fillable = ['course_id', 'name', 'color', 'icon'];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['num_feedback_requirements'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

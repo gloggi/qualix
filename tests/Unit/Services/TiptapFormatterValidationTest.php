@@ -45,7 +45,7 @@ class TiptapFormatterValidationTest extends TestCase {
 
     public function test_isValid_shouldAcceptValidDocument_withSomeRequirementContent() {
         // given
-        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['id' => 99, 'status_id' => 1]]]];
+        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['id' => 99, 'status_id' => 1, 'comment' => '']]]];
 
         // when
         $result = TiptapFormatter::isValid($input, collect([99]), collect([]), collect([1]));
@@ -60,7 +60,7 @@ class TiptapFormatterValidationTest extends TestCase {
             ['type' => 'paragraph'],
             ['type' => 'paragraph', 'content' => [['type' => 'heading', 'attrs' => ['level' => 5], 'text' => 'hello']]],
             ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'hello']]],
-            ['type' => 'requirement', 'attrs' => ['id' => 99, 'status_id' => 1]],
+            ['type' => 'requirement', 'attrs' => ['id' => 99, 'status_id' => 1, 'comment' => '']],
             ['type' => 'observation', 'attrs' => ['id' => 17]],
         ]];
 
@@ -76,7 +76,7 @@ class TiptapFormatterValidationTest extends TestCase {
         $input = ['type' => 'doc', 'something' => 'yes', 'content' => [
             ['type' => 'paragraph', 'what-the-hell' => true, 'content' => [['type' => 'heading', 'why' => 'because', 'attrs' => ['level' => 5, 'bold' => -3], 'text' => 'hello']]],
             ['type' => 'paragraph', 'well' => function() {}, 'content' => [['type' => 'text', 'then' => null, 'text' => 'hello']]],
-            ['type' => 'requirement', 'Bari' => 'approved', 'attrs' => ['id' => 99, 'status_id' => 1, 'sparkle' => false]],
+            ['type' => 'requirement', 'Bari' => 'approved', 'attrs' => ['id' => 99, 'status_id' => 1, 'sparkle' => false, 'comment' => '']],
             ['type' => 'observation', 'participant' => '123', 'attrs' => ['id' => 17, 'name' => 'Lindo']],
         ]];
 
@@ -243,7 +243,7 @@ class TiptapFormatterValidationTest extends TestCase {
 
     public function test_isValid_shouldNotAcceptDocument_withRequirementNodeWithoutId() {
         // given
-        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['status_id' => 1]]]];
+        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['status_id' => 1, 'comment' => '']]]];
 
         // when
         $result = TiptapFormatter::isValid($input, collect([12]), collect([]), collect([1]));
@@ -254,7 +254,7 @@ class TiptapFormatterValidationTest extends TestCase {
 
     public function test_isValid_shouldNotAcceptDocument_withRequirementNodeWithNonexistentId() {
         // given
-        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['id' => 3, 'status_id' => 1]]]];
+        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['id' => 3, 'status_id' => 1, 'comment' => '']]]];
 
         // when
         $result = TiptapFormatter::isValid($input, collect([12]), collect([]), collect([1]));
@@ -265,7 +265,7 @@ class TiptapFormatterValidationTest extends TestCase {
 
     public function test_isValid_shouldNotAcceptDocument_withRequirementNodeWithoutStatusId() {
         // given
-        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['id' => 12]]]];
+        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['id' => 12, 'comment' => '']]]];
 
         // when
         $result = TiptapFormatter::isValid($input, collect([12]), collect([]), collect([1]));
@@ -276,7 +276,29 @@ class TiptapFormatterValidationTest extends TestCase {
 
     public function test_isValid_shouldNotAcceptDocument_withRequirementNodeWithInvalidStatusId() {
         // given
+        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['id' => 12, 'status_id' => 1, 'comment' => '']]]];
+
+        // when
+        $result = TiptapFormatter::isValid($input, collect([12]), collect([]), collect([2]));
+
+        // then
+        $this->assertFalse($result);
+    }
+
+    public function test_isValid_shouldNotAcceptDocument_withRequirementNodeWithoutComment() {
+        // given
         $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['id' => 12, 'status_id' => 1]]]];
+
+        // when
+        $result = TiptapFormatter::isValid($input, collect([12]), collect([]), collect([1]));
+
+        // then
+        $this->assertFalse($result);
+    }
+
+    public function test_isValid_shouldNotAcceptDocument_withRequirementNodeWithInvalidComment() {
+        // given
+        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['id' => 12, 'status_id' => 1, 'comment' => null]]]];
 
         // when
         $result = TiptapFormatter::isValid($input, collect([12]), collect([]), collect([2]));
@@ -287,7 +309,7 @@ class TiptapFormatterValidationTest extends TestCase {
 
     public function test_isValid_shouldNotAcceptDocument_withUnserializableNode() {
         // given
-        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['id' => 12, 'status_id' => 1]]]];
+        $input = ['type' => 'doc', 'content' => [['type' => 'requirement', 'attrs' => ['id' => 12, 'status_id' => 1, 'comment' => '']]]];
         $input['content'][] = &$input;
 
         // when

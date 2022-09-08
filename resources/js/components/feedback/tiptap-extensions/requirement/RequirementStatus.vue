@@ -7,7 +7,7 @@
 export default {
   name: 'RequirementStatus',
   props: {
-    value: { type: Number, required: true },
+    value: { type: [Number,String], required: true },
     statuses: { type: Array, required: true },
   },
   computed: {

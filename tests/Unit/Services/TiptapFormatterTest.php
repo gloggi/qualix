@@ -83,7 +83,7 @@ class TiptapFormatterTest extends TestCase {
         $course = $feedback->participant->course;
         $requirementStatusId = $course->default_requirement_status_id;
         $requirement = $course->requirements()->first();
-        $feedback->feedback_requirements()->create(['requirement_id' => $requirement->id, 'order' => 0, 'requirement_status_id' => $requirementStatusId]);
+        $feedback->feedback_requirements()->create(['requirement' => $requirement->id, 'order' => 0, 'requirement_status' => $requirementStatusId]);
         $formatter = new TiptapFormatter($feedback->fresh());
 
         // when
@@ -91,7 +91,7 @@ class TiptapFormatterTest extends TestCase {
 
         // then
         $this->assertEquals(json_encode(['type' => 'doc', 'content' => [
-            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId, 'comment' => '']],
         ]]), json_encode($result));
     }
 
@@ -109,7 +109,7 @@ class TiptapFormatterTest extends TestCase {
         $feedback->participant_observations()->attach([$participantObservation->id => ['order' => 2]]);
 
         $requirement = $course->requirements()->first();
-        $feedback->feedback_requirements()->create(['requirement_id' => $requirement->id, 'order' => 3, 'requirement_status_id' => $requirementStatusId]);
+        $feedback->feedback_requirements()->create(['requirement' => $requirement->id, 'order' => 3, 'requirement_status' => $requirementStatusId]);
 
         $formatter = new TiptapFormatter($feedback->fresh());
 
@@ -121,7 +121,7 @@ class TiptapFormatterTest extends TestCase {
             ['type' => 'heading', 'attrs' => ['level' => 5], 'content' => [['type' => 'text', 'text' => 'hello']]],
             ['type' => 'paragraph'],
             ['type' => 'observation', 'attrs' => ['id' => $participantObservation->id]],
-            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId]],
+            ['type' => 'requirement', 'attrs' => ['id' => $requirement->id, 'status_id' => $requirementStatusId, 'comment' => '']],
             ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'hello']]],
         ]]), json_encode($result));
     }

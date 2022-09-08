@@ -84,6 +84,10 @@ return array(
 			"observation_count_green_threshold" => "Gewünschte Anzahl Beobachtungen",
 			"uses_impressions" => "Eindruck auf Beobachtungen aktivieren",
 		),
+		"feedback_requirement" => array(
+			"status" => "Status",
+			"comment" => "Notizen"
+		),
 		"invitation" => array(
 			"email" => "E-Mail",
 		),
@@ -338,7 +342,7 @@ return array(
 			),
 			"feedbacks" => array(
 				"create" => "Erstellen",
-				"go_back_to_feedback_list" => "Zurück zur Liste der Rückmeldungen",
+				"go_back_to_feedback_list" => "Abbrechen",
 				"create_success" => "Die Rückmeldung \":name\" wurde erfolgreich erstellt.",
 				"delete_success" => "Die Rückmeldung \":name\" wurde erfolgreich gelöscht.",
 				"edit" => "Rückmeldung bearbeiten",
@@ -394,7 +398,7 @@ return array(
 				"no_color_results" => "Keine Resultate gefunden. Probiers mal mit einem englischen Farbnamen wie \"red\".",
 				"no_icon_results" => "Keine Resultate gefunden. Probiers mit englischen Begriffen wie \"eye\".",
 				"num_uses" => "Anzahl Verwendungen",
-				"feedback_requirements_using_requirement_status" => "{0}Dieser Status wird in keiner Rückmeldung verwendet.|{1}Dieser Status wird noch in einer Rückmeldung verwendet. Er kann daher nicht gelöscht werden.|[2,*]Dieser Status wird noch in :count Rückmeldungen verwendet. Er kann daher nicht gelöscht werden.",
+				"feedback_requirements_using_requirement_status" => "{0}Dieser Status wird in keiner Rückmeldung verwendet.|{1}Dieser Status wird noch in einer Rückmeldung verwendet. Er kann daher nicht gelöscht werden.|[2,*]Dieser Status wird noch :count Mal in Rückmeldungen verwendet. Er kann daher nicht gelöscht werden.",
 				"really_delete" => "Willst du diesen Status wirklich löschen?",
 				"status" => "Status",
 				"what_are_requirement_statuses" => array(
@@ -403,16 +407,10 @@ return array(
 				),
 			),
 		),
-		"blocks" => array(
-			"here" => "hier",
-			"menu_name" => "Blöcke",
-			"no_blocks" => "Bisher sind keine Blöcke erfasst. Bitte erfasse sie :here.",
-			"title" => "Beobachtung in Block erfassen",
-		),
 		"crib" => array(
 			"here" => "hier",
 			"mandatory_requirements" => "Mindestanforderungen",
-			"menu_name" => "Spick",
+			"menu_name" => "Blöcke",
 			"non_mandatory_requirements" => "Weitere Anforderungen",
 			"no_blocks" => "Bisher sind keine Blöcke erfasst. Bitte erfasse und verbinde sie :here mit Anforderungen.",
 			"see_only_empty_blocks" => array(
@@ -433,6 +431,30 @@ return array(
 			"thank_you" => "Danke",
 			"what_happened" => "Was ist passiert?",
 			"what_happened_example" => "Ich habe auf das \"X\" und dann auf \"Bestätigen\" geklickt.",
+		),
+		"feedback" => array(
+			"requirements_matrix" => array(
+				"edit_feedback" => "Rückmeldungstext bearbeiten",
+				"logged_out_help" => array(
+					"answer" => "Du bist inzwischen nicht mehr eingeloggt.",
+					"click_here_to_log_back_in" => "Klicke hier um dich wieder einzuloggen und weiterzuarbeiten.",
+					"question" => "Nicht mehr eingeloggt!",
+				),
+				"offline_help" => array(
+					"answer" => "Aktuell ist keine Verbindung zum Qualix-Server möglich. Überprüfe ob du noch Internetverbindung hast, und probiere es dann nochmals.",
+					"question" => "Keine Internetverbindung!",
+				),
+				"title" => "Anforderungs-Matrix :name",
+			)
+		),
+		"feedbacks" => array(
+			"edit_responsibles" => "Zuordnung der TN zu den Equipenmitgliedern ändern",
+			"go_to_progress_overview" => "Anforderungs-Matrix",
+			"menu_name" => "Rückmeldungen",
+			"none_assigned_to_user" => ":user ist für keine TN verantwortlich. Du kannst oben die Perspektive wechseln, oder die",
+			"show_all" => "Alle TN anzeigen",
+			"title" => "Rückmeldungen",
+			"view_as" => "Aus Sicht von",
 		),
 		"invitation" => array(
 			"accept_invitation" => "Ja, Einladung annehmen",
@@ -465,7 +487,7 @@ return array(
 			"here" => "hier",
 			"menu_name" => "Überblick",
 			"no_participants" => "Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie :here.",
-			"no_feedback" => "keines",
+			"no_feedback" => "keine",
 			"title" => "Beobachtungs-Überblick",
 			"show_feedbacks" => "Rückmeldung anzeigen:",
 		),
@@ -495,6 +517,8 @@ return array(
 		),
 		"feedback_content" => array(
 			"back_to_participant" => "Zurück zu :name",
+			"back_to_feedback_overview" => "Zurück zur Rückmeldungs-Übersicht",
+			"comments_are_internal_and_will_not_be_printed" => "Interne Notizen von der Anforderungs-Matrix, werden nicht gedruckt.",
 			"error_observation_not_found" => "Eine der eingefügten Beobachtungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirements_changed" => "Die Änderungen konnten nicht gespeichert werden, weil die Anforderungen in der Rückmeldung inzwischen geändert wurden. Kontrolliere ob alles stimmt und speichere dann erneut.",
 			"error_requirement_not_found" => "Eine der eingefügten Anforderungen wurde nicht gefunden. Vielleicht wurde sie inzwischen gelöscht. Kontrolliere ob alles stimmt und speichere dann erneut.",

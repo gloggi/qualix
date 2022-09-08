@@ -36,7 +36,7 @@
                     </h5>
                 </b-card-header>
 
-                <b-collapse id="collapse-{{ $day[0]->block_date->timestamp }}" {{ ($course->archived || $day[0]->block_date->gt(\Carbon\Carbon::now()->subDays(1))) ? 'visible' : '' }}>
+                <b-collapse id="collapse-{{ $day[0]->block_date->timestamp }}" {{ ($course->archived || $day[0]->block_date->gt(\Carbon\Carbon::now()->subDays(2))) ? 'visible' : '' }}>
                     <b-list-group flush>
                         @foreach ($day as $block)
                             <b-list-group-item class="mb-0 p-0">

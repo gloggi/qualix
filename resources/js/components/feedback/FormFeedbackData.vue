@@ -46,12 +46,12 @@
     </template>
 
     <row-text>
-      <b-button variant="link" class="px-0" v-b-toggle.collapse-trainer-assignments>
+      <b-button ref="trainerAssignments" variant="link" class="px-0" v-b-toggle.collapse-trainer-assignments>
         {{ $t('t.views.admin.feedbacks.trainer_assignment') }} <i class="fas fa-caret-down"></i>
       </b-button>
     </row-text>
 
-    <b-collapse id="collapse-trainer-assignments" :visible="false">
+    <b-collapse id="collapse-trainer-assignments" :visible="highlightTrainerAssignments" :appear="true" @shown="doHighlightTrainerAssignments">
       <input-multi-select
         v-for="assignment in trainerAssignments"
         :key="assignment.participantId"
@@ -86,6 +86,7 @@ export default {
     requirements: { type: Array, default: () => [] },
     requirementStatuses: { type: Array, default: () => [] },
     trainers: { type: Array, required: true },
+    highlightTrainerAssignments: { type: Boolean, default: false },
     feedbackContentsTemplate: { type: Boolean, default: false },
   },
   data() {
@@ -100,6 +101,7 @@ export default {
           return { participantId: p.id, trainerIds: '' + (feedback && feedback.users ? feedback.users.map(u => u.id).join(',') : '') }
         }),
       feedbackContentsTemplateVisible: false,
+      shouldHighlightTrainerAssignments: this.highlightTrainerAssignments,
     }
   },
   computed: {
@@ -124,6 +126,15 @@ export default {
     },
     focusFeedbackContentsTemplate() {
       if (!this.feedbackContentsTemplateVisible) this.$refs.feedbackContentsTemplate.focus()
+    },
+    doHighlightTrainerAssignments() {
+      if (this.shouldHighlightTrainerAssignments) {
+        this.shouldHighlightTrainerAssignments = false
+        this.$nextTick(() => {
+          this.$refs.trainerAssignments.focus()
+          this.$refs.trainerAssignments.scrollIntoView({ behavior: 'smooth' })
+        })
+      }
     }
   }
 }

@@ -65,7 +65,7 @@
       margin: 0.5em 0;
     }
 
-    td:before {
+    td[data-label]:not([data-label=""]):before {
       content: attr(data-label) "\A";
       white-space: pre;
       font-weight: bold;
@@ -89,4 +89,18 @@
 
   }
 
+}
+
+.requirements-matrix-cell {
+    transition: background-color 150ms linear;
+
+    > a {
+        color: inherit;
+
+        &:hover, &:focus {
+            color: inherit;
+            outline: none;
+            text-decoration: none;
+        }
+    }
 }

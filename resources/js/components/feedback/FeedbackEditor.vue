@@ -36,6 +36,7 @@ export default {
   props: {
     name: { type: String },
     courseId: { type: String, required: true },
+    feedbackDataId: { type: String, required: false },
     value: { type: Object, default: null },
     observations: { type: Array, default: () => [] },
     requirements: { type: Array, required: true },
@@ -172,7 +173,7 @@ export default {
             // remove old requirements
             .filter(node => !this.isRequirementWithIdNotIn(node, newIds))
             // add new requirements with paragraph after them
-            .concat(missingIds.flatMap(id => [{ type: 'requirement', attrs: { id: id, status_id: this.defaultRequirementStatusId } }, this.getEmptyParagraph()]))
+            .concat(missingIds.flatMap(id => [{ type: 'requirement', attrs: { id: id, status_id: this.defaultRequirementStatusId, comment: '' } }, this.getEmptyParagraph()]))
         }
         this.setEditorContent(this.currentValue)
         this.$emit('input', this.currentValue)
@@ -201,6 +202,7 @@ export default {
       categories: this.categories,
       requirementStatuses: this.requirementStatuses,
       courseId: this.courseId,
+      feedbackDataId: this.feedbackDataId,
       showObservationSelectionModal: this.showObservationSelectionModal
     }
   },

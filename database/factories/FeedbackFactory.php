@@ -55,10 +55,35 @@ class FeedbackFactory extends Factory {
             if (!($course = $feedbackData->course)) return;
 
             $feedback->feedback_requirements()->createMany($course->requirements->map(function (Requirement $requirement) use($course) {
+                $comments = [
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    "JA",
+                    "JA",
+                    "JA",
+                    "JA",
+                    "JA",
+                    "NEIN",
+                    "Planung: JA\n2. Chance",
+                    "1. Höck: NEIN\n2. Höck: JA\n2. Chance: JA",
+                    "Planung: JA\nJA",
+                    "1. Höck ja, aber gerade so;\n2. Höck nein\nNachgespräch ja",
+                    "beide Höck ja",
+                    "2. Chance; 2. Chance erfüllt",
+                    "ja\n2. Chance bei Planung",
+                    "JA (nur ein Höck dafür allein)",
+                    "1. Höck: JA knapp\n2. Höck: JA",
+                    "Planung nach 2. Chance: JA JA"
+                ];
+
                 return [
                     'requirement_id' => $requirement->id,
                     'order' => $this->faker->biasedNumberBetween(0, 10),
                     'requirement_status_id' => $this->faker->randomElement($course->requirement_statuses->pluck('id')),
+                    'comment' => $this->faker->randomElement($comments),
                 ];
             }));
         });

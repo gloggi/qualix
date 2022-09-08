@@ -100,6 +100,38 @@
         }
     }
 
+    .feedback-requirement-comment {
+        background-color: $gray-200;
+        width: 50%;
+        min-width: 70ch;
+        margin-left: auto;
+        padding: 5px;
+        border-radius: 4px 4px 0 4px;
+        position: relative;
+
+        &::after {
+            background-color: $white;
+            border-bottom-left-radius: 0.5rem;
+            right: -40px;
+            transform: translate(-30px, -2px);
+            width: 10px;
+        }
+
+        &::before, &::after {
+            bottom: -0.1rem;
+            content: "";
+            height: 1rem;
+            position: absolute;
+        }
+
+        &::before {
+            border-bottom-left-radius: 0.8rem 0.7rem;
+            border-right: 1rem solid $gray-200;
+            right: -0.35rem;
+            transform: translate(0, -0.1rem);
+        }
+    }
+
     &.readonly {
 
         .observation {

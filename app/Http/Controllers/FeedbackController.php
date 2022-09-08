@@ -72,12 +72,13 @@ class FeedbackController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
+     * @param Request $request
      * @param Course $course
      * @param FeedbackData $feedback_data
      * @return Response
      */
-    public function edit(Course $course, FeedbackData $feedback_data) {
-        return view('admin.feedbacks.edit', ['feedback_data' => $feedback_data]);
+    public function edit(Request $request, Course $course, FeedbackData $feedback_data) {
+        return view('admin.feedbacks.edit', ['feedback_data' => $feedback_data, 'highlightTrainerAssignments' => $request->input('highlight', false) == 'assignments']);
     }
 
     /**

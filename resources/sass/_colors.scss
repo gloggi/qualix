@@ -9,6 +9,16 @@ $allColors:(
     "green": $green,
     "teal": $teal,
     "cyan": $cyan,
+    "blue-light": $blue-light,
+    "indigo-light": $indigo-light,
+    "purple-light": $purple-light,
+    "pink-light": $pink-light,
+    "red-light": $red-light,
+    "orange-light": $orange-light,
+    "yellow-light": $yellow-light,
+    "green-light": $green-light,
+    "teal-light": $teal-light,
+    "cyan-light": $cyan-light,
     "white": $white,
     "gray-100": $gray-100,
     "gray-200": $gray-200,
@@ -122,11 +132,24 @@ $allColors:(
     .text-#{$colorName} {
         color: #{$value} !important;
     }
-    .progress-bar.bg-#{$colorName} {
+    .progress-bar.bg-#{$colorName}, .text-auto.bg-#{$colorName} {
         @if (luminance($value) > 0.51) {
-            color: #000;
+            color: #000 !important;
         } @else {
-            color: #fff;
+            color: #fff !important;
         }
+    }
+    .bg-#{$colorName}-hover:hover {
+        background-color: #{$value} !important;
+    }
+    .bg-auto-hover.text-#{$colorName}-hover:hover {
+        @if (luminance($value) > 0.51) {
+            background-color: #000 !important;
+        } @else {
+            background-color: #fff !important;
+        }
+    }
+    .text-#{$colorName}-hover:hover {
+        color: #{$value} !important;
     }
 }

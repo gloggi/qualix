@@ -55,7 +55,7 @@
         <template #header>{{__('t.views.admin.requirement_statuses.existing', ['courseName' => $course->name])}}</template>
 
         <responsive-table
-            :data="{{ json_encode($course->requirement_statuses) }}"
+            :data="{{ json_encode($course->requirement_statuses->map->append('num_feedback_requirements')) }}"
             :fields="[
                 { label: $t('t.views.admin.requirement_statuses.status'), slot: 'status' },
                 @if(!$course->archived){ label: $t('t.views.admin.requirement_statuses.num_uses'), value: requirement_status => requirement_status.num_feedback_requirements },@endif
