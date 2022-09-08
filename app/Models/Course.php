@@ -26,7 +26,6 @@ use Illuminate\Support\Facades\DB;
  * @property Feedback[] $feedbacks
  * @property RequirementStatus[] $requirement_statuses
  * @property boolean $archived
- * @property array $feedbacks_using_observations
  */
 class Course extends Model {
     /**

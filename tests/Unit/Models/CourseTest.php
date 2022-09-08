@@ -17,9 +17,10 @@ class CourseTest extends TestCaseWithBasicData {
         $feedback = Feedback::find($this->createFeedback());
         $feedback->participant_observations()->sync([$participantObservationId => ['order' => 1]]);
         $course = Course::find($this->courseId);
+        $observations = [$observation];
 
         // when
-        $feedbacksUsingObservations = $course->feedbacks_using_observations;
+        $feedbacksUsingObservations = $course->feedbacksUsingObservations($observations);
 
         // then
         $this->assertEquals([$observation->id => [$feedback->display_name]], collect($feedbacksUsingObservations)->toArray());
