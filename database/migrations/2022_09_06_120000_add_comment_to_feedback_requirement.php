@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class AddCommentToFeedbackRequirement extends Migration {
@@ -13,7 +14,7 @@ class AddCommentToFeedbackRequirement extends Migration {
     public function up()
     {
         Schema::table('feedback_requirements', function (Blueprint $table) {
-            $table->text('comment')->default('')->nullable(false);
+            $table->string('comment', 16000)->default('')->nullable(false);
         });
     }
 
@@ -25,7 +26,7 @@ class AddCommentToFeedbackRequirement extends Migration {
     public function down()
     {
         Schema::table('feedback_requirements', function (Blueprint $table) {
-            $table->text('comment');
+            $table->removeColumn('comment');
         });
     }
 }

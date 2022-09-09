@@ -14,7 +14,7 @@ class FeedbackRequirementRequest extends FormRequest {
     public function rules() {
         return [
             'requirement_status' => 'required|existsInCourse',
-            'comment' => 'max:16383' // TEXT column maximum 65535 bytes = 16383 UTF-32 characters
+            'comment' => 'max:4000' // VARCHAR column maximum 16000 bytes = 4000 UTF-32 characters
         ];
     }
 
