@@ -2,7 +2,7 @@
   <div class="d-flex align-items-baseline">
     <a :href="participantUrl"><img :src="participant.image_path" class="avatar-small" :alt="participant.scout_name"/></a>
     <div class="d-flex flex-column flex-grow-1">
-      <div class="d-flex">
+      <div class="d-flex ml-2">
         <a :href="participantUrl"><strong>{{ participant.scout_name }}</strong></a>
         <span class="flex-grow-1"></span>
         <a :href="feedbackEditUrl" target="_blank" :title="$t(`t.views.feedback.requirements_matrix.edit_feedback`)"><i class="fas fa-pen-to-square px-2"></i></a>
