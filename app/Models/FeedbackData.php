@@ -33,14 +33,14 @@ class FeedbackData extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function feedbacks() {
-        return $this->hasMany(Feedback::class);
+        return $this->hasMany(Feedback::class)->join('participants', 'feedbacks.participant_id', '=', 'participants.id')->orderBy('participants.scout_name');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function participants() {
-        return $this->hasManyThrough(Participant::class, Feedback::class, 'feedback_data_id', 'id', 'id', 'participant_id');
+        return $this->hasManyThrough(Participant::class, Feedback::class, 'feedback_data_id', 'id', 'id', 'participant_id')->orderBy('scout_name');
     }
 
     /**
