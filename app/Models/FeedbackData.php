@@ -33,7 +33,10 @@ class FeedbackData extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function feedbacks() {
-        return $this->hasMany(Feedback::class);
+        return $this->hasMany(Feedback::class)
+            ->select('feedbacks.*') // make sure not to select the participants' fields during the join
+            ->join('participants', 'feedbacks.participant_id', '=', 'participants.id')
+            ->orderBy('participants.scout_name');
     }
 
     /**

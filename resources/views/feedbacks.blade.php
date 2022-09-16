@@ -19,7 +19,7 @@
             </div>
         @endif
 
-        @foreach($feedbacks as $feedbackData)
+        @foreach($feedbackDatas as $feedbackData)
             <b-card no-body>
                 <b-card-header>
                     <h5 class="mb-0" v-b-toggle.collapse-{{ $feedbackData->id }}>{{ $feedbackData->name }}</h5>
@@ -30,7 +30,7 @@
 
                 <b-collapse id="collapse-{{ $feedbackData->id }}" visible>
                     <b-list-group flush>
-                        @forelse ($feedbackData->feedbacks()->join('participants as _order_participants', 'feedbacks.participant_id', '=', '_order_participants.id')->orderBy('_order_participants.scout_name')->get() as $feedback)
+                        @forelse ($feedbackData->getRelation('feedbacks') as $feedback)
                             <b-list-group-item href="{{ route('feedbackContent.edit', ['course' => $course->id, 'participant' => $feedback->participant->id, 'feedback' => $feedback->id]) }}" class="mb-0 d-flex flex-row align-items-center flex-wrap justify-content-between">
                                 <img src="{{ $feedback->participant->image_url != null ? asset(Storage::url($feedback->participant->image_url)) : asset('images/was-gaffsch.svg') }}" class="avatar-small mr-3"/>
                                 <h5 class="mb-0 mr-auto">{{ $feedback->participant->scout_name }}</h5>

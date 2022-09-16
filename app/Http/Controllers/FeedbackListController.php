@@ -38,7 +38,7 @@ class FeedbackListController extends Controller
             'userId' => $userId,
             'anyResponsibilities' => $anyResponsibilities,
             'user' => $course->users()->select('name')->findOr($userId, ['id'], fn() => null),
-            'feedbacks' => $feedbackDatas,
+            'feedbackDatas' => $feedbackDatas,
         ]);
     }
 
