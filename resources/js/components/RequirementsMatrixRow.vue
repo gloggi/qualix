@@ -8,7 +8,7 @@
         <a :href="feedbackEditUrl" target="_blank" :title="$t(`t.views.feedback.requirements_matrix.edit_feedback`)"><i class="fas fa-pen-to-square px-2"></i></a>
         <a :href="feedbackPrintUrl" target="_blank" :title="$t('t.global.print')"><i class="fas fa-print pl-2"></i></a>
       </div>
-      <div v-if="feedback.users.length > 0" class="mw-80">{{ $t('t.models.feedback.users') }}: {{ feedback.users.map(u => u.name).join(', ') }}</div>
+      <div v-if="feedback.users.length > 0" class="mw-80 ml-2">{{ $t('t.models.feedback.users') }}: {{ feedback.users.map(u => u.name).join(', ') }}</div>
     </div>
   </div>
 </template>
