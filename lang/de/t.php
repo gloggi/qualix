@@ -548,7 +548,7 @@ return array(
 		),
 		"welcome" => array(
 			"no_courses" => "Du bist momentan noch in keinem Kurs eingetragen. Lass dich in einen Kurs einladen oder erstelle selber einen neuen.",
-			"text" => "Qualix soll gegen den Papier-Krieg helfen und euch dabei unterstützen, den Überblick über alle Beobachtungen zu behalten. Viel Spass beim Beobachten!",
+			"text" => "Qualix soll gegen den Papier-Krieg helfen und euch dabei unterstützen, den Überblick über alle Beobachtungen und Rückmeldungen zu behalten. Viel Spass beim Beobachten!",
 			"title" => "Willkommä bim Qualix",
 		),
 	),
