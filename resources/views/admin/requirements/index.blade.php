@@ -14,8 +14,8 @@
             <input-multi-select
                 name="blocks"
                 label="{{__('t.models.requirement.blocks')}}"
-                :options="{{ json_encode($course->blocks->map->only('id', 'name')) }}"
-                display-field="name"
+                :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number')) }}"
+                display-field="blockname_and_number"
                 multiple></input-multi-select>
 
             <button-submit label="{{__('t.global.add')}}">
