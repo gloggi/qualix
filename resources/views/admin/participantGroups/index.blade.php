@@ -15,8 +15,7 @@
                 :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
                 display-field="scout_name"
                 required
-                multiple
-                :autofocus="true"></input-multi-select>
+                multiple></input-multi-select>
 
             <button-submit label="{{__('t.global.add')}}">
 
