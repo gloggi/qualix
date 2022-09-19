@@ -5,15 +5,19 @@
  *
  * @example cy.login();
  *          cy.login({ name: 'JohnDoe' });
+ *          cy.login({ attributes: { name: 'JohnDoe' }, state: 'guest', load: ['comments] });
  */
 Cypress.Commands.add('login', (attributes = {}) => {
+  // Are we using the new object system.
+  let requestBody = attributes.attributes || attributes.state || attributes.load ? attributes : {attributes}
+
   return cy
     .csrfToken()
     .then((token) => {
       return cy.request({
         method: 'POST',
         url: '/__cypress__/login',
-        body: {attributes, _token: token},
+        body: {...requestBody, _token: token},
         log: false,
       })
     })
@@ -22,12 +26,39 @@ Cypress.Commands.add('login', (attributes = {}) => {
 
       Cypress.log({
         name: 'login',
-        message: attributes,
+        message: JSON.stringify(body),
         consoleProps: () => ({user: body}),
       })
     })
     .its('body', {log: false})
 })
+
+/**
+ * Fetch the currently authenticated user object.
+ *
+ * @example cy.currentUser();
+ */
+Cypress.Commands.add('currentUser', () => {
+  return cy.csrfToken().then((token) => {
+    return cy
+      .request({
+        method: 'POST',
+        url: '/__cypress__/current-user',
+        body: {_token: token},
+        log: false,
+      })
+      .then((response) => {
+        if (!response.body) {
+          cy.log('No authenticated user found.')
+        }
+
+        Cypress.Laravel.currentUser = response?.body
+
+        return response?.body
+      })
+  })
+})
+
 
 /**
  * Logout the current user.
@@ -81,7 +112,7 @@ Cypress.Commands.add('refreshRoutes', () => {
       })
       .its('body', {log: false})
       .then((routes) => {
-        cy.writeFile('cypress/support/routes.json', routes, {
+        cy.writeFile(Cypress.config().supportFolder + '/routes.json', routes, {
           log: false,
         })
 
@@ -102,6 +133,7 @@ Cypress.Commands.overwrite('visit', (originalFn, subject, options) => {
     return originalFn({
       url: Cypress.Laravel.route(subject.route, subject.parameters || {}),
       method: Cypress.Laravel.routes[subject.route].method[0],
+      ...options
     })
   }
 
@@ -121,20 +153,34 @@ Cypress.Commands.overwrite('visit', (originalFn, subject, options) => {
  *          cy.create('App\\User', { active: false });
  *          cy.create('App\\User', 2, { active: false });
  *          cy.create('App\\User', 2, { active: false }, ['profile']);
+ *          cy.create('App\\User', 2, { active: false }, ['profile'], ['guest']);
  *          cy.create('App\\User', { active: false }, ['profile']);
+ *          cy.create('App\\User', { active: false }, ['profile'], ['guest']);
  *          cy.create('App\\User', ['profile']);
+ *          cy.create('App\\User', ['profile'], ['guest']);
+ *          cy.create({ model: 'App\\User', state: ['guest'], relations: ['profile'], count: 2 }
  */
-Cypress.Commands.add('create', (model, times = 1, attributes = {}, relations = []) => {
-  if (Array.isArray(times)) {
-    attributes = {}
-    relations = times
-    times = 1
-  }
+Cypress.Commands.add('create', (model, count = 1, attributes = {}, load = [], state = []) => {
+  let requestBody = {}
 
-  if (typeof times === 'object') {
-    relations = attributes
-    attributes = times
-    times = 1
+  if (typeof model !== 'object') {
+    if (Array.isArray(count)) {
+      state = attributes
+      attributes = {}
+      load = count
+      count = 1
+    }
+
+    if (typeof count === 'object') {
+      state = load
+      load = attributes
+      attributes = count
+      count = 1
+    }
+
+    requestBody = {model, state, attributes, load, count}
+  } else {
+    requestBody = model
   }
 
   return cy
@@ -143,14 +189,14 @@ Cypress.Commands.add('create', (model, times = 1, attributes = {}, relations = [
       return cy.request({
         method: 'POST',
         url: '/__cypress__/factory',
-        body: {attributes, model, times, relations, _token: token},
+        body: {...requestBody, _token: token},
         log: false,
       })
     })
     .then((response) => {
       Cypress.log({
         name: 'create',
-        message: model + (times ? `(${times} times)` : ''),
+        message: requestBody.model + (requestBody.count > 1 ? ` (${requestBody.count} times)` : ''),
         consoleProps: () => ({[model]: response.body}),
       })
     })
@@ -177,10 +223,14 @@ Cypress.Commands.add('refreshDatabase', (options = {}) => {
  * @example cy.seed();
  *          cy.seed('PlansTableSeeder');
  */
-Cypress.Commands.add('seed', (seederClass) => {
-  return cy.artisan('db:seed', {
-    '--class': seederClass,
-  })
+Cypress.Commands.add('seed', (seederClass = '') => {
+  let options = {}
+
+  if (seederClass) {
+    options['--class'] = seederClass
+  }
+
+  return cy.artisan('db:seed', options)
 })
 
 /**
@@ -198,7 +248,15 @@ Cypress.Commands.add('artisan', (command, parameters = {}, options = {}) => {
   if (options.log) {
     Cypress.log({
       name: 'artisan',
-      message: command,
+      message: (() => {
+        let message = command
+
+        for (let key in parameters) {
+          message += ` ${key}="${parameters[key]}"`
+        }
+
+        return message
+      })(),
       consoleProps: () => ({command, parameters}),
     })
   }

@@ -26,7 +26,7 @@
     "ext-dom": "*",
     "ext-libxml": "*",
     "fakerphp/faker": "^1.9.1",
-    "laracasts/cypress": "^2.2.1",
+    "laracasts/cypress": "^3.0",
     "mockery/mockery": "^1.0",
     "nunomaduro/collision": "^6.1",
     "phpunit/phpunit": "^9.5.20",
