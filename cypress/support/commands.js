@@ -30,5 +30,5 @@ Cypress.Commands.add("resetMocks", () => {
 
 Cypress.Commands.add("courseId", () => {
   cy.request({ url: '/', followRedirects: false })
-    .then(response => response.headers.location.match(/\/course\/([0-9]+)$/)[1])
+    .then(response => response.headers.location.match(/\/course\/([0-9]+)$/)[1]).as('courseId')
 })

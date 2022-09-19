@@ -3,19 +3,17 @@ import { useDatabaseResets } from "../support/databaseTransactions"
 describe('observation form', () => {
   useDatabaseResets()
 
-  let courseId
-
   beforeEach(() => {
     cy.then(() => {
       cy.login().then(user => {
         cy.artisan('e2e:scenario', { '--user-id': user.id })
       })
     })
-    cy.courseId().then(id => courseId = id)
+    cy.courseId()
   })
 
-  it('creates an observation', () => {
-    cy.visit(`/course/${courseId}/observation/new`)
+  it('creates an observation', function () {
+    cy.visit(`/course/${this.courseId}/observation/new`)
     cy.contains('Beobachtung erfassen')
 
     cy.get('#participants').click()

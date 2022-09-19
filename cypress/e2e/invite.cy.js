@@ -2,20 +2,16 @@ import { useDatabaseResets } from "../support/databaseTransactions"
 
 describe('invitation flow', () => {
 
-  let courseId
-
   useDatabaseResets()
 
-  beforeEach(() => {
+  beforeEach(function () {
     cy.then(() => {
       cy.login().then(user => {
         cy.artisan('e2e:scenario', { '--user-id': user.id })
       })
     })
 
-    cy.courseId().then(id => {
-      courseId = id
-
+    cy.courseId().then(function (courseId) {
       cy.visit(`/course/${courseId}/admin/equipe`)
     })
   })
