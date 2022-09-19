@@ -79,7 +79,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Teilnehmer muss ausgefüllt sein.', $exception->validator->errors()->first('participants'));
+        $this->assertEquals('TN muss ausgefüllt sein.', $exception->validator->errors()->first('participants'));
     }
 
     public function test_shouldValidateNewParticipantGroupData_invalidParticipantIds()
@@ -95,7 +95,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Teilnehmer Format ist ungültig.', $exception->validator->errors()->first('participants'));
+        $this->assertEquals('TN Format ist ungültig.', $exception->validator->errors()->first('participants'));
     }
 
     public function test_shouldValidateNewParticipantGroupData_oneValidParticipantId()
@@ -144,7 +144,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Der gewählte Wert für Teilnehmer ist ungültig.', $exception->validator->errors()->first('participants'));
+        $this->assertEquals('Der gewählte Wert für TN ist ungültig.', $exception->validator->errors()->first('participants'));
     }
 
     public function test_shouldValidateNewParticipantGroupData_someInvalidParticipantIds()
@@ -161,7 +161,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Teilnehmer Format ist ungültig.', $exception->validator->errors()->first('participants'));
+        $this->assertEquals('TN Format ist ungültig.', $exception->validator->errors()->first('participants'));
     }
 
     public function test_shouldValidateNewParticipantGroupData_multipleValidParticipantIds_shouldWork()
@@ -180,7 +180,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $response->assertRedirect('/course/' . $this->courseId . '/admin/participantGroups/');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Teilnehmergruppe wurde erfolgreich gespeichert.');
+        $response->assertSee('TN-Gruppe wurde erfolgreich gespeichert.');
     }
 
     public function test_shouldValidateNewParticipantGroupData_noName()
@@ -230,7 +230,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Der gewählte Wert für Teilnehmer ist ungültig.', $exception->validator->errors()->first('participants'));
+        $this->assertEquals('Der gewählte Wert für TN ist ungültig.', $exception->validator->errors()->first('participants'));
     }
 
  }
