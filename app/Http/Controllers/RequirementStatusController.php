@@ -19,7 +19,7 @@ class RequirementStatusController extends Controller {
      * @return Response
      */
     public function index() {
-        return view('admin.requirement_statuses.index');
+        return view('admin.requirementStatuses.index');
     }
 
     /**
@@ -47,7 +47,7 @@ class RequirementStatusController extends Controller {
      */
 
     public function edit(Course $course, RequirementStatus $requirementStatus) {
-        return view('admin.requirement_statuses.edit', ['requirementStatus' => $requirementStatus]);
+        return view('admin.requirementStatuses.edit', ['requirementStatus' => $requirementStatus]);
     }
 
     /**
