@@ -3,9 +3,7 @@
 namespace Tests\Feature\FeedbackList;
 
 use App\Models\Feedback;
-use App\Models\FeedbackData;
 use App\Models\Participant;
-use Illuminate\Support\Arr;
 use Tests\TestCaseWithBasicData;
 
 class ReadFeedbackListTest extends TestCaseWithBasicData {
@@ -84,6 +82,18 @@ class ReadFeedbackListTest extends TestCaseWithBasicData {
 
         // then
         $response->assertSee('Aus Sicht von');
+    }
+
+    public function test_shouldNotShowMatrixLink_whenNoRequirementsInFeedback() {
+        // given
+        $this->feedback->requirements()->delete();
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/feedbacks');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('Anforderungs-Matrix');
     }
 
     public function test_shouldOrderFeedbacksByParticipantScoutName() {
