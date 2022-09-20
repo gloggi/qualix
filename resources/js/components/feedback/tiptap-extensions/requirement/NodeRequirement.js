@@ -76,14 +76,14 @@ const NodeRequirement = ({ readonly }) => Node.create({
         tr.setMeta('allowChangingRequirements', true)
         return true
       },
-      setRequirementStatus: ({ requirement_id, requirement_status_id, comment }) => ({ tr, state }) => {
+      updateRequirementNode: ({ requirementId, requirementStatusId, comment }) => ({ tr, state }) => {
         state.doc.descendants((node, pos)  => {
           if ('requirement' !== node.type.name) return false
-          if (String(requirement_id) !== String(node.attrs.id)) return false
+          if (String(requirementId) !== String(node.attrs.id)) return false
 
           tr.setNodeMarkup(pos, undefined, {
             ...node.attrs,
-            status_id: requirement_status_id,
+            status_id: requirementStatusId,
             comment: comment,
           })
         })

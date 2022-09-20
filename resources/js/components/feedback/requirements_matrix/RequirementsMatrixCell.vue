@@ -1,13 +1,13 @@
 <template>
   <div>
     <b-modal
-      :id="`requirement-matrix-cell-${feedbackRequirement.id}`"
+      :id="`requirement-matrix-cell-${feedbackRequirement.participant_id}-${feedbackRequirement.requirement_id}`"
       :title="modalTitle"
       size="lg"
       hide-footer
       @hide="save">
 
-      <form-basic :action="['feedback.updateRequirementStatus', {course: courseId, feedback_data: feedbackDataId, feedback_requirement: feedbackRequirement.id, noFormRestoring: 1}]" ref="form">
+      <form-basic :action="['feedback.updateRequirementStatus', {course: courseId, feedback_data: feedbackDataId, participant: feedbackRequirement.participant_id, requirement: feedbackRequirement.requirement_id, noFormRestoring: 1}]" ref="form">
 
         <input-multi-select
           v-model="statusId"
@@ -46,10 +46,10 @@
 </template>
 
 <script>
-import FormBasic from './FormBasic'
-import InputMultiSelect from './form/InputMultiSelect'
-import AutoSave from './AutoSave'
-import InputTextarea from './form/InputTextarea'
+import FormBasic from '../../FormBasic'
+import InputMultiSelect from '../../form/InputMultiSelect'
+import AutoSave from '../../AutoSave'
+import InputTextarea from '../../form/InputTextarea'
 
 const ellipsis = function(text, max) {
   if (text.length <= max) {
@@ -70,10 +70,11 @@ const ellipsis = function(text, max) {
 }
 
 export default {
-  name: 'RequirementMatrixCell',
+  name: 'RequirementsMatrixCell',
   components: {InputTextarea, AutoSave, InputMultiSelect, FormBasic},
   props: {
-    feedbackRequirement: {type: Object, required: false},
+    feedback: {type: Object, required: true},
+    feedbackRequirement: {type: Object, required: true},
     requirementStatuses: {type: Array, required: true},
   },
   data: function() {
@@ -87,13 +88,13 @@ export default {
       return this.requirementStatuses.find(status => String(status.id) === String(this.statusId))
     },
     modalTitle() {
-      return this.feedbackRequirement.feedback.participant.scout_name + ': ' + this.feedbackRequirement.requirement.content
+      return this.feedback.participant.scout_name + ': ' + this.feedbackRequirement.requirement.content
     },
     courseId() {
-      return this.feedbackRequirement.feedback.feedback_data.course_id
+      return this.feedback.feedback_data.course_id
     },
     feedbackDataId() {
-      return this.feedbackRequirement.feedback.feedback_data.id
+      return this.feedback.feedback_data.id
     },
     form() {
       return () => this.$refs.form
@@ -110,7 +111,8 @@ export default {
     },
     emitUpdate() {
       this.$emit('input', {
-        status_id: this.statusId,
+        requirementId: this.feedbackRequirement.requirement_id,
+        requirementStatusId: this.statusId,
         comment: this.comment,
       })
     },
@@ -122,6 +124,9 @@ export default {
   watch: {
     'feedbackRequirement.requirement_status_id': function (requirementStatusId){
       this.statusId = String(requirementStatusId)
+    },
+    'feedbackRequirement.comment': function (comment){
+      this.comment = String(comment)
     }
   }
 }

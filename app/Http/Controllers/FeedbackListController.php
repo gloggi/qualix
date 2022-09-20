@@ -6,11 +6,14 @@ use App\Http\Requests\FeedbackRequirementRequest;
 use App\Models\Course;
 use App\Models\FeedbackData;
 use App\Models\FeedbackRequirement;
+use App\Models\Participant;
+use App\Models\Requirement;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class FeedbackListController extends Controller
 {
@@ -74,8 +77,15 @@ class FeedbackListController extends Controller
      * @param FeedbackRequirement $feedbackRequirement
      * @return JsonResponse
      */
-    public function updateRequirementStatus(FeedbackRequirementRequest $request, Course $course, FeedbackData $feedbackData, FeedbackRequirement $feedbackRequirement) {
+    public function updateRequirementStatus(FeedbackRequirementRequest $request, Course $course, FeedbackData $feedbackData, Participant $participant, Requirement $requirement) {
         $data = $request->validated();
+        $feedbackRequirement = $feedbackData->feedback_requirements()->firstWhere([
+           'participant_id' => $participant->id,
+           'requirement_id' => $requirement->id,
+        ]);
+        if (!$feedbackRequirement) {
+            throw ValidationException::withMessages(['feedback_requirement' => trans('404 not found')]);
+        }
         $feedbackRequirement->update($data);
         return response()->json(['status' => 'ok']);
     }

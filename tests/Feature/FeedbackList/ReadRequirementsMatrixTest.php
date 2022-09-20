@@ -49,6 +49,6 @@ class ReadRequirementsMatrixTest extends TestCaseWithBasicData {
         // then
         $response->assertOk();
         $response->assertSee('Anforderungs-Matrix Zwischenquali');
-        $response->assertSee('<table-feedback-requirements-matrix', false);
+        $response->assertSee('<requirements-matrix', false);
     }
 }

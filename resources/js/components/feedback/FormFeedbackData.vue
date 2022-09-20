@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import HelpText from "../HelpText"
+import HelpText from '../HelpText'
 
 export default {
   name: 'FormFeedbackData',

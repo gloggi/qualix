@@ -9,12 +9,12 @@
 
         @if (count($feedbacks))
 
-            <table-feedback-requirements-matrix
+            <requirements-matrix
                 :feedback-requirements="{{ json_encode($feedbackRequirements) }}"
                 :feedbacks="{{ json_encode($feedbacks) }}"
                 :all-requirements="{{ json_encode($allRequirements) }}"
                 :all-participants="{{ json_encode($allParticipants) }}"
-                :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"></table-feedback-requirements-matrix>
+                :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"></requirements-matrix>
 
         @else
 

@@ -99,11 +99,6 @@ class RouteServiceProvider extends ServiceProvider
             $course = $route->parameter('course');
             return $course->requirement_statuses()->findOrFail($id);
         });
-        Route::bind('feedback_requirement', function($id, \Illuminate\Routing\Route $route) {
-            /** @var FeedbackData $feedbackData */
-            $feedbackData = $route->parameter('feedback_data');
-            return $feedbackData->feedback_requirements()->findOrFail($id);
-        });
 
         parent::boot();
     }
