@@ -34,3 +34,10 @@ after(() => {
   cy.artisan('config:clear', {}, {log: false})
   cy.artisan('cache:clear', {}, {log: false})
 })
+
+Cypress.on("window:before:load", win => {
+  cy.stub(win.console, "error").callsFake(msg => {
+    cy.now("task", "Qualix logged an error to the console, please review the above error message", msg)
+    throw new Error(msg)
+  })
+})

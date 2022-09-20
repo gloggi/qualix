@@ -64,12 +64,13 @@ export default {
       GapCursorFocus,
       DropCursor,
     ]
+    const collaborationSupported = this.collaborationKey && window.crypto.subtle
     const editor = new Editor({
       content: this.value ?? null,
       editable: !this.readonly,
       injectCSS: false,
       autofocus: this.autofocus,
-      extensions: this.collaborationKey ? this.withCollaboration(extensions) : this.withHistory(extensions),
+      extensions: collaborationSupported ? this.withCollaboration(extensions) : this.withHistory(extensions),
       onBlur: () => {
         this.focused = false
       },

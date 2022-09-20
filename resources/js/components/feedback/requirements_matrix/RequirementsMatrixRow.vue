@@ -119,18 +119,23 @@ export default {
           Heading.configure({levels: [3, 5, 6]}),
           NodeObservation({readonly: false}).configure({readonly: false}),
           NodeRequirement({readonly: false}).configure({readonly: false}),
-          this.createCollaborationExtension()
+          ...this.createCollaborationExtension(),
         ],
       })
     },
     createCollaborationExtension() {
+      if (!window.crypto.subtle || !this.feedback.collaborationKey) {
+        // We are in an environment where crypto and thus syncing is not available
+        // This currently happens only in the Cypress E2E tests
+        return []
+      }
       const ydoc = new Y.Doc()
       const feedbackKey = 'qualix-feedback-' + this.feedback.feedback_data.course_id + '-' + this.feedback.collaborationKey.substr(0, 8)
       new WebrtcProvider(feedbackKey, ydoc, {
         password: this.feedback.collaborationKey.substr(8),
         ...(this.signalingServers ? { signaling: this.signalingServers } : {})
       })
-      return Collaboration.configure({ document: ydoc })
+      return [Collaboration.configure({ document: ydoc })]
     },
     updateEditor(changes) {
       this.editor.commands.updateRequirementNode(changes)
