@@ -1,26 +1,22 @@
-@extends('layouts.print')
+@extends('layouts.master')
 
 @section('pagetitle'){{ $feedback->name }} {{ $participant->scout_name }}@endsection
 
-@section('content')
+@section('head')
+    <link type="text/css" rel="stylesheet" href="{{ mix('css/print.css') }}">
+@endsection
 
-    @component('feedbackContent.header', ['feedback' => $feedback, 'participant' => $participant, 'course' => $course])
-        @if($feedback->requirements()->count())
-            <div class="mt-2">
-                <h5>{{__('t.views.feedback_content.requirements_status')}}</h5>
-                <requirement-progress :requirements="{{ json_encode($feedback->requirements) }}" :statuses="{{ json_encode($course->requirement_statuses) }}"></requirement-progress>
-            </div>
-        @endif
-    @endcomponent
+@section('layout')
 
-    <feedback-editor
-        readonly
-        name=""
-        course-id="{{ $course->id }}"
-        :value="{{ json_encode($feedback->contents) }}"
-        :observations="{{ json_encode($observations) }}"
-        :requirements="{{ json_encode($feedback->requirements) }}"
-        :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"
-        @content-ready="() => $window.PagedPolyfill.preview()"></feedback-editor>
+    <div id="app" v-cloak>
+        <print-feedback
+            :course="{{ json_encode($course) }}"
+            :feedback="{{ json_encode($feedback) }}"
+            :feedback-contents="{{ json_encode($feedback->contents) }}"
+            :participant="{{ json_encode($participant) }}"
+            :observations="{{ json_encode($observations) }}"
+            :statuses="{{ json_encode($course->requirement_statuses) }}"
+        />
+    </div>
 
 @endsection

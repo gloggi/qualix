@@ -26,6 +26,7 @@ class FeedbackContentController extends Controller {
      */
     public function print(Request $request, Course $course, Participant $participant, Feedback $feedback) {
         return view('feedbackContent.print', [
+            'course' => $course,
             'participant' => $participant,
             'feedback' => $feedback,
             'observations' => $participant->observations()->with(['block', 'participants'])->withPivot('id')->get(),

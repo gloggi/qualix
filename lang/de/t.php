@@ -433,6 +433,9 @@ return array(
 			"what_happened_example" => "Ich habe auf das \"X\" und dann auf \"Bestätigen\" geklickt.",
 		),
 		"feedback" => array(
+			"print" => array(
+				"pdf_is_being_generated" => "PDF wird generiert..."
+			),
 			"requirements_matrix" => array(
 				"edit_feedback" => "Rückmeldungstext bearbeiten",
 				"logged_out_help" => array(
