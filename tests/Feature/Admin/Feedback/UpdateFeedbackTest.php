@@ -166,7 +166,7 @@ class UpdateFeedbackTest extends TestCaseWithBasicData {
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/admin/feedbacks');
-        $this->assertEquals($participantIds, FeedbackData::latest()->first()->feedbacks()->pluck('participant_id')->all());
+        $this->assertEqualsCanonicalizing($participantIds, FeedbackData::latest()->first()->feedbacks()->pluck('participant_id')->all());
     }
 
     public function test_shouldValidateNewFeedbackData_someNonexistentParticipantIds() {
