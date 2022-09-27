@@ -15,6 +15,11 @@ function FeedbackDocument({ course, feedback, feedbackContents, participant, obs
     return (
         <Document>
             <Page size="A4" style={{ ...styles.page, paddingLeft: feedback.requirements.length === 0 ? styles.page.padding : '22mm' }}>
+                <Text
+                    style={styles.pageNumbering}
+                    render={({ subPageNumber, subPageTotalPages }) => `${subPageNumber} / ${subPageTotalPages}`}
+                    fixed
+                />
                 <View style={{ display: 'flex', flexDirection: 'row' }}>
                     <View style={{ width: '20mm', marginRight: '10mm' }}>
                         <Image src={imageUrl} />

@@ -5,6 +5,12 @@ const styles = {
     fontSize: '11pt',
     lineHeight: '1.6',
   },
+  pageNumbering: {
+    position: 'absolute',
+    bottom: '12mm',
+    right: '18mm',
+    textAlign: 'right',
+  },
   h2: {
     fontSize: '23pt',
   },
