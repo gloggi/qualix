@@ -434,7 +434,8 @@ return array(
 		),
 		"feedback" => array(
 			"print" => array(
-				"pdf_is_being_generated" => "PDF wird generiert..."
+				"download_pdf" => "PDF herunterladen",
+				"pdf_is_being_generated" => "PDF wird generiert...",
 			),
 			"requirements_matrix" => array(
 				"edit_feedback" => "Rückmeldungstext bearbeiten",

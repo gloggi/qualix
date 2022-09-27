@@ -35,7 +35,18 @@ describe('feedback editor', () => {
       .then(link => {
         cy.visit(link.prop('href'))
       });
+    cy.contains('PDF wird generiert...')
+    cy.contains('PDF herunterladen')
 
-    cy.contains('Text from end-to-end test')
+    cy.task('findFiles', 'cypress/downloads/*').then((foundPdf) => {
+      expect(foundPdf).to.be.a('string')
+      cy.log(`found PDF ${foundPdf}`)
+      cy.task('parsePdf', foundPdf).then((parsedPdf) => {
+        expect(parsedPdf.text).to.include('Text from end-to-end test')
+        expect(parsedPdf.text).not.to.include('Some other text which certainly is not present in the pdf')
+      })
+    })
+
+    cy.task('deleteFiles', 'cypress/downloads/*')
   })
 })

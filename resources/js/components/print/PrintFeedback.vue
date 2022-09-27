@@ -1,6 +1,7 @@
 <template>
   <div>
     <div v-if="error">{{ error }}</div>
+    <div v-else-if="url"><a :href="url" :download="filename">{{ $t('t.views.feedback.print.download_pdf') }}</a></div>
     <div v-else>{{ $t('t.views.feedback.print.pdf_is_being_generated') }}</div>
   </div>
 </template>
@@ -56,7 +57,6 @@ export default {
         console.error(error)
       } else {
         this.url = URL.createObjectURL(blob)
-        console.log(saveAs, this.url, this.filename)
         saveAs(this.url, this.filename)
         setTimeout(() => window.close(), 100)
       }
