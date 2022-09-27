@@ -2,10 +2,6 @@
 
 @section('pagetitle'){{ $feedback->name }} {{ $participant->scout_name }}@endsection
 
-@section('head')
-    <link type="text/css" rel="stylesheet" href="{{ mix('css/print.css') }}">
-@endsection
-
 @section('layout')
 
     <div id="app" v-cloak>
