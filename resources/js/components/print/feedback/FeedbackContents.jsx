@@ -8,6 +8,11 @@ function addKey(child, idx) {
     return {...child, key: idx}
 }
 
+function ucfirst(text) {
+    if (!text || typeof text !== 'string') return text
+    return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
 function FeedbackContents({feedbackContents, observations, requirements, statuses}) {
     if (!feedbackContents) return <View/>
 
@@ -62,7 +67,7 @@ function FeedbackContents({feedbackContents, observations, requirements, statuse
 
             return <View minPresenceAhead={30} style={{ position: 'relative' }}>
                 <Text style={{ ...styles.requirementIcon, color: colors[status.color].color }}>{ icons[status.icon] }</Text>
-                <Text style={styles.requirement}>{requirement.content}</Text>
+                <Text style={styles.requirement}>{ ucfirst(requirement.content) }</Text>
             </View>
         }
 
