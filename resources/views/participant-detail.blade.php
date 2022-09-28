@@ -59,7 +59,7 @@
                     @if($participant->feedbacks()->whereHas('users')->exists()){ label: $t('t.models.feedback.users'), value: feedback => feedback.users ? feedback.users.map(u => u.name).join(', ') : '' },@endif
                 ]"
                 :actions="{
-                    print: feedback => routeUri('feedbackContent.print', {course: {{ $course->id }}, participant: {{ $participant->id }}, feedback: feedback.id}),
+                    print: feedback => ['button-print-feedback', { courseId: {{ $course->id }}, participantId: {{ $participant->id }}, feedbackId: feedback.id }],
                     edit: feedback => routeUri('feedbackContent.edit', {course: {{ $course->id }}, participant: {{ $participant->id }}, feedback: feedback.id}),
                 }">
 

@@ -8,7 +8,9 @@
             <a :href="participantUrl"><strong>{{ participant.scout_name }}</strong></a>
             <span class="flex-grow-1"></span>
             <a :href="feedbackEditUrl" target="_blank" :title="$t(`t.views.feedback.requirements_matrix.edit_feedback`)"><i class="fas fa-pen-to-square px-2"></i></a>
-            <a :href="feedbackPrintUrl" target="_blank" :title="$t('t.global.print')"><i class="fas fa-print pl-2"></i></a>
+            <button-print-feedback :course-id="feedback.feedback_data.course_id" :participant-id="participant.id" :feedback-id="feedback.id">
+              <i class="fas fa-print pl-2"></i>
+            </button-print-feedback>
           </div>
           <div v-if="feedback.users.length > 0" class="mw-80 ml-2">{{ $t('t.models.feedback.users') }}: {{ feedback.users.map(u => u.name).join(', ') }}</div>
         </div>
@@ -35,6 +37,7 @@ import Heading from '@tiptap/extension-heading'
 import NodeObservation from '../tiptap-extensions/observation/NodeObservation'
 import NodeRequirement from '../tiptap-extensions/requirement/NodeRequirement'
 import RequirementsMatrixCell from './RequirementsMatrixCell'
+import ButtonPrintFeedback from '../../print/ButtonPrintFeedback'
 import Collaboration from '@tiptap/extension-collaboration'
 import * as Y from 'yjs'
 import {WebrtcProvider} from 'y-webrtc'
@@ -42,7 +45,7 @@ import {sortBy} from 'lodash'
 
 export default {
   name: 'RequirementsMatrixRow',
-  components: { RequirementsMatrixCell },
+  components: { RequirementsMatrixCell, ButtonPrintFeedback },
   props: {
     feedback: {type: Object, required: true},
     allRequirements: {type: Array, required: true},

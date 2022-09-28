@@ -20,7 +20,7 @@ describe('feedback editor', () => {
     cy.contains('Die Rückmeldung "End-to-end test feedback" wurde erfolgreich erstellt.')
   })
 
-  it('edits a feedback', function () {
+  it('edits and prints a feedback', function () {
     cy.visit(`/course/${this.courseId}/participants`)
     cy.get('img.card-img-top').first().click()
     cy.get('td[data-label=Titel] a').first().click()
@@ -31,12 +31,9 @@ describe('feedback editor', () => {
     cy.contains('Automatisch gespeichert')
     cy.get('a.btn-link').first().click()
 
-    cy.get('[href$="/print"]')
-      .then(link => {
-        cy.visit(link.prop('href'))
-      });
+    cy.get('[title="Drucken"]').click()
     cy.contains('PDF wird generiert...')
-    cy.contains('PDF herunterladen')
+    cy.contains('PDF wurde heruntergeladen')
 
     cy.task('findFiles', 'cypress/downloads/*').then((foundPdf) => {
       expect(foundPdf).to.be.a('string')
