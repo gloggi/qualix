@@ -43,8 +43,8 @@ export default {
     },
     tooltip() {
       if (!this.clicked) return this.$t('t.global.print')
-      return this.error ||
-      this.url ? this.$t('t.views.feedback.print.pdf_downloaded') : this.$t('t.views.feedback.print.pdf_is_being_generated')
+      if (this.error) return this.error
+      return this.url ? this.$t('t.views.feedback.print.pdf_downloaded') : this.$t('t.views.feedback.print.pdf_is_being_generated')
     },
   },
   unmounted() {
@@ -53,6 +53,7 @@ export default {
   methods: {
     async generateAndDownloadPdf() {
       this.clicked = true
+      this.error = null
 
       await this.fetchData()
       if (!this.feedback) return
@@ -84,7 +85,7 @@ export default {
         this.observations = response.data.observations
         this.statuses = response.data.statuses
       }).catch(error => {
-        if (error.response?.status === 401) {
+        if (error.response?.status === 401 || error.response?.status === 404) {
           window.location.reload()
           return
         }
