@@ -21,6 +21,7 @@
     'csrf' => csrf_token(),
     'nonce' => app('csp-nonce'),
     'signalingServers' => explode(' ', env('COLLABORATION_SIGNALING_SERVERS')),
+    'iceServers' => env('COLLABORATION_ICE_SERVERS'),
     'username' => Auth::user() ? Auth::user()->name : null,
 ]) }}"></div>
 <script src="{{ mix('js/app.js') }}"></script>

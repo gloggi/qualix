@@ -132,9 +132,11 @@ export default {
       const ydoc = new Y.Doc()
       const feedbackKey = 'qualix-feedback-' + this.feedback.feedback_data.course_id + '-' + this.feedback.collaborationKey.substr(0, 8)
       const signalingServers = window.Laravel.signalingServers
+      const iceServers = JSON.parse(window.Laravel.iceServers || null)
       new WebrtcProvider(feedbackKey, ydoc, {
         password: this.feedback.collaborationKey.substr(8),
         ...(signalingServers ? { signaling: signalingServers } : {}),
+        ...(iceServers ? { peerOpts: { config: { iceServers } } } : {}),
       })
       return [Collaboration.configure({ document: ydoc })]
     },

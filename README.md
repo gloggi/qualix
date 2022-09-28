@@ -128,6 +128,7 @@ HITOBITO_CALLBACK_URI=https://qualix.flamberg.ch/login/hitobito/callback
 # Collaboration in the feedback editor via WebRTC
 COLLABORATION_ENABLED=true
 COLLABORATION_SIGNALING_SERVERS="wss://signaling.yjs.dev wss://y-webrtc-signaling-eu.herokuapp.com wss://y-webrtc-signaling-us.herokuapp.com"
+COLLABORATION_ICE_SERVERS="[{ \"urls\": \"turn:openrelay.metered.ca:80\", \"username\": \"openrelayproject\", \"credentials\": \"openrelayproject\" }]"
 
 SENTRY_LARAVEL_DSN=<snip>
 SENTRY_USER_FEEDBACK_URL=<snip>
