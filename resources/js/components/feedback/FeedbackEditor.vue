@@ -50,7 +50,6 @@ export default {
     showImpression: { type: Boolean, default: false },
     username: { type: String, default: null },
     collaborationKey: { type: String, default: null },
-    signalingServers: { type: Array, default: null },
   },
   data() {
     const extensions = [
@@ -121,9 +120,10 @@ export default {
     withCollaboration (extensions) {
       const ydoc = new Y.Doc()
       const feedbackKey = 'qualix-feedback-' + this.courseId + '-' + this.collaborationKey.substr(0, 8)
+      const signalingServers = window.Laravel.signalingServers
       const provider = new WebrtcProvider(feedbackKey, ydoc, {
         password: this.collaborationKey.substr(8),
-        ...(this.signalingServers ? { signaling: this.signalingServers } : {})
+        ...(signalingServers ? { signaling: signalingServers } : {}),
       })
       return extensions.concat([
         Collaboration.configure({ document: ydoc }),

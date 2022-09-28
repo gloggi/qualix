@@ -131,9 +131,10 @@ export default {
       }
       const ydoc = new Y.Doc()
       const feedbackKey = 'qualix-feedback-' + this.feedback.feedback_data.course_id + '-' + this.feedback.collaborationKey.substr(0, 8)
+      const signalingServers = window.Laravel.signalingServers
       new WebrtcProvider(feedbackKey, ydoc, {
         password: this.feedback.collaborationKey.substr(8),
-        ...(this.signalingServers ? { signaling: this.signalingServers } : {})
+        ...(signalingServers ? { signaling: signalingServers } : {}),
       })
       return [Collaboration.configure({ document: ydoc })]
     },

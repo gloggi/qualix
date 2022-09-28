@@ -7,7 +7,6 @@
       :name="name"
       :class="{ 'form-control': !readonly, 'is-invalid': errorMessage || markInvalid }"
       :username="username"
-      :signaling-servers="signalingServers"
       v-model="currentValue"
       v-bind="$attrs"
       @localinput="$emit('localinput')"></feedback-editor>
@@ -34,9 +33,6 @@ export default {
   computed: {
     username () {
       return window.Laravel.username
-    },
-    signalingServers () {
-      return window.Laravel.signalingServers
     },
   }
 }
