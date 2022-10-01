@@ -578,6 +578,7 @@ return array(
 			"admin_participant_groups" => "Qualix - Admin - TN Gruppen",
 			"admin_observationAssignments" => "Qualix - Admin - Beobachtungsaufträge",
 			"admin_feedbacks" => "Qualix - Admin - Rückmeldungen",
+			"feedbacks" => "Qualix - Rückmeldungen",
 		)
 	),
 );
