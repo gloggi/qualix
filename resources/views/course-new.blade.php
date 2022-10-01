@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('pagetitle'){{__('t.views.page_titles.create_new_course')}}@endsection
+
 @section('content')
 
     <b-card>

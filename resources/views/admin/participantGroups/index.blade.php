@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('pagetitle'){{__('t.views.page_titles.admin_participant_groups') }}@endsection
+
 @section('content')
 
     <b-card>

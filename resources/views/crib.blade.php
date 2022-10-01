@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('pagetitle'){{__('t.views.page_titles.crib_overview')}}@endsection
+
 @section('content')
 
     <b-card>
