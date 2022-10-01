@@ -551,7 +551,7 @@ return array(
 			"text" => "Qualix soll gegen den Papier-Krieg helfen und euch dabei unterstützen, den Überblick über alle Beobachtungen und Rückmeldungen zu behalten. Viel Spass beim Beobachten!",
 			"title" => "Willkommä bim Qualix",
 			"here" => "hier",
-			"changelog" => "Die neusten Änderungen im Qualix findest du",
+			"changelog" => "Die neusten Änderungen vom Qualix findest du :here",
 		),
 	),
 );

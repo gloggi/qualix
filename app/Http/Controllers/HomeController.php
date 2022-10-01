@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Util\HtmlString;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('pages.welcome');
+        return view('pages.welcome', [
+            'changeLogLink' => $this->changeLogLink(),
+        ]);
     }
 
     /**
@@ -63,6 +66,20 @@ class HomeController extends Controller
      */
     public function refreshCsrf() {
         return view('pages.refreshCsrf');
+    }
+
+
+    /**
+     * Creates a link to the changeLog with the text given through a translation key.
+     *
+     * @return HtmlString
+     */
+    private function changeLogLink(): HtmlString
+    {
+        return (new HtmlString)
+            ->s('<a target="_blank" href="https://github.com/gloggi/qualix/blob/master/CHANGELOG.md#changelog">')
+            ->__('t.views.overview.here')
+            ->s('</a>');
     }
 
 }

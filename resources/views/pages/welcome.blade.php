@@ -8,7 +8,8 @@
 
         <p>{{__('t.views.welcome.text')}}</p>
 
-        <p>{{__('t.views.welcome.changelog')}} <a href="https://github.com/gloggi/qualix/blob/master/CHANGELOG.md#changelog" target="_blank">{{__('t.views.welcome.here')}}</a></p>
+        <p>{{__('t.views.welcome.changelog', ['here' => $changeLogLink])}}</p>
+
     </b-card>
 
 @endsection
