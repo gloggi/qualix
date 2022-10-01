@@ -78,7 +78,7 @@ class HomeController extends Controller
     {
         return (new HtmlString)
             ->s('<a target="_blank" href="https://github.com/gloggi/qualix/blob/master/CHANGELOG.md#changelog">')
-            ->__('t.views.overview.here')
+            ->__('t.views.welcome.here')
             ->s('</a>');
     }
 
