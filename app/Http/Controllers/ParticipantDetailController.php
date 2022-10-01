@@ -18,10 +18,14 @@ class ParticipantDetailController extends Controller {
      */
     public function index(Request $request, Course $course, Participant $participant) {
         $observations = $participant->observations->values();
+        $previousParticipant = $course->getPreviousCandidate($participant);
+        $nextParticipant = $course->getNextCandidate($participant);
 
         return view('participant-detail', [
             'participant' => $participant,
             'observations' => $observations,
+            'previousParticipant' => $previousParticipant,
+            'nextParticipant' => $nextParticipant,
             'feedbacks_using_observations' => $course->feedbacksUsingObservations($observations)
         ]);
     }

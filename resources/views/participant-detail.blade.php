@@ -4,7 +4,10 @@
 
 @section('content')
 
+
     <b-card body-class="container-fluid">
+        @if($previousParticipant != false) <div class="float-left"><a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $previousParticipant['id']] ) }}">< {{ $previousParticipant['scout_name'] }}</a></div> @endif
+        @if($nextParticipant != false) <div class="float-right"><a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $nextParticipant['id']] ) }}">{{ $nextParticipant['scout_name'] }} ></a></div> @endif
         <template #header>{{__('t.views.participant_details.title')}}</template>
 
         <div class="row my-3">

@@ -206,4 +206,28 @@ class Course extends Model {
     public function getDefaultRequirementStatusIdAttribute() {
         return $this->requirement_statuses()->first('id')['id'] ?? null;
     }
+
+
+    /**
+     * Get the previous Participant in alphabetic order.
+     * 
+     * @param Participant $participant
+     */
+    public function getPreviousCandidate(Participant $participant) {
+        $participants = collect($this->participants)->toArray();
+        $index = array_search($participant->id, array_column($participants, 'id'));
+        return $index <= 0 ? false : $participants[$index -1];
+    }
+
+    /**
+     * Get the next Participant in alphabetic order.
+     * 
+     * @param Participant $participant
+     */
+    public function getNextCandidate(Participant $participant) {
+        $participants = collect($this->participants)->toArray();
+        $index = array_search($participant->id, array_column($participants, 'id'));
+        $length = count($participants);
+        return $index > $length-2 ? false : $participants[$index + 1];
+    }
 }
