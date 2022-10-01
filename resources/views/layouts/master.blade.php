@@ -24,7 +24,7 @@
     'routes' => collect(Route::getRoutes())->mapWithKeys(function (\Illuminate\Routing\Route $route) { return [$route->getName() => [ 'uri' => '/'.$route->uri(), 'method' => head($route->methods())]]; }),
     'csrf' => csrf_token(),
     'nonce' => app('csp-nonce'),
-    'signalingServers' => explode(' ', env('COLLABORATION_SIGNALING_SERVERS')),
+    'signalingServers' => explode(' ', config('app.collaboration.signaling_servers')),
     'username' => Auth::user() ? Auth::user()->name : null,
 ]) }}"></div>
 <script src="{{ mix('js/app.js') }}"></script>

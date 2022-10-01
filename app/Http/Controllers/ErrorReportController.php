@@ -21,8 +21,8 @@ class ErrorReportController extends Controller {
         $params = $request->validated();
         $request->session()->flash('previousUrl', $params['previousUrl']);
         $client = app(GuzzleHttp\Client::class);
-        $url = env('SENTRY_USER_FEEDBACK_URL');
-        $dsn = env('SENTRY_LARAVEL_DSN', env('SENTRY_DSN'));
+        $url = config('app.sentry.user_feedback_url');
+        $dsn = config('sentry.dsn');
         $client->post($url, [
             'headers' => ['Authorization' => 'DSN ' . $dsn],
             'form_params' => [

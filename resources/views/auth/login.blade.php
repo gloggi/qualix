@@ -5,7 +5,7 @@
     <b-card>
         <template #header>{{__('Login')}}</template>
 
-        @if (!empty(env('HITOBITO_BASE_URL')))
+        @if (!empty(config('services.hitobito.client_id')))
             <div class="form-group row">
                 <div class="col-md-6 offset-md-3">
                     <a

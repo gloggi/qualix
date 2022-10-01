@@ -7,7 +7,7 @@
     <b-card>
         <template #header>{{__('Server Error')}}</template>
 
-        @if(app()->bound('sentry') && app('sentry')->getLastEventId() && env('SENTRY_USER_FEEDBACK_URL'))
+        @if(app()->bound('sentry') && app('sentry')->getLastEventId() && config('app.sentry.user_feedback_url'))
 
             <h5>{{__('t.views.error_form.it_looks_like_we_are_having_issues')}}</h5>
 
