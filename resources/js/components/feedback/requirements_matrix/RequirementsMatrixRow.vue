@@ -47,6 +47,7 @@ export default {
     feedback: {type: Object, required: true},
     allRequirements: {type: Array, required: true},
     requirementStatuses: {type: Array, required: true},
+    collaborationEnabled: { type: Boolean, default: false },
   },
   data: function () {
     const editor = this.createEditor()
@@ -124,7 +125,7 @@ export default {
       })
     },
     createCollaborationExtension() {
-      if (!window.crypto.subtle || !this.feedback.collaborationKey) {
+      if (!window.crypto.subtle || !this.feedback.collaborationKey || !this.collaborationEnabled) {
         // We are in an environment where crypto and thus syncing is not available
         // This currently happens only in the Cypress E2E tests
         return []
