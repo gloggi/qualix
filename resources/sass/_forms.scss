@@ -28,13 +28,13 @@
 }
 
 .form-control.btn-hitobito {
-    color: #fff;
-    background-color: #99bf62;
-    border-color: #00a651;
-    background-size: 1.9rem 1.9rem;
+    color: #000;
+    background-color: #F5F2F4;
+    border-color: #521D3A;
+    background-size: 1.5rem 1.5rem;
     background-repeat: no-repeat;
     background-position: left 0.75rem center;
-    background-image: url('../images/midata.svg');
+    background-image: url(/images/midata.svg?53e5c6a5bd90905b308381e3bc54afab);
     padding-left: 4.15rem;
     padding-right: 4.15rem;
     position: relative;
@@ -45,12 +45,12 @@
     }
 
     &:hover {
-        color: #fff;
-        background-color: #8fb45c;
-        border-color: #008040;
+        color: #000;
+        background-color: #ECE6EA;
+        border-color: #521D3A;
 
         &::before {
-            border-left-color: #008040;
+            border-left-color: #521D3A;
         }
     }
 
