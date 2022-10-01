@@ -1,5 +1,8 @@
 # Changelog
 
+##### Oktober 2022
+- Die Druckfunktion bei Rückmeldungen wurde überarbeitet. Es werden nun direkt fertige, konsistent gelayoutete PDF-Dateien heruntergeladen, anstatt dass man im Browser die PDF-Druck-Funktion verwenden muss. Da wir nun nicht mehr vom Verhalten unterschiedlicher Browser abhängig sind, konnten zudem die Seitenränder auf dem PDF verkleinert werden, um Papier zu sparen [#228](https://github.com/gloggi/qualix/issues/228)
+
 ##### September 2022
 - Die Ansichten "Blöcke" und "Spick" wurden kombiniert. Beobachtungsaufträge sind nun unter "Blöcke" verfügbar [#165](https://github.com/gloggi/qualix/issues/165)
 - Unter "Rückmeldungen" im Hauptmenü kann jetzt eine Liste der (mir zugewiesenen) Rückmeldungen angezeigt werden [#259](https://github.com/gloggi/qualix/issues/259)

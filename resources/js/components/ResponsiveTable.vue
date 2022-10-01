@@ -29,9 +29,7 @@
                 <modal-delete :id="modalId(row)" v-bind="call(action, row)"></modal-delete>
               </template>
               <template v-else-if="name === 'print'">
-                <a :href="call(action, row)" target="_blank" :title="$t('t.global.print')">
-                  <i class="fas fa-print"></i>
-                </a>
+                <a :is="call(action, row)[0]" v-bind="call(action, row)[1]"><i class="fas fa-print" /></a>
               </template>
               <template v-else-if="name === 'edit'">
                 <a :href="call(action, row)" :title="actionTitle(name)">

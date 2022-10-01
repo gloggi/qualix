@@ -433,6 +433,12 @@ return array(
 			"what_happened_example" => "Ich habe auf das \"X\" und dann auf \"Bestätigen\" geklickt.",
 		),
 		"feedback" => array(
+			"print" => array(
+				"pdf_downloaded" => "PDF wurde heruntergeladen",
+				"pdf_is_being_generated" => "PDF wird generiert...",
+				"error_creating_pdf" => "Beim Erstellen des PDFs ist ein Fehler aufgetreten. Lade die Seite neu und versuche es nochmals, oder kontaktiere das Qualix-Team (siehe zuunterst auf der Seite).",
+				"error_fetching_data" => "Beim Laden der Rückmeldung ist ein Fehler aufgetreten. Lade die Seite neu und versuche es nochmals, oder kontaktiere das Qualix-Team (siehe zuunterst auf der Seite).",
+			),
 			"requirements_matrix" => array(
 				"edit_feedback" => "Rückmeldungstext bearbeiten",
 				"logged_out_help" => array(

@@ -9,6 +9,7 @@ use App\Http\Requests\FeedbackContentRequest;
 use App\Models\Course;
 use App\Models\Feedback;
 use App\Models\Participant;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -22,13 +23,16 @@ class FeedbackContentController extends Controller {
      * @param Course $course
      * @param Participant $participant
      * @param Feedback $feedback
-     * @return View
+     * @return JsonResponse
      */
     public function print(Request $request, Course $course, Participant $participant, Feedback $feedback) {
-        return view('feedbackContent.print', [
+        return response()->json([
+            'course' => $course,
             'participant' => $participant,
             'feedback' => $feedback,
+            'feedbackContents' => $feedback->contents,
             'observations' => $participant->observations()->with(['block', 'participants'])->withPivot('id')->get(),
+            'statuses' => $course->requirement_statuses,
         ]);
     }
 
