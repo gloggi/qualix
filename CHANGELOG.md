@@ -4,6 +4,7 @@
 - Die Ansichten "Blöcke" und "Spick" wurden kombiniert. Beobachtungsaufträge sind nun unter "Blöcke" verfügbar [#165](https://github.com/gloggi/qualix/issues/165)
 - Unter "Rückmeldungen" im Hauptmenü kann jetzt eine Liste der (mir zugewiesenen) Rückmeldungen angezeigt werden [#259](https://github.com/gloggi/qualix/issues/259)
 - Experimentell: Zu jeder Rückmeldung mit Mindestanforderungen kann eine Mindestanforderungs-Matrix angezeigt werden. Diese zeigt eine Übersicht über den Fortschritt aller TN in allen Mindestanforderungen, und erlaubt es den Erfüllungsstatus jeder Mindestanforderung zu kommentieren. Diese Kommentare sind auch im Rückmeldungs-Editor sichtbar, aber nicht wenn man die Rückmeldung ausdruckt [#267](https://github.com/gloggi/qualix/pull/267)
+- Auf der Wilkommens-Seite gibt es nun einen Link zum Changelog [#220](https://github.com/gloggi/qualix/issues/220)
 
 ##### August 2022
 - Es kann jetzt pro Kurs eingestellt werden, welchen Status die Anforderungen in einer Rückmeldung haben können. Die Stati können unter Kursadmin -> Anforderungen -> Stati verwalten... angepasst werden [#259](https://github.com/gloggi/qualix/issues/259)
