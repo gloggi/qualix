@@ -137,8 +137,10 @@ MIX_SENTRY_VUE_DSN=<snip>
 3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker-compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" qualix`
 4. **Frontend-Code builden**: `docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod'" node`
 5. **Optimierung (optional)**: `docker-compose run --entrypoint "composer install --optimize-autoloader --no-dev" qualix`
+    Siehe [hier](https://laravel.com/docs/9.x/deployment#optimization) für weitere Erklärungen.
 6. **Auf den Webhost hochladen**: Z.B. mit FTP alles (Ordner und Dateien) ausser .git, cypress, node_modules und tests hochladen
 7. **Mit SSH auf den Server einloggen**, da die folgenden Befehle in der finalen Umgebung ausgeführt werden müssen
-8. **Optimierung (optional)**: `php artisan config:cache && php artisan route:cache`
+8. **Optimierung (optional)**: `php artisan config:cache && php artisan route:cache && php artisan view:cache`  
+    Siehe [hier](https://laravel.com/docs/9.x/deployment#optimization) für weitere Erklärungen.
 9. **Datenbank-Tabellen einrichten**: `php artisan migrate`
 10. **Laravel Storage-Link einrichten**: `php artisan storage:link`
