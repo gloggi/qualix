@@ -8,6 +8,8 @@
 
         <p>{{__('t.views.welcome.text')}}</p>
 
+        <p>{{__('t.views.welcome.changelog', ['here' => $changeLogLink])}}</p>
+
     </b-card>
 
 @endsection
