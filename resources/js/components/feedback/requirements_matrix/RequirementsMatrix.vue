@@ -14,6 +14,7 @@
         :feedback="feedback"
         :all-requirements="allRequirements"
         :requirement-statuses="requirementStatuses"
+        :collaboration-enabled="collaborationEnabled"
       />
     </b-tbody>
   </b-table-simple>
@@ -32,6 +33,7 @@ export default {
     feedbacks: { type: Array, required: true },
     allRequirements: { type: Array, required: true },
     requirementStatuses: { type: Array, default: () => [] },
+    collaborationEnabled: { type: Boolean, default: false },
   },
   computed: {
     sortedRequirements() {
