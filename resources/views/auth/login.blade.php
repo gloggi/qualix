@@ -41,21 +41,6 @@
                 </div>
             </div>
 
-            <div class="form-group row">
-                <div class="col-md-6 offset-md-3">
-                    <a
-                        class="w-100 btn btn-hitobito form-control{{ $errors->has('hitobito') ? ' is-invalid' : '' }}"
-                        href="{{ route('login.hitobito') }}">
-                        {{ __('t.views.login.via_midata') }}
-                    </a>
-                    @if ($errors->has('hitobito'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('hitobito') }}</strong>
-                        </span>
-                    @endif
-                </div>
-            </div>
-
             <div class="form-group row required">
                 <label for="password" class="col-md-3 col-form-label text-md-right">{{ __('Password') }}</label>
 
