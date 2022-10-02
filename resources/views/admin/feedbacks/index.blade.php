@@ -1,5 +1,8 @@
 @extends('layouts.default')
 
+@section('pagetitle'){{__('t.views.admin.feedbacks.page_title') }}@endsection
+
+
 @section('content')
 
     <b-card>

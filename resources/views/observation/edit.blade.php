@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('pagetitle'){{__('t.views.observations.page_title_edit') }}@endsection
+
 @section('content')
 
     <b-card>

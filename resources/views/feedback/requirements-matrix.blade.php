@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('pagetitle'){{__('t.views.feedback.requirements_matrix.page_title') }}@endsection
+
 @section('wideLayout'){{ json_encode($feedbackRequirements->map->requirement_id->unique()->count() >= 6) }}@endsection
 
 @section('content')

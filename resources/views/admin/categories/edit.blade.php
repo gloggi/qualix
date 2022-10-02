@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('pagetitle'){{__('t.views.admin.categories.page_title_edit') }}@endsection
+
 @section('content')
 
     <b-card>

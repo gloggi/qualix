@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('pagetitle'){{__('t.views.participant_details.page_title', ['participantName' => $participant->scout_name]) }}@endsection
+
 @section('content')
 
     <b-card body-class="container-fluid">

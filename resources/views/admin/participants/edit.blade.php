@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('pagetitle'){{__('t.views.admin.participants.page_title_edit', ['participantName' => $participant->scout_name]) }}@endsection
+
 @section('content')
 
     <b-card>

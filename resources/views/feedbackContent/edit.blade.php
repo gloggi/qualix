@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('pagetitle'){{__('t.views.feedback_content.page_title', ['feedbackName' => $feedback->name, 'participantName' => $participant->scout_name]) }}@endsection
+
 @section('content')
 
     <b-card body-class="container-fluid">

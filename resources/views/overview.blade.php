@@ -2,6 +2,8 @@
 
 @section('wideLayout'){{ json_encode(!!$feedbackData) }}@endsection
 
+@section('pagetitle'){{__('t.views.overview.page_title') }}@endsection
+
 @section('content')
 
     <b-card>

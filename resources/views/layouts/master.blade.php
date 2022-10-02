@@ -7,7 +7,11 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('head')
-    <title>@yield('pagetitle')</title>
+    @if(app()->view->getSections()['pagetitle'] ?? false)
+        <title>{{__('t.global.page_title')}} - @yield('pagetitle')</title>
+    @else
+        <title>{{__('t.global.page_title')}}</title>
+    @endif
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
 </head>
 <body>
