@@ -70,6 +70,8 @@ return array(
 	"models" => array(
 		"block" => array(
 			"block_date" => "Datum",
+			"blocks_startdate" => "Startdatum",
+			"blocks_enddate" => "Enddatum",
 			"full_block_number" => "Blocknummer",
 			"name" => "Blockname",
 			"num_observations" => "Anzahl Beobachtungen",
@@ -174,6 +176,7 @@ return array(
 				"edit_success" => "Block \":name\" wurde erfolgreich gespeichert.",
 				"existing" => "Blöcke :courseName",
 				"import" => "Blöcke importieren...",
+				"generate" => "Blöcke generieren...",
 				"menu_name" => "Blöcke",
 				"new" => "Neuer Block",
 				"no_blocks" => "Bisher sind keine Blöcke erfasst.",
@@ -204,6 +207,13 @@ return array(
 				"unknown_error" => "Beim Import ist ein Fehler aufgetreten. Versuche es nochmals, oder erfasse deine Blöcke manuell.",
 				"warning_existing_blocks" => "In deinem Kurs sind bereits Blöcke definiert. Wenn beim Import eine Blocknummer schon existiert, wird der bestehende Block durch den Import aktualisiert.",
 			),
+			"block_generate" => array(
+				"generate" => "Generieren",
+				"generate_from" => "Mehrere Blöcke generieren",
+				"generate_success" => "{0}Es wurden keine Blöcke generiert.|{1}Es wurde ein Block generiert.|[2,*]Es wurden :count Blöcke generiert.",
+				"error_too_many_blocks" => "Dein Datumsbereich ist zu gross!",
+			),
+
 			"categories" => array(
 				"are_categories_required" => array(
 					"answer" => "Nein, Kategorien sind komplett optional, falls ihr in eurem Kursteam keine Verwendung dafür habt.",
