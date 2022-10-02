@@ -2,7 +2,7 @@
 
 @section('wideLayout'){{ json_encode(!!$feedbackData) }}@endsection
 
-@section('pagetitle'){{__('t.views.page_titles.overview')}}@endsection
+@section('pagetitle'){{__('t.views.overview.page_title') }}@endsection
 
 @section('content')
 

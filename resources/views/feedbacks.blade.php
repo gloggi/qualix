@@ -1,7 +1,6 @@
 @extends('layouts.default')
 
-@section('pagetitle'){{__('t.views.page_titles.feedbacks')}}@endsection
-
+@section('pagetitle'){{__('t.views.feedbacks.page_title') }}@endsection
 
 @section('content')
 

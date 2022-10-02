@@ -1,7 +1,5 @@
 @extends('layouts.master')
 
-@section('pagetitle'){{__('t.global.page_title')}}@endsection
-
 @section('wideLayout'){{ json_encode(false) }}@endsection
 
 @section('head')

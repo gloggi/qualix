@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('pagetitle'){{__('t.views.page_titles.admin_participants') }}@endsection
+@section('pagetitle'){{__('t.views.admin.participants.page_title') }}@endsection
 
 @section('content')
 

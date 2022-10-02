@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('pagetitle'){{__('t.views.user_settings.page_title') }}@endsection
+
 @section('content')
 
     <b-card>

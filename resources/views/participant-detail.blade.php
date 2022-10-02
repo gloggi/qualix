@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('pagetitle'){{__('t.views.page_titles.participant_detail', ['participantName' => $participant->scout_name]) }}@endsection
+@section('pagetitle'){{__('t.views.participant_details.page_title', ['participantName' => $participant->scout_name]) }}@endsection
 
 @section('content')
 
