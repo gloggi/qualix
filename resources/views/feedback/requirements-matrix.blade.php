@@ -17,7 +17,7 @@
                 :all-requirements="{{ json_encode($allRequirements) }}"
                 :all-participants="{{ json_encode($allParticipants) }}"
                 :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"
-                :collaboration-enabled="{{ json_encode(env('COLLABORATION_ENABLED')) }}"></requirements-matrix>
+                :collaboration-enabled="{{ json_encode(config('app.collaboration.enabled')) }}"></requirements-matrix>
 
         @else
 
