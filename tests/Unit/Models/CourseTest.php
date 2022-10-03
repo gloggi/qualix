@@ -87,4 +87,55 @@ class CourseTest extends TestCaseWithBasicData {
         // then
         $this->assertEquals($expected, $defaultRequirementStatusId);
     }
+
+    public function test_getNextParticipant_returnsSecondParticipantForFirst() {
+        // given
+        $course = Course::find($this->courseId);
+        $first = $course->participants->first();
+        $second = $course->participants->get(1);
+
+        // when
+        $next = $course->getNextParticipant($first);
+
+        // then
+        $this->assertEquals($second, $next);
+    }
+
+    public function test_getNextParticipant_returnsNoParticipantForLast() {
+        // given
+        $course = Course::find($this->courseId);
+        $last = $course->participants->last();
+
+        // when
+        $next = $course->getNextParticipant($last);
+
+        // then
+        $this->assertEquals(false, $next);
+    }
+
+    public function test_getPreviousParticipant_returnsSecondToLastParticipantForLast() {
+        // given
+        $course = Course::find($this->courseId);
+        $participants = $course->participants;
+        $last = $participants->last();
+        $secondToLast = $participants->get(count($participants) - 2);
+
+        // when
+        $previous = $course->getPreviousParticipant($last);
+
+        // then
+        $this->assertEquals($secondToLast, $previous);
+    }
+
+    public function test_getPreviousParticipant_returnsNoParticipantForFirst() {
+        // given
+        $course = Course::find($this->courseId);
+        $first = $course->participants->first();
+
+        // when
+        $previous = $course->getPreviousParticipant($first);
+
+        // then
+        $this->assertEquals(false, $previous);
+    }
 }
