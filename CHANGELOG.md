@@ -2,6 +2,10 @@
 
 ##### Oktober 2022
 - Die Druckfunktion bei Rückmeldungen wurde überarbeitet. Es werden nun direkt fertige, konsistent gelayoutete PDF-Dateien heruntergeladen, anstatt dass man im Browser die PDF-Druck-Funktion verwenden muss. Da wir nun nicht mehr vom Verhalten unterschiedlicher Browser abhängig sind, konnten zudem die Seitenränder auf dem PDF verkleinert werden, um Papier zu sparen [#228](https://github.com/gloggi/qualix/issues/228)
+- Das Design des MiData-Login Buttons wurde ans neue PBS-Design angepasst. Merci @Sprudeel! [#265](https://github.com/gloggi/qualix/issues/265)
+- Neue Links zum einfachen Weiterspringen auf nächste und vorhergehende TN auf der TN-Detailansicht. Merci @Sprudeel! [#274](https://github.com/gloggi/qualix/issues/274)
+- Performance-Optimierungen für Qualix wurden ermöglicht. Merci @cleverer! [#44](https://github.com/gloggi/qualix/issues/44)
+- Bugfixes: Wenn ein Feature (konkret MiData-Login und WebRTC Synchronisierung) in einer Instanz von Qualix nicht konfiguriert ist, dann wird es komplett ausgeblendet / deaktiviert. Merci @cleverer! [#286](https://github.com/gloggi/qualix/pull/286) [#284](https://github.com/gloggi/qualix/pull/284)
 
 ##### September 2022
 - Die Ansichten "Blöcke" und "Spick" wurden kombiniert. Beobachtungsaufträge sind nun unter "Blöcke" verfügbar [#165](https://github.com/gloggi/qualix/issues/165)
