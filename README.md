@@ -134,6 +134,7 @@ SENTRY_USER_FEEDBACK_URL=<snip>
 SENTRY_CSP_REPORT_URI=<snip>
 MIX_SENTRY_VUE_DSN=<snip>
 ```
+> Für die `HITOBITO_*` Einstellungen, siehe weiter unten.
 3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker-compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" qualix`
 4. **Frontend-Code builden**: `docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod'" node`
 5. **Optimierung (optional)**: `docker-compose run --entrypoint "composer install --optimize-autoloader --no-dev" qualix`
@@ -142,3 +143,7 @@ MIX_SENTRY_VUE_DSN=<snip>
 8. **Optimierung (optional)**: `php artisan config:cache && php artisan route:cache`
 9. **Datenbank-Tabellen einrichten**: `php artisan migrate`
 10. **Laravel Storage-Link einrichten**: `php artisan storage:link`
+
+### Hitobito / MiData Anbindung
+
+Um den Login via MiData (oder eine andere hitobito-Instanz) zu ermöglichen, muss man Qualix auf hitobito als erlaubte OAuth-Applikation registrieren. Dafür muss der jeweilige Dachverband kontaktiert werden. Bei der MiData stellt die PBS dafür ein [Antragsformular](https://forms.office.com/Pages/ResponsePage.aspx?id=iq6Fcs2Xq0m9ordFTZ0Fa8gnQG-i3p9KkbcKGL9nFhtUMEpMQkYwMzQxNUVEWEIxRTNWTDhPMDVEMS4u) zu Verfügung. Der Dachverband (z.B. die PBS) kann dann die Werte für die `HITOBITO_*` Variabeln in der .env-Datei liefern.
