@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App;
 
+use Illuminate\Support\Facades\Config;
 use Tests\TestCaseWithBasicData;
 
 class ReadWelcomePageTest extends TestCaseWithBasicData {
@@ -31,16 +32,17 @@ class ReadWelcomePageTest extends TestCaseWithBasicData {
 
     public function test_shouldDisplayContactWhenContactLinkSet(){
         // given
-        putenv("APP_CONTACT_LINK=mailto:test@test.ch");
+        Config::set('app.contact.link', 'mailto:test@test.ch');
         // when
         $response = $this->get('/course/' . $this->courseId);
         //then
         $response->assertOk();
         $response->assertSee(env('APP_CONTACT_TEXT', __('t.footer.contact_text')));
     }
+
     public function test_shouldNotDisplayContactWhenContactLinkNotSet(){
         // given
-        putenv("APP_CONTACT_LINK=");
+        Config::set('app.contact.link', '');
         // when
         $response = $this->get('/course/' . $this->courseId);
         //then

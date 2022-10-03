@@ -230,4 +230,22 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    'collaboration' => [
+        'enabled' => (bool) env('COLLABORATION_ENABLED', false),
+        'signaling_servers' => env('COLLABORATION_SIGNALING_SERVERS', false)
+    ],
+
+    'contact' => [
+        'link' => env('APP_CONTACT_LINK'),
+        'text' => env('APP_CONTACT_TEXT'),
+    ],
+
+    'sentry' => [
+        'user_feedback_url' => env('SENTRY_USER_FEEDBACK_URL'),
+        'mix' => [
+            'vue_dsn' => env('MIX_SENTRY_VUE_DSN'),
+        ],
+        'csp_report_uri' => env('sentry.csp_report_uri'),
+    ]
+
 ];

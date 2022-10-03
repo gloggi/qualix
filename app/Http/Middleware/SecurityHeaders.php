@@ -73,18 +73,18 @@ class SecurityHeaders {
     }
 
     protected function getCSPConnectSrc() {
-        if (!env('COLLABORATION_ENABLED')) return '';
+        if (!config('app.collaboration.enabled')) return '';
 
         $sentryUrl = '';
-        if (env('MIX_SENTRY_VUE_DSN')) {
-            $parsed = parse_url(env('MIX_SENTRY_VUE_DSN'));
+        if (config('app.sentry.mix.vue_dsn')) {
+            $parsed = parse_url(config('app.sentry.mix.vue_dsn'));
             $sentryUrl = $parsed['scheme'] . '://' . $parsed['host'] . (isset($parsed['port']) ? ':' . $parsed['port'] : '');
         }
-        return "connect-src 'self' $sentryUrl " . env('COLLABORATION_SIGNALING_SERVERS');
+        return "connect-src 'self' $sentryUrl " . config('app.collaboration.signaling_servers');
     }
 
     protected function getCSPReportUri() {
-        $reportUri = env('SENTRY_CSP_REPORT_URI', false);
+        $reportUri = config('app.sentry.csp_report_uri', false);
         if ($reportUri) return "report-uri $reportUri&sentry_environment=" . App::environment();
         return '';
     }

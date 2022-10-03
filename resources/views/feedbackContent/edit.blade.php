@@ -21,7 +21,7 @@
             :show-requirements="{{ $course->uses_requirements ? 'true' : 'false' }}"
             :show-categories="{{ $course->uses_categories ? 'true' : 'false' }}"
             :show-impression="{{ $course->uses_impressions ? 'true' : 'false' }}"
-            :collaboration-key="{{ json_encode(env('COLLABORATION_ENABLED') ? $feedback->collaborationKey : null) }}">
+            :collaboration-key="{{ json_encode(config('app.collaboration.enabled') ? $feedback->collaborationKey : null) }}">
 
             <div>
                 <b-button variant="link" class="px-0 mr-3" href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}">

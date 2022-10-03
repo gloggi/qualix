@@ -51,7 +51,7 @@ class Handler extends ExceptionHandler
      * @throws Throwable
      */
     public function report(Throwable $exception) {
-        if (!env('APP_DEBUG') && app()->bound('sentry') && $this->shouldReport($exception)) {
+        if (!config('app.debug') && app()->bound('sentry') && $this->shouldReport($exception)) {
             app('sentry')->captureException($exception);
         }
 
