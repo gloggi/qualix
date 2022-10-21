@@ -78,7 +78,7 @@ jobs:
       environment: ${{ steps.extract.outputs.environment }}
     steps:
       - id: extract
-        run: echo "::set-output name=environment::$(echo $GITHUB_REF | sed -e '/^refs\/heads\/deploy-\(.*\)$/!d;s//\1/')"
+        run: echo "environment=$(echo $GITHUB_REF | sed -e '/^refs\/heads\/deploy-\(.*\)$/!d;s//\1/')" >> $GITHUB_OUTPUT
       - env:
           EXTRACTED: ${{ steps.extract.outputs.environment }}
         run: 'echo "Extracted environment name: $EXTRACTED"'
