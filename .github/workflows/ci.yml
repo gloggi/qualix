@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - run: docker-compose up -d qualix db node mail
 
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - run: docker-compose up -d qualix db node mail
 
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - run: docker-compose up -d qualix db node mail e2e-mocks
 
@@ -95,7 +95,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - run: sudo apt-get update -y && sudo apt-get install -y lftp
 
