@@ -13,6 +13,13 @@ function ucfirst(text) {
     return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
+function fixNewlines(text) {
+    // Remove \r characters, because they are rendered as crossed-out box into the PDF.
+    // This happens only in multiline observations for now, because the rest of the text
+    // is divided into paragraphs and should never contain newlines.
+    return text.replace(/(\r\n|\r|\n)/g, '\n')
+}
+
 function FeedbackContents({feedbackContents, observations, requirements, statuses}) {
     if (!feedbackContents) return <View/>
 
@@ -52,7 +59,7 @@ function FeedbackContents({feedbackContents, observations, requirements, statuse
             }
 
             return <View wrap={false} style={styles.observation}>
-                <Text>{observation.participants.length > 1 ? <Text style={{ fontWeight: 'bold' }}>{observation.participants.map(p => p.scout_name).join(' ')} </Text> : <Text />}{observation.content}</Text>
+                <Text>{observation.participants.length > 1 ? <Text style={{ fontWeight: 'bold' }}>{observation.participants.map(p => p.scout_name).join(' ')} </Text> : <Text />}{fixNewlines(observation.content)}</Text>
                 <Text style={styles.observationMetadata}>{observation.block.name}, {new Date(observation.block.block_date).toLocaleDateString(document.documentElement.lang)}</Text>
             </View>
         }
