@@ -48,16 +48,11 @@
     display: none
 }
 
-.avatar {
-    @extend .rounded-circle;
-    width: 96px;
-    height: 96px;
-}
-
 .avatar-small {
     @extend .rounded-circle;
     width: 48px;
     height: 48px;
+    object-fit: cover;
 }
 
 .card {

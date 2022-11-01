@@ -2,6 +2,7 @@
 
 ##### November 2022
 - Auf dem Überblick werden jetzt die Bilder des Kursteams angezeigt, falls zumindest jemand ein Bild hochgeladen hat
+- Nicht-quadratische Avatar-Bilder von TN und Kursteam werden jetzt zugeschnitten statt zurechtgestaucht [#41](https://github.com/gloggi/qualix/issues/41)
 
 ##### Oktober 2022
 - Die Druckfunktion bei Rückmeldungen wurde überarbeitet. Es werden nun direkt fertige, konsistent gelayoutete PDF-Dateien heruntergeladen, anstatt dass man im Browser die PDF-Druck-Funktion verwenden muss. Da wir nun nicht mehr vom Verhalten unterschiedlicher Browser abhängig sind, konnten zudem die Seitenränder auf dem PDF verkleinert werden, um Papier zu sparen [#228](https://github.com/gloggi/qualix/issues/228)
