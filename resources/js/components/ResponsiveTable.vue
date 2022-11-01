@@ -5,7 +5,9 @@
     v-bind="$attrs">
     <b-thead>
       <b-tr>
-        <th v-for="(col, idx) in fields" :class="calculateHeaderClass(col, idx)">{{ col.label }}</th>
+        <th v-for="(col, idx) in fields" :class="calculateHeaderClass(col, idx)">
+          <slot :name="col.headerSlot" :label="col.label" :col="col" :idx="idx">{{ col.label }}</slot>
+        </th>
         <th v-if="showActions" class="actions"></th>
       </b-tr>
     </b-thead>

@@ -3,7 +3,11 @@
     :data="participants"
     :actions="actions"
     :fields="fields"
+    :header-class="headerClass"
     :cell-class="cellClass">
+    <template v-if="anyUserImages" v-for="user in users" v-slot:[headerSlotName(user)]="{ col: { user } }">
+      <div class="d-flex flex-column align-items-center"><img :src="user.image_path" class="avatar-small" :alt="user.name"/>{{ user.name }}</div>
+    </template>
     <template #feedback="{ row }">
       <a v-if="feedbackFor(row)"
          :href="routeUri('feedbackContent.edit', {course: feedbackData.course_id, participant: row.id, feedback: feedbackFor(row).id})"
@@ -42,7 +46,7 @@ export default {
     },
     fields() {
       const totalColumn = [{ label: this.$t('t.global.total'), value: participant => this.totalObservations(participant) }]
-      const observationColumns = this.users.map(user => ({ label: user.name, value: participant => participant.observation_counts_by_user[user.id] || 0}))
+      const observationColumns = this.users.map(user => ({ label: user.name, headerSlot: this.headerSlotName(user), user: user, value: participant => participant.observation_counts_by_user[user.id] || 0}))
       if (!this.multiple) {
         return totalColumn.concat(observationColumns)
       }
@@ -60,20 +64,30 @@ export default {
         ...observationColumns,
         ...feedbackColumn,
       ]
+    },
+    anyUserImages() {
+      return this.users.some(user => user.image_url)
     }
   },
   methods: {
     totalObservations(participant) {
       return this.users.reduce((sum, user) => sum + (participant.observation_counts_by_user[user.id] || 0), 0)
     },
+    headerClass({ col, colIdx }) {
+      if (colIdx === (this.multiple ? 1 : 0)) return ''
+      return 'text-lg-center'
+    },
     cellClass({ cellValue, colIdx }) {
       if (colIdx === (this.multiple ? 1 : 0)) return ''
-      if (cellValue < this.redThreshold) return 'bg-danger-light'
-      if (cellValue >= this.greenThreshold) return 'bg-success-light'
-      return ''
+      if (cellValue < this.redThreshold) return 'text-lg-center bg-danger-light'
+      if (cellValue >= this.greenThreshold) return 'text-lg-center bg-success-light'
+      return 'text-lg-center'
     },
     feedbackFor({ id }) {
       return this.feedbackData?.feedbacks?.find(feedback => feedback.participant_id === id)
+    },
+    headerSlotName(user) {
+      return 'user-' + user.id
     },
   },
 }
