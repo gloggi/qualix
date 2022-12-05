@@ -19,6 +19,8 @@
       :observations="observations"
       :requirements="requirements"
       :categories="categories"
+      :authors="authors"
+      :blocks="blocks"
       :requirement-statuses="requirementStatuses"
       :show-requirements="showRequirements"
       :show-categories="showCategories"
@@ -46,6 +48,8 @@ export default {
     observations: { type: Array, default: () => [] },
     requirements: { type: Array, default: () => [] },
     categories: { type: Array, default: () => [] },
+    authors: { type: Array, default: () => [] },
+    blocks: { type: Array, default: () => [] },
     requirementStatuses: { type: Array, default: () => [] },
     showRequirements: { type: Boolean, default: false },
     showCategories: { type: Boolean, default: false },

@@ -1,19 +1,30 @@
 <template>
   <div>
     <template v-if="anyRequirements || anyCategories || null !== usedObservations">
+      <b-row>
+        <b-col sm>
+          <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse>
+            <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
+          </b-button>
+        </b-col>
+        <b-col v-if="anyFilterActive">
+          <b-button variant="link" block class="mb-2 text-right" :visible="anyFilterActive" @click="clearAllFilters">
+            <p style="color: black; display: inline">
+              {{$tc('t.views.participant_details.shown_observations', 0, {filtered: filteredObservations.length, total : totalObservations})}} -
+            </p> {{$t('t.views.participant_details.show_all')}}
+          </b-button>
+        </b-col>
+      </b-row>
 
-      <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse>
-        <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
-      </b-button>
 
       <b-collapse id="filters-collapse" :visible="filtersVisibleInitially">
         <b-row>
 
-          <b-col cols="12" md="6" v-if="anyRequirements">
+          <b-col class="mb-2" cols="12" md="6" v-if="anyRequirements">
             <multi-select
               id="filter-requirements"
               name="filter-requirements"
-              class="form-control-multiselect"
+              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedRequirement!==null}"
               :selected.sync="selectedRequirement"
               :allow-empty="true"
               :placeholder="$t('t.views.participant_details.filter_by_requirement')"
@@ -25,11 +36,11 @@
               display-field="content"></multi-select>
           </b-col>
 
-          <b-col cols="12" md="6" v-if="anyCategories">
+          <b-col class="mb-2" cols="12" md="6" v-if="anyCategories">
             <multi-select
               id="filter-categories"
               name="filter-categories"
-              class="form-control-multiselect"
+              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedCategory!==null}"
               :selected.sync="selectedCategory"
               :allow-empty="true"
               :placeholder="$t('t.views.participant_details.filter_by_category')"
@@ -41,7 +52,39 @@
               display-field="name"></multi-select>
           </b-col>
 
-          <b-col cols="12" md="6" v-if="null !== usedObservations">
+          <b-col class="mb-2" cols="12" md="6">
+            <multi-select
+              id="filter-authors"
+              name="filter-authors"
+              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedAuthor!==null}"
+              :selected.sync="selectedAuthor"
+              :allow-empty="true"
+              :placeholder="$t('t.views.participant_details.filter_by_author')"
+              :options="authorOptions"
+              :multiple="false"
+              :close-on-select="true"
+              :show-labels="false"
+              :show-clear="true"
+              display-field="name"></multi-select>
+          </b-col>
+
+          <b-col class="mb-2" cols="12" md="6">
+            <multi-select
+              id="filter-authors"
+              name="filter-authors"
+              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedBlock!==null}"
+              :selected.sync="selectedBlock"
+              :allow-empty="true"
+              :placeholder="$t('t.views.participant_details.filter_by_block')"
+              :options="blockOptions"
+              :multiple="false"
+              :close-on-select="true"
+              :show-labels="false"
+              :show-clear="true"
+              display-field="name"></multi-select>
+          </b-col>
+
+          <b-col class="mb-2" cols="12" md="6" v-if="null !== usedObservations">
             <label for="hide-already-used-observations" class="d-flex w-100 h-100 align-items-center">
               <b-form-checkbox
                 type="checkbox"
@@ -111,6 +154,8 @@ export default {
     actions: { type: Object, default: () => {} },
     requirements: { type: Array, default: () => [] },
     categories: { type: Array, default: () => [] },
+    authors: { type: Array, default: () => [] },
+    blocks: { type: Array, default: () => [] },
     usedObservations: { type: Array, default: null },
     showContent: { type: Boolean, default: false },
     showBlock: { type: Boolean, default: false },
@@ -124,6 +169,8 @@ export default {
     return {
       selectedRequirement: null,
       selectedCategory: null,
+      selectedAuthor: null,
+      selectedBlock: null,
       hideUsedObservations: false,
     }
   },
@@ -139,7 +186,7 @@ export default {
       return fields
     },
     filtersVisibleInitially() {
-      return !!(this.selectedRequirement || this.selectedCategory)
+      return !!(this.selectedRequirement || this.selectedCategory || this.selectedAuthor || this.selectedBlock)
     },
     requirementOptions() {
       return [...this.requirements, this.noRequirementOption]
@@ -153,6 +200,12 @@ export default {
     noCategoryOption() {
       return {name: '-- ' + this.$t('t.views.participant_details.observations_without_category') + ' --', id: 0}
     },
+    authorOptions() {
+      return [...this.authors]
+    },
+    blockOptions() {
+      return [...this.blocks]
+    },
     filteredObservations() {
       return this.observations
         .filter(observation =>
@@ -164,9 +217,21 @@ export default {
           (this.selectedCategory.id === 0 && isEmpty(observation.categories)) ||
           observation.categories.map(category => category.id).includes(this.selectedCategory.id))
         .filter(observation =>
+          this.selectedAuthor === null ||
+          observation.user.id ===  this.selectedAuthor.id)
+        .filter(observation =>
+          this.selectedBlock === null ||
+          observation.block.id === this.selectedBlock.id)
+        .filter(observation =>
           this.usedObservations === null ||
           !this.hideUsedObservations ||
           !this.usedObservations.includes(observation.pivot.id))
+    },
+    anyFilterActive() {
+      return this.selectedRequirement !== null || this.selectedCategory !== null || this.selectedAuthor !== null || this.selectedBlock !== null || this.hideUsedObservations
+    },
+    totalObservations() {
+      return this.observations.length;
     },
     anyRequirements() {
       return this.requirements.length > 0
@@ -183,6 +248,13 @@ export default {
     }
   },
   methods: {
+    clearAllFilters() {
+      this.hideUsedObservations = false;
+      this.selectedAuthor = null;
+      this.selectedBlock = null;
+      this.selectedCategory = null;
+      this.selectedRequirement = null;
+    },
     persistFilter(key, value) {
       if (!this.courseId) return
       this.storage[key] = value != null ? value : null;
@@ -213,6 +285,16 @@ export default {
       }
     }
 
+    const storedAuthor = this.storage.selectedAuthor
+    if (storedAuthor !== null) {
+      this.selectedAuthor = this.authors.find(author => author.id === storedAuthor) ?? null;
+    }
+
+    const storedBlock = this.storage.selectedBlock
+    if (storedBlock !== null) {
+      this.selectedBlock = this.blocks.find(block => block.id === storedBlock) ?? null;
+    }
+
     if (this.usedObservations !== null) {
       this.hideUsedObservations = !!this.storage.hideUsedObservations
     }
@@ -224,6 +306,12 @@ export default {
     selectedCategory() {
       this.persistFilter('selectedCategory', this.selectedCategory?.id)
     },
+    selectedAuthor() {
+      this.persistFilter('selectedAuthor', this.selectedAuthor?.id)
+    },
+    selectedBlock() {
+      this.persistFilter('selectedBlock', this.selectedBlock?.id)
+    },
     hideUsedObservations() {
       this.persistFilter('hideUsedObservations', this.hideUsedObservations)
     },
@@ -231,6 +319,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
+.background-color-on-selection.form-control-multiselect .multiselect .multiselect__tags {
+  background:lightgrey;
+}
 </style>
