@@ -1,10 +1,21 @@
 <template>
   <div>
     <template v-if="anyRequirements || anyCategories || null !== usedObservations">
+      <b-row>
+        <b-col sm>
+          <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse>
+            <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
+          </b-button>
+        </b-col>
+        <b-col v-if="anyFilterActive">
+          <b-button variant="link" block class="mb-2 text-right" :visible="anyFilterActive" @click="clearAllFilters">
+            <p style="color: black; display: inline">
+              {{$tc('t.views.participant_details.shown_observations', 0, {filtered: filteredObservations.length, total : totalObservations})}} -
+            </p> {{$t('t.views.participant_details.show_all')}}
+          </b-button>
+        </b-col>
+      </b-row>
 
-      <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse>
-        <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
-      </b-button>
 
       <b-collapse id="filters-collapse" :visible="filtersVisibleInitially">
         <b-row>
@@ -13,7 +24,7 @@
             <multi-select
               id="filter-requirements"
               name="filter-requirements"
-              class="form-control-multiselect"
+              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedRequirement!==null}"
               :selected.sync="selectedRequirement"
               :allow-empty="true"
               :placeholder="$t('t.views.participant_details.filter_by_requirement')"
@@ -29,7 +40,7 @@
             <multi-select
               id="filter-categories"
               name="filter-categories"
-              class="form-control-multiselect"
+              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedCategory!==null}"
               :selected.sync="selectedCategory"
               :allow-empty="true"
               :placeholder="$t('t.views.participant_details.filter_by_category')"
@@ -167,6 +178,12 @@ export default {
           !this.hideUsedObservations ||
           !this.usedObservations.includes(observation.pivot.id))
     },
+    anyFilterActive() {
+      return this.selectedRequirement !== null || this.selectedCategory !== null || this.hideUsedObservations
+    },
+    totalObservations() {
+      return this.observations.length;
+    },
     anyRequirements() {
       return this.requirements.length > 0
     },
@@ -182,6 +199,11 @@ export default {
     }
   },
   methods: {
+    clearAllFilters() {
+      this.hideUsedObservations = false;
+      this.selectedCategory = null;
+      this.selectedRequirement = null;
+    },
     persistFilter(key, value) {
       if (!this.courseId) return
       this.storage[key] = value != null ? value : null;
@@ -230,6 +252,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
+.background-color-on-selection.form-control-multiselect .multiselect .multiselect__tags {
+  background:lightgrey;
+}
 </style>

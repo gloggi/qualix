@@ -550,6 +550,8 @@ return array(
 			"page_title" => ":participantName",
 			"really_delete_observation" => "Willst du diese Beobachtung wirklich löschen?",
 			"title" => "TN Details",
+			"shown_observations" => ":filtered von :total Beobachtungen angezeigt",
+			"show_all" => "Alle anzeigen",
 		),
 		"feedback_content" => array(
 			"back_to_participant" => "Zurück zu :name",
