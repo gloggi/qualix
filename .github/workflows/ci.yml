@@ -114,10 +114,12 @@ jobs:
           app-key: ${{ secrets.APP_KEY }}
           app-url: ${{ secrets.APP_URL }}
           app-contact-link: ${{ secrets.APP_CONTACT_LINK }}
+          app-contact-text: ${{ secrets.APP_CONTACT_TEXT }}
           db-host: ${{ secrets.DB_HOST }}
           db-database: ${{ secrets.DB_DATABASE }}
           db-username: ${{ secrets.DB_USERNAME }}
           db-password: ${{ secrets.DB_PASSWORD }}
+          mail-mailer: ${{ secrets.MAIL_MAILER }}
           mail-host: ${{ secrets.MAIL_HOST }}
           mail-port: ${{ secrets.MAIL_PORT }}
           mail-username: ${{ secrets.MAIL_USERNAME }}
@@ -126,6 +128,8 @@ jobs:
           hitobito-base-url: ${{ secrets.HITOBITO_BASE_URL }}
           hitobito-client-uid: ${{ secrets.HITOBITO_CLIENT_UID }}
           hitobito-client-secret: ${{ secrets.HITOBITO_CLIENT_SECRET }}
+          collaboration-enabled: ${{ secrets.COLLABORATION_ENABLED }}
+          collaboration-signaling-servers: ${{ secrets.COLLABORATION_SIGNALING_SERVERS }}
           sentry-laravel-dsn: ${{ secrets.SENTRY_LARAVEL_DSN }}
           sentry-user-feedback-url: ${{ secrets.SENTRY_USER_FEEDBACK_URL }}
           sentry-csp-report-uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
