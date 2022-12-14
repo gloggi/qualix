@@ -39,6 +39,11 @@ inputs:
     required: false
     default: ''
 
+  app-contact-text:
+    description: 'The text of the footer contact link'
+    required: false
+    default: ''
+
   db-host:
     description: 'The URL of the database server'
     required: false
@@ -56,6 +61,11 @@ inputs:
   db-password:
     description: 'The password that will be used to log in to the database'
     required: true
+
+  mail-mailer:
+    description: 'The mailer to use'
+    required: false
+    default: smtp
 
   mail-host:
     description: 'The location of the SMTP server to send emails'
@@ -97,6 +107,16 @@ inputs:
     description: 'The Secret of the hitobito OAuth application'
     required: true
 
+  collaboration-enabled:
+    description: 'If collaboration features should be enabled'
+    required: false
+    default: 'true'
+
+  collaboration-signaling-servers:
+    description: 'The collaboration signaling servers to use'
+    required: false
+    default: '"wss://signaling.yjs.dev wss://y-webrtc-signaling-eu.herokuapp.com wss://y-webrtc-signaling-us.herokuapp.com"'
+
   sentry-laravel-dsn:
     description: 'DSN for reporting backend errors to sentry'
     required: false
@@ -132,10 +152,12 @@ runs:
         APP_DEBUG: ${{ inputs.app-debug }}
         APP_URL: ${{ inputs.app-url }}
         APP_CONTACT_LINK: ${{ inputs.app-contact-link }}
+        APP_CONTACT_TEXT: ${{ inputs.app-contact-text }}
         DB_HOST: ${{ inputs.db-host }}
         DB_DATABASE: ${{ inputs.db-database }}
         DB_USERNAME: ${{ inputs.db-username }}
         DB_PASSWORD: ${{ inputs.db-password }}
+        MAIL_MAILER: ${{ inputs.mail-mailer }}
         MAIL_HOST: ${{ inputs.mail-host }}
         MAIL_PORT: ${{ inputs.mail-port }}
         MAIL_USERNAME: ${{ inputs.mail-username }}
@@ -145,6 +167,8 @@ runs:
         HITOBITO_BASE_URL: ${{ inputs.hitobito-base-url }}
         HITOBITO_CLIENT_UID: ${{ inputs.hitobito-client-uid }}
         HITOBITO_CLIENT_SECRET: ${{ inputs.hitobito-client-secret }}
+        COLLABORATION_ENABLED: ${{ inputs.collaboration-enabled }}
+        COLLABORATION_SIGNALING_SERVERS: ${{ inputs.collaboration-signaling-servers }}
         SENTRY_LARAVEL_DSN: ${{ inputs.sentry-laravel-dsn }}
         SENTRY_USER_FEEDBACK_URL: ${{ inputs.sentry-user-feedback-url }}
         SENTRY_CSP_REPORT_URI: ${{ inputs.sentry-csp-report-uri }}

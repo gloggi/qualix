@@ -10,6 +10,10 @@ sed -ri "s~^APP_DEBUG=.*$~APP_DEBUG=$APP_DEBUG~" .env
 sed -ri "s~^APP_URL=.*$~APP_URL=$APP_URL~" .env
 sed -ri "s~^APP_CONTACT_LINK=.*$~APP_CONTACT_LINK=$APP_CONTACT_LINK~" .env
 
+if [ "$APP_CONTACT_TEXT" != ""]; then
+  sed -ri "s~^#APP_CONTACT_TEXT=.*$~APP_CONTACT_TEXT=$APP_CONTACT_TEXT~" .env
+fi
+
 sed -ri "s~^DB_HOST=.*$~DB_HOST=$DB_HOST~" .env
 sed -ri "s~^DB_DATABASE=.*$~DB_DATABASE=$DB_DATABASE~" .env
 sed -ri "s~^DB_USERNAME=.*$~DB_USERNAME=$DB_USERNAME~" .env
@@ -17,17 +21,30 @@ sed -ri "s~^DB_PASSWORD=.*$~DB_PASSWORD=$DB_PASSWORD~" .env
 
 sed -ri "s~^SESSION_SECURE_COOKIE=.*$~SESSION_SECURE_COOKIE=true~" .env
 
-sed -ri "s~^MAIL_HOST=.*$~MAIL_HOST=$MAIL_HOST~" .env
-sed -ri "s~^MAIL_PORT=.*$~MAIL_PORT=$MAIL_PORT~" .env
-sed -ri "s~^MAIL_USERNAME=.*$~MAIL_USERNAME=$MAIL_USERNAME~" .env
-sed -ri "s~^MAIL_PASSWORD=.*$~MAIL_PASSWORD=$MAIL_PASSWORD~" .env
-sed -ri "s~^MAIL_ENCRYPTION=.*$~MAIL_ENCRYPTION=$MAIL_ENCRYPTION~" .env
+if [ "$MAIL_MAILER" = "sendmail" ]; then
+  sed -ri "s~^MAIL_MAILER=.*$~MAIL_MAILER=$MAIL_MAILER~" .env
+
+  sed -ri "s~^MAIL_HOST=.*$~~" .env
+  sed -ri "s~^MAIL_PORT=.*$~~" .env
+  sed -ri "s~^MAIL_USERNAME=.*$~~" .env
+  sed -ri "s~^MAIL_PASSWORD=.*$~~" .env
+  sed -ri "s~^MAIL_ENCRYPTION=.*$~~" .env
+else
+  sed -ri "s~^MAIL_HOST=.*$~MAIL_HOST=$MAIL_HOST~" .env
+  sed -ri "s~^MAIL_PORT=.*$~MAIL_PORT=$MAIL_PORT~" .env
+  sed -ri "s~^MAIL_USERNAME=.*$~MAIL_USERNAME=$MAIL_USERNAME~" .env
+  sed -ri "s~^MAIL_PASSWORD=.*$~MAIL_PASSWORD=$MAIL_PASSWORD~" .env
+  sed -ri "s~^MAIL_ENCRYPTION=.*$~MAIL_ENCRYPTION=$MAIL_ENCRYPTION~" .env
+fi
 sed -ri "s~^MAIL_FROM_ADDRESS=.*$~MAIL_FROM_ADDRESS=$MAIL_FROM_ADDRESS~" .env
 
 sed -ri "s~^HITOBITO_BASE_URL=.*$~HITOBITO_BASE_URL=$HITOBITO_BASE_URL~" .env
 sed -ri "s~^HITOBITO_CLIENT_UID=.*$~HITOBITO_CLIENT_UID=$HITOBITO_CLIENT_UID~" .env
 sed -ri "s~^HITOBITO_CLIENT_SECRET=.*$~HITOBITO_CLIENT_SECRET=$HITOBITO_CLIENT_SECRET~" .env
 sed -ri "s~^HITOBITO_CALLBACK_URI=.*$~HITOBITO_CALLBACK_URI=${APP_URL}/login/hitobito/callback~" .env
+
+sed -ri "s~^COLLABORATION_ENABLED=.*$~COLLABORATION_ENABLED=${COLLABORATION_ENABLED}~" .env
+sed -ri "s~^COLLABORATION_SIGNALING_SERVERS=.*$~COLLABORATION_SIGNALING_SERVERS=${COLLABORATION_SIGNALING_SERVERS}~" .env
 
 sed -ri "s~^SENTRY_RELEASE=.*$~SENTRY_RELEASE=$(git rev-parse HEAD)~" .env
 sed -ri "s~^SENTRY_LARAVEL_DSN=.*$~SENTRY_LARAVEL_DSN=$SENTRY_LARAVEL_DSN~" .env
