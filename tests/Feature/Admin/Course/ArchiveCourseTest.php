@@ -7,7 +7,9 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\Invitation;
 use App\Models\Observation;
+use App\Models\ObservationAssignment;
 use App\Models\Participant;
+use App\Models\ParticipantGroup;
 use App\Models\Requirement;
 use App\Models\RequirementDetail;
 use App\Models\Trainer;
@@ -71,6 +73,8 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $requirementId = $this->createRequirement();
         Block::find($this->blockId)->requirements()->attach($requirementId);
         $this->createObservation('Beobachtung', 1, $requirementId, $categoryId);
+        $this->createObservationAssignment();
+        $this->createParticipantGroup();
         $this->post('/course/' . $this->courseId . '/admin/invitation', ['email' => 'invited@test.com']);
         $numBlocks = Block::all()->count();
         $numCategories = Category::all()->count();
@@ -80,10 +84,16 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $numParticipants = Participant::all()->count();
         $numRequirements = Requirement::all()->count();
         $numRequirementDetails = RequirementDetail::all()->count();
+        $numObservationAssignments = ObservationAssignment::all()->count();
+        $numParticipantGroups = ParticipantGroup::all()->count();
         $numTrainers = Trainer::all()->count();
         $numBlocksRequirements = DB::table('blocks_requirements')->count();
         $numObservationsCategories = DB::table('observations_categories')->count();
         $numObservationsRequirements = DB::table('observations_requirements')->count();
+        $numObservationAssignmentBlocks = DB::table('observation_assignment_blocks')->count();
+        $numObservationAssignmentParticipants = DB::table('observation_assignment_participants')->count();
+        $numObservationAssignmentUsers = DB::table('observation_assignment_users')->count();
+        $numParticipantGroupsParticipants = DB::table('participant_groups_participants')->count();
 
         // when
         $this->post('/course/' . $this->courseId . '/admin/archive');
@@ -97,10 +107,16 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $this->assertEquals($numParticipants - 1, Participant::all()->count(), 'All participants of course should have been removed from DB');
         $this->assertEquals($numRequirements, Requirement::all()->count(), 'All requirements should have remained in course');
         $this->assertEquals($numRequirementDetails, RequirementDetail::all()->count(), 'All requirement details should have remained in course');
+        $this->assertEquals($numObservationAssignments - 1, ObservationAssignment::all()->count(), 'All observation assignments should have been removed from DB');
+        $this->assertEquals($numParticipantGroups - 1, ParticipantGroup::all()->count(), 'All participant groups should have been removed from DB');
         $this->assertEquals($numTrainers, Trainer::all()->count(), 'All trainers should have remained in course');
         $this->assertEquals($numBlocksRequirements, DB::table('blocks_requirements')->count(), 'All blocks_requirements should have remained in course');
         $this->assertEquals($numObservationsCategories - 1, DB::table('observations_categories')->count(), 'All observations_categories entries of course should have been removed from DB');
         $this->assertEquals($numObservationsRequirements - 1, DB::table('observations_requirements')->count(), 'All observations_requirements entries of course should have been removed from DB');
+        $this->assertEquals($numObservationAssignmentBlocks - 1, DB::table('observation_assignment_blocks')->count(), 'All observation_assignment_blocks entries of course should have been removed from DB');
+        $this->assertEquals($numObservationAssignmentParticipants - 1, DB::table('observation_assignment_participants')->count(), 'All observation_assignment_participants entries of course should have been removed from DB');
+        $this->assertEquals($numObservationAssignmentUsers - 1, DB::table('observation_assignment_users')->count(), 'All observation_assignment_users entries of course should have been removed from DB');
+        $this->assertEquals($numParticipantGroupsParticipants - 1, DB::table('participant_groups_participants')->count(), 'All participant_groups_participants entries of course should have been removed from DB');
     }
 
     public function test_shouldDeleteImagesOfParticipantsFromStorage() {

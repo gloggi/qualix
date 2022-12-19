@@ -1,5 +1,8 @@
 # Changelog
 
+##### Dezember 2022
+- Wenn ein Kurs archiviert wird, werden jetzt auch alle TN-Gruppen und Beobachtungsaufträge gelöscht, da diese potenziell Namen von TN enthalten können, und durch Anonymisierung der Mehrwert bei späterer Einsicht verloren gehen würde [#298](https://github.com/gloggi/qualix/issues/298)
+
 ##### November 2022
 - Auf dem Überblick werden jetzt die Bilder des Kursteams angezeigt, falls zumindest jemand ein Bild hochgeladen hat
 - Nicht-quadratische Avatar-Bilder von TN und Kursteam werden jetzt zugeschnitten statt zurechtgestaucht [#41](https://github.com/gloggi/qualix/issues/41)
