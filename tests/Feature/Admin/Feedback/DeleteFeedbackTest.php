@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Feedback;
 
+use App\Models\Course;
 use App\Models\Feedback;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCaseWithBasicData;
@@ -31,6 +32,24 @@ class DeleteFeedbackTest extends TestCaseWithBasicData {
 
     public function test_shouldDeleteFeedback() {
         // given
+
+        // when
+        $response = $this->delete('/course/' . $this->courseId . '/admin/feedbacks/' . $this->feedbackDataId);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/feedbacks');
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee('Die Rückmeldung "Zwischenquali" wurde erfolgreich gelöscht.');
+
+        $response = $this->get('/course/' . $this->courseId . '/admin/feedbacks');
+        $response->assertDontSee('Zwischenquali');
+    }
+
+    public function test_shouldWorkInArchivedCourse() {
+        // given
+        Course::find($this->courseId)->update(['archived' => true]);
 
         // when
         $response = $this->delete('/course/' . $this->courseId . '/admin/feedbacks/' . $this->feedbackDataId);

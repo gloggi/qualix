@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\FeedbackList;
 
+use App\Models\Course;
 use App\Models\Feedback;
 use App\Models\FeedbackData;
 use App\Models\Participant;
@@ -38,6 +39,18 @@ class ReadRequirementsMatrixTest extends TestCaseWithBasicData {
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/login');
+    }
+
+    public function test_shouldRequireNonArchivedCourse() {
+        // given
+        Course::find($this->courseId)->update(['archived' => true]);
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
 
     public function test_shouldWork() {

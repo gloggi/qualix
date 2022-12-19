@@ -41,6 +41,18 @@ class CreateFeedbackTest extends TestCaseWithBasicData {
         $response->assertRedirect('/login');
     }
 
+    public function test_shouldRequireNonArchivedCourse() {
+        // given
+        Course::find($this->courseId)->update(['archived' => true]);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/feedbacks', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
+    }
+
     public function test_shouldCreateAndDisplayFeedback() {
         // given
 

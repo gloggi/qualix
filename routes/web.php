@@ -45,11 +45,11 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::get('/course/{course}', [HomeController::class, 'index'])->name('index');
 
     Route::get('/course/{course}/crib/{user?}', [BlockListController::class, 'crib'])->name('crib');
-    Route::get('/course/{course}/feedbacks', [FeedbackListController::class, 'index'])->name('feedbacks');
-    Route::get('/course/{course}/feedbacks/{feedback_data}', [FeedbackListController::class, 'progressOverview'])->name('feedback.requirementMatrix');
-    Route::post('/course/{course}/feedbacks/{feedback_data}/{participant}/{requirement}', [FeedbackListController::class, 'updateRequirementStatus'])->name('feedback.updateRequirementStatus');
 
     Route::middleware('courseNotArchived')->group(function () {
+        Route::get('/course/{course}/feedbacks', [FeedbackListController::class, 'index'])->name('feedbacks');
+        Route::get('/course/{course}/feedbacks/{feedback_data}', [FeedbackListController::class, 'progressOverview'])->name('feedback.requirementMatrix');
+        Route::post('/course/{course}/feedbacks/{feedback_data}/{participant}/{requirement}', [FeedbackListController::class, 'updateRequirementStatus'])->name('feedback.updateRequirementStatus');
         Route::get('/course/{course}/participants', [ParticipantListController::class, 'index'])->name('participants');
         Route::get('/course/{course}/participants/{participant}', [ParticipantDetailController::class, 'index'])->name('participants.detail');
 
@@ -129,9 +129,11 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::delete('/course/{course}/admin/category/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.delete');
 
     Route::get('/course/{course}/admin/feedbacks', [FeedbackController::class, 'index'])->name('admin.feedbacks');
-    Route::post('/course/{course}/admin/feedbacks', [FeedbackController::class, 'store'])->name('admin.feedbacks.store');
-    Route::get('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'edit'])->name('admin.feedbacks.edit');
-    Route::post('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'update'])->name('admin.feedbacks.update');
+    Route::middleware('courseNotArchived')->group(function() {
+        Route::post('/course/{course}/admin/feedbacks', [FeedbackController::class, 'store'])->name('admin.feedbacks.store');
+        Route::get('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'edit'])->name('admin.feedbacks.edit');
+        Route::post('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'update'])->name('admin.feedbacks.update');
+    });
     Route::delete('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'destroy'])->name('admin.feedbacks.delete');
 
     Route::get('/newcourse', [CourseController::class, 'create'])->name('admin.newcourse');

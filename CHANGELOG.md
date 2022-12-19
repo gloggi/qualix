@@ -2,6 +2,7 @@
 
 ##### Dezember 2022
 - Wenn ein Kurs archiviert wird, werden jetzt auch alle TN-Gruppen und Beobachtungsaufträge gelöscht, da diese potenziell Namen von TN enthalten können, und durch Anonymisierung der Mehrwert bei späterer Einsicht verloren gehen würde [#298](https://github.com/gloggi/qualix/issues/298)
+- In archivierten Kursen können Rückmeldungen nicht mehr bearbeitet oder neu angelegt werden, weil in solchen Kursen sowieso keine TN mehr ausgewählt werden können.
 
 ##### November 2022
 - Auf dem Überblick werden jetzt die Bilder des Kursteams angezeigt, falls zumindest jemand ein Bild hochgeladen hat
