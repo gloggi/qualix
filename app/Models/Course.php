@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\DB;
  * @property Invitation[] $invitations
  * @property User[] $users
  * @property Requirement[] $requirements
+ * @property ParticipantGroup[] $participantGroups
+ * @property ObservationAssignment[] $observationAssignments
  * @property Category[] $categories
  * @property Observation[] $observations
  * @property Collection $participants
@@ -61,6 +63,7 @@ class Course extends Model {
     public function requirements() {
         return $this->hasMany('App\Models\Requirement', 'course_id');
     }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -68,6 +71,7 @@ class Course extends Model {
     {
         return $this->hasMany('App\Models\ParticipantGroup', 'course_id');
     }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
