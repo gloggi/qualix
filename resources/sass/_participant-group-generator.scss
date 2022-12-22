@@ -1,0 +1,19 @@
+.participant-group-generator {
+    .round-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .group-grid {
+        display: grid;
+        gap: 0 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+        align-content: start;
+    }
+
+    .group-grid-input {
+        @extend .h3;
+        grid-column: 1 / -1;
+    }
+}

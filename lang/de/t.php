@@ -340,10 +340,12 @@ return array(
 					"question" => "Muss ich TN-Gruppen für meinen Kurs erfassen?",
 				),
 				"create_success" => "TN-Gruppe wurde erfolgreich erstellt.",
+				"create_many_success" => "TN-Gruppen wurden erfolgreich erstellt.",
 				"delete_success" => "TN-Gruppe wurde erfolgreich gelöscht.",
 				"edit" => "TN-Gruppe bearbeiten",
 				"edit_success" => "TN-Gruppe wurde erfolgreich gespeichert.",
 				"existing" => "TN-Gruppen :courseName",
+				"generate" => "TN-Gruppen-Generator",
 				"menu_name" => "TN-Gruppen",
 				"new" => "Neue TN-Gruppe",
 				"no_participant_group" => "Bisher sind keine TN-Gruppen erfasst.",
@@ -354,6 +356,14 @@ return array(
 					"answer" => "Teilnehmende können zu Gruppen hinzugefügt werden. Diese Gruppen stehen dann zur Schnellwahl bei Beobachtungen zu Verfügung.",
 					"question" => "Was sind TN-Gruppen?",
 				),
+			),
+			"participant_group_generator" => array(
+				"generate" => "Gruppen generieren",
+				"no_participant_group" => "Bisher sind keine TN-Gruppen erfasst.",
+				"page_title" => "TN-Gruppen verwalten",
+				"participants" => "Zu gruppierende TN",
+				"participant_groups" => "Überschneidungen mit bestehenden TN-Gruppen vermeiden",
+				"select_all" => "Alle auswählen"
 			),
 			"feedbacks" => array(
 				"create" => "Erstellen",

@@ -21,7 +21,11 @@
 
             <button-submit label="{{__('t.global.add')}}">
 
-                @component('components.help-text', ['id' => 'requirementsHelp', 'key' => 't.views.admin.participant_groups.what_are_participant_groups'])@endcomponent
+                <a class="btn btn-link mb-1" href="{{ route('admin.participantGroups.generate', ['course' => $course]) }}">
+                    {{ __('t.views.admin.participant_groups.generate') }}
+                </a>
+
+            @component('components.help-text', ['id' => 'requirementsHelp', 'key' => 't.views.admin.participant_groups.what_are_participant_groups'])@endcomponent
 
             </button-submit>
 

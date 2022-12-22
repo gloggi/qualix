@@ -21,6 +21,7 @@
 @import 'forms';
 @import 'responsive-table';
 @import 'editor';
+@import 'participant-group-generator';
 
 @include media-breakpoint-up(lg) {
     .align-items-center-lg {

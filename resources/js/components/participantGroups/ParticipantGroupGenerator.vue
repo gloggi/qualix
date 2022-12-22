@@ -1,0 +1,134 @@
+<template>
+  <div class="participant-group-generator">
+    <input-multi-select
+      :label="$t('t.views.admin.participant_group_generator.participants')"
+      name="participants"
+      v-model="selectedParticipantIds"
+      multiple
+      :options="participants"
+      display-field="scout_name"
+      :groups="{[$t('t.views.admin.participant_group_generator.select_all')]: participants.map(p => p.id).join()}"
+      ></input-multi-select>
+
+    <input-multi-select
+      v-if="participantGroups.length"
+      :label="$t('t.views.admin.participant_group_generator.participant_groups')"
+      name="participant-groups"
+      v-model="selectedParticipantGroupIds"
+      multiple
+      :options="participantGroups"
+      display-field="group_name"
+      :groups="{[$t('t.views.admin.participant_group_generator.select_all')]: participantGroups.map(pg => pg.id).join()}"></input-multi-select>
+
+    <button-submit :label="$t('t.views.admin.participant_group_generator.generate')" @click.prevent="generate"></button-submit>
+
+    <div v-if="proposedGroups" class="w-100">
+      <div v-for="(round, roundIndex) in proposedGroups" class="form-group round-grid mt-3 w-100">
+        <div v-for="(proposedGroup, groupIndex) in round.groups" class="group-grid">
+          <input class="form-control group-grid-input mt-3 mb-2" type="text" :name="`participantGroups[${roundIndex}-${groupIndex}][group_name]`" v-model="proposedGroup.name" />
+          <input-hidden :name="`participantGroups[${roundIndex}-${groupIndex}][participants]`" :value="participantsFormValue(proposedGroup)"></input-hidden>
+          <template v-for="participant in proposedGroup.participants">
+            <participant-avatar :participant="participant"></participant-avatar>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <button-submit :label="$t('t.global.save')" :disabled="!proposedGroups"></button-submit>
+  </div>
+</template>
+
+<script>
+import ParticipantAvatar from './ParticipantAvatar'
+import InputMultiSelect from '../form/InputMultiSelect'
+import InputHidden from '../form/InputHidden'
+import RowText from '../form/RowText'
+export default {
+  name: 'ParticipantGroupGenerator',
+  components: {RowText, InputHidden, InputMultiSelect, ParticipantAvatar},
+  props: {
+    participants: { type: Array, required: true },
+    participantGroups: { type: Array, default: () => [] },
+  },
+  data() {
+    return {
+      selectedParticipants: this.participants,
+      selectedParticipantGroups: this.participantGroups,
+      worker: new Worker(new URL('./index.worker.js', import.meta.url)),
+      proposedGroups: null,
+    }
+  },
+  computed: {
+    selectedParticipantIds: {
+      get() {
+        return this.selectedParticipants.map(participant => participant.id).join(',')
+      },
+      set(newValue) {
+        const ids = newValue.split(',')
+        this.selectedParticipants = this.participants.filter(p => ids.includes(p.id.toString()))
+      }
+    },
+    selectedParticipantGroupIds: {
+      get() {
+        return this.selectedParticipantGroups.map(participantGroup => participantGroup.id).join(',')
+      },
+      set(newValue) {
+        const ids = newValue.split(',')
+        this.selectedParticipantGroups = this.participantGroups.filter(pg => ids.includes(pg.id.toString()))
+      }
+    },
+    discouragedGroups() {
+      return this.selectedParticipantGroups
+        .map(group => {
+          return group.participants
+            .map(participant => this.participantToIndex(participant))
+            .filter(index => index !== -1)
+        })
+        .filter(group => group.length > 1)
+    }
+  },
+  mounted() {
+    this.worker.addEventListener('message', this.onResults, false)
+  },
+  methods: {
+    participantToIndex(participant) {
+      return this.selectedParticipants.map(p => p.id).indexOf(participant.id)
+    },
+    indexToParticipant(index) {
+      return this.selectedParticipants[index]
+    },
+    participantsFormValue(group) {
+      return group.participants.map(participant => participant.id).join(',')
+    },
+    generate() {
+      this.proposedGroups = null
+      this.worker.postMessage({
+        numParticipants: this.selectedParticipants.length,
+        rounds: [
+          { groups: 4, ofSize: 3, forbiddenPairs: [], discouragedGroups: this.discouragedGroups },
+          { groups: 3, ofSize: 4, forbiddenPairs: [], discouragedGroups: this.discouragedGroups },
+          { groups: 2, ofSize: 7, forbiddenPairs: [], discouragedGroups: this.discouragedGroups },
+          { groups: 5, ofSize: 2, forbiddenPairs: [], discouragedGroups: this.discouragedGroups },
+          { groups: 3, ofSize: 4, forbiddenPairs: [], discouragedGroups: this.discouragedGroups },
+        ],
+      })
+    },
+    onResults(results) {
+      console.log(results.data)
+      if (!results.data.done) return
+
+      this.proposedGroups = results.data.rounds.map((round, roundIndex) => ({
+        name: 'Round ' + (1+roundIndex), // TODO use user-specified round name
+        groups: round.map((group, groupIndex) => ({
+          name: 'Group ' + (1+roundIndex) + '.' + (1+groupIndex), // TODO use user-specified group name
+          participants: group.map(participant => this.indexToParticipant(participant)),
+        })),
+      }))
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
