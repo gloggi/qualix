@@ -359,10 +359,11 @@ return array(
 			),
 			"participant_group_generator" => array(
 				"generate" => "Gruppen generieren",
+				"discourage_existing_participant_groups" => "Überschneidungen mit bestehenden TN-Gruppen vermeiden",
+				"discourage_membership_groups" => "Abteilungen möglichst durchmischen",
 				"no_participant_group" => "Bisher sind keine TN-Gruppen erfasst.",
 				"page_title" => "TN-Gruppen verwalten",
 				"participants" => "Zu gruppierende TN",
-				"participant_groups" => "Überschneidungen mit bestehenden TN-Gruppen vermeiden",
 				"select_all" => "Alle auswählen"
 			),
 			"feedbacks" => array(

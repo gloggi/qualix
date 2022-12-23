@@ -2,7 +2,7 @@
   <div class="participant-group-generator">
     <input-multi-select
       :label="$t('t.views.admin.participant_group_generator.participants')"
-      name="participants"
+      name=""
       v-model="selectedParticipantIds"
       multiple
       :options="participants"
@@ -12,13 +12,15 @@
 
     <input-multi-select
       v-if="participantGroups.length"
-      :label="$t('t.views.admin.participant_group_generator.participant_groups')"
-      name="participant-groups"
+      :label="$t('t.views.admin.participant_group_generator.discourage_existing_participant_groups')"
+      name=""
       v-model="selectedParticipantGroupIds"
       multiple
       :options="participantGroups"
       display-field="group_name"
       :groups="{[$t('t.views.admin.participant_group_generator.select_all')]: participantGroups.map(pg => pg.id).join()}"></input-multi-select>
+
+    <input-checkbox name="" :label="$t('t.views.admin.participant_group_generator.discourage_membership_groups')" v-model="discourageMembershipGroups" switch size="lg"></input-checkbox>
 
     <button-submit :label="$t('t.views.admin.participant_group_generator.generate')" @click.prevent="generate"></button-submit>
 
@@ -39,13 +41,16 @@
 </template>
 
 <script>
+import { groupBy } from 'lodash'
 import ParticipantAvatar from './ParticipantAvatar'
 import InputMultiSelect from '../form/InputMultiSelect'
 import InputHidden from '../form/InputHidden'
 import RowText from '../form/RowText'
+import InputCheckbox from '../form/InputCheckbox'
+
 export default {
   name: 'ParticipantGroupGenerator',
-  components: {RowText, InputHidden, InputMultiSelect, ParticipantAvatar},
+  components: {InputCheckbox, RowText, InputHidden, InputMultiSelect, ParticipantAvatar},
   props: {
     participants: { type: Array, required: true },
     participantGroups: { type: Array, default: () => [] },
@@ -54,6 +59,7 @@ export default {
     return {
       selectedParticipants: this.participants,
       selectedParticipantGroups: this.participantGroups,
+      discourageMembershipGroups: '0',
       worker: new Worker(new URL('./index.worker.js', import.meta.url)),
       proposedGroups: null,
     }
@@ -78,14 +84,20 @@ export default {
       }
     },
     discouragedGroups() {
-      return this.selectedParticipantGroups
-        .map(group => {
-          return group.participants
+      return this.discouragedExistingGroups.concat(this.discouragedMembershipGroups)
+        .map(discouragedGroup => {
+          return discouragedGroup
             .map(participant => this.participantToIndex(participant))
             .filter(index => index !== -1)
         })
         .filter(group => group.length > 1)
-    }
+    },
+    discouragedExistingGroups() {
+      return this.selectedParticipantGroups.map(group => group.participants)
+    },
+    discouragedMembershipGroups() {
+      return this.discourageMembershipGroups === '1' ? Object.values(groupBy(this.selectedParticipants, 'group')) : []
+    },
   },
   mounted() {
     this.worker.addEventListener('message', this.onResults, false)
