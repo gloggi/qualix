@@ -20,7 +20,11 @@
       display-field="group_name"
       :groups="{[$t('t.views.admin.participant_group_generator.select_all')]: participantGroups.map(pg => pg.id).join()}"></input-multi-select>
 
-    <input-checkbox name="" :label="$t('t.views.admin.participant_group_generator.discourage_membership_groups')" v-model="discourageMembershipGroups" switch size="lg"></input-checkbox>
+    <input-checkbox
+      v-if="anyDuplicateMembershipGroups"
+      name=""
+      :label="$t('t.views.admin.participant_group_generator.discourage_membership_groups')"
+      v-model="discourageMembershipGroups" switch size="lg"></input-checkbox>
 
     <button-submit :label="$t('t.views.admin.participant_group_generator.generate')" @click.prevent="generate"></button-submit>
 
@@ -41,7 +45,7 @@
 </template>
 
 <script>
-import { groupBy } from 'lodash'
+import { groupBy, countBy } from 'lodash'
 import ParticipantAvatar from './ParticipantAvatar'
 import InputMultiSelect from '../form/InputMultiSelect'
 import InputHidden from '../form/InputHidden'
@@ -73,6 +77,13 @@ export default {
         const ids = newValue.split(',')
         this.selectedParticipants = this.participants.filter(p => ids.includes(p.id.toString()))
       }
+    },
+    anyDuplicateMembershipGroups() {
+      return 1 < Math.max(
+        ...Object.values(countBy(
+          this.selectedParticipants.filter(participant => !!participant.group), 'group')
+        )
+      )
     },
     selectedParticipantGroupIds: {
       get() {
