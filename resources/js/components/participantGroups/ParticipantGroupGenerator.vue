@@ -41,7 +41,9 @@
       :label="$t('t.views.admin.participant_group_generator.generate')"
       :disabled="!groupSplitsValid || inProgress"
       @click.prevent="generate">
-      <b-spinner v-if="inProgress" small></b-spinner>
+      <b-progress v-if="inProgress" :max="100" animated class="mb-3">
+        <b-progress-bar :value="progress">{{ progress }}%</b-progress-bar>
+      </b-progress>
     </button-submit>
 
     <div v-if="proposedGroups" class="w-100">
@@ -84,6 +86,7 @@ export default {
       groupSplits: [this.defaultGroupSplit()],
       groupSplitsValid: true,
       inProgress: false,
+      progress: 0,
       worker: new Worker(new URL('./index.worker.js', import.meta.url)),
       proposedGroups: null,
     }
@@ -161,6 +164,7 @@ export default {
       this.groupSplits = this.groupSplits.filter(split => split.split.id !== id)
     },
     generate() {
+      this.progress = 0
       this.inProgress = true
       this.proposedGroups = null
       this.worker.postMessage({
@@ -173,9 +177,11 @@ export default {
       })
     },
     onResults(results) {
+      this.progress = results.data.progress
       if (!results.data.done) return
 
       this.inProgress = false
+      this.progress = 0
       this.proposedGroups = results.data.rounds.map((round, roundIndex) => ({
         name: this.groupSplits[roundIndex].split.name,
         groups: round.map((group, groupIndex) => ({

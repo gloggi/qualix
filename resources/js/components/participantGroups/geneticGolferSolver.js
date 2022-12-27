@@ -179,6 +179,7 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
     return ordering.map(originalLocation => array[originalLocation])
   }
 
+  let progress = 0
   let bestResult = null
   let bestScore = null
   // The primary score can easily reach infinity (as bad as possible) if there are many rounds or large group sizes,
@@ -188,9 +189,10 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
   let bestTertiaryScore = null
   const numRounds = roundSpecifications.length
   const numPossiblePermutations = range(1, numRounds+1).reduce((factorial, i) => factorial*i)
+  const numTriedPermutations = Math.min(MAX_PERMUTATIONS_TO_TRY, numPossiblePermutations)
   for (let permutation of permute(range(numRounds))) {
     // randomly sample whether to skip this permutation
-    if (Math.random() * numPossiblePermutations > Math.min(MAX_PERMUTATIONS_TO_TRY, numPossiblePermutations)) {
+    if (Math.random() * numPossiblePermutations > numTriedPermutations) {
       continue
     }
 
@@ -217,9 +219,10 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
         roundScores: reorder(result.roundScores, inversePermutation),
       }
     }
-    onProgress({ ...result, done: false })
+    progress++
+    onProgress({ ...result, done: false, progress: Math.min(100, Math.round(100. * progress / numTriedPermutations)) })
   }
-  onProgress({ ...bestResult, done: true })
+  onProgress({ ...bestResult, done: true, progress: 100 })
 }
 
 function forEachPair(array, callback) {
