@@ -116,6 +116,7 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
   function optimizeOrderedRounds(roundSpecifications) {
     const rounds = []
     const roundScores = []
+    let roundsWithoutViolations = 0
 
     roundSpecifications.forEach((roundSpecification, index) => {
       const weights = createWeights(roundSpecification)
@@ -134,6 +135,9 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
         generation++;
       }
       const bestOption  = topOptions[0]
+      if (bestOption.total < Infinity) {
+        roundsWithoutViolations++
+      }
       // Filter out all empty slots from any groups
       rounds.push(cleanUpGroups(bestOption.groups))
       roundScores.push(bestOption.total)
@@ -143,6 +147,7 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
     return {
       rounds,
       roundScores,
+      roundsWithoutViolations,
     }
   }
 
@@ -176,6 +181,11 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
 
   let bestResult = null
   let bestScore = null
+  // The primary score can easily reach infinity (as bad as possible) if there are many rounds or large group sizes,
+  // in combination with forbidden pairings.
+  // So we need a secondary and tertiary score to rank permutations with infinite primary score.
+  let bestSecondaryScore = null
+  let bestTertiaryScore = null
   const numRounds = roundSpecifications.length
   const numPossiblePermutations = range(1, numRounds+1).reduce((factorial, i) => factorial*i)
   for (let permutation of permute(range(numRounds))) {
@@ -190,8 +200,16 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
     const result = optimizeOrderedRounds(reorderedRounds)
     // record the best result (lower score is better)
     const totalScore = result.roundScores.reduce((sum, score) => sum + score)
-    if (bestScore === null || totalScore < bestScore) {
+    const secondaryScore = -result.roundsWithoutViolations // with the number of rounds without violations, higher is better
+    const tertiaryScore = result.roundScores.filter(score => score < Infinity).reduce((sum, score) => sum + score)
+    if (bestScore === null ||
+      totalScore < bestScore ||
+      (totalScore === bestScore && secondaryScore < bestSecondaryScore) ||
+      (totalScore === bestScore && secondaryScore === bestSecondaryScore && tertiaryScore < bestTertiaryScore)
+    ) {
       bestScore = totalScore
+      bestSecondaryScore = secondaryScore
+      bestTertiaryScore = tertiaryScore
 
       const inversePermutation = unzip(sortBy(zip(permutation, range(numRounds)), e => e[0]))[1]
       bestResult = {
