@@ -1,7 +1,7 @@
 <template>
   <div class="form-group row">
-    <label :for="name | kebabCase" class="col-md-3 col-form-label text-md-right py-0">{{ label }}</label>
-    <div class="col-md-6">
+    <label :for="name | kebabCase" class="col-form-label py-0" :class="labelClass">{{ label }}</label>
+    <div :class="inputColumnClass">
       <input-hidden :id="name + '-unchecked-value' | kebabCase" :name="name" value="0"></input-hidden>
       <b-form-checkbox
         type="checkbox"

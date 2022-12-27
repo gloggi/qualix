@@ -1,8 +1,8 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-md-3 col-form-label text-md-right">{{ label }}</label>
+    <label :for="name | kebabCase" class="col-form-label" :class="labelClass">{{ label }}</label>
 
-    <div class="col-md-6">
+    <div :class="inputColumnClass">
       <input
         type="file"
         :id="name | kebabCase"
