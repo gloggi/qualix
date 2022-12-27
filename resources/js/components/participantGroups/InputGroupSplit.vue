@@ -1,0 +1,64 @@
+<template>
+  <b-card bg-variant="light">
+    <b-button
+      variant="link"
+      class="card-remove-button text-danger"
+      @click="$emit('remove')"
+      :title="$t('t.global.remove')"
+      :aria-label="$t('t.global.remove')"
+      :disabled="!deletable">
+      <i class="fas fa-circle-minus"></i>
+    </b-button>
+    <input-text
+      :name="'group-split-' + value.id + '-name'"
+      :label="$t('t.views.admin.participant_group_generator.split.name')"
+      v-model="value.name"
+      required
+      narrow-form
+    ></input-text>
+
+    <input-text
+      :name="'group-split-' + value.id + '-groups'"
+      v-model="value.groups"
+      :label="$t('t.views.admin.participant_group_generator.split.groups')"
+      required
+      narrow-form>
+      <template #append>
+        <b-input-group-text>{{ groupSizeText }}</b-input-group-text>
+      </template>
+    </input-text>
+  </b-card>
+</template>
+
+<script>
+import Input from '../../mixins/input'
+import validGroupSplit from './validGroupSplit'
+
+export default {
+  name: 'InputGroupSplit',
+  mixins: [ Input ],
+  props: {
+    value: { type: Object, default: () => ({}) },
+    numParticipants: { type: Number, required: true },
+    deletable: { type: Boolean, default: true },
+  },
+  computed: {
+    groupSizeText() {
+      if (!validGroupSplit(this.value, this.numParticipants)) {
+        return this.$t('t.views.admin.participant_group_generator.split.enter_number_of_groups')
+      }
+      const groups = parseInt(this.value.groups)
+      const min = Math.floor(this.numParticipants / groups)
+      const max = Math.ceil(this.numParticipants / groups)
+      if (min === max) {
+        return this.$t('t.views.admin.participant_group_generator.split.of_size', { size: min })
+      }
+      return this.$t('t.views.admin.participant_group_generator.split.of_size_between', { min, max })
+    },
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

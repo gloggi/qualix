@@ -187,3 +187,10 @@
 .clear-both {
     clear: both;
 }
+
+.card-remove-button {
+    position: absolute;
+    top: 0.625rem;
+    right: 0.5rem;
+    z-index: 1;
+}

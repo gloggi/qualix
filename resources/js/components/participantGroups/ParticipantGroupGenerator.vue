@@ -7,6 +7,7 @@
       multiple
       :options="participants"
       display-field="scout_name"
+      required
       :groups="{[$t('t.views.admin.participant_group_generator.select_all')]: participants.map(p => p.id).join()}"
       ></input-multi-select>
 
@@ -26,7 +27,20 @@
       :label="$t('t.views.admin.participant_group_generator.discourage_membership_groups')"
       v-model="discourageMembershipGroups" switch size="lg"></input-checkbox>
 
-    <button-submit :label="$t('t.views.admin.participant_group_generator.generate')" @click.prevent="generate"></button-submit>
+    <input-group-splits
+      name="groupSplits"
+      :label="$t('t.views.admin.participant_group_generator.group_splits')"
+      :num-participants="selectedParticipants.length"
+      v-model="groupSplits"
+      :valid.sync="groupSplitsValid"
+      required
+      @add-group-split="addGroupSplit"
+      @remove-group-split="removeGroupSplit"></input-group-splits>
+
+    <button-submit
+      :label="$t('t.views.admin.participant_group_generator.generate')"
+      :disabled="!groupSplitsValid"
+      @click.prevent="generate"></button-submit>
 
     <div v-if="proposedGroups" class="w-100">
       <div v-for="(round, roundIndex) in proposedGroups" class="form-group round-grid mt-3 w-100">
@@ -51,10 +65,11 @@ import InputMultiSelect from '../form/InputMultiSelect'
 import InputHidden from '../form/InputHidden'
 import RowText from '../form/RowText'
 import InputCheckbox from '../form/InputCheckbox'
+import InputGroupSplits from './InputGroupSplits'
 
 export default {
   name: 'ParticipantGroupGenerator',
-  components: {InputCheckbox, RowText, InputHidden, InputMultiSelect, ParticipantAvatar},
+  components: {InputCheckbox, RowText, InputHidden, InputMultiSelect, ParticipantAvatar, InputGroupSplits},
   props: {
     participants: { type: Array, required: true },
     participantGroups: { type: Array, default: () => [] },
@@ -64,6 +79,8 @@ export default {
       selectedParticipants: this.participants,
       selectedParticipantGroups: this.participantGroups,
       discourageMembershipGroups: '0',
+      groupSplits: [this.defaultGroupSplit()],
+      groupSplitsValid: true,
       worker: new Worker(new URL('./index.worker.js', import.meta.url)),
       proposedGroups: null,
     }
@@ -123,17 +140,32 @@ export default {
     participantsFormValue(group) {
       return group.participants.map(participant => participant.id).join(',')
     },
+    defaultGroupSplit() {
+      return {
+        split: {
+          id: (Math.random() + 1).toString(36).substring(2,7),
+          name: this.$t('t.views.admin.participant_group_generator.default_split_name'),
+          groups: String(Math.ceil(this.participants.length / Math.max(1, Math.min(this.participants.length, 4)))),
+          discouragedPairings: [],
+          forbiddenPairings: [],
+        }
+      }
+    },
+    addGroupSplit() {
+      this.groupSplits = this.groupSplits.concat(this.defaultGroupSplit())
+    },
+    removeGroupSplit(id) {
+      this.groupSplits = this.groupSplits.filter(split => split.split.id !== id)
+    },
     generate() {
       this.proposedGroups = null
       this.worker.postMessage({
         numParticipants: this.selectedParticipants.length,
-        rounds: [
-          { groups: 4, ofSize: 3, forbiddenPairings: [], discouragedPairings: this.discouragedPairings },
-          { groups: 3, ofSize: 4, forbiddenPairings: [], discouragedPairings: this.discouragedPairings },
-          { groups: 2, ofSize: 7, forbiddenPairings: [], discouragedPairings: this.discouragedPairings },
-          { groups: 5, ofSize: 2, forbiddenPairings: [], discouragedPairings: this.discouragedPairings },
-          { groups: 3, ofSize: 4, forbiddenPairings: [], discouragedPairings: this.discouragedPairings },
-        ],
+        rounds: this.groupSplits.map(split => ({
+          ...split.split,
+          ofSize: Math.ceil(this.selectedParticipants.length / parseInt(split.split.groups)),
+          discouragedPairings: split.split.discouragedPairings.concat(this.discouragedPairings),
+        })),
       })
     },
     onResults(results) {
@@ -141,9 +173,9 @@ export default {
       if (!results.data.done) return
 
       this.proposedGroups = results.data.rounds.map((round, roundIndex) => ({
-        name: 'Round ' + (1+roundIndex), // TODO use user-specified round name
+        name: this.groupSplits[roundIndex].split.name,
         groups: round.map((group, groupIndex) => ({
-          name: 'Group ' + (1+roundIndex) + '.' + (1+groupIndex), // TODO use user-specified group name
+          name: this.groupSplits[roundIndex].split.name + ' ' + (1+groupIndex),
           participants: group.map(participant => this.indexToParticipant(participant)),
         })),
       }))

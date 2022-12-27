@@ -45,6 +45,7 @@ return array(
 		"positive" => "Positiv",
 		"print" => "Drucken",
 		"really_delete" => "Wirklich löschen?",
+		"remove" => "Entfernen",
 		"save" => "Speichern",
 		"total" => "Total",
 		"yes" => "Ja",
@@ -358,13 +359,23 @@ return array(
 				),
 			),
 			"participant_group_generator" => array(
-				"generate" => "Gruppen generieren",
+				"add_group_split" => "Weitere Gruppenaufteilung hinzufügen",
+				"generate" => "Gruppenvorschlag generieren",
+				"default_split_name" => "Arbeitsgruppe",
 				"discourage_existing_participant_groups" => "Überschneidungen mit bestehenden TN-Gruppen vermeiden",
 				"discourage_membership_groups" => "Abteilungen möglichst durchmischen",
+				"group_splits" => "Gruppenaufteilungen",
 				"no_participant_group" => "Bisher sind keine TN-Gruppen erfasst.",
 				"page_title" => "TN-Gruppen verwalten",
 				"participants" => "Zu gruppierende TN",
-				"select_all" => "Alle auswählen"
+				"select_all" => "Alle auswählen",
+				"split" => array(
+					"enter_number_of_groups" => "Bitte Gruppenanzahl eingeben",
+					"groups" => "Anzahl Gruppen",
+					"name" => "Bezeichnung",
+					"of_size" => "Gruppen mit je :size TN",
+					"of_size_between" => "Gruppen mit je :min-:max TN",
+				),
 			),
 			"feedbacks" => array(
 				"create" => "Erstellen",
