@@ -39,8 +39,10 @@
 
     <button-submit
       :label="$t('t.views.admin.participant_group_generator.generate')"
-      :disabled="!groupSplitsValid"
-      @click.prevent="generate"></button-submit>
+      :disabled="!groupSplitsValid || inProgress"
+      @click.prevent="generate">
+      <b-spinner v-if="inProgress" small></b-spinner>
+    </button-submit>
 
     <div v-if="proposedGroups" class="w-100">
       <div v-for="(round, roundIndex) in proposedGroups" class="form-group round-grid mt-3 w-100">
@@ -81,6 +83,7 @@ export default {
       discourageMembershipGroups: '0',
       groupSplits: [this.defaultGroupSplit()],
       groupSplitsValid: true,
+      inProgress: false,
       worker: new Worker(new URL('./index.worker.js', import.meta.url)),
       proposedGroups: null,
     }
@@ -158,6 +161,7 @@ export default {
       this.groupSplits = this.groupSplits.filter(split => split.split.id !== id)
     },
     generate() {
+      this.inProgress = true
       this.proposedGroups = null
       this.worker.postMessage({
         numParticipants: this.selectedParticipants.length,
@@ -169,9 +173,9 @@ export default {
       })
     },
     onResults(results) {
-      console.log(results.data)
       if (!results.data.done) return
 
+      this.inProgress = false
       this.proposedGroups = results.data.rounds.map((round, roundIndex) => ({
         name: this.groupSplits[roundIndex].split.name,
         groups: round.map((group, groupIndex) => ({
