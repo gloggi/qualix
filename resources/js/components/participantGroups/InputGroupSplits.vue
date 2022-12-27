@@ -7,6 +7,7 @@
         <input-group-split
           :name="'group-split-' + split.split.id"
           :num-participants="numParticipants"
+          :any-duplicate-membership-groups="anyDuplicateMembershipGroups"
           v-model="split.split"
           :deletable="value.length > 1"
           @remove="$emit('remove-group-split', split.split.id)"></input-group-split>
@@ -33,6 +34,7 @@ export default {
     label: { type: String, required: true },
     value: { type: Array, default: () => [] },
     numParticipants: { type: Number, required: true },
+    anyDuplicateMembershipGroups: { type: Boolean, default: false },
     valid: { type: Boolean, default: true },
   },
   computed: {

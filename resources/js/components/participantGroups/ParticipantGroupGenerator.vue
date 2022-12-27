@@ -1,47 +1,56 @@
 <template>
   <div class="participant-group-generator">
-    <input-multi-select
-      :label="$t('t.views.admin.participant_group_generator.participants')"
-      name=""
-      v-model="selectedParticipantIds"
-      multiple
-      :options="participants"
-      display-field="scout_name"
-      required
-      :groups="{[$t('t.views.admin.participant_group_generator.select_all')]: participants.map(p => p.id).join()}"
-      ></input-multi-select>
-
-    <input-multi-select
-      v-if="participantGroups.length"
-      :label="$t('t.views.admin.participant_group_generator.discourage_existing_participant_groups')"
-      name=""
-      v-model="selectedParticipantGroupIds"
-      multiple
-      :options="participantGroups"
-      display-field="group_name"
-      :groups="{[$t('t.views.admin.participant_group_generator.select_all')]: participantGroups.map(pg => pg.id).join()}"></input-multi-select>
-
-    <input-checkbox
-      v-if="anyDuplicateMembershipGroups"
-      name=""
-      :label="$t('t.views.admin.participant_group_generator.discourage_membership_groups')"
-      v-model="discourageMembershipGroups" switch size="lg"></input-checkbox>
-
     <input-group-splits
       name="groupSplits"
       :label="$t('t.views.admin.participant_group_generator.group_splits')"
       :num-participants="selectedParticipants.length"
       v-model="groupSplits"
       :valid.sync="groupSplitsValid"
+      :any-duplicate-membership-groups="anyDuplicateMembershipGroups"
       required
       @add-group-split="addGroupSplit"
       @remove-group-split="removeGroupSplit"></input-group-splits>
+
+    <row-text>
+      <b-button variant="link" class="px-0" v-b-toggle="'participant-group-generator-conditions'">
+        {{ $t('t.views.admin.participant_group_generator.conditions') }} <i class="fas fa-caret-down"></i>
+      </b-button>
+    </row-text>
+
+    <b-collapse id="participant-group-generator-conditions" :visible="false">
+      <input-multi-select
+        :label="$t('t.views.admin.participant_group_generator.participants')"
+        name=""
+        v-model="selectedParticipantIds"
+        multiple
+        :options="participants"
+        display-field="scout_name"
+        required
+        :groups="{[$t('t.views.admin.participant_group_generator.select_all')]: participants.map(p => p.id).join()}"
+      ></input-multi-select>
+
+      <input-multi-select
+        v-if="participantGroups.length"
+        :label="$t('t.views.admin.participant_group_generator.discourage_existing_participant_groups')"
+        name=""
+        v-model="selectedParticipantGroupIds"
+        multiple
+        :options="participantGroups"
+        display-field="group_name"
+        :groups="{[$t('t.views.admin.participant_group_generator.select_all')]: participantGroups.map(pg => pg.id).join()}"></input-multi-select>
+
+      <input-checkbox
+        v-if="anyDuplicateMembershipGroups"
+        name=""
+        :label="$t('t.views.admin.participant_group_generator.discourage_membership_groups')"
+        v-model="discourageMembershipGroups" switch size="lg"></input-checkbox>
+    </b-collapse>
 
     <button-submit
       :label="$t('t.views.admin.participant_group_generator.generate')"
       :disabled="!groupSplitsValid || inProgress"
       @click.prevent="generate">
-      <b-progress v-if="inProgress" :max="100" animated class="mb-3">
+      <b-progress v-if="inProgress" :max="100" animated class="mb-3 mt-1">
         <b-progress-bar :value="progress">{{ progress }}%</b-progress-bar>
       </b-progress>
     </button-submit>
@@ -117,20 +126,11 @@ export default {
         this.selectedParticipantGroups = this.participantGroups.filter(pg => ids.includes(pg.id.toString()))
       }
     },
-    discouragedPairings() {
-      return this.discouragedExistingGroups.concat(this.discouragedMembershipGroups)
-        .map(discouragedGroup => {
-          return discouragedGroup
-            .map(participant => this.participantToIndex(participant))
-            .filter(index => index !== -1)
-        })
-        .filter(group => group.length > 1)
-    },
     discouragedExistingGroups() {
       return this.selectedParticipantGroups.map(group => group.participants)
     },
-    discouragedMembershipGroups() {
-      return this.discourageMembershipGroups === '1' ? Object.values(groupBy(this.selectedParticipants, 'group')) : []
+    membershipGroupPairings() {
+      return Object.values(groupBy(this.selectedParticipants, 'group'))
     },
   },
   mounted() {
@@ -154,14 +154,20 @@ export default {
           groups: String(Math.ceil(this.participants.length / Math.max(1, Math.min(this.participants.length, 4)))),
           discouragedPairings: [],
           forbiddenPairings: [],
+          forbidMembershipGroups: '0',
         }
       }
     },
     addGroupSplit() {
-      this.groupSplits = this.groupSplits.concat(this.defaultGroupSplit())
+      this.groupSplits = [...this.groupSplits, this.defaultGroupSplit()]
     },
     removeGroupSplit(id) {
       this.groupSplits = this.groupSplits.filter(split => split.split.id !== id)
+    },
+    preparePairings(pairings) {
+      return pairings
+        .map(group => group.map(participant => this.participantToIndex(participant)).filter(index => index !== -1))
+        .filter(group => group.length > 1)
     },
     generate() {
       this.progress = 0
@@ -172,7 +178,15 @@ export default {
         rounds: this.groupSplits.map(split => ({
           ...split.split,
           ofSize: Math.ceil(this.selectedParticipants.length / parseInt(split.split.groups)),
-          discouragedPairings: split.split.discouragedPairings.concat(this.discouragedPairings),
+          discouragedPairings: this.preparePairings([
+            ...split.split.discouragedPairings,
+            ...this.discouragedExistingGroups,
+            ...(this.discourageMembershipGroups === '1' ? this.membershipGroupPairings : [])
+          ]),
+          forbiddenPairings: this.preparePairings([
+            ...split.split.forbiddenPairings,
+            ...(split.split.forbidMembershipGroups === '1' ? this.membershipGroupPairings : []),
+          ]),
         })),
       })
     },

@@ -10,7 +10,7 @@
       <i class="fas fa-circle-minus"></i>
     </b-button>
     <input-text
-      :name="'group-split-' + value.id + '-name'"
+      :name="`group-split-${value.id}-name`"
       :label="$t('t.views.admin.participant_group_generator.split.name')"
       v-model="value.name"
       required
@@ -18,7 +18,7 @@
     ></input-text>
 
     <input-text
-      :name="'group-split-' + value.id + '-groups'"
+      :name="`group-split-${value.id}-groups`"
       v-model="value.groups"
       :label="$t('t.views.admin.participant_group_generator.split.groups')"
       required
@@ -27,6 +27,25 @@
         <b-input-group-text>{{ groupSizeText }}</b-input-group-text>
       </template>
     </input-text>
+
+    <row-text v-if="anyDuplicateMembershipGroups" narrow-form>
+      <b-button variant="link" class="px-0" v-b-toggle="`group-split-${value.id}-conditions`">
+        {{ $t('t.views.admin.participant_group_generator.split.conditions') }} <i class="fas fa-caret-down"></i>
+      </b-button>
+    </row-text>
+
+    <b-collapse :id="`group-split-${value.id}-conditions`" :visible="false">
+
+      <input-checkbox
+        v-if="anyDuplicateMembershipGroups"
+        :name="`group-split-${value.id}-forbid-membership-groups`"
+        :label="$t('t.views.admin.participant_group_generator.split.forbid_membership_groups')"
+        v-model="value.forbidMembershipGroups"
+        switch
+        size="lg"
+        narrow-form></input-checkbox>
+
+    </b-collapse>
   </b-card>
 </template>
 
@@ -40,6 +59,7 @@ export default {
   props: {
     value: { type: Object, default: () => ({}) },
     numParticipants: { type: Number, required: true },
+    anyDuplicateMembershipGroups: { type: Boolean, default: false },
     deletable: { type: Boolean, default: true },
   },
   computed: {
