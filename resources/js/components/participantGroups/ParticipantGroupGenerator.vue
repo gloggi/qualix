@@ -58,7 +58,13 @@
     <div v-if="proposedGroups" class="w-100">
       <div v-for="(round, roundIndex) in proposedGroups" class="form-group round-grid mt-3 w-100">
         <div v-for="(proposedGroup, groupIndex) in round.groups" class="group-grid">
-          <input class="form-control group-grid-input mt-3 mb-2" type="text" :name="`participantGroups[${roundIndex}-${groupIndex}][group_name]`" v-model="proposedGroup.name" />
+          <input
+            class="form-control group-grid-input mt-3 mb-2"
+            type="text"
+            :name="`participantGroups[${roundIndex}-${groupIndex}][group_name]`"
+            :aria-label="$t('t.views.admin.participant_group_generator.group_name', { name: groupSplits[roundIndex].split.name, number: groupIndex + 1 })"
+            v-model="proposedGroup.name"
+            required="required" />
           <input-hidden :name="`participantGroups[${roundIndex}-${groupIndex}][participants]`" :value="participantsFormValue(proposedGroup)"></input-hidden>
           <template v-for="participant in proposedGroup.participants">
             <participant-avatar :participant="participant"></participant-avatar>

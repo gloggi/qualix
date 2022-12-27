@@ -365,6 +365,7 @@ return array(
 				"default_split_name" => "Arbeitsgruppe",
 				"discourage_existing_participant_groups" => "Überschneidungen mit bestehenden TN-Gruppen vermeiden",
 				"discourage_membership_groups" => "Abteilungs-durchmischte Gruppen generell bevorzugen",
+				"group_name" => "Gruppenname für :name nummer :number",
 				"group_splits" => "Gruppenaufteilungen",
 				"no_participant_group" => "Bisher sind keine TN-Gruppen erfasst.",
 				"page_title" => "TN-Gruppen verwalten",
