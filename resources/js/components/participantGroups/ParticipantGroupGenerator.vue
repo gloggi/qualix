@@ -94,7 +94,7 @@ export default {
         this.selectedParticipantGroups = this.participantGroups.filter(pg => ids.includes(pg.id.toString()))
       }
     },
-    discouragedGroups() {
+    discouragedPairings() {
       return this.discouragedExistingGroups.concat(this.discouragedMembershipGroups)
         .map(discouragedGroup => {
           return discouragedGroup
@@ -128,11 +128,11 @@ export default {
       this.worker.postMessage({
         numParticipants: this.selectedParticipants.length,
         rounds: [
-          { groups: 4, ofSize: 3, forbiddenPairs: [], discouragedGroups: this.discouragedGroups },
-          { groups: 3, ofSize: 4, forbiddenPairs: [], discouragedGroups: this.discouragedGroups },
-          { groups: 2, ofSize: 7, forbiddenPairs: [], discouragedGroups: this.discouragedGroups },
-          { groups: 5, ofSize: 2, forbiddenPairs: [], discouragedGroups: this.discouragedGroups },
-          { groups: 3, ofSize: 4, forbiddenPairs: [], discouragedGroups: this.discouragedGroups },
+          { groups: 4, ofSize: 3, forbiddenPairings: [], discouragedPairings: this.discouragedPairings },
+          { groups: 3, ofSize: 4, forbiddenPairings: [], discouragedPairings: this.discouragedPairings },
+          { groups: 2, ofSize: 7, forbiddenPairings: [], discouragedPairings: this.discouragedPairings },
+          { groups: 5, ofSize: 2, forbiddenPairings: [], discouragedPairings: this.discouragedPairings },
+          { groups: 3, ofSize: 4, forbiddenPairings: [], discouragedPairings: this.discouragedPairings },
         ],
       })
     },

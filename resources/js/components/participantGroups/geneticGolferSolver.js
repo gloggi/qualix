@@ -74,7 +74,7 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
     }
   }
 
-  function createWeights({ groups, ofSize, forbiddenPairs, discouragedGroups }) {
+  function createWeights({ groups, ofSize, forbiddenPairings: forbiddenPairs, discouragedPairings: discouragedGroups }) {
     const totalSize = groups * ofSize
     const weights = range(totalSize).map(() => range(totalSize).fill(0))
 
@@ -88,10 +88,8 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
 
     // Forbid leaving more than one empty slot per group
     if (totalSize > numParticipants) {
-      range(numParticipants + 1, totalSize).forEach(emptySlot1 => {
-        range(numParticipants + 1, totalSize).forEach(emptySlot2 => {
-          weights[emptySlot1][emptySlot2] = weights[emptySlot2][emptySlot1] = Infinity
-        })
+      forEachPair(range(numParticipants + 1, totalSize), (emptySlot1, emptySlot2) => {
+        weights[emptySlot1][emptySlot2] = weights[emptySlot2][emptySlot1] = Infinity
       })
     }
 
