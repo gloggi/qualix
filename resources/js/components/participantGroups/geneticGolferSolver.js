@@ -107,7 +107,9 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
   function cleanUpGroups(groups) {
     return sortBy(groups
       // Remove any empty slot placeholder participants
-      .map(group => group.filter(participant => participant < numParticipants)),
+      .map(group => group.filter(participant => participant < numParticipants))
+      // Sort the participants inside the groups in their original ordering
+        .map(group => sortBy(group)),
       // Sort smaller groups to the back
       (group) => -group.length
     )
