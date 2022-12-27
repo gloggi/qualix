@@ -3,11 +3,12 @@
  * This code is licensed under the MIT license.
  * Originally written by Brad Buchanan.
  */
-import { shuffle, range, sortBy } from 'lodash'
+import { shuffle, range, sortBy, zip, unzip } from 'lodash'
 
 const GENERATIONS = 30
 const RANDOM_MUTATIONS = 2
 const MAX_DESCENDANTS_TO_EXPLORE = 100
+const MAX_PERMUTATIONS_TO_TRY = 100
 
 function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
   function score(round, weights) {
@@ -112,38 +113,95 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
     )
   }
 
-  const rounds = []
-  const roundScores = []
+  function optimizeOrderedRounds(roundSpecifications) {
+    const rounds = []
+    const roundScores = []
 
-  roundSpecifications.forEach((roundSpecification, index) => {
-    const weights = createWeights(roundSpecification)
-    // Previous rounds also count towards the weights
-    rounds.forEach(previousRound => updateWeights(previousRound, weights))
-    let topOptions = range(5).map(() => score(generatePermutation(roundSpecification), weights))
-    let generation = 0
-    while (generation < GENERATIONS && topOptions[0].total > 0) {
-      const candidates = generateMutations(topOptions, weights, roundSpecification)
-      let sorted = sortBy(candidates, c => c.total)
-      const bestScore = sorted[0].total
-      // Reduce to all the options that share the best score
-      topOptions = sorted.slice(0, sorted.findIndex(opt => opt.total > bestScore))
-      // Shuffle those options and only explore some maximum number of them
-      topOptions = shuffle(topOptions).slice(0, MAX_DESCENDANTS_TO_EXPLORE)
-      generation++;
-    }
-    const bestOption  = topOptions[0]
-    // Filter out all empty slots from any groups
-    rounds.push(cleanUpGroups(bestOption.groups))
-    roundScores.push(bestOption.total)
-    updateWeights(bestOption.groups, weights)
+    roundSpecifications.forEach((roundSpecification, index) => {
+      const weights = createWeights(roundSpecification)
+      // Previous rounds also count towards the weights
+      rounds.forEach(previousRound => updateWeights(previousRound, weights))
+      let topOptions = range(5).map(() => score(generatePermutation(roundSpecification), weights))
+      let generation = 0
+      while (generation < GENERATIONS && topOptions[0].total > 0) {
+        const candidates = generateMutations(topOptions, weights, roundSpecification)
+        let sorted = sortBy(candidates, c => c.total)
+        const bestScore = sorted[0].total
+        // Reduce to all the options that share the best score
+        topOptions = sorted.slice(0, sorted.findIndex(opt => opt.total > bestScore))
+        // Shuffle those options and only explore some maximum number of them
+        topOptions = shuffle(topOptions).slice(0, MAX_DESCENDANTS_TO_EXPLORE)
+        generation++;
+      }
+      const bestOption  = topOptions[0]
+      // Filter out all empty slots from any groups
+      rounds.push(cleanUpGroups(bestOption.groups))
+      roundScores.push(bestOption.total)
+      updateWeights(bestOption.groups, weights)
+    })
 
-    onProgress({
+    return {
       rounds,
       roundScores,
-      weights,
-      done: (index+1) >= roundSpecifications.length,
-    })
-  })
+    }
+  }
+
+  function* permute(permutation) {
+    const length = permutation.length
+    const c = Array(length).fill(0)
+    let i = 1
+    let k
+    let p
+
+    yield permutation.slice();
+    while (i < length) {
+      if (c[i] < i) {
+        k = i % 2 && c[i];
+        p = permutation[i];
+        permutation[i] = permutation[k];
+        permutation[k] = p;
+        ++c[i];
+        i = 1;
+        yield permutation.slice();
+      } else {
+        c[i] = 0;
+        ++i;
+      }
+    }
+  }
+
+  function reorder(array, ordering) {
+    return ordering.map(originalLocation => array[originalLocation])
+  }
+
+  let bestResult = null
+  let bestScore = null
+  const numRounds = roundSpecifications.length
+  const numPossiblePermutations = range(1, numRounds+1).reduce((factorial, i) => factorial*i)
+  for (let permutation of permute(range(numRounds))) {
+    // randomly sample whether to skip this permutation
+    if (Math.random() * numPossiblePermutations > Math.min(MAX_PERMUTATIONS_TO_TRY, numPossiblePermutations)) {
+      continue
+    }
+
+    // create the permutation of the input
+    const reorderedRounds = reorder(roundSpecifications, permutation)
+    // run the genetic algorithm
+    const result = optimizeOrderedRounds(reorderedRounds)
+    // record the best result (lower score is better)
+    const totalScore = result.roundScores.reduce((sum, score) => sum + score)
+    if (bestScore === null || totalScore < bestScore) {
+      bestScore = totalScore
+
+      const inversePermutation = unzip(sortBy(zip(permutation, range(numRounds)), e => e[0]))[1]
+      bestResult = {
+        rounds: reorder(result.rounds, inversePermutation),
+        roundScores: reorder(result.roundScores, inversePermutation),
+      }
+    }
+    onProgress({ ...result, done: false })
+  }
+  onProgress({ ...bestResult, done: true })
 }
 
 function forEachPair(array, callback) {
