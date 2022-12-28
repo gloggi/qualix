@@ -379,6 +379,7 @@ return array(
 				"select_all" => "Alle auswählen",
 				"split" => array(
 					"conditions" => "Erweiterte Bedingungen",
+					"encouraged_pairings" => "Folgende TN wenn möglich zusammen in eine Gruppe einteilen",
 					"enter_number_of_groups" => "Bitte Gruppenanzahl eingeben",
 					"forbidden_pairings" => "Folgende TN trennen",
 					"forbid_membership_groups" => "Abteilungen unbedingt durchmischen",

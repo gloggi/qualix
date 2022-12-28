@@ -14,7 +14,7 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
   function score(round, weights) {
     const groupScores = round.map(group => {
       let groupCost = 0
-      forEachPair(group, (a, b) => groupCost += Math.pow(weights[a][b], 2))
+      forEachPair(group, (a, b) => groupCost += Math.sign(weights[a][b]) * Math.pow(weights[a][b], 2))
       return groupCost
     })
     return {
@@ -22,6 +22,14 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
       groupsScores: groupScores,
       total: groupScores.reduce((sum, next) => sum + next, 0),
     }
+  }
+
+  function potentialFor(group, weights) {
+    return -group.map(member => {
+      return weights[member]
+        .filter(index => !group.includes(index))
+        .reduce((sum, weight) => sum + Math.sign(weight) * Math.pow(weight, 2), 0)
+    }).reduce((sum, memberSum) => sum + memberSum, 0)
   }
 
   function generatePermutation({ groups, ofSize }) {
@@ -37,8 +45,8 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
     const { ofSize } = roundSpecification
     const mutations = []
     candidates.forEach(candidate => {
-      const scoredGroups = candidate.groups.map((g, i) => ({group: g, score: candidate.groupsScores[i]}))
-      const sortedScoredGroups = sortBy(scoredGroups, sg => sg.score).reverse()
+      const scoredGroups = candidate.groups.map((g, i) => ({group: g, score: candidate.groupsScores[i], potential: potentialFor(g, weights)}))
+      const sortedScoredGroups = sortBy(scoredGroups, ['score', 'potential']).reverse()
       const sorted = sortedScoredGroups.map(ssg => ssg.group)
 
       // Always push the original candidate back onto the list
@@ -75,7 +83,7 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
     }
   }
 
-  function createWeights({ groups, ofSize, forbiddenPairings: forbiddenPairs, discouragedPairings: discouragedGroups }) {
+  function createWeights({ groups, ofSize, forbiddenPairings: forbiddenPairs, discouragedPairings: discouragedGroups, encouragedPairings: encouragedPairs }) {
     const totalSize = groups * ofSize
     const weights = range(totalSize).map(() => range(totalSize).fill(0))
 
@@ -98,6 +106,14 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
       forEachPair(group, (a, b) => {
         if (a >= totalSize || b >= totalSize) return
         weights[a][b] = weights[b][a] = (weights[a][b] + 1)
+      })
+    })
+
+    // Encouraged pairings override all previous discouragement and even make it beneficial to pair the participants
+    encouragedPairs.forEach(group => {
+      forEachPair(group, (a, b) => {
+        if (a >= totalSize || b >= totalSize) return
+        weights[a][b] = weights[b][a] = -1
       })
     })
 
@@ -126,7 +142,7 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
       rounds.forEach(previousRound => updateWeights(previousRound, weights))
       let topOptions = range(5).map(() => score(generatePermutation(roundSpecification), weights))
       let generation = 0
-      while (generation < GENERATIONS && topOptions[0].total > 0) {
+      while (generation < GENERATIONS) {
         const candidates = generateMutations(topOptions, weights, roundSpecification)
         let sorted = sortBy(candidates, c => c.total)
         const bestScore = sorted[0].total

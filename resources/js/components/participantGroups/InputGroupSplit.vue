@@ -53,6 +53,15 @@
         display-field="scout_name"
         narrow-form
         multiple></input-multi-multi-select>
+
+      <input-multi-multi-select
+        :name="`group-split-${value.id}-encouraged-pairings`"
+        v-model="value.encouragedPairings"
+        :label="$t('t.views.admin.participant_group_generator.split.encouraged_pairings')"
+        :options="participants"
+        display-field="scout_name"
+        narrow-form
+        multiple></input-multi-multi-select>
     </b-collapse>
   </b-card>
 </template>

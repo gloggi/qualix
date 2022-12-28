@@ -173,8 +173,9 @@ export default {
           id: (Math.random() + 1).toString(36).substring(2,7),
           name: this.$t('t.views.admin.participant_group_generator.default_split_name'),
           groups: String(Math.ceil(this.participants.length / Math.max(1, Math.min(this.participants.length, 4)))),
-          forbiddenPairings: [[]],
           forbidMembershipGroups: '0',
+          forbiddenPairings: [[]],
+          encouragedPairings: [[]],
         }
       }
     },
@@ -207,6 +208,9 @@ export default {
             ...split.split.forbiddenPairings,
             ...(split.split.forbidMembershipGroups === '1' ? this.membershipGroupPairings : []),
           ]),
+          encouragedPairings: this.preparePairings([
+            ...split.split.encouragedPairings,
+          ])
         })),
       })
     },
