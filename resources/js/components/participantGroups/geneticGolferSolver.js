@@ -142,7 +142,9 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
       rounds.forEach(previousRound => updateWeights(previousRound, weights))
       let topOptions = range(5).map(() => score(generatePermutation(roundSpecification), weights))
       let generation = 0
-      while (generation < GENERATIONS) {
+      // We can exit early only if there are no encouraged pairings, because in that case, there can't be any
+      // negative weights
+      while (generation < GENERATIONS && (roundSpecification.encouragedPairings.length || topOptions[0].total > 0)) {
         const candidates = generateMutations(topOptions, weights, roundSpecification)
         let sorted = sortBy(candidates, c => c.total)
         const bestScore = sorted[0].total
