@@ -24,7 +24,7 @@
     <b-collapse id="participant-group-generator-conditions" :visible="false">
       <input-multi-select
         :label="$t('t.views.admin.participant_group_generator.participants')"
-        name=""
+        name="participantGroupGeneratorParticipants"
         v-model="selectedParticipantIds"
         multiple
         :options="participants"
@@ -36,7 +36,7 @@
       <input-multi-select
         v-if="participantGroups.length"
         :label="$t('t.views.admin.participant_group_generator.discourage_existing_participant_groups')"
-        name=""
+        name="participantGroupGeneratorParticipantGroups"
         v-model="selectedParticipantGroupIds"
         multiple
         :options="participantGroups"
@@ -45,7 +45,7 @@
 
       <input-checkbox
         v-if="anyDuplicateMembershipGroups"
-        name=""
+        name="participantGroupGeneratorDiscourageMembershipGroups"
         :label="$t('t.views.admin.participant_group_generator.discourage_membership_groups')"
         v-model="discourageMembershipGroups" switch size="lg"></input-checkbox>
     </b-collapse>
