@@ -190,7 +190,7 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
   let bestSecondaryScore = null
   let bestTertiaryScore = null
   const numRounds = roundSpecifications.length
-  const numPossiblePermutations = range(1, numRounds+1).reduce((factorial, i) => factorial*i)
+  const numPossiblePermutations = range(1, numRounds+1).reduce((factorial, i) => factorial*i, 1)
   const numTriedPermutations = Math.min(MAX_PERMUTATIONS_TO_TRY, numPossiblePermutations)
   for (let permutation of permute(range(numRounds))) {
     // randomly sample whether to skip this permutation
@@ -203,9 +203,9 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
     // run the genetic algorithm
     const result = optimizeOrderedRounds(reorderedRounds)
     // record the best result (lower score is better)
-    const totalScore = result.roundScores.reduce((sum, score) => sum + score)
+    const totalScore = result.roundScores.reduce((sum, score) => sum + score, 0)
     const secondaryScore = -result.roundsWithoutViolations // with the number of rounds without violations, higher is better
-    const tertiaryScore = result.roundScores.filter(score => score < Infinity).reduce((sum, score) => sum + score)
+    const tertiaryScore = result.roundScores.filter(score => score < Infinity).reduce((sum, score) => sum + score, 0)
     if (bestScore === null ||
       totalScore < bestScore ||
       (totalScore === bestScore && secondaryScore < bestSecondaryScore) ||

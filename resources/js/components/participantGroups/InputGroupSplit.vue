@@ -28,7 +28,7 @@
       </template>
     </input-text>
 
-    <row-text v-if="anyDuplicateMembershipGroups" narrow-form>
+    <row-text narrow-form>
       <b-button variant="link" class="px-0" v-b-toggle="`group-split-${value.id}-conditions`">
         {{ $t('t.views.admin.participant_group_generator.split.conditions') }} <i class="fas fa-caret-down"></i>
       </b-button>
@@ -45,24 +45,37 @@
         size="lg"
         narrow-form></input-checkbox>
 
+      <input-multi-multi-select
+        :name="`group-split-${value.id}-forbidden-pairings`"
+        v-model="value.forbiddenPairings"
+        :label="$t('t.views.admin.participant_group_generator.split.forbidden_pairings')"
+        :options="participants"
+        display-field="scout_name"
+        narrow-form
+        multiple></input-multi-multi-select>
     </b-collapse>
   </b-card>
 </template>
 
 <script>
 import Input from '../../mixins/input'
+import InputMultiMultiSelect from '../form/InputMultiMultiSelect'
 import validGroupSplit from './validGroupSplit'
 
 export default {
   name: 'InputGroupSplit',
   mixins: [ Input ],
+  components: { InputMultiMultiSelect },
   props: {
     value: { type: Object, default: () => ({}) },
-    numParticipants: { type: Number, required: true },
+    participants: { type: Array, required: true },
     anyDuplicateMembershipGroups: { type: Boolean, default: false },
     deletable: { type: Boolean, default: true },
   },
   computed: {
+    numParticipants() {
+      return this.participants.length
+    },
     groupSizeText() {
       if (!validGroupSplit(this.value, this.numParticipants)) {
         return this.$t('t.views.admin.participant_group_generator.split.enter_number_of_groups')
@@ -75,7 +88,7 @@ export default {
       }
       return this.$t('t.views.admin.participant_group_generator.split.of_size_between', { min, max })
     },
-  }
+  },
 }
 </script>
 

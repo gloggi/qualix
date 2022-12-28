@@ -10,6 +10,7 @@ return array(
 	),
 	"global" => array(
 		"add" => "Hinzufügen",
+		"add_more" => "Weitere hinzufügen",
 		"add_observation" => "Beobachtung erfassen",
 		"autosaved" => "Automatisch gespeichert",
 		"autosaving" => "Speichern...",
@@ -365,6 +366,7 @@ return array(
 				"default_split_name" => "Arbeitsgruppe",
 				"discourage_existing_participant_groups" => "Überschneidungen mit bestehenden TN-Gruppen vermeiden",
 				"discourage_membership_groups" => "Abteilungs-durchmischte Gruppen generell bevorzugen",
+				"discouraged_pairings" => "Folgende TN nach Möglichkeit trennen",
 				"group_name" => "Gruppenname für :name nummer :number",
 				"group_splits" => "Gruppenaufteilungen",
 				"how_to_avoid_overlap" => array(
@@ -378,6 +380,7 @@ return array(
 				"split" => array(
 					"conditions" => "Erweiterte Bedingungen",
 					"enter_number_of_groups" => "Bitte Gruppenanzahl eingeben",
+					"forbidden_pairings" => "Folgende TN trennen",
 					"forbid_membership_groups" => "Abteilungen unbedingt durchmischen",
 					"groups" => "Anzahl Gruppen",
 					"name" => "Bezeichnung",

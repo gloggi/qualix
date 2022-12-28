@@ -1,12 +1,12 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-md-3 col-form-label text-md-right">{{ label }}</label>
+    <label :for="name | kebabCase" class="col-form-label" :class="labelClass">{{ label }}</label>
 
-    <div class="col-md-6">
+    <div :class="inputColumnClass">
       <template v-for="split in value">
         <input-group-split
           :name="'group-split-' + split.split.id"
-          :num-participants="numParticipants"
+          :participants="participants"
           :any-duplicate-membership-groups="anyDuplicateMembershipGroups"
           v-model="split.split"
           :deletable="value.length > 1"
@@ -33,7 +33,7 @@ export default {
     required: { type: Boolean, default: false },
     label: { type: String, required: true },
     value: { type: Array, default: () => [] },
-    numParticipants: { type: Number, required: true },
+    participants: { type: Array, required: true },
     anyDuplicateMembershipGroups: { type: Boolean, default: false },
     valid: { type: Boolean, default: true },
   },
@@ -42,7 +42,7 @@ export default {
       if (this.value.length < 1) {
         return false
       }
-      return this.value.every(({ split }) => validSplit(split, this.numParticipants))
+      return this.value.every(({ split }) => validSplit(split, this.participants.length))
     },
   },
   watch: {

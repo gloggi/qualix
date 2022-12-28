@@ -3,7 +3,7 @@
     <input-group-splits
       name="groupSplits"
       :label="$t('t.views.admin.participant_group_generator.group_splits')"
-      :num-participants="selectedParticipants.length"
+      :participants="selectedParticipants"
       v-model="groupSplits"
       :valid.sync="groupSplitsValid"
       :any-duplicate-membership-groups="anyDuplicateMembershipGroups"
@@ -48,6 +48,14 @@
         name="participantGroupGeneratorDiscourageMembershipGroups"
         :label="$t('t.views.admin.participant_group_generator.discourage_membership_groups')"
         v-model="discourageMembershipGroups" switch size="lg"></input-checkbox>
+
+      <input-multi-multi-select
+        name="participantGroupGeneratorDiscouragedPairings"
+        v-model="discouragedPairings"
+        :label="$t('t.views.admin.participant_group_generator.discouraged_pairings')"
+        :options="selectedParticipants"
+        display-field="scout_name"
+        multiple></input-multi-multi-select>
     </b-collapse>
 
     <button-submit
@@ -103,6 +111,7 @@ export default {
       selectedParticipants: this.participants,
       selectedParticipantGroups: this.participantGroups,
       discourageMembershipGroups: '0',
+      discouragedPairings: [[]],
       groupSplits: [this.defaultGroupSplit()],
       groupSplitsValid: true,
       inProgress: false,
@@ -149,7 +158,8 @@ export default {
   },
   methods: {
     participantToIndex(participant) {
-      return this.selectedParticipants.map(p => p.id).indexOf(participant.id)
+      return this.selectedParticipants.map(p => p.id)
+        .indexOf(typeof participant === 'string' ? parseInt(participant) : participant.id)
     },
     indexToParticipant(index) {
       return this.selectedParticipants[index]
@@ -163,8 +173,7 @@ export default {
           id: (Math.random() + 1).toString(36).substring(2,7),
           name: this.$t('t.views.admin.participant_group_generator.default_split_name'),
           groups: String(Math.ceil(this.participants.length / Math.max(1, Math.min(this.participants.length, 4)))),
-          discouragedPairings: [],
-          forbiddenPairings: [],
+          forbiddenPairings: [[]],
           forbidMembershipGroups: '0',
         }
       }
@@ -190,7 +199,7 @@ export default {
           ...split.split,
           ofSize: Math.ceil(this.selectedParticipants.length / parseInt(split.split.groups)),
           discouragedPairings: this.preparePairings([
-            ...split.split.discouragedPairings,
+            ...this.discouragedPairings,
             ...this.discouragedExistingGroups,
             ...(this.discourageMembershipGroups === '1' ? this.membershipGroupPairings : [])
           ]),
