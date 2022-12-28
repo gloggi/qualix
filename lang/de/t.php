@@ -367,6 +367,10 @@ return array(
 				"discourage_membership_groups" => "Abteilungs-durchmischte Gruppen generell bevorzugen",
 				"group_name" => "Gruppenname für :name nummer :number",
 				"group_splits" => "Gruppenaufteilungen",
+				"how_to_avoid_overlap" => array(
+					"answer" => "In den generierten Gruppen werden bereits automatisch wo immer möglich Überschneidungen vermieden. Das heisst, wenn zwei TN zusammen in einer generierten Gruppe sind, dann werden sie so gut wie möglich in den anderen generierten Gruppen getrennt. Du kannst das Verhalten noch mit den erweiterten Bedingungen etwas genauer steuern, oder erneut einen Gruppenvorschlag generieren lassen falls dir die generierten Gruppen nicht gefallen. Ab einer gewissen Anzahl Gruppenaufteilungen und Gruppengrössen sind vereinzelte Überschneidungen aber unvermeidlich.",
+					"question" => "Wie kann ich vermeiden, dass dieselben TN öfter als nötig in denselben Gruppen landen?",
+				),
 				"no_participant_group" => "Bisher sind keine TN-Gruppen erfasst.",
 				"page_title" => "TN-Gruppen verwalten",
 				"participants" => "Zu gruppierende TN",

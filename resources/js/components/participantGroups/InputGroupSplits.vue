@@ -15,7 +15,7 @@
       <b-btn
         class="px-0"
         variant="link"
-        @click="$emit('add-group-split')">{{ $t('t.views.admin.participant_group_generator.add_group_split') }}</b-btn>
+        @click="$emit('add-group-split')"><i class="fas fa-plus mr-1"></i> {{ $t('t.views.admin.participant_group_generator.add_group_split') }}</b-btn>
     </div>
   </div>
 </template>
@@ -42,7 +42,7 @@ export default {
       if (this.value.length < 1) {
         return false
       }
-      return this.value.some(({ split }) => validSplit(split, this.numParticipants))
+      return this.value.every(({ split }) => validSplit(split, this.numParticipants))
     },
   },
   watch: {

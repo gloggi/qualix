@@ -9,7 +9,11 @@
       :any-duplicate-membership-groups="anyDuplicateMembershipGroups"
       required
       @add-group-split="addGroupSplit"
-      @remove-group-split="removeGroupSplit"></input-group-splits>
+      @remove-group-split="removeGroupSplit">
+    </input-group-splits>
+    <row-text>
+      <help-text id="participant-group-generator-overlap-help" trans="t.views.admin.participant_group_generator.how_to_avoid_overlap"></help-text>
+    </row-text>
 
     <row-text>
       <b-button variant="link" class="px-0" v-b-toggle="'participant-group-generator-conditions'">
@@ -48,7 +52,7 @@
 
     <button-submit
       :label="$t('t.views.admin.participant_group_generator.generate')"
-      :disabled="!groupSplitsValid || inProgress"
+      :disabled="!groupSplitsValid || selectedParticipants.length < 3 || inProgress"
       @click.prevent="generate">
       <b-progress v-if="inProgress" :max="100" animated class="mb-3 mt-1">
         <b-progress-bar :value="progress">{{ progress }}%</b-progress-bar>
@@ -85,10 +89,11 @@ import InputHidden from '../form/InputHidden'
 import RowText from '../form/RowText'
 import InputCheckbox from '../form/InputCheckbox'
 import InputGroupSplits from './InputGroupSplits'
+import HelpText from '../HelpText'
 
 export default {
   name: 'ParticipantGroupGenerator',
-  components: {InputCheckbox, RowText, InputHidden, InputMultiSelect, ParticipantAvatar, InputGroupSplits},
+  components: {InputCheckbox, RowText, InputHidden, InputMultiSelect, ParticipantAvatar, InputGroupSplits, HelpText},
   props: {
     participants: { type: Array, required: true },
     participantGroups: { type: Array, default: () => [] },
