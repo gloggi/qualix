@@ -126,8 +126,8 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
       .map(group => group.filter(participant => participant < numParticipants))
       // Sort the participants inside the groups in their original ordering
         .map(group => sortBy(group)),
-      // Sort smaller groups to the back
-      (group) => -group.length
+      // Sort smaller groups to the back, and then sort alphabetically by the first group member
+      [(group => -group.length), (group => group[0])]
     )
   }
 
