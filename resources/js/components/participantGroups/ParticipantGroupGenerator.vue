@@ -66,7 +66,7 @@
             class="form-control group-grid-input mt-3 mb-2"
             type="text"
             :name="`participantGroups[${roundIndex}-${groupIndex}][group_name]`"
-            :aria-label="$t('t.views.admin.participant_group_generator.group_name', { name: groupSplits[roundIndex].split.name, number: groupIndex + 1 })"
+            :aria-label="$t('t.views.admin.participant_group_generator.group_name', { name: proposedGroup.name, number: groupIndex + 1 })"
             v-model="proposedGroup.name"
             required="required" />
           <input-hidden :name="`participantGroups[${roundIndex}-${groupIndex}][participants]`" :value="participantsFormValue(proposedGroup)"></input-hidden>
