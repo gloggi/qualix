@@ -3,7 +3,7 @@ function validSplit(split, numParticipants) {
   if (typeof split.name !== 'string') return false
   if (!split.name.trim()) return false
   const groups = parseInt(split.groups)
-  if (isNaN(groups) || groups < 2 || groups >= numParticipants) return false
+  if (isNaN(groups) || groups < 2 || groups > numParticipants) return false
   return true
 }
 
