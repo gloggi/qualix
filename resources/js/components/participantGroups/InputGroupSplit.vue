@@ -49,18 +49,22 @@
         :name="`group-split-${value.id}-forbidden-pairings`"
         v-model="value.forbiddenPairings"
         :label="$t('t.views.admin.participant_group_generator.split.forbidden_pairings')"
+        :add-more-label="$t('t.views.admin.participant_group_generator.split.add_pairing')"
         :options="participants"
         display-field="scout_name"
         narrow-form
+        :require-multiple="$t('t.views.admin.participant_group_generator.split.select_multiple_participants')"
         multiple></input-multi-multi-select>
 
       <input-multi-multi-select
         :name="`group-split-${value.id}-encouraged-pairings`"
         v-model="value.encouragedPairings"
         :label="$t('t.views.admin.participant_group_generator.split.encouraged_pairings')"
+        :add-more-label="$t('t.views.admin.participant_group_generator.split.add_pairing')"
         :options="participants"
         display-field="scout_name"
         narrow-form
+        :require-multiple="$t('t.views.admin.participant_group_generator.split.select_multiple_participants')"
         multiple></input-multi-multi-select>
     </b-collapse>
   </b-card>

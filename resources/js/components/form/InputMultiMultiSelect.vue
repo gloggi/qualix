@@ -3,72 +3,51 @@
     <label class="col-form-label" :class="labelClass">{{ label }}</label>
 
     <div :class="inputColumnClass">
-      <div
-        v-for="(singleValue, index) in currentValue"
+      <input-multi-multi-select-entry
+        v-for="(menuValue, index) in currentValue"
         :key="index"
-        class="form-control-multiselect d-flex mb-1"
-        :class="{ 'is-invalid': errorMessage }">
-        <multi-select
-          :id="`${name}-${index}` | kebabCase"
-          class="form-control-multiselect flex-grow-1" :class="{ 'is-invalid': errorMessage }"
-          :name="name"
-          :aria-label="label"
-          :value="singleValue.join(',')"
-          multiple
-          @input="(val) => onInput(index, val)"
-          v-bind="$attrs">
-          <template #option="props">
-            <slot name="option" v-bind="props"></slot>
-          </template>
-          <template #single-label="props">
-            <slot name="single-label" v-bind="props"></slot>
-          </template>
-        </multi-select>
-        <b-button
-          variant="link"
-          class="text-danger"
-          @click="currentValue.splice(index, 1)"
-          :title="$t('t.global.remove')"
-          :aria-label="$t('t.global.remove')">
-          <i class="fas fa-circle-minus"></i>
-        </b-button>
-      </div>
+        :name="`${name}${index}`"
+        :label="label"
+        :array-value.sync="currentValue[index]"
+        :class="{ 'is-invalid': errorMessage }"
+        :require-multiple="requireMultiple"
+        @remove="currentValue.splice(index, 1)"
+        v-bind="$attrs">
+        <template #option="props">
+          <slot name="option" v-bind="props"></slot>
+        </template>
+        <template #single-label="props">
+          <slot name="single-label" v-bind="props"></slot>
+        </template>
+      </input-multi-multi-select-entry>
 
-      <span v-if="true || errorMessage" class="invalid-feedback" role="alert">
-        <strong>error: {{ errorMessage }}</strong>
+      <span v-if="errorMessage" class="invalid-feedback" role="alert">
+        <strong>{{ errorMessage }}</strong>
       </span>
 
       <b-btn
         class="px-0"
         variant="link"
-        @click="currentValue.push([])"><i class="fas fa-plus mr-1"></i> {{ $t('t.global.add_more') }}</b-btn>
+        @click="currentValue.push([])"><i class="fas fa-plus mr-1"></i> {{ addMoreLabel }}</b-btn>
     </div>
   </div>
 </template>
 
 <script>
 import Input from '../../mixins/input'
+import InputMultiMultiSelectEntry from './inputMultiMultiSelect/InputMultiMultiSelectEntry'
 export default {
-  name: 'InputMultiSelect',
+  name: 'InputMultiMultiSelect',
+  components: {InputMultiMultiSelectEntry},
   mixins: [ Input ],
   props: {
     label: { type: String, required: true },
     value: { type: Array, default: () => [[]] },
     required: { type: Boolean, default: false },
-    autofocus: { type: Boolean, default: false }
+    autofocus: { type: Boolean, default: false },
+    addMoreLabel: { type: String, default: function() { return this.$t('t.global.add_more') } },
+    requireMultiple: { type: String, default: '' },
   },
-  data: () => ({
-    log: 'input-multi-multi-select',
-  }),
-  methods: {
-    onInput(index, val) {
-      if (val === '') {
-        this.currentValue[index] = []
-      } else {
-        this.currentValue[index] = val.split(',')
-      }
-    }
-  }
 }
 </script>
 

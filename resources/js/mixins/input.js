@@ -14,7 +14,7 @@ export default {
   computed: {
     errorMessage() {
       const errors = window.Laravel.errors[this.name]
-      return errors && errors.length ? errors[0] : undefined;
+      return errors && errors.length ? errors[0] : undefined
     },
     labelClass() {
       return this.narrowForm ? 'col-12' : 'col-md-3 text-md-right'

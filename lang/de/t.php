@@ -366,7 +366,7 @@ return array(
 				"default_split_name" => "Arbeitsgruppe",
 				"discourage_existing_participant_groups" => "Überschneidungen mit bestehenden TN-Gruppen vermeiden",
 				"discourage_membership_groups" => "Abteilungs-durchmischte Gruppen generell bevorzugen",
-				"discouraged_pairings" => "Folgende TN nach Möglichkeit trennen",
+				"discouraged_pairings" => "Folgende TN-Kombinationen nach Möglichkeit trennen",
 				"group_name" => "Gruppenname für :name nummer :number",
 				"group_splits" => "Gruppenaufteilungen",
 				"how_to_avoid_overlap" => array(
@@ -378,15 +378,17 @@ return array(
 				"participants" => "Zu gruppierende TN",
 				"select_all" => "Alle auswählen",
 				"split" => array(
+					"add_pairing" => "Weitere TN-Kombination hinzufügen",
 					"conditions" => "Erweiterte Bedingungen",
-					"encouraged_pairings" => "Folgende TN wenn möglich zusammen in eine Gruppe einteilen",
+					"encouraged_pairings" => "Folgende TN-Kombinationen möglichst zusammen in eine Gruppe einteilen",
 					"enter_number_of_groups" => "Bitte Gruppenanzahl eingeben",
-					"forbidden_pairings" => "Folgende TN trennen",
+					"forbidden_pairings" => "Folgende TN-Kombinationen trennen",
 					"forbid_membership_groups" => "Abteilungen unbedingt durchmischen",
 					"groups" => "Anzahl Gruppen",
 					"name" => "Bezeichnung",
 					"of_size" => "Gruppen mit je :size TN",
 					"of_size_between" => "Gruppen mit je :min-:max TN",
+					"select_multiple_participants" => "Wähle mehrere TN aus, sonst hat diese Kombination keine Wirkung."
 				),
 			),
 			"feedbacks" => array(
