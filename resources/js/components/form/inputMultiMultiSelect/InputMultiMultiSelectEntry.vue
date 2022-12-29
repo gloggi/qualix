@@ -41,7 +41,6 @@ export default {
   mixins: [ Input ],
   props: {
     label: { type: String, required: true },
-    arrayValue: { type: Array, default: () => [[]]},
     requireMultiple: { type: String, default: '' },
   },
   computed: {
@@ -52,19 +51,8 @@ export default {
     },
     localErrorMessage() {
       if (!this.requireMultiple) return undefined
-      if (!this.arrayValue) return undefined
-      return this.arrayValue.length === 1 ? this.requireMultiple : undefined
-    },
-  },
-  watch: {
-    currentValue() {
-      this.$emit('update:arrayValue', this.currentValue ? this.currentValue.split(',') : [])
-    },
-    arrayValue: {
-      deep: true,
-      handler(newArrayValue) {
-        this.currentValue = newArrayValue.join(',')
-      },
+      if (!this.currentValue) return undefined
+      return this.currentValue.split(',').length === 1 ? this.requireMultiple : undefined
     },
   },
 }

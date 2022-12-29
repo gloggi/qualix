@@ -361,6 +361,7 @@ return array(
 			),
 			"participant_group_generator" => array(
 				"add_group_split" => "Weitere Gruppenaufteilung hinzufügen",
+				"add_pairing" => "Weitere TN-Kombination hinzufügen",
 				"conditions" => "Erweiterte Bedingungen für alle Gruppenaufteilungen",
 				"generate" => "Gruppenvorschlag generieren",
 				"default_split_name" => "Arbeitsgruppe",
@@ -370,15 +371,15 @@ return array(
 				"group_name" => "Gruppenname für :name nummer :number",
 				"group_splits" => "Gruppenaufteilungen",
 				"how_to_avoid_overlap" => array(
-					"answer" => "In den generierten Gruppen werden bereits automatisch wo immer möglich Überschneidungen vermieden. Das heisst, wenn zwei TN zusammen in einer generierten Gruppe sind, dann werden sie so gut wie möglich in den anderen generierten Gruppen getrennt. Du kannst das Verhalten noch mit den erweiterten Bedingungen etwas genauer steuern, oder erneut einen Gruppenvorschlag generieren lassen falls dir die generierten Gruppen nicht gefallen. Ab einer gewissen Anzahl Gruppenaufteilungen und Gruppengrössen sind vereinzelte Überschneidungen aber unvermeidlich.",
+					"answer" => "In den generierten Gruppen werden bereits automatisch wo immer möglich Überschneidungen vermieden. Das heisst, wenn zwei TN zusammen in einer generierten Gruppe sind, dann werden sie so gut wie möglich in den anderen generierten Gruppen getrennt. Ab einer gewissen Anzahl Gruppenaufteilungen und Gruppengrössen sind vereinzelte Überschneidungen aber unvermeidlich.",
 					"question" => "Wie kann ich vermeiden, dass dieselben TN öfter als nötig in denselben Gruppen landen?",
 				),
 				"no_participant_group" => "Bisher sind keine TN-Gruppen erfasst.",
 				"page_title" => "TN-Gruppen verwalten",
 				"participants" => "Zu gruppierende TN",
 				"select_all" => "Alle auswählen",
+				"select_multiple_participants" => "Wähle mehrere TN aus, sonst hat diese Kombination keine Wirkung.",
 				"split" => array(
-					"add_pairing" => "Weitere TN-Kombination hinzufügen",
 					"conditions" => "Erweiterte Bedingungen",
 					"encouraged_pairings" => "Folgende TN-Kombinationen möglichst zusammen in eine Gruppe einteilen",
 					"enter_number_of_groups" => "Bitte Gruppenanzahl eingeben",
@@ -388,7 +389,6 @@ return array(
 					"name" => "Bezeichnung",
 					"of_size" => "Gruppen mit je :size TN",
 					"of_size_between" => "Gruppen mit je :min-:max TN",
-					"select_multiple_participants" => "Wähle mehrere TN aus, sonst hat diese Kombination keine Wirkung."
 				),
 			),
 			"feedbacks" => array(

@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\Lang;
-
 class MultiParticipantGroupRequest extends ParticipantGroupRequest {
 
     /**

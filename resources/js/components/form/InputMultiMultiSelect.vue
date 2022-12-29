@@ -6,9 +6,9 @@
       <input-multi-multi-select-entry
         v-for="(menuValue, index) in currentValue"
         :key="index"
-        :name="`${name}${index}`"
+        :name="`${name}[${index}]`"
         :label="label"
-        :array-value.sync="currentValue[index]"
+        v-model="currentValue[index]"
         :class="{ 'is-invalid': errorMessage }"
         :require-multiple="requireMultiple"
         @remove="currentValue.splice(index, 1)"
@@ -28,7 +28,7 @@
       <b-btn
         class="px-0"
         variant="link"
-        @click="currentValue.push([])"><i class="fas fa-plus mr-1"></i> {{ addMoreLabel }}</b-btn>
+        @click="currentValue.push('')"><i class="fas fa-plus mr-1"></i> {{ addMoreLabel }}</b-btn>
     </div>
   </div>
 </template>

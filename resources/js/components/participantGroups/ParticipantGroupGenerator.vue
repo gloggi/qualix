@@ -16,12 +16,12 @@
     </row-text>
 
     <row-text>
-      <b-button variant="link" class="px-0" v-b-toggle="'participant-group-generator-conditions'">
+      <b-button variant="link" class="px-0" v-b-toggle="'collapse-participant-group-generator-conditions'">
         {{ $t('t.views.admin.participant_group_generator.conditions') }} <i class="fas fa-caret-down"></i>
       </b-button>
     </row-text>
 
-    <b-collapse id="participant-group-generator-conditions" :visible="false">
+    <b-collapse id="collapse-participant-group-generator-conditions" :visible="false">
       <input-multi-select
         :label="$t('t.views.admin.participant_group_generator.participants')"
         name="participantGroupGeneratorParticipants"
@@ -53,9 +53,10 @@
         name="participantGroupGeneratorDiscouragedPairings"
         v-model="discouragedPairings"
         :label="$t('t.views.admin.participant_group_generator.discouraged_pairings')"
+        :add-more-label="$t('t.views.admin.participant_group_generator.add_pairing')"
         :options="selectedParticipants"
         display-field="scout_name"
-        multiple></input-multi-multi-select>
+        :require-multiple="$t('t.views.admin.participant_group_generator.select_multiple_participants')"></input-multi-multi-select>
     </b-collapse>
 
     <button-submit
@@ -93,15 +94,17 @@
 import { groupBy, countBy } from 'lodash'
 import ParticipantAvatar from './ParticipantAvatar'
 import InputMultiSelect from '../form/InputMultiSelect'
+import InputMultiMultiSelect from '../form/InputMultiMultiSelect'
 import InputHidden from '../form/InputHidden'
 import RowText from '../form/RowText'
+import ButtonSubmit from '../form/ButtonSubmit'
 import InputCheckbox from '../form/InputCheckbox'
 import InputGroupSplits from './InputGroupSplits'
 import HelpText from '../HelpText'
 
 export default {
   name: 'ParticipantGroupGenerator',
-  components: {InputCheckbox, RowText, InputHidden, InputMultiSelect, ParticipantAvatar, InputGroupSplits, HelpText},
+  components: {InputCheckbox, RowText, InputHidden, InputMultiSelect, ParticipantAvatar, InputGroupSplits, HelpText, InputMultiMultiSelect, ButtonSubmit},
   props: {
     participants: { type: Array, required: true },
     participantGroups: { type: Array, default: () => [] },
@@ -111,7 +114,7 @@ export default {
       selectedParticipants: this.participants,
       selectedParticipantGroups: this.participantGroups,
       discourageMembershipGroups: '0',
-      discouragedPairings: [[]],
+      discouragedPairings: [''],
       groupSplits: [this.defaultGroupSplit()],
       groupSplitsValid: true,
       inProgress: false,
@@ -165,25 +168,23 @@ export default {
       return this.selectedParticipants[index]
     },
     participantsFormValue(group) {
-      return group.participants.map(participant => participant.id).join(',')
+      return group.participants.map(participant => participant.id).join(',') + ',1'
     },
     defaultGroupSplit() {
       return {
-        split: {
-          id: (Math.random() + 1).toString(36).substring(2,7),
-          name: this.$t('t.views.admin.participant_group_generator.default_split_name'),
-          groups: String(Math.ceil(this.participants.length / Math.max(1, Math.min(this.participants.length, 4)))),
-          forbidMembershipGroups: '0',
-          forbiddenPairings: [[]],
-          encouragedPairings: [[]],
-        }
+        id: (Math.random() + 1).toString(36).substring(2,7),
+        name: this.$t('t.views.admin.participant_group_generator.default_split_name'),
+        groups: String(Math.ceil(this.participants.length / Math.max(1, Math.min(this.participants.length, 4)))),
+        forbidMembershipGroups: '0',
+        forbiddenPairings: [''],
+        encouragedPairings: [''],
       }
     },
     addGroupSplit() {
       this.groupSplits = [...this.groupSplits, this.defaultGroupSplit()]
     },
     removeGroupSplit(id) {
-      this.groupSplits = this.groupSplits.filter(split => split.split.id !== id)
+      this.groupSplits = this.groupSplits.filter(split => split.id !== id)
     },
     preparePairings(pairings) {
       return pairings
@@ -197,19 +198,19 @@ export default {
       this.worker.postMessage({
         numParticipants: this.selectedParticipants.length,
         rounds: this.groupSplits.map(split => ({
-          ...split.split,
-          ofSize: Math.ceil(this.selectedParticipants.length / parseInt(split.split.groups)),
+          ...split,
+          ofSize: Math.ceil(this.selectedParticipants.length / parseInt(split.groups)),
           discouragedPairings: this.preparePairings([
-            ...this.discouragedPairings,
+            ...this.discouragedPairings.map(pairing => pairing.split(',')),
             ...this.discouragedExistingGroups,
             ...(this.discourageMembershipGroups === '1' ? this.membershipGroupPairings : [])
           ]),
           forbiddenPairings: this.preparePairings([
-            ...split.split.forbiddenPairings,
-            ...(split.split.forbidMembershipGroups === '1' ? this.membershipGroupPairings : []),
+            ...split.forbiddenPairings.map(pairing => pairing.split(',')),
+            ...(split.forbidMembershipGroups === '1' ? this.membershipGroupPairings : []),
           ]),
           encouragedPairings: this.preparePairings([
-            ...split.split.encouragedPairings,
+            ...split.encouragedPairings.map(pairing => pairing.split(',')),
           ])
         })),
       })
@@ -221,9 +222,9 @@ export default {
       this.inProgress = false
       this.progress = 0
       this.proposedGroups = results.data.rounds.map((round, roundIndex) => ({
-        name: this.groupSplits[roundIndex].split.name,
+        name: this.groupSplits[roundIndex].name,
         groups: round.map((group, groupIndex) => ({
-          name: this.groupSplits[roundIndex].split.name + ' ' + (1+groupIndex),
+          name: this.groupSplits[roundIndex].name + ' ' + (1+groupIndex),
           participants: group.map(participant => this.indexToParticipant(participant)),
         })),
       }))
