@@ -97,7 +97,7 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
 
     // Forbid leaving more than one empty slot per group
     if (totalSize > numParticipants) {
-      forEachPair(range(numParticipants + 1, totalSize), (emptySlot1, emptySlot2) => {
+      forEachPair(range(numParticipants, totalSize), (emptySlot1, emptySlot2) => {
         weights[emptySlot1][emptySlot2] = weights[emptySlot2][emptySlot1] = Infinity
       })
     }
