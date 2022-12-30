@@ -4,6 +4,7 @@
       <b-alert v-if="error" variant="danger" show dismissible fade>
         {{ error }}
       </b-alert>
+
       <input-group-splits
         name="groupSplits"
         :label="$t('t.views.admin.participant_group_generator.group_splits')"
@@ -15,6 +16,7 @@
         @add-group-split="addGroupSplit"
         @remove-group-split="removeGroupSplit">
       </input-group-splits>
+
       <row-text>
         <help-text id="participant-group-generator-overlap-help" trans="t.views.admin.participant_group_generator.how_to_avoid_overlap"></help-text>
       </row-text>
@@ -189,7 +191,9 @@ export default {
     generate() {
       this.progress = 0
       this.inProgress = true
-      this.proposedGroups = null
+      this.proposedGroups = []
+      window.Laravel.errors = {}
+      window.Laravel.oldInput.participantGroups = {}
       this.worker.postMessage({
         numParticipants: this.selectedParticipants.length,
         rounds: this.groupSplits.map(split => ({

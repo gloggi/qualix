@@ -53,7 +53,7 @@
         :options="participants"
         display-field="scout_name"
         narrow-form
-        :require-multiple="$t('t.views.admin.participant_group_generator.split.select_multiple_participants')"
+        :require-multiple="$t('t.views.admin.participant_group_generator.select_multiple_participants')"
         multiple></input-multi-multi-select>
 
       <input-multi-multi-select
@@ -64,7 +64,7 @@
         :options="participants"
         display-field="scout_name"
         narrow-form
-        :require-multiple="$t('t.views.admin.participant_group_generator.split.select_multiple_participants')"
+        :require-multiple="$t('t.views.admin.participant_group_generator.select_multiple_participants')"
         multiple></input-multi-multi-select>
     </b-collapse>
   </b-card>

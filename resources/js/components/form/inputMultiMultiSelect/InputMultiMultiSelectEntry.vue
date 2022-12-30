@@ -46,8 +46,7 @@ export default {
   computed: {
     errorMessage() {
       if (this.localErrorMessage) return this.localErrorMessage
-      const errors = window.Laravel.errors[this.name]
-      return errors && errors.length ? errors[0] : undefined
+      return this.errors && this.errors.length ? this.errors[0] : undefined
     },
     localErrorMessage() {
       if (!this.requireMultiple) return undefined
