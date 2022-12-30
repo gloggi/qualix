@@ -120,7 +120,7 @@ return array(
 			"freetext" => "Freitext"
 		),
 		"participant_group" => array(
-			"group_name" => "Gruppe",
+			"group_name" => "Gruppenname",
 			"participants" => "TN",
 		),
 		"feedback" => array(
@@ -368,7 +368,7 @@ return array(
 				"discourage_existing_participant_groups" => "Überschneidungen mit bestehenden TN-Gruppen vermeiden",
 				"discourage_membership_groups" => "Abteilungs-durchmischte Gruppen generell bevorzugen",
 				"discouraged_pairings" => "Folgende TN-Kombinationen nach Möglichkeit trennen",
-				"group_name" => "Gruppenname für :name nummer :number",
+				"group_name" => "Gruppenname",
 				"group_splits" => "Gruppenaufteilungen",
 				"how_to_avoid_overlap" => array(
 					"answer" => "In den generierten Gruppen werden bereits automatisch wo immer möglich Überschneidungen vermieden. Das heisst, wenn zwei TN zusammen in einer generierten Gruppe sind, dann werden sie so gut wie möglich in den anderen generierten Gruppen getrennt. Ab einer gewissen Anzahl Gruppenaufteilungen und Gruppengrössen sind vereinzelte Überschneidungen aber unvermeidlich.",
@@ -390,6 +390,7 @@ return array(
 					"of_size" => "Gruppen mit je :size TN",
 					"of_size_between" => "Gruppen mit je :min-:max TN",
 				),
+				"validation_errors" => "Die TN-Gruppen konnten nicht gespeichert werden. Bitte korrigiere deine Eingaben und versuche es dann erneut."
 			),
 			"feedbacks" => array(
 				"create" => "Erstellen",

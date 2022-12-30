@@ -11,13 +11,13 @@ class MultiParticipantGroupRequest extends ParticipantGroupRequest {
      */
     public function rules() {
         return collect(parent::rules())->mapWithKeys(function ($item, $key) {
-            return ["participantGroups.*.$key" => $item];
+            return ["participantGroups.*.*.$key" => $item];
         })->all();
     }
 
     public function attributes() {
         return collect(parent::attributes())->mapWithKeys(function ($item, $key) {
-            return ["participantGroups.*.$key" => $item];
+            return ["participantGroups.*.*.$key" => $item];
         })->all();
     }
 }

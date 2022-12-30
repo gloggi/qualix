@@ -65,9 +65,11 @@ class ParticipantGroupController extends Controller
     {
         DB::transaction(function() use ($request, $course){
             $data = $request->validated();
-            foreach($data['participantGroups'] as $groupData) {
-                $participantGroup = ParticipantGroup::create(array_merge($groupData, ['course_id' => $course->id]));
-                $participantGroup->participants()->sync(array_filter(explode(',', $groupData['participants'])));
+            foreach($data['participantGroups'] as $roundData) {
+                foreach($roundData as $groupData) {
+                    $participantGroup = ParticipantGroup::create(array_merge($groupData, ['course_id' => $course->id]));
+                    $participantGroup->participants()->sync(array_filter(explode(',', $groupData['participants'])));
+                }
             }
             $request->session()->flash('alert-success', __('t.views.admin.participant_groups.create_many_success'));
         });

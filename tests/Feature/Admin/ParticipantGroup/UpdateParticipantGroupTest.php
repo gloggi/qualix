@@ -196,14 +196,14 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Gruppe muss ausgefüllt sein.', $exception->validator->errors()->first('group_name'));
+        $this->assertEquals('Gruppenname muss ausgefüllt sein.', $exception->validator->errors()->first('group_name'));
     }
 
     public function test_shouldValidateNewParticipantGroupData_longName()
     {
         // given
         $payload = $this->payload;
-        $payload['group_name'] = 'Unglaublich langer Name. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr.';
+        $payload['group_name'] = 'Unglaublich langer Gruppenname. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr.';
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/' . $this->participantGroupId, $payload);
@@ -212,7 +212,7 @@ class UpdateParticipantGroupTest extends TestCaseWithBasicData
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Gruppe darf maximal 1023 Zeichen haben.', $exception->validator->errors()->first('group_name'));
+        $this->assertEquals('Gruppenname darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('group_name'));
     }
 
     public function test_shouldNotAllowChangingParticipantToSomeoneFromADifferentCourse()

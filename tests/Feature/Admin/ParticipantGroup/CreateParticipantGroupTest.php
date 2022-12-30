@@ -212,14 +212,14 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Gruppe muss ausgefüllt sein.', $exception->validator->errors()->first('group_name'));
+        $this->assertEquals('Gruppenname muss ausgefüllt sein.', $exception->validator->errors()->first('group_name'));
     }
 
-    public function test_shouldValidateNewParticipantGroup_longContent()
+    public function test_shouldValidateNewParticipantGroup_longGroupName()
     {
         // given
         $payload = $this->payload;
-        $payload['group_name'] = 'Unglaublich langer Gruppenname. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr.';
+        $payload['group_name'] = 'Unglaublich langer Gruppenname. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr.';
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
@@ -228,7 +228,7 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Gruppe darf maximal 1023 Zeichen haben.', $exception->validator->errors()->first('group_name'));
+        $this->assertEquals('Gruppenname darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('group_name'));
     }
 
 
