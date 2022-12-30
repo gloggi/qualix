@@ -92,7 +92,7 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
         Route::get('/course/{course}/admin/participantGroups', [ParticipantGroupController::class, 'index'])->name('admin.participantGroups');
         Route::post('/course/{course}/admin/participantGroups', [ParticipantGroupController::class, 'store'])->name('admin.participantGroups.store');
         Route::get('/course/{course}/admin/participantGroups/generate', [ParticipantGroupController::class, 'generate'])->name('admin.participantGroups.generate');
-        Route::post('/course/{course}/admin/participantGroups/generate', [ParticipantGroupController::class, 'storeMany'])->name('admin.participantGroups.storeMany');
+        Route::post('/course/{course}/admin/participantGroups/storeMany', [ParticipantGroupController::class, 'storeMany'])->name('admin.participantGroups.storeMany');
         Route::get('/course/{course}/admin/participantGroups/{participantGroup}', [ParticipantGroupController::class, 'edit'])->name('admin.participantGroups.edit');
         Route::post('/course/{course}/admin/participantGroups/{participantGroup}', [ParticipantGroupController::class, 'update'])->name('admin.participantGroups.update');
         Route::delete('/course/{course}/admin/participantGroups/{participantGroup}', [ParticipantGroupController::class, 'destroy'])->name('admin.participantGroups.delete');
