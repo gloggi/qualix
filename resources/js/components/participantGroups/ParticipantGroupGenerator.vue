@@ -34,7 +34,7 @@
           v-model="selectedParticipantIds"
           multiple
           :options="participants"
-          display-field="scout_name"
+          :display-field="anyDuplicateMembershipGroups ? 'name_and_group' : 'scout_name'"
           required
           :groups="{[$t('t.views.admin.participant_group_generator.select_all')]: participants.map(p => p.id).join()}"
         ></input-multi-select>
@@ -61,7 +61,7 @@
           :label="$t('t.views.admin.participant_group_generator.discouraged_pairings')"
           :add-more-label="$t('t.views.admin.participant_group_generator.add_pairing')"
           :options="selectedParticipants"
-          display-field="scout_name"
+          :display-field="anyDuplicateMembershipGroups ? 'name_and_group' : 'scout_name'"
           :require-multiple="$t('t.views.admin.participant_group_generator.select_multiple_participants')"></input-multi-multi-select>
       </b-collapse>
 
@@ -77,7 +77,8 @@
     <input-generated-participant-groups
       name="participantGroups"
       v-model="proposedGroups"
-      :participants="participants"></input-generated-participant-groups>
+      :participants="participants"
+      :show-group="membershipGroupsAreRelevant"></input-generated-participant-groups>
 
     <button-submit :label="$t('t.global.save')" :disabled="!proposedGroups"></button-submit>
   </div>
@@ -117,6 +118,7 @@ export default {
       progress: 0,
       error: null,
       worker: new Worker(new URL('./index.worker.js', import.meta.url)),
+      membershipGroupsAreRelevant: false,
       proposedGroups: null,
     }
   },
@@ -192,6 +194,9 @@ export default {
       this.progress = 0
       this.inProgress = true
       this.proposedGroups = []
+      this.membershipGroupsAreRelevant = this.discourageMembershipGroups === '1' || this.groupSplits.some(split => {
+        return split.forbidMembershipGroups === '1'
+      })
       window.Laravel.errors = {}
       window.Laravel.oldInput.participantGroups = {}
       this.worker.postMessage({

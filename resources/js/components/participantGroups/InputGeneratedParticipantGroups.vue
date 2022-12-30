@@ -11,7 +11,10 @@
           narrow-form />
         <input-hidden :name="`${name}[${roundIndex}][${groupIndex}][participants]`" :value="proposedGroup.participants"></input-hidden>
         <template v-for="participantId in proposedGroup.participants.split(',')">
-          <participant-avatar v-if="participantFor(participantId)" :participant="participantFor(participantId)"></participant-avatar>
+          <participant-avatar
+            v-if="participantFor(participantId)"
+            :participant="participantFor(participantId)"
+            :show-group="showGroup"></participant-avatar>
         </template>
       </div>
     </div>
@@ -31,6 +34,7 @@ export default {
   props: {
     value: { type: Array, default: () => [] },
     participants: { type: Array, required: true },
+    showGroup: { type: Boolean, default: false },
   },
   mounted() {
     this.$emit('input', this.currentValue)

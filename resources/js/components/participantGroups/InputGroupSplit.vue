@@ -51,7 +51,7 @@
         :label="$t('t.views.admin.participant_group_generator.split.forbidden_pairings')"
         :add-more-label="$t('t.views.admin.participant_group_generator.add_pairing')"
         :options="participants"
-        display-field="scout_name"
+        :display-field="anyDuplicateMembershipGroups ? 'name_and_group' : 'scout_name'"
         narrow-form
         :require-multiple="$t('t.views.admin.participant_group_generator.select_multiple_participants')"
         multiple></input-multi-multi-select>
@@ -62,7 +62,7 @@
         :label="$t('t.views.admin.participant_group_generator.split.encouraged_pairings')"
         :add-more-label="$t('t.views.admin.participant_group_generator.add_pairing')"
         :options="participants"
-        display-field="scout_name"
+        :display-field="anyDuplicateMembershipGroups ? 'name_and_group' : 'scout_name'"
         narrow-form
         :require-multiple="$t('t.views.admin.participant_group_generator.select_multiple_participants')"
         multiple></input-multi-multi-select>
