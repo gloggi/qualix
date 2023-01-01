@@ -12,7 +12,6 @@ it('should display the correct color classes', () => {
       redThreshold: 7,
       greenThreshold: 20,
     },
-    mocks: { '$t': () => {} },
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr' ],
   })
 
@@ -40,7 +39,7 @@ it('should not display the feedback column when feedbackData is null', () => {
       redThreshold: 7,
       greenThreshold: 20,
     },
-    mocks: { '$t': () => {}, '$te': () => {}, 'routeUri': () => {} },
+    mocks: { 'routeUri': () => {} },
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr' ],
   })
 
@@ -60,7 +59,7 @@ it('should display the feedback column when feedbackData is passed', () => {
       redThreshold: 7,
       greenThreshold: 20,
     },
-    mocks: { '$t': () => {}, '$te': () => {}, 'routeUri': () => {} },
+    mocks: { 'routeUri': () => {} },
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr' ],
   })
 
@@ -86,7 +85,7 @@ it('should generate the correct link to the feedback of a participant', () => {
       redThreshold: 7,
       greenThreshold: 20,
     },
-    mocks: { '$t': () => {}, '$te': () => {}, '$tc': () => {}, 'routeUri': (...params) => {
+    mocks: { 'routeUri': (...params) => {
         if (params[0] === 'feedbackContent.edit') passedRouteParams = params
       } },
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-progress', 'b-progress-bar' ],
@@ -124,7 +123,7 @@ it('should display the requirements progress bar of a participant', () => {
       redThreshold: 7,
       greenThreshold: 20,
     },
-    mocks: { '$t': () => {}, '$te': () => {}, '$tc': (key, count) => `${key} ${count}`, 'routeUri': (...params) => {
+    mocks: { 'routeUri': (...params) => {
         if (params[0] === 'feedbackContent.edit') passedRouteParams = params
       } },
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-progress', 'b-progress-bar' ],

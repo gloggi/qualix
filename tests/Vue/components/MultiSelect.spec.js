@@ -10,7 +10,6 @@ describe('single select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           autofocus: true,
         },
-        mocks: { '$t': () => {} }
       })
 
       await waitFor(() => {
@@ -24,7 +23,6 @@ describe('single select', () => {
         props: {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: { '$t': () => {} }
       })
 
       // The select options should never become visible
@@ -41,10 +39,6 @@ describe('single select', () => {
         props: {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: {
-          '$t': () => {
-          }
-        }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -60,10 +54,6 @@ describe('single select', () => {
         props: {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: {
-          '$t': () => {
-          }
-        }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -86,10 +76,6 @@ describe('single select', () => {
         props: {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: {
-          '$t': () => {
-          }
-        }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -115,10 +101,6 @@ describe('single select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           placeholder: 'type here'
         },
-        mocks: {
-          '$t': () => {
-          }
-        }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -144,10 +126,6 @@ describe('single select', () => {
       props: {
         options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
       },
-      mocks: {
-        '$t': () => {
-        }
-      }
     })
 
     userEvent.click(screen.getByRole('combobox'))
@@ -169,7 +147,6 @@ describe('single select', () => {
         props: {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(multiSelect.container).not.toHaveVisibleTextContent()
@@ -181,7 +158,6 @@ describe('single select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           placeholder: 'Select one',
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(multiSelect.container).toHaveVisibleTextContent('Select one')
@@ -193,7 +169,6 @@ describe('single select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           value: '2'
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(multiSelect.container).toHaveVisibleTextContent('Bar')
@@ -206,7 +181,6 @@ describe('single select', () => {
           placeholder: 'Select one',
           value: '2'
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(multiSelect.container).toHaveVisibleTextContent('Bar')
@@ -217,7 +191,6 @@ describe('single select', () => {
         props: {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: { '$t': () => {} }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -243,7 +216,6 @@ describe('single select', () => {
             options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
             name: 'my-input',
           },
-          mocks: { '$t': () => {} }
         })
 
         expect(multiSelect.container).not.toHaveVisibleTextContent()
@@ -257,7 +229,6 @@ describe('single select', () => {
             name: 'my-input',
             value: '2'
           },
-          mocks: { '$t': () => {} }
         })
 
         expect(multiSelect.container).toHaveVisibleTextContent('Bar')
@@ -270,7 +241,6 @@ describe('single select', () => {
             options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
             name: 'my-input',
           },
-          mocks: { '$t': () => {} }
         })
 
         userEvent.click(screen.getByRole('combobox'))
@@ -298,7 +268,6 @@ describe('single select', () => {
         props: {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).not.toBeInTheDocument()
@@ -310,7 +279,6 @@ describe('single select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           'show-clear': false,
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).not.toBeInTheDocument()
@@ -322,7 +290,6 @@ describe('single select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           'show-clear': true,
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).not.toBeInTheDocument()
@@ -334,7 +301,6 @@ describe('single select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           value: '2',
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).not.toBeInTheDocument()
@@ -347,7 +313,6 @@ describe('single select', () => {
           'show-clear': false,
           value: '2',
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).not.toBeInTheDocument()
@@ -360,7 +325,6 @@ describe('single select', () => {
           'show-clear': true,
           value: '2',
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).toBeInTheDocument()
@@ -374,7 +338,6 @@ describe('single select', () => {
           value: '2',
           name: 'my-input',
         },
-        mocks: { '$t': () => {} }
       })
 
       userEvent.click(document.querySelector('.multiselect__clear'))
@@ -392,7 +355,6 @@ describe('single select', () => {
         options: [],
         'no-options': 'Test text',
       },
-      mocks: { '$t': () => {} }
     })
 
     expect(multiSelect.container).toHaveTextContent('Test text')
@@ -409,7 +371,7 @@ describe('single select', () => {
           </div>`,
         components: {MultiSelect},
         methods: { formSubmitted }
-      }, { mocks: { '$t': () => {} } }
+      },
     )
 
     userEvent.click(screen.getByRole('combobox'))
@@ -435,7 +397,7 @@ describe('single select', () => {
                         @input="onInput" value="2"></multi-select>`,
         components: { MultiSelect },
         methods: { onInput }
-      }, { mocks: { '$t': () => {} } }
+      },
     )
 
     await waitFor(() => {
@@ -452,7 +414,7 @@ describe('single select', () => {
                         @input="onInput" value="2"></multi-select>`,
         components: { MultiSelect },
         methods: { onInput }
-      }, { mocks: { '$t': () => {} } }
+      },
     )
 
     await waitFor(() => {
@@ -481,7 +443,7 @@ describe('single select', () => {
                         @update:selected="onUpdateSelected" value="2"></multi-select>`,
         components: { MultiSelect },
         methods: { onUpdateSelected }
-      }, { mocks: { '$t': () => {} } }
+      },
     )
 
     // onUpdateSelected should never be called
@@ -498,7 +460,7 @@ describe('single select', () => {
                         @update:selected="onUpdateSelected" value="2"></multi-select>`,
         components: { MultiSelect },
         methods: { onUpdateSelected }
-      }, { mocks: { '$t': () => {} } }
+      },
     )
 
     userEvent.click(screen.getByRole('combobox'))
@@ -523,7 +485,6 @@ describe('multiple select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           autofocus: true,
         },
-        mocks: { '$t': () => {} }
       })
 
       await waitFor(() => {
@@ -538,7 +499,6 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: { '$t': () => {} }
       })
 
       // The select options should never become visible
@@ -556,10 +516,6 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: {
-          '$t': () => {
-          }
-        }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -576,10 +532,6 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: {
-          '$t': () => {
-          }
-        }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -603,10 +555,6 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: {
-          '$t': () => {
-          }
-        }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -634,10 +582,6 @@ describe('multiple select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           placeholder: 'type here',
         },
-        mocks: {
-          '$t': () => {
-          }
-        }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -665,10 +609,6 @@ describe('multiple select', () => {
         multiple: true,
         options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
       },
-      mocks: {
-        '$t': () => {
-        }
-      }
     })
 
     userEvent.click(screen.getByRole('combobox'))
@@ -692,7 +632,6 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(multiSelect.container).not.toHaveVisibleTextContent()
@@ -705,7 +644,6 @@ describe('multiple select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           placeholder: 'Select one',
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(multiSelect.container).toHaveVisibleTextContent('Select one')
@@ -718,7 +656,6 @@ describe('multiple select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           value: '2'
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(multiSelect.container).toHaveVisibleTextContent('Bar')
@@ -732,7 +669,6 @@ describe('multiple select', () => {
           placeholder: 'Select one',
           value: '2'
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(multiSelect.container).toHaveVisibleTextContent('Bar')
@@ -744,7 +680,6 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: { '$t': () => {} }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -777,7 +712,6 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}, {id: 3, label: 'Baz'}],
         },
-        mocks: { '$t': () => {} }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -818,10 +752,6 @@ describe('multiple select', () => {
             options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
             name: 'my-input',
           },
-          mocks: {
-            '$t': () => {
-            }
-          }
         })
 
         expect(multiSelect.container).not.toHaveVisibleTextContent()
@@ -836,10 +766,6 @@ describe('multiple select', () => {
             name: 'my-input',
             value: '2'
           },
-          mocks: {
-            '$t': () => {
-            }
-          }
         })
 
         expect(multiSelect.container).toHaveVisibleTextContent('Bar')
@@ -853,10 +779,6 @@ describe('multiple select', () => {
             options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
             name: 'my-input',
           },
-          mocks: {
-            '$t': () => {
-            }
-          }
         })
 
         userEvent.click(screen.getByRole('combobox'))
@@ -893,10 +815,6 @@ describe('multiple select', () => {
             options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}, {id: 3, label: 'Baz'}],
             name: 'my-input',
           },
-          mocks: {
-            '$t': () => {
-            }
-          }
         })
 
         userEvent.click(screen.getByRole('combobox'))
@@ -940,7 +858,6 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).not.toBeInTheDocument()
@@ -953,7 +870,6 @@ describe('multiple select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           'show-clear': false,
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).not.toBeInTheDocument()
@@ -966,7 +882,6 @@ describe('multiple select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           'show-clear': true,
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).not.toBeInTheDocument()
@@ -979,7 +894,6 @@ describe('multiple select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           value: '2',
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).not.toBeInTheDocument()
@@ -992,7 +906,6 @@ describe('multiple select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           value: '1,2',
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).not.toBeInTheDocument()
@@ -1006,7 +919,6 @@ describe('multiple select', () => {
           'show-clear': false,
           value: '2',
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).not.toBeInTheDocument()
@@ -1020,7 +932,6 @@ describe('multiple select', () => {
           'show-clear': true,
           value: '2',
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).toBeInTheDocument()
@@ -1034,7 +945,6 @@ describe('multiple select', () => {
           'show-clear': true,
           value: '1,2',
         },
-        mocks: { '$t': () => {} }
       })
 
       expect(document.querySelector('.multiselect__clear')).toBeInTheDocument()
@@ -1049,7 +959,6 @@ describe('multiple select', () => {
           value: '2',
           name: 'my-input',
         },
-        mocks: { '$t': () => {} }
       })
 
       userEvent.click(document.querySelector('.multiselect__clear'))
@@ -1069,7 +978,6 @@ describe('multiple select', () => {
           value: '2,1',
           name: 'my-input',
         },
-        mocks: { '$t': () => {} }
       })
 
       userEvent.click(document.querySelector('.multiselect__clear'))
@@ -1088,7 +996,6 @@ describe('multiple select', () => {
         options: [],
         'no-options': 'Test text',
       },
-      mocks: { '$t': () => {} }
     })
 
     expect(multiSelect.container).toHaveTextContent('Test text')
@@ -1105,7 +1012,7 @@ describe('multiple select', () => {
           </div>`,
         components: {MultiSelect},
         methods: { formSubmitted }
-      }, { mocks: { '$t': () => {} } }
+      },
     )
 
     userEvent.click(screen.getByRole('combobox'))
@@ -1131,7 +1038,7 @@ describe('multiple select', () => {
                         @input="onInput" value="2"></multi-select>`,
         components: { MultiSelect },
         methods: { onInput }
-      }, { mocks: { '$t': () => {} } }
+      },
     )
 
     await waitFor(() => {
@@ -1148,7 +1055,7 @@ describe('multiple select', () => {
                         @input="onInput"></multi-select>`,
         components: { MultiSelect },
         methods: { onInput }
-      }, { mocks: { '$t': () => {} } }
+      },
     )
 
     await waitFor(() => {
@@ -1179,7 +1086,7 @@ describe('multiple select', () => {
                         @update:selected="onUpdateSelected" value="2"></multi-select>`,
         components: { MultiSelect },
         methods: { onUpdateSelected }
-      }, { mocks: { '$t': () => {} } }
+      },
     )
 
     // onUpdateSelected should never be called
@@ -1196,7 +1103,7 @@ describe('multiple select', () => {
                         @update:selected="onUpdateSelected"></multi-select>`,
         components: { MultiSelect },
         methods: { onUpdateSelected }
-      }, { mocks: { '$t': () => {} } }
+      },
     )
 
     userEvent.click(screen.getByRole('combobox'))
@@ -1221,7 +1128,6 @@ describe('multiple select', () => {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}, {id: 3, label: 'Baz'}],
           groups: { Group1: '2,1' }
         },
-        mocks: { '$t': () => {} }
       })
 
       userEvent.click(screen.getByRole('combobox'))
@@ -1264,7 +1170,7 @@ describe('multiple select', () => {
               formSubmitted(event.target.elements.multiselect.value)
             }
           }
-        }, { mocks: { '$t': () => {} } }
+        },
       )
 
       userEvent.click(screen.getByRole('combobox'))
