@@ -16,9 +16,11 @@
 <script>
 import Input from '../../mixins/input'
 import {get} from "lodash"
+import FeedbackEditor from './FeedbackEditor'
 
 export default {
   name: 'InputFeedbackEditorLarge',
+  components: {FeedbackEditor},
   mixins: [Input],
   props: {
     readonly: { type: Boolean, default: false },

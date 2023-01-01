@@ -75,11 +75,14 @@ import Input from '../../mixins/input'
 import InputMultiMultiSelect from '../form/InputMultiMultiSelect'
 import { validSplitGroups } from './validSplit'
 import {kebabCase} from 'lodash'
+import InputText from '../form/InputText'
+import RowText from '../form/RowText'
+import InputCheckbox from '../form/InputCheckbox'
 
 export default {
   name: 'InputGroupSplit',
   mixins: [ Input ],
-  components: { InputMultiMultiSelect },
+  components: {InputCheckbox, RowText, InputText, InputMultiMultiSelect },
   props: {
     value: { type: Object, default: () => ({}) },
     participants: { type: Array, required: true },

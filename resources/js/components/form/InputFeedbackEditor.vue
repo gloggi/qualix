@@ -25,9 +25,11 @@
 <script>
 import Input from '../../mixins/input'
 import {get} from 'lodash'
+import FeedbackEditor from '../feedback/FeedbackEditor'
 
 export default {
   name: 'InputFeedbackEditor',
+  components: {FeedbackEditor},
   mixins: [ Input ],
   props: {
     label: { type: String, required: true },

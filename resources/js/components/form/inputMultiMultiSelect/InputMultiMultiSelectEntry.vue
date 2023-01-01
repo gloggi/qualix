@@ -36,8 +36,10 @@
 
 <script>
 import Input from '../../../mixins/input'
+import MultiSelect from '../../MultiSelect'
 export default {
   name: 'InputMultiMultiSelectEntry',
+  components: {MultiSelect},
   mixins: [ Input ],
   props: {
     label: { type: String, required: true },

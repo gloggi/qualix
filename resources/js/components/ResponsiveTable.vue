@@ -53,9 +53,11 @@
 
 <script>
 import { isEmpty } from 'lodash'
+import ModalDelete from './ModalDelete'
 
 export default {
   name: 'ResponsiveTable',
+  components: {ModalDelete},
   props: {
     data: { type: Array, default: () => [] },
     actions: { type: Object, default: () => {} },

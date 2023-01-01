@@ -24,8 +24,10 @@
 
 <script>
 import Input from "../../mixins/input";
+import InputHidden from './InputHidden'
 export default {
   name: 'InputCheckbox',
+  components: {InputHidden},
   mixins: [ Input ],
   props: {
     label: { type: String, required: true },
