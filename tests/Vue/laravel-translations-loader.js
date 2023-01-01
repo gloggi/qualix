@@ -3,10 +3,10 @@ const path = require('path')
 
 module.exports = {
   process(src, filename, config, options) {
-    return loader.bind({
+    return loader.call({
       resource: filename,
       query: '',
       addDependency: () => {}
-    })();
+    })
   },
-};
+}
