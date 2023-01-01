@@ -1,9 +1,18 @@
-const mix = require('laravel-mix');
+const mix = require('laravel-mix')
 
 mix.webpackConfig({
     output: {
         chunkFilename: 'js/[name].[contenthash].js',
     }
+})
+
+mix.extend('translations', new class {
+  webpackRules() {
+    return {
+      test: /\/lang\/index\.js$/,
+      loader: '@kirschbaum-development/laravel-translations-loader/all',
+    }
+  }
 });
 
 /*
@@ -23,4 +32,5 @@ mix.vue()
    .sass('resources/sass/app.scss', 'public/css')
    .copyDirectory('resources/images', 'public/images')
    .options({ legacyNodePolyfills: false })
+   .translations()
    .version();

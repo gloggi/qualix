@@ -1,5 +1,3 @@
-import languageBundle
-  from '@kirschbaum-development/laravel-translations-loader!@kirschbaum-development/laravel-translations-loader'
 import React from 'react'
 import createI18n from '../i18n.js'
 import feedbackDocument from './FeedbackDocument.jsx'
@@ -13,7 +11,7 @@ const renderPdf = async (data, language = 'de') => {
   }
 
   try {
-    const { translate } = createI18n(languageBundle, language)
+    const { translate } = createI18n(language)
 
     if (typeof feedbackDocument.prepare === 'function') {
       await feedbackDocument.prepare()

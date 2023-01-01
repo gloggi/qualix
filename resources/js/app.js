@@ -1,11 +1,8 @@
 import Vue from 'vue'
-import languageBundle
-  from '@kirschbaum-development/laravel-translations-loader!@kirschbaum-development/laravel-translations-loader'
-import VueI18n from 'vue-i18n'
+import i18n from './i18n'
 import {kebabCase} from 'lodash'
-import LaravelTranslationFormatter from './laravel-translation-formatter'
 import './svg.js'
-import * as Sentry from "@sentry/vue";
+import * as Sentry from '@sentry/vue'
 
 require('./bootstrap')
 
@@ -14,7 +11,6 @@ window.Vue = Vue
 const {BootstrapVue, IconsPlugin} = require('bootstrap-vue')
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
-Vue.use(VueI18n)
 
 const element = document.getElementById('laravel-data')
 window.Laravel = JSON.parse(element.getAttribute('data-laravel'))
@@ -90,13 +86,6 @@ Vue.directive('focus', {
 })
 
 Vue.filter('kebabCase', value => kebabCase(value))
-
-const i18n = new VueI18n({
-  locale: document.documentElement.lang,
-  fallbackLocale: 'de',
-  messages: languageBundle,
-  formatter: new LaravelTranslationFormatter({ locale: document.documentElement.lang })
-})
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

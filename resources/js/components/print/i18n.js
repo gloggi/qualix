@@ -5,8 +5,9 @@ import {
   compileToFunction,
   resolveValue,
 } from '@intlify/core'
+import translationData from '../../../../lang/index.js'
 
-const createI18n = (translationData, language) => {
+const createI18n = (language) => {
   registerMessageCompiler(compileToFunction)
 
   const context = createCoreContext({
