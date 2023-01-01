@@ -5,9 +5,10 @@ module.exports = {
     'json',
     'vue'
   ],
-  'transform': {
-    '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
-    '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest'
+  transform: {
+    'lang/index\\.js$' : '<rootDir>/tests/Vue/laravel-translations-loader.js',
+    '^.+\\.js$': 'babel-jest',
+    '.*\\.(vue)$': '@vue/vue2-jest',
   },
   setupFilesAfterEnv: ['<rootDir>/tests/Vue/jest-setup.js'],
   testEnvironment: 'jsdom',

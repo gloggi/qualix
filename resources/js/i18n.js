@@ -6,7 +6,7 @@ import LaravelTranslationFormatter from './laravel-translation-formatter'
 Vue.use(VueI18n)
 
 export default new VueI18n({
-  locale: document.documentElement.lang,
+  locale: document?.documentElement.lang || 'de',
   fallbackLocale: 'de',
   messages: languageBundle,
   formatter: new LaravelTranslationFormatter({ locale: document.documentElement.lang })
