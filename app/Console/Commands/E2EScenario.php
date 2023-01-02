@@ -19,7 +19,7 @@ class E2EScenario extends Command
      *
      * @var string
      */
-    protected $signature = 'e2e:scenario {--user-id=}';
+    protected $signature = 'e2e:scenario {--user-id=} {--with-images}';
 
     /**
      * The console command description.
@@ -64,7 +64,7 @@ class E2EScenario extends Command
             ->hasRequirementStatuses(3)
             ->has(Participant::factory()
                 ->count(10)
-                ->withImage()
+                ->withImage($this->option('with-images'))
             )
             ->has(Block::factory()
                 ->count(10)

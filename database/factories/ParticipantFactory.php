@@ -27,7 +27,9 @@ class ParticipantFactory extends Factory {
         ];
     }
 
-    public function withImage() {
+    public function withImage($withImage) {
+        if (!$withImage) return $this;
+
         return $this->state(function (array $state) {
             // Download metadata about the image
             $response = Http::get('https://fakeface.rest/face/json?minimum_age=17&maximum_age=24')->json();
