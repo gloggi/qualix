@@ -13,7 +13,8 @@
       :close-on-select="true"
       :show-labels="false"
       :placeholder="placeholder"
-      role="combobox">
+      role="combobox"
+      :aria-label="ariaLabel">
 
       <template slot="clear">
         <div v-if="showClearButton" @mousedown.prevent.stop="clear" class="multiselect__clear"></div>
@@ -59,6 +60,7 @@ export default {
     showClear: { type: Boolean, default: false },
     placeholder: { type: String, default: '' },
     autofocus: { type: Boolean, default: false },
+    ariaLabel: { type: String, required: false },
   },
   data() {
     return {

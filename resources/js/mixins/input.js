@@ -25,7 +25,7 @@ export default {
       return this.narrowForm ? 'col-12' : 'col-md-6'
     },
     htmlFormName() {
-      return this.name.replaceAll('[', '.').replaceAll(']', '')
+      return this.name.replace(/\[/g, '.').replace(/]/g, '')
     },
   },
   watch: {

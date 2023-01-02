@@ -1,6 +1,6 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-form-label" :class="labelClass">{{ label }}</label>
+    <span class="col-form-label" :class="labelClass">{{ label }}</span>
 
     <div :class="inputColumnClass">
       <multi-select
@@ -11,6 +11,7 @@
         :autofocus="autofocus"
         :v-focus="autofocus"
         v-model="currentValue"
+        :aria-label="label"
         v-bind="$attrs"
         v-on="$listeners">
         <template #option="props">

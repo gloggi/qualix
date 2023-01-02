@@ -96,6 +96,7 @@ import InputCheckbox from '../form/InputCheckbox'
 import InputGroupSplits from './InputGroupSplits'
 import HelpText from '../HelpText'
 import InputGeneratedParticipantGroups from './InputGeneratedParticipantGroups'
+import createWorker from './createWorker'
 
 export default {
   name: 'ParticipantGroupGenerator',
@@ -117,7 +118,7 @@ export default {
       inProgress: false,
       progress: 0,
       error: null,
-      worker: new Worker(new URL('./index.worker.js', import.meta.url)),
+      worker: createWorker(),
       membershipGroupsAreRelevant: false,
       proposedGroups: null,
     }

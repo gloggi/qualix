@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import i18n from './i18n'
-import {kebabCase} from 'lodash'
+import './kebabCaseFilter'
 import './svg.js'
 import * as Sentry from '@sentry/vue'
 
@@ -84,8 +84,6 @@ Vue.directive('focus', {
     }
   }
 })
-
-Vue.filter('kebabCase', value => kebabCase(value))
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
