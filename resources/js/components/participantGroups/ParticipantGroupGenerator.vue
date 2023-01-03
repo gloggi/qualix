@@ -199,7 +199,7 @@ export default {
         return split.forbidMembershipGroups === '1'
       })
       window.Laravel.errors = {}
-      window.Laravel.oldInput.participantGroups = {}
+      window.Laravel.oldInput.participantGroups = []
       this.worker.postMessage({
         numParticipants: this.selectedParticipants.length,
         rounds: this.groupSplits.map(split => ({
