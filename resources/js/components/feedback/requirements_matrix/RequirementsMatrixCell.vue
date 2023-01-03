@@ -50,6 +50,7 @@ import FormBasic from '../../FormBasic'
 import InputMultiSelect from '../../form/InputMultiSelect'
 import AutoSave from '../../AutoSave'
 import InputTextarea from '../../form/InputTextarea'
+import RowText from '../../form/RowText'
 
 const ellipsis = function(text, max) {
   if (text.length <= max) {
@@ -71,7 +72,7 @@ const ellipsis = function(text, max) {
 
 export default {
   name: 'RequirementsMatrixCell',
-  components: {InputTextarea, AutoSave, InputMultiSelect, FormBasic},
+  components: {RowText, InputTextarea, AutoSave, InputMultiSelect, FormBasic},
   props: {
     feedback: {type: Object, required: true},
     feedbackRequirement: {type: Object, required: true},

@@ -1,7 +1,7 @@
 <template>
   <div class="form-group row mb-0">
-    <div class="col-md-8 offset-md-3">
-      <button type="submit" class="btn btn-primary mr-3 mb-1" v-on="$listeners">
+    <div :class="inputColumnClass">
+      <button type="submit" class="btn btn-primary mr-3 mb-1" :disabled="disabled" v-on="$listeners">
         {{ label }}
       </button>
 
@@ -15,7 +15,14 @@ export default {
   name: 'ButtonSubmit',
   props: {
     label: { type: String, default: function() { return this.$t('t.global.save') } },
+    disabled: { type: Boolean, default: false },
+    narrowForm: { type: Boolean, default: false },
   },
+  computed: {
+    inputColumnClass() {
+      return this.narrowForm ? 'col-12' : 'col-md-8 offset-md-3'
+    }
+  }
 }
 </script>
 

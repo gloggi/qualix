@@ -31,10 +31,13 @@
 
 <script>
 import AutoSave from '../AutoSave'
+import FormBasic from '../FormBasic'
+import RequirementProgress from './RequirementProgress'
+import InputFeedbackEditorLarge from './InputFeedbackEditorLarge'
 
 export default {
   name: 'FormFeedbackContent',
-  components: { AutoSave },
+  components: {InputFeedbackEditorLarge, RequirementProgress, FormBasic, AutoSave },
   props: {
     action: {},
     courseId: { type: String, required: true },

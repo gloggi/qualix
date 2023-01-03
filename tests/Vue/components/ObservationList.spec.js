@@ -1,5 +1,5 @@
 import { render } from '@testing-library/vue'
-import ObservationList from "../../../resources/js/components/ObservationList"
+import ObservationList from '../../../resources/js/components/ObservationList'
 
 const observations = [{
   block: {
@@ -27,11 +27,10 @@ describe('visible columns', () => {
         showContent: false,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.queryByText('t.models.observation.content')).toBeNull()
+    expect(list.queryByText('Beobachtung')).toBeNull()
   })
 
   it('should display the content column when enabled', () => {
@@ -41,11 +40,10 @@ describe('visible columns', () => {
         showContent: true,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.getByText('t.models.observation.content')).toBeInTheDocument()
+    expect(list.getByText('Beobachtung')).toBeInTheDocument()
     expect(list.getByText('war gut drauf')).toBeInTheDocument()
   })
 
@@ -56,11 +54,10 @@ describe('visible columns', () => {
         showBlock: false,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.queryByText('t.models.observation.block')).toBeNull()
+    expect(list.queryByText('Block')).toBeNull()
   })
 
   it('should display the block column when enabled', () => {
@@ -70,11 +67,10 @@ describe('visible columns', () => {
         showBlock: true,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.getByText('t.models.observation.block')).toBeInTheDocument()
+    expect(list.getByText('Block')).toBeInTheDocument()
     expect(list.getByText('1.3 my block')).toBeInTheDocument()
   })
 
@@ -85,11 +81,10 @@ describe('visible columns', () => {
         showRequirements: false,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.queryByText('t.models.observation.requirements')).toBeNull()
+    expect(list.queryByText('Anforderungen')).toBeNull()
   })
 
   it('should display the requirements column when enabled', () => {
@@ -99,11 +94,10 @@ describe('visible columns', () => {
         showRequirements: true,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.getByText('t.models.observation.requirements')).toBeInTheDocument()
+    expect(list.getByText('Anforderungen')).toBeInTheDocument()
     expect(list.getByText('some requirement')).toBeInTheDocument()
   })
 
@@ -114,11 +108,10 @@ describe('visible columns', () => {
         showCategories: false,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.queryByText('t.models.observation.categories')).toBeNull()
+    expect(list.queryByText('Kategorien')).toBeNull()
   })
 
   it('should display the categories column when enabled', () => {
@@ -128,11 +121,10 @@ describe('visible columns', () => {
         showCategories: true,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.getByText('t.models.observation.categories')).toBeInTheDocument()
+    expect(list.getByText('Kategorien')).toBeInTheDocument()
     expect(list.getByText('my category')).toBeInTheDocument()
   })
 
@@ -143,11 +135,10 @@ describe('visible columns', () => {
         showImpression: false,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.queryByText('t.models.observation.impression')).toBeNull()
+    expect(list.queryByText('Eindruck')).toBeNull()
   })
 
   it('should display the impression column when enabled', () => {
@@ -157,12 +148,11 @@ describe('visible columns', () => {
         showImpression: true,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.getByText('t.models.observation.impression')).toBeInTheDocument()
-    expect(list.getByText('t.global.positive')).toBeInTheDocument()
+    expect(list.getByText('Eindruck')).toBeInTheDocument()
+    expect(list.getByText('Positiv')).toBeInTheDocument()
   })
 
   it('should not display the user column when disabled', () => {
@@ -172,11 +162,10 @@ describe('visible columns', () => {
         showUser: false,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.queryByText('t.models.observation.user')).toBeNull()
+    expect(list.queryByText('Beobachtet von')).toBeNull()
   })
 
   it('should display the user column when enabled', () => {
@@ -186,11 +175,10 @@ describe('visible columns', () => {
         showUser: true,
         observations,
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
 
-    expect(list.getByText('t.models.observation.user')).toBeInTheDocument()
+    expect(list.getByText('Beobachtet von')).toBeInTheDocument()
     expect(list.getByText('Bari')).toBeInTheDocument()
   })
 })
@@ -211,16 +199,15 @@ describe('filters', () => {
         }],
         usedObservations: [ 1 ],
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
       directives: {
         bToggle: () => {}
       }
     })
 
-    expect(list.getByText('t.views.participant_details.filter')).toBeInTheDocument()
-    expect(list.getByPlaceholderText('t.views.participant_details.filter_by_requirement')).toBeInTheDocument()
-    expect(list.getByPlaceholderText('t.views.participant_details.filter_by_category')).toBeInTheDocument()
+    expect(list.getByText('Beobachtungen filtern')).toBeInTheDocument()
+    expect(list.getByPlaceholderText('Anforderung')).toBeInTheDocument()
+    expect(list.getByPlaceholderText('Kategorie')).toBeInTheDocument()
   })
 
   it('should not display the requirement filter when there are no requirements', () => {
@@ -236,16 +223,15 @@ describe('filters', () => {
         }],
         usedObservations: [ 1 ],
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
       directives: {
         bToggle: () => {}
       }
     })
 
-    expect(list.getByText('t.views.participant_details.filter')).toBeInTheDocument()
-    expect(list.queryByPlaceholderText('t.views.participant_details.filter_by_requirement')).toBeNull()
-    expect(list.getByPlaceholderText('t.views.participant_details.filter_by_category')).toBeInTheDocument()
+    expect(list.getByText('Beobachtungen filtern')).toBeInTheDocument()
+    expect(list.queryByPlaceholderText('Anforderung')).toBeNull()
+    expect(list.getByPlaceholderText('Kategorie')).toBeInTheDocument()
   })
 
   it('should not display the category filter when there are no categories', () => {
@@ -261,16 +247,15 @@ describe('filters', () => {
         categories: [],
         usedObservations: [ 1 ],
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
       directives: {
         bToggle: () => {}
       }
     })
 
-    expect(list.getByText('t.views.participant_details.filter')).toBeInTheDocument()
-    expect(list.getByPlaceholderText('t.views.participant_details.filter_by_requirement')).toBeInTheDocument()
-    expect(list.queryByPlaceholderText('t.views.participant_details.filter_by_category')).toBeNull()
+    expect(list.getByText('Beobachtungen filtern')).toBeInTheDocument()
+    expect(list.getByPlaceholderText('Anforderung')).toBeInTheDocument()
+    expect(list.queryByPlaceholderText('Kategorie')).toBeNull()
   })
 
   it('should not display the used observation filter when no used observations are passed in', () => {
@@ -287,16 +272,15 @@ describe('filters', () => {
           name: 'my category'
         }],
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
       directives: {
         bToggle: () => {}
       }
     })
 
-    expect(list.getByText('t.views.participant_details.filter')).toBeInTheDocument()
-    expect(list.getByPlaceholderText('t.views.participant_details.filter_by_requirement')).toBeInTheDocument()
-    expect(list.getByPlaceholderText('t.views.participant_details.filter_by_category')).toBeInTheDocument()
+    expect(list.getByText('Beobachtungen filtern')).toBeInTheDocument()
+    expect(list.getByPlaceholderText('Anforderung')).toBeInTheDocument()
+    expect(list.getByPlaceholderText('Kategorie')).toBeInTheDocument()
   })
 
   it('should not display the filters at all when there are no requirements and no categories', () => {
@@ -309,17 +293,16 @@ describe('filters', () => {
         requirements: [],
         categories: [],
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
       directives: {
         bToggle: () => {}
       }
     })
 
-    expect(list.queryByText('t.views.participant_details.filter')).toBeNull()
-    expect(list.queryByPlaceholderText('t.views.participant_details.filter_by_requirement')).toBeNull()
-    expect(list.queryByPlaceholderText('t.views.participant_details.filter_by_category')).toBeNull()
-    expect(list.queryByText('t.views.participant_details.hide_already_used_observations')).toBeNull()
+    expect(list.queryByText('Beobachtungen filtern')).toBeNull()
+    expect(list.queryByPlaceholderText('Anforderung')).toBeNull()
+    expect(list.queryByPlaceholderText('Kategorie')).toBeNull()
+    expect(list.queryByText('Beobachtungen ausblenden, wenn sie in dieser Rückmeldung schon erwähnt wurden')).toBeNull()
   })
 
   it('should display the used observation filter when used observations are passed in', () => {
@@ -333,14 +316,13 @@ describe('filters', () => {
         categories: [],
         usedObservations: [],
       },
-      mocks: {'$t': (key) => key},
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
       directives: {
         bToggle: () => {}
       }
     })
 
-    expect(list.queryByText('t.views.participant_details.filter')).toBeInTheDocument()
-    expect(list.queryByText('t.views.participant_details.hide_already_used_observations')).toBeInTheDocument()
+    expect(list.queryByText('Beobachtungen filtern')).toBeInTheDocument()
+    expect(list.queryByText('Beobachtungen ausblenden, wenn sie in dieser Rückmeldung schon erwähnt wurden')).toBeInTheDocument()
   })
 })

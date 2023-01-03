@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Feedback;
 use App\Models\FeedbackData;
 use App\Models\Observation;
+use App\Models\Participant;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
@@ -18,7 +19,7 @@ class E2EScenario extends Command
      *
      * @var string
      */
-    protected $signature = 'e2e:scenario {--user-id=}';
+    protected $signature = 'e2e:scenario {--user-id=} {--with-images}';
 
     /**
      * The console command description.
@@ -61,7 +62,10 @@ class E2EScenario extends Command
             ->hasUsers(3)
             ->hasRequirements(4)
             ->hasRequirementStatuses(3)
-            ->hasParticipants(10)
+            ->has(Participant::factory()
+                ->count(10)
+                ->withImage($this->option('with-images'))
+            )
             ->has(Block::factory()
                 ->count(10)
                 ->has(Observation::factory()

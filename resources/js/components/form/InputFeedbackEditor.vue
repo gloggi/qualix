@@ -1,8 +1,8 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-md-3 col-form-label text-md-right">{{ label }}</label>
+    <label :for="name | kebabCase" class="col-form-label" :class="labelClass">{{ label }}</label>
 
-    <div class="col-md-6">
+    <div :class="inputColumnClass">
       <feedback-editor
         :id="name | kebabCase"
         :name="name"
@@ -25,9 +25,11 @@
 <script>
 import Input from '../../mixins/input'
 import {get} from 'lodash'
+import FeedbackEditor from '../feedback/FeedbackEditor'
 
 export default {
   name: 'InputFeedbackEditor',
+  components: {FeedbackEditor},
   mixins: [ Input ],
   props: {
     label: { type: String, required: true },

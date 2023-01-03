@@ -14,10 +14,9 @@ class ParticipantGroupRequest extends FormRequest {
     public function rules() {
         return [
             'participants' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
-            'group_name' => 'required|max:1023'
+            'group_name' => 'required|max:255'
         ];
     }
-
 
     public function attributes() {
         return Lang::get('t.models.participant_group');

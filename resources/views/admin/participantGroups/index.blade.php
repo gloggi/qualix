@@ -21,7 +21,13 @@
 
             <button-submit label="{{__('t.global.add')}}">
 
-                @component('components.help-text', ['id' => 'requirementsHelp', 'key' => 't.views.admin.participant_groups.what_are_participant_groups'])@endcomponent
+                @if(count($course->participants) > 2)
+                    <a class="btn btn-link mb-1" href="{{ route('admin.participantGroups.generate', ['course' => $course]) }}">
+                        {{ __('t.views.admin.participant_groups.generate') }}
+                    </a>
+                @endif
+
+            @component('components.help-text', ['id' => 'requirementsHelp', 'key' => 't.views.admin.participant_groups.what_are_participant_groups'])@endcomponent
 
             </button-submit>
 

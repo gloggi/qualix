@@ -101,9 +101,10 @@
 import { isEmpty } from 'lodash'
 import ResponsiveTable from "./ResponsiveTable"
 import ObservationContent from "./ObservationContent"
+import MultiSelect from './MultiSelect'
 export default {
   name: 'ObservationList',
-  components: {ResponsiveTable, ObservationContent},
+  components: {MultiSelect, ResponsiveTable, ObservationContent},
   props: {
     courseId: { type: String },
     observations: { type: Array, default: () => [] },

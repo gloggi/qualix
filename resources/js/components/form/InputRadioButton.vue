@@ -1,7 +1,7 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-md-3 col-form-label text-md-right py-0">{{ label }}</label>
-    <div class="col-md-6">
+    <label :for="name | kebabCase" class="col-form-label py-0" :class="labelClass">{{ label }}</label>
+    <div :class="inputColumnClass">
       <div class="my-auto d-flex" :class="{ 'is-invalid': errorMessage }">
         <b-form-radio v-for="(option, optionValue) in options"
                       :key="name + '-' + optionValue"

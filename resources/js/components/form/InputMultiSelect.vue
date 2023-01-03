@@ -1,8 +1,8 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-md-3 col-form-label text-md-right">{{ label }}</label>
+    <span class="col-form-label" :class="labelClass">{{ label }}</span>
 
-    <div class="col-md-6">
+    <div :class="inputColumnClass">
       <multi-select
         :id="name | kebabCase"
         class="form-control-multiselect" :class="{ 'is-invalid': errorMessage }"
@@ -11,6 +11,7 @@
         :autofocus="autofocus"
         :v-focus="autofocus"
         v-model="currentValue"
+        :aria-label="label"
         v-bind="$attrs"
         v-on="$listeners">
         <template #option="props">
@@ -30,8 +31,10 @@
 
 <script>
 import Input from '../../mixins/input'
+import MultiSelect from '../MultiSelect'
 export default {
   name: 'InputMultiSelect',
+  components: {MultiSelect},
   mixins: [ Input ],
   props: {
     label: { type: String, required: true },

@@ -11,8 +11,10 @@
 
 <script>
 
+import FormBasic from './FormBasic'
 export default {
   name: 'ModalDelete',
+  components: {FormBasic},
   props: {
     id: { type: String },
     text: { type: String, required: true },

@@ -27,10 +27,11 @@
 
 <script>
 import ObservationContent from '../../../ObservationContent'
+import ObservationList from '../../../ObservationList'
 
 export default {
   name: 'ModalAddObservation',
-  components: {ObservationContent},
+  components: {ObservationList, ObservationContent},
   props: {
     value: {type: Function, required: false},
     observations: {type: Array, required: true},

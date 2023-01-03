@@ -72,10 +72,15 @@
 
 <script>
 import HelpText from '../HelpText'
+import FormBasic from '../FormBasic'
+import InputText from '../form/InputText'
+import InputMultiSelect from '../form/InputMultiSelect'
+import RowText from '../form/RowText'
+import InputFeedbackEditor from '../form/InputFeedbackEditor'
 
 export default {
   name: 'FormFeedbackData',
-  components: {HelpText},
+  components: {InputFeedbackEditor, RowText, InputMultiSelect, InputText, FormBasic, HelpText},
   props: {
     action: {},
     courseId: { type: String, required: true },

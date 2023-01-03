@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MultiParticipantGroupRequest;
 use App\Http\Requests\ParticipantGroupRequest;
 use App\Models\Course;
 use App\Models\ParticipantGroup;
@@ -37,6 +38,40 @@ class ParticipantGroupController extends Controller
             $participantGroup = ParticipantGroup::create(array_merge($data, ['course_id' => $course->id]));
             $participantGroup->participants()->sync(array_filter(explode(',', $data['participants'])));
             $request->session()->flash('alert-success', __('t.views.admin.participant_groups.create_success'));
+        });
+
+        return Redirect::route('admin.participantGroups', ['course' => $course->id]);
+    }
+
+    /**
+     * Display a UI for generating participant groups.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function generate()
+    {
+        return view('admin.participantGroups.generate');
+    }
+
+    /**
+     * Store multiple newly created resources in storage.
+     *
+     * @param  MultiParticipantGroupRequest $request
+     * @param Course $course
+
+     * @return RedirectResponse
+     */
+    public function storeMany(MultiParticipantGroupRequest $request, Course $course)
+    {
+        DB::transaction(function() use ($request, $course){
+            $data = $request->validated();
+            foreach($data['participantGroups'] as $roundData) {
+                foreach($roundData as $groupData) {
+                    $participantGroup = ParticipantGroup::create(array_merge($groupData, ['course_id' => $course->id]));
+                    $participantGroup->participants()->sync(array_filter(explode(',', $groupData['participants'])));
+                }
+            }
+            $request->session()->flash('alert-success', __('t.views.admin.participant_groups.create_many_success'));
         });
 
         return Redirect::route('admin.participantGroups', ['course' => $course->id]);

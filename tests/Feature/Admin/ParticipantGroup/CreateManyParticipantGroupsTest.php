@@ -8,18 +8,23 @@ use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithCourse;
 
-class CreateParticipantGroupTest extends TestCaseWithCourse
+class CreateManyParticipantGroupsTest extends TestCaseWithCourse
 {
 
     private $payload;
     private $participantId;
+    private $participantId2;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->participantId = $this->createParticipant('Pflock');
-        $this->payload = ['group_name' => 'Unternehmungsgruppe 1', 'participants' => '' . $this->participantId];
+        $this->participantId2 = $this->createParticipant('Pfnörch');
+        $this->payload = ['participantGroups' => [[
+            ['group_name' => 'Unternehmungsgruppe 1', 'participants' => '' . $this->participantId],
+            ['group_name' => 'Unternehmungsgruppe 2', 'participants' => '' . $this->participantId2],
+        ]]];
     }
 
     public function test_shouldRequireLogin()
@@ -28,7 +33,7 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         auth()->logout();
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $this->payload);
 
         // then
         $response->assertStatus(302);
@@ -41,58 +46,60 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         Course::find($this->courseId)->update(['archived' => true]);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $this->payload);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect(route('admin.course', ['course' => $this->courseId]));
     }
 
-    public function test_shouldCreateAndDisplayParticipantGroup()
+    public function test_shouldCreateAndDisplayParticipantGroups()
     {
         // given
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $this->payload);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/admin/participantGroups');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('TN-Gruppe wurde erfolgreich erstellt.');
+        $response->assertSee('TN-Gruppen wurden erfolgreich erstellt.');
+        $response->assertSee('Unternehmungsgruppe 1');
+        $response->assertSee('Unternehmungsgruppe 2');
     }
 
     public function test_shouldValidateNewParticipantGroup_noParticipantIds()
     {
         // given
         $payload = $this->payload;
-        unset($payload['participants']);
+        unset($payload['participantGroups'][0][0]['participants']);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('TN muss ausgefüllt sein.', $exception->validator->errors()->first('participants'));
+        $this->assertEquals('TN muss ausgefüllt sein.', $exception->validator->errors()->first('participantGroups.0.0.participants'));
     }
 
     public function test_shouldValidateNewParticipantGroup_invalidParticipantIds()
     {
         // given
         $payload = $this->payload;
-        $payload['participants'] = 'a';
+        $payload['participantGroups'][0][0]['participants'] = 'a';
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('TN Format ist ungültig.', $exception->validator->errors()->first('participants'));
+        $this->assertEquals('TN Format ist ungültig.', $exception->validator->errors()->first('participantGroups.0.0.participants'));
     }
 
     public function test_shouldValidateNewParticipantGroup_oneValidParticipantId()
@@ -100,10 +107,10 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         // given
         $payload = $this->payload;
         $participantId = $this->createParticipant();
-        $payload['participants'] = $participantId;
+        $payload['participantGroups'][0][0]['participants'] = $participantId;
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload);
 
         // then
         $response->assertStatus(302);
@@ -116,10 +123,10 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         // given
         $payload = $this->payload;
         $participantIds = [$this->createParticipant(), $this->createParticipant()];
-        $payload['participants'] = implode(',', $participantIds);
+        $payload['participantGroups'][0][0]['participants'] = implode(',', $participantIds);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload);
 
         // then
         $response->assertStatus(302);
@@ -132,16 +139,16 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         // given
         $payload = $this->payload;
         $participantIds = [$this->createParticipant(), '999999', $this->createParticipant()];
-        $payload['participants'] = implode(',', $participantIds);
+        $payload['participantGroups'][0][0]['participants'] = implode(',', $participantIds);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Der gewählte Wert für TN ist ungültig.', $exception->validator->errors()->first('participants'));
+        $this->assertEquals('Der gewählte Wert für TN ist ungültig.', $exception->validator->errors()->first('participantGroups.0.0.participants'));
     }
 
     public function test_shouldValidateNewParticipantGroup_someInvalidParticipantIds()
@@ -149,16 +156,16 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         // given
         $payload = $this->payload;
         $participantIds = [$this->createParticipant(), 'abc', $this->createParticipant()];
-        $payload['participants'] = implode(',', $participantIds);
+        $payload['participantGroups'][0][0]['participants'] = implode(',', $participantIds);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('TN Format ist ungültig.', $exception->validator->errors()->first('participants'));
+        $this->assertEquals('TN Format ist ungültig.', $exception->validator->errors()->first('participantGroups.0.0.participants'));
     }
 
     public function test_shouldValidateNewParticipantGroup_multipleValidParticipantIds_shouldWork()
@@ -167,17 +174,17 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         $participantId2 = $this->createParticipant('Pfnörch');
         $participantIds = $this->participantId . ',' . $participantId2;
         $payload = $this->payload;
-        $payload['participants'] = $participantIds;
+        $payload['participantGroups'][0][0]['participants'] = $participantIds;
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload);
 
         // then
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/admin/participantGroups');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('TN-Gruppe wurde erfolgreich erstellt.');
+        $response->assertSee('TN-Gruppen wurden erfolgreich erstellt.');
     }
 
     public function test_createParticipantGroupWitMultipleParticipantIds_shouldLinkTheParticipantGroup()
@@ -186,11 +193,11 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         $participantId2 = $this->createParticipant('Pfnörch');
         $participantIds = $this->participantId . ',' . $participantId2;
         $payload = $this->payload;
-        $payload['participants'] = $participantIds;
-        $payload['group_name'] = 'visible on both participants';
+        $payload['participantGroups'][0][0]['participants'] = $participantIds;
+        $payload['participantGroups'][0][0]['group_name'] = 'visible on both participants';
 
         // when
-        $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
+        $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload);
 
         // then
         $response = $this->get('/course/' . $this->courseId . '/participants/' . $this->participantId);
@@ -203,32 +210,32 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
     {
         // given
         $payload = $this->payload;
-        unset($payload['group_name']);
+        unset($payload['participantGroups'][0][0]['group_name']);
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Gruppenname muss ausgefüllt sein.', $exception->validator->errors()->first('group_name'));
+        $this->assertEquals('Gruppenname muss ausgefüllt sein.', $exception->validator->errors()->first('participantGroups.0.0.group_name'));
     }
 
     public function test_shouldValidateNewParticipantGroup_longGroupName()
     {
         // given
         $payload = $this->payload;
-        $payload['group_name'] = 'Unglaublich langer Gruppenname. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr.';
+        $payload['participantGroups'][0][0]['group_name'] = 'Unglaublich langer Gruppenname. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr. Und noch etwas mehr.';
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Gruppenname darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('group_name'));
+        $this->assertEquals('Gruppenname darf maximal 255 Zeichen haben.', $exception->validator->errors()->first('participantGroups.0.0.group_name'));
     }
 
     public function test_shouldShowEscapedNotice_afterCreatingParticipantGroup()
@@ -237,11 +244,11 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         $participantName = '<b>Participant name</b> with \'some" formatting';
         $groupName = '<b>Group name</b> with \'some" formatting';
         $payload = $this->payload;
-        $payload['participants'] = $this->createParticipant($participantName);
-        $payload['group_name'] = $groupName;
+        $payload['participantGroups'][0][0]['participants'] = $this->createParticipant($participantName);
+        $payload['participantGroups'][0][0]['group_name'] = $groupName;
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload)->followRedirects();
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload)->followRedirects();
 
         // then
         $response->assertDontSee($participantName, false);
@@ -255,16 +262,16 @@ class CreateParticipantGroupTest extends TestCaseWithCourse
         $differentCourse = $this->createCourse('Other course', '', false);
         $participantFromDifferentCourse = $this->createParticipant('Foreign', $differentCourse);
         $payload = $this->payload;
-        $payload['participants'] = $this->participantId . ',' . $participantFromDifferentCourse;
+        $payload['participantGroups'][0][0]['participants'] = $this->participantId . ',' . $participantFromDifferentCourse;
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups', $payload);
+        $response = $this->post('/course/' . $this->courseId . '/admin/participantGroups/storeMany', $payload);
 
         // then
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Der gewählte Wert für TN ist ungültig.', $exception->validator->errors()->first('participants'));
+        $this->assertEquals('Der gewählte Wert für TN ist ungültig.', $exception->validator->errors()->first('participantGroups.0.0.participants'));
     }
 
 }

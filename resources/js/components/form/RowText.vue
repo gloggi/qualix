@@ -1,6 +1,6 @@
 <template>
   <div class="form-group row">
-    <div class="col-md-8 offset-md-3">
+    <div :class="inputColumnClass">
       <slot></slot>
     </div>
   </div>
@@ -8,7 +8,15 @@
 
 <script>
 export default {
-  name: 'RowText'
+  name: 'RowText',
+  props: {
+    narrowForm: { type: Boolean, default: false },
+  },
+  computed: {
+    inputColumnClass() {
+      return this.narrowForm ? 'col-12' : 'col-md-8 offset-md-3'
+    }
+  }
 }
 </script>
 
