@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Services\Import\SpreadsheetReaderFactory;
+use Illuminate\Http\UploadedFile;
 use Mockery;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
@@ -26,5 +27,7 @@ trait ReadsSpreadsheets
         });
 
         $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
+
+        return UploadedFile::fake()->create($filename);
     }
 }

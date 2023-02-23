@@ -8,10 +8,8 @@ class AddArchivedFlagToCourse extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('courses', function (Blueprint $table) {
             $table->boolean('archived')->default(false)->nullable(false);
@@ -20,10 +18,8 @@ class AddArchivedFlagToCourse extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('courses', function (Blueprint $table) {
             $table->dropColumn('archived');

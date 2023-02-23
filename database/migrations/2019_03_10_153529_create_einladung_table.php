@@ -7,10 +7,8 @@ class CreateEinladungTable extends Migration {
 
 	/**
 	 * Run the migrations.
-	 *
-	 * @return void
 	 */
-	public function up()
+	public function up(): void
 	{
 		Schema::create('einladung', function(Blueprint $table)
 		{
@@ -24,10 +22,8 @@ class CreateEinladungTable extends Migration {
 
 	/**
 	 * Reverse the migrations.
-	 *
-	 * @return void
 	 */
-	public function down()
+	public function down(): void
 	{
 		Schema::drop('einladung');
 	}

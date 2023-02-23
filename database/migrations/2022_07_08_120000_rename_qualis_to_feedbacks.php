@@ -7,10 +7,8 @@ use Illuminate\Support\Facades\Schema;
 class RenameQualisToFeedbacks extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up() {
+    public function up(): void {
         Schema::rename('quali_datas', 'feedback_datas');
         Schema::rename('qualis', 'feedbacks');
         Schema::rename('quali_observations_participants', 'feedback_observations_participants');
@@ -68,10 +66,8 @@ class RenameQualisToFeedbacks extends Migration {
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down() {
+    public function down(): void {
         Schema::table('feedbacks_users', function (Blueprint $table) {
             $table->dropForeign('fk_feedbacks_users_feedback_id');
             $table->dropForeign('fk_feedbacks_users_user_id');

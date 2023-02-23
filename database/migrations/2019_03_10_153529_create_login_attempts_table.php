@@ -7,10 +7,8 @@ class CreateLoginAttemptsTable extends Migration {
 
 	/**
 	 * Run the migrations.
-	 *
-	 * @return void
 	 */
-	public function up()
+	public function up(): void
 	{
 		Schema::create('login_attempts', function(Blueprint $table)
 		{
@@ -22,10 +20,8 @@ class CreateLoginAttemptsTable extends Migration {
 
 	/**
 	 * Reverse the migrations.
-	 *
-	 * @return void
 	 */
-	public function down()
+	public function down(): void
 	{
 		Schema::drop('login_attempts');
 	}

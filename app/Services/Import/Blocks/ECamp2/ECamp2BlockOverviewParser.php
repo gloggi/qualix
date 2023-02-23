@@ -25,7 +25,7 @@ class ECamp2BlockOverviewParser implements BlockListParser {
     public static $COL_WITH_BLOCK_DESCRIPTION = 'A';
     public static $COL_WITH_BLOCK_DATE = 'B';
 
-    protected static $WEEKDAYS = ['Mo' => 0, 'Di' => 1, 'Mi' => 2, 'Do' => 3, 'Fr' => 4, 'Sa' => 5, 'So' => 6];
+    protected static $WEEKDAYS = ['Mo' => 1, 'Di' => 2, 'Mi' => 3, 'Do' => 4, 'Fr' => 5, 'Sa' => 6, 'So' => 0];
 
     public function __construct(SpreadsheetReaderFactory $readerFactory, DateCalculator $dateCalculator) {
         $this->readerFactory = $readerFactory;

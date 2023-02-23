@@ -9,10 +9,8 @@ class AddFeedbackRequirementStatuses extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('requirement_statuses', function (Blueprint $table) {
             $table->integer('id', true);
@@ -53,10 +51,8 @@ class AddFeedbackRequirementStatuses extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('feedback_requirements', function(Blueprint $table) {
             $table->boolean('passed')->nullable();

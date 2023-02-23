@@ -7,10 +7,8 @@ class AddForeignKeysToQkTable extends Migration {
 
 	/**
 	 * Run the migrations.
-	 *
-	 * @return void
 	 */
-	public function up()
+	public function up(): void
 	{
 		Schema::table('qk', function(Blueprint $table)
 		{
@@ -21,10 +19,8 @@ class AddForeignKeysToQkTable extends Migration {
 
 	/**
 	 * Reverse the migrations.
-	 *
-	 * @return void
 	 */
-	public function down()
+	public function down(): void
 	{
 		Schema::table('qk', function(Blueprint $table)
 		{

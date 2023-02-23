@@ -8,10 +8,8 @@ class CreateObservationAssignmentparticipants extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('observation_assignment_participants', function (Blueprint $table) {
             $table->integer('observation_assignment_id')->nullable(false);
@@ -27,10 +25,8 @@ class CreateObservationAssignmentparticipants extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('observation_assignment_participants', function(Blueprint $table)
         {

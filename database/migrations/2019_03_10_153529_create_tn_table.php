@@ -7,10 +7,8 @@ class CreateTnTable extends Migration {
 
 	/**
 	 * Run the migrations.
-	 *
-	 * @return void
 	 */
-	public function up()
+	public function up(): void
 	{
 		Schema::create('tn', function(Blueprint $table)
 		{
@@ -25,10 +23,8 @@ class CreateTnTable extends Migration {
 
 	/**
 	 * Reverse the migrations.
-	 *
-	 * @return void
 	 */
-	public function down()
+	public function down(): void
 	{
 		Schema::drop('tn');
 	}

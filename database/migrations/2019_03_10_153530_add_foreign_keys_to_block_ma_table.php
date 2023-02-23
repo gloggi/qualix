@@ -7,10 +7,8 @@ class AddForeignKeysToBlockMaTable extends Migration {
 
 	/**
 	 * Run the migrations.
-	 *
-	 * @return void
 	 */
-	public function up()
+	public function up(): void
 	{
 		Schema::table('block_ma', function(Blueprint $table)
 		{
@@ -22,10 +20,8 @@ class AddForeignKeysToBlockMaTable extends Migration {
 
 	/**
 	 * Reverse the migrations.
-	 *
-	 * @return void
 	 */
-	public function down()
+	public function down(): void
 	{
 		Schema::table('block_ma', function(Blueprint $table)
 		{

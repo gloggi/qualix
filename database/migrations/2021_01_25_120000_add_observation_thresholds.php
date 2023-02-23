@@ -8,10 +8,8 @@ use Illuminate\Support\Facades\Schema;
 class AddObservationThresholds extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up() {
+    public function up(): void {
         Schema::table('courses', function (Blueprint $table) {
             $table->integer('observation_count_red_threshold')->default(5);
             $table->integer('observation_count_green_threshold')->default(10);
@@ -20,10 +18,8 @@ class AddObservationThresholds extends Migration {
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down() {
+    public function down(): void {
         Schema::table('courses', function (Blueprint $table) {
             $table->dropColumn('observation_count_red_threshold');
             $table->dropColumn('observation_count_green_threshold');

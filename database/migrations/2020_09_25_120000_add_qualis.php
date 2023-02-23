@@ -7,10 +7,8 @@ use Illuminate\Support\Facades\Schema;
 class AddQualis extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up() {
+    public function up(): void {
         Schema::create('quali_datas', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('name');
@@ -74,10 +72,8 @@ class AddQualis extends Migration {
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down() {
+    public function down(): void {
         Schema::drop('quali_requirements');
         Schema::drop('quali_content_nodes');
         Schema::drop('quali_participant_observations');

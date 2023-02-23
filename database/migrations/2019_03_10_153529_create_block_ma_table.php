@@ -7,10 +7,8 @@ class CreateBlockMaTable extends Migration {
 
 	/**
 	 * Run the migrations.
-	 *
-	 * @return void
 	 */
-	public function up()
+	public function up(): void
 	{
 		Schema::create('block_ma', function(Blueprint $table)
 		{
@@ -23,10 +21,8 @@ class CreateBlockMaTable extends Migration {
 
 	/**
 	 * Reverse the migrations.
-	 *
-	 * @return void
 	 */
-	public function down()
+	public function down(): void
 	{
 		Schema::drop('block_ma');
 	}
