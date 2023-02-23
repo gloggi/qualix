@@ -8,10 +8,8 @@ class CreateObservationAssignmentsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('observation_assignments', function (Blueprint $table) {
             $table->integer('id', true);
@@ -28,10 +26,8 @@ class CreateObservationAssignmentsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('observation_assignments', function(Blueprint $table)
         {

@@ -8,10 +8,8 @@ use Illuminate\Support\Facades\Schema;
 class AddCommentToFeedbackRequirement extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('feedback_requirements', function (Blueprint $table) {
             $table->string('comment', 16000)->default('')->nullable(false);
@@ -20,10 +18,8 @@ class AddCommentToFeedbackRequirement extends Migration {
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('feedback_requirements', function (Blueprint $table) {
             $table->removeColumn('comment');

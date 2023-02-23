@@ -7,10 +7,8 @@ use Illuminate\Support\Facades\Schema;
 class AddCollaborationKeyToQuali extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('qualis', function (Blueprint $table) {
             $table->string('collaborationKey', 32);
@@ -19,10 +17,8 @@ class AddCollaborationKeyToQuali extends Migration {
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('qualis', function (Blueprint $table) {
             $table->dropColumn('collaborationKey');

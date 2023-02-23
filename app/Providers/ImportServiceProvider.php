@@ -21,10 +21,8 @@ class ImportServiceProvider extends ServiceProvider {
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register() {
+    public function register(): void {
         // eCamp2 Block import
         $this->app
             ->when(ECamp2BlockOverviewImporter::class)
@@ -50,9 +48,7 @@ class ImportServiceProvider extends ServiceProvider {
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot() {
+    public function boot(): void {
     }
 }

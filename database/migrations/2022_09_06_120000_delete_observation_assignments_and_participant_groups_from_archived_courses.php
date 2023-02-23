@@ -6,10 +6,8 @@ use Illuminate\Support\Facades\DB;
 class DeleteObservationAssignmentsAndParticipantGroupsFromArchivedCourses extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up() {
+    public function up(): void {
         DB::transaction(function () {
             DB::table('observation_assignments')
                 ->whereIn('course_id', function ($query) {
@@ -27,10 +25,8 @@ class DeleteObservationAssignmentsAndParticipantGroupsFromArchivedCourses extend
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down() {
+    public function down(): void {
         // Not possible to restore deleted data
     }
 }

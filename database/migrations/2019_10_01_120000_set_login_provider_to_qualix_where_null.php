@@ -9,10 +9,8 @@ class SetLoginProviderToQualixWhereNull extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         DB::table('users')
             ->where('login_provider', '=', null)
@@ -21,10 +19,8 @@ class SetLoginProviderToQualixWhereNull extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         DB::table('users')
             ->where('login_provider', '=', 'qualix')

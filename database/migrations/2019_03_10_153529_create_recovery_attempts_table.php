@@ -7,10 +7,8 @@ class CreateRecoveryAttemptsTable extends Migration {
 
 	/**
 	 * Run the migrations.
-	 *
-	 * @return void
 	 */
-	public function up()
+	public function up(): void
 	{
 		Schema::create('recovery_attempts', function(Blueprint $table)
 		{
@@ -23,10 +21,8 @@ class CreateRecoveryAttemptsTable extends Migration {
 
 	/**
 	 * Reverse the migrations.
-	 *
-	 * @return void
 	 */
-	public function down()
+	public function down(): void
 	{
 		Schema::drop('recovery_attempts');
 	}

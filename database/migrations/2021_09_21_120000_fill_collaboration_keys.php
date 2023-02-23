@@ -7,10 +7,8 @@ use Illuminate\Support\Str;
 class FillCollaborationKeys extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up() {
+    public function up(): void {
         DB::table('qualis')->orderBy('id')->each(function ($quali) {
             $quali->collaborationKey = Str::random(32);
             $quali->save();
@@ -19,9 +17,7 @@ class FillCollaborationKeys extends Migration {
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down() {
+    public function down(): void {
     }
 }

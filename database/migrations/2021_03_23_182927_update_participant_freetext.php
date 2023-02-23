@@ -8,10 +8,8 @@ class UpdateParticipantFreetext extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('participants', function (Blueprint $table) {
             $table->string('freetext', 1023)->nullable();
@@ -20,10 +18,8 @@ class UpdateParticipantFreetext extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('participants', function (Blueprint $table) {
             $table->dropColumn('freetext');
