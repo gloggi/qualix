@@ -6,7 +6,6 @@ use App\Exceptions\Handler;
 use App\Exceptions\MiDataParticipantsListsParsingException;
 use App\Exceptions\UnsupportedFormatException;
 use App\Services\Import\SpreadsheetReaderFactory;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Mockery;
@@ -20,18 +19,6 @@ class ImportParticipantsTest extends TestCaseWithCourse {
     use ReadsSpreadsheets;
 
     private $payload;
-
-    public function setUp(): void {
-        parent::setUp();
-
-        $uploadedFile = Mockery::mock(UploadedFile::class, function ($mock) {
-            $mock->shouldReceive('isValid')->andReturn(true);
-            $mock->shouldReceive('getPath')->andReturn('/some/path');
-            $mock->shouldReceive('getSize')->andReturn(1024);
-            $mock->shouldReceive('getRealPath')->andReturn('/some/path');
-        });
-        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
-    }
 
     public function test_viewingForm_shouldRequireLogin() {
         // given
@@ -48,7 +35,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
     public function test_importingParticipants_shouldRequireLogin() {
         // given
         auth()->logout();
-        $this->setUpInputFile('event_participation_export.xlsx', new Xlsx());
+        $uploadedFile = $this->setUpInputFile('event_participation_export.xlsx', new Xlsx());
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -60,7 +48,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldImportParticipants() {
         // given
-        $this->setUpInputFile('event_participation_export.xlsx', new Xlsx());
+        $uploadedFile = $this->setUpInputFile('event_participation_export.xlsx', new Xlsx());
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -80,7 +69,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldConstructNames_whenScoutNameColumnIsEntirelyMissing() {
         // given
-        $this->setUpInputFile('event_participation_export-noScoutNameColumn.xlsx', new Xlsx());
+        $uploadedFile = $this->setUpInputFile('event_participation_export-noScoutNameColumn.xlsx', new Xlsx());
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -100,7 +90,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldCropOverlyLongParticipantNames() {
         // given
-        $this->setUpInputFile('event_participation_export-longParticipantName.xlsx', new Xlsx());
+        $uploadedFile = $this->setUpInputFile('event_participation_export-longParticipantName.xlsx', new Xlsx());
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -116,7 +107,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldShowMessage_whenNoParticipantsInImportedFile() {
         // given
-        $this->setUpInputFile('event_participation_export-empty.xlsx', new Xlsx());
+        $uploadedFile = $this->setUpInputFile('event_participation_export-empty.xlsx', new Xlsx());
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -154,7 +146,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldSupportXLS() {
         // given
-        $this->setUpInputFile('event_participation_export.xls');
+        $uploadedFile = $this->setUpInputFile('event_participation_export.xls');
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -175,7 +168,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
     public function test_shouldSupportCSV() {
         // given
         $csvReader = (new Csv())->setInputEncoding('CP1252');
-        $this->setUpInputFile('event_participation_export.csv', $csvReader);
+        $uploadedFile = $this->setUpInputFile('event_participation_export.csv', $csvReader);
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -199,6 +193,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
             $mock->shouldReceive('getReader')->andThrow(new UnsupportedFormatException());
         });
+        $uploadedFile = $this->setUpInputFile('event_participation_export.xls');
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
 
@@ -219,6 +215,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
             $mock->shouldReceive('getReader')->andThrow(new MiDataParticipantsListsParsingException('test exception'));
         });
+        $uploadedFile = $this->setUpInputFile('event_participation_export.xls');
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
 
@@ -235,7 +233,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldReportMissingNameColumnsToTheUser() {
         // given
-        $this->setUpInputFile('event_participation_export-noNameColumns.xlsx', new Xlsx());
+        $uploadedFile = $this->setUpInputFile('event_participation_export-noNameColumns.xlsx', new Xlsx());
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -249,7 +248,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
 
     public function test_shouldIgnoreMissingGroupColumn() {
         // given
-        $this->setUpInputFile('event_participation_export-noGroupColumn.xlsx', new Xlsx());
+        $uploadedFile = $this->setUpInputFile('event_participation_export-noGroupColumn.xlsx', new Xlsx());
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);
@@ -275,6 +275,8 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
             $mock->shouldReceive('getReader')->andThrow(new \RuntimeException('test runtime exception'));
         });
+        $uploadedFile = $this->setUpInputFile('event_participation_export.xls');
+        $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
         $this->mock(Handler::class, function ($mock) {

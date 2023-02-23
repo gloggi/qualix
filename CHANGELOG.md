@@ -1,5 +1,8 @@
 # Changelog
 
+##### Februar 2023
+- Upgrade auf Laravel 10 und PHP >= 8.1.0 [#305](https://github.com/gloggi/qualix/issues/305)
+
 ##### Januar 2023
 - TN-Gruppen können jetzt direkt in Qualix automatisch generiert werden. Dabei werden die TN so verteilt, dass sie möglichst nie mehrmals mit denselben anderen TN in Gruppen sind. Der TN-Gruppen-Generator ist unter Kursadmin -> TN-Gruppen -> TN-Gruppen-Generator verfügbar [#301](https://github.com/gloggi/qualix/issues/301)
 
@@ -29,7 +32,7 @@
 - Die Icons wurden geupdatet. Für Anforderungs-Stati kann jetzt aus einer grösseren Auswahl an Icons gewählt werden. Falls dir ein Icon fehlt, melde dich beim Qualix-Team. Wir können jedes gewünschte Icon von [dieser Liste](https://fontawesome.com/search?m=free&s=solid) aktivieren [#264](https://github.com/gloggi/qualix/pull/264)
 
 ##### Juli 2022
-- Qualis wurden zu Rückmeldungen umbenannt, um besser zu kommunizieren wofür sie gedacht sind, und damit klarer wird dass Beobachtungen nicht für die Erfassung von Rückmeldungen optimiert sind [#261](https://github.com/gloggi/qualix/issues/261) 
+- Qualis wurden zu Rückmeldungen umbenannt, um besser zu kommunizieren wofür sie gedacht sind, und damit klarer wird dass Beobachtungen nicht für die Erfassung von Rückmeldungen optimiert sind [#261](https://github.com/gloggi/qualix/issues/261)
 
 ##### Juni 2022
 - Upgrade auf Laravel 9 und PHP >= 8.0.2 [#254](https://github.com/gloggi/qualix/pull/254)

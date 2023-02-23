@@ -22,18 +22,6 @@ class ImportBlocksTest extends TestCaseWithCourse {
 
     private $payload;
 
-    public function setUp(): void {
-        parent::setUp();
-
-        $uploadedFile = Mockery::mock(UploadedFile::class, function ($mock) {
-            $mock->shouldReceive('isValid')->andReturn(true);
-            $mock->shouldReceive('getPath')->andReturn('/some/path');
-            $mock->shouldReceive('getSize')->andReturn(1024);
-            $mock->shouldReceive('getRealPath')->andReturn('/some/path');
-        });
-        $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
-    }
-
     public function test_viewingForm_shouldRequireLogin() {
         // given
         auth()->logout();
@@ -49,7 +37,8 @@ class ImportBlocksTest extends TestCaseWithCourse {
     public function test_importingBlocks_shouldRequireLogin() {
         // given
         auth()->logout();
-        $this->setUpInputFile('Blockuebersicht.xls');
+        $uploadedFile = $this->setUpInputFile('Blockuebersicht.xls');
+        $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
@@ -61,7 +50,8 @@ class ImportBlocksTest extends TestCaseWithCourse {
 
     public function test_shouldImportBlocks() {
         // given
-        $this->setUpInputFile('Blockuebersicht.xls');
+        $uploadedFile = $this->setUpInputFile('Blockuebersicht.xls');
+        $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
@@ -84,7 +74,8 @@ class ImportBlocksTest extends TestCaseWithCourse {
 
     public function test_shouldCropOverlyLongBlockNames() {
         // given
-        $this->setUpInputFile('Blockuebersicht-longBlockName.xls');
+        $uploadedFile = $this->setUpInputFile('Blockuebersicht-longBlockName.xls');
+        $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
@@ -99,7 +90,8 @@ class ImportBlocksTest extends TestCaseWithCourse {
 
     public function test_shouldShowMessage_whenNoBlocksInImportedFile() {
         // given
-        $this->setUpInputFile('Blockuebersicht-empty.xls');
+        $uploadedFile = $this->setUpInputFile('Blockuebersicht-empty.xls');
+        $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
@@ -117,7 +109,8 @@ class ImportBlocksTest extends TestCaseWithCourse {
         $blockId = $this->createBlock('Existierender Block', '1.1', '09.09.2009');
         $participantId = $this->createParticipant('Pflock');
         $existingObservationId = Observation::create(['user_id' => $this->user()->id, 'block' => $blockId, 'content' => 'something', 'impression' => 0, 'participants' => [$participantId]])->id;
-        $this->setUpInputFile('Blockuebersicht.xls');
+        $uploadedFile = $this->setUpInputFile('Blockuebersicht.xls');
+        $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
@@ -163,7 +156,8 @@ class ImportBlocksTest extends TestCaseWithCourse {
 
     public function test_shouldSupportXLSX() {
         // given
-        $this->setUpInputFile('Blockuebersicht.xlsx', new Xlsx());
+        $uploadedFile = $this->setUpInputFile('Blockuebersicht.xlsx', new Xlsx());
+        $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
@@ -187,7 +181,8 @@ class ImportBlocksTest extends TestCaseWithCourse {
     public function test_shouldSupportCSV() {
         // given
         $csvReader = (new Csv())->setInputEncoding('CP1252');
-        $this->setUpInputFile('Blockuebersicht.csv', $csvReader);
+        $uploadedFile = $this->setUpInputFile('Blockuebersicht.csv', $csvReader);
+        $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/blocks/import', $this->payload);
@@ -214,6 +209,8 @@ class ImportBlocksTest extends TestCaseWithCourse {
         $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
             $mock->shouldReceive('getReader')->andThrow(new UnsupportedFormatException());
         });
+        $uploadedFile = $this->setUpInputFile('Blockuebersicht.xlsx', new Xlsx());
+        $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
 
         $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
 
@@ -234,6 +231,8 @@ class ImportBlocksTest extends TestCaseWithCourse {
         $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
             $mock->shouldReceive('getReader')->andThrow(new ECamp2BlockOverviewParsingException('test exception'));
         });
+        $uploadedFile = $this->setUpInputFile('Blockuebersicht.xlsx', new Xlsx());
+        $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
 
         $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
 
@@ -254,6 +253,8 @@ class ImportBlocksTest extends TestCaseWithCourse {
         $factoryMock = Mockery::mock(SpreadsheetReaderFactory::class, function ($mock) {
             $mock->shouldReceive('getReader')->andThrow(new \RuntimeException('test runtime exception'));
         });
+        $uploadedFile = $this->setUpInputFile('Blockuebersicht.xlsx', new Xlsx());
+        $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
 
         $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
         $this->mock(Handler::class, function ($mock) {
