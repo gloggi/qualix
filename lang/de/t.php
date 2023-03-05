@@ -591,6 +591,10 @@ return array(
 			"title" => "TN Details",
 			"shown_observations" => ":filtered von :total Beobachtungen angezeigt",
 			"show_all" => "Alle anzeigen",
+			"filter_explanation_help" => array(
+				"answer" => "Die Filter der einzelnen Attribute (Anforderung, Kategorie, Block, Author*in) funktionieren nach dem UND Prinzip, das heisst alle Kriterien müssen erfüllt sein. Gleichzeitig sind bei den Anforderungen und Kategorien sind Mehrfachauswahlen möglich, welchen nach dem ODER Prinzip funktionieren. Beispiel: Falls Anforderungen A und B ausgewählt sind und Author*in XYZ, dann werden alle Beobachtungen angezeigt von Author*in XYZ, welche Anforderung A oder B (oder beide) haben.",
+				"question" => "Wie funktionieren die Filter?",
+			),
 		),
 		"feedback_content" => array(
 			"back_to_participant" => "Zurück zu :name",

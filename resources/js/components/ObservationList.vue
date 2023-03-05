@@ -96,7 +96,11 @@
               <span>{{ $t('t.views.participant_details.hide_already_used_observations') }}</span>
             </label>
           </b-col>
-
+        </b-row>
+        <b-row>
+          <b-col sm>
+            <help-text id="filterExplanationHelp" trans="t.views.participant_details.filter_explanation_help"></help-text>
+          </b-col>
         </b-row>
       </b-collapse>
 
@@ -145,9 +149,11 @@ import { isEmpty } from 'lodash'
 import ResponsiveTable from "./ResponsiveTable"
 import ObservationContent from "./ObservationContent"
 import MultiSelect from './MultiSelect'
+import HelpText from './HelpText'
+
 export default {
   name: 'ObservationList',
-  components: {MultiSelect, ResponsiveTable, ObservationContent},
+  components: {MultiSelect, ResponsiveTable, ObservationContent, HelpText},
   props: {
     courseId: { type: String },
     observations: { type: Array, default: () => [] },
