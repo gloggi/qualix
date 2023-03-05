@@ -24,15 +24,15 @@
             <multi-select
               id="filter-requirements"
               name="filter-requirements"
-              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedRequirement!==null}"
-              :selected.sync="selectedRequirement"
+              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedRequirements.length>0}"
+              :selected.sync="selectedRequirements"
               :allow-empty="true"
               :placeholder="$t('t.views.participant_details.filter_by_requirement')"
               :options="requirementOptions"
-              :multiple="false"
+              :multiple="true"
               :close-on-select="true"
               :show-labels="false"
-              :show-clear="true"
+              :show-clear="false"
               display-field="content"></multi-select>
           </b-col>
 
@@ -40,15 +40,15 @@
             <multi-select
               id="filter-categories"
               name="filter-categories"
-              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedCategory!==null}"
-              :selected.sync="selectedCategory"
+              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedCategories.length>0}"
+              :selected.sync="selectedCategories"
               :allow-empty="true"
               :placeholder="$t('t.views.participant_details.filter_by_category')"
               :options="categoryOptions"
-              :multiple="false"
+              :multiple="true"
               :close-on-select="true"
               :show-labels="false"
-              :show-clear="true"
+              :show-clear="false"
               display-field="name"></multi-select>
           </b-col>
 
@@ -70,8 +70,8 @@
 
           <b-col class="mb-2" cols="12" md="6">
             <multi-select
-              id="filter-authors"
-              name="filter-authors"
+              id="filter-blocks"
+              name="filter-blocks"
               :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedBlock!==null}"
               :selected.sync="selectedBlock"
               :allow-empty="true"
@@ -167,8 +167,8 @@ export default {
   },
   data() {
     return {
-      selectedRequirement: null,
-      selectedCategory: null,
+      selectedRequirements: [],
+      selectedCategories: [],
       selectedAuthor: null,
       selectedBlock: null,
       hideUsedObservations: false,
@@ -186,7 +186,7 @@ export default {
       return fields
     },
     filtersVisibleInitially() {
-      return !!(this.selectedRequirement || this.selectedCategory || this.selectedAuthor || this.selectedBlock)
+      return !!(!isEmpty(this.selectedRequirements) || !isEmpty(this.selectedCategories) || this.selectedAuthor || this.selectedBlock)
     },
     requirementOptions() {
       return [...this.requirements, this.noRequirementOption]
@@ -209,13 +209,13 @@ export default {
     filteredObservations() {
       return this.observations
         .filter(observation =>
-          this.selectedRequirement === null ||
-          (this.selectedRequirement.id === 0 && isEmpty(observation.requirements)) ||
-          observation.requirements.map(requirement => requirement.id).includes(this.selectedRequirement.id))
+          isEmpty(this.selectedRequirements) ||
+          (this.selectedRequirements.some(selectedRequirement => selectedRequirement.id === 0) && isEmpty(observation.requirements)) ||
+          observation.requirements.map(requirement => requirement.id).some(requirement => this.selectedRequirements.map(selectedRequirement => selectedRequirement.id).includes(requirement)))
         .filter(observation =>
-          this.selectedCategory === null ||
-          (this.selectedCategory.id === 0 && isEmpty(observation.categories)) ||
-          observation.categories.map(category => category.id).includes(this.selectedCategory.id))
+          isEmpty(this.selectedCategories) ||
+          (this.selectedCategories.some(selectedCategory => selectedCategory.id === 0) && isEmpty(observation.categories)) ||
+          observation.categories.map(category => category.id).some(category => this.selectedCategories.map(selectedCategory => selectedCategory.id).includes(category)))
         .filter(observation =>
           this.selectedAuthor === null ||
           observation.user.id ===  this.selectedAuthor.id)
@@ -228,7 +228,7 @@ export default {
           !this.usedObservations.includes(observation.pivot.id))
     },
     anyFilterActive() {
-      return this.selectedRequirement !== null || this.selectedCategory !== null || this.selectedAuthor !== null || this.selectedBlock !== null || this.hideUsedObservations
+      return this.selectedRequirements.length > 0 || this.selectedCategories.length > 0 || this.selectedAuthor !== null || this.selectedBlock !== null || this.hideUsedObservations
     },
     totalObservations() {
       return this.observations.length;
@@ -252,8 +252,8 @@ export default {
       this.hideUsedObservations = false;
       this.selectedAuthor = null;
       this.selectedBlock = null;
-      this.selectedCategory = null;
-      this.selectedRequirement = null;
+      this.selectedCategories = [];
+      this.selectedRequirements = [];
     },
     persistFilter(key, value) {
       if (!this.courseId) return
@@ -270,18 +270,24 @@ export default {
     if (!this.courseId || !localStorage.courses) return
 
     if (this.anyRequirements) {
-      const storedRequirement = this.storage.selectedRequirement
-      if (storedRequirement !== null) {
-        if (storedRequirement === 0) this.selectedRequirement = this.noRequirementOption
-        else this.selectedRequirement = this.requirements.find(req => req.id === storedRequirement) ?? null;
+      const selectedRequirements = this.storage.selectedRequirements
+      if (!isEmpty(selectedRequirements)) {
+        this.selectedRequirements = selectedRequirements.map(e => {
+          if (e === 0) return this.noRequirementOption;
+          else return this.requirements.find(req => req.id === e)
+          }
+        )
       }
     }
 
     if (this.anyCategories) {
-      const storedCategory = this.storage.selectedCategory
-      if (storedCategory !== null) {
-        if (storedCategory === 0) this.selectedCategory = this.noCategoryOption
-        else this.selectedCategory = this.categories.find(cat => cat.id === storedCategory) ?? null;
+      const selectedCategories = this.storage.selectedCategories
+      if (!isEmpty(selectedCategories)) {
+        this.selectedCategories = selectedCategories.map(e => {
+            if (e === 0) return this.noCategoryOption;
+            else return this.categories.find(cat => cat.id === selectedCategories)
+          }
+        )
       }
     }
 
@@ -300,11 +306,11 @@ export default {
     }
   },
   watch: {
-    selectedRequirement() {
-      this.persistFilter('selectedRequirement', this.selectedRequirement?.id)
+    selectedRequirements() {
+      this.persistFilter('selectedRequirements', this.selectedRequirements?.map(selectedRequirement => selectedRequirement.id))
     },
-    selectedCategory() {
-      this.persistFilter('selectedCategory', this.selectedCategory?.id)
+    selectedCategories() {
+      this.persistFilter('selectedCategories',  this.selectedCategories?.map(selectedCategory => selectedCategory.id))
     },
     selectedAuthor() {
       this.persistFilter('selectedAuthor', this.selectedAuthor?.id)
