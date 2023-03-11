@@ -573,7 +573,7 @@ return array(
 			"delete_observation_success" => "Beobachtung gelöscht.",
 			"existing_observations" => "Beobachtungen",
 			"filter" => "Beobachtungen filtern",
-			"filter_by_author" => "Author*in",
+			"filter_by_author" => "Beobachtet von",
 			"filter_by_block" => "Block",
 			"filter_by_category" => "Kategorie",
 			"filter_by_requirement" => "Anforderung",
@@ -592,7 +592,7 @@ return array(
 			"shown_observations" => ":filtered von :total Beobachtungen angezeigt",
 			"show_all" => "Alle anzeigen",
 			"filter_explanation_help" => array(
-				"answer" => "Die Filter der einzelnen Attribute (Anforderung, Kategorie, Block, Author*in) funktionieren nach dem UND Prinzip, das heisst alle Kriterien müssen erfüllt sein. Gleichzeitig sind bei den Anforderungen und Kategorien sind Mehrfachauswahlen möglich, welchen nach dem ODER Prinzip funktionieren. Beispiel: Falls Anforderungen A und B ausgewählt sind und Author*in XYZ, dann werden alle Beobachtungen angezeigt von Author*in XYZ, welche Anforderung A oder B (oder beide) haben.",
+				"answer" => "Die Filter der einzelnen Attribute (Anforderung, Kategorie, Block, Beobachtet von) funktionieren nach dem UND-Prinzip, das heisst alle Kriterien müssen erfüllt sein. Gleichzeitig sind bei den Anforderungen und Kategorien Mehrfachauswahlen möglich, welche nach dem ODER-Prinzip funktionieren. Beispiel: Falls Anforderungen A und B ausgewählt sind und Beobachtet von XYZ, dann werden alle Beobachtungen von XYZ angezeigt, welche Anforderung A oder B (oder beide) haben.",
 				"question" => "Wie funktionieren die Filter?",
 			),
 		),

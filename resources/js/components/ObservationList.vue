@@ -7,15 +7,15 @@
             <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
           </b-button>
         </b-col>
-        <b-col v-if="anyFilterActive">
-          <b-button variant="link" block class="mb-2 text-right" :visible="anyFilterActive" @click="clearAllFilters">
-            <p style="color: black; display: inline">
-              {{$tc('t.views.participant_details.shown_observations', 0, {filtered: filteredObservations.length, total : totalObservations})}} -
-            </p> {{$t('t.views.participant_details.show_all')}}
-          </b-button>
+        <b-col v-if="anyFilterActive" class="text-right">
+          <p class="mb-0">
+            {{$tc('t.views.participant_details.shown_observations', 0, {filtered: filteredObservations.length, total: totalObservations})}} -
+            <b-button variant="link" class="mb-2 px-0 align-baseline" :visible="anyFilterActive" @click="clearAllFilters">
+              {{$t('t.views.participant_details.show_all')}}
+            </b-button>
+          </p>
         </b-col>
       </b-row>
-
 
       <b-collapse id="filters-collapse" :visible="filtersVisibleInitially">
         <b-row>
@@ -60,7 +60,7 @@
               :selected.sync="selectedAuthor"
               :allow-empty="true"
               :placeholder="$t('t.views.participant_details.filter_by_author')"
-              :options="authorOptions"
+              :options="authors"
               :multiple="false"
               :close-on-select="true"
               :show-labels="false"
@@ -76,7 +76,7 @@
               :selected.sync="selectedBlock"
               :allow-empty="true"
               :placeholder="$t('t.views.participant_details.filter_by_block')"
-              :options="blockOptions"
+              :options="blocks"
               :multiple="false"
               :close-on-select="true"
               :show-labels="false"
@@ -194,6 +194,9 @@ export default {
     filtersVisibleInitially() {
       return !!(!isEmpty(this.selectedRequirements) || !isEmpty(this.selectedCategories) || this.selectedAuthor || this.selectedBlock)
     },
+    anyFilterActive() {
+      return this.filtersVisibleInitially || this.hideUsedObservations
+    },
     requirementOptions() {
       return [...this.requirements, this.noRequirementOption]
     },
@@ -205,12 +208,6 @@ export default {
     },
     noCategoryOption() {
       return {name: '-- ' + this.$t('t.views.participant_details.observations_without_category') + ' --', id: 0}
-    },
-    authorOptions() {
-      return [...this.authors]
-    },
-    blockOptions() {
-      return [...this.blocks]
     },
     filteredObservations() {
       return this.observations
@@ -232,9 +229,6 @@ export default {
           this.usedObservations === null ||
           !this.hideUsedObservations ||
           !this.usedObservations.includes(observation.pivot.id))
-    },
-    anyFilterActive() {
-      return this.selectedRequirements.length > 0 || this.selectedCategories.length > 0 || this.selectedAuthor !== null || this.selectedBlock !== null || this.hideUsedObservations
     },
     totalObservations() {
       return this.observations.length;
@@ -332,8 +326,4 @@ export default {
 </script>
 
 <style>
-
-.background-color-on-selection.form-control-multiselect .multiselect .multiselect__tags {
-  background:lightgrey;
-}
 </style>
