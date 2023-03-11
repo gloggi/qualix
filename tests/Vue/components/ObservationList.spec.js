@@ -1,4 +1,4 @@
-import { render } from '@testing-library/vue'
+import {render, within} from '@testing-library/vue'
 import ObservationList from '../../../resources/js/components/ObservationList'
 
 const observations = [{
@@ -56,8 +56,9 @@ describe('visible columns', () => {
       },
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
+    const observationsTable = list.getByRole('table')
 
-    expect(list.queryByText('Block')).toBeNull()
+    expect(within(observationsTable).queryByText('Block')).toBeNull()
   })
 
   it('should display the block column when enabled', () => {
@@ -69,9 +70,10 @@ describe('visible columns', () => {
       },
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
+    const observationsTable = list.getByRole('table')
 
-    expect(list.getByText('Block')).toBeInTheDocument()
-    expect(list.getByText('1.3 my block')).toBeInTheDocument()
+    expect(within(observationsTable).getByText('Block')).toBeInTheDocument()
+    expect(within(observationsTable).getByText('1.3 my block')).toBeInTheDocument()
   })
 
   it('should not display the requirements column when disabled', () => {
@@ -164,8 +166,9 @@ describe('visible columns', () => {
       },
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
+    const observationsTable = list.getByRole('table')
 
-    expect(list.queryByText('Beobachtet von')).toBeNull()
+    expect(within(observationsTable).queryByText('Beobachtet von')).toBeNull()
   })
 
   it('should display the user column when enabled', () => {
@@ -177,9 +180,10 @@ describe('visible columns', () => {
       },
       stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr'],
     })
+    const observationsTable = list.getByRole('table')
 
-    expect(list.getByText('Beobachtet von')).toBeInTheDocument()
-    expect(list.getByText('Bari')).toBeInTheDocument()
+    expect(within(observationsTable).getByText('Beobachtet von')).toBeInTheDocument()
+    expect(within(observationsTable).getByText('Bari')).toBeInTheDocument()
   })
 })
 
@@ -283,7 +287,7 @@ describe('filters', () => {
     expect(list.getByPlaceholderText('Kategorie')).toBeInTheDocument()
   })
 
-  it('should not display the filters at all when there are no requirements and no categories', () => {
+  it('should display the filters, even when there are no requirements and no categories', () => {
     const list = render(ObservationList, {
       props: {
         courseId: '1',
@@ -299,7 +303,7 @@ describe('filters', () => {
       }
     })
 
-    expect(list.queryByText('Beobachtungen filtern')).toBeNull()
+    expect(list.queryByText('Beobachtungen filtern')).toBeInTheDocument()
     expect(list.queryByPlaceholderText('Anforderung')).toBeNull()
     expect(list.queryByPlaceholderText('Kategorie')).toBeNull()
     expect(list.queryByText('Beobachtungen ausblenden, wenn sie in dieser Rückmeldung schon erwähnt wurden')).toBeNull()

@@ -1,110 +1,107 @@
 <template>
   <div>
-    <template v-if="anyRequirements || anyCategories || null !== usedObservations">
-      <b-row>
-        <b-col sm>
-          <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse>
-            <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
+    <b-row>
+      <b-col sm>
+        <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse>
+          <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
+        </b-button>
+      </b-col>
+      <b-col v-if="anyFilterActive" class="text-right">
+        <p class="mb-0">
+          {{$tc('t.views.participant_details.shown_observations', 0, {filtered: filteredObservations.length, total: totalObservations})}} -
+          <b-button variant="link" class="mb-2 px-0 align-baseline" :visible="anyFilterActive" @click="clearAllFilters">
+            {{$t('t.views.participant_details.show_all')}}
           </b-button>
+        </p>
+      </b-col>
+    </b-row>
+
+    <b-collapse id="filters-collapse" :visible="filtersVisibleInitially">
+      <b-row>
+
+        <b-col class="mb-2" cols="12" md="6" v-if="anyRequirements">
+          <multi-select
+            id="filter-requirements"
+            name="filter-requirements"
+            :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedRequirements.length>0}"
+            :selected.sync="selectedRequirements"
+            :allow-empty="true"
+            :placeholder="$t('t.views.participant_details.filter_by_requirement')"
+            :options="requirementOptions"
+            :multiple="true"
+            :close-on-select="true"
+            :show-labels="false"
+            :show-clear="false"
+            display-field="content"></multi-select>
         </b-col>
-        <b-col v-if="anyFilterActive" class="text-right">
-          <p class="mb-0">
-            {{$tc('t.views.participant_details.shown_observations', 0, {filtered: filteredObservations.length, total: totalObservations})}} -
-            <b-button variant="link" class="mb-2 px-0 align-baseline" :visible="anyFilterActive" @click="clearAllFilters">
-              {{$t('t.views.participant_details.show_all')}}
-            </b-button>
-          </p>
+
+        <b-col class="mb-2" cols="12" md="6" v-if="anyCategories">
+          <multi-select
+            id="filter-categories"
+            name="filter-categories"
+            :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedCategories.length>0}"
+            :selected.sync="selectedCategories"
+            :allow-empty="true"
+            :placeholder="$t('t.views.participant_details.filter_by_category')"
+            :options="categoryOptions"
+            :multiple="true"
+            :close-on-select="true"
+            :show-labels="false"
+            :show-clear="false"
+            display-field="name"></multi-select>
+        </b-col>
+
+        <b-col class="mb-2" cols="12" md="6">
+          <multi-select
+            id="filter-authors"
+            name="filter-authors"
+            :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedAuthor!==null}"
+            :selected.sync="selectedAuthor"
+            :allow-empty="true"
+            :placeholder="$t('t.views.participant_details.filter_by_author')"
+            :options="authors"
+            :multiple="false"
+            :close-on-select="true"
+            :show-labels="false"
+            :show-clear="true"
+            display-field="name"></multi-select>
+        </b-col>
+
+        <b-col class="mb-2" cols="12" md="6">
+          <multi-select
+            id="filter-blocks"
+            name="filter-blocks"
+            :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedBlock!==null}"
+            :selected.sync="selectedBlock"
+            :allow-empty="true"
+            :placeholder="$t('t.views.participant_details.filter_by_block')"
+            :options="blocks"
+            :multiple="false"
+            :close-on-select="true"
+            :show-labels="false"
+            :show-clear="true"
+            display-field="name"></multi-select>
+        </b-col>
+
+        <b-col class="mb-2" cols="12" md="6" v-if="null !== usedObservations">
+          <label for="hide-already-used-observations" class="d-flex w-100 h-100 align-items-center">
+            <b-form-checkbox
+              type="checkbox"
+              id="hide-already-used-observations"
+              v-model="hideUsedObservations"
+              :switch="true"
+              size="xl"
+            ></b-form-checkbox>
+            <span>{{ $t('t.views.participant_details.hide_already_used_observations') }}</span>
+          </label>
         </b-col>
       </b-row>
-
-      <b-collapse id="filters-collapse" :visible="filtersVisibleInitially">
-        <b-row>
-
-          <b-col class="mb-2" cols="12" md="6" v-if="anyRequirements">
-            <multi-select
-              id="filter-requirements"
-              name="filter-requirements"
-              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedRequirements.length>0}"
-              :selected.sync="selectedRequirements"
-              :allow-empty="true"
-              :placeholder="$t('t.views.participant_details.filter_by_requirement')"
-              :options="requirementOptions"
-              :multiple="true"
-              :close-on-select="true"
-              :show-labels="false"
-              :show-clear="false"
-              display-field="content"></multi-select>
-          </b-col>
-
-          <b-col class="mb-2" cols="12" md="6" v-if="anyCategories">
-            <multi-select
-              id="filter-categories"
-              name="filter-categories"
-              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedCategories.length>0}"
-              :selected.sync="selectedCategories"
-              :allow-empty="true"
-              :placeholder="$t('t.views.participant_details.filter_by_category')"
-              :options="categoryOptions"
-              :multiple="true"
-              :close-on-select="true"
-              :show-labels="false"
-              :show-clear="false"
-              display-field="name"></multi-select>
-          </b-col>
-
-          <b-col class="mb-2" cols="12" md="6">
-            <multi-select
-              id="filter-authors"
-              name="filter-authors"
-              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedAuthor!==null}"
-              :selected.sync="selectedAuthor"
-              :allow-empty="true"
-              :placeholder="$t('t.views.participant_details.filter_by_author')"
-              :options="authors"
-              :multiple="false"
-              :close-on-select="true"
-              :show-labels="false"
-              :show-clear="true"
-              display-field="name"></multi-select>
-          </b-col>
-
-          <b-col class="mb-2" cols="12" md="6">
-            <multi-select
-              id="filter-blocks"
-              name="filter-blocks"
-              :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedBlock!==null}"
-              :selected.sync="selectedBlock"
-              :allow-empty="true"
-              :placeholder="$t('t.views.participant_details.filter_by_block')"
-              :options="blocks"
-              :multiple="false"
-              :close-on-select="true"
-              :show-labels="false"
-              :show-clear="true"
-              display-field="name"></multi-select>
-          </b-col>
-
-          <b-col class="mb-2" cols="12" md="6" v-if="null !== usedObservations">
-            <label for="hide-already-used-observations" class="d-flex w-100 h-100 align-items-center">
-              <b-form-checkbox
-                type="checkbox"
-                id="hide-already-used-observations"
-                v-model="hideUsedObservations"
-                :switch="true"
-                size="xl"
-              ></b-form-checkbox>
-              <span>{{ $t('t.views.participant_details.hide_already_used_observations') }}</span>
-            </label>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col sm>
-            <help-text id="filterExplanationHelp" trans="t.views.participant_details.filter_explanation_help"></help-text>
-          </b-col>
-        </b-row>
-      </b-collapse>
-
-    </template>
+      <b-row>
+        <b-col sm>
+          <help-text id="filterExplanationHelp" trans="t.views.participant_details.filter_explanation_help"></help-text>
+        </b-col>
+      </b-row>
+    </b-collapse>
 
     <responsive-table
       class="mt-3 mt-lg-0"
