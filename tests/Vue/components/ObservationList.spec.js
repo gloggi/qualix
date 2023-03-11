@@ -332,29 +332,21 @@ describe('filters', () => {
 
   describe('filtering', () => {
     const observations = [{
-      block: {
-        blockname_and_number: '1.3 my block'
-      },
+      block: { id: 10000, blockname_and_number: '1.3 my block' },
       categories: [{ id: 100, name: 'my category' }],
       content: 'war gut drauf',
       impression: 2,
       participants: [{id: '1', scout_name: 'Pflock'}],
       requirements: [{ id: 10, content: 'some requirement' }],
-      user: {
-        name: 'Bari'
-      }
+      user: { id: 1000, name: 'Bari' }
     }, {
-      block: {
-        blockname_and_number: '1.4 second block'
-      },
+      block: { id: 10001, blockname_and_number: '1.4 second block' },
       categories: [],
       content: 'war schlecht drauf',
       impression: 2,
       participants: [{id: '1', scout_name: 'Pflock'}],
       requirements: [],
-      user: {
-        name: 'Lindo'
-      }
+      user: { id: 1001, name: 'Lindo' }
     }]
 
     it('should show all observations by default', () => {
@@ -367,6 +359,8 @@ describe('filters', () => {
           observations,
           requirements: [{ id: 10 }],
           categories: [{ id: 100 }],
+          authors: [{ id: 1000 }],
+          blocks: [{ id: 10000 }],
           usedObservations: [],
         },
         stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
@@ -392,6 +386,8 @@ describe('filters', () => {
           observations,
           requirements: [{ id: 10 }],
           categories: [{ id: 100 }],
+          authors: [{ id: 1000 }],
+          blocks: [{ id: 10000 }],
           usedObservations: [],
         },
         stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
@@ -418,6 +414,8 @@ describe('filters', () => {
           observations,
           requirements: [{ id: 10 }],
           categories: [{ id: 100 }],
+          authors: [{ id: 1000 }],
+          blocks: [{ id: 10000 }],
           usedObservations: [],
         },
         stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
@@ -444,6 +442,8 @@ describe('filters', () => {
           observations,
           requirements: [{ id: 10 }],
           categories: [{ id: 100 }],
+          authors: [{ id: 1000 }],
+          blocks: [{ id: 10000 }],
           usedObservations: [],
         },
         stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
@@ -470,6 +470,8 @@ describe('filters', () => {
           observations,
           requirements: [{ id: 10 }],
           categories: [{ id: 100 }],
+          authors: [{ id: 1000 }],
+          blocks: [{ id: 10000 }],
           usedObservations: [],
         },
         stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
@@ -496,6 +498,8 @@ describe('filters', () => {
           observations,
           requirements: [{ id: 10 }],
           categories: [{ id: 100 }],
+          authors: [{ id: 1000 }],
+          blocks: [{ id: 10000 }],
           usedObservations: [],
         },
         stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
@@ -522,6 +526,8 @@ describe('filters', () => {
           observations,
           requirements: [{ id: 10 }],
           categories: [{ id: 100 }],
+          authors: [{ id: 1000 }],
+          blocks: [{ id: 10000 }],
           usedObservations: [],
         },
         stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
@@ -534,6 +540,59 @@ describe('filters', () => {
       expect(list.queryByText('Alle anzeigen')).toBeInTheDocument()
       expect(list.queryByText('war gut drauf')).toBeInTheDocument()
       expect(list.queryByText('war schlecht drauf')).toBeInTheDocument()
+    })
+
+    it('should filter by user', async() => {
+      mockLocalStorage({
+        selectedAuthor: 1000
+      })
+      const list = render(ObservationList, {
+        props: {
+          courseId: '1',
+          showContent: true,
+          showUser: true,
+          observations,
+          requirements: [{id: 10}],
+          categories: [{id: 100}],
+          authors: [{id: 1000}],
+          blocks: [{id: 10000}],
+          usedObservations: [],
+        },
+        stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+        directives: {
+          bToggle: () => {
+          }
+        }
+      })
+    })
+
+    it('should filter by block', async () => {
+      mockLocalStorage({
+        selectedBlock: 10000
+      })
+      const list = render(ObservationList, {
+        props: {
+          courseId: '1',
+          showContent: true,
+          showUser: true,
+          observations,
+          requirements: [{id: 10}],
+          categories: [{id: 100}],
+          authors: [{id: 1000}],
+          blocks: [{id: 10000}],
+          usedObservations: [],
+        },
+        stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+        directives: {
+          bToggle: () => {
+          }
+        }
+      })
+
+      expect(await list.findByText(/1 von 2 Beobachtungen angezeigt/)).toBeInTheDocument()
+      expect(list.queryByText('Alle anzeigen')).toBeInTheDocument()
+      expect(list.queryByText('war gut drauf')).toBeInTheDocument()
+      expect(list.queryByText('war schlecht drauf')).toBeNull()
     })
   })
 })
