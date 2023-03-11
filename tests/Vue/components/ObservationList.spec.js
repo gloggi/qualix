@@ -329,4 +329,246 @@ describe('filters', () => {
     expect(list.queryByText('Beobachtungen filtern')).toBeInTheDocument()
     expect(list.queryByText('Beobachtungen ausblenden, wenn sie in dieser Rückmeldung schon erwähnt wurden')).toBeInTheDocument()
   })
+
+  describe('filtering', () => {
+    const observations = [{
+      block: {
+        blockname_and_number: '1.3 my block'
+      },
+      categories: [{ id: 100, name: 'my category' }],
+      content: 'war gut drauf',
+      impression: 2,
+      participants: [{id: '1', scout_name: 'Pflock'}],
+      requirements: [{ id: 10, content: 'some requirement' }],
+      user: {
+        name: 'Bari'
+      }
+    }, {
+      block: {
+        blockname_and_number: '1.4 second block'
+      },
+      categories: [],
+      content: 'war schlecht drauf',
+      impression: 2,
+      participants: [{id: '1', scout_name: 'Pflock'}],
+      requirements: [],
+      user: {
+        name: 'Lindo'
+      }
+    }]
+
+    it('should show all observations by default', () => {
+      mockLocalStorage()
+      const list = render(ObservationList, {
+        props: {
+          courseId: '1',
+          showContent: true,
+          showUser: true,
+          observations,
+          requirements: [{ id: 10 }],
+          categories: [{ id: 100 }],
+          usedObservations: [],
+        },
+        stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+        directives: {
+          bToggle: () => {}
+        }
+      })
+
+      expect(list.queryByText('Alle anzeigen')).toBeNull()
+      expect(list.queryByText('war gut drauf')).toBeInTheDocument()
+      expect(list.queryByText('war schlecht drauf')).toBeInTheDocument()
+    })
+
+    it('should filter by requirement', async() => {
+      mockLocalStorage({
+        selectedRequirements: [ 10 ]
+      })
+      const list = render(ObservationList, {
+        props: {
+          courseId: '1',
+          showContent: true,
+          showUser: true,
+          observations,
+          requirements: [{ id: 10 }],
+          categories: [{ id: 100 }],
+          usedObservations: [],
+        },
+        stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+        directives: {
+          bToggle: () => {}
+        }
+      })
+
+      expect(await list.findByText(/1 von 2 Beobachtungen angezeigt/)).toBeInTheDocument()
+      expect(list.queryByText('Alle anzeigen')).toBeInTheDocument()
+      expect(list.queryByText('war gut drauf')).toBeInTheDocument()
+      expect(list.queryByText('war schlecht drauf')).toBeNull()
+    })
+
+    it('should filter by no requirement', async() => {
+      mockLocalStorage({
+        selectedRequirements: [ 0 ]
+      })
+      const list = render(ObservationList, {
+        props: {
+          courseId: '1',
+          showContent: true,
+          showUser: true,
+          observations,
+          requirements: [{ id: 10 }],
+          categories: [{ id: 100 }],
+          usedObservations: [],
+        },
+        stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+        directives: {
+          bToggle: () => {}
+        }
+      })
+
+      expect(await list.findByText(/1 von 2 Beobachtungen angezeigt/)).toBeInTheDocument()
+      expect(list.queryByText('Alle anzeigen')).toBeInTheDocument()
+      expect(list.queryByText('war gut drauf')).toBeNull()
+      expect(list.queryByText('war schlecht drauf')).toBeInTheDocument()
+    })
+
+    it('should filter by multiple requirements', async() => {
+      mockLocalStorage({
+        selectedRequirements: [ 0, 10 ]
+      })
+      const list = render(ObservationList, {
+        props: {
+          courseId: '1',
+          showContent: true,
+          showUser: true,
+          observations,
+          requirements: [{ id: 10 }],
+          categories: [{ id: 100 }],
+          usedObservations: [],
+        },
+        stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+        directives: {
+          bToggle: () => {}
+        }
+      })
+
+      expect(await list.findByText(/2 von 2 Beobachtungen angezeigt/)).toBeInTheDocument()
+      expect(list.queryByText('Alle anzeigen')).toBeInTheDocument()
+      expect(list.queryByText('war gut drauf')).toBeInTheDocument()
+      expect(list.queryByText('war schlecht drauf')).toBeInTheDocument()
+    })
+
+    it('should filter by category', async() => {
+      mockLocalStorage({
+        selectedCategories: [ 100 ]
+      })
+      const list = render(ObservationList, {
+        props: {
+          courseId: '1',
+          showContent: true,
+          showUser: true,
+          observations,
+          requirements: [{ id: 10 }],
+          categories: [{ id: 100 }],
+          usedObservations: [],
+        },
+        stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+        directives: {
+          bToggle: () => {}
+        }
+      })
+
+      expect(await list.findByText(/1 von 2 Beobachtungen angezeigt/)).toBeInTheDocument()
+      expect(list.queryByText('Alle anzeigen')).toBeInTheDocument()
+      expect(list.queryByText('war gut drauf')).toBeInTheDocument()
+      expect(list.queryByText('war schlecht drauf')).toBeNull()
+    })
+
+    it('should filter by no category', async() => {
+      mockLocalStorage({
+        selectedCategories: [ 0 ]
+      })
+      const list = render(ObservationList, {
+        props: {
+          courseId: '1',
+          showContent: true,
+          showUser: true,
+          observations,
+          requirements: [{ id: 10 }],
+          categories: [{ id: 100 }],
+          usedObservations: [],
+        },
+        stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+        directives: {
+          bToggle: () => {}
+        }
+      })
+
+      expect(await list.findByText(/1 von 2 Beobachtungen angezeigt/)).toBeInTheDocument()
+      expect(list.queryByText('Alle anzeigen')).toBeInTheDocument()
+      expect(list.queryByText('war gut drauf')).toBeNull()
+      expect(list.queryByText('war schlecht drauf')).toBeInTheDocument()
+    })
+
+    it('should filter by multiple categories', async() => {
+      mockLocalStorage({
+        selectedCategories: [ 0, 100 ]
+      })
+      const list = render(ObservationList, {
+        props: {
+          courseId: '1',
+          showContent: true,
+          showUser: true,
+          observations,
+          requirements: [{ id: 10 }],
+          categories: [{ id: 100 }],
+          usedObservations: [],
+        },
+        stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+        directives: {
+          bToggle: () => {}
+        }
+      })
+
+      expect(await list.findByText(/2 von 2 Beobachtungen angezeigt/)).toBeInTheDocument()
+      expect(list.queryByText('Alle anzeigen')).toBeInTheDocument()
+      expect(list.queryByText('war gut drauf')).toBeInTheDocument()
+      expect(list.queryByText('war schlecht drauf')).toBeInTheDocument()
+    })
+  })
 })
+
+function mockLocalStorage(initialFilters = {}) {
+  const localStorageMock = (function () {
+    let store = {}
+    return {
+      getItem(key) {
+        return store[key]
+      },
+      setItem(key, value) {
+        store[key] = value
+      },
+      clear() {
+        store = {}
+      },
+      removeItem(key) {
+        delete store[key]
+      },
+      getAll() {
+        return store
+      },
+    }
+  })()
+  Object.defineProperty(window, 'localStorage', {value: localStorageMock, writable: true})
+  localStorageMock.setItem('courses', JSON.stringify({
+    '1': {
+      selectedAuthor: null,
+      selectedRequirements: [],
+      selectedCategories: [],
+      selectedBlock: null,
+      hideUnusedObservations: false,
+      ...initialFilters,
+    }
+  }))
+  return localStorageMock
+}

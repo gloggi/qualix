@@ -237,7 +237,7 @@ export default {
       return this.categories.length > 0
     },
     allStorage() {
-      return JSON.parse(localStorage.courses ?? '{}') || {}
+      return JSON.parse(localStorage.getItem('courses') ?? '{}') || {}
     },
     storage() {
       if (!this.courseId) return {}
@@ -257,14 +257,14 @@ export default {
       this.storage[key] = value != null ? value : null;
       const alteredStorage = this.allStorage
       alteredStorage[this.courseId] = this.storage
-      localStorage.courses = JSON.stringify(alteredStorage)
+      localStorage.setItem('courses', JSON.stringify(alteredStorage))
     },
     onClickObservation(...args) {
       this.$emit('clickObservation', ...args)
     },
   },
   mounted() {
-    if (!this.courseId || !localStorage.courses) return
+    if (!this.courseId || !window.localStorage.getItem('courses')) return
 
     if (this.anyRequirements) {
       const selectedRequirements = this.storage.selectedRequirements
@@ -282,7 +282,7 @@ export default {
       if (!isEmpty(selectedCategories)) {
         this.selectedCategories = selectedCategories.map(e => {
             if (e === 0) return this.noCategoryOption;
-            else return this.categories.find(cat => cat.id === selectedCategories)
+            else return this.categories.find(cat => cat.id === e)
           }
         )
       }
