@@ -10,7 +10,7 @@ sed -ri "s~^APP_DEBUG=.*$~APP_DEBUG=$APP_DEBUG~" .env
 sed -ri "s~^APP_URL=.*$~APP_URL=$APP_URL~" .env
 sed -ri "s~^APP_CONTACT_LINK=.*$~APP_CONTACT_LINK=$APP_CONTACT_LINK~" .env
 
-if [ "$APP_CONTACT_TEXT" != ""]; then
+if [ "$APP_CONTACT_TEXT" != "" ]; then
   sed -ri "s~^#APP_CONTACT_TEXT=.*$~APP_CONTACT_TEXT=$APP_CONTACT_TEXT~" .env
 fi
 
