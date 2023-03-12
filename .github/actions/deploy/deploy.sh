@@ -62,12 +62,12 @@ ssh-keyscan -H $SSH_HOST
 echo "Showing configured know_hosts:"
 cat ~/.ssh/known_hosts
 
-echo "Checking PHP version:"
+echo "Checking PHP version:"c
 ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   set -e
   php -v
   cd $SSH_DIRECTORY
-  php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80100}){echo \"Your PHP version is too old\\n\";exit(1);}"
+  php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80100}){echo \"Your PHP version is too old\\nYou might be able to use these instructions on your hosting as well: https://www.cyon.ch/support/a/php-standardversion-fur-die-kommandozeile-festlegen\n\";exit(1);}"
 EOF
 
 echo "Uploading files to the server..."
