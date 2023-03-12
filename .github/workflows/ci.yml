@@ -142,6 +142,7 @@ jobs:
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_RELEASE_TRACKING_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+        if: env.SENTRY_AUTH_TOKEN != null
         with:
           environment: ${{ needs.get-environment-name.outputs.environment }}
           projects: ${{ secrets.SENTRY_PROJECTS }}
