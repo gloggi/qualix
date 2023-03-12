@@ -1,5 +1,8 @@
 # Changelog
 
+##### März 2023
+- Die Beobachtungs-Filter wurden verbessert und erweitert. Man kann neu nach Autor*in und Block filtern, und nach mehreren Anforderungen und Kategorien gleichzeitig [#307](https://github.com/gloggi/qualix/pull/307)
+
 ##### Februar 2023
 - Upgrade auf Laravel 10 und PHP >= 8.1.0 [#305](https://github.com/gloggi/qualix/issues/305)
 
