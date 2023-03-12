@@ -90,6 +90,8 @@
                 :observations="{{ json_encode($observations) }}"
                 :requirements="{{ json_encode($course->requirements) }}"
                 :categories="{{ json_encode($course->categories) }}"
+                :authors="{{ json_encode($course->users->map->only('id', 'name')) }}"
+                :blocks="{{ json_encode($course->blocks) }}"
                 show-content
                 show-block
                 :show-requirements="{{ $course->uses_requirements ? 'true' : 'false' }}"

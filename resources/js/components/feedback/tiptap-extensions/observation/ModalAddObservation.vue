@@ -12,6 +12,8 @@
       :observations="observations"
       :requirements="requirements"
       :categories="categories"
+      :authors="authors"
+      :blocks="blocks"
       :used-observations="usedObservations"
       show-content
       show-block
@@ -41,7 +43,7 @@ export default {
     showCategories: {type: Boolean, default: false},
     showImpression: {type: Boolean, default: false},
   },
-  inject: ['courseId', 'requirements', 'categories'],
+  inject: ['courseId', 'requirements', 'categories', 'authors', 'blocks'],
   computed: {
     addingObservation: {
       get() {

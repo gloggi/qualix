@@ -56,11 +56,11 @@ export default {
     },
     setObservationFilter() {
       if (!this.courseId) return
-      let storage = JSON.parse(localStorage.courses ?? '{}')
+      let storage = JSON.parse(localStorage.getItem('courses') ?? '{}')
       if (!storage) storage = {}
       if (!storage[this.courseId]) storage[this.courseId] = {}
       storage[this.courseId].selectedRequirement = this.node.attrs.id
-      localStorage.courses = JSON.stringify(storage)
+      localStorage.setItem('courses', JSON.stringify(storage))
     },
     setCursorAfterRequirement() {
       const pos = this.getPos() + this.node.nodeSize

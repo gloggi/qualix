@@ -2,6 +2,7 @@
   <b-table-simple
     hover
     class="table-responsive-cards"
+    role="table"
     v-bind="$attrs">
     <b-thead>
       <b-tr>

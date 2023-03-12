@@ -573,6 +573,8 @@ return array(
 			"delete_observation_success" => "Beobachtung gelöscht.",
 			"existing_observations" => "Beobachtungen",
 			"filter" => "Beobachtungen filtern",
+			"filter_by_author" => "Beobachtet von",
+			"filter_by_block" => "Block",
 			"filter_by_category" => "Kategorie",
 			"filter_by_requirement" => "Anforderung",
 			"hide_already_used_observations" => "Beobachtungen ausblenden, wenn sie in dieser Rückmeldung schon erwähnt wurden",
@@ -587,6 +589,12 @@ return array(
 			"page_title" => ":participantName",
 			"really_delete_observation" => "Willst du diese Beobachtung wirklich löschen?",
 			"title" => "TN Details",
+			"shown_observations" => ":filtered von :total Beobachtungen angezeigt",
+			"show_all" => "Alle anzeigen",
+			"filter_explanation_help" => array(
+				"answer" => "Die Filter der einzelnen Attribute (Anforderung, Kategorie, Block, Beobachtet von) funktionieren nach dem UND-Prinzip, das heisst alle Kriterien müssen erfüllt sein. Gleichzeitig sind bei den Anforderungen und Kategorien Mehrfachauswahlen möglich, welche nach dem ODER-Prinzip funktionieren. Beispiel: Falls Anforderungen A und B ausgewählt sind und Beobachtet von XYZ, dann werden alle Beobachtungen von XYZ angezeigt, welche Anforderung A oder B (oder beide) haben.",
+				"question" => "Wie funktionieren die Filter?",
+			),
 		),
 		"feedback_content" => array(
 			"back_to_participant" => "Zurück zu :name",

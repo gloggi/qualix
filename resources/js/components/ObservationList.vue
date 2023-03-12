@@ -1,63 +1,107 @@
 <template>
   <div>
-    <template v-if="anyRequirements || anyCategories || null !== usedObservations">
+    <b-row>
+      <b-col sm>
+        <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse>
+          <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
+        </b-button>
+      </b-col>
+      <b-col v-if="anyFilterActive" class="text-right">
+        <p class="mb-0">
+          {{$tc('t.views.participant_details.shown_observations', 0, {filtered: filteredObservations.length, total: totalObservations})}} -
+          <b-button variant="link" class="mb-2 px-0 align-baseline" :visible="anyFilterActive" @click="clearAllFilters">
+            {{$t('t.views.participant_details.show_all')}}
+          </b-button>
+        </p>
+      </b-col>
+    </b-row>
 
-      <b-button variant="link" block class="mb-2 text-left" v-b-toggle.filters-collapse>
-        <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
-      </b-button>
+    <b-collapse id="filters-collapse" :visible="filtersVisibleInitially">
+      <b-row>
 
-      <b-collapse id="filters-collapse" :visible="filtersVisibleInitially">
-        <b-row>
+        <b-col class="mb-2" cols="12" md="6" v-if="anyRequirements">
+          <multi-select
+            id="filter-requirements"
+            name="filter-requirements"
+            :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedRequirements.length>0}"
+            :selected.sync="selectedRequirements"
+            :allow-empty="true"
+            :placeholder="$t('t.views.participant_details.filter_by_requirement')"
+            :options="requirementOptions"
+            :multiple="true"
+            :close-on-select="true"
+            :show-labels="false"
+            :show-clear="false"
+            display-field="content"></multi-select>
+        </b-col>
 
-          <b-col cols="12" md="6" v-if="anyRequirements">
-            <multi-select
-              id="filter-requirements"
-              name="filter-requirements"
-              class="form-control-multiselect"
-              :selected.sync="selectedRequirement"
-              :allow-empty="true"
-              :placeholder="$t('t.views.participant_details.filter_by_requirement')"
-              :options="requirementOptions"
-              :multiple="false"
-              :close-on-select="true"
-              :show-labels="false"
-              :show-clear="true"
-              display-field="content"></multi-select>
-          </b-col>
+        <b-col class="mb-2" cols="12" md="6" v-if="anyCategories">
+          <multi-select
+            id="filter-categories"
+            name="filter-categories"
+            :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedCategories.length>0}"
+            :selected.sync="selectedCategories"
+            :allow-empty="true"
+            :placeholder="$t('t.views.participant_details.filter_by_category')"
+            :options="categoryOptions"
+            :multiple="true"
+            :close-on-select="true"
+            :show-labels="false"
+            :show-clear="false"
+            display-field="name"></multi-select>
+        </b-col>
 
-          <b-col cols="12" md="6" v-if="anyCategories">
-            <multi-select
-              id="filter-categories"
-              name="filter-categories"
-              class="form-control-multiselect"
-              :selected.sync="selectedCategory"
-              :allow-empty="true"
-              :placeholder="$t('t.views.participant_details.filter_by_category')"
-              :options="categoryOptions"
-              :multiple="false"
-              :close-on-select="true"
-              :show-labels="false"
-              :show-clear="true"
-              display-field="name"></multi-select>
-          </b-col>
+        <b-col class="mb-2" cols="12" md="6">
+          <multi-select
+            id="filter-authors"
+            name="filter-authors"
+            :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedAuthor!==null}"
+            :selected.sync="selectedAuthor"
+            :allow-empty="true"
+            :placeholder="$t('t.views.participant_details.filter_by_author')"
+            :options="authors"
+            :multiple="false"
+            :close-on-select="true"
+            :show-labels="false"
+            :show-clear="true"
+            display-field="name"></multi-select>
+        </b-col>
 
-          <b-col cols="12" md="6" v-if="null !== usedObservations">
-            <label for="hide-already-used-observations" class="d-flex w-100 h-100 align-items-center">
-              <b-form-checkbox
-                type="checkbox"
-                id="hide-already-used-observations"
-                v-model="hideUsedObservations"
-                :switch="true"
-                size="xl"
-              ></b-form-checkbox>
-              <span>{{ $t('t.views.participant_details.hide_already_used_observations') }}</span>
-            </label>
-          </b-col>
+        <b-col class="mb-2" cols="12" md="6">
+          <multi-select
+            id="filter-blocks"
+            name="filter-blocks"
+            :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedBlock!==null}"
+            :selected.sync="selectedBlock"
+            :allow-empty="true"
+            :placeholder="$t('t.views.participant_details.filter_by_block')"
+            :options="blocks"
+            :multiple="false"
+            :close-on-select="true"
+            :show-labels="false"
+            :show-clear="true"
+            display-field="name"></multi-select>
+        </b-col>
 
-        </b-row>
-      </b-collapse>
-
-    </template>
+        <b-col class="mb-2" cols="12" md="6" v-if="null !== usedObservations">
+          <label for="hide-already-used-observations" class="d-flex w-100 h-100 align-items-center">
+            <b-form-checkbox
+              type="checkbox"
+              id="hide-already-used-observations"
+              v-model="hideUsedObservations"
+              :switch="true"
+              size="xl"
+            ></b-form-checkbox>
+            <span>{{ $t('t.views.participant_details.hide_already_used_observations') }}</span>
+          </label>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col sm>
+          <help-text id="filterExplanationHelp" trans="t.views.participant_details.filter_explanation_help"></help-text>
+        </b-col>
+      </b-row>
+    </b-collapse>
 
     <responsive-table
       class="mt-3 mt-lg-0"
@@ -102,15 +146,19 @@ import { isEmpty } from 'lodash'
 import ResponsiveTable from "./ResponsiveTable"
 import ObservationContent from "./ObservationContent"
 import MultiSelect from './MultiSelect'
+import HelpText from './HelpText'
+
 export default {
   name: 'ObservationList',
-  components: {MultiSelect, ResponsiveTable, ObservationContent},
+  components: {MultiSelect, ResponsiveTable, ObservationContent, HelpText},
   props: {
     courseId: { type: String },
     observations: { type: Array, default: () => [] },
     actions: { type: Object, default: () => {} },
     requirements: { type: Array, default: () => [] },
     categories: { type: Array, default: () => [] },
+    authors: { type: Array, default: () => [] },
+    blocks: { type: Array, default: () => [] },
     usedObservations: { type: Array, default: null },
     showContent: { type: Boolean, default: false },
     showBlock: { type: Boolean, default: false },
@@ -122,8 +170,10 @@ export default {
   },
   data() {
     return {
-      selectedRequirement: null,
-      selectedCategory: null,
+      selectedRequirements: [],
+      selectedCategories: [],
+      selectedAuthor: null,
+      selectedBlock: null,
       hideUsedObservations: false,
     }
   },
@@ -139,7 +189,10 @@ export default {
       return fields
     },
     filtersVisibleInitially() {
-      return !!(this.selectedRequirement || this.selectedCategory)
+      return !!(!isEmpty(this.selectedRequirements) || !isEmpty(this.selectedCategories) || this.selectedAuthor || this.selectedBlock)
+    },
+    anyFilterActive() {
+      return this.filtersVisibleInitially || this.hideUsedObservations
     },
     requirementOptions() {
       return [...this.requirements, this.noRequirementOption]
@@ -156,17 +209,26 @@ export default {
     filteredObservations() {
       return this.observations
         .filter(observation =>
-          this.selectedRequirement === null ||
-          (this.selectedRequirement.id === 0 && isEmpty(observation.requirements)) ||
-          observation.requirements.map(requirement => requirement.id).includes(this.selectedRequirement.id))
+          isEmpty(this.selectedRequirements) ||
+          (this.selectedRequirements.some(selectedRequirement => selectedRequirement.id === 0) && isEmpty(observation.requirements)) ||
+          observation.requirements.map(requirement => requirement.id).some(requirement => this.selectedRequirements.map(selectedRequirement => selectedRequirement.id).includes(requirement)))
         .filter(observation =>
-          this.selectedCategory === null ||
-          (this.selectedCategory.id === 0 && isEmpty(observation.categories)) ||
-          observation.categories.map(category => category.id).includes(this.selectedCategory.id))
+          isEmpty(this.selectedCategories) ||
+          (this.selectedCategories.some(selectedCategory => selectedCategory.id === 0) && isEmpty(observation.categories)) ||
+          observation.categories.map(category => category.id).some(category => this.selectedCategories.map(selectedCategory => selectedCategory.id).includes(category)))
+        .filter(observation =>
+          this.selectedAuthor === null ||
+          observation.user.id ===  this.selectedAuthor.id)
+        .filter(observation =>
+          this.selectedBlock === null ||
+          observation.block.id === this.selectedBlock.id)
         .filter(observation =>
           this.usedObservations === null ||
           !this.hideUsedObservations ||
           !this.usedObservations.includes(observation.pivot.id))
+    },
+    totalObservations() {
+      return this.observations.length;
     },
     anyRequirements() {
       return this.requirements.length > 0
@@ -175,7 +237,7 @@ export default {
       return this.categories.length > 0
     },
     allStorage() {
-      return JSON.parse(localStorage.courses ?? '{}') || {}
+      return JSON.parse(localStorage.getItem('courses') ?? '{}') || {}
     },
     storage() {
       if (!this.courseId) return {}
@@ -183,34 +245,57 @@ export default {
     }
   },
   methods: {
+    clearAllFilters() {
+      this.hideUsedObservations = false;
+      this.selectedAuthor = null;
+      this.selectedBlock = null;
+      this.selectedCategories = [];
+      this.selectedRequirements = [];
+    },
     persistFilter(key, value) {
       if (!this.courseId) return
       this.storage[key] = value != null ? value : null;
       const alteredStorage = this.allStorage
       alteredStorage[this.courseId] = this.storage
-      localStorage.courses = JSON.stringify(alteredStorage)
+      localStorage.setItem('courses', JSON.stringify(alteredStorage))
     },
     onClickObservation(...args) {
       this.$emit('clickObservation', ...args)
     },
   },
   mounted() {
-    if (!this.courseId || !localStorage.courses) return
+    if (!this.courseId || !window.localStorage.getItem('courses')) return
 
     if (this.anyRequirements) {
-      const storedRequirement = this.storage.selectedRequirement
-      if (storedRequirement !== null) {
-        if (storedRequirement === 0) this.selectedRequirement = this.noRequirementOption
-        else this.selectedRequirement = this.requirements.find(req => req.id === storedRequirement) ?? null;
+      const selectedRequirements = this.storage.selectedRequirements
+      if (!isEmpty(selectedRequirements)) {
+        this.selectedRequirements = selectedRequirements.map(e => {
+          if (e === 0) return this.noRequirementOption;
+          else return this.requirements.find(req => req.id === e)
+          }
+        )
       }
     }
 
     if (this.anyCategories) {
-      const storedCategory = this.storage.selectedCategory
-      if (storedCategory !== null) {
-        if (storedCategory === 0) this.selectedCategory = this.noCategoryOption
-        else this.selectedCategory = this.categories.find(cat => cat.id === storedCategory) ?? null;
+      const selectedCategories = this.storage.selectedCategories
+      if (!isEmpty(selectedCategories)) {
+        this.selectedCategories = selectedCategories.map(e => {
+            if (e === 0) return this.noCategoryOption;
+            else return this.categories.find(cat => cat.id === e)
+          }
+        )
       }
+    }
+
+    const storedAuthor = this.storage.selectedAuthor
+    if (storedAuthor !== null) {
+      this.selectedAuthor = this.authors.find(author => author.id === storedAuthor) ?? null;
+    }
+
+    const storedBlock = this.storage.selectedBlock
+    if (storedBlock !== null) {
+      this.selectedBlock = this.blocks.find(block => block.id === storedBlock) ?? null;
     }
 
     if (this.usedObservations !== null) {
@@ -218,11 +303,17 @@ export default {
     }
   },
   watch: {
-    selectedRequirement() {
-      this.persistFilter('selectedRequirement', this.selectedRequirement?.id)
+    selectedRequirements() {
+      this.persistFilter('selectedRequirements', this.selectedRequirements?.map(selectedRequirement => selectedRequirement.id))
     },
-    selectedCategory() {
-      this.persistFilter('selectedCategory', this.selectedCategory?.id)
+    selectedCategories() {
+      this.persistFilter('selectedCategories',  this.selectedCategories?.map(selectedCategory => selectedCategory.id))
+    },
+    selectedAuthor() {
+      this.persistFilter('selectedAuthor', this.selectedAuthor?.id)
+    },
+    selectedBlock() {
+      this.persistFilter('selectedBlock', this.selectedBlock?.id)
     },
     hideUsedObservations() {
       this.persistFilter('hideUsedObservations', this.hideUsedObservations)
@@ -231,6 +322,5 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
 </style>
