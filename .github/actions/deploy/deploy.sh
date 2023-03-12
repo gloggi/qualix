@@ -4,6 +4,10 @@ set -e
 rm -f .env
 cp .env.example .env
 
+if [ "$APP_NAME" != "" ]; then
+  sed -ri "s~^#APP_NAME=.*$~APP_NAME=$APP_NAME~" .env
+fi
+
 sed -ri "s~^APP_ENV=.*$~APP_ENV=$APP_ENV~" .env
 sed -ri "s~^APP_KEY=.*$~APP_KEY=$APP_KEY~" .env
 sed -ri "s~^APP_DEBUG=.*$~APP_DEBUG=$APP_DEBUG~" .env

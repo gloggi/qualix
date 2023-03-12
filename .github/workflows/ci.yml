@@ -114,6 +114,7 @@ jobs:
           ssh-username: ${{ secrets.SSH_USERNAME }}
           ssh-host: ${{ secrets.SSH_HOST }}
           ssh-directory: ${{ secrets.SSH_DIRECTORY }}
+          app-name: ${{ secrets.APP_NAME }}
           app-key: ${{ secrets.APP_KEY }}
           app-url: ${{ secrets.APP_URL }}
           app-contact-link: ${{ secrets.APP_CONTACT_LINK }}
