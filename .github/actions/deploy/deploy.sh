@@ -68,6 +68,8 @@ ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   php -v
   cd $SSH_DIRECTORY
   php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80100}){echo \"Your PHP version is too old\\nYou might be able to use these instructions on your hosting as well: https://www.cyon.ch/support/a/php-standardversion-fur-die-kommandozeile-festlegen\n\";exit(1);}"
+
+  php artisan down
 EOF
 
 echo "Uploading files to the server..."
@@ -90,4 +92,6 @@ ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   php artisan config:cache
   php artisan route:cache
   php artisan view:cache
+
+  php artisan up
 EOF
