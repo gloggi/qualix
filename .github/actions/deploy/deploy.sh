@@ -56,17 +56,19 @@ docker-compose run --no-deps --entrypoint "/bin/sh -c 'npm install && npm run pr
 docker-compose run --no-deps --entrypoint "composer install --no-dev" qualix
 PHP_MIN_VERSION_ID=$(grep -Po '(?<=\(PHP_VERSION_ID >= )[0-9]+(?=\))' vendor/composer/platform_check.php)
 
+echo "Scanning ssh host keys of \"$SSH_HOST\" (showing hashed output only):"
+ssh-keyscan -H $SSH_HOST
+
+echo "Showing configured know_hosts:"
 cat ~/.ssh/known_hosts
 
-echo "Checking PHP version"
-ssh -l $SSH_USERNAME -T $SSH_HOST -o StrictHostKeyChecking=no <<EOF
+echo "Checking PHP version:"
+ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   set -e
   php -v
   cd $SSH_DIRECTORY
   php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80100}){echo \"Your PHP version is too old\\n\";exit(1);}"
 EOF
-
-cat ~/.ssh/known_hosts
 
 echo "Uploading files to the server..."
 lftp <<EOF
