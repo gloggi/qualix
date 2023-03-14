@@ -82,7 +82,7 @@ lftp <<EOF
   set dns:order "inet"
   open -u $SSH_USERNAME, sftp://$SSH_HOST
   cd $SSH_DIRECTORY
-  mirror -enRv -x '^node_modules' -x '^cypress' -x '^\.' -x '^tests' -x '^storage/logs/.*' -x '^storage/app/.*' -x '^resources/fonts/.*' -x '^resources/images/.*' -x '^resources/js/.*' -x '^resources/sass/.*'
+  mirror -enRv -x '^node_modules' -x '^cypress' -x '^\.' -x '^tests' -x '^storage/logs/.*' -x '^storage/app/.*' -x '^storage/framework/maintenance.php' -x '^resources/fonts/.*' -x '^resources/images/.*' -x '^resources/js/.*' -x '^resources/sass/.*'
   mirror -Rv -f .env
 EOF
 
