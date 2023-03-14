@@ -66,7 +66,7 @@ ssh-keyscan -H $SSH_HOST
 echo "Showing configured know_hosts:"
 cat ~/.ssh/known_hosts
 
-echo "Checking PHP version:"c
+echo "Checking PHP version:"
 ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   set -e
   php -v
