@@ -4,13 +4,17 @@ set -e
 rm -f .env
 cp .env.example .env
 
+if [ "$APP_NAME" != "" ]; then
+  sed -ri "s~^#APP_NAME=.*$~APP_NAME=$APP_NAME~" .env
+fi
+
 sed -ri "s~^APP_ENV=.*$~APP_ENV=$APP_ENV~" .env
 sed -ri "s~^APP_KEY=.*$~APP_KEY=$APP_KEY~" .env
 sed -ri "s~^APP_DEBUG=.*$~APP_DEBUG=$APP_DEBUG~" .env
 sed -ri "s~^APP_URL=.*$~APP_URL=$APP_URL~" .env
 sed -ri "s~^APP_CONTACT_LINK=.*$~APP_CONTACT_LINK=$APP_CONTACT_LINK~" .env
 
-if [ "$APP_CONTACT_TEXT" != ""]; then
+if [ "$APP_CONTACT_TEXT" != "" ]; then
   sed -ri "s~^#APP_CONTACT_TEXT=.*$~APP_CONTACT_TEXT=$APP_CONTACT_TEXT~" .env
 fi
 
@@ -56,17 +60,21 @@ docker-compose run --no-deps --entrypoint "/bin/sh -c 'npm install && npm run pr
 docker-compose run --no-deps --entrypoint "composer install --no-dev" qualix
 PHP_MIN_VERSION_ID=$(grep -Po '(?<=\(PHP_VERSION_ID >= )[0-9]+(?=\))' vendor/composer/platform_check.php)
 
+echo "Scanning ssh host keys of \"$SSH_HOST\" (showing hashed output only):"
+ssh-keyscan -H $SSH_HOST
+
+echo "Showing configured know_hosts:"
 cat ~/.ssh/known_hosts
 
-echo "Checking PHP version"
-ssh -l $SSH_USERNAME -T $SSH_HOST -o StrictHostKeyChecking=no <<EOF
+echo "Checking PHP version:"c
+ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   set -e
   php -v
   cd $SSH_DIRECTORY
-  php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80100}){echo \"Your PHP version is too old\\n\";exit(1);}"
-EOF
+  php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80100}){echo \"Your PHP version is too old\\nYou might be able to use these instructions on your hosting as well: https://www.cyon.ch/support/a/php-standardversion-fur-die-kommandozeile-festlegen\n\";exit(1);}"
 
-cat ~/.ssh/known_hosts
+  php artisan down --render=updating
+EOF
 
 echo "Uploading files to the server..."
 lftp <<EOF
@@ -88,4 +96,6 @@ ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   php artisan config:cache
   php artisan route:cache
   php artisan view:cache
+
+  php artisan up
 EOF

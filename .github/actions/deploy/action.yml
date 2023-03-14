@@ -16,6 +16,11 @@ inputs:
     required: false
     default: .
 
+  app-name:
+    description: 'The App Name'
+    required: false
+    default: ''
+
   app-env:
     description: 'The environment type that will be deployed'
     required: false
@@ -147,6 +152,7 @@ runs:
         SSH_USERNAME: ${{ inputs.ssh-username }}
         SSH_HOST: ${{ inputs.ssh-host }}
         SSH_DIRECTORY: ${{ inputs.ssh-directory }}
+        APP_NAME: ${{ inputs.app-name }}
         APP_ENV: ${{ inputs.app-env }}
         APP_KEY: ${{ inputs.app-key }}
         APP_DEBUG: ${{ inputs.app-debug }}

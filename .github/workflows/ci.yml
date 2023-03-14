@@ -66,6 +66,9 @@ jobs:
     steps:
 
       - uses: peter-evans/repository-dispatch@v1
+        env:
+          REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+        if: env.REPO_ACCESS_TOKEN != null
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           event-type: ci-passed
@@ -111,6 +114,7 @@ jobs:
           ssh-username: ${{ secrets.SSH_USERNAME }}
           ssh-host: ${{ secrets.SSH_HOST }}
           ssh-directory: ${{ secrets.SSH_DIRECTORY }}
+          app-name: ${{ secrets.APP_NAME }}
           app-key: ${{ secrets.APP_KEY }}
           app-url: ${{ secrets.APP_URL }}
           app-contact-link: ${{ secrets.APP_CONTACT_LINK }}
@@ -139,6 +143,7 @@ jobs:
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_RELEASE_TRACKING_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+        if: env.SENTRY_AUTH_TOKEN != null
         with:
           environment: ${{ needs.get-environment-name.outputs.environment }}
           projects: ${{ secrets.SENTRY_PROJECTS }}
