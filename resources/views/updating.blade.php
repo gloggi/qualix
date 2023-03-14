@@ -51,13 +51,13 @@
     <div class="message">
         <p>
         Qualix wird gerade aktualisiert. Bitte einen Moment Geduld.
-        @if($_ENV['APP_CONTACT_LINK'] !== null && $_ENV['APP_CONTACT_LINK'] !== "")
+        @if(($_ENV['APP_CONTACT_LINK'] ?? '') !== null && ($_ENV['APP_CONTACT_LINK'] ?? '') !== '')
             Falls diese Nachricht unerwartet erscheint, <a href="{{$_ENV['APP_CONTACT_LINK']}}">kontaktiere uns</a>.
         @endif
         </p>
         <p>
         Qualix est en cours de mise à jour. Veuille patienter un instant.
-        @if($_ENV['APP_CONTACT_LINK'] !== null && $_ENV['APP_CONTACT_LINK'] !== "")
+        @if(($_ENV['APP_CONTACT_LINK'] ?? '') !== null && ($_ENV['APP_CONTACT_LINK'] ?? '') !== '')
                 Si ce message apparaît de manière inattendue, <a href="{{$_ENV['APP_CONTACT_LINK']}}">contacte-nous</a>.
         @endif
         </p>
