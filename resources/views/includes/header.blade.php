@@ -37,14 +37,14 @@
                         </b-nav-item>
                         @if(!$course->feedback_datas->isEmpty())
                             @if($course->feedback_datas->count() == 1)
-                                <b-nav-item href="{{ route('feedback.progressOverview', ['course' => $course->id, 'feedback_data' => $course->feedback_datas()->first()->id, 'view' => $course->feedback_datas()->has('feedbacks.users')->exists() ? Auth::user()->id : 'all']) }}" {{ Route::currentRouteName() == 'feedback.progressOverview' ? ' active' : '' }}>
+                                <b-nav-item href="{{ route('feedback.progressOverview', ['course' => $course->id, 'feedback_data' => $course->feedback_datas()->first()->id]) }}" {{ Route::currentRouteName() == 'feedback.progressOverview' ? ' active' : '' }}>
                                     {{$course->feedback_datas()->first()->name}}
                                 </b-nav-item>
                             @else
-                                <b-nav-item-dropdown text="{{__('t.views.feedbacks.menu_name')}}" class="{{ substr( Route::currentRouteName(), 0, 8) == 'feedback' ? ' active' : '' }}">
+                                <b-nav-item-dropdown text="{{__('t.views.feedback.progress_overview.menu_name')}}" class="{{ substr( Route::currentRouteName(), 0, 8) == 'feedback' ? ' active' : '' }}">
                                     @foreach($course->feedback_datas as $feedbackData)
                                         <b-dropdown-item {{ (Route::currentRouteName() == 'feedback.progressOverview' && (Route::current()->parameters['feedback_data']->id ?? null) == $feedbackData->id) ? ' active' : '' }}
-                                                         href="{{ route('feedback.progressOverview', ['course' => $course->id, 'feedback_data' => $feedbackData->id, 'view' => $feedbackData->has('feedbacks.users')->exists() ? Auth::user()->id : 'all']) }}">{{$feedbackData->name}}</b-dropdown-item>
+                                                         href="{{ route('feedback.progressOverview', ['course' => $course->id, 'feedback_data' => $feedbackData->id]) }}">{{$feedbackData->name}}</b-dropdown-item>
                                     @endforeach
                                 </b-nav-item-dropdown>
                             @endif
