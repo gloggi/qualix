@@ -59,8 +59,8 @@ class ReadFeedbackListTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $requirementMatrixHref = '/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId;
-        $this->assertSeeAllInOrder('[href$="'.$requirementMatrixHref.'"]', ['Anforderungs-Matrix']);
+        $progressOverviewHref = '/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId;
+        $this->assertSeeAllInOrder('[href$="'.$progressOverviewHref.'"]', ['Anforderungs-Matrix']);
         $feedbackContentHref = '/course/' . $this->courseId . '/participants/' . $this->participantId . '/feedbacks/' . $this->feedbackId . '/edit';
         $this->assertSeeAllInOrder('[href$="'.$feedbackContentHref.'"]', ['']);
         $this->assertEquals($this->feedbackId, $response->viewData('feedbackDatas')[0]->feedbacks->first()->id);

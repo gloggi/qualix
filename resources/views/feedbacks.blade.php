@@ -26,7 +26,7 @@
                 <b-card-header>
                     <h5 class="mb-0" v-b-toggle.collapse-{{ $feedbackData->id }}>{{ $feedbackData->name }}</h5>
                     @if($feedbackData->feedback_requirements()->count())
-                        <a href="{{ route('feedback.requirementMatrix', ['course' => $course->id, 'feedback_data' => $feedbackData->id]) }}"><i class="fa-solid fa-list-check mr-1"></i> {{__('t.views.feedbacks.go_to_progress_overview')}}</a>
+                        <a href="{{ route('feedback.progressOverview', ['course' => $course->id, 'feedback_data' => $feedbackData->id]) }}"><i class="fa-solid fa-list-check mr-1"></i> {{__('t.views.feedbacks.go_to_progress_overview')}}</a>
                     @endif
                 </b-card-header>
 

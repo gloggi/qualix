@@ -11,7 +11,7 @@
     </div>
     <b-collapse v-if="editor.options.editable" :id="`requirement-comment-${node.attrs.id}`">
       <div class="feedback-requirement-comment">
-        <a :href="routeUri('feedback.requirementMatrix', {course: courseId, feedback_data: feedbackDataId})" class="float-right mr-2"><i class="fas fa-pen-to-square" /></a>
+        <a :href="routeUri('feedback.progressOverview', {course: courseId, feedback_data: feedbackDataId})" class="float-right mr-2"><i class="fas fa-pen-to-square" /></a>
         <div class="mh-1em multiline" :class="{ 'text-muted': node.attrs.comment.length === 0 }">{{ node.attrs.comment || $t('t.views.feedback_content.comments_are_internal_and_will_not_be_printed') }}</div>
       </div>
     </b-collapse>
