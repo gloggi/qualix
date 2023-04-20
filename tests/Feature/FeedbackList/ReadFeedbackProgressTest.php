@@ -4,10 +4,12 @@ namespace Tests\Feature\FeedbackList;
 
 use App\Models\Course;
 use App\Models\Feedback;
+use App\Models\FeedbackData;
 use App\Models\Participant;
+use Illuminate\Support\Arr;
 use Tests\TestCaseWithBasicData;
 
-class ReadFeedbackListTest extends TestCaseWithBasicData {
+class ReadFeedbackProgressTest extends TestCaseWithBasicData {
 
     protected $payload;
     /** @var Feedback|Feedback[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null */
@@ -32,7 +34,7 @@ class ReadFeedbackListTest extends TestCaseWithBasicData {
         auth()->logout();
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/feedbacks');
+        $response = $this->get('/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId);
 
         // then
         $response->assertStatus(302);
@@ -44,7 +46,7 @@ class ReadFeedbackListTest extends TestCaseWithBasicData {
         Course::find($this->courseId)->update(['archived' => true]);
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/feedbacks');
+        $response = $this->get('/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId);
 
         // then
         $response->assertStatus(302);
@@ -55,22 +57,19 @@ class ReadFeedbackListTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/feedbacks');
+        $response = $this->get('/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId);
 
         // then
         $response->assertOk();
-        $requirementMatrixHref = '/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId;
-        $this->assertSeeAllInOrder('[href$="'.$requirementMatrixHref.'"]', ['Anforderungs-Matrix']);
-        $feedbackContentHref = '/course/' . $this->courseId . '/participants/' . $this->participantId . '/feedbacks/' . $this->feedbackId . '/edit';
-        $this->assertSeeAllInOrder('[href$="'.$feedbackContentHref.'"]', ['']);
-        $this->assertEquals($this->feedbackId, $response->viewData('feedbackDatas')[0]->feedbacks->first()->id);
+        $response->assertSee('Anforderungs-Matrix Zwischenquali');
+        $response->assertSee('<requirements-matrix', false);
     }
 
     public function test_shouldNotShowPerspectiveSelection_whenNoFeedbackIsAssigned() {
         // given
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/feedbacks');
+        $response = $this->get('/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId);
 
         // then
         $response->assertDontSee('Aus Sicht von');
@@ -80,7 +79,7 @@ class ReadFeedbackListTest extends TestCaseWithBasicData {
         // given
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/feedbacks?view=' . $this->user()->id);
+        $response = $this->get('/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId . '?view=' . $this->user()->id);
 
         // then
         $response->assertSee('ist für keine TN verantwortlich. Du kannst oben die Perspektive wechseln, oder die');
@@ -91,25 +90,26 @@ class ReadFeedbackListTest extends TestCaseWithBasicData {
         $this->feedback->users()->attach($this->user());
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/feedbacks');
+        $response = $this->get('/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId);
 
         // then
         $response->assertSee('Aus Sicht von');
     }
 
-    public function test_shouldNotShowMatrixLink_whenNoRequirementsInFeedback() {
+    public function test_shouldNotShowMatrix_whenNoRequirementsInFeedback() {
         // given
         $this->feedback->requirements()->delete();
 
         // when
-        $response = $this->get('/course/' . $this->courseId . '/feedbacks');
+        $response = $this->get('/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId);
 
         // then
         $response->assertOk();
         $response->assertDontSee('Anforderungs-Matrix');
+        $response->assertSee($this->feedback->name);
     }
 
-    public function test_shouldOrderFeedbacksByParticipantScoutName() {
+    public function test_shouldOrderFeedbacksByParticipantScoutNameInBackend_whenNoRequirementsInFeedback() {
         // given
         $feedbackData = $this->feedback->feedback_data;
         /** @var Participant $participant2 */
@@ -118,11 +118,12 @@ class ReadFeedbackListTest extends TestCaseWithBasicData {
         /** @var Participant $participant3 */
         $participant3 = $this->createParticipant('Zyglrox');
         $feedbackData->feedbacks()->create(['participant_id' => $participant3]);
+        $this->feedback->requirements()->delete();
 
         // when
-        $this->get('/course/' . $this->courseId . '/feedbacks');
+        $this->get('/course/' . $this->courseId . '/feedbacks/' . $this->feedbackDataId);
 
         // then
-        $this->assertSeeAllInOrder('b-collapse b-list-group-item h5', ['Aal', 'Pflock', 'Zyglrox']);
+        $this->assertSeeAllInOrder('b-list-group-item a strong', ['Aal', 'Pflock', 'Zyglrox']);
     }
 }

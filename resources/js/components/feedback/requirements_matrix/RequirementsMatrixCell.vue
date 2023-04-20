@@ -35,7 +35,7 @@
           @input="onCommentInput"></input-textarea>
 
         <row-text>
-          <auto-save ref="autosave" trans="t.views.feedback.requirements_matrix" :form="form" />
+          <auto-save ref="autosave" trans="t.views.feedback.progress_overview" :form="form" />
         </row-text>
 
       </form-basic>

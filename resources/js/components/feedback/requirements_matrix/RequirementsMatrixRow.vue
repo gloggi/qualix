@@ -4,10 +4,10 @@
       <div class="d-flex align-items-baseline">
         <a :href="participantUrl"><img :src="participant.image_path" class="avatar-small" :alt="participant.scout_name"/></a>
         <div class="d-flex flex-column flex-grow-1">
-          <div class="d-flex ml-2">
+          <div class="d-flex flex-wrap ml-2">
             <a :href="participantUrl"><strong>{{ participant.scout_name }}</strong></a>
             <span class="flex-grow-1"></span>
-            <a :href="feedbackEditUrl" target="_blank" :title="$t(`t.views.feedback.requirements_matrix.edit_feedback`)"><i class="fas fa-pen-to-square px-2"></i></a>
+            <a :href="feedbackEditUrl" target="_blank" :title="$t(`t.views.feedback.progress_overview.edit_feedback`)"><i class="fas fa-pen-to-square px-2"></i></a>
             <button-print-feedback :course-id="feedback.feedback_data.course_id" :participant-id="participant.id" :feedback-id="feedback.id">
               <i class="fas fa-print pl-2"></i>
             </button-print-feedback>
@@ -85,13 +85,6 @@ export default {
     },
     feedbackEditUrl() {
       return this.routeUri('feedbackContent.edit', {
-        course: this.feedback.feedback_data.course_id,
-        participant: this.participant.id,
-        feedback: this.feedback.id
-      })
-    },
-    feedbackPrintUrl() {
-      return this.routeUri('feedbackContent.print', {
         course: this.feedback.feedback_data.course_id,
         participant: this.participant.id,
         feedback: this.feedback.id

@@ -499,30 +499,26 @@ return array(
 				"error_creating_pdf" => "Beim Erstellen des PDFs ist ein Fehler aufgetreten. Lade die Seite neu und versuche es nochmals, oder kontaktiere das Qualix-Team (siehe zuunterst auf der Seite).",
 				"error_fetching_data" => "Beim Laden der Rückmeldung ist ein Fehler aufgetreten. Lade die Seite neu und versuche es nochmals, oder kontaktiere das Qualix-Team (siehe zuunterst auf der Seite).",
 			),
-			"requirements_matrix" => array(
+			"progress_overview" => array(
 				"edit_feedback" => "Rückmeldungstext bearbeiten",
+				"edit_responsibles" => "Zuordnung der TN zu den Equipenmitgliedern ändern",
 				"logged_out_help" => array(
 					"answer" => "Du bist inzwischen nicht mehr eingeloggt.",
 					"click_here_to_log_back_in" => "Klicke hier um dich wieder einzuloggen und weiterzuarbeiten.",
 					"question" => "Nicht mehr eingeloggt!",
 				),
+				"menu_name" => "Rückmeldungen",
+				"none_assigned_to_user" => ":user ist für keine TN verantwortlich. Du kannst oben die Perspektive wechseln, oder die",
 				"offline_help" => array(
 					"answer" => "Aktuell ist keine Verbindung zum Qualix-Server möglich. Überprüfe ob du noch Internetverbindung hast, und probiere es dann nochmals.",
 					"question" => "Keine Internetverbindung!",
 				),
 				"page_title" => "Anforderungs-Matrix",
-				"title" => "Anforderungs-Matrix :name",
+				"show_all" => "Alle TN anzeigen",
+				"title" => ":name",
+				"requirements_matrix" => "Anforderungs-Matrix :name",
+				"view_as" => "Aus Sicht von",
 			)
-		),
-		"feedbacks" => array(
-			"edit_responsibles" => "Zuordnung der TN zu den Equipenmitgliedern ändern",
-			"go_to_progress_overview" => "Anforderungs-Matrix",
-			"menu_name" => "Rückmeldungen",
-			"none_assigned_to_user" => ":user ist für keine TN verantwortlich. Du kannst oben die Perspektive wechseln, oder die",
-			"page_title" => "Rückmeldungs-Überblick",
-			"show_all" => "Alle TN anzeigen",
-			"title" => "Rückmeldungen",
-			"view_as" => "Aus Sicht von",
 		),
 		"invitation" => array(
 			"accept_invitation" => "Ja, Einladung annehmen",

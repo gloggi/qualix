@@ -30,7 +30,7 @@
                     <i class="fas fa-arrow-left"></i> {{__('t.views.feedback_content.back_to_participant', ['name' => $participant->scout_name])}}
                 </b-button>
 
-                <b-button variant="link" class="px-0" href="{{ route('feedbacks', ['course' => $course->id]) }}">
+                <b-button variant="link" class="px-0" href="{{ route('feedback.progressOverview', ['course' => $course->id, 'feedback_data' => $feedback->feedback_data_id]) }}">
                     <i class="fas fa-arrow-left"></i> {{__('t.views.feedback_content.back_to_feedback_overview')}}
                 </b-button>
             </div>
