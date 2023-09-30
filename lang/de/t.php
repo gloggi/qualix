@@ -518,6 +518,7 @@ return array(
 				"title" => ":name",
 				"requirements_matrix" => "Anforderungs-Matrix :name",
 				"view_as" => "Aus Sicht von",
+				"download_all" => "Alle Rückmeldungen herunterladen"
 			)
 		),
 		"invitation" => array(
