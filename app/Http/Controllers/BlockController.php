@@ -122,7 +122,7 @@ class BlockController extends Controller {
             $startDate = $request->date('blocks_startdate');
             $endDate = $request->date('blocks_enddate');
             $days = $startDate->diffInDays($endDate);
-            if($days > 500) {
+            if($days > 370) {
                 $request->session()->flash('alert-danger', __('t.views.admin.block_generate.error_too_many_blocks'));
                 throw ValidationException::withMessages([trans('t.views.admin.block_generate.error_too_many_blocks')]);
             }
@@ -138,7 +138,7 @@ class BlockController extends Controller {
                 $block->requirements()->sync(array_filter(explode(',', $data['requirements'])));
                 $result->push($block);
             }
-            $this->rememberBlockDate($startDate, $course);
+            $this->rememberBlockDate($endDate, $course);
             return $result;
         });
 
