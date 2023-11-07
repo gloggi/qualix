@@ -11,6 +11,11 @@
 @section('content')
 
     <b-card>
+        <button-print-all-feedbacks :feedbacks="{{ json_encode($feedbacks) }}">
+            {{__('t.views.feedback.progress_overview.download_all')}}
+            <i class="fas fa-print pl-2"></i>
+        </button-print-all-feedbacks>
+
         @if(count($feedbackRequirements))
             <template #header>{{__('t.views.feedback.progress_overview.requirements_matrix', ['name' => $feedbackData->name])}}</template>
         @else

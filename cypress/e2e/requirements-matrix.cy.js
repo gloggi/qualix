@@ -1,4 +1,4 @@
-import { useDatabaseResets } from "../support/databaseTransactions"
+import {useDatabaseResets} from "../support/databaseTransactions"
 
 describe('requirements matrix', () => {
   useDatabaseResets()
@@ -6,14 +6,19 @@ describe('requirements matrix', () => {
   beforeEach(() => {
     cy.then(() => {
       cy.login().then(user => {
-        cy.artisan('e2e:scenario', { '--user-id': user.id })
+        cy.artisan('e2e:scenario', {'--user-id': user.id})
       })
     })
   })
 
   it('can be displayed and edited', function () {
     cy.courseId().then((courseId) => {
-      cy.create('App\\Models\\RequirementStatus', 1, { course_id: courseId, name: 'E2E status', color: 'green', icon: 'book' })
+      cy.create('App\\Models\\RequirementStatus', 1, {
+        course_id: courseId,
+        name: 'E2E status',
+        color: 'green',
+        icon: 'book'
+      })
 
       cy.php(`App\\Models\\FeedbackData::orderBy('id', 'desc')->first();`).then(feedback => {
         cy.visit(`/course/${courseId}`)
@@ -42,8 +47,13 @@ describe('requirements matrix', () => {
 
   it('can be displayed and edited if there are multiple feedbacks in course', function () {
     cy.courseId().then((courseId) => {
-      cy.create('App\\Models\\RequirementStatus', 1, { course_id: courseId, name: 'E2E status', color: 'green', icon: 'book' })
-      cy.create('App\\Models\\FeedbackData', 1, { course_id: courseId, name: 'E2E Feedback' })
+      cy.create('App\\Models\\RequirementStatus', 1, {
+        course_id: courseId,
+        name: 'E2E status',
+        color: 'green',
+        icon: 'book'
+      })
+      cy.create('App\\Models\\FeedbackData', 1, {course_id: courseId, name: 'E2E Feedback'})
 
       cy.php(`App\\Models\\FeedbackData::orderBy('id', 'desc')->offset(1)->first();`).then(feedback => {
         cy.visit(`/course/${courseId}`)
@@ -69,6 +79,36 @@ describe('requirements matrix', () => {
         cy.get('@cell').should('have.class', 'bg-green')
       })
 
+    })
+  })
+
+  it('edits and prints all feedbacks', function () {
+    cy.courseId().then((courseId) => {
+      cy.create('App\\Models\\RequirementStatus', 1, {
+        course_id: courseId,
+        name: 'E2E status',
+        color: 'green',
+        icon: 'book'
+      })
+
+      cy.php(`App\\Models\\FeedbackData::orderBy('id', 'desc')->first();`).then(feedback => {
+        cy.visit(`/course/${courseId}`)
+        cy.contains(feedback.name).click()
+
+        cy.contains('Anforderungs-Matrix')
+
+        cy.contains(`Anforderungs-Matrix ${feedback.name}`)
+
+        cy.get('[title="Drucken"]').first().click()
+        cy.contains('PDF wird generiert...')
+        cy.contains('PDF wurde heruntergeladen', {timeout: 20000})
+
+        cy.task('findFiles', 'cypress/downloads/*').then((foundZip) => {
+          expect(foundZip).to.be.a('string')
+          cy.log(`found PDF ${foundZip}`)
+          cy.readFile(foundZip)
+        })
+      })
     })
   })
 })
