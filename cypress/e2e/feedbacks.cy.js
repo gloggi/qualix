@@ -20,30 +20,30 @@ describe('feedback editor', () => {
     cy.contains('Die Rückmeldung "End-to-end test feedback" wurde erfolgreich erstellt.')
   })
 
-    it('edits and prints a feedback', function () {
-        cy.visit(`/course/${this.courseId}/participants`)
-        cy.get('img.card-img-top').first().click()
-        cy.get('td[data-label=Titel] a').first().click()
-        cy.contains('Rückmeldung Details')
+  it('edits and prints a feedback', function () {
+    cy.visit(`/course/${this.courseId}/participants`)
+    cy.get('img.card-img-top').first().click()
+    cy.get('td[data-label=Titel] a').first().click()
+    cy.contains('Rückmeldung Details')
 
-        cy.get('div.editor.form-control [contenteditable]').first().type("Text from end-to-end test\n")
-        cy.contains('Speichern...')
-        cy.contains('Automatisch gespeichert')
-        cy.get('a.btn-link').first().click()
+    cy.get('div.editor.form-control [contenteditable]').first().type("Text from end-to-end test\n")
+    cy.contains('Speichern...')
+    cy.contains('Automatisch gespeichert')
+    cy.get('a.btn-link').first().click()
 
-        cy.get('[title="Drucken"]').click()
-        cy.contains('PDF wird generiert...')
-        cy.contains('PDF wurde heruntergeladen')
+    cy.get('[title="Drucken"]').click()
+    cy.contains('PDF wird generiert...')
+    cy.contains('PDF wurde heruntergeladen')
 
-        cy.task('findFiles', 'cypress/downloads/*').then((foundPdf) => {
-            expect(foundPdf).to.be.a('string')
-            cy.log(`found PDF ${foundPdf}`)
-            cy.task('parsePdf', foundPdf).then((parsedPdf) => {
-                expect(parsedPdf.text).to.include('Text from end-to-end test')
-                expect(parsedPdf.text).not.to.include('Some other text which certainly is not present in the pdf')
-            })
-        })
-
-        cy.task('deleteFiles', 'cypress/downloads/*')
+    cy.task('findFiles', 'cypress/downloads/*').then((foundPdf) => {
+      expect(foundPdf).to.be.a('string')
+      cy.log(`found PDF ${foundPdf}`)
+      cy.task('parsePdf', foundPdf).then((parsedPdf) => {
+        expect(parsedPdf.text).to.include('Text from end-to-end test')
+        expect(parsedPdf.text).not.to.include('Some other text which certainly is not present in the pdf')
+      })
     })
+
+    cy.task('deleteFiles', 'cypress/downloads/*')
+  })
 })
