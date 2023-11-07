@@ -1,5 +1,8 @@
 # Changelog
 
+##### November 2023
+- Es können nun die Rückmeldungs-PDFs für alle TN gleichzeitig heruntergeladen werden [#325](https://github.com/gloggi/qualix/pull/325)
+
 ##### April 2023
 - Es ist nun möglich, direkt via Haupt-Navigation zur Rückmeldungs-Matrix zu gelangen [#310](https://github.com/gloggi/qualix/issues/310)
 
