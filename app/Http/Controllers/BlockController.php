@@ -16,13 +16,11 @@ use Carbon\CarbonPeriod;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use function Psy\debug;
 
 class BlockController extends Controller {
     /**
@@ -98,7 +96,7 @@ class BlockController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a form to generate blocks.
      *
      * @return View
      */
@@ -108,23 +106,21 @@ class BlockController extends Controller {
     }
 
     /**
-     * Store an uploaded list of blocks in storage.
+     * Store an generated list of blocks in storage.
      *
      * @param BlockGenerateRequest $request
      * @param Course $course
      * @return RedirectResponse
-     * @throws ValidationException if parsing the uploaded file fails
      */
     public function generateStore(BlockGenerateRequest $request, Course $course): RedirectResponse
     {
-        $generated = DB::transaction(function () use ($request, $course,) {
+        $generated = DB::transaction(function () use ($request, $course) {
             $request->validated();
             $startDate = $request->date('blocks_startdate');
             $endDate = $request->date('blocks_enddate');
             $days = $startDate->diffInDays($endDate);
             if($days > 370) {
-                $request->session()->flash('alert-danger', __('t.views.admin.block_generate.error_too_many_blocks'));
-                throw ValidationException::withMessages([trans('t.views.admin.block_generate.error_too_many_blocks')]);
+                throw ValidationException::withMessages(['blocks_enddate' => trans('t.views.admin.block_generate.error_too_many_blocks')]);
             }
             $result = collect([]);
             $data = $request->validated();
