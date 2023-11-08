@@ -209,6 +209,7 @@ return array(
 			),
 			"block_generate" => array(
 				"generate" => "Generieren",
+				"page_title" => "Blöcke generieren",
 				"generate_from" => "Mehrere Blöcke generieren",
 				"generate_success" => "{0}Es wurden keine Blöcke generiert.|{1}Es wurde ein Block generiert.|[2,*]Es wurden :count Blöcke generiert.",
 				"error_too_many_blocks" => "Dein Datumsbereich ist zu gross!",
