@@ -28,6 +28,10 @@
                     {{ __('t.views.admin.blocks.import') }}
                 </a>
 
+                <a class="btn btn-link mb-1" href="{{ route('admin.block.generate', ['course' => $course]) }}">
+                    {{ __('t.views.admin.blocks.generate') }}
+                </a>
+
                 @component('components.help-text', ['key' => 't.views.admin.blocks.what_are_blocks', 'id' => 'blockHelp'])@endcomponent
 
             </button-submit>

@@ -107,6 +107,8 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
     Route::post('/course/{course}/admin/blocks', [BlockController::class, 'store'])->name('admin.block.store');
     Route::get('/course/{course}/admin/blocks/import', [BlockController::class, 'upload'])->name('admin.block.upload');
     Route::post('/course/{course}/admin/blocks/import', [BlockController::class, 'import'])->name('admin.block.import');
+    Route::get('/course/{course}/admin/blocks/generate', [BlockController::class, 'generate'])->name('admin.block.generate');
+    Route::post('/course/{course}/admin/blocks/generate', [BlockController::class, 'generateStore'])->name('admin.block.generate_store');
     Route::get('/course/{course}/admin/blocks/{block}', [BlockController::class, 'edit'])->name('admin.block.edit');
     Route::post('/course/{course}/admin/blocks/{block}', [BlockController::class, 'update'])->name('admin.block.update');
     Route::delete('/course/{course}/admin/blocks/{block}', [BlockController::class, 'destroy'])->name('admin.block.delete');

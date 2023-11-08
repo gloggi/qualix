@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Exceptions\ECamp2BlockOverviewParsingException;
 use App\Exceptions\Handler;
 use App\Exceptions\UnsupportedFormatException;
+use App\Http\Requests\BlockGenerateRequest;
 use App\Http\Requests\BlockImportRequest;
 use App\Http\Requests\BlockRequest;
 use App\Models\Block;
 use App\Models\Course;
 use App\Models\User;
 use App\Util\HtmlString;
+use Carbon\CarbonPeriod;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -91,6 +93,52 @@ class BlockController extends Controller {
         }
 
         return Redirect::route('admin.blocks', ['course' => $course->id])->with('alert-success', trans_choice('t.views.admin.block_import.import_success', $imported));
+    }
+
+    /**
+     * Display a form to generate blocks.
+     *
+     * @return View
+     */
+    public function generate(): View
+    {
+        return view('admin.blocks.generate');
+    }
+
+    /**
+     * Store an generated list of blocks in storage.
+     *
+     * @param BlockGenerateRequest $request
+     * @param Course $course
+     * @return RedirectResponse
+     */
+    public function generateStore(BlockGenerateRequest $request, Course $course): RedirectResponse
+    {
+        $generated = DB::transaction(function () use ($request, $course) {
+            $request->validated();
+            $startDate = $request->date('blocks_startdate');
+            $endDate = $request->date('blocks_enddate');
+            $days = $startDate->diffInDays($endDate);
+            if($days > 370) {
+                throw ValidationException::withMessages(['blocks_enddate' => trans('t.views.admin.block_generate.error_too_many_blocks')]);
+            }
+            $result = collect([]);
+            $data = $request->validated();
+
+            foreach (CarbonPeriod::create($startDate, $endDate) as $date) {
+                $block = Block::create(array_merge($data, [
+                    'course_id' => $course->id,
+                    'block_date' => $date,
+                    'name' => $data['name'] . " - " . $date->format("d.m.y"),
+                ]));
+                $block->requirements()->sync(array_filter(explode(',', $data['requirements'])));
+                $result->push($block);
+            }
+            $this->rememberBlockDate($endDate, $course);
+            return $result;
+        });
+
+        return Redirect::route('admin.blocks', ['course' => $course->id])->with('alert-success', trans_choice('t.views.admin.block_generate.generate_success', $generated));
     }
 
     /**
