@@ -304,6 +304,22 @@ class UpdateFeedbackTest extends TestCaseWithBasicData {
         $this->assertEquals('Relevante Anforderungen Format ist ungültig.', $exception->validator->errors()->first('requirements'));
     }
 
+    public function test_shouldValidateNewFeedbackData_tooManyValidRequirementIds() {
+        // given
+        $payload = $this->payload;
+        $requirementIds = array_map(function () { return $this->createRequirement(); }, range(1, 41));
+        $payload['requirements'] = implode(',', $requirementIds);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/feedbacks/' . $this->feedbackDataId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Relevante Anforderungen darf nicht mehr als 40 ausgewählte Elemente haben.', $exception->validator->errors()->first('requirements'));
+    }
+
     public function test_shouldValidateNewFeedbackData_invalidTrainerAssignment() {
         // given
         $payload = $this->payload;

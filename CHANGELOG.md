@@ -1,5 +1,26 @@
 # Changelog
 
+##### Januar 2024
+- Aus technischen und praktischen Gründen wurde die Anzahl relevante Anforderungen in einer Rückmeldung auf maximal 40 limitiert. Auslöser war, dass die Übersichtstabelle sonst technisch wie auch visuell nicht mehr sinnvoll angezeigt werden konnte. Auch fachlich gesehen ist das Konzept der Rückmeldungen in Qualix nicht darauf ausgelegt, sehr viele eingebettete Anforderungen zu enthalten, da Übersichtlichkeit, Fördergedanke, Überprüfbarkeit, zweite Chancen, Zweitausbildung etc. alle darunter leiden. Dies sehen wir in folgenden Textstellen der RQF-Broschüre bestätigt, welche klar machen dass mit jeder einzelnen Mindestanforderung der Zeitaufwand für das Kursteam wie auch für die TN markant ansteigt:
+  > [Es] muss beachtet werden, dass zu jeder Mindestanforderung auch ein Beobachtungsmoment gehört, bei dem die TN zeigen können, was sie gelernt haben und das Kursteam ebendies wahrnehmen kann.[^1]
+
+  > Im Kurs sollen die TN unbedingt auch diejenigen Kompetenzen (weiter)entwickeln können, welche nicht explizit geprüft werden.[^1]
+
+  > Wichtig ist auch, dass die TN die Möglichkeit erhalten zu üben, Neues auszuprobieren und Fehler zu machen, bevor die Mindestanforderungen zur Hand genommen werden und die Leistung der TN überprüft wird.[^2]
+
+  > Es muss sichergestellt werden, dass zu allen definierten Mindestanforderungen im Kursverlauf auch die entsprechenden Inhalte ausgebildet werden und die TN die Gelegenheit haben, die erwarteten Leistungen zu erbringen.[^3]
+
+  > Jede einzelne Mindestanforderung muss für sich erfüllt sein. Eine Kompensation von Schwächen durch besonders gute Leistungen in anderen Bereichen ist deshalb nicht möglich.[^4]
+
+  Aus diesen Gründen empfehlen wir den Einsatz von maximal 10 Mindestanforderungen in einem Kurs. Die Nutzendenoberfläche und Features von Qualix sind ebenfalls auf dieser Annahme basierend optimiert.
+
+- Beim neu Erstellen von Rückmeldungen werden aus obigen Gründen nur noch Anforderungen vorausgewählt, welche explizit als "Mindestanforderung" markiert sind. Die restlichen Anforderungen sind natürlich weiterhin auswählbar.
+
+[^1]: [Rückmelden, Qualifizieren und Fördern im Ausbildungskurs, Seite 14](https://issuu.com/pbs-msds-mss/docs/3118.01de-rqf-20160831-akom/14)
+[^2]: [Rückmelden, Qualifizieren und Fördern im Ausbildungskurs, Seite 15](https://issuu.com/pbs-msds-mss/docs/3118.01de-rqf-20160831-akom/15)
+[^3]: [Rückmelden, Qualifizieren und Fördern im Ausbildungskurs, Seite 31](https://issuu.com/pbs-msds-mss/docs/3118.01de-rqf-20160831-akom/31)
+[^4]: [Rückmelden, Qualifizieren und Fördern im Ausbildungskurs, Seite 35](https://issuu.com/pbs-msds-mss/docs/3118.01de-rqf-20160831-akom/35)
+
 ##### November 2023
 - Es können nun die Rückmeldungs-PDFs für alle TN gleichzeitig heruntergeladen werden [#325](https://github.com/gloggi/qualix/pull/325)
 - Tägliche "Sonstiges"-Blöcke o.ä. können jetzt automatisch generiert werden [#326](https://github.com/gloggi/qualix/issues/76)

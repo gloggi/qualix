@@ -107,6 +107,7 @@ return array(
 		"numeric" => ":attribute darf maximal :max sein.",
 		"string" => ":attribute darf maximal :max Zeichen haben.",
 	),
+	"max_entries" => ":attribute darf nicht mehr als :max ausgewählte Elemente haben.",
 	"mimes" => ":attribute muss den Dateityp :values haben.",
 	"mimetypes" => ":attribute muss den Dateityp :values haben.",
 	"min" => array(

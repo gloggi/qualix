@@ -338,6 +338,29 @@ class CreateFeedbackTest extends TestCaseWithBasicData {
         $this->assertEquals('Relevante Anforderungen Format ist ungültig.', $exception->validator->errors()->first('requirements'));
     }
 
+    public function test_shouldValidateNewFeedbackData_tooManyValidRequirementIds() {
+        // given
+        $payload = $this->payload;
+        $requirementIds = array_map(function () { return $this->createRequirement(); }, range(1, 41));
+        $requirementStatusId = $this->createRequirementStatus();
+        $payload['requirements'] = implode(',', $requirementIds);
+        $payload['feedback_contents_template'] = json_encode([
+            'type' => 'doc',
+            'content' => array_map(function ($requirementId) use ($requirementStatusId) {
+                return ['type' => 'requirement', 'attrs' => ['id' => $requirementId, 'status_id' => $requirementStatusId, 'comment' => 'something']];
+            }, $requirementIds)
+        ]);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/feedbacks', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Relevante Anforderungen darf nicht mehr als 40 ausgewählte Elemente haben.', $exception->validator->errors()->first('requirements'));
+    }
+
     public function test_shouldValidateNewFeedbackData_noFeedbackNotesTemplate() {
         // given
         $payload = $this->payload;

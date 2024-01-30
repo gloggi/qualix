@@ -95,10 +95,13 @@ export default {
     feedbackContentsTemplate: { type: Boolean, default: false },
   },
   data() {
+    const noMandatoryRequirements = !this.requirements.some(r => r.mandatory)
     return {
       currentName: this.name,
       participantsFormValue: this.feedbacks ? this.feedbacks.map(q => q.participant.id).join() : this.participants.map(p => p.id).join(),
-      requirementsFormValue: this.feedbacks ? [...new Set(this.feedbacks.flatMap(q => q.requirements.map(r => r.id)))].join() : this.requirements.map(r => r.id).join(),
+      requirementsFormValue: this.feedbacks ?
+        [...new Set(this.feedbacks.flatMap(q => q.requirements.map(r => r.id)))].join() :
+        this.requirements.filter(r => noMandatoryRequirements || r.mandatory).map(r => r.id).join(),
       trainerAssignments: this.participants
         .sort((a, b) => a.scout_name.localeCompare(b.scout_name))
         .map(p => {

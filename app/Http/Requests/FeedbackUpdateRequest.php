@@ -16,7 +16,7 @@ class FeedbackUpdateRequest extends FormRequest {
         return [
             'name' => 'required|max:255',
             'participants' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
-            'requirements' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
+            'requirements' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse|maxEntries:40',
             'feedbacks' => 'nullable|array',
             'feedbacks.*.users' => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse:trainers,user_id',
         ];
