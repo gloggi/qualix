@@ -551,6 +551,18 @@ return array(
 			),
 			"via_midata" => "Via PBS MiData einloggen",
 		),
+		"name_game" => array(
+			"correct" => "Richtig!",
+			"name_game" => "Name Game",
+			"next" => "Weiter",
+			"page_title" => "Name Game",
+			"participants" => "TN",
+			"select_all" => "Alle auswählen",
+			"start" => "Los geht's",
+			"this_is" => "Das ist:",
+			"who_is_this" => "Wer ist das?",
+			"you_guessed" => "Deine Antwort:",
+		),
 		"observations" => array(
 			"add_success" => "Beobachtung erfasst. Mässi!",
 			"go_to_participant" => "Zu :name",

@@ -24,6 +24,7 @@ use App\Http\Controllers\FeedbackListController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LocalizationController;
+use App\Http\Controllers\NameGameController;
 use App\Http\Controllers\ObservationAssignmentController;
 use App\Http\Controllers\ObservationController;
 use App\Http\Controllers\ParticipantController;
@@ -63,6 +64,8 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->group(function () {
         Route::get('/course/{course}/observation/{observation}', [ObservationController::class, 'edit'])->name('observation.edit');
         Route::post('/course/{course}/observation/{observation}', [ObservationController::class, 'update'])->name('observation.update');
         Route::delete('/course/{course}/observation/{observation}', [ObservationController::class, 'destroy'])->name('observation.delete');
+
+        Route::get('/course/{course}/names', [NameGameController::class, 'index'])->name('nameGame');
 
         Route::post('/course/{course}/admin/archive', [CourseController::class, 'archive'])->name('admin.course.archive');
     });
