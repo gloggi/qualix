@@ -21,6 +21,7 @@
           v-model="gameMode"
           :options="[ { id: 'multipleChoice', label: $t('t.views.name_game.multiple_choice')}, { id: 'manualNameInput', label: $t('t.views.name_game.manual_name_input') } ]"
           required
+          :allow-empty="false"
         ></input-multi-select>
 
         <button-submit :label="$t('t.views.name_game.start')"></button-submit>
