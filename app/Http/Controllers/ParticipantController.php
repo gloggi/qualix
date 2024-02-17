@@ -64,7 +64,6 @@ class ParticipantController extends Controller
             $request->session()->now('alert-warning', trans('t.views.admin.participant_import.warning_existing_participants'));
         }
 
-
         $MiDataParticipantListLink = (new HtmlString)
             ->s('<a href="https://db.scout.ch/" target="_blank">')
             ->__('t.views.admin.participant_import.MiData.name')
@@ -81,7 +80,6 @@ class ParticipantController extends Controller
      * @throws ValidationException if parsing the uploaded file fails
      */
     public function import(ParticipantImportRequest $request, Course $course) {
-
         $request->validated();
         try {
             $imported = $request->getImporter()->import($request->file('file')->getRealPath(), $course);

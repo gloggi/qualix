@@ -1,5 +1,8 @@
 # Changelog
 
+##### Februar 2024
+- Qualix enthält neu ein Namenslernspiel! Auf der TN-Liste hat es einen Link zum Spiel.
+
 ##### Januar 2024
 - Aus technischen und praktischen Gründen wurde die Anzahl relevante Anforderungen in einer Rückmeldung auf maximal 40 limitiert. Auslöser war, dass die Übersichtstabelle sonst technisch wie auch visuell nicht mehr sinnvoll angezeigt werden konnte. Auch fachlich gesehen ist das Konzept der Rückmeldungen in Qualix nicht darauf ausgelegt, sehr viele eingebettete Anforderungen zu enthalten, da Übersichtlichkeit, Fördergedanke, Überprüfbarkeit, zweite Chancen, Zweitausbildung etc. alle darunter leiden. Dies sehen wir in folgenden Textstellen der RQF-Broschüre bestätigt, welche klar machen dass mit jeder einzelnen Mindestanforderung der Zeitaufwand für das Kursteam wie auch für die TN markant ansteigt:
   > [Es] muss beachtet werden, dass zu jeder Mindestanforderung auch ein Beobachtungsmoment gehört, bei dem die TN zeigen können, was sie gelernt haben und das Kursteam ebendies wahrnehmen kann.[^1]

@@ -555,6 +555,7 @@ return array(
 			"correct" => "Richtig!",
 			"name_game" => "Name Game",
 			"next" => "Weiter",
+			"no_image" => "kein Bild",
 			"page_title" => "Name Game",
 			"participants" => "TN",
 			"play_again" => "Nochmals",

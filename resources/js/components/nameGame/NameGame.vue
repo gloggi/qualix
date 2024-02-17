@@ -9,7 +9,7 @@
           name="selectedParticipants"
           v-model="selectedParticipantIds"
           multiple
-          :options="participants"
+          :options="participantsWithImage"
           :display-field="anyDuplicateMembershipGroups ? 'name_and_group' : 'scout_name'"
           required
           :groups="{[$t('t.views.name_game.select_all')]: participants.map(p => p.id).join()}"
@@ -44,12 +44,23 @@ export default {
   },
   data() {
     return {
-      selectedParticipants: this.participants,
+      selectedParticipants: this.participants.filter(participant => participant.image_url),
       playing: false,
       gameMode: 'multipleChoice',
     }
   },
   computed: {
+    participantsWithImage() {
+      return this.participants.map(participant => {
+        if (participant.image_url) {
+          return participant
+        }
+        return {
+          ...participant,
+          scout_name: participant.scout_name + ' (' + this.$tc('t.views.name_game.no_image') + ')'
+        }
+      })
+    },
     selectedParticipantIds: {
       get () {
         return this.selectedParticipants.map(participant => participant.id).join(',')
