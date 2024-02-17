@@ -23,12 +23,13 @@
         <div class="d-flex align-items-baseline justify-content-start">
           <i class="text-red fas fa-xmark"></i>
           &nbsp;
-          <span>{{ submittedGuess.scout_name }}</span>
+          <span>{{ submittedScoutName }}</span>
         </div>
       </div>
       <button
         type="submit"
-        class="btn btn-outline-primary mr-3 mb-1 w-100 h-25">
+        class="btn btn-outline-primary mr-3 mb-1 w-100 h-25"
+        ref="nextButton">
         {{ $t('t.views.name_game.next') }}
       </button>
     </form>
@@ -52,13 +53,15 @@ export default {
       guessing: true,
       correct: false,
       submittedGuess: null,
+      submittedScoutName: '',
     }
   },
   methods: {
     guess(event) {
-      const selectedId = event.submitter.getAttribute('value')
-      this.submittedGuess = this.participants.find(p => selectedId === `${p.id}`)
-      if (this.submittedGuess.id === this.participant.id) {
+      this.gameMode === 'multipleChoice' ?
+        this.getSelectedParticipant(event) :
+        this.getGuessedParticipant(event)
+      if (this.submittedGuess?.id === this.participant.id) {
         this.correct = true
         this.$emit('correct')
       } else {
@@ -66,10 +69,26 @@ export default {
         this.$emit('incorrect')
       }
       this.guessing = false
+      this.$nextTick(() => this.$refs.nextButton.focus())
     },
     next() {
       this.$emit('advance')
       this.guessing = true
+    },
+    getSelectedParticipant(event) {
+      const selectedId = event.submitter.getAttribute('value')
+      this.submittedGuess = this.participants.find(p => selectedId === `${p.id}`)
+      this.submittedScoutName = this.submittedGuess?.scout_name
+    },
+    getGuessedParticipant(event) {
+      const input = (new FormData(event.target)).get('scout_name')
+      this.submittedGuess = this.participants.find(participant => {
+        return this.normalize(participant.scout_name) === this.normalize(input)
+      })
+      this.submittedScoutName = this.submittedGuess ? this.submittedGuess.scout_name : input
+    },
+    normalize(name) {
+      return name.toLocaleLowerCase().replaceAll(/[^a-zA-Z]/g, '')
     }
   }
 }

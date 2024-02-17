@@ -9,13 +9,23 @@
       {{ option.scout_name }}
     </button>
   </div>
-  <div v-else>{{ participant.scout_name }}</div>
+  <div v-else>
+    <input-text :label="$t('t.views.name_game.scout_name')" name="scout_name" ref="scoutName"></input-text>
+    <button
+      type="submit"
+      class="btn btn-primary mr-3 mb-1 w-100 h-25">
+      {{ $t('t.views.name_game.submit') }}
+    </button>
+  </div>
 </template>
 
 <script>
 
+import InputText from '../form/InputText.vue';
+
 export default {
   name: 'AnswerInput',
+  components: { InputText },
   props: {
     participant: { type: Object, required: true },
     participants: { type: Array, required: true },
@@ -42,8 +52,13 @@ export default {
       const options = [this.participant, this.wrongGuess1, this.wrongGuess2]
       options.sort((a, b) => a.scout_name.localeCompare(b.scout_name))
       return options
+    },
+  },
+  mounted() {
+    if (this.gameMode === 'manualNameInput' && this.$refs.scoutName) {
+      this.$refs.scoutName.focus()
     }
-  }
+  },
 }
 </script>
 

@@ -30,7 +30,8 @@
         v-model="currentValue"
         :required="required"
         :autofocus="autofocus"
-        :v-focus="autofocus">
+        :v-focus="autofocus"
+        ref="input">
 
       <span v-if="errorMessage" class="invalid-feedback" role="alert">
         <strong>{{ errorMessage }}</strong>
@@ -50,6 +51,11 @@ export default {
     label: { type: String, required: true },
     type: { type: String, default: 'text' },
     autofocus: { type: Boolean, default: false },
+  },
+  methods: {
+    focus() {
+      this.$refs.input.focus()
+    }
   }
 }
 </script>

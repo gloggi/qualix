@@ -15,6 +15,14 @@
           :groups="{[$t('t.views.name_game.select_all')]: participants.map(p => p.id).join()}"
         ></input-multi-select>
 
+        <input-multi-select
+          :label="$t('t.views.name_game.game_mode')"
+          name="gameMode"
+          v-model="gameMode"
+          :options="[ { id: 'multipleChoice', label: $t('t.views.name_game.multiple_choice')}, { id: 'manualNameInput', label: $t('t.views.name_game.manual_name_input') } ]"
+          required
+        ></input-multi-select>
+
         <button-submit :label="$t('t.views.name_game.start')"></button-submit>
 
       </form>
