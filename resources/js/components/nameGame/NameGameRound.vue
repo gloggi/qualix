@@ -30,18 +30,20 @@
       @incorrect="incorrect"
       @advance="step += 1"
     ></name-game-guess>
-    <score-screen v-else :participants="shuffledParticipants"></score-screen>
+    <score-screen v-else :participants="shuffledParticipants" @finish="$emit('finish')"></score-screen>
   </div>
 </template>
 
 <script>
 import { shuffle } from 'lodash'
 import '@formatjs/intl-durationformat/polyfill'
-import ButtonSubmit from '../form/ButtonSubmit.vue';
+import ButtonSubmit from '../form/ButtonSubmit.vue'
+import NameGameGuess from './NameGameGuess.vue'
+import ScoreScreen from './ScoreScreen.vue'
 
 export default {
   name: 'NameGameRound',
-  components: { ButtonSubmit },
+  components: { ButtonSubmit, NameGameGuess, ScoreScreen },
   props: {
     participants: { type: Array, required: true },
     gameMode: { type: String, required: true }
@@ -55,6 +57,11 @@ export default {
       score: 0,
     };
   },
+  computed: {
+    finished() {
+      return this.step >= this.participants.length
+    }
+  },
   mounted () {
     this.score = 0
     this.startTime = new Date()
@@ -62,11 +69,13 @@ export default {
   },
   methods: {
     updateTimer() {
-      const elapsed =
+      const elapsedSeconds = Math.round(((new Date()) - this.startTime) / 100) / 10
       this.elapsedTime = new Intl.DurationFormat('de-CH', { style: 'digital' }).format({
-        milliseconds: Math.round(((new Date()) - this.startTime) / 100) * 100
+        milliseconds: Math.floor((elapsedSeconds * 1000) % 1000),
+        seconds: Math.floor(elapsedSeconds) % 60,
+        minutes: Math.floor(elapsedSeconds / 60)
       })
-      requestAnimationFrame(this.updateTimer)
+      if (!this.finished) requestAnimationFrame(this.updateTimer)
     },
     correct() {
       this.shuffledParticipants[this.step].correct = true

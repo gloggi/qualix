@@ -6,19 +6,31 @@
     </form>
     <form v-else @submit.prevent="next">
       <div v-if="correct">
-        {{ $t('t.views.name_game.correct') }}
+        <div>{{ $t('t.views.name_game.correct') }}</div>
+        <div>{{ $t('t.views.name_game.this_is') }}</div>
+        <div class="d-flex align-items-baseline justify-content-start">
+          <i class="text-green fas fa-check"></i>
+          &nbsp;
+          {{ participant.scout_name }}
+        </div>
       </div>
       <div v-else>
         <div>{{ $t('t.views.name_game.this_is') }}</div>
-        <div>{{ participant.scout_name }}</div>
+        <div class="d-flex align-items-baseline justify-content-start">
+          {{ participant.scout_name }}
+        </div>
         <div>{{ $t('t.views.name_game.you_guessed') }}</div>
-        <div class="d-flex align-items-baseline justify-content-between">
+        <div class="d-flex align-items-baseline justify-content-start">
           <i class="text-red fas fa-xmark"></i>
           &nbsp;
           <span>{{ submittedGuess.scout_name }}</span>
         </div>
       </div>
-      <button-submit :label="$t('t.views.name_game.next')"></button-submit>
+      <button
+        type="submit"
+        class="btn btn-outline-primary mr-3 mb-1 w-100 h-25">
+        {{ $t('t.views.name_game.next') }}
+      </button>
     </form>
   </div>
 </template>
