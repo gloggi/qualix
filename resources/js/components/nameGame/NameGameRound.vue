@@ -18,8 +18,10 @@
         </div>
       </div>
     </div>
-    <b-progress :max="participants.length" class="mb-3 mt-1">
-      <b-progress-bar :value="step" variant="info">{{ step }} / {{ participants.length }}</b-progress-bar>
+    <b-progress class="position-relative mb-3 mt-1" :max="participants.length" >
+      <span class="justify-content-center align-self-center d-flex position-absolute w-100"><strong class="ml-1"> {{ step }} / {{ participants.length }}</strong></span>
+      <b-progress-bar :value="this.numCorrect" variant="info"></b-progress-bar>
+      <b-progress-bar :value="this.numIncorrect" variant="danger"></b-progress-bar>
     </b-progress>
     <name-game-guess
       v-if="step < shuffledParticipants.length"
@@ -35,11 +37,12 @@
 </template>
 
 <script>
-import { shuffle } from 'lodash'
+import { cloneDeep, shuffle } from 'lodash';
 import '@formatjs/intl-durationformat/polyfill'
 import ButtonSubmit from '../form/ButtonSubmit.vue'
 import NameGameGuess from './NameGameGuess.vue'
 import ScoreScreen from './ScoreScreen.vue'
+import Vue from 'vue';
 
 export default {
   name: 'NameGameRound',
@@ -60,11 +63,16 @@ export default {
   computed: {
     finished() {
       return this.step >= this.participants.length
-    }
+    },
+    numCorrect() {
+      return this.shuffledParticipants.filter(participant => participant.correct === true).length
+    },
+    numIncorrect() {
+      return this.shuffledParticipants.filter(participant => participant.correct === false).length
+    },
   },
   mounted () {
-    this.score = 0
-    this.startTime = new Date()
+    this.start()
     this.updateTimer()
   },
   methods: {
@@ -78,13 +86,20 @@ export default {
       if (!this.finished) requestAnimationFrame(this.updateTimer)
     },
     correct() {
-      this.shuffledParticipants[this.step].correct = true
+      Vue.set(this.shuffledParticipants[this.step], 'correct', true)
       this.score += 10
     },
     incorrect() {
-      this.shuffledParticipants[this.step].correct = false
+      Vue.set(this.shuffledParticipants[this.step], 'correct', false)
     },
-  }
+    start() {
+      this.shuffledParticipants = shuffle(this.participants.map(cloneDeep))
+      this.step = 0
+      this.startTime = new Date()
+      this.elapsedTime = ''
+      this.score = 0
+    },
+  },
 };
 </script>
 
