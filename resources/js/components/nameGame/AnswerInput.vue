@@ -10,11 +10,11 @@
     </button>
   </div>
   <div v-else>
-    <input-text :label="$t('t.views.name_game.scout_name')" name="scout_name" ref="scoutName"></input-text>
+    <input-text v-model="manualInput" :label="$t('t.views.name_game.scout_name')" name="scout_name" ref="scoutName"></input-text>
     <button
       type="submit"
       class="btn btn-primary mr-3 mb-1 w-100 h-25">
-      {{ $t('t.views.name_game.submit') }}
+      {{ buttonLabel }}
     </button>
   </div>
 </template>
@@ -31,6 +31,9 @@ export default {
     participants: { type: Array, required: true },
     gameMode: { type: String, required: true },
   },
+  data: () => ({
+    manualInput: '',
+  }),
   computed: {
     wrongGuess1() {
       let result = this.participant
@@ -53,9 +56,16 @@ export default {
       options.sort((a, b) => a.scout_name.localeCompare(b.scout_name))
       return options
     },
+    buttonLabel() {
+      if (this.manualInput.length) {
+        return this.$t('t.views.name_game.submit')
+      }
+      return this.$t('t.views.name_game.skip')
+    },
   },
   mounted() {
     if (this.gameMode === 'manualNameInput' && this.$refs.scoutName) {
+      this.manualInput = ''
       this.$refs.scoutName.focus()
     }
   },

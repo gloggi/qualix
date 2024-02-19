@@ -564,6 +564,7 @@ return array(
 			"play_again" => "Nochmals",
 			"scout_name" => "Name",
 			"select_all" => "Alle auswählen",
+			"skip" => "Weiss nicht",
 			"start" => "Los geht's",
 			"submit" => "Abschicken",
 			"this_is" => "Das ist:",
