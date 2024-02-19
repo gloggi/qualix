@@ -568,6 +568,7 @@ return array(
 			"start" => "Los geht's",
 			"submit" => "Abschicken",
 			"this_is" => "Das ist:",
+			"too_few_participants" => "Wähle mindestens 3 TN aus",
 			"well_done" => "Super gemacht!",
 			"who_is_this" => "Wer ist das?",
 			"you_guessed" => "Deine Antwort:",

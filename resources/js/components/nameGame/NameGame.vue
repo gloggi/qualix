@@ -24,7 +24,7 @@
           :allow-empty="false"
         ></input-multi-select>
 
-        <button-submit :label="$t('t.views.name_game.start')"></button-submit>
+        <button-submit :label="tooFewParticipantsSelected ? $t('t.views.name_game.too_few_participants') : $t('t.views.name_game.start')" :disabled="tooFewParticipantsSelected"></button-submit>
 
       </form>
 
@@ -86,6 +86,9 @@ export default {
         )
       )
     },
+    tooFewParticipantsSelected() {
+      return this.selectedParticipants.length < 3
+    }
   }
 }
 </script>
