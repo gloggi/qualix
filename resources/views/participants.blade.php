@@ -8,7 +8,7 @@
         <template #header>
             <div class="d-flex justify-content-between">
                 {{__('t.views.participants.title')}}
-                <a href="{{ route('nameGame', [ 'course' => $course->id ]) }}">Namen lernen</a>
+                <a href="{{ route('nameGame', [ 'course' => $course->id ]) }}">{{__('t.views.participants.name_game')}}</a>
             </div>
         </template>
 

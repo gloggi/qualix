@@ -552,6 +552,7 @@ return array(
 			"via_midata" => "Via PBS MiData einloggen",
 		),
 		"name_game" => array(
+			"abort" => "Zurück zu den TN",
 			"correct" => "Richtig!",
 			"game_mode" => "Schwierigkeit",
 			"manual_name_input" => "Schwierig (Namen eintippen)",
@@ -601,6 +602,7 @@ return array(
 		"participants" => array(
 			"here" => "hier",
 			"menu_name" => "TN",
+			"name_game" => "Namen lernen",
 			"no_participants" => "Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie :here.",
 			"page_title" => "TN-Überblick",
 			"title" => "Beobachtung für TN erfassen",

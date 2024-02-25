@@ -5,7 +5,13 @@
 @section('content')
 
     <b-card>
-        <template #header>{{__('t.views.name_game.name_game')}}</template>
+        <template #header>
+            <div class="d-flex justify-content-between">
+                {{__('t.views.name_game.name_game')}}
+                <a href="{{ route('participants', [ 'course' => $course->id ]) }}">{{ __('t.views.name_game.abort') }}</a>
+            </div>
+
+        </template>
 
             <name-game
                 :participants="{{ json_encode($course->participants) }}"
