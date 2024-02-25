@@ -1,5 +1,5 @@
 <template>
-  <div class="w-25 w-md-50 w-sm-100 m-auto">
+  <div class="w-100 w-md-50 m-auto">
     <div class="d-flex justify-content-between">
       <div class="d-flex">
         <div class="hc fc-30-90-150-255 s e wc">

@@ -1,5 +1,5 @@
 <template>
-  <row-text v-if="image">
+  <row-text v-if="image" :narrow-form="true">
     <div class="square-container name-game-image">
       <img class="card-img-top img img-responsive full-width" :src="participant.image_path" :alt="$t('t.views.name_game.who_is_this')">
     </div>
