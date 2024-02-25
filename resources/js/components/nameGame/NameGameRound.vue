@@ -32,7 +32,7 @@
       @incorrect="incorrect"
       @advance="step += 1"
     ></name-game-guess>
-    <score-screen v-else :participants="shuffledParticipants" @finish="$emit('finish')"></score-screen>
+    <score-screen v-else :participants="shuffledParticipants" @finish="(...args) => this.$emit('finish', ...args)"></score-screen>
   </div>
 </template>
 

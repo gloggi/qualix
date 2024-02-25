@@ -563,6 +563,7 @@ return array(
 			"page_title" => "Name Game",
 			"participants" => "TN",
 			"play_again" => "Nochmals",
+			"practice_wrong_names" => "Falsch geratene Namen üben",
 			"scout_name" => "Name",
 			"select_all" => "Alle auswählen",
 			"skip" => "Weiss nicht",
@@ -572,6 +573,7 @@ return array(
 			"too_few_participants" => "Wähle mindestens 3 TN aus",
 			"well_done" => "Super gemacht!",
 			"who_is_this" => "Wer ist das?",
+			"wrong_guesses" => "Folgende Namen hast du falsch geraten:",
 			"you_guessed" => "Deine Antwort:",
 		),
 		"observations" => array(

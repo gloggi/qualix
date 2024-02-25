@@ -33,7 +33,7 @@
       <name-game-round
         :participants="selectedParticipants"
         :game-mode="gameMode"
-        @finish="playing = false"
+        @finish="finishRound"
       ></name-game-round>
     </template>
   </div>
@@ -88,6 +88,14 @@ export default {
     },
     tooFewParticipantsSelected() {
       return this.selectedParticipants.length < 3
+    }
+  },
+  methods: {
+    finishRound(selectParticipants = []) {
+      this.playing = false
+      if (selectParticipants && selectParticipants.length) {
+        this.selectedParticipantIds = selectParticipants.join(',')
+      }
     }
   }
 }
