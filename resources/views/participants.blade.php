@@ -5,7 +5,12 @@
 @section('content')
 
     <b-card>
-        <template #header>{{__('t.views.participants.title')}}</template>
+        <template #header>
+            <div class="d-flex justify-content-between">
+                {{__('t.views.participants.title')}}
+                <a href="{{ route('nameGame', [ 'course' => $course->id ]) }}">{{__('t.views.participants.name_game')}}</a>
+            </div>
+        </template>
 
         @if (count($course->participants))
 
