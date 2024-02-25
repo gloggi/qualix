@@ -559,6 +559,7 @@ return array(
 			"name_game" => "Name Game",
 			"next" => "Weiter",
 			"no_image" => "kein Bild",
+			"num_correct_and_incorrect" => ":correct richtig, :incorrect falsch von :total",
 			"page_title" => "Name Game",
 			"participants" => "TN",
 			"play_again" => "Nochmals",

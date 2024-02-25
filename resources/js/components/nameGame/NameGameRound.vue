@@ -19,9 +19,9 @@
       </div>
     </div>
     <b-progress class="position-relative mb-3 mt-1" :max="participants.length" >
-      <span class="justify-content-center align-self-center d-flex position-absolute w-100"><strong class="ml-1"> {{ step }} / {{ participants.length }}</strong></span>
-      <b-progress-bar :value="this.numCorrect" variant="info"></b-progress-bar>
-      <b-progress-bar :value="this.numIncorrect" variant="danger"></b-progress-bar>
+      <span class="justify-content-center align-self-center d-flex position-absolute w-100"><strong class="ml-1"> {{ $t('t.views.name_game.num_correct_and_incorrect', { correct: numCorrect, incorrect: numIncorrect, total: participants.length }) }}</strong></span>
+      <b-progress-bar :value="numCorrect" variant="info"></b-progress-bar>
+      <b-progress-bar :value="numIncorrect" variant="danger"></b-progress-bar>
     </b-progress>
     <name-game-guess
       v-if="step < shuffledParticipants.length"
