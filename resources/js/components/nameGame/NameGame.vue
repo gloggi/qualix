@@ -7,6 +7,7 @@
         <input-multi-select
           :label="$t('t.views.name_game.participants')"
           name="selectedParticipants"
+          id="participants"
           v-model="selectedParticipantIds"
           multiple
           :options="candidatesWithImage"
@@ -18,6 +19,7 @@
         <input-multi-select
           :label="$t('t.views.name_game.game_mode')"
           name="gameMode"
+          id="gameMode"
           v-model="gameMode"
           :options="[ { id: 'multipleChoice', label: $t('t.views.name_game.multiple_choice')}, { id: 'manualNameInput', label: $t('t.views.name_game.manual_name_input') } ]"
           required
