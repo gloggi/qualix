@@ -9,10 +9,10 @@
           name="selectedParticipants"
           v-model="selectedParticipantIds"
           multiple
-          :options="participantsWithImage"
+          :options="candidatesWithImage"
           :display-field="anyDuplicateMembershipGroups ? 'name_and_group' : 'scout_name'"
           required
-          :groups="{[$t('t.views.name_game.select_all')]: participants.map(p => p.id).join()}"
+          :groups="groups"
         ></input-multi-select>
 
         <input-multi-select
@@ -49,7 +49,7 @@ export default {
   components: { InputMultiSelect, ButtonSubmit },
   props: {
     participants: { type: Array, required: true },
-    participantGroups: { type: Array, default: () => [] },
+    teamMembers: { type: Array, default: [] },
   },
   data() {
     return {
@@ -59,14 +59,25 @@ export default {
     }
   },
   computed: {
-    participantsWithImage() {
-      return this.participants.map(participant => {
-        if (participant.image_url) {
-          return participant
+    maxParticipantId() {
+      return Math.max(...this.participants.map(p => p.id))
+    },
+    candidates() {
+      return this.participants.concat(this.teamMembers.map(teamMember => ({
+        ...teamMember,
+        id: this.maxParticipantId + teamMember.id,
+        scout_name: teamMember.name,
+      })))
+    },
+    candidatesWithImage() {
+      return this.candidates.map(candidate => {
+        if (candidate.image_url) {
+          return { ...candidate, id: '' + candidate.id }
         }
         return {
-          ...participant,
-          scout_name: participant.scout_name + ' (' + this.$tc('t.views.name_game.no_image') + ')'
+          ...candidate,
+          id: '' + candidate.id,
+          scout_name: candidate.scout_name + ' (' + this.$tc('t.views.name_game.no_image') + ')',
         }
       })
     },
@@ -76,7 +87,7 @@ export default {
       },
       set (newValue) {
         const ids = newValue.split(',')
-        this.selectedParticipants = this.participants.filter(p => ids.includes(p.id.toString()))
+        this.selectedParticipants = this.candidates.filter(p => ids.includes(p.id.toString()))
       }
     },
     anyDuplicateMembershipGroups() {
@@ -88,7 +99,15 @@ export default {
     },
     tooFewParticipantsSelected() {
       return this.selectedParticipants.length < 3
-    }
+    },
+    groups() {
+      return {
+        [this.$t('t.views.name_game.select_all_participants')]: this.participants.map(p => p.id).join(),
+        [this.$t('t.views.name_game.select_all_participants_with_image')]: this.participants.filter(p => p.image_url).map(p => p.id).join(),
+        [this.$t('t.views.name_game.select_all_equipe_members')]: this.teamMembers.map(p => this.maxParticipantId + p.id).join(),
+        [this.$t('t.views.name_game.select_all')]: this.candidates.map(p => p.id).join(),
+      }
+    },
   },
   methods: {
     finishRound(selectParticipants = []) {

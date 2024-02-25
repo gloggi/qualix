@@ -9,7 +9,7 @@
 
             <name-game
                 :participants="{{ json_encode($course->participants) }}"
-                :participant-groups="{{ json_encode($course->participantGroups) }}"
+                :team-members="{{ json_encode($course->users) }}"
             ></name-game>
 
     </b-card>
