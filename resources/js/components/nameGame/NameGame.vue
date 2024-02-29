@@ -69,6 +69,7 @@ export default {
         ...teamMember,
         id: this.maxParticipantId + teamMember.id,
         scout_name: teamMember.name,
+        name_and_group: teamMember.name,
       })))
     },
     candidatesWithImage() {
@@ -95,7 +96,7 @@ export default {
     anyDuplicateMembershipGroups() {
       return 1 < Math.max(
         ...Object.values(countBy(
-          this.selectedParticipants.filter(participant => !!participant.group), 'group')
+          this.participants.filter(participant => !!participant.group), 'group')
         )
       )
     },
