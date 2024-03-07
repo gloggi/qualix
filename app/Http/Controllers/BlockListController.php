@@ -22,7 +22,6 @@ class BlockListController extends Controller
     public function crib(Request $request, Course $course, User $user)
     {
         $userId = $user->id ?? Auth::id();
-        $request->session()->flash('return_url', $request->url());
         return view('crib', [
             'blockManagementLink' => $this->blockManagementLink($course, 't.views.crib.here'),
             'showObservationAssignments' => $course->observationAssignments()->count(),

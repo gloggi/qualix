@@ -191,7 +191,7 @@ class ReadCribTest extends TestCaseWithCourse {
 
     }
 
-    public function test_shouldReturnToCrib_afterAddingObservationInAssignment() {
+    public function test_shouldReturnToObservationForm_afterAddingObservationInAssignment() {
         // given
         $block1 = $this->createBlock('Block 1', '1.1', '01.01.2019');
         $block2 = $this->createBlock('Block 2', '1.2', '01.01.2019');
@@ -218,10 +218,10 @@ class ReadCribTest extends TestCaseWithCourse {
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/crib');
+        $response->assertRedirect('/course/' . $this->courseId . '/observation/new?participant=' . $participant1 . '&block=' . $block1);
     }
 
-    public function test_shouldReturnToCrib_afterAddingObservationInBlock() {
+    public function test_shouldReturnToObservationForm_afterAddingObservationInBlock() {
         // given
         $block1 = $this->createBlock('Block 1', '1.1', '01.01.2019');
         $participant1 = $this->createParticipant('One');
@@ -241,6 +241,6 @@ class ReadCribTest extends TestCaseWithCourse {
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/crib');
+        $response->assertRedirect('/course/' . $this->courseId . '/observation/new?participant=' . $participant1 . '&block=' . $block1);
     }
 }
