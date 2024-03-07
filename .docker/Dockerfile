@@ -7,13 +7,10 @@ RUN apt-get -y update && apt-get -y upgrade && apt-get -y install libxml2-dev li
 RUN echo "de_CH.UTF-8 UTF-8" >> /etc/locale.gen && echo "fr_CH.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-RUN yes | pecl install xdebug-3.2.0 && docker-php-ext-enable xdebug
-ENV XDEBUG_MODE="debug,develop"
-ENV XDEBUG_CONFIG="client_host=docker-host"
-
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions xdebug @composer
 RUN docker-php-ext-install pdo pdo_mysql mbstring xml bcmath zip gd
+COPY docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN a2enmod rewrite
 COPY apache-vhost.conf /etc/apache2/sites-enabled/000-default.conf

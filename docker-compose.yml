@@ -12,6 +12,8 @@ services:
     volumes:
       - .:/var/www
       - ./public/.htaccess.docker:/var/www/public/.htaccess
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   db:
     image: mariadb:10.3
