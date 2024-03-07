@@ -95,7 +95,6 @@ class ObservationController extends Controller {
      */
     protected function rememberPreviouslyActiveView(Request $request) {
         $returnTo = $this->extractPathParameter(URL::previous(), 'participants.detail', 'participant');
-        $request->session()->keep(['return_url']);
         $request->session()->flash('participant_before_edit', $request->session()->get('participant_before_edit', $returnTo));
     }
 
@@ -110,8 +109,6 @@ class ObservationController extends Controller {
      * @return RedirectResponse
      */
     protected function redirectToPreviouslyActiveView(Request $request, Course $course, Collection $returnOptions, $fallback = null) {
-        if ($request->session()->has('return_url')) return Redirect::to($request->session()->get('return_url'));
-
         $returnTo = $request->session()->get('participant_before_edit');
         if (!$returnOptions->contains($returnTo)) {
             $returnTo = $returnOptions->first();

@@ -115,7 +115,6 @@ class ParticipantController extends Controller
      */
     protected function rememberPreviouslyActiveView(Request $request) {
         $returnTo = $this->extractPathParameter(URL::previous(), 'participants.detail', 'participant');
-        $request->session()->keep(['return_url']);
         $request->session()->flash('participant_before_edit', $request->session()->get('participant_before_edit', $returnTo));
     }
 
@@ -130,8 +129,6 @@ class ParticipantController extends Controller
      * @return RedirectResponse
      */
     protected function redirectToPreviouslyActiveView(Request $request, Course $course) {
-        if ($request->session()->has('return_url')) return Redirect::to($request->session()->get('return_url'));
-
         $returnTo = $request->session()->get('participant_before_edit');
         if ($returnTo) return Redirect::to(route('participants.detail', ['course' => $course->id, 'participant' => $returnTo]));
 

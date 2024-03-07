@@ -1,5 +1,8 @@
 # Changelog
 
+##### März 2024
+- Nachdem man via Blöcke-Ansicht eine Beobachtung hinzugefügt hat, bleibt man nun auf dem Beobachtungs-Formular, um noch weitere Beobachtungen erfassen zu können. Das vorherige Verhalten war noch aus der Zeit als der Spick und die Blöcke-Ansicht noch separat waren, und war für Beobachtungsaufträge mit genau einer Beobachtung pro Auftrag optimiert. Das neue Verhalten ist hoffentlich hilfreicher, um mehrere kleine Beobachtungen zu erfassen [#334](https://github.com/gloggi/qualix/pull/334)
+
 ##### Februar 2024
 - Qualix enthält neu ein Namenslernspiel! Auf der TN-Liste hat es einen Link zum Spiel [#332](https://github.com/gloggi/qualix/pull/332)
 
