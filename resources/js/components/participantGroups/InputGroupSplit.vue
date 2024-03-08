@@ -66,6 +66,27 @@
         narrow-form
         :require-multiple="$t('t.views.admin.participant_group_generator.select_multiple_participants')"
         multiple></input-multi-multi-select>
+
+      <input-multi-select
+        v-if="unevenSplit"
+        :name="`${name}[preferLargeGroup]`"
+        v-model="currentValue.preferLargeGroup"
+        :label="$t('t.views.admin.participant_group_generator.split.prefer_large_group', { size: largeGroupSize })"
+        label-class="col-12"
+        :options="participantsWithoutSmallGroupPreference"
+        :display-field="anyDuplicateMembershipGroups ? 'name_and_group' : 'scout_name'"
+        narrow-form
+        multiple></input-multi-select>
+
+      <input-multi-select
+        v-if="unevenSplit"
+        :name="`${name}[preferSmallGroup]`"
+        v-model="currentValue.preferSmallGroup"
+        :label="$t('t.views.admin.participant_group_generator.split.prefer_small_group', { size: smallGroupSize })"
+        :options="participantsWithoutLargeGroupPreference"
+        :display-field="anyDuplicateMembershipGroups ? 'name_and_group' : 'scout_name'"
+        narrow-form
+        multiple></input-multi-select>
     </b-collapse>
   </b-card>
 </template>
@@ -78,11 +99,12 @@ import {kebabCase} from 'lodash'
 import InputText from '../form/InputText'
 import RowText from '../form/RowText'
 import InputCheckbox from '../form/InputCheckbox'
+import InputMultiSelect from '../form/InputMultiSelect.vue';
 
 export default {
   name: 'InputGroupSplit',
   mixins: [ Input ],
-  components: {InputCheckbox, RowText, InputText, InputMultiMultiSelect },
+  components: { InputMultiSelect, InputCheckbox, RowText, InputText, InputMultiMultiSelect },
   props: {
     value: { type: Object, default: () => ({}) },
     participants: { type: Array, required: true },
@@ -93,21 +115,44 @@ export default {
     numParticipants() {
       return this.participants.length
     },
+    largeGroupSize() {
+      if (!validSplitGroups(this.currentValue, this.numParticipants)) {
+        return 0
+      }
+      return Math.ceil(this.numParticipants / parseInt(this.currentValue.groups))
+    },
+    smallGroupSize() {
+      if (!validSplitGroups(this.currentValue, this.numParticipants)) {
+        return 0
+      }
+      return Math.floor(this.numParticipants / parseInt(this.currentValue.groups))
+    },
+    unevenSplit() {
+      if (!validSplitGroups(this.currentValue, this.numParticipants)) {
+        return false
+      }
+      return this.largeGroupSize !== this.smallGroupSize
+    },
     groupSizeText() {
       if (!validSplitGroups(this.currentValue, this.numParticipants)) {
         return this.$t('t.views.admin.participant_group_generator.split.enter_number_of_groups')
       }
-      const groups = parseInt(this.currentValue.groups)
-      const min = Math.floor(this.numParticipants / groups)
-      const max = Math.ceil(this.numParticipants / groups)
-      if (min === max) {
-        return this.$t('t.views.admin.participant_group_generator.split.of_size', { size: min })
+      if (this.smallGroupSize === this.largeGroupSize) {
+        return this.$t('t.views.admin.participant_group_generator.split.of_size', { size: this.smallGroupSize })
       }
-      return this.$t('t.views.admin.participant_group_generator.split.of_size_between', { min, max })
+      return this.$t('t.views.admin.participant_group_generator.split.of_size_between', { min: this.smallGroupSize, max: this.largeGroupSize })
     },
     conditionsId() {
       return kebabCase(`collapse-${this.name}-conditions`)
-    }
+    },
+    participantsWithoutSmallGroupPreference() {
+      const preferSmallGroup = this.currentValue.preferSmallGroup.split(',')
+      return this.participants.filter(participant => !preferSmallGroup.includes(`${participant.id}`))
+    },
+    participantsWithoutLargeGroupPreference() {
+      const preferLargeGroup = this.currentValue.preferLargeGroup.split(',')
+      return this.participants.filter(participant => !preferLargeGroup.includes(`${participant.id}`))
+    },
   },
 }
 </script>

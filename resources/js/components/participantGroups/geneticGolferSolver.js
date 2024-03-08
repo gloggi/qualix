@@ -83,7 +83,7 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
     }
   }
 
-  function createWeights({ groups, ofSize, forbiddenPairings: forbiddenPairs, discouragedPairings: discouragedGroups, encouragedPairings: encouragedPairs }) {
+  function createWeights({ groups, ofSize, forbiddenPairings: forbiddenPairs, discouragedPairings: discouragedGroups, encouragedPairings: encouragedPairs, preferLargeGroup, preferSmallGroup }) {
     const totalSize = groups * ofSize
     const weights = range(totalSize).map(() => range(totalSize).fill(0))
 
@@ -116,6 +116,24 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
         weights[a][b] = weights[b][a] = -1
       })
     })
+
+    // Preference for a bigger group means pairing with an empty slot is a disadvantage
+    preferLargeGroup.forEach(participant => {
+      for (let emptySlot = numParticipants; emptySlot < totalSize; emptySlot++) {
+        weights[participant][emptySlot] = weights[emptySlot][participant] = 1
+      }
+    })
+
+    // Preference for a smaller group means pairing with an empty slot is an advantage
+    preferSmallGroup.forEach(participant => {
+      for (let emptySlot = numParticipants; emptySlot < totalSize; emptySlot++) {
+        weights[participant][emptySlot] = weights[emptySlot][participant] = -1
+      }
+    })
+
+    // Normalize so we only have zero or positive weights. The calculation of permutation potential works better this way
+    const minWeight = Math.min(0, ...weights.flatMap(w => w))
+    forEachPair(range(0, totalSize), (i, j) => weights[i][j] = weights[j][i] = weights[i][j] - minWeight)
 
     return weights
   }
