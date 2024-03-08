@@ -400,6 +400,8 @@ return array(
 					"name" => "Bezeichnung",
 					"of_size" => "Gruppen mit je :size TN",
 					"of_size_between" => "Gruppen mit je :min-:max TN",
+					"prefer_large_group" => ":sizeer-Gruppe bevorzugen",
+					"prefer_small_group" => ":sizeer-Gruppe bevorzugen",
 				),
 				"validation_errors" => "Die TN-Gruppen konnten nicht gespeichert werden. Bitte korrigiere deine Eingaben und versuche es dann erneut."
 			),

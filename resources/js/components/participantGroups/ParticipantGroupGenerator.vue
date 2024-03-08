@@ -178,6 +178,8 @@ export default {
         forbidMembershipGroups: '0',
         forbiddenPairings: [''],
         encouragedPairings: [''],
+        preferLargeGroup: '',
+        preferSmallGroup: '',
       }
     },
     addGroupSplit() {
@@ -190,6 +192,12 @@ export default {
       return pairings
         .map(group => group.map(participant => this.participantToIndex(participant)).filter(index => index !== -1))
         .filter(group => group.length > 1)
+    },
+    prepareSizePreference(participants, split) {
+      if (Math.ceil(this.selectedParticipants.length / split.groups) === Math.floor(this.selectedParticipants.length / split.groups)) {
+        return []
+      }
+      return participants.map(participant => this.participantToIndex(participant)).filter(index => index !== -1)
     },
     generate() {
       this.progress = 0
@@ -216,7 +224,9 @@ export default {
           ]),
           encouragedPairings: this.preparePairings([
             ...split.encouragedPairings.map(pairing => pairing.split(',')),
-          ])
+          ]),
+          preferLargeGroup: this.prepareSizePreference(split.preferLargeGroup.split(','), split),
+          preferSmallGroup: this.prepareSizePreference(split.preferSmallGroup.split(','), split),
         })),
       })
     },
