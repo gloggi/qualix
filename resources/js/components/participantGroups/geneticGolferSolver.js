@@ -27,7 +27,7 @@ function geneticGolferSolver(numParticipants, roundSpecifications, onProgress) {
   function potentialFor(group, weights) {
     return -group.map(member => {
       return weights[member]
-        .filter(index => !group.includes(index))
+        .filter((_, index) => !group.includes(index))
         .reduce((sum, weight) => sum + Math.sign(weight) * Math.pow(weight, 2), 0)
     }).reduce((sum, memberSum) => sum + memberSum, 0)
   }
