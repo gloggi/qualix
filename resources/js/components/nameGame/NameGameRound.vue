@@ -73,11 +73,15 @@ export default {
   },
   mounted () {
     this.start()
-    this.updateTimer()
+    this.updateTimer(performance.now())
   },
   methods: {
-    updateTimer() {
-      const elapsedSeconds = Math.round(((new Date()) - this.startTime) / 100) / 10
+    updateTimer(time) {
+      const elapsedSeconds = Math.round((time - this.startTime) / 100) / 10
+      if (elapsedSeconds < 0.1 && !this.finished) {
+        requestAnimationFrame(this.updateTimer)
+        return
+      }
       this.elapsedTime = new Intl.DurationFormat('de-CH', { style: 'digital' }).format({
         milliseconds: Math.floor((elapsedSeconds * 1000) % 1000),
         seconds: Math.floor(elapsedSeconds) % 60,
@@ -95,7 +99,7 @@ export default {
     start() {
       this.shuffledParticipants = shuffle(this.participants.map(cloneDeep))
       this.step = 0
-      this.startTime = new Date()
+      this.startTime = performance.now()
       this.elapsedTime = ''
       this.score = 0
     },
