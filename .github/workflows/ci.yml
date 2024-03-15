@@ -47,7 +47,7 @@ jobs:
 
       - run: docker-compose run e2e run
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: cypress-output
@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: peter-evans/repository-dispatch@v1
+      - uses: peter-evans/repository-dispatch@v3
         env:
           REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
         if: env.REPO_ACCESS_TOKEN != null
