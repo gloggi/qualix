@@ -1,5 +1,8 @@
 # Changelog
 
+##### April 2024
+- Bugfix: Die allererste Änderung nach dem Öffnen des Rückmeldungs-Editors wird jetzt wieder automatisch gespeichert [#320](https://github.com/gloggi/qualix/issues/320)
+
 ##### März 2024
 - Nachdem man via Blöcke-Ansicht eine Beobachtung hinzugefügt hat, bleibt man nun auf dem Beobachtungs-Formular, um noch weitere Beobachtungen erfassen zu können. Das vorherige Verhalten war noch aus der Zeit als der Spick und die Blöcke-Ansicht noch separat waren, und war für Beobachtungsaufträge mit genau einer Beobachtung pro Auftrag optimiert. Das neue Verhalten ist hoffentlich hilfreicher, um mehrere kleine Beobachtungen zu erfassen [#334](https://github.com/gloggi/qualix/pull/334)
 - Im TN-Gruppen-Generator kann man nun angeben, wenn einzelne TN besser in eine grössere oder eine kleinere Gruppe eingeteilt werden sollen. Dies kann zum Beispiel nützlich sein, wenn TN nicht die ganze Zeit über im Kurs anwesend sein können [#335](https://github.com/gloggi/qualix/pull/335)
