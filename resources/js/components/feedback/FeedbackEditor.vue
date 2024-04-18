@@ -80,6 +80,14 @@ export default {
       },
       onCreate: ({ editor }) => {
         let creating = true
+        // Ensure editor is fully loaded before setting creating to false
+        editor.on('transaction', () => {
+          if (creating) {
+            this.$nextTick(() => {
+              creating = false;
+            });
+          }
+        });
         editor.on('update', ({editor, transaction}) => {
           this.currentValue = editor.getJSON()
           this.$emit('input', this.currentValue)
@@ -87,7 +95,6 @@ export default {
           if (!this.isRemoteChange(transaction) && !creating) {
             this.$emit('localinput', this.currentValue)
           }
-          creating = false
         })
       }
     })
