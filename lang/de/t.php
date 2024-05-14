@@ -28,7 +28,7 @@ return array(
 			"selected_date" => "Ausgewähltes Datum",
 			"today" => "Heute",
 		),
-		"date_format" => "%A %d.%m.%Y",
+		"date_format" => "dddd D.M.YYYY",
 		"delete" => "Löschen",
 		"edit" => "Bearbeiten",
 		"editor" => array(

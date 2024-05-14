@@ -12,7 +12,7 @@ return array(
 		"add" => "Ajouter",
 		"add_observation" => "Saisir une observation",
 		"close" => "Fermer",
-		"date_format" => "%A %d.%m.%Y",
+		"date_format" => "dddd D.M.YYYY",
 		"delete" => "Supprimer",
 		"edit" => "Modifier",
 		"negative" => "Négatif",
