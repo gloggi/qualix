@@ -415,7 +415,7 @@ return array(
 				"error_requirements_dont_match" => "Die Anforderungen in der Vorlage stimmten nicht mit den relevanten Anforderungen überein. Wir haben das automatisch korrigiert. Kontrolliere ob jetzt alles stimmt und speichere erneut.",
 				"existing" => "Rückmeldungen :courseName",
 				"trainer_assignment" => "Zuordnung der TN zu den Equipenmitgliedern",
-				"menu_name" => "Rückmeldungen (ehem. Qualis)",
+				"menu_name" => "Rückmeldungen",
 				"new" => "Neue Rückmeldung",
 				"no_feedbacks" => "Bisher sind keine Rückmeldungen erfasst.",
 				"page_title" => "Rückmeldungen verwalten",
