@@ -254,17 +254,10 @@ return array(
 			),
 			"title_with_requirements" => "Que puis-je observer aujourd'hui?",
 		),
-		"error_form" => array(
+		"error_page" => array(
 			"back" => "Retour à ce que j'étais il y a une minute...",
-			"back_without_sending_report" => "Retour sans envoyer de description",
-			"error_report_has_been_submitted" => "Ta description a été saisie. Merci beaucoup.",
-			"it_looks_like_we_are_having_issues" => "Il semble que nous ayons un problème.",
-			"our_team_has_been_notified" => "L'équipe Qualix a déjà été informée. Si tu veux nous aider, dis-nous ci-dessous ce qui s'est passé.",
+			"page_title" => "Erreur technique",
 			"please_try_again_later" => "Essaye à nouveau plus tard.",
-			"send_description" => "Envoyer la description",
-			"thank_you" => "Merci",
-			"what_happened" => "Que s'est-il passé?",
-			"what_happened_example" => "J'ai cliqué sur le \"X\" et ensuite sur \"Confirmer\".",
 		),
 		"invitation" => array(
 			"accept_invitation" => "Oui, accepter l'invitation",

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin\Participant;
 
-use App\Exceptions\Handler;
 use App\Exceptions\MiDataParticipantsListsParsingException;
 use App\Exceptions\UnsupportedFormatException;
 use App\Services\Import\SpreadsheetReaderFactory;
@@ -11,6 +10,8 @@ use Illuminate\Validation\ValidationException;
 use Mockery;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use Sentry\SentrySdk;
+use Sentry\State\Hub;
 use Tests\ReadsSpreadsheets;
 use Tests\TestCaseWithCourse;
 
@@ -279,9 +280,11 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $this->payload = ['file' => $uploadedFile, 'source' => 'MiDataParticipantList'];
 
         $this->instance(SpreadsheetReaderFactory::class, $factoryMock);
-        $this->mock(Handler::class, function ($mock) {
-            $mock->shouldReceive('report')->once();
-        });
+
+        // Spy on Sentry to check the exception is reported
+        $sentryHubMock = $this->createMock(Hub::class);
+        $sentryHubMock->expects(self::once())->method('captureException')->willReturn(null);
+        SentrySdk::setCurrentHub($sentryHubMock);
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/participants/import', $this->payload);

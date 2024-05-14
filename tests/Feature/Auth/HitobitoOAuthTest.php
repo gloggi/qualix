@@ -251,6 +251,20 @@ class HitobitoOAuthTest extends TestCase {
         $response->followRedirects()->assertSee('Dieses Login ist uns nicht bekannt. Meldest du dich vielleicht normalerweise mit MiData an?');
     }
 
+    public function test_nativeLogin_shouldFail_whenEmailBelongsToHitobitoUser_andTinkeringWithSubmittedPassword() {
+        // given
+        $email = 'cosinus@hitobito.com';
+        HitobitoUser::factory()->create(['name' => 'Cosinus', 'email' => $email]);
+        $this->get('/login');
+
+        // when
+        $response = $this->post('/login', ['email' => $email, 'password' => null]);
+
+        // then
+        $response->assertRedirect('/login');
+        $response->followRedirects()->assertSee('Passwort muss ausgefüllt sein.');
+    }
+
     public function test_passwordReset_shouldFail_whenEmailBelongsToHitobitoUser() {
         // given
         $email = 'cosinus@hitobito.com';

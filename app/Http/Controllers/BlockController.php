@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ECamp2BlockOverviewParsingException;
-use App\Exceptions\Handler;
 use App\Exceptions\UnsupportedFormatException;
 use App\Http\Requests\BlockGenerateRequest;
 use App\Http\Requests\BlockImportRequest;
@@ -88,7 +87,7 @@ class BlockController extends Controller {
         } catch (UnsupportedFormatException $e) {
             throw ValidationException::withMessages(['file' => trans('t.views.admin.block_import.error_unsupported_format')]);
         } catch (Exception $e) {
-            app(Handler::class)->report($e);
+            report($e);
             return Redirect::back()->with('alert-danger', trans('t.views.admin.block_import.unknown_error'));
         }
 

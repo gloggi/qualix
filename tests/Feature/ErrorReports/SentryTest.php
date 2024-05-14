@@ -4,22 +4,18 @@ namespace Tests\Feature\ErrorReports;
 
 use App\Http\Requests\UserRequest;
 use Illuminate\Validation\ValidationException;
-use Mockery;
-use Sentry\EventId;
 use Sentry\SentrySdk;
+use Sentry\State\Hub;
 use Tests\TestCase;
 
 class SentryTest extends TestCase {
 
-    public function test_shouldReportErrorToSentry_andDisplayErrorForm_when500ErrorOccurs() {
+    public function test_shouldReportErrorToSentry_when500ErrorOccurs() {
         // given
-        $sentryMock = Mockery::mock(app('sentry'));
-        // Stupid fix because mockery ->passthru() doesn't work here for some reason
-        $sentryMock->shouldReceive('captureException')->once()->andReturnUsing(function(...$args) use($sentryMock) {
-            SentrySdk::getCurrentHub()->captureException(...$args);
-            $sentryMock->shouldReceive('getLastEventId')->andReturn(new EventId('12341234123412341234123412341234'));
-        });
-        $this->instance('sentry', $sentryMock);
+        // Spy on Sentry to check the exception is reported
+        $sentryHubMock = $this->createMock(Hub::class);
+        $sentryHubMock->expects(self::once())->method('captureException')->willReturn(null);
+        SentrySdk::setCurrentHub($sentryHubMock);
 
         // Force an exception
         $requestMock = $this->createPartialMock(UserRequest::class, [ 'validated', 'file' ]);
@@ -32,14 +28,15 @@ class SentryTest extends TestCase {
 
         // then
         $response->assertStatus(500);
-        $response->assertSeeText('Es sieht so aus als hätten wir ein Problem.');
+        $response->assertSeeText('Bitte versuche es später nochmals.');
     }
 
     public function test_shouldNotReportErrorToSentry_orDisplayErrorForm_whenValidationErrorOccurs() {
         // given
-        $sentryMock = Mockery::mock(app('sentry'));
-        $sentryMock->shouldNotReceive('captureException');
-        $this->instance('sentry', $sentryMock);
+        // Spy on Sentry to check the exception isn't reported
+        $sentryHubMock = $this->createMock(Hub::class);
+        $sentryHubMock->expects(self::never())->method('captureException');
+        SentrySdk::setCurrentHub($sentryHubMock);
 
         // Force an exception
         $requestMock = $this->createPartialMock(UserRequest::class, [ 'validated', 'file' ]);
@@ -57,9 +54,10 @@ class SentryTest extends TestCase {
 
     public function test_shouldNotReportErrorToSentry_orDisplayErrorForm_whenNoErrorOccurs() {
         // given
-        $sentryMock = Mockery::mock(app('sentry'));
-        $sentryMock->shouldNotReceive('captureException');
-        $this->instance('sentry', $sentryMock);
+        // Spy on Sentry to check the exception isn't reported
+        $sentryHubMock = $this->createMock(Hub::class);
+        $sentryHubMock->expects(self::never())->method('captureException');
+        SentrySdk::setCurrentHub($sentryHubMock);
 
         // when
         $response = $this->get('/');
