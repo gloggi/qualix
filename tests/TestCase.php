@@ -18,7 +18,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\DomCrawler\Crawler;
 
 abstract class TestCase extends BaseTestCase {
-    use CreatesApplication;
     use DatabaseTransactions;
 
     /** @var Crawler $crawler */

@@ -130,7 +130,6 @@ COLLABORATION_ENABLED=true
 COLLABORATION_SIGNALING_SERVERS="wss://signaling.yjs.dev wss://y-webrtc-signaling-eu.herokuapp.com wss://y-webrtc-signaling-us.herokuapp.com"
 
 SENTRY_LARAVEL_DSN=<snip>
-SENTRY_USER_FEEDBACK_URL=<snip>
 SENTRY_CSP_REPORT_URI=<snip>
 MIX_SENTRY_VUE_DSN=<snip>
 ```

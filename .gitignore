@@ -3,6 +3,7 @@
 /vendor
 .env
 .ready
+.phpactor.json
 .phpunit.result.cache
 .phpunit.cache
 Homestead.json

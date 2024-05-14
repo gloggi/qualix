@@ -10,9 +10,9 @@ return [
     | Default Log Channel
     |--------------------------------------------------------------------------
     |
-    | This option defines the default log channel that gets used when writing
-    | messages to the logs. The name specified in this option should match
-    | one of the channels defined in the "channels" configuration array.
+    | This option defines the default log channel that is utilized to write
+    | messages to your logs. The value provided here should match one of
+    | the channels present in the list of "channels" configured below.
     |
     */
 
@@ -30,7 +30,7 @@ return [
     */
     'deprecations' => [
         'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
-        'trace' => false,
+        'trace' => env('LOG_DEPRECATIONS_TRACE', false),
     ],
 
     /*
@@ -38,20 +38,20 @@ return [
     | Log Channels
     |--------------------------------------------------------------------------
     |
-    | Here you may configure the log channels for your application. Out of
-    | the box, Laravel uses the Monolog PHP logging library. This gives
-    | you a variety of powerful log handlers / formatters to utilize.
+    | Here you may configure the log channels for your application. Laravel
+    | utilizes the Monolog PHP logging library, which includes a variety
+    | of powerful log handlers and formatters that you're free to use.
     |
     | Available Drivers: "single", "daily", "slack", "syslog",
-    |                    "errorlog", "monolog",
-    |                    "custom", "stack"
+    |                    "errorlog", "monolog", "custom", "stack"
     |
     */
 
     'channels' => [
+
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily'],
+            'channels' => explode(',', env('LOG_STACK', 'daily')),
             'ignore_exceptions' => false,
         ],
 
@@ -65,7 +65,7 @@ return [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 14,
+            'days' => env('LOG_DAILY_DAYS', 14),
         ],
 
         'stderr' => [
@@ -80,6 +80,7 @@ return [
         'syslog' => [
             'driver' => 'syslog',
             'level' => env('LOG_LEVEL', 'debug'),
+            'facility' => env('LOG_SYSLOG_FACILITY', LOG_USER),
         ],
 
         'errorlog' => [
@@ -95,6 +96,7 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
     ],
 
 ];
