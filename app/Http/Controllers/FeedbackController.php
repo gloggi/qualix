@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\RequirementsMismatchException;
+use App\Http\Requests\FeedbackAllocationRequest;
 use App\Http\Requests\FeedbackCreateRequest;
+use App\Http\Requests\FeedbackTrainerAssignmentUpdateRequest;
 use App\Http\Requests\FeedbackUpdateRequest;
 use App\Models\Course;
 use App\Models\Feedback;
 use App\Models\FeedbackData;
+use App\Services\FeedbackAllocation\FeedbackAllocator;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -121,6 +124,26 @@ class FeedbackController extends Controller {
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param FeedbackTrainerAssignmentUpdateRequest $request
+     * @param Course $course
+     * @param FeedbackData $feedbackData
+     * @return RedirectResponse
+     */
+    public function updateTrainerAssignments(FeedbackTrainerAssignmentUpdateRequest $request, Course $course, FeedbackData $feedbackData)
+    {
+        $data = $request->validated();
+        return DB::transaction(function () use ($request, $course, $feedbackData, $data) {
+
+            $this->setTrainerAssignments($feedbackData->feedbacks(), $data);
+
+            $request->session()->flash('alert-success', __('t.views.admin.feedbacks.edit_success', ['name' => $feedbackData->name]));
+            return Redirect::route('admin.feedbacks', ['course' => $course->id]);
+        });
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param Request $request
@@ -128,7 +151,8 @@ class FeedbackController extends Controller {
      * @param FeedbackData $feedbackData
      * @return RedirectResponse
      */
-    public function destroy(Request $request, Course $course, FeedbackData $feedbackData) {
+    public function destroy(Request $request, Course $course, FeedbackData $feedbackData)
+    {
         $feedbackData->delete();
         $request->session()->flash('alert-success', __('t.views.admin.feedbacks.delete_success', ['name' => $feedbackData->name]));
         return Redirect::route('admin.feedbacks', ['course' => $course->id]);
@@ -138,12 +162,56 @@ class FeedbackController extends Controller {
      * @param Collection|HasMany $feedbacks
      * @param array $data
      */
-    protected function setTrainerAssignments($feedbacks, $data) {
-        $feedbacks->each(function(Feedback $feedback) use($data) {
-            $key = 'feedbacks.'.$feedback->participant->id.'.users';
+    protected function setTrainerAssignments($feedbacks, $data)
+    {
+        $feedbacks->each(function (Feedback $feedback) use ($data) {
+            $key = 'feedbacks.' . $feedback->participant->id . '.users';
             $user_ids = array_filter(explode(',', Arr::get($data, $key, '')));
             $feedback->users()->detach();
             $feedback->users()->attach($user_ids);
         });
+    }
+
+    /**
+     * Show the form for feedback preferences.
+     *
+     * @param Request $request
+     * @param Course $course
+     * @param FeedbackData $feedback_data
+     * @return Response
+     */
+    public function preference(Request $request, Course $course, FeedbackData $feedback_data)
+    {
+        return view('admin.feedbacks.allocation.generate', ['feedback_data' => $feedback_data, 'course' => $course]);
+    }
+
+    /**
+     * Try to allocate feedbacks based on preferences.
+     *
+     * @param FeedbackAllocationRequest $request
+     * @return Response
+     */
+    public function allocate(FeedbackAllocationRequest $request, FeedbackAllocator $allocator): Response
+    {
+        $trainerCapacities = $request->input('trainerCapacities');
+        $participantPreferences = $request->input('participantPreferences');
+        $numberOfWishes = $request->input('numberOfWishes');
+        $forbiddenWishes = $request->input('forbiddenWishes');
+        $defaultPriority = $request->input('defaultPriority', 100); // Fallback Default
+
+        $result = $allocator->tryToAllocateFeedbacks(
+            $trainerCapacities,
+            $participantPreferences,
+            $numberOfWishes,
+            $forbiddenWishes,
+            $defaultPriority
+        );
+
+        return response($result);
+        // Alternativ schöner als JSON:
+        // return response()->json([
+        //     'status' => 'success',
+        //     'data' => $result
+        // ]);
     }
 }

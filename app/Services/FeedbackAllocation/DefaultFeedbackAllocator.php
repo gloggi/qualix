@@ -7,6 +7,7 @@ use Graphp\Algorithms\MinimumCostFlow\SuccessiveShortestPath;
 use Graphp\Graph\Exception\UnderflowException;
 use Graphp\Graph\Graph;
 use Graphp\Graph\Vertex;
+use Illuminate\Support\Facades\Log;
 
 class DefaultFeedbackAllocator implements FeedbackAllocator
 {
@@ -14,7 +15,8 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
     private EdgeAdder $edgeAdder;
     private Vertex $source;
     private Vertex $sink;
-    private array $nameToVertexId;
+    private array $trainerNameToVertexId;
+    private array $particpantNameToVertexId;
     private array $vertexIdToName;
     private int $participantCount;
 
@@ -24,7 +26,8 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
         $this->edgeAdder = new EdgeAdder($this->graph);
         $this->source = $this->graph->createVertex(0);
         $this->sink = $this->graph->createVertex(1);
-        $this->nameToVertexId = [];
+        $this->trainerNameToVertexId = [];
+        $this->particpantNameToVertexId = [];
         $this->vertexIdToName = [];
     }
 
@@ -52,7 +55,7 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
             $trainerVertexId = $participantCount + $index + 2;
             $trainerVertex = $this->graph->createVertex($trainerVertexId);
 
-            $this->nameToVertexId[$name] = $trainerVertexId;
+            $this->trainerNameToVertexId[$name] = $trainerVertexId;
             $this->vertexIdToName[$trainerVertexId] = $name;
 
             $this->edgeAdder->addEdge($trainerVertex, $this->sink, $capacity, 0);
@@ -64,15 +67,16 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
             $participantVertexId = $index + 2;
             $participantVertex = $this->graph->createVertex($participantVertexId);
 
-            $this->nameToVertexId[$participantName] = $participantVertexId;
+            Log::info('Participant ' . $participantName . ' has index:' . $participantVertexId);
+            $this->particpantNameToVertexId[$participantName] = $participantVertexId;
             $this->vertexIdToName[$participantVertexId] = $participantName;
 
             $this->edgeAdder->addEdge($this->source, $participantVertex, 1, 0);
 
             for ($priority = 1; $priority <= $numberOfWishes && $priority < count($participantPreference); $priority++) {
                 $preferredTrainerName = $participantPreference[$priority];
-                if ($preferredTrainerName !== 'x' && isset($this->nameToVertexId[$preferredTrainerName])) {
-                    $trainerIndex = $this->nameToVertexId[$preferredTrainerName] - 2 - $participantCount;
+                if ($preferredTrainerName !== 'x' && isset($this->trainerNameToVertexId[$preferredTrainerName])) {
+                    $trainerIndex = $this->trainerNameToVertexId[$preferredTrainerName] - 2 - $participantCount;
                     $preferenceMatrix[$index][$trainerIndex] = min($priority, $preferenceMatrix[$index][$trainerIndex]);
                 }
             }
@@ -81,8 +85,11 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
         // Handle forbidden wishes
         foreach ($forbiddenWishes as $forbiddenWish) {
             [$participantName, $trainerName] = $forbiddenWish;
-            $participantIndex = $this->nameToVertexId[$participantName] - 2;
-            $trainerIndex = $this->nameToVertexId[$trainerName] - 2 - $participantCount;
+            Log::info($forbiddenWish);
+            $participantIndex = $this->particpantNameToVertexId[$participantName] - 2;
+            $trainerIndex = $this->trainerNameToVertexId[$trainerName] - 2 - $participantCount;
+            Log::info($participantName . ' has index:' . $participantIndex);
+            Log::info($trainerName . ' has index:' . $trainerIndex);
             $preferenceMatrix[$participantIndex][$trainerIndex] = PHP_INT_MAX;
         }
 
@@ -141,8 +148,8 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
 
         foreach ($trainerParticipants as $trainerName => $participants) {
             $assignments[] = [
-                'trainerName' => $trainerName,
-                'participantsNames' => $participants
+                'trainerIdent' => $trainerName,
+                'participantIdents' => $participants
             ];
         }
         return $assignments;

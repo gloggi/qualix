@@ -141,6 +141,10 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->scopeBindings()->gro
         Route::post('/course/{course}/admin/feedbacks', [FeedbackController::class, 'store'])->name('admin.feedbacks.store');
         Route::get('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'edit'])->name('admin.feedbacks.edit');
         Route::post('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'update'])->name('admin.feedbacks.update');
+        Route::post('/course/{course}/admin/feedbacks/{feedback_data}/assignments/update', [FeedbackController::class, 'updateTrainerAssignments'])->name('admin.feedbacks.assignments.update');
+        Route::get('/course/{course}/admin/feedbacks/{feedback_data}/allocate', [FeedbackController::class, 'preference'])->name('admin.feedbacks.preferences');
+        Route::post('/course/{course}/admin/feedbacks/{feedback_data}/allocate', [FeedbackController::class, 'allocate'])->name('admin.feedbacks.allocate');
+
     });
     Route::delete('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'destroy'])->name('admin.feedbacks.delete');
 

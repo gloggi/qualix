@@ -31,12 +31,12 @@ class FeedbackAllocatorTest extends TestCase
 
         $expected = [
             [
-                'trainerName' => 'Alice',
-                'participantsNames' => ['John']
+                'trainerIdent' => 'Alice',
+                'participantIdents' => ['John']
             ],
             [
-                'trainerName' => 'Bob',
-                'participantsNames' => ['Jane']
+                'trainerIdent' => 'Bob',
+                'participantIdents' => ['Jane']
             ]
         ];
 
@@ -86,12 +86,12 @@ class FeedbackAllocatorTest extends TestCase
 
         $expected = [
             [
-                'trainerName' => 'Alice',
-                'participantsNames' => ['John']
+                'trainerIdent' => 'Alice',
+                'participantIdents' => ['John']
             ],
             [
-                'trainerName' => 'Bob',
-                'participantsNames' => ['Jane']
+                'trainerIdent' => 'Bob',
+                'participantIdents' => ['Jane']
             ]
         ];
 
@@ -247,13 +247,13 @@ class FeedbackAllocatorTest extends TestCase
 
         //then
         $expected = [
-            ['trainerName' => 'Bubblegum', 'participantsNames' => ['Red', 'Heisenberg', 'Goose', 'Belch']],
-            ['trainerName' => 'Gingersnap', 'participantsNames' => ['Twiggy', 'Pearl', 'Vale']],
-            ['trainerName' => 'Champ', 'participantsNames' => ['Sams', 'Guy', 'Dawg', 'Chance']],
-            ['trainerName' => 'Ash', 'participantsNames' => ['Chickie', 'Kirby', 'Doc']],
-            ['trainerName' => 'Pecan', 'participantsNames' => ['Duckling', 'Turkey', 'Chamuya']],
-            ['trainerName' => 'Bello', 'participantsNames' => ['Gumdrop', 'Frankfurter', 'Taco']],
-            ['trainerName' => 'Skunk', 'participantsNames' => ['Scratchy', 'Pixel', 'Toodler']]
+            ['trainerIdent' => 'Bubblegum', 'participantIdents' => ['Red', 'Heisenberg', 'Goose', 'Belch']],
+            ['trainerIdent' => 'Gingersnap', 'participantIdents' => ['Twiggy', 'Pearl', 'Vale']],
+            ['trainerIdent' => 'Champ', 'participantIdents' => ['Sams', 'Guy', 'Dawg', 'Chance']],
+            ['trainerIdent' => 'Ash', 'participantIdents' => ['Chickie', 'Kirby', 'Doc']],
+            ['trainerIdent' => 'Pecan', 'participantIdents' => ['Duckling', 'Turkey', 'Chamuya']],
+            ['trainerIdent' => 'Bello', 'participantIdents' => ['Gumdrop', 'Frankfurter', 'Taco']],
+            ['trainerIdent' => 'Skunk', 'participantIdents' => ['Scratchy', 'Pixel', 'Toodler']]
         ];
         sort($expected);
         sort($result);
@@ -300,16 +300,16 @@ class FeedbackAllocatorTest extends TestCase
                 $defaultPriority, // Default Priority
                 [
                     [
-                        'trainerName' => 'Salz',
-                        'participantsNames' => ['Coke']
+                        'trainerIdent' => 'Salz',
+                        'participantIdents' => ['Coke']
                     ],
                     [
-                        'trainerName' => 'Paprika',
-                        'participantsNames' => ['Honig']
+                        'trainerIdent' => 'Paprika',
+                        'participantIdents' => ['Honig']
                     ],
                     [
-                        'trainerName' => 'Chips',
-                        'participantsNames' => ['Nutella']
+                        'trainerIdent' => 'Chips',
+                        'participantIdents' => ['Nutella']
                     ]
                 ] // Expected Result
             ],
@@ -328,16 +328,16 @@ class FeedbackAllocatorTest extends TestCase
                 $defaultPriority,
                 [
                     [
-                        'trainerName' => 'Salz',
-                        'participantsNames' => ['Honig', 'Coke', 'Schoggi']
+                        'trainerIdent' => 'Salz',
+                        'participantIdents' => ['Honig', 'Coke', 'Schoggi']
                     ],
                     [
-                        'trainerName' => 'Paprika',
-                        'participantsNames' => ['Nutella', 'Haribo']
+                        'trainerIdent' => 'Paprika',
+                        'participantIdents' => ['Nutella', 'Haribo']
                     ] /*,
                     [
-                        'trainerName' => 'Chips',
-                        'participantsNames' => []
+                        'trainerIdent' => 'Chips',
+                        'participantIdents' => []
                     ] */
                 ]
 
@@ -355,20 +355,20 @@ class FeedbackAllocatorTest extends TestCase
                 $defaultPriority,
                 [
                     [
-                        'trainerName' => 'Chips',
-                        'participantsNames' => ['Haribo']
+                        'trainerIdent' => 'Chips',
+                        'participantIdents' => ['Haribo']
                     ],
                     [
-                        'trainerName' => 'Salz',
-                        'participantsNames' => ['Coke']
+                        'trainerIdent' => 'Salz',
+                        'participantIdents' => ['Coke']
                     ],
                     [
-                        'trainerName' => 'Paprika',
-                        'participantsNames' => ['Fanta']
+                        'trainerIdent' => 'Paprika',
+                        'participantIdents' => ['Fanta']
                     ],
                     [
-                        'trainerName' => 'Käse',
-                        'participantsNames' => ['Schoggi']
+                        'trainerIdent' => 'Käse',
+                        'participantIdents' => ['Schoggi']
                     ]
                 ]
 
@@ -386,20 +386,20 @@ class FeedbackAllocatorTest extends TestCase
                 $defaultPriority,
                 [
                     [
-                        'trainerName' => 'Chips',
-                        'participantsNames' => ['Rivella']
+                        'trainerIdent' => 'Chips',
+                        'participantIdents' => ['Rivella']
                     ],
                     [
-                        'trainerName' => 'Salz',
-                        'participantsNames' => ['Honig']
+                        'trainerIdent' => 'Salz',
+                        'participantIdents' => ['Honig']
                     ],
                     [
-                        'trainerName' => 'Paprika',
-                        'participantsNames' => ['Haribo']
+                        'trainerIdent' => 'Paprika',
+                        'participantIdents' => ['Haribo']
                     ],
                     [
-                        'trainerName' => 'Käse',
-                        'participantsNames' => ['Schoggi']
+                        'trainerIdent' => 'Käse',
+                        'participantIdents' => ['Schoggi']
                     ]
                 ]
 
@@ -421,20 +421,20 @@ class FeedbackAllocatorTest extends TestCase
                 $defaultPriority,
                 [
                     [
-                        'trainerName' => 'Chips',
-                        'participantsNames' => ['Honig', 'Glace', 'Fanta']
+                        'trainerIdent' => 'Chips',
+                        'participantIdents' => ['Honig', 'Glace', 'Fanta']
                     ],
                     [
-                        'trainerName' => 'Salz',
-                        'participantsNames' => ['Rivella', 'Coke', 'Haribo']
+                        'trainerIdent' => 'Salz',
+                        'participantIdents' => ['Rivella', 'Coke', 'Haribo']
                     ],
                     [
-                        'trainerName' => 'Paprika',
-                        'participantsNames' => ['Nutella']
+                        'trainerIdent' => 'Paprika',
+                        'participantIdents' => ['Nutella']
                     ],
                     [
-                        'trainerName' => 'Käse',
-                        'participantsNames' => ['Schoggi']
+                        'trainerIdent' => 'Käse',
+                        'participantIdents' => ['Schoggi']
                     ]
                 ]
             ],
@@ -466,24 +466,24 @@ class FeedbackAllocatorTest extends TestCase
                 $defaultPriority,
                 [
                     [
-                        'trainerName' => 'Chips',
-                        'participantsNames' => ['Schoggi', 'Zucker', 'Rivella']
+                        'trainerIdent' => 'Chips',
+                        'participantIdents' => ['Schoggi', 'Zucker', 'Rivella']
                     ],
                     [
-                        'trainerName' => 'Salz',
-                        'participantsNames' => ['Coke', 'Ovi']
+                        'trainerIdent' => 'Salz',
+                        'participantIdents' => ['Coke', 'Ovi']
                     ],
                     [
-                        'trainerName' => 'Paprika',
-                        'participantsNames' => ['Haribo', 'Sugus']
+                        'trainerIdent' => 'Paprika',
+                        'participantIdents' => ['Haribo', 'Sugus']
                     ],
                     [
-                        'trainerName' => 'Käse',
-                        'participantsNames' => ['Ricola', 'Sweet']
+                        'trainerIdent' => 'Käse',
+                        'participantIdents' => ['Ricola', 'Sweet']
                     ],
                     [
-                        'trainerName' => 'Salzstange',
-                        'participantsNames' => ['Fanta', 'Gummibär']
+                        'trainerIdent' => 'Salzstange',
+                        'participantIdents' => ['Fanta', 'Gummibär']
                     ]
                 ]
             ],
@@ -511,16 +511,16 @@ class FeedbackAllocatorTest extends TestCase
                 $defaultPriority, // Default Priority
                 [
                     [
-                        'trainerName' => 'Chips',
-                        'participantsNames' => ['Haribo', 'Fanta', 'Coke', 'Sugus']
+                        'trainerIdent' => 'Chips',
+                        'participantIdents' => ['Haribo', 'Fanta', 'Coke', 'Sugus']
                     ],
                     [
-                        'trainerName' => 'Salz',
-                        'participantsNames' => ['Gummibär', 'Zucker', 'Ricola']
+                        'trainerIdent' => 'Salz',
+                        'participantIdents' => ['Gummibär', 'Zucker', 'Ricola']
                     ],
                     [
-                        'trainerName' => 'Paprika',
-                        'participantsNames' => ['Schoggi', 'Rivella']
+                        'trainerIdent' => 'Paprika',
+                        'participantIdents' => ['Schoggi', 'Rivella']
                     ],
                 ] // Expected Results
             ],
@@ -575,24 +575,24 @@ class FeedbackAllocatorTest extends TestCase
                 $defaultPriority,
                 [
                     [
-                        'trainerName' => 'Chips',
-                        'participantsNames' => ['Ricola', 'Rivella', 'Sweet']
+                        'trainerIdent' => 'Chips',
+                        'participantIdents' => ['Ricola', 'Rivella', 'Sweet']
                     ],
                     [
-                        'trainerName' => 'Salz',
-                        'participantsNames' => ['Fanta', 'Zucker', 'Honig']
+                        'trainerIdent' => 'Salz',
+                        'participantIdents' => ['Fanta', 'Zucker', 'Honig']
                     ],
                     [
-                        'trainerName' => 'Paprika',
-                        'participantsNames' => ['Haribo', 'Schoggi', 'Gummibär']
+                        'trainerIdent' => 'Paprika',
+                        'participantIdents' => ['Haribo', 'Schoggi', 'Gummibär']
                     ],
                     [
-                        'trainerName' => 'Käse',
-                        'participantsNames' => ['Sugus', 'Ovi']
+                        'trainerIdent' => 'Käse',
+                        'participantIdents' => ['Sugus', 'Ovi']
                     ],
                     [
-                        'trainerName' => 'Salzstange',
-                        'participantsNames' => ['Coke']
+                        'trainerIdent' => 'Salzstange',
+                        'participantIdents' => ['Coke']
                     ]
                 ]
             ],
@@ -624,45 +624,45 @@ class FeedbackAllocatorTest extends TestCase
                 $defaultPriority,
                 [
                     [
-                        'trainerName' => 'Chips',
-                        'participantsNames' => ['Coke']
+                        'trainerIdent' => 'Chips',
+                        'participantIdents' => ['Coke']
                     ],
                     [
-                        'trainerName' => 'Salz',
-                        'participantsNames' => ['Haribo', 'Fanta']
+                        'trainerIdent' => 'Salz',
+                        'participantIdents' => ['Haribo', 'Fanta']
                     ],
                     [
-                        'trainerName' => 'Salzstange',
-                        'participantsNames' => ['Schoggi']
+                        'trainerIdent' => 'Salzstange',
+                        'participantIdents' => ['Schoggi']
                     ],
                     [
-                        'trainerName' => 'Senf',
-                        'participantsNames' => ['Gummibär']
+                        'trainerIdent' => 'Senf',
+                        'participantIdents' => ['Gummibär']
                     ],
                     /*
                     [
-                        'trainerName' => 'Paprika',
-                        'participantsNames' => []
+                        'trainerIdent' => 'Paprika',
+                        'participantIdents' => []
                     ],
                     [
-                        'trainerName' => 'Käse',
-                        'participantsNames' => []
+                        'trainerIdent' => 'Käse',
+                        'participantIdents' => []
                     ],
                     [
-                        'trainerName' => 'Pfeffer',
-                        'participantsNames' => []
+                        'trainerIdent' => 'Pfeffer',
+                        'participantIdents' => []
                     ],
                     [
-                        'trainerName' => 'Zwiback',
-                        'participantsNames' => []
+                        'trainerIdent' => 'Zwiback',
+                        'participantIdents' => []
                     ],
                     [
-                        'trainerName' => 'Chili',
-                        'participantsNames' => []
+                        'trainerIdent' => 'Chili',
+                        'participantIdents' => []
                     ],
                     [
-                        'trainerName' => 'Bouillon',
-                        'participantsNames' => []
+                        'trainerIdent' => 'Bouillon',
+                        'participantIdents' => []
                     ]
                     */
                 ]
@@ -680,8 +680,8 @@ class FeedbackAllocatorTest extends TestCase
         foreach ($result as $trainer) {
             // Checking that no forbidden pairs are in the result
             foreach ($forbiddenWishes as $forbidden) {
-                if ($trainer['trainerName'] === $forbidden[1]) { // Matching trainer name
-                    $this->assertNotContains($forbidden[0], $trainer['participantsNames'],
+                if ($trainer['trainerIdent'] === $forbidden[1]) { // Matching trainer name
+                    $this->assertNotContains($forbidden[0], $trainer['participantIdents'],
                         "Forbidden pair $forbidden[0] and $forbidden[1] found in the results.");
                 }
             }

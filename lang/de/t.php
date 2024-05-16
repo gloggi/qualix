@@ -44,6 +44,7 @@ return array(
 		"no_result" => "Keine Resultate gefunden",
 		"or" => "oder",
 		"page_title" => "Qualix",
+		"people-arrows" => "Zuweisung generieren",
 		"positive" => "Positiv",
 		"print" => "Drucken",
 		"really_delete" => "Wirklich löschen?",
@@ -478,6 +479,7 @@ return array(
 				"edit_success" => "Die Rückmeldung \":name\" wurde erfolgreich gespeichert.",
 				"error_requirements_dont_match" => "Die Anforderungen in der Vorlage stimmten nicht mit den relevanten Anforderungen überein. Wir haben das automatisch korrigiert. Kontrolliere ob jetzt alles stimmt und speichere erneut.",
 				"existing" => "Rückmeldungen :courseName",
+				"generate_allocation" => "Zuteilung generieren",
 				"trainer_assignment" => "Zuordnung der TN zu den Equipenmitgliedern",
 				"menu_name" => "Rückmeldungen",
 				"new" => "Neue Rückmeldung",
@@ -495,6 +497,27 @@ return array(
 					"answer" => "Eine Rückmeldung steht für ein TN-Gespräch, Zwischengespräch das mit allen Teilnehmenden separat gehalten wird, oder für eine Qualifikation die alle Teilnehmenden separat bestehen können. Auf der Detailansicht der ausgewählten TN kannst du später einen Rückmeldungs-Text zusammenstellen um dein Gespräch zu planen oder zu protokollieren. Eine Rückmeldung kann sich auf alle Anforderungen des Kurses oder auch nur auf einen Teil davon beziehen.",
 					"question" => "Was sind Rückmeldungen?",
 				),
+				"allocation" => array(
+					"allocations" => "Generierte Zuteilung",
+					"confirm_allocation" => "Zuteilung speichern",
+					"general_settings" => "Allgemeine Einstellungen",
+					"nogo_header" => "Vermeide Zuteilung",
+					"nogo" => "Vermeide",
+					"number_of_feedbacks_per_trainer" => "Max Rückmeldungen",
+					"number_of_preferences_per_participant" => "Anzahl Wünsche",
+					"participant" => "TN",
+					"participant_preferences" => "TN-Präferenzen",
+					"prio" => "Priorität",
+					"prio_with_index" => "Priorität :index",
+					"trainer" => "Equipenmitglied",
+					"trainer_settings" => "Equipen Präferenzen",
+					"unknown_trainer" => "Equipenmitglied unbekannt (:name)",
+					"unknown_participant" => "TN unbekannt (:name)",
+					"generation_explanation_help" => array(
+						"answer" => "Am besten fragst du die TN und die Equipe nach ihren Präferenzen. Danach kannst du die Gespräche von Hand zuteilen oder die Gespräche von Qualix automatisch zuteilen lassenZuteilung automatisch generieren. Diese Funktion findest du nach dem Speichern auf der Übersichtsliste der Rückmeldungen.",
+						"question" => "Wie gehe ich vor um Gespräche zuzuteilen?",
+					),
+				)
 			),
 			"requirements" => array(
 				"are_requirements_required" => array(

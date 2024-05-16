@@ -45,6 +45,7 @@
                 ]"
                 :actions="{
                     @if(!$course->archived)
+                        'people-arrows': feedbackData => routeUri('admin.feedbacks.preferences', {course: {{ $course->id }}, feedback_data: feedbackData.id}),
                         edit: feedbackData => routeUri('admin.feedbacks.edit', {course: {{ $course->id }}, feedback_data: feedbackData.id}),
                     @endif
                     delete: feedbackData => ({
