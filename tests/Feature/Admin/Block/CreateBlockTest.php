@@ -15,7 +15,7 @@ class CreateBlockTest extends TestCaseWithCourse {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '01.01.2019', 'requirements' => null];
+        $this->payload = ['full_block_number' => '1.1', 'name' => 'Block 1', 'block_date' => '1.1.2019', 'requirements' => null];
     }
 
     public function test_shouldRequireLogin() {

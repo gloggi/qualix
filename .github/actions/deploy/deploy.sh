@@ -52,7 +52,6 @@ sed -ri "s~^COLLABORATION_SIGNALING_SERVERS=.*$~COLLABORATION_SIGNALING_SERVERS=
 
 sed -ri "s~^SENTRY_RELEASE=.*$~SENTRY_RELEASE=$(git rev-parse HEAD)~" .env
 sed -ri "s~^SENTRY_LARAVEL_DSN=.*$~SENTRY_LARAVEL_DSN=$SENTRY_LARAVEL_DSN~" .env
-sed -ri "s~^SENTRY_USER_FEEDBACK_URL=.*$~SENTRY_USER_FEEDBACK_URL=$SENTRY_USER_FEEDBACK_URL~" .env
 sed -ri "s~^SENTRY_CSP_REPORT_URI=.*$~SENTRY_CSP_REPORT_URI=$SENTRY_CSP_REPORT_URI~" .env
 sed -ri "s~^MIX_SENTRY_VUE_DSN=.*$~MIX_SENTRY_VUE_DSN=$SENTRY_VUE_DSN~" .env
 
@@ -71,7 +70,7 @@ ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   set -e
   php -v
   cd $SSH_DIRECTORY
-  php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80100}){echo \"Your PHP version is too old\\nYou might be able to use these instructions on your hosting as well: https://www.cyon.ch/support/a/php-standardversion-fur-die-kommandozeile-festlegen\n\";exit(1);}"
+  php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80200}){echo \"Your PHP version is too old\\nYou might be able to use these instructions on your hosting as well: https://www.cyon.ch/support/a/php-standardversion-fur-die-kommandozeile-festlegen\n\";exit(1);}"
 
   APP_CONTACT_LINK=$APP_CONTACT_LINK php artisan down --render=updating
 EOF

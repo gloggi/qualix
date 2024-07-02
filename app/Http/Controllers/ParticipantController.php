@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Exceptions\Handler;
 use App\Exceptions\MiDataParticipantsListsParsingException;
 use App\Exceptions\UnsupportedFormatException;
 use App\Http\Requests\ParticipantImportRequest;
@@ -88,7 +86,7 @@ class ParticipantController extends Controller
         } catch (UnsupportedFormatException $e) {
             throw ValidationException::withMessages(['file' => trans('t.views.admin.participant_import.error_unsupported_format')]);
         } catch (Exception $e) {
-            app(Handler::class)->report($e);
+            report($e);
             return Redirect::back()->with('alert-danger', trans('t.views.admin.participant_import.unknown_error'));
         }
 

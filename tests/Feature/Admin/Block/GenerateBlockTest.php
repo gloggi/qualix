@@ -15,7 +15,7 @@ class GenerateBlockTest extends TestCaseWithCourse {
     public function setUp(): void {
         parent::setUp();
 
-        $this->payload = ['name' => 'SonstigesBlockGenTest', 'blocks_startdate' => '01.10.2023', 'blocks_enddate' => '07.10.2023', 'requirements' => null];
+        $this->payload = ['name' => 'SonstigesBlockGenTest', 'blocks_startdate' => '1.10.2023', 'blocks_enddate' => '7.10.2023', 'requirements' => null];
     }
 
     public function test_shouldRequireLogin() {

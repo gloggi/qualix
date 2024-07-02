@@ -176,6 +176,5 @@ runs:
         COLLABORATION_ENABLED: ${{ inputs.collaboration-enabled }}
         COLLABORATION_SIGNALING_SERVERS: ${{ inputs.collaboration-signaling-servers }}
         SENTRY_LARAVEL_DSN: ${{ inputs.sentry-laravel-dsn }}
-        SENTRY_USER_FEEDBACK_URL: ${{ inputs.sentry-user-feedback-url }}
         SENTRY_CSP_REPORT_URI: ${{ inputs.sentry-csp-report-uri }}
         SENTRY_VUE_DSN: ${{ inputs.sentry-vue-dsn }}
