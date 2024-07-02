@@ -35,7 +35,7 @@
 
             @php
                 $days = $course->blocks->mapToGroups(function($block) {
-                    return [$block->block_date->formatLocalized(__('t.global.date_format')) => $block->id];
+                    return [$block->block_date->isoFormat(__('t.global.date_format')) => $block->id];
                 })->map(function($ids, $date) {
                     return implode(',', $ids->all());
                 });

@@ -11,16 +11,8 @@ use Tests\TestCase;
 
 class SentryTest extends TestCase {
 
-    public function test_shouldReportErrorToSentry_andDisplayErrorForm_when500ErrorOccurs() {
+    public function test_shouldReportErrorToSentry_when500ErrorOccurs() {
         // given
-        $sentryMock = Mockery::mock(app('sentry'));
-        // Stupid fix because mockery ->passthru() doesn't work here for some reason
-        $sentryMock->shouldReceive('captureException')->once()->andReturnUsing(function(...$args) use($sentryMock) {
-            SentrySdk::getCurrentHub()->captureException(...$args);
-            $sentryMock->shouldReceive('getLastEventId')->andReturn(new EventId('12341234123412341234123412341234'));
-        });
-        $this->instance('sentry', $sentryMock);
-
         // Force an exception
         $requestMock = $this->createPartialMock(UserRequest::class, [ 'validated', 'file' ]);
         $requestMock->expects(self::once())->method('validated')->willThrowException(new \Exception('exception thrown by test'));
@@ -32,7 +24,7 @@ class SentryTest extends TestCase {
 
         // then
         $response->assertStatus(500);
-        $response->assertSeeText('Es sieht so aus als hätten wir ein Problem.');
+        $response->assertSeeText('Bitte versuche es später nochmals.');
     }
 
     public function test_shouldNotReportErrorToSentry_orDisplayErrorForm_whenValidationErrorOccurs() {

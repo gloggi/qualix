@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\App;
 
-use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\HitobitoUser;
 use Closure;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Testing\TestResponse;
 use Tests\Feature\Auth\HitobitoOAuthTest;
@@ -200,11 +200,11 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
     }
 
     protected function fakeCSRFMiddleware() {
-        $this->app->bind(VerifyCsrfToken::class, TestVerifyCsrfToken::class);
+        $this->app->bind(ValidateCsrfToken::class, TestValidateCsrfToken::class);
     }
 }
 
-class TestVerifyCsrfToken extends VerifyCsrfToken {
+class TestValidateCsrfToken extends ValidateCsrfToken {
 
     /**
      * In this test, we want the CSRF protection to be active.

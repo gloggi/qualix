@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin\Participant;
 
-use App\Exceptions\Handler;
 use App\Exceptions\MiDataParticipantsListsParsingException;
 use App\Exceptions\UnsupportedFormatException;
 use App\Services\Import\SpreadsheetReaderFactory;

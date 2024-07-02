@@ -84,7 +84,7 @@ docker-compose run e2e open
 
 ## Produktive Installation
 
-> Qualix basiert auf Laravel 10 und benötigt deshalb eine PHP Version >= 8.1.0
+> Qualix basiert auf Laravel 11 und benötigt deshalb eine PHP Version >= 8.2.0
 
 1. **Code herunterladen**: `git clone https://github.com/gloggi/qualix.git && cd qualix`
 2. **Server-Einstellungen**: Eine Kopie von .env.example namens .env erstellen und die Angaben darin ergänzen. Zum Beispiel so (kritische Angaben sind mit `<snip>` zensiert):
@@ -130,7 +130,6 @@ COLLABORATION_ENABLED=true
 COLLABORATION_SIGNALING_SERVERS="wss://signaling.yjs.dev wss://y-webrtc-signaling-eu.herokuapp.com wss://y-webrtc-signaling-us.herokuapp.com"
 
 SENTRY_LARAVEL_DSN=<snip>
-SENTRY_USER_FEEDBACK_URL=<snip>
 SENTRY_CSP_REPORT_URI=<snip>
 MIX_SENTRY_VUE_DSN=<snip>
 ```

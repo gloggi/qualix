@@ -34,7 +34,7 @@
             <b-card no-body>
                 <b-card-header v-b-toggle.collapse-{{ $day[0]->block_date->timestamp }}>
                     <h5 class="mb-0">
-                        {{ $day[0]->block_date->formatLocalized(__('t.global.date_format')) }}
+                        {{ $day[0]->block_date->isoFormat(__('t.global.date_format')) }}
                     </h5>
                 </b-card-header>
 

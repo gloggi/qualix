@@ -52,7 +52,7 @@
                 }
                 $blocks = [];
                 foreach($days as $day) {
-                    $blocks[] = ['type' => 'header', 'text' => $day[0]->block_date->formatLocalized(__('t.global.date_format'))];
+                    $blocks[] = ['type' => 'header', 'text' => $day[0]->block_date->isoFormat(__('t.global.date_format'))];
                     $blocks = array_merge($blocks, $day);
                 }
             @endphp
