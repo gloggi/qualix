@@ -1,5 +1,8 @@
 # Changelog
 
+##### Juli 2024
+- Upgrade auf Laravel 11 und PHP >= 8.2.0 [#344](https://github.com/gloggi/qualix/pull/344)
+
 ##### April 2024
 - Bugfix: Die allererste Änderung nach dem Öffnen des Rückmeldungs-Editors wird jetzt wieder automatisch gespeichert [#320](https://github.com/gloggi/qualix/issues/320)
 
