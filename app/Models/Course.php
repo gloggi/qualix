@@ -171,6 +171,13 @@ class Course extends Model {
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evaluation_grid_templates() {
+        return $this->hasMany(EvaluationGridTemplate::class)->orderBy('name');
+    }
+
+    /**
      * Get the names of all Feedbacks that contain this observation.
      *
      * @return array
