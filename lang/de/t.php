@@ -214,7 +214,6 @@ return array(
 				"generate_success" => "{0}Es wurden keine Blöcke generiert.|{1}Es wurde ein Block generiert.|[2,*]Es wurden :count Blöcke generiert.",
 				"error_too_many_blocks" => "Dein Datumsbereich ist zu gross!",
 			),
-
 			"categories" => array(
 				"are_categories_required" => array(
 					"answer" => "Nein, Kategorien sind komplett optional, falls ihr in eurem Kursteam keine Verwendung dafür habt.",
@@ -278,6 +277,11 @@ return array(
 				"page_title" => "Equipe verwalten",
 				"really_delete" => "Willst du :name wirklich aus der Kursequipe entfernen?",
 				"really_delete_invitation" => "Willst du die Einladung für :email wirklich entfernen?",
+			),
+			"evaluation_grid_templates" => array(
+				"create_success" => "Das Beurteilungsraster \":name\" wurde erfolgreich erstellt.",
+				"delete_success" => "Das Beurteilungsraster \":name\" wurde erfolgreich gelöscht.",
+				"edit_success" => "Das Beurteilungsraster \":name\" wurde erfolgreich gespeichert.",
 			),
 			"new_course" => array(
 				"more_settings" => "Weitere Einstellungen",

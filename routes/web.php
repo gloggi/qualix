@@ -6,6 +6,7 @@ use App\Http\Controllers\BlockListController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EquipeController;
+use App\Http\Controllers\EvaluationGridTemplateController;
 use App\Http\Controllers\FeedbackContentController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FeedbackListController;
@@ -129,6 +130,12 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->scopeBindings()->gro
         Route::post('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'update'])->name('admin.feedbacks.update');
     });
     Route::delete('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'destroy'])->name('admin.feedbacks.delete');
+
+    Route::get('/course/{course}/admin/evaluation_grids', [EvaluationGridTemplateController::class, 'index'])->name('admin.evaluation_grid_templates');
+    Route::post('/course/{course}/admin/evaluation_grids', [EvaluationGridTemplateController::class, 'store'])->name('admin.evaluation_grid_templates.store');
+    Route::get('/course/{course}/admin/evaluation_grids/{evaluation_grid_template}', [EvaluationGridTemplateController::class, 'edit'])->name('admin.evaluation_grid_templates.edit');
+    Route::post('/course/{course}/admin/evaluation_grids/{evaluation_grid_template}', [EvaluationGridTemplateController::class, 'update'])->name('admin.evaluation_grid_templates.update');
+    Route::delete('/course/{course}/admin/evaluation_grids/{evaluation_grid_template}', [EvaluationGridTemplateController::class, 'destroy'])->name('admin.evaluation_grid_templates.delete');
 
     Route::get('/newcourse', [CourseController::class, 'create'])->name('admin.newcourse');
     Route::post('/newcourse', [CourseController::class, 'store'])->name('admin.newcourse.store');

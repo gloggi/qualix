@@ -13,6 +13,9 @@ namespace App\Models;
  * @property EvaluationGridRow[] $evaluation_grid_rows
  */
 class EvaluationGridRowTemplate extends Model {
+
+    const CONTROL_TYPES = ['checkbox', 'radiobuttons', 'slider'];
+
     /**
      * The table associated with the model.
      *
