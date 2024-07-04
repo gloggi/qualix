@@ -73,6 +73,8 @@
                         @endif
                         <b-dropdown-item {{ Route::currentRouteName() == 'admin.feedbacks' ? ' active' : '' }}
                            href="{{ route('admin.feedbacks', ['course' => $course->id]) }}">{{__('t.views.admin.feedbacks.menu_name')}}</b-dropdown-item>
+                        <b-dropdown-item {{ Route::currentRouteName() == 'admin.evaluation_grid_templates' ? ' active' : '' }}
+                                         href="{{ route('admin.evaluation_grid_templates', ['course' => $course->id]) }}">{{__('t.views.admin.evaluation_grid_templates.menu_name')}}</b-dropdown-item>
                     </b-nav-item-dropdown>
                 @endif
                 <b-nav-item href="{{ route('admin.newcourse') }}" {{ Route::currentRouteName() == 'admin.newcourse' ? ' active' : '' }}>

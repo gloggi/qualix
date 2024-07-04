@@ -23,6 +23,11 @@ class EvaluationGridTemplate extends Model {
     /**
      * @var array
      */
+    protected $with = ['evaluationGridRowTemplates', 'requirements', 'blocks'];
+
+    /**
+     * @var array
+     */
     protected $fillable = ['name', 'course_id'];
 
     /**
@@ -51,7 +56,7 @@ class EvaluationGridTemplate extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function requirements() {
-        return $this->belongsToMany(Requirement::class, 'evaluation_grid_templates_blocks');
+        return $this->belongsToMany(Requirement::class, 'evaluation_grid_templates_requirements');
     }
 
     /**

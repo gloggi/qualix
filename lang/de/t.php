@@ -88,6 +88,23 @@ return array(
 			"observation_count_green_threshold" => "Gewünschte Anzahl Beobachtungen",
 			"uses_impressions" => "Eindruck auf Beobachtungen aktivieren",
 		),
+		"evaluation_grid_template" => array(
+			"add_row" => "Zeile hinzufügen",
+			"blocks" => "Leistungszeitpunkte",
+			"name" => "Titel",
+			"requirements" => "Beurteilte Anforderungen",
+			"rows" => "Zeilen",
+			"row_templates" => "Zeilen",
+		),
+		"evaluation_grid_row_template" => array(
+			"control_type" => "Typ",
+			"control_types" => array(
+				"checkbox" => "Checkbox",
+				"radiobuttons" => "Nicht erfüllt / erfüllt / übertroffen",
+				"slider" => "Skala von 1 - 10",
+			),
+			"criterion" => "Kriterium",
+		),
 		"feedback_requirement" => array(
 			"status" => "Status",
 			"comment" => "Notizen"
@@ -279,9 +296,24 @@ return array(
 				"really_delete_invitation" => "Willst du die Einladung für :email wirklich entfernen?",
 			),
 			"evaluation_grid_templates" => array(
+				"create" => "Erstellen",
 				"create_success" => "Das Beurteilungsraster \":name\" wurde erfolgreich erstellt.",
 				"delete_success" => "Das Beurteilungsraster \":name\" wurde erfolgreich gelöscht.",
 				"edit_success" => "Das Beurteilungsraster \":name\" wurde erfolgreich gespeichert.",
+				"edit" => "Beurteilungsraster bearbeiten",
+				"existing" => "Beurteilungsraster :courseName",
+				"go_back_to_evaluation_grid_template_list" => "Abbrechen",
+				"menu_name" => "Beurteilungsraster",
+				"new" => "Neues Beurteilungsraster",
+				"no_evaluation_grid_templates" => "Bisher sind keine Beurteilungsraster erfasst.",
+				"page_title" => "Beurteilungsraster verwalten",
+				"page_title_edit" => "Beurteilungsraster bearbeiten",
+				"really_delete" => "Willst du das Beurteilungsraster \":name\" wirklich löschen? Alle ausgefüllten Kopien davon werden dabei mitgelöscht.",
+				"warning_updating_templates_may_overwrite_existing_data" => "Achtung: Dieses Beurteilungsraster wird bereits :count Mal verwendet. Wenn du die darin enthaltenen Zeilen änderst, überschreibst du damit möglicherweise bereits gemachte Beurteilungen.",
+				"what_are_evaluation_grids" => array(
+					"answer" => "Ein Beurteilungsraster ist ein Formular, mit dem man Leistungen der TN systematisch und nach fairen Kriterien beurteilen kann. Es kann wie eine Checkliste gesehen werden, oder wie eine Präzisierung / Ausformulierung einer Anforderung, oder wie ein etwas strukturierteres Beobachtungs-Formular. Wenn du hier ein Beurteilungsraster erfasst, dann kannst du dieses Raster jeweils ausfüllen, sobald TN etwas geleistet haben. Basierend darauf kannst du dann eifacher entscheiden, ob die Leistung deine Anforderung bereits erfüllt.",
+					"question" => "Was sind Beurteilungsraster?",
+				),
 			),
 			"new_course" => array(
 				"more_settings" => "Weitere Einstellungen",

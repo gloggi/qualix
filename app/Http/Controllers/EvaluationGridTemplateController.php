@@ -22,8 +22,8 @@ class EvaluationGridTemplateController extends Controller {
      *
      * @return Response
      */
-    public function index() {
-        return view('admin.evaluation_grid_templates.index');
+    public function index(Request $request) {
+        return view('admin.evaluationGridTemplates.index');
     }
 
     /**
@@ -36,11 +36,13 @@ class EvaluationGridTemplateController extends Controller {
     public function store(EvaluationGridTemplateRequest $request, Course $course) {
         $data = $request->validated();
         return DB::transaction(function () use ($request, $course, $data) {
-            $gridTemplate = EvaluationGridTemplate::create(array_merge($data, ['course_id' => $course->id]));
+            $evaluationGridTemplate = EvaluationGridTemplate::create(array_merge($data, ['course_id' => $course->id]));
+            $evaluationGridTemplate->blocks()->sync(array_filter(explode(',', $data['blocks'])));
+            $evaluationGridTemplate->requirements()->sync(array_filter(explode(',', $data['requirements'])));
 
-            $this->createNewRowTemplates($data['row_templates'], $gridTemplate);
+            $this->createNewRowTemplates(collect($data['row_templates']), $evaluationGridTemplate);
 
-            $request->session()->flash('alert-success', __('t.views.admin.evaluation_grid_templates.create_success', ['name' => $gridTemplate->name]));
+            $request->session()->flash('alert-success', __('t.views.admin.evaluation_grid_templates.create_success', ['name' => $evaluationGridTemplate->name]));
             return Redirect::route('admin.evaluation_grid_templates', ['course' => $course->id]);
         });
     }
@@ -54,7 +56,11 @@ class EvaluationGridTemplateController extends Controller {
      * @return Response
      */
     public function edit(Request $request, Course $course, EvaluationGridTemplate $evaluationGridTemplate) {
-        return view('admin.evaluation_grid_templates.edit', ['evaluation_grid_template' => $evaluationGridTemplate]);
+        if (($count = $evaluationGridTemplate->evaluationGrids()->count()) && !$request->session()->has('alert-warning')) {
+            $request->session()->now('alert-warning', trans('t.views.admin.evaluation_grid_templates.warning_updating_templates_may_overwrite_existing_data', ['count' => $count]));
+        }
+
+        return view('admin.evaluationGridTemplates.edit', ['evaluationGridTemplate' => $evaluationGridTemplate]);
     }
 
     /**
@@ -69,9 +75,11 @@ class EvaluationGridTemplateController extends Controller {
         $data = $request->validated();
         return DB::transaction(function() use($request, $course, $evaluationGridTemplate, $data) {
             $evaluationGridTemplate->update($data);
+            $evaluationGridTemplate->blocks()->sync(array_filter(explode(',', $data['blocks'])));
+            $evaluationGridTemplate->requirements()->sync(array_filter(explode(',', $data['requirements'])));
 
             /** @var Collection $currentRowTemplates */
-            $currentRowTemplates = $evaluationGridTemplate->evaluation_grid_row_templates;
+            $currentRowTemplates = $evaluationGridTemplate->evaluationGridRowTemplates;
             $specifiedRowTemplates = collect($data['row_templates'])->whereNotNull('id')->unique('id');
 
             $newRowTemplates = collect($data['row_templates'])->whereNull('id');
@@ -80,7 +88,7 @@ class EvaluationGridTemplateController extends Controller {
 
             $this->createNewRowTemplates($newRowTemplates, $evaluationGridTemplate);
             $this->deleteRowTemplates($deletableRowTemplates);
-            $this->updateAndReorderRowTemplates($existingRowTemplates);
+            $this->updateAndReorderRowTemplates($existingRowTemplates, $evaluationGridTemplate);
 
             $request->session()->flash('alert-success', __('t.views.admin.evaluation_grid_templates.edit_success', ['name' => $evaluationGridTemplate->name]));
             return Redirect::route('admin.evaluation_grid_templates', ['course' => $course->id]);
