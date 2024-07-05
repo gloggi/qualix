@@ -4,14 +4,14 @@
     <input-text
       name="name"
       :label="$t('t.models.evaluation_grid_template.name')"
-      :value="nameFormValue"
+      v-model="nameFormValue"
       required
       autofocus></input-text>
 
     <input-multi-select
       name="requirements"
       :label="$t('t.models.evaluation_grid_template.requirements')"
-      :value="requirementsFormValue"
+      v-model="requirementsFormValue"
       :options="requirements"
       display-field="content"
       multiple required></input-multi-select>
@@ -19,7 +19,7 @@
     <input-multi-select
       name="blocks"
       :label="$t('t.models.evaluation_grid_template.blocks')"
-      :value="blocksFormValue"
+      v-model="blocksFormValue"
       :options="blocks"
       display-field="blockname_and_number"
       multiple required></input-multi-select>
@@ -27,7 +27,7 @@
     <input-evaluation-grid-template
       name="row_templates"
       :label="$t('t.models.evaluation_grid_template.rows')"
-      :value="rowTemplates"
+      v-model="rowTemplatesFormValue"
       :control-types="controlTypes"></input-evaluation-grid-template>
 
     <slot name="submit"></slot>
@@ -40,7 +40,6 @@ import FormBasic from '../FormBasic';
 import InputText from '../form/InputText';
 import InputMultiSelect from '../form/InputMultiSelect';
 import InputEvaluationGridTemplate from './InputEvaluationGridTemplate.vue';
-import { get } from 'lodash';
 
 export default {
   name: 'FormEvaluationGridTemplate',
@@ -56,10 +55,10 @@ export default {
   },
   data() {
     return {
-      nameFormValue: get(Laravel.oldInput, 'name', this.evaluationGridTemplate ? this.evaluationGridTemplate.name : ''),
-      requirementsFormValue: get(Laravel.oldInput, 'requirements', this.evaluationGridTemplate ? this.evaluationGridTemplate.requirements.map(r => r.id).join() : ''),
-      blocksFormValue: get(Laravel.oldInput, 'blocks', this.evaluationGridTemplate ? this.evaluationGridTemplate.blocks.map(r => r.id).join() : ''),
-      rowTemplates: get(Laravel.oldInput, 'row_templates', this.evaluationGridTemplate ? this.evaluationGridTemplate.evaluation_grid_row_templates : [{}]),
+      nameFormValue: this.evaluationGridTemplate ? this.evaluationGridTemplate.name : '',
+      requirementsFormValue: this.evaluationGridTemplate ? this.evaluationGridTemplate.requirements.map(r => r.id).join() : '',
+      blocksFormValue: this.evaluationGridTemplate ? this.evaluationGridTemplate.blocks.map(r => r.id).join() : '',
+      rowTemplatesFormValue: this.evaluationGridTemplate ? this.evaluationGridTemplate.evaluation_grid_row_templates : [{}],
     }
   },
 }
