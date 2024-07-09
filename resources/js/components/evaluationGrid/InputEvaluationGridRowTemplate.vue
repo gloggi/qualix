@@ -21,6 +21,7 @@
       v-model="currentValue.control_type"
       :options="controlTypesWithTranslation"
       required
+      :allow-empty="false"
       narrow-form
     ></input-multi-select>
     <input-hidden :name="`${name}[control_config]`" value="{}"></input-hidden>

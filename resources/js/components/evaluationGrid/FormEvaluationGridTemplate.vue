@@ -9,19 +9,19 @@
       autofocus></input-text>
 
     <input-multi-select
-      name="requirements"
-      :label="$t('t.models.evaluation_grid_template.requirements')"
-      v-model="requirementsFormValue"
-      :options="requirements"
-      display-field="content"
-      multiple required></input-multi-select>
-
-    <input-multi-select
       name="blocks"
       :label="$t('t.models.evaluation_grid_template.blocks')"
       v-model="blocksFormValue"
       :options="blocks"
       display-field="blockname_and_number"
+      multiple required></input-multi-select>
+
+    <input-multi-select
+      name="requirements"
+      :label="$t('t.models.evaluation_grid_template.requirements')"
+      v-model="requirementsFormValue"
+      :options="requirements"
+      display-field="content"
       multiple required></input-multi-select>
 
     <input-evaluation-grid-template
