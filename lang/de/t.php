@@ -38,6 +38,7 @@ return array(
 		),
 		"negative" => "Negativ",
 		"neutral" => "Neutral",
+		"new_feature" => "NEU",
 		"no" => "Nein",
 		"no_options" => "Keine Einträge gefunden",
 		"no_result" => "Keine Resultate gefunden",
