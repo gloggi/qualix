@@ -46,7 +46,16 @@
                     required
                     :options="{{ json_encode($blocks->map->only('id', 'blockname_and_number', 'requirement_ids')) }}"
                     display-field="blockname_and_number"
-                    @input="onBlockUpdate"></input-multi-select>
+                    @input="onBlockUpdate">
+                    <template #below="{ value }">
+                        <button-new-evaluation-grid
+                            :course-id="{{ $course->id }}"
+                            :block-id="value"
+                            :evaluation-grid-templates-mapping="{{ json_encode($course->evaluationGridTemplatesPerBlock()) }}">
+                            {{__('t.views.observations.evaluation_grid_templates_available')}}
+                        </button-new-evaluation-grid>
+                    </template>
+                </input-multi-select>
 
                 @if($course->uses_requirements)
                     <input-multi-select

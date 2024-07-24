@@ -25,6 +25,8 @@
       <span v-if="errorMessage" class="invalid-feedback" role="alert">
         <strong>{{ errorMessage }}</strong>
       </span>
+
+      <slot name="below" :value="currentValue"></slot>
     </div>
   </div>
 </template>

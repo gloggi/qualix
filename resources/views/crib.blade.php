@@ -43,7 +43,7 @@
                         @foreach ($day as $block)
                             <b-list-group-item class="mb-0 p-0">
                                 <b-list-group horizontal class="row m-0">
-                                    <b-list-group-item :href="routeUri('observation.new', {course: {{ $course->id }}, block: {{ $block->id }} })" class="border-0 mb-0 col-12 @if($showObservationAssignments && isset($trainerObservationAssignments[$block->id]))col-md-6 @endif">
+                                    <b-list-group-item :href="routeUri('observation.new', {course: {{ $course->id }}, block: {{ $block->id }} })" class="border-0 mb-0 col">
                                         <h5>{{ $block->blockname_and_number }}</h5>
                                         @if(count($block->mandatory_requirements))
                                             {{__('t.views.crib.mandatory_requirements')}}:
@@ -59,6 +59,14 @@
                                             @endforeach
                                         @endif
                                     </b-list-group-item>
+                                    @if(isset($evaluationGridTemplates[$block->id]))
+                                        <b-list-group-item class="border-0 mb-0 col-auto px-4">
+                                            <button-new-evaluation-grid
+                                                :course-id="{{ $course->id }}"
+                                                block-id="{{ $block->id }}"
+                                                :evaluation-grid-templates-mapping="{{ json_encode($evaluationGridTemplates) }}" />
+                                        </b-list-group-item>
+                                    @endif
                                     @if($showObservationAssignments && isset($trainerObservationAssignments[$block->id]))
                                         <b-list-group-item class="border-0 mb-0 col-sm-12 col-md-6">
                                                 <div class="row">

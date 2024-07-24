@@ -119,6 +119,11 @@ class Course extends Model {
 
         return $this->observationAssignments;
     }
+
+    public function evaluationGridTemplatesPerBlock() {
+        return $this->evaluationGridTemplates()->with('blocks')->get()->groupBy('blocks.*.id');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

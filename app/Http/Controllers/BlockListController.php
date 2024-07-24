@@ -28,6 +28,7 @@ class BlockListController extends Controller
             'userId' => $userId,
             'trainerObservationAssignments' => $course->observationAssignmentsPerUserAndPerBlock()[$userId] ?? [],
             'neededObservations' => 1,
+            'evaluationGridTemplates' => $course->evaluationGridTemplatesPerBlock(),
         ]);
     }
 

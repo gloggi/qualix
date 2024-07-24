@@ -89,6 +89,9 @@ return array(
 			"observation_count_green_threshold" => "Gewünschte Anzahl Beobachtungen",
 			"uses_impressions" => "Eindruck auf Beobachtungen aktivieren",
 		),
+		"evaluation_grid" => array(
+			"model_name" => "Beurteilungsraster",
+		),
 		"evaluation_grid_template" => array(
 			"add_row" => "Zeile hinzufügen",
 			"blocks" => "Leistungszeitpunkte",
@@ -616,6 +619,7 @@ return array(
 			"go_to_participant" => "Zu :name",
 			"edit" => "Beobachtung bearbeiten",
 			"edit_success" => "Beobachtung aktualisiert.",
+			"evaluation_grid_templates_available" => "Beurteilungsraster verfügbar:",
 			"new" => "Beobachtung erfassen",
 			"char_limit" => "Zeichen genutzt:",
 			"page_title" => "Beobachtung erfassen",
