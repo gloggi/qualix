@@ -83,6 +83,13 @@ class Participant extends Model {
         return $this->belongsToMany('App\Models\ParticipantGroup', 'participant_groups_participants');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function evaluation_grids() {
+        return $this->belongsToMany(EvaluationGrid::class, 'evaluation_grids_participants');
+    }
+
     public function getPositiveAttribute() {
         return $this->observations()->where('impression', '=', '2');
     }

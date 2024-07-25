@@ -51,7 +51,6 @@
 
     </b-card>
 
-
     @if ($participant->feedbacks()->count())
 
         <b-card>
@@ -73,6 +72,34 @@
                     <requirement-progress v-if="feedback.requirements.length" :requirements="feedback.requirements" :statuses="{{ json_encode($course->requirement_statuses) }}"></requirement-progress>
                 </template>
 
+            </responsive-table>
+
+        </b-card>
+
+    @endif
+
+    @if ($participant->evaluation_grids()->count())
+
+        <b-card>
+            <template #header>{{__('t.views.participant_details.evaluation_grids.title')}}</template>
+
+            <responsive-table
+                :data="{{ json_encode($participant->evaluation_grids()->with('evaluationGridTemplate.requirements', 'block', 'user')->get()) }}"
+                :fields="[
+                    { label: $t('t.models.evaluation_grid_template.name'), value: evaluationGrid => evaluationGrid.evaluation_grid_template.name, href: evaluationGrid => routeUri('evaluationGrid.edit', {course: {{ $course->id }}, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id}) },
+                    { label: $t('t.models.evaluation_grid.block'), value: evaluationGrid => evaluationGrid.block.blockname_and_number },
+                    { label: $t('t.models.observation.requirements'), slot: 'requirements' },
+                    { label: $t('t.models.evaluation_grid.user'), value: evaluationGrid => evaluationGrid.user.name },
+                ]"
+                :actions="{
+                    edit: evaluationGrid => routeUri('evaluationGrid.edit', {course: {{ $course->id }}, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id}),
+                }">
+
+                <template v-slot:requirements="{ row: evaluationGrid }">
+                    <template v-for="requirement in evaluationGrid.evaluation_grid_template.requirements">
+                        <span class="white-space-normal badge" :class="requirement.mandatory ? 'badge-warning' : 'badge-info'">@{{ requirement.content }}</span>
+                    </template>
+                </template>
             </responsive-table>
 
         </b-card>

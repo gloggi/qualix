@@ -93,7 +93,7 @@ return array(
 			"block" => "Block",
 			"model_name" => "Beurteilungsraster",
 			"participants" => "TN",
-			"user" => "Beurteilt von",
+			"user" => "Erstellt von",
 		),
 		"evaluation_grid_row" => array(
 			"notes" => "Bemerkungen",
@@ -676,6 +676,9 @@ return array(
 			"num_observations" => "{0}Bisher keine Beobachtungen.|{1}Erst eine Beobachtung. Da geht noch mehr!|[2,*]:count Beobachtungen, davon :positive mit positivem, :neutral mit neutralem und :negative mit negativem Eindruck.",
 			"observations_without_category" => "Beobachtungen ohne Kategorie",
 			"observations_without_requirement" => "Beobachtungen ohne Anforderung",
+			"evaluation_grids" => array(
+				"title" => "Beurteilungsraster",
+			),
 			"feedbacks" => array(
 				"title" => "Rückmeldungen",
 			),
