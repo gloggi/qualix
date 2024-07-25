@@ -183,10 +183,24 @@ class Course extends Model {
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function evaluation_grids() {
+        return $this->hasManyThrough(EvaluationGrid::class, EvaluationGridTemplate::class);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function evaluationGridTemplates() {
         return $this->evaluation_grid_templates();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evaluationGrids() {
+        return $this->evaluation_grids();
     }
 
     /**

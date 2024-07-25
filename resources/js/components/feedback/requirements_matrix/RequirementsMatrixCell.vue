@@ -40,6 +40,22 @@
 
       </form-basic>
 
+      <template v-if="evaluationGrids.length">
+        <h6 class="font-size-larger">{{ $t('t.views.participant_details.evaluation_grids.title') }}</h6>
+
+        <responsive-table
+          :data="evaluationGrids"
+          :fields="[
+                    { label: $t('t.models.evaluation_grid_template.name'), value: evaluationGrid => evaluationGrid.evaluation_grid_template.name, href: evaluationGrid => routeUri('evaluationGrid.edit', {course: courseId, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id}) },
+                    { label: $t('t.models.evaluation_grid.block'), value: evaluationGrid => evaluationGrid.block.blockname_and_number },
+                    { label: $t('t.models.evaluation_grid.user'), value: evaluationGrid => evaluationGrid.user.name },
+                ]"
+          :actions="{
+                    print: evaluationGrid => ['button-print-evaluation-grid', { courseId: courseId, evaluationGridTemplateId: evaluationGrid.evaluation_grid_template_id, evaluationGridId: evaluationGrid.id }],
+                    edit: evaluationGrid => routeUri('evaluationGrid.edit', {course: courseId, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id}),
+                }">
+        </responsive-table>
+      </template>
     </b-modal>
     <i class="fas" :class="`fa-${requirementStatus.icon}`"></i> {{ ellipsis(comment, 50) }}
   </div>
@@ -77,6 +93,7 @@ export default {
     feedback: {type: Object, required: true},
     feedbackRequirement: {type: Object, required: true},
     requirementStatuses: {type: Array, required: true},
+    evaluationGrids: {type: Array, default: () => []},
   },
   data: function() {
     return {

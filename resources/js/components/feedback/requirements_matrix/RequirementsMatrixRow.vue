@@ -25,6 +25,7 @@
         :feedback="feedback"
         :feedback-requirement="feedbackRequirement"
         :requirement-statuses="requirementStatuses"
+        :evaluation-grids="evaluationGrids.filter(grid => grid.evaluation_grid_template.requirements.map(r => r.id).includes(feedbackRequirement.requirement_id))"
         @input="updateEditor" /></td>
   </b-tr>
 </template>
@@ -50,6 +51,7 @@ export default {
     feedback: {type: Object, required: true},
     allRequirements: {type: Array, required: true},
     requirementStatuses: {type: Array, required: true},
+    evaluationGrids: {type: Array, default: () => []},
     collaborationEnabled: { type: Boolean, default: false },
   },
   data: function () {
