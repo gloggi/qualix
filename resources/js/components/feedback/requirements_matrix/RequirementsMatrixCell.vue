@@ -41,7 +41,7 @@
       </form-basic>
 
       <template v-if="evaluationGrids.length">
-        <h6 class="font-size-larger">{{ $t('t.views.participant_details.evaluation_grids.title') }}</h6>
+        <h6 class="font-size-larger">{{ $t('t.views.evaluation_grids.matching_evaluation_grids') }}</h6>
 
         <responsive-table
           :data="evaluationGrids"

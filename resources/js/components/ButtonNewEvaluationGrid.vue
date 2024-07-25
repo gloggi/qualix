@@ -6,7 +6,7 @@
         <i class="fas fa-list-check"></i> {{ templates[0].name }}
       </b-button>
       <b-dropdown v-else variant="link" class="align-baseline" toggle-class="py-0">
-        <template #button-content><i class="fas fa-list-check"></i> {{ $t('t.models.evaluation_grid.model_name') }}</template>
+        <template #button-content><i class="fas fa-list-check"></i> {{ $t('t.models.evaluation_grid.one') }}</template>
         <b-dropdown-item
           v-for="evaluationGridTemplate in templates"
           :key="evaluationGridTemplate.id"

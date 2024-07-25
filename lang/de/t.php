@@ -91,7 +91,7 @@ return array(
 		),
 		"evaluation_grid" => array(
 			"block" => "Block",
-			"model_name" => "Beurteilungsraster",
+			"one" => "Beurteilungsraster",
 			"participants" => "TN",
 			"user" => "Erstellt von",
 		),
@@ -554,6 +554,7 @@ return array(
 			"edit" => "Beurteilungsraster :name bearbeiten",
 			"edit_success" => "Beurteilungsraster aktualisiert.",
 			"go_to_participant" => "Zu :name",
+			"matching_evaluation_grids" => "Dazugehörige Beurteilungsraster",
 			"new" => "Beurteilungsraster :name ausfüllen",
 			"page_title" => "Beurteilungsraster :name ausfüllen",
 			"page_title_edit" => "Beurteilungsraster :name bearbeiten",

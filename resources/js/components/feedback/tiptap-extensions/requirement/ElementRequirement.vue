@@ -7,7 +7,7 @@
       <b-dropdown v-if="editor.options.editable" dropleft class="mr-2 requirement-menu" no-caret variant="link">
         <template v-slot:button-content>
           <i class="fas fa-ellipsis-vertical"></i>
-        </template><b-dropdown-item-button v-for="status in requirementStatuses" :key="status.id" @click="onChange(status.id)"><i :class="[`text-${status.color}`, `fa-${status.icon}`]" class="fas mr-3"></i> {{ status.name }}</b-dropdown-item-button><b-dropdown-item-button v-if="observations.length" @click="selectObservation"><i class="text-primary fas fa-plus mr-3"></i> {{$t('t.models.observation.one')}}</b-dropdown-item-button></b-dropdown>
+        </template><b-dropdown-item-button v-for="status in requirementStatuses" :key="status.id" @click="onChange(status.id)"><i :class="[`text-${status.color}`, `fa-${status.icon}`]" class="fas mr-3"></i> {{ status.name }}</b-dropdown-item-button><b-dropdown-item-button v-if="observations.length" @click="selectObservation"><i class="text-primary fas fa-plus mr-3"></i> {{$t('t.models.observation.one')}}</b-dropdown-item-button><b-dropdown-group v-if="matchingEvaluationGrids.length" :header="$t('t.views.evaluation_grids.matching_evaluation_grids')"><b-dropdown-item v-for="evaluationGrid in matchingEvaluationGrids" :key="evaluationGrid.id" :href="routeUri('evaluationGrid.edit', {course: courseId, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id})"><i class="fas fa-list-check mr-3"></i> {{evaluationGrid.evaluation_grid_template.name}}</b-dropdown-item></b-dropdown-group></b-dropdown>
     </div>
     <b-collapse v-if="editor.options.editable" :id="`requirement-comment-${node.attrs.id}`">
       <div class="feedback-requirement-comment">
@@ -34,7 +34,7 @@ export default {
   // `updateAttributes` is a function to update attributes of the current node
   // `deleteNode` is a function to delete the current node
   props: nodeViewProps,
-  inject: ['requirements', 'showObservationSelectionModal', 'observations', 'requirementStatuses', 'courseId', 'feedbackDataId'],
+  inject: ['requirements', 'showObservationSelectionModal', 'observations', 'requirementStatuses', 'courseId', 'feedbackDataId', 'evaluationGrids'],
   computed: {
     requirement() {
       const requirement = this.requirements.find(requirement => requirement.id === this.node.attrs.id)
@@ -42,6 +42,9 @@ export default {
         this.deleteNode()
       }
       return requirement || {}
+    },
+    matchingEvaluationGrids() {
+      return this.evaluationGrids.filter(grid => grid.evaluation_grid_template.requirements.map(r => r.id).includes(this.requirement.id))
     },
   },
   filters: {

@@ -20,6 +20,7 @@
             :authors="{{ json_encode($course->users->map->only('id', 'name')) }}"
             :blocks="{{ json_encode($course->blocks) }}"
             :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"
+            :evaluation-grids="{{ json_encode($participant->evaluation_grids()->with('evaluationGridTemplate.requirements', 'block', 'user')->get()) }}"
             :show-requirements="{{ $course->uses_requirements ? 'true' : 'false' }}"
             :show-categories="{{ $course->uses_categories ? 'true' : 'false' }}"
             :show-impression="{{ $course->uses_impressions ? 'true' : 'false' }}"

@@ -51,6 +51,7 @@ export default {
     authors: { type: Array, default: () => [] },
     blocks: { type: Array, default: () => [] },
     requirementStatuses: { type: Array, default: () => [] },
+    evaluationGrids: { type: Array, default: () => [] },
     showRequirements: { type: Boolean, default: false },
     showCategories: { type: Boolean, default: false },
     showImpression: { type: Boolean, default: false },
@@ -60,6 +61,11 @@ export default {
     return {
       json: this.feedbackContents,
       error: false,
+    }
+  },
+  provide() {
+    return {
+      evaluationGrids: this.evaluationGrids,
     }
   },
   computed: {
