@@ -24,7 +24,8 @@ class EvaluationGrid extends Model {
     /**
      * @var array
      */
-    protected $fillable = ['block_id'];
+    protected $fillable = ['evaluation_grid_template_id', 'block_id', 'user_id'];
+    protected $fillable_relations = ['block'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -34,10 +35,10 @@ class EvaluationGrid extends Model {
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function participants() {
-        return $this->hasMany(Participant::class);
+        return $this->belongsToMany(Participant::class, 'evaluation_grids_participants');
     }
 
     /**

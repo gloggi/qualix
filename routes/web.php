@@ -6,6 +6,7 @@ use App\Http\Controllers\BlockListController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EquipeController;
+use App\Http\Controllers\EvaluationGridController;
 use App\Http\Controllers\EvaluationGridTemplateController;
 use App\Http\Controllers\FeedbackContentController;
 use App\Http\Controllers\FeedbackController;
@@ -53,6 +54,12 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->scopeBindings()->gro
         Route::get('/course/{course}/observation/{observation}', [ObservationController::class, 'edit'])->name('observation.edit');
         Route::post('/course/{course}/observation/{observation}', [ObservationController::class, 'update'])->name('observation.update');
         Route::delete('/course/{course}/observation/{observation}', [ObservationController::class, 'destroy'])->name('observation.delete');
+
+        Route::get('/course/{course}/evaluation_grid/{evaluation_grid_template}/new', [EvaluationGridController::class, 'create'])->name('evaluationGrid.new');
+        Route::post('/course/{course}/evaluation_grid/{evaluation_grid_template}/new', [EvaluationGridController::class, 'store'])->name('evaluationGrid.store');
+        Route::get('/course/{course}/evaluation_grid/{evaluation_grid_template}/{evaluation_grid}', [EvaluationGridController::class, 'edit'])->name('evaluationGrid.edit');
+        Route::post('/course/{course}/evaluation_grid/{evaluation_grid_template}/{evaluation_grid}', [EvaluationGridController::class, 'update'])->name('evaluationGrid.update');
+        Route::delete('/course/{course}/evaluation_grid/{evaluation_grid_template}/{evaluation_grid}', [EvaluationGridController::class, 'destroy'])->name('evaluationGrid.delete');
 
         Route::get('/course/{course}/names', [NameGameController::class, 'index'])->name('nameGame');
 

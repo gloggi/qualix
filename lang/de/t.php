@@ -90,7 +90,19 @@ return array(
 			"uses_impressions" => "Eindruck auf Beobachtungen aktivieren",
 		),
 		"evaluation_grid" => array(
+			"block" => "Block",
 			"model_name" => "Beurteilungsraster",
+			"participants" => "TN",
+			"user" => "Beurteilt von",
+		),
+		"evaluation_grid_row" => array(
+			"notes" => "Bemerkungen",
+			"value" => "Wert",
+			"radio_buttons" => array(
+				"not_fulfilled" => "✘",
+				"fulfilled" => "✔",
+				"expectations_surpassed" => "✨",
+			),
 		),
 		"evaluation_grid_template" => array(
 			"add_row" => "Zeile hinzufügen",
@@ -536,6 +548,15 @@ return array(
 			"back" => "Zurück zu wo ich gerade noch war...",
 			"page_title" => "Technischer Fehler",
 			"please_try_again_later" => "Bitte versuche es später nochmals.",
+		),
+		"evaluation_grids" => array(
+			"add_success" => "Beurteilungsraster erfasst. Mässi!",
+			"edit" => "Beurteilungsraster :name bearbeiten",
+			"edit_success" => "Beurteilungsraster aktualisiert.",
+			"go_to_participant" => "Zu :name",
+			"new" => "Beurteilungsraster :name ausfüllen",
+			"page_title" => "Beurteilungsraster :name ausfüllen",
+			"page_title_edit" => "Beurteilungsraster :name bearbeiten",
 		),
 		"feedback" => array(
 			"print" => array(

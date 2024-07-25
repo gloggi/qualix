@@ -44,8 +44,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('evaluation_grid_id');
             $table->foreignId('evaluation_grid_row_template_id');
-            $table->json('value');
-            $table->text('notes');
+            $table->json('value')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
 
             $table->foreign('evaluation_grid_id')->references('id')->on('evaluation_grids')->onDelete('CASCADE');
