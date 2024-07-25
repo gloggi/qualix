@@ -116,7 +116,7 @@ return array(
 			"control_type" => "Typ",
 			"control_types" => array(
 				"checkbox" => "Checkbox",
-				"radiobuttons" => "Nicht erfüllt / erfüllt / übertroffen",
+				"radiobuttons" => "✘ / ✔ / ✨",
 				"slider" => "Skala von 1 - 10",
 			),
 			"criterion" => "Kriterium",

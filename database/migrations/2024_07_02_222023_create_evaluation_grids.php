@@ -24,7 +24,6 @@ return new class extends Migration {
             $table->integer('order');
             $table->text('criterion');
             $table->string('control_type');
-            $table->json('control_config');
             $table->timestamps();
 
             $table->foreign('evaluation_grid_template_id', 'fk_egrt_grid_template')->references('id')->on('evaluation_grid_templates')->onDelete('CASCADE');

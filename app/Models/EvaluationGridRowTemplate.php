@@ -8,7 +8,6 @@ namespace App\Models;
  * @property int $order
  * @property string $criterion
  * @property string $control_type
- * @property string $control_config
  * @property EvaluationGridTemplate $evaluation_grid_template
  * @property EvaluationGridRow[] $evaluation_grid_rows
  */

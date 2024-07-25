@@ -3,7 +3,7 @@
     <div class="d-flex flex-row flex-wrap" :class="{ 'is-invalid': errorMessage }">
       <template v-if="type === 'slider'">
         <div class="d-flex flex-column w-100">
-          <b-form-input type="range" min="0" max="3" :name="name" :value="currentValue || 0" />
+          <b-form-input type="range" min="0" max="9" :name="name" :value="currentValue || 0" />
           <div class="d-flex flex-row justify-content-between font-size-larger">
             <span>--</span>
             <span>-</span>
@@ -29,7 +29,7 @@
           :id="name | kebabCase"
           :name="name"
           :class="{ 'is-invalid': errorMessage }"
-          value="1"
+          value="7"
           unchecked-value="0"
           :state="errorMessage ? false : null"
           v-model="currentValue"
@@ -58,11 +58,11 @@ export default {
       return this.rowTemplate.control_type
     },
     radioButtonOptions() {
-      return [
-        this.$t('t.models.evaluation_grid_row.radio_buttons.not_fulfilled'),
-        this.$t('t.models.evaluation_grid_row.radio_buttons.fulfilled'),
-        this.$t('t.models.evaluation_grid_row.radio_buttons.expectations_surpassed'),
-      ]
+      return {
+        '0': this.$t('t.models.evaluation_grid_row.radio_buttons.not_fulfilled'),
+        '7': this.$t('t.models.evaluation_grid_row.radio_buttons.fulfilled'),
+        '9': this.$t('t.models.evaluation_grid_row.radio_buttons.expectations_surpassed'),
+      }
     },
   },
 }

@@ -8,6 +8,7 @@
       :aria-label="$t('t.global.remove')">
       <i class="fas fa-circle-minus"></i>
     </b-button>
+    <input-hidden :name="`${name}[id]`" :value="currentValue.id" />
     <input-textarea
       :name="`${name}[criterion]`"
       :label="$t('t.models.evaluation_grid_row_template.criterion')"
@@ -24,7 +25,6 @@
       :allow-empty="false"
       narrow-form
     ></input-multi-select>
-    <input-hidden :name="`${name}[control_config]`" value="{}"></input-hidden>
   </b-card>
 </template>
 

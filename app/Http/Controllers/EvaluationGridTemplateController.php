@@ -122,13 +122,13 @@ class EvaluationGridTemplateController extends Controller {
         );
 
         EvaluationGridRow::insert(
-            collect($evaluationGridTemplate->evaluation_grids)
+            collect($evaluationGridTemplate->evaluationGrids()->get())
                 ->crossJoin($newRowTemplates)
                 ->map(function ($input) {
                     /** @var EvaluationGrid $evaluationGrid */
                     /** @var EvaluationGridRowTemplate $rowTemplate */
                     [$evaluationGrid, $rowTemplate] = $input;
-                    return ['evaluation_grid_id' => $evaluationGrid->id, 'evaluation_grid_row_template' => $rowTemplate->id];
+                    return ['evaluation_grid_id' => $evaluationGrid->id, 'evaluation_grid_row_template_id' => $rowTemplate->id];
                 })
                 ->all()
         );
