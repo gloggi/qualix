@@ -5,10 +5,10 @@ import SourceSansProItalic from '../../../../fonts/SourceSansPro-Italic.ttf'
 import SourceSansProBold from '../../../../fonts/SourceSansPro-Bold.ttf'
 import SourceSansProBoldItalic from '../../../../fonts/SourceSansPro-BoldItalic.ttf'
 import FontAwesomeSolid from '@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf'
+import EvaluationGridRow from './EvaluationGridRow.jsx'
 import styles from './styles.js'
 
 function EvaluationGridDocument({ course, evaluationGridTemplate, evaluationGrid, participants, block, user, t }) {
-    console.log(user)
     return (
         <Document>
             <Page size="A4" style={ styles.page }>
@@ -44,9 +44,12 @@ function EvaluationGridDocument({ course, evaluationGridTemplate, evaluationGrid
                         </View>
                     </View>
                 </View>
-                <Text style={{ ...styles.h5, marginTop: '4mm' }}>{ t('t.models.evaluation_grid_template.requirements') }:</Text>
-                { evaluationGridTemplate.requirements.map(requirement => <View><Text>• { requirement.content }</Text></View>) }
-                {/*evaluationGrid.rows.map(row => <EvaluationGridRow row={row} t={t} />)*/}
+                <View style={{ marginBottom: '4mm', marginTop: '4mm' }}>
+                    <Text style={styles.h5}>{ t('t.models.evaluation_grid_template.requirements') }:</Text>
+                    { evaluationGridTemplate.requirements.map(requirement => <View key={requirement.id}><Text>• { requirement.content }</Text></View>) }
+                </View>
+                <View style={{ borderBottom: '0.5pt solid black', width: '100%' }} />
+                {evaluationGridTemplate.evaluation_grid_row_templates.map(rowTemplate => <EvaluationGridRow key={rowTemplate.id} rowTemplate={rowTemplate} rows={evaluationGrid?.rows} t={t} />)}
             </Page>
         </Document>
     )
@@ -67,6 +70,10 @@ const registerFonts = async () => {
         fonts: [
             {src: FontAwesomeSolid},
         ],
+    })
+    Font.registerEmojiSource({
+        formag: 'png',
+        url: '/twemoji/assets/72x72/',
     })
 
     return await Promise.all([

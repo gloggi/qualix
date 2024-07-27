@@ -31,6 +31,7 @@ mix.vue()
    .js('resources/js/app.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css')
    .copyDirectory('resources/images', 'public/images')
+   .copyDirectory('resources/twemoji/assets/72x72', 'public/twemoji/assets/72x72')
    .options({ legacyNodePolyfills: false })
    .translations()
    .version();

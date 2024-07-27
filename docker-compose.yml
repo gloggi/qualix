@@ -39,7 +39,7 @@ services:
     working_dir: '/app'
     volumes:
       - .:/app
-    command: bash -c "npm install && npm run watch"
+    command: bash -c "npm install && scripts/install-twemoji.sh && npm run watch"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
