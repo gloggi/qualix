@@ -37,6 +37,8 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->scopeBindings()->gro
 
     Route::get('/course/{course}/crib/{user?}', [BlockListController::class, 'crib'])->name('crib');
 
+    Route::get('/course/{course}/evaluation_grid/{evaluation_grid_template}/print', [EvaluationGridTemplateController::class, 'print'])->name('admin.evaluation_grid_templates.print');
+
     Route::middleware('courseNotArchived')->group(function () {
         Route::get('/course/{course}/feedbacks/{feedback_data}', [FeedbackListController::class, 'progressOverview'])->name('feedback.progressOverview');
         Route::post('/course/{course}/feedbacks/{feedback_data}/{participant}/{requirement}', [FeedbackListController::class, 'updateRequirementStatus'])->name('feedback.updateRequirementStatus');
@@ -60,6 +62,7 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->scopeBindings()->gro
         Route::get('/course/{course}/evaluation_grid/{evaluation_grid_template}/{evaluation_grid}', [EvaluationGridController::class, 'edit'])->name('evaluationGrid.edit');
         Route::post('/course/{course}/evaluation_grid/{evaluation_grid_template}/{evaluation_grid}', [EvaluationGridController::class, 'update'])->name('evaluationGrid.update');
         Route::delete('/course/{course}/evaluation_grid/{evaluation_grid_template}/{evaluation_grid}', [EvaluationGridController::class, 'destroy'])->name('evaluationGrid.delete');
+        Route::get('/course/{course}/evaluation_grid/{evaluation_grid_template}/{evaluation_grid}/print', [EvaluationGridController::class, 'print'])->name('evaluationGrid.print');
 
         Route::get('/course/{course}/names', [NameGameController::class, 'index'])->name('nameGame');
 

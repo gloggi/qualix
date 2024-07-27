@@ -10,6 +10,7 @@ use App\Models\EvaluationGridRow;
 use App\Models\EvaluationGridTemplate;
 use App\Util\HtmlString;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -133,5 +134,25 @@ class EvaluationGridController extends Controller {
         $evaluationGrid->delete();
         $request->session()->flash('alert-success', __('t.views.participant_details.delete_evaluationGrid_success'));
         return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $participantId]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Course $course
+     * @param EvaluationGridTemplate $evaluationGridTemplate
+     * @param EvaluationGrid $evaluationGrid
+     * @return JsonResponse
+     */
+    public function print(Request $request, Course $course, EvaluationGridTemplate $evaluationGridTemplate, EvaluationGrid $evaluationGrid) {
+        return response()->json([
+            'course' => $course,
+            'evaluationGridTemplate' => $evaluationGridTemplate,
+            'evaluationGrid' => EvaluationGrid::with(
+                'rows',
+                'block',
+                'participants',
+                'user',
+            )->find($evaluationGrid->id),
+        ]);
     }
 }

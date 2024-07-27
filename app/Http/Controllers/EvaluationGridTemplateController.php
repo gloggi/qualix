@@ -9,6 +9,7 @@ use App\Models\EvaluationGrid;
 use App\Models\EvaluationGridRow;
 use App\Models\EvaluationGridRowTemplate;
 use App\Models\EvaluationGridTemplate;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -107,6 +108,19 @@ class EvaluationGridTemplateController extends Controller {
         $evaluationGridTemplate->delete();
         $request->session()->flash('alert-success', __('t.views.admin.evaluation_grid_templates.delete_success', ['name' => $evaluationGridTemplate->name]));
         return Redirect::route('admin.evaluation_grid_templates', ['course' => $course->id]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Course $course
+     * @param EvaluationGridTemplate $evaluationGridTemplate
+     * @return JsonResponse
+     */
+    public function print(Request $request, Course $course, EvaluationGridTemplate $evaluationGridTemplate) {
+        return response()->json([
+            'course' => $course,
+            'evaluationGridTemplate' => $evaluationGridTemplate,
+        ]);
     }
 
     protected function createNewRowTemplates(Collection $data, EvaluationGridTemplate $evaluationGridTemplate) {

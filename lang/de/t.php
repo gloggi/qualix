@@ -550,6 +550,12 @@ return array(
 			"please_try_again_later" => "Bitte versuche es später nochmals.",
 		),
 		"evaluation_grids" => array(
+			"print" => array(
+				"pdf_downloaded" => "PDF wurde heruntergeladen",
+				"pdf_is_being_generated" => "PDF wird generiert...",
+				"error_creating_pdf" => "Beim Erstellen des PDFs ist ein Fehler aufgetreten. Lade die Seite neu und versuche es nochmals, oder kontaktiere das Qualix-Team (siehe zuunterst auf der Seite).",
+				"error_fetching_data" => "Beim Laden des Beurteilungsrasters ist ein Fehler aufgetreten. Lade die Seite neu und versuche es nochmals, oder kontaktiere das Qualix-Team (siehe zuunterst auf der Seite).",
+			),
 			"add_success" => "Beurteilungsraster erfasst. Mässi!",
 			"edit" => "Beurteilungsraster :name bearbeiten",
 			"edit_success" => "Beurteilungsraster aktualisiert.",
