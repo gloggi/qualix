@@ -63,6 +63,10 @@ const registerFonts = async () => {
             {src: FontAwesomeSolid},
         ],
     })
+    Font.registerEmojiSource({
+        formag: 'png',
+        url: '/twemoji/assets/72x72/',
+    })
 
     return await Promise.all([
         Font.load({fontFamily: 'SourceSansPro'}),
