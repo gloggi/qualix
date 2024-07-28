@@ -14,15 +14,13 @@ function EvaluationGridRow({rowTemplate, rows, t}) {
     if (!rowTemplate) return <View/>
     const row = rows ? rows.find(row => row.evaluation_grid_row_template_id === rowTemplate.id) : null
 
-    return <React.Fragment>
-        <View style={styles.evaluationGridRow}>
-            <View style={styles.evaluationGridRowCriterion}><Text>{fixNewlines(rowTemplate.criterion)}</Text></View>
-            <View style={styles.evaluationGridRowValue}>
-                <EvaluationGridRowControl rowTemplate={rowTemplate} row={row} t={t} />
-            </View>
-            <View style={styles.evaluationGridRowNotes}><Text>{fixNewlines(row?.notes || '')}</Text></View>
+    return <View style={styles.evaluationGridRow} wrap={false}>
+        <View style={styles.evaluationGridRowCriterion}><Text>{fixNewlines(rowTemplate.criterion)}</Text></View>
+        <View style={styles.evaluationGridRowValue}>
+            <EvaluationGridRowControl rowTemplate={rowTemplate} row={row} t={t} />
         </View>
-    </React.Fragment>
+        <View style={styles.evaluationGridRowNotes}><Text>{fixNewlines(row?.notes || '')}</Text></View>
+    </View>
 }
 
 export default EvaluationGridRow

@@ -48,7 +48,6 @@ function EvaluationGridDocument({ course, evaluationGridTemplate, evaluationGrid
                     <Text style={styles.h5}>{ t('t.models.evaluation_grid_template.requirements') }:</Text>
                     { evaluationGridTemplate.requirements.map(requirement => <View key={requirement.id}><Text>• { requirement.content }</Text></View>) }
                 </View>
-                <View style={{ borderBottom: '0.5pt solid black', width: '100%' }} />
                 {evaluationGridTemplate.evaluation_grid_row_templates.map(rowTemplate => <EvaluationGridRow key={rowTemplate.id} rowTemplate={rowTemplate} rows={evaluationGrid?.rows} t={t} />)}
             </Page>
         </Document>

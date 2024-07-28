@@ -35,9 +35,8 @@ const styles = {
     borderBottom: '0.5pt solid black',
   },
   evaluationGridRow: {
-    borderLeft: '0.5pt solid black',
-    borderRight: '0.5pt solid black',
-    borderBottom: '0.5pt solid black',
+    border: '0.5pt solid black',
+    marginBottom: '-0.5pt',
     display: 'flex',
     flexDirection: 'row',
   },
