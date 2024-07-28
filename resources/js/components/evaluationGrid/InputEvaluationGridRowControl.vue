@@ -60,7 +60,7 @@ export default {
     radioButtonOptions() {
       return {
         '0': this.$t('t.models.evaluation_grid_row.radio_buttons.not_fulfilled'),
-        '7': this.$t('t.models.evaluation_grid_row.radio_buttons.fulfilled'),
+        '6': this.$t('t.models.evaluation_grid_row.radio_buttons.fulfilled'),
         '9': this.$t('t.models.evaluation_grid_row.radio_buttons.expectations_surpassed'),
       }
     },

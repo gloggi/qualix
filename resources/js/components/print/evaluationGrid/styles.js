@@ -63,7 +63,7 @@ const styles = {
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    paddingTop: '9mm',
+    paddingTop: '6mm',
   },
   evaluationGridRowScaleAxisSquish: {
     width: '100%',
@@ -99,6 +99,36 @@ const styles = {
     flexBasis: '4mm',
     flexGrow: 0,
     flexShrink: 0,
+  },
+  evaluationGridRowRadiobuttons: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    paddingTop: '2mm',
+    justifyContent: 'space-around',
+  },
+  evaluationGridRowRadiobuttonsOption: {
+    flexBasis: '5mm',
+    flexGrow: 0,
+    flexShrink: 0,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  evaluationGridRowCheckboxControl: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    paddingTop: '2mm',
+    justifyContent: 'space-around',
+  },
+  evaluationGridRowCheckbox: {
+    height: '5mm',
+    width: '5mm',
+    flexGrow: 0,
+    flexShrink: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    border: '1pt solid black',
   },
 }
 

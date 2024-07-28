@@ -99,8 +99,8 @@ return array(
 			"notes" => "Bemerkungen",
 			"value" => "Wert",
 			"radio_buttons" => array(
-				"not_fulfilled" => "✘",
-				"fulfilled" => "✔",
+				"not_fulfilled" => "➖",
+				"fulfilled" => "➕",
 				"expectations_surpassed" => "✨",
 			),
 		),
@@ -116,7 +116,7 @@ return array(
 			"control_type" => "Typ",
 			"control_types" => array(
 				"checkbox" => "Checkbox",
-				"radiobuttons" => "✘ / ✔ / ✨",
+				"radiobuttons" => "➖ / ➕ / ✨",
 				"slider" => "Skala von 1 - 10",
 			),
 			"criterion" => "Kriterium",

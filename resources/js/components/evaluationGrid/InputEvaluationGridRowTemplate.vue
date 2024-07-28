@@ -8,7 +8,7 @@
       :aria-label="$t('t.global.remove')">
       <i class="fas fa-circle-minus"></i>
     </b-button>
-    <input-hidden :name="`${name}[id]`" :value="String(currentValue.id)" />
+    <input-hidden v-if="currentValue.id" :name="`${name}[id]`" :value="String(currentValue.id)" />
     <input-textarea
       :name="`${name}[criterion]`"
       :label="$t('t.models.evaluation_grid_row_template.criterion')"
