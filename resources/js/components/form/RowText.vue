@@ -14,7 +14,7 @@ export default {
   },
   computed: {
     inputColumnClass() {
-      return this.narrowForm ? 'col-12' : 'col-md-8 offset-md-3'
+      return this.narrowForm ? 'col-12' : 'col-md-6 offset-md-3'
     }
   }
 }

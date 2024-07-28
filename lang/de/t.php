@@ -118,6 +118,7 @@ return array(
 				"checkbox" => "Checkbox",
 				"radiobuttons" => "➖ / ➕ / ✨",
 				"slider" => "Skala von 1 - 10",
+				"heading" => "Zwischentitel",
 			),
 			"criterion" => "Kriterium",
 		),
