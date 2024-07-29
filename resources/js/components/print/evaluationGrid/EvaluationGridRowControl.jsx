@@ -11,7 +11,13 @@ function EvaluationGridRowControl({rowTemplate, row, t}) {
                 <View style={styles.evaluationGridRowScaleTicks}>
                     {[...Array(9)].map((e, i) => <View key={i} style={styles.evaluationGridRowScaleTick} />)}
                 </View>
-                { row && (row.value !== null) ? <View style={{ width: '8pt', height: '8mm', textAlign: 'center', position: 'absolute', top: '-2mm', left: (parseInt(row.value) + 1) + '0%' }}><Text>❌</Text></View> : <View /> }
+                { row && (row.value === null) ? <View /> :
+                    <View style={{ position: 'absolute', margin: '0 7pt 0 6pt', left: '-5pt', right: '5pt', top: '-6pt', height: '7mm' }}>
+                        <View style={{ position: 'absolute', left: (Math.round(parseInt(row.value) * 1000 / 9) / 10) + '%', width: '11pt', height: '100%', textAlign: 'center' }}>
+                            <Text>❌</Text>
+                        </View>
+                    </View>
+                }
             </View>
             <View style={styles.evaluationGridRowScaleLabels}>
                 {['--', '-', '+', '++'].map((e, i) => <Text key={i} style={styles.evaluationGridRowScaleLabel}>{e}</Text>)}

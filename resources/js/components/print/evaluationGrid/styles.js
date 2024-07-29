@@ -66,7 +66,7 @@ const styles = {
   },
   evaluationGridRowScaleAxisSquish: {
     width: '100%',
-    padding: '0 2mm',
+    padding: '0 6pt',
     display: 'flex',
     flexDirection: 'column',
   },
