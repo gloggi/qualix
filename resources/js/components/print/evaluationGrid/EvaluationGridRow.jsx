@@ -15,7 +15,7 @@ function EvaluationGridRow({rowTemplate, rows, t}) {
     const row = rows ? rows.find(row => row.evaluation_grid_row_template_id === rowTemplate.id) : null
 
     if (rowTemplate.control_type === 'heading') {
-        return <View style={{ ...styles.evaluationGridRow, fontWeight: '700', padding: '2mm 1.5mm 1mm' }}><Text>{ fixNewlines(rowTemplate.criterion) }</Text></View>
+        return <View style={{ ...styles.evaluationGridRow, fontWeight: '700', padding: '2mm 1.5mm 1mm' }} minPresenceAhead={175}><Text>{ fixNewlines(rowTemplate.criterion) }</Text></View>
     }
 
     return <View style={styles.evaluationGridRow} wrap={false}>
