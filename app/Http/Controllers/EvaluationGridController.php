@@ -61,7 +61,14 @@ class EvaluationGridController extends Controller {
             EvaluationGridRow::insert(
                 collect($evaluationGrid->evaluationGridTemplate->evaluationGridRowTemplates)
                     ->map(function ($rowTemplate, $index) use($data, $evaluationGrid) {
-                        return array_merge($data['rows'][$index], ['evaluation_grid_id' => $evaluationGrid->id, 'evaluation_grid_row_template_id' => $rowTemplate->id]);
+                        return array_merge(
+                            // Some defaults
+                            ['value' => null, 'notes' => null],
+                            // The user input
+                            $data['rows'][$index],
+                            // Fixed values which may not be changed
+                            ['evaluation_grid_id' => $evaluationGrid->id, 'evaluation_grid_row_template_id' => $rowTemplate->id]
+                        );
                     })
                     ->all()
             );
