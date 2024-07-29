@@ -32,7 +32,7 @@
 
             <input-evaluation-grid
                 name="rows"
-                :value="{{ json_encode($evaluationGrid->rows) }}"
+                :value="{{ json_encode($evaluationGrid->rows->values()->keyBy('evaluation_grid_row_template_id'), JSON_FORCE_OBJECT) }}"
                 :row-templates="{{ json_encode($evaluationGridTemplate->evaluationGridRowTemplates) }}"
                 :notes-length-limit="{{ \App\Models\Observation::CHAR_LIMIT }}"></input-evaluation-grid>
 

@@ -38,7 +38,6 @@ export default {
   mixins: [ Input ],
   props: {
     value: { type: Object, default: () => ({}) },
-    index: { type: Number, required: true },
     rowTemplate: { type: Object, required: true },
     notesLengthLimit: { type: Number, required: false },
   },

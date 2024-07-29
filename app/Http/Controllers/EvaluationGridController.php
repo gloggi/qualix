@@ -31,6 +31,9 @@ class EvaluationGridController extends Controller {
     public function create(Request $request, Course $course, EvaluationGridTemplate $evaluationGridTemplate) {
         return view('evaluationGrid.new', [
             'evaluationGridTemplate' => $evaluationGridTemplate,
+            'evaluationGridRows' => $evaluationGridTemplate->evaluationGridRowTemplates
+                ->map(function($rowTemplate) { return [ 'notes' => null, 'value' => null, 'evaluation_grid_row_template_id' => $rowTemplate->id ]; })
+                ->keyBy('evaluation_grid_row_template_id'),
             'participants' => $request->input('participant'),
             'block' => $request->input('block'),
             'blocks' => $this->prioritize($evaluationGridTemplate->blocks, function(Block $block) { return $block->block_date->gt(Carbon::now()->subDays(2)); })
@@ -60,12 +63,16 @@ class EvaluationGridController extends Controller {
 
             EvaluationGridRow::insert(
                 collect($evaluationGrid->evaluationGridTemplate->evaluationGridRowTemplates)
-                    ->map(function ($rowTemplate, $index) use($data, $evaluationGrid) {
+                    ->filter(function ($rowTemplate) use($data) {
+                        // Skip heading rows, and rows which have been added to the template in the meantime
+                        return isset($data['rows'][$rowTemplate->id]);
+                    })
+                    ->map(function ($rowTemplate) use($data, $evaluationGrid) {
                         return array_merge(
                             // Some defaults
                             ['value' => null, 'notes' => null],
                             // The user input
-                            $data['rows'][$index],
+                            $data['rows'][$rowTemplate->id],
                             // Fixed values which may not be changed
                             ['evaluation_grid_id' => $evaluationGrid->id, 'evaluation_grid_row_template_id' => $rowTemplate->id]
                         );
@@ -115,9 +122,13 @@ class EvaluationGridController extends Controller {
 
             $evaluationGrid->participants()->sync(array_filter(explode(',', $data['participants'])));
 
-            $evaluationGrid->rows()->each(function ($row, $index) use($data, $evaluationGrid, $evaluationGridTemplate) {
+            $evaluationGrid->rows()->each(function ($row) use($data, $evaluationGrid, $evaluationGridTemplate) {
+                if (!isset($data['rows'][$row->evaluation_grid_row_template_id])) {
+                    // Skip heading rows, and rows which have been added to the template in the meantime
+                    return;
+                }
                 $row->update(array_merge(
-                    $data['rows'][$index],
+                    $data['rows'][$row->evaluation_grid_row_template_id],
                     ['evaluation_grid_id' => $evaluationGrid->id, 'evaluation_grid_row_template_id' => $row->evaluation_grid_row_template_id]
                 ));
             });
