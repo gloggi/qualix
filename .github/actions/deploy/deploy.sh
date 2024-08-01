@@ -55,8 +55,8 @@ sed -ri "s~^SENTRY_LARAVEL_DSN=.*$~SENTRY_LARAVEL_DSN=$SENTRY_LARAVEL_DSN~" .env
 sed -ri "s~^SENTRY_CSP_REPORT_URI=.*$~SENTRY_CSP_REPORT_URI=$SENTRY_CSP_REPORT_URI~" .env
 sed -ri "s~^MIX_SENTRY_VUE_DSN=.*$~MIX_SENTRY_VUE_DSN=$SENTRY_VUE_DSN~" .env
 
-docker-compose run --no-deps --entrypoint "/bin/sh -c 'npm install && npm run prod --no-unsafe-inline'" node
-docker-compose run --no-deps --entrypoint "composer install --no-dev" qualix
+docker compose run --no-deps --entrypoint "/bin/sh -c 'npm install && npm run prod --no-unsafe-inline'" node
+docker compose run --no-deps --entrypoint "composer install --no-dev" qualix
 PHP_MIN_VERSION_ID=$(grep -Po '(?<=\(PHP_VERSION_ID >= )[0-9]+(?=\))' vendor/composer/platform_check.php)
 
 echo "Scanning ssh host keys of \"$SSH_HOST\" (showing hashed output only):"

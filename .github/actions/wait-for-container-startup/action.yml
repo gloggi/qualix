@@ -1,5 +1,5 @@
 name: Wait for container startup
-description: Waits for the docker-compose containers to have started
+description: Waits for the docker compose containers to have started
 
 runs:
   using: "composite"
