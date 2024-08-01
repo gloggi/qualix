@@ -110,7 +110,7 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
         }, true, function (TestResponse $response) {
             // then
             // the participant selection field in the restored form should still be empty
-            $response->assertDontSee(' value="' . $this->participantId . '"');
+            $response->assertDontSee(' participants="' . $this->participantId . '"');
         });
     }
 
@@ -131,8 +131,8 @@ class RestoreFormDataWhenSessionExpiredTest extends TestCaseWithBasicData {
             $response->assertSee('&quot;block&quot;:&quot;9999999&quot;', false);
             // in the form, the value is still the default value, because Vue will pick up the oldInput
             // and use it instead of the prescribed value on the input
-            $response->assertSee(' value="' . $this->blockId . '"', false);
-            $response->assertDontSee(' value="' . $this->blockIds . '"', false);
+            $response->assertSee(' block="' . $this->blockId . '"', false);
+            $response->assertDontSee(' block="' . $this->blockIds . '"', false);
         });
     }
 

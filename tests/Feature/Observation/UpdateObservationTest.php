@@ -75,9 +75,9 @@ class UpdateObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertSee('label="Anforderungen"', false);
-        $response->assertSee('label="Eindruck"', false);
-        $response->assertSee('label="Kategorien"', false);
+        $response->assertSee(':all-requirements="[{&quot;id&quot;:', false);
+        $response->assertSee(':use-impressions="true"', false);
+        $response->assertSee('categories="[{&quot;id&quot;:', false);
     }
 
     public function test_shouldNotDisplayRequirementsSelect_whenNoRequirementsInCourse() {
@@ -89,7 +89,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertDontSee('label="Anforderungen"', false);
+        $response->assertDontSee(':all-requirements="[{', false);
     }
 
     public function test_shouldNotDisplayImpressionInput_whenDeactivatedInCourse() {
@@ -101,7 +101,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertDontSee('label="Eindruck"', false);
+        $response->assertDontSee(':use-impressions="true"', false);
     }
 
     public function test_shouldNotDisplayCategorySelect_whenNoCategoriesInCourse() {
@@ -113,7 +113,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertDontSee('label="Kategorien"', false);
+        $response->assertDontSee('categories="[{', false);
     }
 
     public function test_shouldUpdateObservation() {

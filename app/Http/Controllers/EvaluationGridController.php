@@ -38,7 +38,7 @@ class EvaluationGridController extends Controller {
             'evaluationGridRows' => $evaluationGridTemplate->evaluationGridRowTemplates
                 ->map(function($rowTemplate) { return [ 'notes' => null, 'value' => null, 'evaluation_grid_row_template_id' => $rowTemplate->id ]; })
                 ->keyBy('evaluation_grid_row_template_id'),
-            'participants' => $request->input('participant'),
+            'participants' => $request->input('participants'),
             'block' => $request->input('block'),
             'blocks' => $this->prioritize($evaluationGridTemplate->blocks, function(Block $block) { return $block->block_date->gt(Carbon::now()->subDays(2)); })
         ]);
@@ -105,9 +105,8 @@ class EvaluationGridController extends Controller {
      * @param Request $request
      */
     protected function rememberPreviouslyActiveView(Request $request) {
-        $previousFlash = $request->session()->get('participant_before_edit');
-        $returnTo = $this->extractPathParameter(URL::previous(), 'participants.detail', 'participant', $previousFlash);
-        $request->session()->flash('participant_before_edit', $request->session()->get('participant_before_edit', $returnTo));
+        $request->session()->keep('participant_before_edit');
+        $request->session()->flash('return_to', $request->session()->get('return_to', URL::previous()));
     }
 
     /**
@@ -136,13 +135,13 @@ class EvaluationGridController extends Controller {
      * @return RedirectResponse
      */
     protected function redirectToPreviouslyActiveView(Request $request, Course $course, Collection $returnOptions, $fallback = null) {
-        $returnTo = $request->session()->get('participant_before_edit');
-        if (!$returnOptions->contains($returnTo)) {
-            $returnTo = $returnOptions->first();
+        $previousParticipant = $request->session()->get('participant_before_edit');
+        if (!$returnOptions->contains($previousParticipant)) {
+            $previousParticipant = $returnOptions->first();
         }
 
-        if ($returnTo) return Redirect::to(route('participants.detail', ['course' => $course->id, 'participant' => $returnTo]));
-        return Redirect::to($fallback ?? URL::previous());
+        if ($previousParticipant) return Redirect::to(route('participants.detail', ['course' => $course->id, 'participant' => $previousParticipant]));
+        return Redirect::to($request->session()->get('return_to', $fallback ?: URL::previous()));
     }
 
     /**
