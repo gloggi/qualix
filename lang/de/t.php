@@ -673,6 +673,7 @@ return array(
 		),
 		"participant_details" => array(
 			"delete_observation_success" => "Beobachtung gelöscht.",
+			"delete_evaluation_grid_success" => "Beurteilungsraster gelöscht.",
 			"existing_observations" => "Beobachtungen",
 			"filter" => "Beobachtungen filtern",
 			"filter_by_author" => "Beobachtet von",
@@ -693,6 +694,7 @@ return array(
 			"feedbacks_using_observation" => "{0}|{1} Folgende Rückmeldung verwendet diese Beobachtung: :feedbacks|[2,*] Die folgenden :count Rückmeldungen verwenden diese Beobachtung: :feedbacks",
 			"page_title" => ":participantName",
 			"really_delete_observation" => "Willst du diese Beobachtung wirklich löschen?",
+			"really_delete_evaluation_grid" => "Willst du dieses Beurteilungsraster wirklich löschen?",
 			"title" => "TN Details",
 			"shown_observations" => ":filtered von :total Beobachtungen angezeigt",
 			"show_all" => "Alle anzeigen",

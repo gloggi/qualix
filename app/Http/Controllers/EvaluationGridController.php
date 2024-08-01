@@ -150,7 +150,7 @@ class EvaluationGridController extends Controller {
     public function destroy(Request $request, Course $course, EvaluationGridTemplate $evaluationGridTemplate, EvaluationGrid $evaluationGrid) {
         $participantId = $evaluationGrid->participants()->first()->id;
         $evaluationGrid->delete();
-        $request->session()->flash('alert-success', __('t.views.participant_details.delete_evaluationGrid_success'));
+        $request->session()->flash('alert-success', __('t.views.participant_details.delete_evaluation_grid_success'));
         return Redirect::route('participants.detail', ['course' => $course->id, 'participant' => $participantId]);
     }
 
