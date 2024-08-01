@@ -14,10 +14,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\RouteCollectionInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 class EvaluationGridController extends Controller {
     /**
@@ -29,6 +32,7 @@ class EvaluationGridController extends Controller {
      * @return Response
      */
     public function create(Request $request, Course $course, EvaluationGridTemplate $evaluationGridTemplate) {
+        $this->rememberPreviouslyActiveView($request);
         return view('evaluationGrid.new', [
             'evaluationGridTemplate' => $evaluationGridTemplate,
             'evaluationGridRows' => $evaluationGridTemplate->evaluationGridRowTemplates
@@ -92,7 +96,53 @@ class EvaluationGridController extends Controller {
             $request->session()->flash('alert-success', $flash);
         });
 
-        return Redirect::back();
+        return $this->redirectToPreviouslyActiveView($request, $course, collect([]), route('evaluationGrid.new', ['course' => $course->id, 'evaluation_grid_template' => $evaluationGridTemplate->id, 'participants' => $data['participants'], 'block' => $data['block']]));
+    }
+
+    /**
+     * Stores the participant which the user was just looking at into the session, for restoring the same view later.
+     *
+     * @param Request $request
+     */
+    protected function rememberPreviouslyActiveView(Request $request) {
+        $previousFlash = $request->session()->get('participant_before_edit');
+        $returnTo = $this->extractPathParameter(URL::previous(), 'participants.detail', 'participant', $previousFlash);
+        $request->session()->flash('participant_before_edit', $request->session()->get('participant_before_edit', $returnTo));
+    }
+
+    /**
+     * Parse a URL, interpret it as a route in our app and extract one of the parameters values.
+     *
+     * @param $url
+     * @param $routeName
+     * @param $parameterName
+     * @param $fallback
+     * @return string|object|null
+     */
+    protected function extractPathParameter($url, $routeName, $parameterName, $fallback) {
+        /** @var RouteCollectionInterface $routes */
+        $routes = Route::getRoutes();
+        return $routes->getByName($routeName)->bind(new Request([], [], [], [], [], ['REQUEST_URI' => $url]))->parameter($parameterName, $fallback);
+    }
+
+    /**
+     * Redirects the user back to the view that was remembered in the session previously. If the previously viewed
+     * participant is not in the passed options, falls back to the first viable option.
+     *
+     * @param Request $request
+     * @param Course $course
+     * @param Collection $returnOptions a collection of participant ids that are legal to be viewed
+     * @param string|null $fallback
+     * @return RedirectResponse
+     */
+    protected function redirectToPreviouslyActiveView(Request $request, Course $course, Collection $returnOptions, $fallback = null) {
+        $returnTo = $request->session()->get('participant_before_edit');
+        if (!$returnOptions->contains($returnTo)) {
+            $returnTo = $returnOptions->first();
+        }
+
+        if ($returnTo) return Redirect::to(route('participants.detail', ['course' => $course->id, 'participant' => $returnTo]));
+        return Redirect::to($fallback ?? URL::previous());
     }
 
     /**
@@ -104,6 +154,7 @@ class EvaluationGridController extends Controller {
      * @return Response
      */
     public function edit(Request $request, Course $course, EvaluationGridTemplate $evaluationGridTemplate, EvaluationGrid $evaluationGrid) {
+        $this->rememberPreviouslyActiveView($request);
         return view('evaluationGrid.edit', ['evaluationGridTemplate' => $evaluationGridTemplate, 'evaluationGrid' => $evaluationGrid]);
     }
 
@@ -136,7 +187,7 @@ class EvaluationGridController extends Controller {
 
         $request->session()->flash('alert-success', __('t.views.evaluation_grids.edit_success'));
 
-        return Redirect::back();
+        return $this->redirectToPreviouslyActiveView($request, $course, $evaluationGrid->participants()->pluck('participants.id'));
     }
 
     /**
