@@ -58,7 +58,7 @@ export default {
       nameFormValue: this.evaluationGridTemplate ? this.evaluationGridTemplate.name : '',
       requirementsFormValue: this.evaluationGridTemplate ? this.evaluationGridTemplate.requirements.map(r => r.id).join() : '',
       blocksFormValue: this.evaluationGridTemplate ? this.evaluationGridTemplate.blocks.map(r => r.id).join() : '',
-      rowTemplatesFormValue: this.evaluationGridTemplate ? this.evaluationGridTemplate.evaluation_grid_row_templates : [{}],
+      rowTemplatesFormValue: this.evaluationGridTemplate ? this.evaluationGridTemplate.evaluation_grid_row_templates : [{ order: 1 }],
     }
   },
 }

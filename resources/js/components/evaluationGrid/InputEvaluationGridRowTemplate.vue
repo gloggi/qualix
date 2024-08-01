@@ -25,6 +25,13 @@
       :allow-empty="false"
       narrow-form
     ></input-multi-select>
+    <input-text
+      type="number"
+      :name="`${name}[order]`"
+      :label="$t('t.models.evaluation_grid_row_template.order')"
+      v-model="currentValue.order"
+      narrow-form
+    ></input-text>
   </b-card>
 </template>
 

@@ -121,6 +121,7 @@ return array(
 				"heading" => "Zwischentitel",
 			),
 			"criterion" => "Kriterium",
+			"order" => "Sortierreihenfolge"
 		),
 		"feedback_requirement" => array(
 			"status" => "Status",

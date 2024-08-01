@@ -41,7 +41,7 @@ class EvaluationGridTemplateController extends Controller {
             $evaluationGridTemplate->blocks()->sync(array_filter(explode(',', $data['blocks'])));
             $evaluationGridTemplate->requirements()->sync(array_filter(explode(',', $data['requirements'])));
 
-            $this->createNewRowTemplates(collect($data['row_templates']), $evaluationGridTemplate);
+            $this->createNewRowTemplates($this->normalizeOrder($data['row_templates']), $evaluationGridTemplate);
 
             $request->session()->flash('alert-success', __('t.views.admin.evaluation_grid_templates.create_success', ['name' => $evaluationGridTemplate->name]));
             return Redirect::route('admin.evaluation_grid_templates', ['course' => $course->id]);
@@ -81,7 +81,7 @@ class EvaluationGridTemplateController extends Controller {
 
             /** @var Collection $currentRowTemplates */
             $currentRowTemplates = $evaluationGridTemplate->evaluationGridRowTemplates;
-            $specifiedRowTemplates = collect($data['row_templates'])->whereNotNull('id')->unique('id');
+            $specifiedRowTemplates = $this->normalizeOrder($data['row_templates'])->whereNotNull('id')->unique('id');
 
             $newRowTemplates = collect($data['row_templates'])->whereNull('id');
             $deletableRowTemplates = $currentRowTemplates->whereNotIn('id', $specifiedRowTemplates->pluck('id'));
@@ -89,7 +89,7 @@ class EvaluationGridTemplateController extends Controller {
 
             $this->createNewRowTemplates($newRowTemplates, $evaluationGridTemplate);
             $this->deleteRowTemplates($deletableRowTemplates);
-            $this->updateAndReorderRowTemplates($existingRowTemplates, $evaluationGridTemplate);
+            $this->updateRowTemplates($existingRowTemplates, $evaluationGridTemplate);
 
             $request->session()->flash('alert-success', __('t.views.admin.evaluation_grid_templates.edit_success', ['name' => $evaluationGridTemplate->name]));
             return Redirect::route('admin.evaluation_grid_templates', ['course' => $course->id]);
@@ -123,13 +123,19 @@ class EvaluationGridTemplateController extends Controller {
         ]);
     }
 
+    protected function normalizeOrder(array $data) {
+        return collect($data)
+            ->sortBy('order')
+            ->values()
+            ->map(function ($row, $index) { return [...$row, 'order' => $index + 1]; });
+    }
+
     protected function createNewRowTemplates(Collection $data, EvaluationGridTemplate $evaluationGridTemplate) {
         $newRowTemplates = $evaluationGridTemplate->evaluationGridRowTemplates()->createMany(
             $data
                 ->map(function ($rowTemplate, $index) use ($evaluationGridTemplate) {
                     return array_merge($rowTemplate, [
                         'evaluation_grid_template_id' => $evaluationGridTemplate->id,
-                        'order' => $index,
                     ]);
                 })
                 ->all()
@@ -152,12 +158,12 @@ class EvaluationGridTemplateController extends Controller {
         EvaluationGridRowTemplate::whereIn('id', $rowTemplates->pluck('id'))->delete();
     }
 
-    protected function updateAndReorderRowTemplates(Collection $rowTemplates, EvaluationGridTemplate $evaluationGridTemplate) {
-        $rowTemplates->each(function ($rowTemplateData, $index) use ($evaluationGridTemplate) {
+    protected function updateRowTemplates(Collection $rowTemplates, EvaluationGridTemplate $evaluationGridTemplate) {
+        $rowTemplates->each(function ($rowTemplateData) use ($evaluationGridTemplate) {
             $evaluationGridTemplate
                 ->evaluationGridRowTemplates()
                 ->where('id', $rowTemplateData['id'])
-                ->update(array_merge($rowTemplateData, ['order' => $index]));
+                ->update($rowTemplateData);
 
             // TODO update or clear any existing data in connected evaluation grid row instances, in case the control type or config has changed
         });

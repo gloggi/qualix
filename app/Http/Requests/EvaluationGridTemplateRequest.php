@@ -20,6 +20,7 @@ class EvaluationGridTemplateRequest extends FormRequest {
             'row_templates' => 'required',
             'row_templates.*.criterion' => 'required|max:65535',
             'row_templates.*.control_type' => 'required|in:' . implode(',', EvaluationGridRowTemplate::CONTROL_TYPES),
+            'row_templates.*.order' => 'nullable|numeric',
         ];
     }
 
