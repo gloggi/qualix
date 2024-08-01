@@ -659,9 +659,12 @@ return array(
 			"here" => "hier",
 			"menu_name" => "Überblick",
 			"no_participants" => "Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie :here.",
+			"no_evaluation_grid" => "keines",
 			"no_feedback" => "keine",
 			"page_title" => "Beobachtungs-Überblick",
 			"title" => "Beobachtungs-Überblick",
+			"show_all_evaluation_grids" => "Alle anzeigen",
+			"show_evaluation_grids" => "Beurteilungsraster anzeigen:",
 			"show_feedbacks" => "Rückmeldung anzeigen:",
 		),
 		"participants" => array(
