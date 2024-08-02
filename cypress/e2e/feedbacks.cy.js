@@ -31,7 +31,9 @@ describe('feedback editor', () => {
     cy.contains('Automatisch gespeichert')
     cy.get('a.btn-link').first().click()
 
-    cy.get('[title="Drucken"]').click()
+    cy.get('div.card').contains('Rückmeldungen').parent().within(() => {
+      cy.get('[title="Drucken"]').click()
+    })
     cy.contains('PDF wird generiert...')
     cy.contains('PDF wurde heruntergeladen')
 

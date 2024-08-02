@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Models\Block;
 use App\Models\Course;
+use App\Models\EvaluationGrid;
+use App\Models\EvaluationGridTemplate;
 use App\Models\Feedback;
 use App\Models\FeedbackData;
 use App\Models\Observation;
@@ -83,6 +85,19 @@ class E2EScenario extends Command
                     ->withRequirements()
                     ->withObservations()
                 ), 'feedback_datas'
+            )
+            ->has(EvaluationGridTemplate::factory()
+                ->count(2)
+                ->withBlocks()
+                ->withRequirements()
+                ->withRowTemplates()
+                ->has(EvaluationGrid::factory()
+                    ->count(4)
+                    ->withBlock()
+                    ->fromRandomUser()
+                    ->maybeMultiParticipant()
+                    ->withRows()
+                )
             )
             ->create();
 

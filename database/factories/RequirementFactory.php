@@ -24,7 +24,6 @@ class RequirementFactory extends Factory {
             'macht sich Gedanken über die Machbarkeit einer Aktivität und kann wenn nötig Anpassungen vornehmen',
             'zeigt aktiv, dass er/sie eine Gruppe stufengerecht anleiten kann',
             'kann einen Höck selbständig vorbereiten und leiten',
-            'verstösst nicht grob gegen die Kursregeln',
             'kann ein stufengerechtes Pfadiprogramm gestalten',
             'kann sich Überlegungen zu stufengerechtem und ausgewogenem Programm machen',
             'kann ein Team und eine Gruppe aktiv anleiten',
