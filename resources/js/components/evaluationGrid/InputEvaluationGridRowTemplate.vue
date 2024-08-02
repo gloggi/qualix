@@ -29,7 +29,7 @@
       type="number"
       :name="`${name}[order]`"
       :label="$t('t.models.evaluation_grid_row_template.order')"
-      v-model="currentValue.order"
+      v-model="order"
       narrow-form
     ></input-text>
   </b-card>
@@ -60,6 +60,15 @@ export default {
         label: this.$t(`t.models.evaluation_grid_row_template.control_types.${controlType}`)
       }))
     },
+    order: {
+      // BootstrapVue's number input expects a string value, but this field really is a number
+      get() {
+        return String(this.currentValue['order'])
+      },
+      set(newValue) {
+        this.currentValue['order'] = parseInt(newValue)
+      },
+    }
   },
 }
 </script>
