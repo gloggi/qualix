@@ -92,8 +92,8 @@
                     { label: $t('t.models.evaluation_grid.user'), value: evaluationGrid => evaluationGrid.user.name },
                 ]"
                 :actions="{
-                    print: evaluationGrid => ['button-print-evaluation-grid', { courseId: {{ $course->id }}, evaluationGridTemplateId: evaluationGrid.evaluation_grid_template_id, evaluationGridId: evaluationGrid.id }],
                     edit: evaluationGrid => routeUri('evaluationGrid.edit', {course: {{ $course->id }}, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id}),
+                    print: evaluationGrid => ['button-print-evaluation-grid', { courseId: {{ $course->id }}, evaluationGridTemplateId: evaluationGrid.evaluation_grid_template_id, evaluationGridId: evaluationGrid.id }],
                     delete: evaluationGrid => ({ text: this.$t('t.views.participant_details.really_delete_evaluation_grid'), route: ['evaluationGrid.delete', {course: {{ $course->id }}, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id}] }),
                 }">
 
