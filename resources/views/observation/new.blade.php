@@ -21,7 +21,7 @@
             block="{{ $block }}"
             :all-blocks="{{ json_encode($blocks->map->only('id', 'blockname_and_number', 'requirement_ids')) }}"
             :course-id="{{ $course->id }}"
-            :evaluation-grid-templates-mapping="{{ json_encode($course->evaluationGridTemplatesPerBlock()) }}"
+            :evaluation-grid-templates-mapping="{{ json_encode($course->evaluationGridTemplatesPerBlock(), JSON_FORCE_OBJECT) }}"
             requirements="{{ old('requirements') }}"
             :all-requirements="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
             :use-impressions="{{ $course->uses_impressions ? 'true' : 'false' }}"

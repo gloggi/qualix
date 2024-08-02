@@ -64,7 +64,7 @@
                                             <button-new-evaluation-grid
                                                 :course-id="{{ $course->id }}"
                                                 block-id="{{ $block->id }}"
-                                                :evaluation-grid-templates-mapping="{{ json_encode($evaluationGridTemplates) }}" />
+                                                :evaluation-grid-templates-mapping="{{ json_encode($evaluationGridTemplates, JSON_FORCE_OBJECT) }}" />
                                         </b-list-group-item>
                                     @endif
                                     @if($showObservationAssignments && isset($trainerObservationAssignments[$block->id]))
