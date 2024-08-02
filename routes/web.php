@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->scopeBindings()->gro
 
     Route::get('/course/{course}/crib/{user?}', [BlockListController::class, 'crib'])->name('crib');
 
+    // This route must be defined above feedbackContent.print, in order to make sure "print" isn't interpreted as an evaluation grid id
     Route::get('/course/{course}/evaluation_grid/{evaluation_grid_template}/print', [EvaluationGridTemplateController::class, 'print'])->name('admin.evaluation_grid_templates.print');
 
     Route::middleware('courseNotArchived')->group(function () {
@@ -142,9 +143,11 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->scopeBindings()->gro
     Route::delete('/course/{course}/admin/feedbacks/{feedback_data}', [FeedbackController::class, 'destroy'])->name('admin.feedbacks.delete');
 
     Route::get('/course/{course}/admin/evaluation_grids', [EvaluationGridTemplateController::class, 'index'])->name('admin.evaluation_grid_templates');
-    Route::post('/course/{course}/admin/evaluation_grids', [EvaluationGridTemplateController::class, 'store'])->name('admin.evaluation_grid_templates.store');
-    Route::get('/course/{course}/admin/evaluation_grids/{evaluation_grid_template}', [EvaluationGridTemplateController::class, 'edit'])->name('admin.evaluation_grid_templates.edit');
-    Route::post('/course/{course}/admin/evaluation_grids/{evaluation_grid_template}', [EvaluationGridTemplateController::class, 'update'])->name('admin.evaluation_grid_templates.update');
+    Route::middleware('courseNotArchived')->group(function() {
+        Route::post('/course/{course}/admin/evaluation_grids', [EvaluationGridTemplateController::class, 'store'])->name('admin.evaluation_grid_templates.store');
+        Route::get('/course/{course}/admin/evaluation_grids/{evaluation_grid_template}', [EvaluationGridTemplateController::class, 'edit'])->name('admin.evaluation_grid_templates.edit');
+        Route::post('/course/{course}/admin/evaluation_grids/{evaluation_grid_template}', [EvaluationGridTemplateController::class, 'update'])->name('admin.evaluation_grid_templates.update');
+    });
     Route::delete('/course/{course}/admin/evaluation_grids/{evaluation_grid_template}', [EvaluationGridTemplateController::class, 'destroy'])->name('admin.evaluation_grid_templates.delete');
 
     Route::get('/newcourse', [CourseController::class, 'create'])->name('admin.newcourse');

@@ -38,7 +38,9 @@
                     { label: $t('t.models.evaluation_grid_template.name'), value: evaluationGridTemplate => evaluationGridTemplate.name },
                 ]"
                 :actions="{
-                    edit: evaluationGridTemplate => routeUri('admin.evaluation_grid_templates.edit', {course: {{ $course->id }}, evaluation_grid_template: evaluationGridTemplate.id}),
+                    @if(!$course->archived)
+                        edit: evaluationGridTemplate => routeUri('admin.evaluation_grid_templates.edit', {course: {{ $course->id }}, evaluation_grid_template: evaluationGridTemplate.id}),
+                    @endif
                     print: evaluationGridTemplate => ['button-print-evaluation-grid', { courseId: {{ $course->id }}, evaluationGridTemplateId: evaluationGridTemplate.id }],
                     delete: evaluationGridTemplate => ({
                         text: $t('t.views.admin.evaluation_grid_templates.really_delete', evaluationGridTemplate),

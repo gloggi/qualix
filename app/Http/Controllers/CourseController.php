@@ -117,6 +117,7 @@ class CourseController extends Controller {
             $course->observations()->delete();
             $course->observationAssignments()->delete();
             $course->participantGroups()->delete();
+            $course->evaluationGrids()->delete();
             $course->update(['archived' => true]);
         });
         // Perform the image deletion after database deletion, so that a failing image doesn't prevent the whole deletion operation.
