@@ -76,6 +76,7 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $this->createObservationAssignment();
         $this->createParticipantGroup();
         $this->post('/course/' . $this->courseId . '/admin/invitation', ['email' => 'invited@test.com']);
+        $this->createEvaluationGrid();
         $numBlocks = Block::all()->count();
         $numCategories = Category::all()->count();
         $numCourses = Course::all()->count();

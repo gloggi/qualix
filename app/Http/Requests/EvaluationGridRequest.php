@@ -15,8 +15,8 @@ class EvaluationGridRequest extends FormRequest {
     public function rules() {
         return [
             'participants' => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse',
-            'block' => 'required|regex:/^\d+$/|existsInCourse',
-            'rows.*.value' => 'nullable|json',
+            'block' => 'required|regex:/^\d+$/|existsInEvaluationGridTemplate:evaluation_grid_templates_blocks,block_id',
+            'rows.*.value' => 'nullable|numeric',
             'rows.*.notes' => 'nullable|max:'.Observation::CHAR_LIMIT,
         ];
     }

@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\Course;
+use App\Models\EvaluationGrid;
 use App\Models\EvaluationGridTemplate;
 use App\Models\Observation;
 use App\Models\ObservationAssignment;
@@ -51,6 +52,20 @@ abstract class TestCaseWithBasicData extends TestCaseWithCourse
             ->withBlocks(1)
             ->withRequirements(1)
             ->withRowTemplates()
+            ->create()
+            ->id;
+    }
+
+    protected function createEvaluationGrid($evaluationGridTemplateId = null, $blockId = null) {
+        if ($evaluationGridTemplateId == null) {
+            $evaluationGridTemplateId = $this->createEvaluationGridTemplate();
+        }
+        return EvaluationGrid::factory()
+            ->state(['evaluation_grid_template_id' => $evaluationGridTemplateId])
+            ->withBlock($blockId)
+            ->fromRandomUser()
+            ->maybeMultiParticipant()
+            ->withRows()
             ->create()
             ->id;
     }

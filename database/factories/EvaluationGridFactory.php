@@ -24,16 +24,26 @@ class EvaluationGridFactory extends Factory {
         return [];
     }
 
-    public function withBlock() {
-        return $this->state(function (array $state, EvaluationGridTemplate $evaluationGridTemplate) {
-            return [
-                'block_id' => $this->faker->randomElement($evaluationGridTemplate->course->blocks->map->id)
-            ];
+    public function withBlock($blockId = null) {
+        return $this->state(function (array $state, ?EvaluationGridTemplate $evaluationGridTemplate = null) use ($blockId) {
+            if ($evaluationGridTemplate == null) {
+                $evaluationGridTemplate = EvaluationGridTemplate::find($state['evaluation_grid_template_id']);
+            }
+            if ($blockId == null) {
+                $options = $evaluationGridTemplate->blocks()->count() > 0 ?
+                    $evaluationGridTemplate->blocks()->get() :
+                    $evaluationGridTemplate->course->blocks()->get();
+                $blockId = $this->faker->randomElement($options->map->id);
+            }
+            return [ 'block_id' => $blockId ];
         });
     }
 
     public function fromRandomUser() {
-        return $this->state(function (array $state, EvaluationGridTemplate $evaluationGridTemplate) {
+        return $this->state(function (array $state, ?EvaluationGridTemplate $evaluationGridTemplate = null) {
+            if ($evaluationGridTemplate == null) {
+                $evaluationGridTemplate = EvaluationGridTemplate::find($state['evaluation_grid_template_id']);
+            }
             return [
                 'user_id' => $this->faker->randomElement($evaluationGridTemplate->course->users->map->id),
             ];
@@ -45,11 +55,11 @@ class EvaluationGridFactory extends Factory {
             if (!($evaluationGridTemplate = $evaluationGrid->evaluationGridTemplate()->first())) return;
             if (!($course = $evaluationGridTemplate->course)) return;
             $numParticipants = $course->participants()->count();
-            if ($numParticipants <= 1) return;
+            if ($numParticipants == 0) return;
 
             $numParticipants = 1;
-            // Only a fraction of observations are multi-participant
-            if ($this->faker->randomNumber(2) < $percentage) $numParticipants = $this->faker->biasedNumberBetween(2, min($numParticipants, 4));
+            // Only a fraction of evaluation grids are multi-participant
+            if ($this->faker->randomNumber(2) < $percentage) $numParticipants = min($numParticipants, $this->faker->biasedNumberBetween(2, min($numParticipants, 4)));
 
             $evaluationGrid->participants()->sync(
                 $this->faker->randomElements($course->participants->map->id->all(), $numParticipants)
