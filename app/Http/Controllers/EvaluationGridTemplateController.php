@@ -79,9 +79,11 @@ class EvaluationGridTemplateController extends Controller {
             $evaluationGridTemplate->blocks()->sync(array_filter(explode(',', $data['blocks'])));
             $evaluationGridTemplate->requirements()->sync(array_filter(explode(',', $data['requirements'])));
 
+            $data['row_templates'] = $this->normalizeOrder($data['row_templates']);
+
             /** @var Collection $currentRowTemplates */
             $currentRowTemplates = $evaluationGridTemplate->evaluationGridRowTemplates;
-            $specifiedRowTemplates = $this->normalizeOrder($data['row_templates'])->whereNotNull('id')->unique('id');
+            $specifiedRowTemplates = $data['row_templates']->whereNotNull('id')->unique('id');
 
             $newRowTemplates = collect($data['row_templates'])->whereNull('id');
             $deletableRowTemplates = $currentRowTemplates->whereNotIn('id', $specifiedRowTemplates->pluck('id'));

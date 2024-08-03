@@ -8,9 +8,9 @@ use App\Models\ObservationAssignment;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
-use Tests\TestCaseWithCourse;
+use Tests\TestCaseWithBasicData;
 
-class ReadCribTest extends TestCaseWithCourse {
+class ReadCribTest extends TestCaseWithBasicData {
 
     protected $safetyRequirementId;
     protected $basicsRequirementId;
@@ -38,6 +38,7 @@ class ReadCribTest extends TestCaseWithCourse {
 
     public function test_shouldDisplayMessage_whenNoBlocksInCourse() {
         // given
+        Course::find($this->courseId)->blocks()->delete();
 
         // when
         $response = $this->get('/course/' . $this->courseId . '/crib');
@@ -189,6 +190,19 @@ class ReadCribTest extends TestCaseWithCourse {
         $this->assertEquals($block2Participant2['scout_name'], 'Two');
         $this->assertEquals($block2Participant2['observation_assignment_names'], $observationAssignment1['name'].", ".$observationAssignment2['name']);
 
+    }
+
+    public function test_shouldDisplayEvaluationGrids() {
+        // given
+        $evaluationGridTemplateId = $this->createEvaluationGridTemplate('Crib test evaluation grid');
+        $this->createEvaluationGrid($evaluationGridTemplateId);
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/crib');
+
+        // then
+        $response->assertOk();
+        $response->assertSee('Crib test evaluation grid');
     }
 
     public function test_shouldReturnToObservationForm_afterAddingObservationInAssignment() {

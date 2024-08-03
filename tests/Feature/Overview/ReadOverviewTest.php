@@ -142,6 +142,19 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $response->assertSee('&quot;Co&lt;i&gt;si&lt;\/i&gt;nus&#039;\&quot;&quot;', false);
     }
 
+    public function test_shouldNotUseWideLayout_whenNoFeedbackAndNoEvaluationGridTemplateIsSelected() {
+        // given
+        Feedback::find($this->createFeedback())->feedback_data_id;
+        $this->createEvaluationGridTemplate();
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('<b-container :fluid="true">', false);
+    }
+
     public function test_shouldNotShowFeedbackDropdown_whenNoFeedbacksInCourse() {
         // given
         Course::find($this->courseId)->feedback_datas()->delete();
@@ -169,18 +182,6 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $response->assertSee(':value="&quot;0&quot;"', false);
         $response->assertSee('Zwischenquali');
         $response->assertDontSee(':value="&quot;'. $feedbackDataId .'&quot;"', false);
-    }
-
-    public function test_shouldNotUseWideLayout_whenNoFeedbackIsSelected() {
-        // given
-        $feedbackDataId = Feedback::find($this->createFeedback())->feedback_data_id;
-
-        // when
-        $response = $this->get('/course/' . $this->courseId . '/overview');
-
-        // then
-        $response->assertOk();
-        $response->assertDontSee('<b-container :fluid="true">', false);
     }
 
     public function test_shouldNotPassFeedbackToOverviewTable_whenNoFeedbackIsSelected() {
@@ -235,5 +236,87 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $response->assertOk();
         $response->assertSee(':feedback-data="{', false);
         $response->assertDontSee(':feedback-data="null"', false);
+    }
+
+    public function test_shouldNotShowEvaluationGridTemplateDropdown_whenNoEvaluationGridTemplatesInCourse() {
+        // given
+        Course::find($this->courseId)->evaluation_grid_templates()->delete();
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview');
+
+        // then
+        $response->assertOk();
+        $response->assertDontSee('Beurteilungsraster anzeigen:');
+        $response->assertDontSee('keines');
+    }
+
+    public function test_shouldSelectNoEvaluationGridByDefault() {
+        // given
+        $evaluationGridTemplateId = $this->createEvaluationGridTemplate('Test Beurteilungsraster');
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview');
+
+        // then
+        $response->assertOk();
+        $response->assertSee('Beurteilungsraster anzeigen:');
+        $response->assertSee('keines');
+        $response->assertSee(':value="&quot;0&quot;"', false);
+        $response->assertSee('Test Beurteilungsraster');
+        $response->assertDontSee(':value="&quot;'. $evaluationGridTemplateId .'&quot;"', false);
+    }
+
+    public function test_shouldNotPassEvaluationGridTemplateToOverviewTable_whenNoEvaluationGridTemplateIsSelected() {
+        // given
+        $this->createEvaluationGridTemplate('Test Beurteilungsraster');
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview');
+
+        // then
+        $response->assertOk();
+        $response->assertSee(':evaluation-grid-templates="[]"', false);
+    }
+
+    public function test_shouldShowSelectedEvaluationGridTemplate_whenEvaluationGridTemplateIsSelected() {
+        // given
+        $evaluationGridTemplateId = $this->createEvaluationGridTemplate('Test Beurteilungsraster');
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview/?evaluation_grid_templates=' . $evaluationGridTemplateId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee('Beurteilungsraster anzeigen:');
+        $response->assertSee('keines');
+        $response->assertDontSee(':value="&quot;0&quot;"', false);
+        $response->assertSee('Test Beurteilungsraster');
+        $response->assertSee(':value="&quot;'. $evaluationGridTemplateId .'&quot;"', false);
+    }
+
+    public function test_shouldUseWideLayout_whenEvaluationGridTemplateIsSelected() {
+        // given
+        $evaluationGridTemplateId = $this->createEvaluationGridTemplate('Test Beurteilungsraster');
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview/?evaluation_grid_templates=' . $evaluationGridTemplateId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee('<b-container :fluid="true">', false);
+    }
+
+    public function test_shouldPassEvaluationGridTemplateToOverviewTable_whenEvaluationGridTemplateIsSelected() {
+        // given
+        $evaluationGridTemplateId = $this->createEvaluationGridTemplate('Test Beurteilungsraster');
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview/?evaluation_grid_templates=' . $evaluationGridTemplateId);
+
+        // then
+        $response->assertOk();
+        $response->assertSee(':evaluation-grid-templates="[{', false);
+        $response->assertDontSee(':evaluation-grid-templates="[]"', false);
     }
 }

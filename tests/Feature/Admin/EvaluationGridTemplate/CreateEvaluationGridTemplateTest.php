@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin\EvaluationGridTemplate;
 
 use App\Models\Course;
+use App\Models\EvaluationGridRowTemplate;
 use App\Models\EvaluationGridTemplate;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
@@ -422,5 +423,101 @@ class CreateEvaluationGridTemplateTest extends TestCaseWithBasicData {
         // then
         $response->assertOk();
         $response->assertDontSee('Bisher sind keine Beurteilungsraster erfasst.');
+    }
+
+    public function test_shouldValidateNewEvaluationGridRowTemplateData_noCriterion() {
+        // given
+        $payload = $this->payload;
+        unset($payload['row_templates'][0]['criterion']);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Kriterium muss ausgefüllt sein.', $exception->validator->errors()->first());
+    }
+
+    public function test_shouldValidateNewEvaluationGridRowTemplateData_longCriterion() {
+        // given
+        $payload = $this->payload;
+        $payload['row_templates'][0]['criterion'] = str_repeat('a', 65536);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Kriterium darf maximal 65535 Zeichen haben.', $exception->validator->errors()->first());
+    }
+
+    public function test_shouldValidateNewEvaluationGridRowTemplateData_noControlType() {
+        // given
+        $payload = $this->payload;
+        unset($payload['row_templates'][0]['control_type']);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Typ muss ausgefüllt sein.', $exception->validator->errors()->first());
+    }
+
+    public function test_shouldValidateNewEvaluationGridRowTemplateData_invalidControlType() {
+        // given
+        $payload = $this->payload;
+        $payload['row_templates'][0]['control_type'] = 'foobar';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Typ ist ungültig.', $exception->validator->errors()->first());
+    }
+
+    public function test_shouldValidateNewEvaluationGridRowTemplateData_invalidOrder() {
+        // given
+        $payload = $this->payload;
+        $payload['row_templates'][0]['order'] = 'foobar';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Sortierreihenfolge muss eine Zahl sein.', $exception->validator->errors()->first());
+    }
+
+    public function test_shouldValidateNewEvaluationGridRowTemplateData_reassignsOrderDuringUpdate() {
+        // given
+        $payload = $this->payload;
+        $payload['row_templates'][0]['order'] = 3;
+        $payload['row_templates'][0]['criterion'] = 'Test criterion 3';
+        $payload['row_templates'][1]['order'] = 5;
+        $payload['row_templates'][1]['criterion'] = 'Test criterion 5';
+        $payload['row_templates'][2]['order'] = -10;
+        $payload['row_templates'][2]['criterion'] = 'Test criterion -10';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids', $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/evaluation_grids');
+        $this->assertEquals(1, EvaluationGridRowTemplate::where(['criterion' => 'Test criterion -10'])->first()->order);
+        $this->assertEquals(2, EvaluationGridRowTemplate::where(['criterion' => 'Test criterion 3'])->first()->order);
+        $this->assertEquals(3, EvaluationGridRowTemplate::where(['criterion' => 'Test criterion 5'])->first()->order);
     }
 }
