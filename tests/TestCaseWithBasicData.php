@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use App\Models\Course;
+use App\Models\EvaluationGridTemplate;
 use App\Models\Observation;
 use App\Models\ObservationAssignment;
 use App\Models\ParticipantGroup;
@@ -40,5 +42,16 @@ abstract class TestCaseWithBasicData extends TestCaseWithCourse
         $observation_assignment->blocks()->attach(($blockIds !== null ? Arr::wrap($blockIds) : [$this->blockId]));
         $observation_assignment->users()->attach(($userIds !== null ? Arr::wrap($userIds) : [Auth::id()]));
         return $observation_assignment->id;
+    }
+
+    protected function createEvaluationGridTemplate($name = 'Unternehmungsplanung', $courseId = null) {
+        $course = Course::find($courseId === null ? $this->courseId : $courseId);
+        return EvaluationGridTemplate::factory()
+            ->state(['name' => $name, 'course_id' => $course->id])
+            ->withBlocks(1)
+            ->withRequirements(1)
+            ->withRowTemplates()
+            ->create()
+            ->id;
     }
 }

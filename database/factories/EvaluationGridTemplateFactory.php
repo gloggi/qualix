@@ -40,24 +40,27 @@ class EvaluationGridTemplateFactory extends Factory {
         ];
     }
 
-    public function withBlocks() {
-        return $this->afterCreating(function (EvaluationGridTemplate $evaluationGridTemplate) {
+    public function withBlocks($count = null) {
+        return $this->afterCreating(function (EvaluationGridTemplate $evaluationGridTemplate) use ($count) {
             if (!($course = $evaluationGridTemplate->course)) return;
             if ($course->blocks()->count() == 0) return;
 
             $blockIds = $evaluationGridTemplate->evaluationGrids()->get()->flatMap->blocks->map->id->unique();
-            if ($blockIds->count() == 0) $blockIds = $this->faker->randomElements($course->blocks->map->id, $this->faker->biasedNumberBetween(1, 6));
+            if ($count === null) $count = $this->faker->biasedNumberBetween(1, 6);
+            if ($blockIds->count() == 0) $blockIds = $this->faker->randomElements($course->blocks->map->id, $count);
             $evaluationGridTemplate->blocks()->attach($blockIds);
         });
     }
 
-    public function withRequirements() {
-        return $this->afterCreating(function (EvaluationGridTemplate $evaluationGridTemplate) {
+    public function withRequirements($count = null) {
+        return $this->afterCreating(function (EvaluationGridTemplate $evaluationGridTemplate) use ($count) {
             if (!($course = $evaluationGridTemplate->course)) return;
             if ($course->requirements()->count() == 0) return;
 
+            if ($count === null) $count = $this->faker->biasedNumberBetween(1, 3);
+
             $evaluationGridTemplate->requirements()->attach(
-                $this->faker->randomElements($course->requirements->map->id, $this->faker->biasedNumberBetween(1, 3))
+                $this->faker->randomElements($course->requirements->map->id, $count)
             );
         });
     }
