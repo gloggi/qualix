@@ -1,6 +1,6 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <span class="col-form-label" :class="labelClass">{{ label }}</span>
+    <label :for="name | kebabCase" class="col-form-label" :class="labelClass">{{ label }}</label>
 
     <div :class="inputColumnClass">
       <multi-select
@@ -25,6 +25,8 @@
       <span v-if="errorMessage" class="invalid-feedback" role="alert">
         <strong>{{ errorMessage }}</strong>
       </span>
+
+      <slot name="below" :value="currentValue"></slot>
     </div>
   </div>
 </template>

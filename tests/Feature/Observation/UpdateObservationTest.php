@@ -75,9 +75,9 @@ class UpdateObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertSee('label="Anforderungen"', false);
-        $response->assertSee('label="Eindruck"', false);
-        $response->assertSee('label="Kategorien"', false);
+        $response->assertSee(':all-requirements="[{&quot;id&quot;:', false);
+        $response->assertSee(':use-impressions="true"', false);
+        $response->assertSee('categories="[{&quot;id&quot;:', false);
     }
 
     public function test_shouldNotDisplayRequirementsSelect_whenNoRequirementsInCourse() {
@@ -89,7 +89,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertDontSee('label="Anforderungen"', false);
+        $response->assertDontSee(':all-requirements="[{', false);
     }
 
     public function test_shouldNotDisplayImpressionInput_whenDeactivatedInCourse() {
@@ -101,7 +101,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertDontSee('label="Eindruck"', false);
+        $response->assertDontSee(':use-impressions="true"', false);
     }
 
     public function test_shouldNotDisplayCategorySelect_whenNoCategoriesInCourse() {
@@ -113,7 +113,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
 
         // then
         $response->assertOk();
-        $response->assertDontSee('label="Kategorien"', false);
+        $response->assertDontSee('categories="[{', false);
     }
 
     public function test_shouldUpdateObservation() {
@@ -127,6 +127,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertRedirect('/course/' . $this->courseId . '/participants/' . $this->participantId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
+        $response->assertSee('Beobachtung aktualisiert.');
         $response->assertSee($this->payload['content']);
         $response->assertDontSee('hat gut mitgemacht');
     }
@@ -174,6 +175,9 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/participants/' . $participantId);
         $this->assertEquals([$participantId], Observation::latest()->first()->participants->pluck('id')->all());
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee('Beobachtung aktualisiert.');
     }
 
     public function test_shouldValidateNewObservationData_multipleValidParticipantIds() {
@@ -189,6 +193,9 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $response->assertStatus(302);
         $response->assertRedirect('/course/' . $this->courseId . '/participants/' . $participantIds[0]);
         $this->assertEquals($participantIds, Observation::latest()->first()->participants->pluck('id')->all());
+        /** @var TestResponse $response */
+        $response = $response->followRedirects();
+        $response->assertSee('Beobachtung aktualisiert.');
     }
 
     public function test_shouldValidateNewObservationData_someNonexistentParticipantIds() {
@@ -221,24 +228,6 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         /** @var ValidationException $exception */
         $exception = $response->exception;
         $this->assertEquals('TN Format ist ungültig.', $exception->validator->errors()->first('participants'));
-    }
-
-    public function test_shouldValidateNewObservationData_multipleValidParticipantIds_shouldWork() {
-        // given
-        $participantId2 = $this->createParticipant('Pfnörch');
-        $participantIds = $this->participantId . ',' . $participantId2;
-        $payload = $this->payload;
-        $payload['participants'] = $participantIds;
-
-        // when
-        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
-
-        // then
-        $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/participants/' . $this->participantId);
-        /** @var TestResponse $response */
-        $response = $response->followRedirects();
-        $response->assertSee('Beobachtung aktualisiert.');
     }
 
     public function test_shouldValidateNewObservationData_noComment() {

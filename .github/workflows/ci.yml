@@ -13,13 +13,13 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - run: docker-compose up -d qualix db node mail
+      - run: docker compose up -d qualix db node mail
 
       - uses: ./.github/actions/wait-for-container-startup
 
-      - run: docker-compose exec -T qualix php artisan config:clear --env=testing
+      - run: docker compose exec -T qualix php artisan config:clear --env=testing
 
-      - run: docker-compose exec -T qualix vendor/bin/phpunit
+      - run: docker compose exec -T qualix vendor/bin/phpunit
 
   frontend-tests:
     name: "Frontend tests"
@@ -28,11 +28,11 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - run: docker-compose up -d qualix db node mail
+      - run: docker compose up -d qualix db node mail
 
       - uses: ./.github/actions/wait-for-container-startup
 
-      - run: docker-compose exec -T node npm run test
+      - run: docker compose exec -T node npm run test
 
   e2e-tests:
     name: "End-to-end tests"
@@ -41,11 +41,11 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - run: docker-compose up -d qualix db node mail e2e-mocks
+      - run: docker compose up -d qualix db node mail e2e-mocks
 
       - uses: ./.github/actions/wait-for-container-startup
 
-      - run: docker-compose run e2e run
+      - run: docker compose run e2e run
 
       - uses: actions/upload-artifact@v4
         if: always()

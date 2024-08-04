@@ -112,6 +112,11 @@ export default {
       shouldHighlightTrainerAssignments: this.highlightTrainerAssignments,
     }
   },
+  provide() {
+    return {
+      evaluationGrids: [],
+    }
+  },
   computed: {
     allParticipantGroups() {
       return {

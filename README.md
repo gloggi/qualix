@@ -9,13 +9,13 @@ Wir benützen [Phrase](https://phrase.com), um Qualix auch in anderen Sprachen a
 
 ## Lokale Installation
 
-Qualix ist ein PHP-Projekt basierend auf dem Framework Laravel. Wir verwenden [docker-compose](https://docs.docker.com/compose/install/) um es lokal zur Entwicklung laufen zu lassen. Wenn du auf Linux arbeitest, musst du zuerst noch separat [Docker für Linux](https://docs.docker.com/install/#server) installieren.
+Qualix ist ein PHP-Projekt basierend auf dem Framework Laravel. Wir verwenden [docker compose](https://docs.docker.com/compose/install/) um es lokal zur Entwicklung laufen zu lassen. Wenn du auf Linux arbeitest, musst du zuerst noch separat [Docker für Linux](https://docs.docker.com/install/#server) installieren.
 
 Um Qualix laufen zu lassen, musst du nur den Quellcode mit Git herunterladen und die Container starten:
 ```
 git clone https://github.com/gloggi/qualix.git
 cd qualix
-docker-compose up
+docker compose up
 ```
 
 Wenn sich der Output beruhigt hat (wenn im Output mehrere Zeilen mit `qualix-npm` und `[emitted]` stehen), kannst du dein lokales Qualix unter <http://localhost> und das Datenbank-Tool phpMyAdmin unter <http://localhost:8081> aufrufen.
@@ -27,29 +27,29 @@ Wenn du E-Mails in deiner Qualix-Kopie auslöst (zum Beispiel beim Passwort-Rese
 Da alles was mit Qualix zu tun hat, inklusive PHP, Composer, artisan, etc. nur im Container läuft, musst du entsprechende Befehle auch in den Container hinein absetzen. Hier ein Paar Beispiele:
 
 ```
-docker-compose exec qualix composer update
-docker-compose exec qualix php artisan tinker
-docker-compose exec qualix php -v
+docker compose exec qualix composer update
+docker compose exec qualix php artisan tinker
+docker compose exec qualix php -v
 ```
 
 ### Tests laufen lassen
 
-Für sämtliche Tests müssen zuerst die Container laufen (`docker-compose up`).
+Für sämtliche Tests müssen zuerst die Container laufen (`docker compose up`).
 
 #### PHP Unit Tests
 
 Vor den Unit Tests musst du einmalig die gecachete Config löschen:
 ```
-docker-compose exec qualix php artisan config:clear --env=testing
+docker compose exec qualix php artisan config:clear --env=testing
 ```
 
 Danach kannst du die Unit Tests mit PHPUnit laufen lassen:
 ```
 # Alle Unit Tests
-docker-compose exec qualix vendor/bin/phpunit
+docker compose exec qualix vendor/bin/phpunit
 
 # Nur Unit Tests die "Course" im Namen haben
-docker-compose exec qualix vendor/bin/phpunit --filter=Course
+docker compose exec qualix vendor/bin/phpunit --filter=Course
 ```
 
 #### Frontend Tests
@@ -57,17 +57,17 @@ docker-compose exec qualix vendor/bin/phpunit --filter=Course
 Die Frontend Tests kannst du wie folgt laufen lassen:
 ```
 # Alle Frontend Tests
-docker-compose exec node npm run test
+docker compose exec node npm run test
 
 # Ein spezifischer Test
-docker-compose exec node npm run test -- ObservationList
+docker compose exec node npm run test -- ObservationList
 ```
 
 #### End-to-end Tests
 
 Du kannst die E2E-Tests mit Cypress headless (ohne sichtbares Browserfenster) laufen lassen:
 ```
-docker-compose run e2e run
+docker compose run e2e run
 ```
 
 Oder du kannst das grafische Tool von Cypress vom Container aus auf deinem Mac- oder Linux-Computer öffnen:
@@ -79,7 +79,7 @@ brew cask install xquartz
 xhost local:root
 
 # Cypress öffnen
-docker-compose run e2e open
+docker compose run e2e open
 ```
 
 ## Produktive Installation
@@ -134,9 +134,9 @@ SENTRY_CSP_REPORT_URI=<snip>
 MIX_SENTRY_VUE_DSN=<snip>
 ```
 > Für die `HITOBITO_*` Einstellungen, siehe weiter unten.
-3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker-compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" qualix`
-4. **Frontend-Code builden**: `docker-compose run --entrypoint "/bin/sh -c 'npm install && npm run prod'" node`
-5. **Optimierung (optional)**: `docker-compose run --entrypoint "composer install --optimize-autoloader --no-dev" qualix`
+3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" qualix`
+4. **Frontend-Code builden**: `docker compose run --entrypoint "/bin/sh -c 'npm install && npm run prod'" node`
+5. **Optimierung (optional)**: `docker compose run --entrypoint "composer install --optimize-autoloader --no-dev" qualix`
     Siehe [hier](https://laravel.com/docs/9.x/deployment#optimization) für weitere Erklärungen.
 6. **Auf den Webhost hochladen**: Z.B. mit FTP alles (Ordner und Dateien) ausser .git, cypress, node_modules und tests hochladen
 7. **Mit SSH auf den Server einloggen**, da die folgenden Befehle in der finalen Umgebung ausgeführt werden müssen

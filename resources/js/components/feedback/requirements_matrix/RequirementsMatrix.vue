@@ -14,6 +14,7 @@
         :feedback="feedback"
         :all-requirements="allRequirements"
         :requirement-statuses="requirementStatuses"
+        :evaluation-grids="evaluationGrids.filter(grid => grid.participants.map(p => p.id).includes(feedback.participant.id))"
         :collaboration-enabled="collaborationEnabled"
       />
     </b-tbody>
@@ -33,6 +34,7 @@ export default {
     feedbacks: { type: Array, required: true },
     allRequirements: { type: Array, required: true },
     requirementStatuses: { type: Array, default: () => [] },
+    evaluationGrids: {type: Array, default: () => []},
     collaborationEnabled: { type: Boolean, default: false },
   },
   computed: {

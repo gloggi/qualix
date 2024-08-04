@@ -5,6 +5,10 @@ namespace Tests\Feature\Admin\Course;
 use App\Models\Block;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\EvaluationGrid;
+use App\Models\EvaluationGridRow;
+use App\Models\EvaluationGridRowTemplate;
+use App\Models\EvaluationGridTemplate;
 use App\Models\Invitation;
 use App\Models\Observation;
 use App\Models\ObservationAssignment;
@@ -76,6 +80,9 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $this->createObservationAssignment();
         $this->createParticipantGroup();
         $this->post('/course/' . $this->courseId . '/admin/invitation', ['email' => 'invited@test.com']);
+        $numEvaluationGridRows = EvaluationGridRow::all()->count();
+        $numEvaluationGridsParticipants = DB::table('evaluation_grids_participants')->count();
+        $this->createEvaluationGrid();
         $numBlocks = Block::all()->count();
         $numCategories = Category::all()->count();
         $numCourses = Course::all()->count();
@@ -87,6 +94,9 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $numObservationAssignments = ObservationAssignment::all()->count();
         $numParticipantGroups = ParticipantGroup::all()->count();
         $numTrainers = Trainer::all()->count();
+        $numEvaluationGridTemplates = EvaluationGridTemplate::all()->count();
+        $numEvaluationGridRowTemplates = EvaluationGridRowTemplate::all()->count();
+        $numEvaluationGrids = EvaluationGrid::all()->count();
         $numBlocksRequirements = DB::table('blocks_requirements')->count();
         $numObservationsCategories = DB::table('observations_categories')->count();
         $numObservationsRequirements = DB::table('observations_requirements')->count();
@@ -94,6 +104,8 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $numObservationAssignmentParticipants = DB::table('observation_assignment_participants')->count();
         $numObservationAssignmentUsers = DB::table('observation_assignment_users')->count();
         $numParticipantGroupsParticipants = DB::table('participant_groups_participants')->count();
+        $numEvaluationGridTemplatesBlocks = DB::table('evaluation_grid_templates_blocks')->count();
+        $numEvaluationGridTemplatesRequirements = DB::table('evaluation_grid_templates_requirements')->count();
 
         // when
         $this->post('/course/' . $this->courseId . '/admin/archive');
@@ -110,6 +122,10 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $this->assertEquals($numObservationAssignments - 1, ObservationAssignment::all()->count(), 'All observation assignments should have been removed from DB');
         $this->assertEquals($numParticipantGroups - 1, ParticipantGroup::all()->count(), 'All participant groups should have been removed from DB');
         $this->assertEquals($numTrainers, Trainer::all()->count(), 'All trainers should have remained in course');
+        $this->assertEquals($numEvaluationGridTemplates, EvaluationGridTemplate::all()->count(), 'All evaluation grid templates should have remained in course');
+        $this->assertEquals($numEvaluationGridRowTemplates, EvaluationGridRowTemplate::all()->count(), 'All evaluation grid row templates should have remained in course');
+        $this->assertEquals($numEvaluationGrids - 1, EvaluationGrid::all()->count(), 'All evaluation grids should have been removed from DB');
+        $this->assertEquals($numEvaluationGridRows, EvaluationGridRow::all()->count(), 'All evaluation grid rows should have been removed from DB');
         $this->assertEquals($numBlocksRequirements, DB::table('blocks_requirements')->count(), 'All blocks_requirements should have remained in course');
         $this->assertEquals($numObservationsCategories - 1, DB::table('observations_categories')->count(), 'All observations_categories entries of course should have been removed from DB');
         $this->assertEquals($numObservationsRequirements - 1, DB::table('observations_requirements')->count(), 'All observations_requirements entries of course should have been removed from DB');
@@ -117,6 +133,9 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $this->assertEquals($numObservationAssignmentParticipants - 1, DB::table('observation_assignment_participants')->count(), 'All observation_assignment_participants entries of course should have been removed from DB');
         $this->assertEquals($numObservationAssignmentUsers - 1, DB::table('observation_assignment_users')->count(), 'All observation_assignment_users entries of course should have been removed from DB');
         $this->assertEquals($numParticipantGroupsParticipants - 1, DB::table('participant_groups_participants')->count(), 'All participant_groups_participants entries of course should have been removed from DB');
+        $this->assertEquals($numEvaluationGridsParticipants, DB::table('evaluation_grids_participants')->count(), 'All evaluation_grids_participants entries of course should have been removed from DB');
+        $this->assertEquals($numEvaluationGridTemplatesBlocks, DB::table('evaluation_grid_templates_blocks')->count(), 'All evaluation_grid_templates_blocks entries should have remained in course');
+        $this->assertEquals($numEvaluationGridTemplatesRequirements, DB::table('evaluation_grid_templates_requirements')->count(), 'All evaluation_grid_templates_requirements entries should have remained in course');
     }
 
     public function test_shouldDeleteImagesOfParticipantsFromStorage() {

@@ -180,12 +180,21 @@ class ObservationController extends Controller {
      */
     public function overview(Request $request, Course $course, FeedbackData $feedbackData) {
         $feedbackOptions = collect([['id' => 0, 'name' => __('t.views.overview.no_feedback')]])->concat($course->feedback_datas->map->only('id', 'name'));
+        $evaluationGridTemplateIds = collect(explode(',', $request->input('evaluation_grid_templates')))
+            ->map(function ($id) { return trim($id); })
+            ->filter()
+            ->filter(function ($id) { return preg_match('/^\d+$/', $id); });
+        $evaluationGridTemplates = $course->evaluation_grid_templates()->with('evaluationGrids.participants', 'evaluationGrids.block', 'evaluationGrids.user')->whereIn('id', $evaluationGridTemplateIds->all())->get();
         return view('overview', [
             'participants' => $course->participants->all(),
             'participantManagementLink' => $this->participantManagementLink($course, 't.views.overview.here'),
             'showFeedbacks' => $course->feedback_datas()->count(),
             'feedbackOptions' => $feedbackOptions,
             'feedbackData' => $feedbackData->id ? $feedbackData : null,
+            'showEvaluationGridTemplates' => $course->evaluation_grid_templates()->count(),
+            'evaluationGridTemplateOptions' => $course->evaluation_grid_templates->map->only('id', 'name'),
+            'evaluationGridTemplates' => $evaluationGridTemplates,
+            'evaluationGridTemplateGroups' => $course->evaluationGridTemplates()->count() > 1 ? [ __('t.views.overview.show_all_evaluation_grids') => $course->evaluation_grid_templates()->pluck('id') ] : [],
         ]);
     }
 

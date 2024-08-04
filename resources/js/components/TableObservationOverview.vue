@@ -8,6 +8,15 @@
     <template v-if="anyUserImages" v-for="user in users" v-slot:[headerSlotName(user)]="{ col: { user } }">
       <div class="d-flex flex-column align-items-center"><img :src="user.image_path" class="avatar-small" :alt="user.name"/>{{ user.name }}</div>
     </template>
+    <template #evaluation-grid="{ row, col }">
+      <div v-for="evaluationGrid in evaluationGridsFor(row, col)">
+        <a :href="routeUri('evaluationGrid.edit', {course: col.evaluationGridTemplate.course_id, evaluation_grid_template: col.evaluationGridTemplate.id, evaluation_grid: evaluationGrid.id})"
+           target="_blank" class="text-decoration-none">
+          <i class="fas fa-list-check"></i>&nbsp;{{ evaluationGrid.block.blockname_and_number }} <span v-if="multipleEvaluationGridsForBlock(row, col, evaluationGrid.block.id)">({{ evaluationGrid.user.name }})</span>
+        </a>&nbsp;<button-print-evaluation-grid :evaluation-grid-template-id="col.evaluationGridTemplate.id" :evaluation-grid-id="evaluationGrid.id" :course-id="col.evaluationGridTemplate.course_id" />
+      </div>
+      <a :href="routeUri('evaluationGrid.new', {course: col.evaluationGridTemplate.course_id, evaluation_grid_template: col.evaluationGridTemplate.id, participants: row.id})"><i class="fas fa-plus"></i></a>
+    </template>
     <template #feedback="{ row }">
       <a v-if="feedbackFor(row)"
          :href="routeUri('feedbackContent.edit', {course: feedbackData.course_id, participant: row.id, feedback: feedbackFor(row).id})"
@@ -21,13 +30,15 @@
 <script>
 import ResponsiveTable from "./ResponsiveTable"
 import RequirementProgress from './feedback/RequirementProgress'
+import ButtonPrintEvaluationGrid from './print/ButtonPrintEvaluationGrid.vue';
 
 export default {
   name: 'TableObservationOverview',
-  components: {RequirementProgress, ResponsiveTable},
+  components: {ButtonPrintEvaluationGrid, RequirementProgress, ResponsiveTable},
   props: {
     users: { type: Array, required: true },
     participants: { type: Array, required: true },
+    evaluationGridTemplates: { type: Array, default: () => [] },
     feedbackData: { type: Object, default: null },
     requirementStatuses: { type: Array, default: () => [] },
     multiple: { type: Boolean, default: false },
@@ -50,6 +61,11 @@ export default {
       if (!this.multiple) {
         return totalColumn.concat(observationColumns)
       }
+      const evaluationGridColumns = this.evaluationGridTemplates.map(evaluationGridTemplate => ({
+        label: evaluationGridTemplate.name,
+        slot: 'evaluation-grid',
+        evaluationGridTemplate,
+      }))
       const feedbackColumn = this.feedbackData ? [{
         label: this.feedbackData.name,
         slot: 'feedback',
@@ -62,6 +78,7 @@ export default {
         },
         ...totalColumn,
         ...observationColumns,
+        ...evaluationGridColumns,
         ...feedbackColumn,
       ]
     },
@@ -82,6 +99,12 @@ export default {
       if (cellValue < this.redThreshold) return 'text-lg-center bg-danger-light'
       if (cellValue >= this.greenThreshold) return 'text-lg-center bg-success-light'
       return 'text-lg-center'
+    },
+    evaluationGridsFor(row, col) {
+      return col.evaluationGridTemplate.evaluation_grids.filter(evaluationGrid => evaluationGrid.participants.find(participant => participant.id === row.id))
+    },
+    multipleEvaluationGridsForBlock(row, col, blockId) {
+      return this.evaluationGridsFor(row, col).filter(evaluationGrid => evaluationGrid.block.id === blockId).length > 1
     },
     feedbackFor({ id }) {
       return this.feedbackData?.feedbacks?.find(feedback => feedback.participant_id === id)

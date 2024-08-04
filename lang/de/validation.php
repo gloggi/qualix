@@ -67,6 +67,7 @@ return array(
 	"ends_with" => ":attribute muss auf einen der folgenden Werte enden: :values",
 	"exists" => "Der gewählte Wert für :attribute ist ungültig.",
 	"exists_in_course" => "Der gewählte Wert für :attribute ist ungültig.",
+	"exists_in_evaluation_grid_template" => "Der gewählte Wert für :attribute ist ungültig.",
 	"file" => ":attribute muss eine Datei sein.",
 	"filled" => ":attribute muss ausgefüllt sein.",
 	"gt" => array(

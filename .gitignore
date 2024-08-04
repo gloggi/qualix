@@ -17,3 +17,4 @@ yarn-error.log
 !/public/favicon.png
 !/public/index.php
 !/public/robots.txt
+resources/twemoji

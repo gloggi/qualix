@@ -38,6 +38,7 @@ return array(
 		),
 		"negative" => "Negativ",
 		"neutral" => "Neutral",
+		"new_feature" => "NEU",
 		"no" => "Nein",
 		"no_options" => "Keine Einträge gefunden",
 		"no_result" => "Keine Resultate gefunden",
@@ -87,6 +88,40 @@ return array(
 			"observation_count_red_threshold" => "Mindestanzahl Beobachtungen",
 			"observation_count_green_threshold" => "Gewünschte Anzahl Beobachtungen",
 			"uses_impressions" => "Eindruck auf Beobachtungen aktivieren",
+		),
+		"evaluation_grid" => array(
+			"block" => "Block",
+			"one" => "Beurteilungsraster",
+			"participants" => "TN",
+			"user" => "Erstellt von",
+		),
+		"evaluation_grid_row" => array(
+			"notes" => "Bemerkungen",
+			"value" => "Wert",
+			"radio_buttons" => array(
+				"not_fulfilled" => "➖",
+				"fulfilled" => "➕",
+				"expectations_surpassed" => "✨",
+			),
+		),
+		"evaluation_grid_template" => array(
+			"add_row" => "Zeile hinzufügen",
+			"blocks" => "Leistungszeitpunkte",
+			"name" => "Titel",
+			"requirements" => "Beurteilte Anforderungen",
+			"rows" => "Zeilen",
+			"row_templates" => "Zeilen",
+		),
+		"evaluation_grid_row_template" => array(
+			"control_type" => "Typ",
+			"control_types" => array(
+				"checkbox" => "Checkbox",
+				"radiobuttons" => "➖ / ➕ / ✨",
+				"slider" => "Skala von 1 - 10",
+				"heading" => "Zwischentitel",
+			),
+			"criterion" => "Kriterium",
+			"order" => "Sortierreihenfolge"
 		),
 		"feedback_requirement" => array(
 			"status" => "Status",
@@ -214,7 +249,6 @@ return array(
 				"generate_success" => "{0}Es wurden keine Blöcke generiert.|{1}Es wurde ein Block generiert.|[2,*]Es wurden :count Blöcke generiert.",
 				"error_too_many_blocks" => "Dein Datumsbereich ist zu gross!",
 			),
-
 			"categories" => array(
 				"are_categories_required" => array(
 					"answer" => "Nein, Kategorien sind komplett optional, falls ihr in eurem Kursteam keine Verwendung dafür habt.",
@@ -240,16 +274,16 @@ return array(
 			"course_settings" => array(
 				"archive" => "Kurs archivieren…",
 				"archive_confirm" => "Definitiv archivieren",
-				"archive_description" => "Dies wird alle TN, Beobachtungen, TN-Gruppen, Beobachtungsaufträge und Rückmeldungen im Kurs komplett und dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden. Blöcke, Anforderungen, Kategorien und Equipenmitglieder bleiben zur späteren Einsicht bestehen.",
+				"archive_description" => "Dies wird alle TN, Beobachtungen, TN-Gruppen, Beobachtungsaufträge, ausgefüllte Beurteilungsraster und Rückmeldungen im Kurs komplett und dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden. Blöcke, Anforderungen, Kategorien, Beurteilungsraster-Vorlagen und Equipenmitglieder bleiben zur späteren Einsicht bestehen.",
 				"archive_or_delete" => "Kurs archivieren oder löschen",
 				"archive_success" => "Kurs \":name\" wurde archiviert.",
 				"archive_vs_delete" => array(
-					"answer" => "Wenn du einen Kurs archivierst, werden alle personenbezogenen Daten (TN, Bilder, Beobachtungen, TN-Gruppen, Beobachtungsaufträge, Rückmeldungen) dauerhaft gelöscht. So kannst du Datenschutz-Problemen entgegenwirken, aber für spätere Kurse trotzdem noch deine alten Anforderungen und Blöcke einsehen. Wenn du den Kurs hingegen ganz löschst wird alles was damit zu tun hat unwiderruflich entfernt.",
+					"answer" => "Wenn du einen Kurs archivierst, werden alle personenbezogenen Daten (TN, Bilder, Beobachtungen, TN-Gruppen, Beobachtungsaufträge, ausgefüllte Beurteilungsraster, Rückmeldungen) dauerhaft gelöscht. So kannst du Datenschutz-Problemen entgegenwirken, aber für spätere Kurse trotzdem noch deine alten Anforderungen und Blöcke einsehen. Wenn du den Kurs hingegen ganz löschst wird alles was damit zu tun hat unwiderruflich entfernt.",
 					"question" => "Was ist der Unterschied?",
 				),
 				"delete" => "Kurs komplett löschen…",
 				"delete_confirm" => "Definitiv löschen",
-				"delete_description" => "Dies wird den Kurs komplett und dauerhaft löschen, inklusive alle Blöcke, TN, Anforderungen, Kategorien, TN-Gruppen, Beobachtungsaufträge, Rückmeldungen und Beobachtungen darin. Diese Aktion kann nicht rückgängig gemacht werden.",
+				"delete_description" => "Dies wird den Kurs komplett und dauerhaft löschen, inklusive alle Blöcke, TN, Beobachtungen, Anforderungen, Kategorien, TN-Gruppen, Beobachtungsaufträge, Beurteilungsraster und Rückmeldungen darin. Diese Aktion kann nicht rückgängig gemacht werden.",
 				"delete_success" => "Kurs \":name\" und alle damit verbundenen Daten wurden gelöscht.",
 				"edit" => "Kurseinstellungen :name",
 				"edit_success" => "Kursdetails erfolgreich gespeichert.",
@@ -278,6 +312,26 @@ return array(
 				"page_title" => "Equipe verwalten",
 				"really_delete" => "Willst du :name wirklich aus der Kursequipe entfernen?",
 				"really_delete_invitation" => "Willst du die Einladung für :email wirklich entfernen?",
+			),
+			"evaluation_grid_templates" => array(
+				"create" => "Erstellen",
+				"create_success" => "Das Beurteilungsraster \":name\" wurde erfolgreich erstellt.",
+				"delete_success" => "Das Beurteilungsraster \":name\" wurde erfolgreich gelöscht.",
+				"edit_success" => "Das Beurteilungsraster \":name\" wurde erfolgreich gespeichert.",
+				"edit" => "Beurteilungsraster bearbeiten",
+				"existing" => "Beurteilungsraster :courseName",
+				"go_back_to_evaluation_grid_template_list" => "Abbrechen",
+				"menu_name" => "Beurteilungsraster",
+				"new" => "Neues Beurteilungsraster",
+				"no_evaluation_grid_templates" => "Bisher sind keine Beurteilungsraster erfasst.",
+				"page_title" => "Beurteilungsraster verwalten",
+				"page_title_edit" => "Beurteilungsraster bearbeiten",
+				"really_delete" => "Willst du das Beurteilungsraster \":name\" wirklich löschen? Alle ausgefüllten Kopien davon werden dabei mitgelöscht.",
+				"warning_updating_templates_may_overwrite_existing_data" => "Achtung: Dieses Beurteilungsraster wird bereits :count Mal verwendet. Wenn du die darin enthaltenen Zeilen änderst, überschreibst du damit möglicherweise bereits gemachte Beurteilungen.",
+				"what_are_evaluation_grids" => array(
+					"answer" => "Ein Beurteilungsraster ist ein Formular, mit dem man Leistungen der TN systematisch und nach fairen Kriterien beurteilen kann. Es kann wie eine Checkliste gesehen werden, oder wie eine Präzisierung / Ausformulierung einer Anforderung, oder wie ein etwas strukturierteres Beobachtungs-Formular. Wenn du hier ein Beurteilungsraster erfasst, dann kannst du dieses Raster jeweils ausfüllen, sobald TN etwas geleistet haben. Basierend darauf kannst du dann eifacher entscheiden, ob die Leistung deine Anforderung bereits erfüllt.",
+					"question" => "Was sind Beurteilungsraster?",
+				),
 			),
 			"new_course" => array(
 				"more_settings" => "Weitere Einstellungen",
@@ -497,6 +551,22 @@ return array(
 			"page_title" => "Technischer Fehler",
 			"please_try_again_later" => "Bitte versuche es später nochmals.",
 		),
+		"evaluation_grids" => array(
+			"print" => array(
+				"pdf_downloaded" => "PDF wurde heruntergeladen",
+				"pdf_is_being_generated" => "PDF wird generiert...",
+				"error_creating_pdf" => "Beim Erstellen des PDFs ist ein Fehler aufgetreten. Lade die Seite neu und versuche es nochmals, oder kontaktiere das Qualix-Team (siehe zuunterst auf der Seite).",
+				"error_fetching_data" => "Beim Laden des Beurteilungsrasters ist ein Fehler aufgetreten. Lade die Seite neu und versuche es nochmals, oder kontaktiere das Qualix-Team (siehe zuunterst auf der Seite).",
+			),
+			"add_success" => "Beurteilungsraster erfasst. Mässi!",
+			"edit" => "Beurteilungsraster :name bearbeiten",
+			"edit_success" => "Beurteilungsraster aktualisiert.",
+			"go_to_participant" => "Zu :name",
+			"matching_evaluation_grids" => "Dazugehörige Beurteilungsraster",
+			"new" => "Beurteilungsraster :name ausfüllen",
+			"page_title" => "Beurteilungsraster :name ausfüllen",
+			"page_title_edit" => "Beurteilungsraster :name bearbeiten",
+		),
 		"feedback" => array(
 			"print" => array(
 				"pdf_downloaded" => "PDF wurde heruntergeladen",
@@ -579,6 +649,7 @@ return array(
 			"go_to_participant" => "Zu :name",
 			"edit" => "Beobachtung bearbeiten",
 			"edit_success" => "Beobachtung aktualisiert.",
+			"evaluation_grid_templates_available" => "Beurteilungsraster verfügbar:",
 			"new" => "Beobachtung erfassen",
 			"char_limit" => "Zeichen genutzt:",
 			"page_title" => "Beobachtung erfassen",
@@ -588,9 +659,12 @@ return array(
 			"here" => "hier",
 			"menu_name" => "Überblick",
 			"no_participants" => "Bisher sind keine Teilnehmende erfasst. Bitte erfasse sie :here.",
+			"no_evaluation_grid" => "keines",
 			"no_feedback" => "keine",
 			"page_title" => "Beobachtungs-Überblick",
 			"title" => "Beobachtungs-Überblick",
+			"show_all_evaluation_grids" => "Alle anzeigen",
+			"show_evaluation_grids" => "Beurteilungsraster anzeigen:",
 			"show_feedbacks" => "Rückmeldung anzeigen:",
 		),
 		"participants" => array(
@@ -603,6 +677,7 @@ return array(
 		),
 		"participant_details" => array(
 			"delete_observation_success" => "Beobachtung gelöscht.",
+			"delete_evaluation_grid_success" => "Beurteilungsraster gelöscht.",
 			"existing_observations" => "Beobachtungen",
 			"filter" => "Beobachtungen filtern",
 			"filter_by_author" => "Beobachtet von",
@@ -614,12 +689,16 @@ return array(
 			"num_observations" => "{0}Bisher keine Beobachtungen.|{1}Erst eine Beobachtung. Da geht noch mehr!|[2,*]:count Beobachtungen, davon :positive mit positivem, :neutral mit neutralem und :negative mit negativem Eindruck.",
 			"observations_without_category" => "Beobachtungen ohne Kategorie",
 			"observations_without_requirement" => "Beobachtungen ohne Anforderung",
+			"evaluation_grids" => array(
+				"title" => "Beurteilungsraster",
+			),
 			"feedbacks" => array(
 				"title" => "Rückmeldungen",
 			),
 			"feedbacks_using_observation" => "{0}|{1} Folgende Rückmeldung verwendet diese Beobachtung: :feedbacks|[2,*] Die folgenden :count Rückmeldungen verwenden diese Beobachtung: :feedbacks",
 			"page_title" => ":participantName",
 			"really_delete_observation" => "Willst du diese Beobachtung wirklich löschen?",
+			"really_delete_evaluation_grid" => "Willst du dieses Beurteilungsraster wirklich löschen?",
 			"title" => "TN Details",
 			"shown_observations" => ":filtered von :total Beobachtungen angezeigt",
 			"show_all" => "Alle anzeigen",

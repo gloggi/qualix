@@ -119,6 +119,11 @@ class Course extends Model {
 
         return $this->observationAssignments;
     }
+
+    public function evaluationGridTemplatesPerBlock() {
+        return $this->evaluationGridTemplates()->with('blocks')->get()->groupBy('blocks.*.id');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -168,6 +173,34 @@ class Course extends Model {
      */
     public function requirementStatuses() {
         return $this->requirement_statuses();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evaluation_grid_templates() {
+        return $this->hasMany(EvaluationGridTemplate::class)->orderBy('name');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function evaluation_grids() {
+        return $this->hasManyThrough(EvaluationGrid::class, EvaluationGridTemplate::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evaluationGridTemplates() {
+        return $this->evaluation_grid_templates();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evaluationGrids() {
+        return $this->evaluation_grids();
     }
 
     /**

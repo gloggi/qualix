@@ -2,6 +2,9 @@
 
 namespace Tests;
 
+use App\Models\Course;
+use App\Models\EvaluationGrid;
+use App\Models\EvaluationGridTemplate;
 use App\Models\Observation;
 use App\Models\ObservationAssignment;
 use App\Models\ParticipantGroup;
@@ -40,5 +43,30 @@ abstract class TestCaseWithBasicData extends TestCaseWithCourse
         $observation_assignment->blocks()->attach(($blockIds !== null ? Arr::wrap($blockIds) : [$this->blockId]));
         $observation_assignment->users()->attach(($userIds !== null ? Arr::wrap($userIds) : [Auth::id()]));
         return $observation_assignment->id;
+    }
+
+    protected function createEvaluationGridTemplate($name = 'Unternehmungsplanung', $numRowTemplates = null, $courseId = null) {
+        $course = Course::find($courseId === null ? $this->courseId : $courseId);
+        return EvaluationGridTemplate::factory()
+            ->state(['name' => $name, 'course_id' => $course->id])
+            ->withBlocks(1)
+            ->withRequirements(1)
+            ->withRowTemplates($numRowTemplates)
+            ->create()
+            ->id;
+    }
+
+    protected function createEvaluationGrid($evaluationGridTemplateId = null, $blockId = null) {
+        if ($evaluationGridTemplateId == null) {
+            $evaluationGridTemplateId = $this->createEvaluationGridTemplate();
+        }
+        return EvaluationGrid::factory()
+            ->state(['evaluation_grid_template_id' => $evaluationGridTemplateId])
+            ->withBlock($blockId)
+            ->fromRandomUser()
+            ->maybeMultiParticipant()
+            ->withRows()
+            ->create()
+            ->id;
     }
 }

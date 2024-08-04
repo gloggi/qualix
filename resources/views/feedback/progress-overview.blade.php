@@ -46,6 +46,7 @@
                     :all-requirements="{{ json_encode($allRequirements) }}"
                     :all-participants="{{ json_encode($allParticipants) }}"
                     :requirement-statuses="{{ json_encode($course->requirement_statuses) }}"
+                    :evaluation-grids="{{ json_encode($course->evaluation_grids()->with('evaluationGridTemplate.requirements', 'participants', 'block', 'user')->get()) }}"
                     :collaboration-enabled="{{ json_encode(config('app.collaboration.enabled')) }}"></requirements-matrix>
 
             @else
