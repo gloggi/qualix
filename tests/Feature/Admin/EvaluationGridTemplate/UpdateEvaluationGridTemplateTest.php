@@ -3,6 +3,8 @@
 namespace Tests\Feature\Admin\EvaluationGridTemplate;
 
 use App\Models\Course;
+use App\Models\EvaluationGrid;
+use App\Models\EvaluationGridRow;
 use App\Models\EvaluationGridRowTemplate;
 use App\Models\EvaluationGridTemplate;
 use Illuminate\Testing\TestResponse;
@@ -14,12 +16,14 @@ class UpdateEvaluationGridTemplateTest extends TestCaseWithBasicData {
     private $course;
     private $payload;
     private $evaluationGridTemplateId;
+    private $rowTemplateIds;
 
     public function setUp(): void {
         parent::setUp();
 
         $this->course = Course::find($this->courseId);
-        $this->evaluationGridTemplateId = $this->createEvaluationGridTemplate('Unternehmungsplanung');
+        $this->evaluationGridTemplateId = $this->createEvaluationGridTemplate('Unternehmungsplanung', 3);
+        $this->rowTemplateIds = EvaluationGridTemplate::find($this->evaluationGridTemplateId)->evaluationGridRowTemplates()->pluck('id');
 
         $requirement = $this->createRequirement();
         $this->payload = [
@@ -31,16 +35,19 @@ class UpdateEvaluationGridTemplateTest extends TestCaseWithBasicData {
                     'criterion' => 'Routenwahl',
                     'control_type' => 'heading',
                     'order' => 1,
+                    'id' => $this->rowTemplateIds[0],
                 ],
                 [
                     'criterion' => 'Stufengerecht für Wolfsstufe',
                     'control_type' => 'radiobuttons',
                     'order' => 2,
+                    'id' => $this->rowTemplateIds[1],
                 ],
                 [
                     'criterion' => 'Höhepunkt eingebaut',
                     'control_type' => 'checkbox',
                     'order' => 3,
+                    'id' => $this->rowTemplateIds[2],
                 ],
             ],
         ];
@@ -478,5 +485,103 @@ class UpdateEvaluationGridTemplateTest extends TestCaseWithBasicData {
         $this->assertEquals(1, EvaluationGridRowTemplate::where(['criterion' => 'Test criterion -10'])->first()->order);
         $this->assertEquals(2, EvaluationGridRowTemplate::where(['criterion' => 'Test criterion 3'])->first()->order);
         $this->assertEquals(3, EvaluationGridRowTemplate::where(['criterion' => 'Test criterion 5'])->first()->order);
+    }
+
+    public function test_shouldProcessNewEvaluationGridRowTemplateData_updatesExistingRowTemplates_keepingExistingRows() {
+        // given
+        $this->createEvaluationGrid($this->evaluationGridTemplateId);
+        $numRowTemplates = EvaluationGridRowTemplate::all()->count();
+        $numRows = EvaluationGridRow::all()->count();
+        $rowIds = EvaluationGridRowTemplate::whereIn('id', $this->rowTemplateIds)->get()->flatMap->evaluation_grid_rows->map->id;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids/' . $this->evaluationGridTemplateId, $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/evaluation_grids');
+        $this->assertEquals($numRowTemplates, EvaluationGridRowTemplate::all()->count(), 'should have kept the 3 evaluation grid row templates');
+        foreach($this->rowTemplateIds as $index => $id) {
+            $this->assertTrue(EvaluationGridRowTemplate::where(['id' => $id])->exists());
+            $rowTemplate = EvaluationGridRowTemplate::find($id);
+            $this->assertEquals($this->payload['row_templates'][$index]['criterion'], $rowTemplate->criterion);
+            $this->assertEquals($this->payload['row_templates'][$index]['control_type'], $rowTemplate->control_type);
+            $this->assertEquals($index + 1, $rowTemplate->order);
+        }
+        $this->assertEquals($numRows, EvaluationGridRow::all()->count(), 'should have kept the 3 evaluation grid rows');
+        foreach($rowIds as $id) {
+            $this->assertTrue(EvaluationGridRow::where(['id' => $id])->exists());
+        }
+    }
+
+    public function test_shouldProcessNewEvaluationGridRowTemplateData_deletesExistingRowTemplates_deletesExistingRows() {
+        // given
+        $this->createEvaluationGrid($this->evaluationGridTemplateId);
+        $numRowTemplates = EvaluationGridRowTemplate::all()->count();
+        $numRows = EvaluationGridRow::all()->count();
+        $rowIds = EvaluationGridRowTemplate::whereIn('id', $this->rowTemplateIds)->get()->flatMap->evaluation_grid_rows->map->id;
+        $payload = $this->payload;
+        unset($payload['row_templates'][0]['id']);
+        unset($payload['row_templates'][1]);
+        unset($payload['row_templates'][2]);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids/' . $this->evaluationGridTemplateId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/evaluation_grids');
+        $this->assertEquals($numRowTemplates - 2, EvaluationGridRowTemplate::all()->count(), 'should have deleted 3 and created 1 evaluation grid row template');
+        foreach($this->rowTemplateIds as $id) {
+            $this->assertFalse(EvaluationGridRowTemplate::where(['id' => $id])->exists());
+        }
+        $this->assertEquals($numRows - 2, EvaluationGridRow::all()->count(), 'should have deleted 3 and created 1 evaluation grid row');
+        foreach($rowIds as $id) {
+            $this->assertFalse(EvaluationGridRow::where(['id' => $id])->exists());
+        }
+    }
+
+    public function test_shouldProcessNewEvaluationGridRowTemplateData_createsNewRowTemplates_creatingNewRows() {
+        // given
+        $this->createEvaluationGrid($this->evaluationGridTemplateId);
+        $numRowTemplates = EvaluationGridRowTemplate::all()->count();
+        $numRows = EvaluationGridRow::all()->count();
+        $rowIds = EvaluationGridRowTemplate::whereIn('id', $this->rowTemplateIds)->get()->flatMap->evaluation_grid_rows->map->id;
+        $payload = $this->payload;
+        $payload['row_templates'][] = [
+            'criterion' => 'Neues Kriterium',
+            'control_type' => 'radiobuttons',
+            'order' => 0,
+        ];
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids/' . $this->evaluationGridTemplateId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/evaluation_grids');
+        $this->assertEquals($numRowTemplates + 1, EvaluationGridRowTemplate::all()->count(), 'should have added 1 new evaluation grid row template');
+        foreach($this->rowTemplateIds as $index => $id) {
+            $this->assertTrue(EvaluationGridRowTemplate::where(['id' => $id])->exists());
+            $rowTemplate = EvaluationGridRowTemplate::find($id);
+            $this->assertEquals($payload['row_templates'][$index]['criterion'], $rowTemplate->criterion);
+            $this->assertEquals($payload['row_templates'][$index]['control_type'], $rowTemplate->control_type);
+            $this->assertEquals($index + 2, $rowTemplate->order);
+        }
+
+        $newRowTemplate = EvaluationGridRowTemplate::find(EvaluationGridRowTemplate::max('id'));
+        $this->assertEquals('Neues Kriterium', $newRowTemplate->criterion);
+        $this->assertEquals('radiobuttons', $newRowTemplate->control_type);
+        $this->assertEquals(1, $newRowTemplate->order);
+
+        $this->assertEquals($numRows + 1, EvaluationGridRow::all()->count(), 'should have added 1 new evaluation grid row');
+        foreach($rowIds as $id) {
+            $this->assertTrue(EvaluationGridRow::where(['id' => $id])->exists());
+        }
+
+        $newRow = EvaluationGridRow::find(EvaluationGridRow::max('id'));
+        $this->assertEquals($newRowTemplate->id, $newRow->evaluation_grid_row_template_id);
+        $this->assertNull($newRow->value);
+        $this->assertNull($newRow->notes);
     }
 }

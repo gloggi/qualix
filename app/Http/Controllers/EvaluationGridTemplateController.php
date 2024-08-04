@@ -85,7 +85,7 @@ class EvaluationGridTemplateController extends Controller {
             $currentRowTemplates = $evaluationGridTemplate->evaluationGridRowTemplates;
             $specifiedRowTemplates = $data['row_templates']->whereNotNull('id')->unique('id');
 
-            $newRowTemplates = collect($data['row_templates'])->whereNull('id');
+            $newRowTemplates = $data['row_templates']->where('id', null);
             $deletableRowTemplates = $currentRowTemplates->whereNotIn('id', $specifiedRowTemplates->pluck('id'));
             $existingRowTemplates = $specifiedRowTemplates->whereIn('id', $currentRowTemplates->pluck('id'));
 

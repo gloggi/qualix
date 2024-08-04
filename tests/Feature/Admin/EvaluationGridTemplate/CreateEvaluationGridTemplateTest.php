@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin\EvaluationGridTemplate;
 
 use App\Models\Course;
+use App\Models\EvaluationGridRow;
 use App\Models\EvaluationGridRowTemplate;
 use App\Models\EvaluationGridTemplate;
 use Illuminate\Testing\TestResponse;
@@ -500,7 +501,7 @@ class CreateEvaluationGridTemplateTest extends TestCaseWithBasicData {
         $this->assertEquals('Sortierreihenfolge muss eine Zahl sein.', $exception->validator->errors()->first());
     }
 
-    public function test_shouldValidateNewEvaluationGridRowTemplateData_reassignsOrderDuringUpdate() {
+    public function test_shouldProcessNewEvaluationGridRowTemplateData_reassignsOrder() {
         // given
         $payload = $this->payload;
         $payload['row_templates'][0]['order'] = 3;
@@ -519,5 +520,20 @@ class CreateEvaluationGridTemplateTest extends TestCaseWithBasicData {
         $this->assertEquals(1, EvaluationGridRowTemplate::where(['criterion' => 'Test criterion -10'])->first()->order);
         $this->assertEquals(2, EvaluationGridRowTemplate::where(['criterion' => 'Test criterion 3'])->first()->order);
         $this->assertEquals(3, EvaluationGridRowTemplate::where(['criterion' => 'Test criterion 5'])->first()->order);
+    }
+
+    public function test_shouldProcessNewEvaluationGridRowTemplateData_createsNewRowTemplates() {
+        // given
+        $numRowTemplates = EvaluationGridRowTemplate::all()->count();
+        $numRows = EvaluationGridRow::all()->count();
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids', $this->payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/evaluation_grids');
+        $this->assertEquals($numRowTemplates + 3, EvaluationGridRowTemplate::all()->count(), 'should have created 3 new evaluation grid row templates');
+        $this->assertEquals($numRows, EvaluationGridRow::all()->count(), 'should not have created any new evaluation grid rows');
     }
 }

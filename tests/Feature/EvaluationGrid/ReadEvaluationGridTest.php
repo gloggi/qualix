@@ -75,7 +75,7 @@ class ReadEvaluationGridTest extends TestCaseWithBasicData {
         $this->createBlock('Block 1', '1.1', '01.01.2019', null, $otherCourseId);
         $otherUserId = $this->createUser(['name' => 'Lindo'])->id;
         Course::find($otherCourseId)->users()->attach($otherUserId);
-        $otherEvaluationGridTemplateId = $this->createEvaluationGridTemplate('Unternehmungsplanung', $otherCourseId);
+        $otherEvaluationGridTemplateId = $this->createEvaluationGridTemplate('Unternehmungsplanung', null, $otherCourseId);
         $otherEvaluationGridId = $this->createEvaluationGrid($otherEvaluationGridTemplateId);
 
         // when

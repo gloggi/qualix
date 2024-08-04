@@ -45,13 +45,13 @@ abstract class TestCaseWithBasicData extends TestCaseWithCourse
         return $observation_assignment->id;
     }
 
-    protected function createEvaluationGridTemplate($name = 'Unternehmungsplanung', $courseId = null) {
+    protected function createEvaluationGridTemplate($name = 'Unternehmungsplanung', $numRowTemplates = null, $courseId = null) {
         $course = Course::find($courseId === null ? $this->courseId : $courseId);
         return EvaluationGridTemplate::factory()
             ->state(['name' => $name, 'course_id' => $course->id])
             ->withBlocks(1)
             ->withRequirements(1)
-            ->withRowTemplates()
+            ->withRowTemplates($numRowTemplates)
             ->create()
             ->id;
     }

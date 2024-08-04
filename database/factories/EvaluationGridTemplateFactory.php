@@ -65,9 +65,10 @@ class EvaluationGridTemplateFactory extends Factory {
         });
     }
 
-    public function withRowTemplates() {
+    public function withRowTemplates($count = null) {
+        if (!$count) $count = $this->faker->biasedNumberBetween(4, 10);
         return $this->has(
-            EvaluationGridRowTemplate::factory()->withOrdering()->count($this->faker->biasedNumberBetween(4, 10)),
+            EvaluationGridRowTemplate::factory()->withOrdering()->count($count),
             'evaluationGridRowTemplates'
         );
     }

@@ -65,7 +65,7 @@ class ReadEvaluationGridTemplateTest extends TestCaseWithBasicData {
     public function test_shouldNotDisplayEvaluationGrid_fromOtherUser() {
         // given
         $otherCourseId = $this->createCourse('Zweiter Kurs', '', false);
-        $otherEvaluationGridTemplateId = $this->createEvaluationGridTemplate('Fremdes Beurteilungsraster', $otherCourseId);
+        $otherEvaluationGridTemplateId = $this->createEvaluationGridTemplate('Fremdes Beurteilungsraster', null, $otherCourseId);
 
         // when
         $response = $this->get('/course/' . $otherCourseId . '/admin/evaluation_grids/' . $otherEvaluationGridTemplateId);
