@@ -584,4 +584,85 @@ class UpdateEvaluationGridTemplateTest extends TestCaseWithBasicData {
         $this->assertNull($newRow->value);
         $this->assertNull($newRow->notes);
     }
+
+    public function test_validatesNewRowTemplateData_noRowTemplates() {
+        // given
+        $this->createEvaluationGrid($this->evaluationGridTemplateId);
+        $payload = $this->payload;
+        unset($payload['row_templates']);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids/' . $this->evaluationGridTemplateId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Zeilen muss ausgefüllt sein.', $exception->validator->errors()->first());
+    }
+
+    public function test_validatesNewRowTemplateData_emptyRowTemplates() {
+        // given
+        $this->createEvaluationGrid($this->evaluationGridTemplateId);
+        $payload = $this->payload;
+        $payload['row_templates'] = [];
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids/' . $this->evaluationGridTemplateId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Zeilen muss ausgefüllt sein.', $exception->validator->errors()->first());
+    }
+
+    public function test_processesNewRowTemplateData_referencingNonexistentRowTemplates_isTreatedLikeNewRowTemplate() {
+        // given
+        $this->createEvaluationGrid($this->evaluationGridTemplateId);
+        $otherEvaluationGridTemplate = $this->createEvaluationGridTemplate();
+        $this->createEvaluationGrid($otherEvaluationGridTemplate);
+        $otherRowTemplateId = EvaluationGridTemplate::find($otherEvaluationGridTemplate)->evaluationGridRowTemplates()->pluck('id')->first();
+
+        $numRowTemplates = EvaluationGridRowTemplate::all()->count();
+        $numRows = EvaluationGridRow::all()->count();
+        $rowIds = EvaluationGridRowTemplate::whereIn('id', $this->rowTemplateIds)->get()->flatMap->evaluation_grid_rows->map->id;
+        $payload = $this->payload;
+        $payload['row_templates'][] = [
+            'criterion' => 'Neues Kriterium',
+            'control_type' => 'radiobuttons',
+            'order' => 0,
+            'id' => $otherRowTemplateId,
+        ];
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/evaluation_grids/' . $this->evaluationGridTemplateId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $response->assertRedirect('/course/' . $this->courseId . '/admin/evaluation_grids');
+        $this->assertEquals($numRowTemplates + 1, EvaluationGridRowTemplate::all()->count(), 'should have added 1 new evaluation grid row template');
+        foreach($this->rowTemplateIds as $index => $id) {
+            $this->assertTrue(EvaluationGridRowTemplate::where(['id' => $id])->exists());
+            $rowTemplate = EvaluationGridRowTemplate::find($id);
+            $this->assertEquals($payload['row_templates'][$index]['criterion'], $rowTemplate->criterion);
+            $this->assertEquals($payload['row_templates'][$index]['control_type'], $rowTemplate->control_type);
+            $this->assertEquals($index + 2, $rowTemplate->order);
+        }
+
+        $newRowTemplate = EvaluationGridRowTemplate::find(EvaluationGridRowTemplate::max('id'));
+        $this->assertEquals('Neues Kriterium', $newRowTemplate->criterion);
+        $this->assertEquals('radiobuttons', $newRowTemplate->control_type);
+        $this->assertEquals(1, $newRowTemplate->order);
+
+        $this->assertEquals($numRows + 1, EvaluationGridRow::all()->count(), 'should have added 1 new evaluation grid row');
+        foreach($rowIds as $id) {
+            $this->assertTrue(EvaluationGridRow::where(['id' => $id])->exists());
+        }
+
+        $newRow = EvaluationGridRow::find(EvaluationGridRow::max('id'));
+        $this->assertEquals($newRowTemplate->id, $newRow->evaluation_grid_row_template_id);
+        $this->assertNull($newRow->value);
+        $this->assertNull($newRow->notes);
+    }
 }
