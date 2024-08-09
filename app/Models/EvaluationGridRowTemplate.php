@@ -13,7 +13,7 @@ namespace App\Models;
  */
 class EvaluationGridRowTemplate extends Model {
 
-    const CONTROL_TYPES = ['slider', 'radiobuttons', 'checkbox', 'heading'];
+    const CONTROL_TYPES = ['slider', 'radiobuttons', 'checkbox', 'heading', 'notes_only'];
 
     /**
      * The table associated with the model.

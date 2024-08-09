@@ -4,13 +4,13 @@
 
     <div :class="inputColumnClass">
       <div class="row">
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6" v-if="rowTemplate.control_type !== 'notes_only'">
           <input-evaluation-grid-row-control
             :name="`${name}[value]`"
             v-model="currentValue.value"
             :row-template="rowTemplate" />
         </div>
-        <div class="col-12 col-lg-6">
+        <div class="col-12" :class="rowTemplate.control_type === 'notes_only' ? '' : 'col-lg-6'">
           <input-evaluation-grid-row-notes
             :name="`${name}[notes]`"
             v-model="currentValue.notes"

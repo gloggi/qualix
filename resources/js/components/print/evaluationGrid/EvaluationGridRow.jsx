@@ -18,6 +18,13 @@ function EvaluationGridRow({rowTemplate, rows, t}) {
         return <View style={{ ...styles.evaluationGridRow, fontWeight: '700', padding: '2mm 1.5mm 1mm' }} minPresenceAhead={175}><Text>{ fixNewlines(rowTemplate.criterion) }</Text></View>
     }
 
+    if (rowTemplate.control_type === 'notes_only') {
+        return <View style={styles.evaluationGridRow} wrap={false}>
+            <View style={styles.evaluationGridRowCriterion}><Text>{fixNewlines(rowTemplate.criterion)}</Text></View>
+            <View style={{ ...styles.evaluationGridRowNotes, minHeight: '12mm' }}><Text>{fixNewlines(row?.notes || '')}</Text></View>
+        </View>
+    }
+
     return <View style={styles.evaluationGridRow} wrap={false}>
         <View style={styles.evaluationGridRowCriterion}><Text>{fixNewlines(rowTemplate.criterion)}</Text></View>
         <View style={styles.evaluationGridRowValue}>

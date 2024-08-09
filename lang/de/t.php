@@ -119,6 +119,7 @@ return array(
 				"radiobuttons" => "➖ / ➕ / ✨",
 				"slider" => "Skala von 1 - 10",
 				"heading" => "Zwischentitel",
+				"notes_only" => "Nur Notizfeld",
 			),
 			"criterion" => "Kriterium",
 			"order" => "Sortierreihenfolge"
