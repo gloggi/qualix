@@ -16,9 +16,22 @@ class ECamp3BlockOverviewParser implements BlockListParser
      */
     public function parse(string $filePath): Collection
     {
+        // Load PDF
         $parser = new Parser();
         $pdf = $parser->parseFile($filePath);
-        $text = $pdf->getText();
+
+        // Extract raw text with positions
+        $pages = $pdf->getPages();
+        $text = '';
+
+        foreach ($pages as $page) {
+            $objs = $page->getDataTm();
+            foreach ($objs as $obj) {
+                // Add spaces manually between words
+                $text .= ' ' . $obj[1];
+            }
+        }
+
         $text = mb_convert_encoding($text, 'UTF-8', 'auto');
         return $this->extractBlocks($text);
     }
@@ -32,10 +45,7 @@ class ECamp3BlockOverviewParser implements BlockListParser
     private function extractBlocks(string $text): Collection
     {
         $blocks = collect();
-
-        // Adjusted regex
-        $pattern = '/[A-Za-z]+(\d+)\.(\d+) (.+?)([A-Za-z]{2}) (\d{1,2})\.(\d{1,2})\.(\d{4}) (\d{2}:\d{2}) - (\d{2}:\d{2})/u';
-
+        $pattern = '/.+?\s+(\d+)\.(\d+)\s+(.+?)\s+[A-Za-z]{2}\s+(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})/u';
         preg_match_all($pattern, $text, $matches, PREG_SET_ORDER);
 
         foreach ($matches as $match) {
@@ -44,9 +54,9 @@ class ECamp3BlockOverviewParser implements BlockListParser
             $full_block_number = "{$day_number}.{$block_number}"; // Format full block number without letter
 
             $name = trim($match[3]); // Extract block name
-            $day = (int)$match[5];  // e.g., "18"
-            $month = (int)$match[6];  // e.g., "4"
-            $year = (int)$match[7]; //e.g., 2025
+            $day = (int)$match[4];  // e.g., "18"
+            $month = (int)$match[5];  // e.g., "4"
+            $year = (int)$match[6]; //e.g., 2025
 
             // Format block_date as DD.MM.YYYY
             $block_date = sprintf('%02d.%02d.%d', $day, $month, $year);
