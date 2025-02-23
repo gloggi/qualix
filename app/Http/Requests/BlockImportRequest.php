@@ -25,11 +25,6 @@ class BlockImportRequest extends FormRequest {
      * @return BlockListImporter
      */
     public function getImporter() {
-        // check if it is a pdf from ecamp3
-        if ($this->file('file')->getMimeType() == 'application/pdf') {
-            return app()->get(ImportServiceProvider::$BLOCK_IMPORTER_MAP['eCamp3BlockOverview']);
-        } else {
-            return app()->get(ImportServiceProvider::$BLOCK_IMPORTER_MAP[$this->input('source')]);
-        }
+        return app()->get(ImportServiceProvider::$BLOCK_IMPORTER_MAP[$this->input('source')]);
     }
 }
