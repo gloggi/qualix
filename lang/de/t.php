@@ -238,7 +238,7 @@ return array(
 				"ecamp3" => array(
 					"block_overview" => "Aktivitätenliste (Kurse)",
 					"how_to_get_the_block_overview" => array(
-						"answer" => "Wenn du die Blöcke in deinem Kurs auf :ecamp3 erfasst hast, gehe dort links in der Navigation zu \"Admin\" -> \"PDF / Drucken\". Danach kannst du die \"Aktivitätenliste (Kurse)\" als PDF herunterladen (Layout #2).",
+						"answer" => "Wenn du die Blöcke in deinem Kurs auf :ecamp3 erfasst hast, gehe dort in der Navigation zu \"Admin\" -> \"PDF / Drucken\", oder auf Mobile in der Navigation zu \"Mehr\" -> \"PDF / Drucken\". Danach kannst du die \"Aktivitätenliste (Kurse)\" als PDF herunterladen (Layout #2).",
 						"question" => "Woher bekomme ich die Aktivitätenliste?",
 					),
 					"name" => "eCamp v3",
