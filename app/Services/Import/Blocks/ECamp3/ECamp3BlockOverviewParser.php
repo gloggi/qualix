@@ -3,6 +3,7 @@
 namespace App\Services\Import\Blocks\ECamp3;
 
 use App\Services\Import\Blocks\BlockListParser;
+use Smalot\PdfParser\Config;
 use Smalot\PdfParser\Parser;
 use Illuminate\Support\Collection;
 
@@ -16,8 +17,12 @@ class ECamp3BlockOverviewParser implements BlockListParser
      */
     public function parse(string $filePath): Collection
     {
-        // Load PDF
-        $parser = new Parser();
+        // create config
+        $config = new Config();
+        $config->setDataTmFontInfoHasToBeIncluded(true);
+
+        // use config and parse file
+        $parser = new Parser([], $config);
         $pdf = $parser->parseFile($filePath);
 
         // Extract raw text with positions
@@ -28,7 +33,11 @@ class ECamp3BlockOverviewParser implements BlockListParser
             $objs = $page->getDataTm();
             foreach ($objs as $obj) {
                 // Add spaces manually between words
-                $text .= ' ' . $obj[1];
+                // font size 10 are checklist elements which can also have numbers like (1.2 etc.) and breaks regex.
+                $font_size = $obj[3];
+                if ($font_size > 10) {
+                    $text .= ' ' . $obj[1]; //text element
+                }
             }
         }
 
@@ -45,7 +54,7 @@ class ECamp3BlockOverviewParser implements BlockListParser
     private function extractBlocks(string $text): Collection
     {
         $blocks = collect();
-        $pattern = '/.+?\s+(\d+)\.(\d+)\s+(.+?)\s+[A-Za-z]{2}\s+(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})/u';
+        $pattern = '/.+?\s+(\d+)\.(\d+)\s+(.+?)\s+([A-Za-z]{2,3})\.?\s+(\d{1,2})[\.|\/](\d{1,2})[\.|\/](\d{4})\s+(\d{1,2}:\d{2})(?:\sPM|\sAM)?\s*-(\s+[A-Za-z]{2,3}\.?\s+\d{1,2}[\.|\/]\d{1,2}[\.|\/]\d{4})?\s*(\d{1,2}:\d{2})(?:\sPM|\sAM)?/u';
         preg_match_all($pattern, $text, $matches, PREG_SET_ORDER);
 
         foreach ($matches as $match) {
@@ -54,11 +63,17 @@ class ECamp3BlockOverviewParser implements BlockListParser
             $full_block_number = "{$day_number}.{$block_number}"; // Format full block number without letter
 
             $name = trim($match[3]); // Extract block name
-            $day = (int)$match[4];  // e.g., "18"
-            $month = (int)$match[5];  // e.g., "4"
-            $year = (int)$match[6]; //e.g., 2025
+            $weekday = $match[4];  // e.g., "Fr"
+            $day = (int)$match[5];  // e.g., "18"
+            $month = (int)$match[6];  // e.g., "4"
+            $year = (int)$match[7]; //e.g., 2025
 
-            // Format block_date as DD.MM.YYYY
+            if (in_array($weekday, array('Mon','Tue','Wed','Thu','Fri','Sat','Sun'))) {
+                // english date format... makes no sense...
+                $day = (int)$match[6];  // e.g., "18"
+                $month = (int)$match[5];  // e.g., "4"
+            }
+            // Format block_date as DD.MM.YYYY or DD/MM/YYYY (or MM/DD/YYYY)
             $block_date = sprintf('%02d.%02d.%d', $day, $month, $year);
 
             $blocks->push([
