@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ECamp2BlockOverviewParsingException;
+use App\Exceptions\ECamp3BlockOverviewParsingException;
 use App\Exceptions\UnsupportedFormatException;
 use App\Http\Requests\BlockGenerateRequest;
 use App\Http\Requests\BlockImportRequest;
@@ -70,6 +71,27 @@ class BlockController extends Controller {
     }
 
     /**
+     * Display a form for uploading a list of blocks.
+     *
+     * @param Request $request
+     * @param Course $course
+     * @return View
+     */
+    public function uploadV3(Request $request, Course $course) {
+        if ($course->blocks()->exists() && !$request->session()->has('alert-warning')) {
+            $request->session()->now('alert-warning', trans('t.views.admin.block_import.warning_existing_blocks'));
+        }
+
+        $ecamp3BlockOverviewLink = (new HtmlString)
+            ->s('<a href="https://app.ecamp3.ch" target="_blank">')
+            ->__('t.views.admin.block_import.ecamp3.name')
+            ->s('</a>');
+        return view('admin.blocks.importV3', ['ecamp3Link' => $ecamp3BlockOverviewLink]);
+    }
+
+
+
+    /**
      * Store an uploaded list of blocks in storage.
      *
      * @param BlockImportRequest $request
@@ -83,6 +105,8 @@ class BlockController extends Controller {
         try {
             $imported = $request->getImporter()->import($request->file('file')->getRealPath(), $course);
         } catch (ECamp2BlockOverviewParsingException $e) {
+            throw ValidationException::withMessages(['file' => $e->getMessage()]);
+        } catch (ECamp3BlockOverviewParsingException $e) {
             throw ValidationException::withMessages(['file' => $e->getMessage()]);
         } catch (UnsupportedFormatException $e) {
             throw ValidationException::withMessages(['file' => trans('t.views.admin.block_import.error_unsupported_format')]);
