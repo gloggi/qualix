@@ -1,5 +1,8 @@
 # Changelog
 
+##### Mai 2025
+- Im Rückmeldungs-Editor wird jetzt noch deutlicher und immer sichtbar klargestellt, wenn man offline ist und darum die Änderungen noch nicht gespeichert werden konnten [#342](https://github.com/gloggi/qualix/issues/342)
+
 ##### August 2024
 - Neu können Beurteilungsraster in Qualix erstellt und ausgefüllt werden. Beurteilungsraster sind detaillierte Kriterienkataloge, mithilfe dessen man eine komplexe Leistung von TN fair und objektiv beurteilen kann. Jedes Beurteilungsraster basiert auf einer Vorlage, welche initial im Kursadmin-Bereich angelegt werden muss. Ein Beurteilungsraster für eine spezifische Leistung von 1 oder mehreren TN kann dann entweder direkt in Qualix digital ausgefüllt werden, oder ausgedruckt und von Hand ausgefüllt werden [#343](https://github.com/gloggi/qualix/issues/343)
 

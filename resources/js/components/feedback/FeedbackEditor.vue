@@ -5,6 +5,11 @@
     <editor-floating-menu v-if="!readonly && editor" :editor="editor" :tippy-options="{ zIndex: 1 }">
       <floating-menu :observations="observations" :editor="editor" @addObservation="showObservationSelectionModal(true)"/>
     </editor-floating-menu>
+    <b-alert v-if="offline" class="offline-warning-banner" variant="danger" show fade>
+      <help-text v-if="offline" id="feedback-editor-offline-help" trans="t.views.feedback_content.offline_help_banner">
+        <template #question><i class="fas fa-triangle-exclamation mr-2 text-danger"></i></template>
+      </help-text>
+    </b-alert>
     <editor-content class="editor-content" :class="{ readonly }" :editor="editor" />
   </div>
 </template>
@@ -29,10 +34,11 @@ import GapCursorFocus from './tiptap-extensions/GapCursorFocus'
 import InputHidden from '../form/InputHidden'
 import FloatingMenu from './FloatingMenu'
 import ModalAddObservation from './tiptap-extensions/observation/ModalAddObservation'
+import HelpText from '../HelpText.vue';
 
 export default {
   name: 'FeedbackEditor',
-  components: {FloatingMenu, InputHidden, EditorContent, EditorFloatingMenu, ModalAddObservation},
+  components: { HelpText, FloatingMenu, InputHidden, EditorContent, EditorFloatingMenu, ModalAddObservation},
   props: {
     name: { type: String },
     courseId: { type: String, required: true },
@@ -106,6 +112,7 @@ export default {
       emptyDocument,
       focused: false,
       addObservation: null,
+      offline: false,
     }
   },
   computed: {
@@ -199,6 +206,12 @@ export default {
     focus(position = 0) {
       this.editor.commands.focus(position)
     },
+    setOffline() {
+      this.offline = true
+    },
+    setOnline() {
+      this.offline = false
+    },
   },
   watch: {
     feedbackRequirements(newIds) {
@@ -219,6 +232,9 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener('offline', this.setOffline)
+    window.addEventListener('online', this.setOnline)
+
     this.updateContentWithRequirementIds(this.feedbackRequirements)
 
     // Two ticks after mounted, the HTML is rendered correctly
@@ -227,6 +243,10 @@ export default {
         this.$emit('content-ready')
       })
     })
+  },
+  unmounted() {
+    window.removeEventListener('offline', this.setOffline)
+    window.removeEventListener('online', this.setOnline)
   },
   beforeDestroy() {
     this.editor.destroy()
