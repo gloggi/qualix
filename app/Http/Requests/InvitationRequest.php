@@ -13,7 +13,7 @@ class InvitationRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'email' => 'required|email|max:50',
+            'email' => 'required|email:strict,Egulias\EmailValidator\Validation\DNSCheckValidation|max:50',
         ];
     }
 

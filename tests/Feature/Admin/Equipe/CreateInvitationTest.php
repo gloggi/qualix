@@ -17,6 +17,8 @@ class CreateInvitationTest extends TestCaseWithCourse {
         parent::setUp();
 
         $this->payload = ['email' => 'neues-mitglied@equipe.com'];
+
+        $this->fakeDNSValidation();
     }
 
     public function test_shouldRequireLogin() {
@@ -108,6 +110,21 @@ class CreateInvitationTest extends TestCaseWithCourse {
         // given
         $payload = $this->payload;
         $payload['email'] = 'so en chabis';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/invitation', $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('E-Mail muss eine gültige E-Mail-Adresse sein.', $exception->validator->errors()->first('email'));
+    }
+
+    public function test_shouldValidateNewInvitationData_emailWithNonexistentMailserver() {
+        // given
+        $payload = $this->payload;
+        $payload['email'] = 'chabis@fail.com';
 
         // when
         $response = $this->post('/course/' . $this->courseId . '/admin/invitation', $payload);

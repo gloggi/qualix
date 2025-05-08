@@ -11,6 +11,8 @@ class DeleteInvitationTest extends TestCaseWithCourse {
     public function setUp(): void {
         parent::setUp();
 
+        $this->fakeDNSValidation();
+
         $this->post('/course/' . $this->courseId . '/admin/invitation', ['email' => $this->email]);
     }
 
