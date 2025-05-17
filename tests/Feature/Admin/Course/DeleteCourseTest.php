@@ -20,6 +20,8 @@ class DeleteCourseTest extends TestCaseWithBasicData {
 
     public function setUp(): void {
         parent::setUp();
+
+        $this->fakeDNSValidation();
     }
 
     public function test_shouldRequireLogin() {

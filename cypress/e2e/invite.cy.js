@@ -34,15 +34,15 @@ describe('invitation flow', () => {
 
   it('successfully invites another equipe member', () => {
     cy.get('#email')
-      .type('some-email@example.org')
+      .type('some-email@gmail.com')
     cy.contains('Einladen')
       .click()
 
-    cy.contains('Wir haben eine Einladung an some-email@example.org gesendet.')
+    cy.contains('Wir haben eine Einladung an some-email@gmail.com gesendet.')
 
     cy.logout()
 
-    cy.login({ email: 'some-email@example.org' })
+    cy.login({ email: 'some-email@gmail.com' })
 
     cy.lastSentMail()
       .then(mail => {
@@ -51,7 +51,7 @@ describe('invitation flow', () => {
         cy.visit(verifyLink)
 
         cy.get('.card-header').contains('Einladung in ')
-        cy.contains('Gehört dir die Mailadresse some-email@example.org?')
+        cy.contains('Gehört dir die Mailadresse some-email@gmail.com?')
 
         cy.contains('Nein, diese Einladung ist nicht für mich')
           .should('have.attr', 'href').and('match', /^http:\/\/qualix$/)
@@ -67,20 +67,20 @@ describe('invitation flow', () => {
 
   it('deletes an invitation', () => {
     cy.get('#email')
-      .type('some-email@example.org')
+      .type('some-email@gmail.com')
     cy.contains('Einladen')
       .click()
 
-    cy.contains('Wir haben eine Einladung an some-email@example.org gesendet.')
+    cy.contains('Wir haben eine Einladung an some-email@gmail.com gesendet.')
 
     cy.contains('Einladungen').parent('.card').find('[title="Löschen"]').click()
 
-    cy.contains('Willst du die Einladung für some-email@example.org wirklich entfernen?')
+    cy.contains('Willst du die Einladung für some-email@gmail.com wirklich entfernen?')
       .parent()
       .contains('Löschen')
       .click()
 
-    cy.contains('Die Einladung für some-email@example.org wurde erfolgreich gelöscht.')
+    cy.contains('Die Einladung für some-email@gmail.com wurde erfolgreich gelöscht.')
 
     cy.contains('Momentan sind keine Einladungen offen.')
   })

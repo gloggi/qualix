@@ -8,6 +8,8 @@ use App\Models\Course;
 use App\Models\FeedbackData;
 use App\Models\Participant;
 use App\Models\Requirement;
+use Egulias\EmailValidator\EmailLexer;
+use Egulias\EmailValidator\Validation\DNSCheckValidation;
 
 abstract class TestCaseWithCourse extends TestCase
 {
@@ -42,5 +44,18 @@ abstract class TestCaseWithCourse extends TestCase
         if (!$course->participants()->exists()) $this->createParticipant('Feedback-TN', $course->id);
         $feedbackData = FeedbackData::create(['name' => $name, 'course_id' => $course->id]);
         return $feedbackData->feedbacks()->create(['participant_id' => $course->participants()->first()->id])->id;
+    }
+
+    protected function fakeDNSValidation() {
+        $this->app->bind(DNSCheckValidation::class, TestDNSCheckValidation::class);
+    }
+}
+
+class TestDNSCheckValidation extends DNSCheckValidation {
+    /**
+     * In this test, we want the DNS validation to fail for fail.com domains, and pass for all others.
+     */
+    public function isValid(string $email, EmailLexer $emailLexer): bool {
+        return !str_ends_with($email, 'fail.com');
     }
 }

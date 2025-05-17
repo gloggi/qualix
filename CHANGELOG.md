@@ -1,10 +1,11 @@
 # Changelog
 
 ##### Mai 2025
+- Beim Einladen von Leuten in den Kurs wird die eingegebene E-Mail-Adresse strenger auf Fehler überprüft [#141](https://github.com/gloggi/qualix/issues/141)
 - Im Rückmeldungs-Editor wird jetzt noch deutlicher und immer sichtbar klargestellt, wenn man offline ist und darum die Änderungen noch nicht gespeichert werden konnten [#342](https://github.com/gloggi/qualix/issues/342)
 
 ##### März 2025
-- Neu können Blöcke aus eCamp v3 importiert werden. [#370](https://github.com/gloggi/qualix/pull/370)
+- Neu können Blöcke aus eCamp v3 importiert werden [#370](https://github.com/gloggi/qualix/pull/370)
 
 ##### August 2024
 - Neu können Beurteilungsraster in Qualix erstellt und ausgefüllt werden. Beurteilungsraster sind detaillierte Kriterienkataloge, mithilfe deren man eine komplexe Leistung von TN fair und objektiv beurteilen kann. Im Kursadmin-Bereich kann man Beurteilungsraster entwerfen / zusammenstellen (d.h. die Kriterien im Katalog definieren). Der so zusammengestellte Fragebogen kann dann - für eine spezifische Leistung von 1 oder mehreren TN - entweder direkt in Qualix digital ausgefüllt werden, oder ausgedruckt und von Hand ausgefüllt werden [#343](https://github.com/gloggi/qualix/issues/343)

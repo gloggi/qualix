@@ -18,6 +18,8 @@ class AcceptInvitationTest extends TestCaseWithCourse {
     public function setUp(): void {
         parent::setUp();
 
+        $this->fakeDNSValidation();
+
         $payload = ['email' => $this->email];
         $this->post('/course/' . $this->courseId . '/admin/invitation', $payload);
         $this->token = Invitation::where('course_id', '=', $this->courseId)->where('email', '=', $payload['email'])->first()->token;
