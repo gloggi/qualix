@@ -3,8 +3,11 @@
 ##### Mai 2025
 - Im Rückmeldungs-Editor wird jetzt noch deutlicher und immer sichtbar klargestellt, wenn man offline ist und darum die Änderungen noch nicht gespeichert werden konnten [#342](https://github.com/gloggi/qualix/issues/342)
 
+##### März 2025
+- Neu können Blöcke aus eCamp v3 importiert werden. [#370](https://github.com/gloggi/qualix/pull/370)
+
 ##### August 2024
-- Neu können Beurteilungsraster in Qualix erstellt und ausgefüllt werden. Beurteilungsraster sind detaillierte Kriterienkataloge, mithilfe dessen man eine komplexe Leistung von TN fair und objektiv beurteilen kann. Jedes Beurteilungsraster basiert auf einer Vorlage, welche initial im Kursadmin-Bereich angelegt werden muss. Ein Beurteilungsraster für eine spezifische Leistung von 1 oder mehreren TN kann dann entweder direkt in Qualix digital ausgefüllt werden, oder ausgedruckt und von Hand ausgefüllt werden [#343](https://github.com/gloggi/qualix/issues/343)
+- Neu können Beurteilungsraster in Qualix erstellt und ausgefüllt werden. Beurteilungsraster sind detaillierte Kriterienkataloge, mithilfe deren man eine komplexe Leistung von TN fair und objektiv beurteilen kann. Im Kursadmin-Bereich kann man Beurteilungsraster entwerfen / zusammenstellen (d.h. die Kriterien im Katalog definieren). Der so zusammengestellte Fragebogen kann dann - für eine spezifische Leistung von 1 oder mehreren TN - entweder direkt in Qualix digital ausgefüllt werden, oder ausgedruckt und von Hand ausgefüllt werden [#343](https://github.com/gloggi/qualix/issues/343)
 
 ##### Juli 2024
 - Upgrade auf Laravel 11 und PHP >= 8.2.0 [#344](https://github.com/gloggi/qualix/pull/344)

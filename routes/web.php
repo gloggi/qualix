@@ -110,6 +110,8 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->scopeBindings()->gro
     Route::post('/course/{course}/admin/blocks', [BlockController::class, 'store'])->name('admin.block.store');
     Route::get('/course/{course}/admin/blocks/import', [BlockController::class, 'upload'])->name('admin.block.upload');
     Route::post('/course/{course}/admin/blocks/import', [BlockController::class, 'import'])->name('admin.block.import');
+    Route::get('/course/{course}/admin/blocks/importV3', [BlockController::class, 'uploadV3'])->name('admin.block.uploadV3');
+    Route::post('/course/{course}/admin/blocks/importV3', [BlockController::class, 'import'])->name('admin.block.importV3');
     Route::get('/course/{course}/admin/blocks/generate', [BlockController::class, 'generate'])->name('admin.block.generate');
     Route::post('/course/{course}/admin/blocks/generate', [BlockController::class, 'generateStore'])->name('admin.block.generate_store');
     Route::get('/course/{course}/admin/blocks/{block}', [BlockController::class, 'edit'])->name('admin.block.edit');
