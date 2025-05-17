@@ -52,16 +52,19 @@ export default {
       this.debouncedAutosave()
     },
     autosave () {
+      const previouslyOffline = this.offline
       this.saving = true
       this.offline = false
       this.loggedOut = false
       this.dirty = false
       this.form().xhrSubmit().then(() => {
         this.saving = false
+        if (previouslyOffline) window.dispatchEvent(new Event('online'))
       }).catch(err => {
         if (!err.response && err.request) {
           this.offline = true
           this.$emit('error')
+          window.dispatchEvent(new Event('offline'))
         } else if (err.response && err.response.status === 419) {
           this.loggedOut = true
           this.$emit('error')
