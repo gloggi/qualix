@@ -734,6 +734,10 @@ return array(
 				"answer" => "Aktuell ist keine Verbindung zum Qualix-Server möglich. Behalte diese Seite offen. Du kannst normal weiterarbeiten, und wenn du wieder online bist werden deine Änderungen gespeichert.",
 				"question" => "Keine Internetverbindung!",
 			),
+			"offline_help_banner" => array(
+				"answer" => "Aktuell ist keine Verbindung zum Qualix-Server möglich. Behalte diese Seite offen. Du kannst normal weiterarbeiten, und wenn du wieder online bist werden deine Änderungen gespeichert.",
+				"question" => "Keine Internetverbindung! Noch nicht gespeichert!",
+			),
 			"participant_feedback" => ":feedback: :participant",
 			"page_title" => ":feedbackName :participantName",
 			"requirements_status" => "Anforderungen",

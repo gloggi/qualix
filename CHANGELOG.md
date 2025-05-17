@@ -1,5 +1,8 @@
 # Changelog
 
+##### Mai 2025
+- Im Rückmeldungs-Editor wird jetzt noch deutlicher und immer sichtbar klargestellt, wenn man offline ist und darum die Änderungen noch nicht gespeichert werden konnten [#342](https://github.com/gloggi/qualix/issues/342)
+
 ##### März 2025
 - Neu können Blöcke aus eCamp v3 importiert werden. [#370](https://github.com/gloggi/qualix/pull/370)
 
