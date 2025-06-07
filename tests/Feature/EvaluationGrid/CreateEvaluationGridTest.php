@@ -97,14 +97,14 @@ class CreateEvaluationGridTest extends TestCaseWithBasicData {
         $payload = $this->payload;
         $participantIds = [$this->createParticipant(), $this->createParticipant()];
         $payload['participants'] = implode(',', $participantIds);
-        $participants = Participant::where(['id' => $participantIds]);
+        $participants = Participant::whereIn('id', $participantIds)->get();
 
         // when
-        $response = $this->post('/course/' . $this->courseId . '/evaluation_grid/' . $this->evaluationGridTemplateId . '/new', $this->payload);
+        $response = $this->post('/course/' . $this->courseId . '/evaluation_grid/' . $this->evaluationGridTemplateId . '/new', $payload);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/evaluation_grid/' . $this->evaluationGridTemplateId . '/new?participants=' . $this->participantId . '&block=' . $this->blockId);
+        $response->assertRedirect('/course/' . $this->courseId . '/evaluation_grid/' . $this->evaluationGridTemplateId . '/new?participants=' . urlencode($payload['participants']) . '&block=' . $this->blockId);
         /** @var TestResponse $response */
         $response = $response->followRedirects();
         foreach ($participants as $participant) {
