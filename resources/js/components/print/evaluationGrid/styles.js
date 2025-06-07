@@ -3,7 +3,7 @@ const styles = {
     padding: '18mm',
     fontFamily: 'SourceSansPro',
     fontSize: '11pt',
-    lineHeight: '1.6',
+    lineHeight: '1.8',
   },
   pageNumbering: {
     position: 'absolute',
@@ -13,6 +13,7 @@ const styles = {
   },
   h2: {
     fontSize: '17pt',
+    marginBottom: '11pt',
   },
   h3: {
     fontSize: '15pt',
@@ -31,7 +32,7 @@ const styles = {
   },
   emptyLine: {
     width: '100%',
-    height: '16pt',
+    height: '14pt',
     borderBottom: '0.5pt solid black',
   },
   evaluationGridRow: {
@@ -55,6 +56,12 @@ const styles = {
   evaluationGridRowNotes: {
     flexGrow: '0',
     width: '45%',
+    padding: '1mm 1.5mm',
+    minHeight: '35mm',
+  },
+  evaluationGridRowNotesOnly: {
+    flexGrow: '0',
+    width: '70%',
     padding: '1mm 1.5mm',
     minHeight: '35mm',
   },

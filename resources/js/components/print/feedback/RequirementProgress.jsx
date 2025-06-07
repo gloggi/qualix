@@ -7,7 +7,7 @@ const styles = {
     outer: {
         border: '1pt solid black',
         borderRadius: '2pt',
-        lineHeight: 1.25,
+        lineHeight: 0.8,
         width: '100%',
         display: 'flex',
         flexDirection: 'row',

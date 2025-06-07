@@ -38,13 +38,13 @@ function EvaluationGridDocument({ course, evaluationGridTemplate, evaluationGrid
                     <View style={{ flexGrow: 0, width: '60mm', marginLeft: '10mm' }}>
                         <Text style={{ fontWeight: 'bold', marginTop: '1mm' }}>{ course.name }</Text>
                         <Text>{ course.course_number }</Text>
-                        <View style={{ marginTop: '2.2mm' }}>
+                        <View style={{ marginTop: '1.8mm' }}>
                             <Text>{ t('t.models.evaluation_grid.user') }:</Text>
                             {user ? <Text>{ user.name }</Text> : <View style={{ ...styles.emptyLine, marginTop: '2mm' }} /> }
                         </View>
                     </View>
                 </View>
-                <View style={{ marginBottom: '4mm', marginTop: '4mm' }}>
+                <View style={{ marginBottom: '4mm' }}>
                     <Text style={styles.h5}>{ t('t.models.evaluation_grid_template.requirements') }:</Text>
                     { evaluationGridTemplate.requirements.map(requirement => <View key={requirement.id}><Text>• { requirement.content }</Text></View>) }
                 </View>

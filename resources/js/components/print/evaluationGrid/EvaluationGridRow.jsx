@@ -21,7 +21,7 @@ function EvaluationGridRow({rowTemplate, rows, t}) {
     if (rowTemplate.control_type === 'notes_only') {
         return <View style={styles.evaluationGridRow} wrap={false}>
             <View style={styles.evaluationGridRowCriterion}><Text>{fixNewlines(rowTemplate.criterion)}</Text></View>
-            <View style={{ ...styles.evaluationGridRowNotes, minHeight: '12mm' }}><Text>{fixNewlines(row?.notes || '')}</Text></View>
+            <View style={{ ...styles.evaluationGridRowNotesOnly, minHeight: '12mm' }}><Text>{fixNewlines(row?.notes || '')}</Text></View>
         </View>
     }
 

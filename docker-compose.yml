@@ -34,7 +34,7 @@ services:
       - '1080:1080'
 
   node:
-    image: node:18
+    image: node:22
     container_name: 'qualix-npm'
     working_dir: '/app'
     volumes:
