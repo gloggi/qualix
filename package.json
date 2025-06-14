@@ -18,7 +18,7 @@
         "@intlify/core": "^9.2.2",
         "@kirschbaum-development/laravel-translations-loader": "^1.4.0",
         "@react-pdf/renderer": "^4.3.0",
-        "@sentry/vue": "^6.13.2",
+        "@sentry/vue": "^9.27.0",
         "@testing-library/jest-dom": "^5.13.0",
         "@testing-library/user-event": "^13.1.9",
         "@testing-library/vue": "^5.6.2",
