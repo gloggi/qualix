@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Input from '../../mixins/input';
+import Input from '../../mixins/input.js';
 import InputEvaluationGridRow from './InputEvaluationGridRow.vue';
 import RowText from '../form/RowText.vue';
 

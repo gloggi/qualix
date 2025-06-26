@@ -71,12 +71,12 @@
 </template>
 
 <script>
-import HelpText from '../HelpText'
-import FormBasic from '../FormBasic'
-import InputText from '../form/InputText'
-import InputMultiSelect from '../form/InputMultiSelect'
-import RowText from '../form/RowText'
-import InputFeedbackEditor from '../form/InputFeedbackEditor'
+import HelpText from '../HelpText.vue'
+import FormBasic from '../FormBasic.vue'
+import InputText from '../form/InputText.vue'
+import InputMultiSelect from '../form/InputMultiSelect.vue'
+import RowText from '../form/RowText.vue'
+import InputFeedbackEditor from '../form/InputFeedbackEditor.vue'
 
 export default {
   name: 'FormFeedbackData',

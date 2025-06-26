@@ -85,18 +85,19 @@
 </template>
 
 <script>
-import { groupBy, countBy } from 'lodash'
-import ParticipantAvatar from './ParticipantAvatar'
-import InputMultiSelect from '../form/InputMultiSelect'
-import InputMultiMultiSelect from '../form/InputMultiMultiSelect'
-import InputHidden from '../form/InputHidden'
-import RowText from '../form/RowText'
-import ButtonSubmit from '../form/ButtonSubmit'
-import InputCheckbox from '../form/InputCheckbox'
-import InputGroupSplits from './InputGroupSplits'
-import HelpText from '../HelpText'
-import InputGeneratedParticipantGroups from './InputGeneratedParticipantGroups'
-import createWorker from './createWorker'
+import groupBy from 'lodash/groupBy'
+import countBy from 'lodash/countBy'
+import ParticipantAvatar from './ParticipantAvatar.vue'
+import InputMultiSelect from '../form/InputMultiSelect.vue'
+import InputMultiMultiSelect from '../form/InputMultiMultiSelect.vue'
+import InputHidden from '../form/InputHidden.vue'
+import RowText from '../form/RowText.vue'
+import ButtonSubmit from '../form/ButtonSubmit.vue'
+import InputCheckbox from '../form/InputCheckbox.vue'
+import InputGroupSplits from './InputGroupSplits.vue'
+import HelpText from '../HelpText.vue'
+import InputGeneratedParticipantGroups from './InputGeneratedParticipantGroups.vue'
+import createWorker from './createWorker.js';
 
 export default {
   name: 'ParticipantGroupGenerator',

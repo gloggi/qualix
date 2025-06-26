@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
+import Input from '../../mixins/input.js'
 import MultiSelect from '../MultiSelect.vue';
 import InputHidden from '../form/InputHidden.vue';
 import InputMultiSelect from '../form/InputMultiSelect.vue';

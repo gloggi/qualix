@@ -42,9 +42,9 @@
 </template>
 
 <script>
-import InputMultiSelect from '../form/InputMultiSelect'
-import ButtonSubmit from '../form/ButtonSubmit'
-import { countBy } from 'lodash'
+import InputMultiSelect from '../form/InputMultiSelect.vue'
+import ButtonSubmit from '../form/ButtonSubmit.vue'
+import countBy from 'lodash/countBy'
 
 export default {
   name: 'NameGame',

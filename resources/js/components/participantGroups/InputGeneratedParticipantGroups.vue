@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
-import ParticipantAvatar from './ParticipantAvatar'
-import InputHidden from '../form/InputHidden'
-import InputText from '../form/InputText'
+import Input from '../../mixins/input.js'
+import ParticipantAvatar from './ParticipantAvatar.vue'
+import InputHidden from '../form/InputHidden.vue'
+import InputText from '../form/InputText.vue'
 
 export default {
   name: 'InputGeneratedParticipantGroups',

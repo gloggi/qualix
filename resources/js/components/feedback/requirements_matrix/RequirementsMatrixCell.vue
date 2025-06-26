@@ -62,11 +62,11 @@
 </template>
 
 <script>
-import FormBasic from '../../FormBasic'
-import InputMultiSelect from '../../form/InputMultiSelect'
-import AutoSave from '../../AutoSave'
-import InputTextarea from '../../form/InputTextarea'
-import RowText from '../../form/RowText'
+import FormBasic from '../../FormBasic.vue'
+import InputMultiSelect from '../../form/InputMultiSelect.vue'
+import AutoSave from '../../AutoSave.vue'
+import InputTextarea from '../../form/InputTextarea.vue'
+import RowText from '../../form/RowText.vue'
 
 const ellipsis = function(text, max) {
   if (text.length <= max) {

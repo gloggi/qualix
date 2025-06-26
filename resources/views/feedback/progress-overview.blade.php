@@ -55,7 +55,7 @@
                     @foreach ($feedbacks as $feedback)
                         <b-list-group-item>
                             <div class="d-flex align-items-baseline">
-                                <a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $feedback->participant_id]) }}"><img src="{{ $feedback->participant->image_url != null ? asset(Storage::url($feedback->participant->image_url)) : asset('images/was-gaffsch.svg') }}" class="avatar-small" alt="{{ $feedback->participant->scout_name }}"/></a>
+                                <a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $feedback->participant_id]) }}"><img src="{{ $feedback->participant->image_url != null ? asset(Storage::url($feedback->participant->image_url)) : '/was-gaffsch.svg' }}" class="avatar-small" alt="{{ $feedback->participant->scout_name }}"/></a>
                                 <div class="d-flex flex-column flex-grow-1">
                                     <div class="d-flex flex-wrap ml-2">
                                         <a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $feedback->participant_id]) }}"><strong>{{ $feedback->participant->scout_name }}</strong></a>

@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import Input from "../../mixins/input";
-import InputHidden from './InputHidden'
+import Input from '../../mixins/input.js';
+import InputHidden from './InputHidden.vue'
 export default {
   name: 'InputCheckbox',
   components: {InputHidden},

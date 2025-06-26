@@ -57,10 +57,10 @@ docker compose exec qualix vendor/bin/phpunit --filter=Course
 Die Frontend Tests kannst du wie folgt laufen lassen:
 ```
 # Alle Frontend Tests
-docker compose exec node npm run test
+docker compose exec vite npm run test
 
 # Ein spezifischer Test
-docker compose exec node npm run test -- ObservationList
+docker compose exec vite npm run test -- ObservationList
 ```
 
 #### End-to-end Tests
@@ -127,15 +127,15 @@ HITOBITO_CALLBACK_URI=https://qualix.flamberg.ch/login/hitobito/callback
 
 # Collaboration in the feedback editor via WebRTC
 COLLABORATION_ENABLED=true
-COLLABORATION_SIGNALING_SERVERS="wss://signaling.yjs.dev wss://y-webrtc-signaling-eu.herokuapp.com wss://y-webrtc-signaling-us.herokuapp.com"
+COLLABORATION_SIGNALING_SERVERS="wss://y-webrtc-eu.fly.dev"
 
 SENTRY_LARAVEL_DSN=<snip>
 SENTRY_CSP_REPORT_URI=<snip>
-MIX_SENTRY_VUE_DSN=<snip>
+VITE_SENTRY_VUE_DSN=<snip>
 ```
 > Für die `HITOBITO_*` Einstellungen, siehe weiter unten.
 3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" qualix`
-4. **Frontend-Code builden**: `docker compose run --entrypoint "/bin/sh -c 'npm install && npm run prod'" node`
+4. **Frontend-Code builden**: `docker compose run --entrypoint "/bin/sh -c 'npm install && npm run build && npm run workers:build'" vite`
 5. **Optimierung (optional)**: `docker compose run --entrypoint "composer install --optimize-autoloader --no-dev" qualix`
     Siehe [hier](https://laravel.com/docs/9.x/deployment#optimization) für weitere Erklärungen.
 6. **Auf den Webhost hochladen**: Z.B. mit FTP alles (Ordner und Dateien) ausser .git, cypress, node_modules und tests hochladen

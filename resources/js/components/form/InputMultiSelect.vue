@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
-import MultiSelect from '../MultiSelect'
+import Input from '../../mixins/input.js'
+import MultiSelect from '../MultiSelect.vue'
 export default {
   name: 'InputMultiSelect',
   components: {MultiSelect},

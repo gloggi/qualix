@@ -18,7 +18,7 @@
 
 <script>
 import {nodeViewProps, NodeViewWrapper} from '@tiptap/vue-2'
-import ObservationContent from '../../../ObservationContent'
+import ObservationContent from '../../../ObservationContent.vue'
 
 export default {
   name: 'ElementObservation',

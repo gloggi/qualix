@@ -15,7 +15,9 @@
 </template>
 
 <script>
-import {cloneDeep, isEqual, sortBy} from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
+import isEqual from 'lodash/isEqual'
+import sortBy from 'lodash/sortBy'
 import {Editor, EditorContent, FloatingMenu as EditorFloatingMenu} from '@tiptap/vue-2'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -30,10 +32,10 @@ import * as Y from 'yjs'
 import {WebrtcProvider} from 'y-webrtc'
 import NodeObservation from './tiptap-extensions/observation/NodeObservation.js'
 import NodeRequirement from './tiptap-extensions/requirement/NodeRequirement.js'
-import GapCursorFocus from './tiptap-extensions/GapCursorFocus'
-import InputHidden from '../form/InputHidden'
-import FloatingMenu from './FloatingMenu'
-import ModalAddObservation from './tiptap-extensions/observation/ModalAddObservation'
+import GapCursorFocus from './tiptap-extensions/GapCursorFocus.js'
+import InputHidden from '../form/InputHidden.vue'
+import FloatingMenu from './FloatingMenu.vue'
+import ModalAddObservation from './tiptap-extensions/observation/ModalAddObservation.vue'
 import HelpText from '../HelpText.vue';
 
 export default {

@@ -23,7 +23,7 @@
                             <div class="card">
                                 <div class="imagebox">
                                     <div class="square-container">
-                                        <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
+                                        <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : '/was-gaffsch.svg' }}" alt="{{ $participant->scout_name }}">
                                     </div>
                                     <span class="font-size-larger imagebox-label badge badge-primary my-2">{{ count($participant->observations) }} <i class="fas fa-binoculars"></i></span>
                                 </div>

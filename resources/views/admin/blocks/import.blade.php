@@ -16,7 +16,7 @@
             <button-submit label="{{__('t.views.admin.block_import.import')}}">
 
                 @component('components.help-text', ['key' => 't.views.admin.block_import.ecamp2.how_to_get_the_block_overview', 'id' => 'eCamp2BlockOverviewHelp', 'params' => ['ecamp2' => $ecamp2Link]])
-                    <img src="{{ asset('images/ecamp2-block-overview.png') }}" class="img-fluid w-100 mt-2 border">
+                    <img src="{{ Vite::asset('resources/images/ecamp2-block-overview.png') }}" class="img-fluid w-100 mt-2 border">
                 @endcomponent
 
             </button-submit>

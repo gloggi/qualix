@@ -19,4 +19,9 @@ else
   git pull || echo 'Could not update twemoji. Skipping for now...'
 fi
 
+cd ../..
+rm -rf public/twemoji
+mkdir -p public/twemoji/assets/72x72
+cp -r resources/twemoji/assets/72x72/* public/twemoji/assets/72x72/
+
 echo 'twemoji images should be up to date now.'

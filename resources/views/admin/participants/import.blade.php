@@ -17,7 +17,7 @@
 
                 @component('components.help-text', ['key' => 't.views.admin.participant_import.MiData.how_to_get_the_participant_list', 'id' => 'MiDataParticipantListHelp', 'params' => ['MiData' => $MiDataLink]])
 
-                    <img src="{{ asset('images/MiData-participant-list.png') }}" class="img-fluid w-100 mt-2 border">
+                    <img src="{{ Vite::asset('resources/images/MiData-participant-list.png') }}" class="img-fluid w-100 mt-2 border">
 
                 @endcomponent
 

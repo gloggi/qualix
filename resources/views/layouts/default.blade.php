@@ -3,7 +3,7 @@
 @section('wideLayout'){{ json_encode(false) }}@endsection
 
 @section('head')
-    <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
+    @vite('resources/sass/app.scss')
 @endsection
 
 @section('layout')

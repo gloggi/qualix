@@ -11,7 +11,7 @@
 
 <script>
 
-import FormBasic from './FormBasic'
+import FormBasic from './FormBasic.vue'
 export default {
   name: 'ModalDelete',
   components: {FormBasic},

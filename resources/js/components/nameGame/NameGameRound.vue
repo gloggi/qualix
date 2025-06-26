@@ -37,7 +37,8 @@
 </template>
 
 <script>
-import { cloneDeep, shuffle } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import shuffle from 'lodash/shuffle';
 import '@formatjs/intl-durationformat/polyfill'
 import ButtonSubmit from '../form/ButtonSubmit.vue'
 import NameGameGuess from './NameGameGuess.vue'

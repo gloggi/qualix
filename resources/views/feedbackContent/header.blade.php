@@ -2,7 +2,7 @@
 
     <div class="col-2 mb-3">
         <div class="square-container">
-            <img class="card-img-top img img-responsive full-width not-selectable" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
+            <img class="card-img-top img img-responsive full-width not-selectable" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : '/was-gaffsch.svg' }}" alt="{{ $participant->scout_name }}">
         </div>
     </div>
 

@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
+import Input from '../../mixins/input.js'
 
 export default {
   name: 'InputText',

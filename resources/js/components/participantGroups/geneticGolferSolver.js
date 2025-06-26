@@ -3,7 +3,11 @@
  * This code is licensed under the MIT license.
  * Originally written by Brad Buchanan.
  */
-import { shuffle, range, sortBy, zip, unzip } from 'lodash'
+import shuffle from 'lodash/shuffle';
+import range from 'lodash/range';
+import sortBy from 'lodash/sortBy';
+import zip from 'lodash/zip';
+import unzip from 'lodash/unzip';
 
 const GENERATIONS = 30
 const RANDOM_MUTATIONS = 2

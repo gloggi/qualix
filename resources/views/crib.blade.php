@@ -74,7 +74,7 @@
                                                         <div class="col-4 col-sm-3 col-md-4 col-lg-3 mb-1 text-center" v-b-tooltip.hover title="{{$participant->observation_assignment_names}}">
                                                             <a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id, 'block' => $block->id]) }}">
                                                                 <div class="mb-0 position-relative">
-                                                                    <img class="card-img-top rounded-circle img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
+                                                                    <img class="card-img-top rounded-circle img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : '/was-gaffsch.svg' }}" alt="{{ $participant->scout_name }}">
                                                                     <div class="card-img-overlay w-100 p-0 d-flex flex-column ">
                                                                         <b-badge v-if="{{ $participant->observation_count }}" variant="primary" class="ml-auto mb-auto font-size-larger" pill>{{ $participant->observation_count }}</b-badge>
                                                                         <b-badge v-else variant="danger" class="ml-auto mb-auto font-size-larger" pill>{{ $participant->observation_count }}</b-badge>

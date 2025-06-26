@@ -13,7 +13,7 @@
 <script>
 import sanitizeFilename from 'sanitize-filename'
 import { saveAs } from 'file-saver'
-import JSZip from "jszip";
+import JSZip from 'jszip';
 
 export default {
   name: 'ButtonPrintAllFeedbacks',

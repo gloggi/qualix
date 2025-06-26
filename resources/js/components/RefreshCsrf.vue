@@ -3,9 +3,6 @@
 </template>
 
 <script>
-import { isArray } from 'lodash'
-import InputHidden from "./form/InputHidden"
-
 export default {
   name: 'RefreshCsrf',
   created () {

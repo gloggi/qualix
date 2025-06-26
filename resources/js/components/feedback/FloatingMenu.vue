@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import ModalAddObservation from './tiptap-extensions/observation/ModalAddObservation'
-import ButtonAdd from './ButtonAdd'
+import ModalAddObservation from './tiptap-extensions/observation/ModalAddObservation.vue'
+import ButtonAdd from './ButtonAdd.vue'
 
 export default {
   name: 'FloatingMenu',

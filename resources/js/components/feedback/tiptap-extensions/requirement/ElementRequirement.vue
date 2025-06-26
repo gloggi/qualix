@@ -20,7 +20,7 @@
 
 <script>
 import {nodeViewProps, NodeViewWrapper} from '@tiptap/vue-2'
-import RequirementStatus from './RequirementStatus'
+import RequirementStatus from './RequirementStatus.vue'
 
 export default {
   name: 'ElementRequirement',

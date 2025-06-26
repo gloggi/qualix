@@ -5,7 +5,6 @@ import {
   compileToFunction,
   resolveValue,
 } from '@intlify/core'
-import translationData from '../../../../lang/index.js'
 
 const createI18n = (language) => {
   registerMessageCompiler(compileToFunction)
@@ -13,7 +12,7 @@ const createI18n = (language) => {
   const context = createCoreContext({
     locale: language,
     fallbackLocale: 'de',
-    messages: translationData,
+    messages: import.meta.env.VITE_LARAVEL_TRANSLATIONS,
     missingWarn: false,
     fallbackWarn: false,
     messageResolver: resolveValue,

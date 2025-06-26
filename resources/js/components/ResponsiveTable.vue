@@ -53,8 +53,8 @@
 </template>
 
 <script>
-import { isEmpty } from 'lodash'
-import ModalDelete from './ModalDelete'
+import isEmpty from 'lodash/isEmpty'
+import ModalDelete from './ModalDelete.vue'
 
 export default {
   name: 'ResponsiveTable',

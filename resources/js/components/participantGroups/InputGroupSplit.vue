@@ -92,13 +92,13 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
-import InputMultiMultiSelect from '../form/InputMultiMultiSelect'
-import { validSplitGroups } from './validSplit'
-import {kebabCase} from 'lodash'
-import InputText from '../form/InputText'
-import RowText from '../form/RowText'
-import InputCheckbox from '../form/InputCheckbox'
+import Input from '../../mixins/input.js'
+import InputMultiMultiSelect from '../form/InputMultiMultiSelect.vue'
+import { validSplitGroups } from './validSplit.js'
+import kebabCase from 'lodash/kebabCase'
+import InputText from '../form/InputText.vue'
+import RowText from '../form/RowText.vue'
+import InputCheckbox from '../form/InputCheckbox.vue'
 import InputMultiSelect from '../form/InputMultiSelect.vue';
 
 export default {
