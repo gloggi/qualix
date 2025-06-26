@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import ObservationContent from '../../../ObservationContent'
-import ObservationList from '../../../ObservationList'
+import ObservationContent from '../../../ObservationContent.vue'
+import ObservationList from '../../../ObservationList.vue'
 
 export default {
   name: 'ModalAddObservation',

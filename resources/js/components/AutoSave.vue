@@ -9,8 +9,8 @@
   <span v-else class="btn px-0 text-secondary" :class="textClass">{{ autosaveText }} <i class="fas" :class="autosaveIcon"></i></span>
 </template>
 <script>
-import {debounce} from 'lodash'
-import HelpText from './HelpText'
+import debounce from 'lodash/debounce'
+import HelpText from './HelpText.vue'
 
 export default {
   name: 'AutoSave',

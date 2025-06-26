@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import { isArray } from 'lodash'
-import InputHidden from "./form/InputHidden"
+import isArray from 'lodash/isArray'
+import InputHidden from './form/InputHidden.vue'
 
 export default {
   name: 'FormBasic',

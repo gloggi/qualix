@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import FormBasic from '../FormBasic';
-import InputText from '../form/InputText';
-import InputMultiSelect from '../form/InputMultiSelect';
+import FormBasic from '../FormBasic.vue';
+import InputText from '../form/InputText.vue';
+import InputMultiSelect from '../form/InputMultiSelect.vue';
 import InputEvaluationGridTemplate from './InputEvaluationGridTemplate.vue';
 
 export default {

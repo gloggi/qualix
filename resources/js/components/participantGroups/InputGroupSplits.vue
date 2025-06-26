@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
-import InputGroupSplit from './InputGroupSplit'
-import validSplit from './validSplit'
+import Input from '../../mixins/input.js'
+import InputGroupSplit from './InputGroupSplit.vue'
+import validSplit from './validSplit.js'
 
 export default {
   name: 'InputGroupSplits',

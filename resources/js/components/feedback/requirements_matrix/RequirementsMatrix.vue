@@ -22,9 +22,10 @@
 </template>
 
 <script>
-import {sortBy, uniqBy} from 'lodash'
-import RequirementsMatrixHeaderRow from './RequirementsMatrixHeaderRow'
-import RequirementsMatrixRow from './RequirementsMatrixRow'
+import sortBy from 'lodash/sortBy'
+import uniqBy from 'lodash/uniqBy'
+import RequirementsMatrixHeaderRow from './RequirementsMatrixHeaderRow.vue'
+import RequirementsMatrixRow from './RequirementsMatrixRow.vue'
 
 export default {
   name: 'RequirementsMatrix',

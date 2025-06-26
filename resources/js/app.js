@@ -3,12 +3,17 @@ import i18n from './i18n'
 import './kebabCaseFilter'
 import './svg.js'
 import * as Sentry from '@sentry/vue'
+import './bootstrap.js'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import 'remote-web-worker'
 
-require('./bootstrap')
+import.meta.glob([
+  '../images/**',
+  '../fonts/**',
+], { eager: true });
 
 window.Vue = Vue
 
-const {BootstrapVue, IconsPlugin} = require('bootstrap-vue')
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
@@ -50,9 +55,11 @@ Vue.prototype.routeMethod = function (name, parameters) {
   }
 }
 
-require.context('./', true, /\.vue$/i, 'lazy').keys().forEach(file => {
-  Vue.component(file.split('/').pop().split('.')[0], () => import(`${file}` /*webpackChunkName: "[request]" */))
-})
+const allComponents = import.meta.glob('./components/**/*.vue')
+for (const path in allComponents) {
+  const fileName = path.split('/').slice(-1)[0]
+  Vue.component(fileName.split('.')[0], allComponents[path])
+}
 
 /**
  * Fix autofocus on form elements inside the Vue.js area of the page by adding v-focus additionally to autofocus:
@@ -85,22 +92,15 @@ Vue.directive('focus', {
   }
 })
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
 const app = new Vue({
   el: '#app',
   i18n
 })
 
-
-if (process.env.MIX_SENTRY_VUE_DSN && process.env.MIX_SENTRY_VUE_DSN !== 'null') {
+if (import.meta.env.VITE_SENTRY_VUE_DSN && import.meta.env.VITE_SENTRY_VUE_DSN !== 'null') {
   Sentry.init({
     Vue: Vue,
-    dsn: process.env.MIX_SENTRY_VUE_DSN,
+    dsn: import.meta.env.VITE_SENTRY_VUE_DSN,
     logErrors: true,
   })
 }

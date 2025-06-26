@@ -53,9 +53,9 @@ sed -ri "s~^COLLABORATION_SIGNALING_SERVERS=.*$~COLLABORATION_SIGNALING_SERVERS=
 sed -ri "s~^SENTRY_RELEASE=.*$~SENTRY_RELEASE=$(git rev-parse HEAD)~" .env
 sed -ri "s~^SENTRY_LARAVEL_DSN=.*$~SENTRY_LARAVEL_DSN=$SENTRY_LARAVEL_DSN~" .env
 sed -ri "s~^SENTRY_CSP_REPORT_URI=.*$~SENTRY_CSP_REPORT_URI=$SENTRY_CSP_REPORT_URI~" .env
-sed -ri "s~^MIX_SENTRY_VUE_DSN=.*$~MIX_SENTRY_VUE_DSN=$SENTRY_VUE_DSN~" .env
+sed -ri "s~^VITE_SENTRY_VUE_DSN=.*$~VITE_SENTRY_VUE_DSN=$SENTRY_VUE_DSN~" .env
 
-docker compose run --no-deps --entrypoint "/bin/sh -c 'npm install && scripts/install-twemoji.sh && npm run prod --no-unsafe-inline'" node
+docker compose run --no-deps --entrypoint "/bin/sh -c 'npm install && scripts/install-twemoji.sh && npm run build && npm run worker:build'" vite
 docker compose run --no-deps --entrypoint "composer install --no-dev" qualix
 PHP_MIN_VERSION_ID=$(grep -Po '(?<=\(PHP_VERSION_ID >= )[0-9]+(?=\))' vendor/composer/platform_check.php)
 

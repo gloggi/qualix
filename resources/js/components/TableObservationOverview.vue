@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import ResponsiveTable from "./ResponsiveTable"
-import RequirementProgress from './feedback/RequirementProgress'
+import ResponsiveTable from './ResponsiveTable.vue'
+import RequirementProgress from './feedback/RequirementProgress.vue'
 import ButtonPrintEvaluationGrid from './print/ButtonPrintEvaluationGrid.vue';
 
 export default {

@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import InputHidden from './InputHidden'
-import Input from '../../mixins/input'
+import InputHidden from './InputHidden.vue'
+import Input from '../../mixins/input.js'
 export default {
   name: 'InputRadioButton',
   mixins: [ Input ],

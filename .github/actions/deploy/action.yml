@@ -120,7 +120,7 @@ inputs:
   collaboration-signaling-servers:
     description: 'The collaboration signaling servers to use'
     required: false
-    default: '"wss://signaling.yjs.dev wss://y-webrtc-signaling-eu.herokuapp.com wss://y-webrtc-signaling-us.herokuapp.com"'
+    default: '"wss://y-webrtc-eu.fly.dev"'
 
   sentry-laravel-dsn:
     description: 'DSN for reporting backend errors to sentry'

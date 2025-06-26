@@ -1,14 +1,12 @@
-version: "3"
-
 services:
   qualix:
     build: .docker
-    container_name: 'qualix-app'
     ports:
       - '80:80'
     depends_on:
       - db
-      - node
+      - vite
+      - worker-build
     volumes:
       - .:/var/www
       - ./public/.htaccess.docker:/var/www/public/.htaccess
@@ -17,7 +15,6 @@ services:
 
   db:
     image: mariadb:10.3
-    container_name: 'qualix-db'
     ports:
       - '3306:3306'
     environment:
@@ -29,21 +26,27 @@ services:
 
   mail:
     image: schickling/mailcatcher@sha256:994aba62ace1a4442e796041b6c6c96aed5eca9de4a6584f3d5d716f1d7549ed
-    container_name: 'qualix-mail'
     ports:
       - '1080:1080'
 
-  node:
+  vite:
     image: node:22
-    container_name: 'qualix-npm'
     working_dir: '/app'
     volumes:
       - .:/app
-    command: bash -c "npm install && scripts/install-twemoji.sh && npm run watch"
+    command: bash -c "npm install && scripts/install-twemoji.sh && npm run dev"
+    ports:
+      - '5173:5173'
+
+  worker-build:
+    image: node:22
+    working_dir: '/app'
+    volumes:
+      - .:/app
+    command: bash -c "npm run worker:watch"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: 'qualix-phpmyadmin'
     depends_on:
       - db
     ports:

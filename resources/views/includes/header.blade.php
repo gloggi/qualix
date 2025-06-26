@@ -1,6 +1,6 @@
 <b-navbar toggleable="lg" class="px-0">
     <b-navbar-brand href="{{ route('home') }}" class="navbar-brand">
-        <img class="avatar-small" src="{{ asset('images/was-gaffsch.svg') }}" />{{__('t.header.qualix')}}
+        <img class="avatar-small" src="/was-gaffsch.svg" />{{__('t.header.qualix')}}
     </b-navbar-brand>
     <b-navbar-toggle target="navbar-collapse-mobile"></b-navbar-toggle>
     <b-collapse id="navbar-collapse-mobile" is-nav>
@@ -91,7 +91,7 @@
             @auth
                 <b-nav-item-dropdown right title="{{ Auth::user()->name }}">
                     <template #button-content>
-                        <img class="avatar-small" src="{{ Auth::user()->image_url != null ? asset(Storage::url(Auth::user()->image_url)) : asset('images/was-gaffsch.svg') }}">
+                        <img class="avatar-small" src="{{ Auth::user()->image_url != null ? asset(Storage::url(Auth::user()->image_url)) : '/was-gaffsch.svg' }}">
                     </template>
 
                     <b-dropdown-item {{ Route::currentRouteName() == 'user' ? ' active' : '' }} href="{{ route('user') }}">{{ Auth::user()->name }}</b-dropdown-item>

@@ -1,8 +1,8 @@
 import {mergeAttributes, Node} from '@tiptap/core'
 import {VueNodeViewRenderer} from '@tiptap/vue-2'
 import {Plugin} from 'prosemirror-state'
-import {isEqual} from 'lodash'
-import ElementRequirement from './ElementRequirement'
+import isEqual from 'lodash/isEqual'
+import ElementRequirement from './ElementRequirement.vue'
 
 const NodeRequirement = ({ readonly }) => Node.create({
   name: 'requirement',

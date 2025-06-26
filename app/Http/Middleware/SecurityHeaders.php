@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Vite;
 
 class SecurityHeaders {
 
@@ -30,6 +31,7 @@ class SecurityHeaders {
             $this->getCSPDefaultSrc(),
             $this->getCSPScriptSrc(),
             $this->getCSPStyleSrc(),
+            $this->getCSPFontSrc(),
             $this->getCSPImgSrc(),
             $this->getCSPConnectSrc(),
             $this->getCSPReportUri(),
@@ -56,31 +58,45 @@ class SecurityHeaders {
     }
 
     protected function getCSPDefaultSrc() {
-        return "default-src 'self'";
+        return "default-src {$this->getSelf()}";
     }
 
     protected function getCSPScriptSrc() {
-        return "script-src 'self' 'unsafe-eval'";
+        return "script-src {$this->getSelf()} 'unsafe-eval'";
     }
 
     protected function getCSPStyleSrc() {
-        $nonce = app('csp-nonce');
-        return "style-src 'self' 'nonce-${nonce}'";
+        $nonce = Vite::cspNonce();
+        return "style-src {$this->getSelf()} 'nonce-{$nonce}'";
+    }
+
+    protected function getCSPFontSrc() {
+        return "font-src {$this->getSelf()}";
     }
 
     protected function getCSPImgSrc() {
-        return "img-src 'self' data:";
+        return "img-src {$this->getSelf()} data:";
     }
 
     protected function getCSPConnectSrc() {
-        if (!config('app.collaboration.enabled')) return '';
-
         $sentryUrl = '';
         if (config('app.sentry.mix.vue_dsn')) {
             $parsed = parse_url(config('app.sentry.mix.vue_dsn'));
             $sentryUrl = $parsed['scheme'] . '://' . $parsed['host'] . (isset($parsed['port']) ? ':' . $parsed['port'] : '');
         }
-        return "connect-src 'self' $sentryUrl " . config('app.collaboration.signaling_servers');
+
+        $collaborationUrl = '';
+        if (config('app.collaboration.enabled')) {
+            $collaborationUrl = config('app.collaboration.signaling_servers');
+        }
+
+        return "connect-src {$this->getSelf('ws')} {$this->getSelf()} data: $sentryUrl $collaborationUrl";
+    }
+
+    protected function getSelf($protocol = 'http') {
+        if (App::environment() === 'production') return "'self'";
+        // In development, allow anything from the vite dev server
+        return "'self' {$protocol}://localhost:5173";
     }
 
     protected function getCSPReportUri() {

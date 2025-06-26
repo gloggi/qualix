@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
+import Input from '../../mixins/input.js'
 import InputEvaluationGridRowTemplate from './InputEvaluationGridRowTemplate.vue';
 export default {
   name: 'InputEvaluationGridTemplate',

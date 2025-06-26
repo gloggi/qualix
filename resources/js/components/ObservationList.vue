@@ -142,11 +142,11 @@
 
 <script>
 
-import { isEmpty } from 'lodash'
-import ResponsiveTable from "./ResponsiveTable"
-import ObservationContent from "./ObservationContent"
-import MultiSelect from './MultiSelect'
-import HelpText from './HelpText'
+import isEmpty from 'lodash/isEmpty'
+import ResponsiveTable from './ResponsiveTable.vue'
+import ObservationContent from './ObservationContent.vue'
+import MultiSelect from './MultiSelect.vue'
+import HelpText from './HelpText.vue'
 
 export default {
   name: 'ObservationList',

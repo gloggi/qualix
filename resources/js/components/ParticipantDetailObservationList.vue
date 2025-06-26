@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import { get } from 'lodash'
-import ObservationList from "./ObservationList"
+import get from 'lodash/get'
+import ObservationList from './ObservationList.vue'
 
 export default {
   name: 'ParticipantDetailObservationList',

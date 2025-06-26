@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
-import {get} from "lodash"
-import FeedbackEditor from './FeedbackEditor'
+import Input from '../../mixins/input.js'
+import get from 'lodash/get'
+import FeedbackEditor from './FeedbackEditor.vue'
 
 export default {
   name: 'InputFeedbackEditorLarge',

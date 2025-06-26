@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
+import Input from '../../mixins/input.js'
 import InputHidden from '../form/InputHidden.vue';
 export default {
   name: 'InputEvaluationGridRowControl',
