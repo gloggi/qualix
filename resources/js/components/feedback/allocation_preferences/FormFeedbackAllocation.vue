@@ -136,8 +136,10 @@
             <small>Stark</small>
           </div>
         </b-col>
-        <b-col class="text-right" md="4">
-          <button-submit :label="$t('t.views.admin.feedbacks.generate_allocation')" @click.prevent="submitForm"/>
+        <b-col md="4">
+          <b-button class="float-right" type="submit" variant="primary" @click.prevent="submitForm">
+            {{ $t('t.views.admin.feedbacks.generate_allocation') }}
+          </b-button>
         </b-col>
       </b-row>
     </form-basic>
@@ -171,8 +173,15 @@
             </b-tr>
           </b-tbody>
         </b-table-simple>
-        <button-submit :label="$t('t.views.admin.feedbacks.allocation.confirm_allocation')"></button-submit>
+        <b-button
+          class="float-right"
+          type="submit"
+          variant="primary"
+        >
+          {{ $t('t.views.admin.feedbacks.allocation.confirm_allocation') }}
+        </b-button>
       </form-basic>
+
 
     </b-card>
   </div>
