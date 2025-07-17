@@ -67,7 +67,6 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
             $participantVertexId = $index + 2;
             $participantVertex = $this->graph->createVertex($participantVertexId);
 
-            Log::info('Participant ' . $participantName . ' has index:' . $participantVertexId);
             $this->particpantNameToVertexId[$participantName] = $participantVertexId;
             $this->vertexIdToName[$participantVertexId] = $participantName;
 
@@ -85,11 +84,8 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
         // Handle forbidden wishes
         foreach ($forbiddenWishes as $forbiddenWish) {
             [$participantName, $trainerName] = $forbiddenWish;
-            Log::info($forbiddenWish);
             $participantIndex = $this->particpantNameToVertexId[$participantName] - 2;
             $trainerIndex = $this->trainerNameToVertexId[$trainerName] - 2 - $participantCount;
-            Log::info($participantName . ' has index:' . $participantIndex);
-            Log::info($trainerName . ' has index:' . $trainerIndex);
             $preferenceMatrix[$participantIndex][$trainerIndex] = PHP_INT_MAX;
         }
 

@@ -189,6 +189,7 @@ class FeedbackController extends Controller {
      * Try to allocate feedbacks based on preferences.
      *
      * @param FeedbackAllocationRequest $request
+     * @param FeedbackAllocator $allocator
      * @return Response
      */
     public function allocate(FeedbackAllocationRequest $request, FeedbackAllocator $allocator): Response
@@ -208,10 +209,5 @@ class FeedbackController extends Controller {
         );
 
         return response($result);
-        // Alternativ schöner als JSON:
-        // return response()->json([
-        //     'status' => 'success',
-        //     'data' => $result
-        // ]);
     }
 }
