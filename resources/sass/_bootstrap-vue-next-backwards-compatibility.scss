@@ -1,0 +1,79 @@
+$custom-select-padding-y: 0.375rem;
+$custom-select-padding-x: 0.75rem;
+$custom-select-height: $input-height;
+$custom-select-indicator-padding: 1rem;
+$custom-select-line-height: $input-btn-line-height;
+$custom-select-color: $input-color;
+$custom-select-disabled-color: $gray-600;
+$custom-select-bg: $white;
+$custom-select-disabled-bg: $gray-200;
+$custom-select-bg-size: 8px 10px;
+$custom-select-indicator-color: #333;
+$custom-select-border-width: $input-btn-border-width;
+$custom-select-border-color: $input-border-color;
+$custom-select-border-radius: $border-radius;
+$custom-select-focus-border-color: lighten($blue, 25%);
+$custom-select-focus-box-shadow: inset 0 1px 2px rgba($black, 0.075), 0 0 5px rgba($custom-select-focus-border-color, 0.5);
+$custom-select-font-size-sm: 75%;
+$custom-select-height-sm: $input-height-sm;
+
+.btn-primary, .btn-danger, .btn-secondary {
+    --bs-btn-color: #fff;
+}
+
+.btn-primary:disabled, .btn-danger:disabled, .btn-secondary:disabled {
+    --bs-btn-disabled-color: #fff;
+}
+
+.btn:hover:not(.btn-link) {
+    --bs-btn-hover-color: #fff;
+}
+
+.btn-check:checked + .btn:not(.btn-link), :not(.btn-check) + .btn:active:not(.btn-link), .btn:not(.btn-link):first-child:active, .btn.active:not(.btn-link), .btn.show:not(.btn-link) {
+    --bs-btn-active-color: #fff;
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-hover-bg: rgba(0,0,0,.075);
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    --bs-dropdown-link-hover-bg: #e9ecef;
+}
+
+body {
+    --bs-body-bg: #f8fafc;
+}
+
+.card {
+    --bs-card-bg: #fff;
+}
+
+.dropdown-menu {
+    --bs-dropdown-bg: #fff;
+}
+
+.form-group.row {
+  margin-bottom: 1rem;
+}
+
+input.form-control, textarea.form-control, input.form-control:focus, textarea.form-control:focus, select.form-select {
+    background-color: #fff;
+}
+
+.list-group-item {
+    background-color: transparent;
+}
+
+.form-switch.form-control-lg .form-check-input {
+    margin-top: -0.27em;
+}
+
+.table-hover > tbody > tr:hover {
+    background-color: var(--bs-table-hover-bg);
+}
+
+.table > :not(caption) > * > td {
+    box-shadow: none; // avoid duplicate semi-transparent background color in responsive tables
+}

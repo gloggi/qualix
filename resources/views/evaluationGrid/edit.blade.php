@@ -11,7 +11,7 @@
 
             <input-multi-select
                 name="participants"
-                value="{{ $evaluationGrid->participants->pluck('id')->join(',') }}"
+                model-value="{{ $evaluationGrid->participants->pluck('id')->join(',') }}"
                 label="{{__('t.models.evaluation_grid.participants')}}"
                 required
                 :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
@@ -24,7 +24,7 @@
 
             <input-multi-select
                 name="block"
-                value="{{ $evaluationGrid->block->id }}"
+                model-value="{{ $evaluationGrid->block->id }}"
                 label="{{__('t.models.evaluation_grid.block')}}"
                 required
                 :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number')) }}"
@@ -32,7 +32,7 @@
 
             <input-evaluation-grid
                 name="rows"
-                :value="{{ json_encode($evaluationGrid->rows->values()->keyBy('evaluation_grid_row_template_id'), JSON_FORCE_OBJECT) }}"
+                :model-value="{{ json_encode($evaluationGrid->rows->values()->keyBy('evaluation_grid_row_template_id'), JSON_FORCE_OBJECT) }}"
                 :row-templates="{{ json_encode($evaluationGridTemplate->evaluationGridRowTemplates) }}"
                 :notes-length-limit="{{ \App\Models\Observation::CHAR_LIMIT }}"></input-evaluation-grid>
 

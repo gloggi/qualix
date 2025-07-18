@@ -26,18 +26,14 @@
 </template>
 
 <script>
-import Input from '../../mixins/input.js'
-import MultiSelect from '../MultiSelect.vue';
-import InputHidden from '../form/InputHidden.vue';
-import InputMultiSelect from '../form/InputMultiSelect.vue';
-import InputTextarea from '../form/InputTextarea.vue';
+import Input from '../../mixins/input.js';
 import InputEvaluationGridRowNotes from './InputEvaluationGridRowNotes.vue';
 export default {
   name: 'InputEvaluationGridRow',
   components: { InputEvaluationGridRowNotes },
   mixins: [ Input ],
   props: {
-    value: { type: Object, default: () => ({}) },
+    modelValue: { type: Object, default: () => ({}) },
     rowTemplate: { type: Object, required: true },
     notesLengthLimit: { type: Number, required: false },
   },

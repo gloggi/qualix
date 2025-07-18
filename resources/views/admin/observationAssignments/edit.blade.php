@@ -9,11 +9,11 @@
 
         <form-basic :action="['admin.observationAssignments.update', {course: {{ $course->id }}, observationAssignment: {{ $observationAssignment->id }}}]">
 
-            <input-text name="name" value="{{ $observationAssignment->name }}" label="{{__('t.models.observation_assignment.name')}}" required autofocus></input-text>
+            <input-text name="name" model-value="{{ $observationAssignment->name }}" label="{{__('t.models.observation_assignment.name')}}" required autofocus></input-text>
 
             <input-multi-select
                 name="users"
-                value="{{ $observationAssignment->users->pluck('id')->join(',') }}"
+                model-value="{{ $observationAssignment->users->pluck('id')->join(',') }}"
                 label="{{__('t.models.observation_assignment.users')}}"
                 required
                 :options="{{ json_encode($course->users->map->only('id', 'name')) }}"
@@ -22,7 +22,7 @@
 
             <input-multi-select
                 name="participants"
-                value="{{ $observationAssignment->participants->pluck('id')->join(',') }}"
+                model-value="{{ $observationAssignment->participants->pluck('id')->join(',') }}"
                 label="{{__('t.models.observation_assignment.participants')}}"
                 required
                 :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
@@ -43,7 +43,7 @@
 
             <input-multi-select
                 name="blocks"
-                value="{{ $observationAssignment->blocks->pluck('id')->join(',') }}"
+                model-value="{{ $observationAssignment->blocks->pluck('id')->join(',') }}"
                 label="{{__('t.models.observation_assignment.blocks')}}"
                 required
                 :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number')) }}"

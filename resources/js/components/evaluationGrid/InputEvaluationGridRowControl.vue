@@ -3,7 +3,7 @@
     <div class="d-flex flex-row flex-wrap" :class="{ 'is-invalid': errorMessage }">
       <template v-if="type === 'slider'">
         <div class="d-flex flex-column w-100">
-          <b-form-input type="range" min="0" max="9" :name="name" :value="currentValue || 0" />
+          <b-form-input type="range" min="0" max="9" :name="name" :model-value="currentValue || 0" />
           <div class="d-flex flex-row justify-content-between font-size-larger">
             <span>--</span>
             <span>-</span>
@@ -15,7 +15,7 @@
       <template v-else-if="type === 'radiobuttons'">
         <b-form-radio v-for="(option, optionValue) in radioButtonOptions"
                       :key="name + '-' + optionValue"
-                      :id="name + '-' + optionValue | kebabCase"
+                      :id="kebabCase(name + '-' + optionValue)"
                       :name="name"
                       class="horizontal-radio"
                       size="lg"
@@ -23,10 +23,10 @@
                       v-model="currentValue">{{ option }}</b-form-radio>
       </template>
       <template v-else-if="type === 'checkbox'">
-        <input-hidden :id="name + '-unchecked-value' | kebabCase" :name="name" value="0"></input-hidden>
+        <input-hidden :id="kebabCase(name) + '-unchecked-value'" :name="name" model-value="0"></input-hidden>
         <b-form-checkbox
           type="checkbox"
-          :id="name | kebabCase"
+          :id="kebabCase(name)"
           :name="name"
           :class="{ 'is-invalid': errorMessage }"
           value="7"
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import Input from '../../mixins/input.js'
+import Input from '../../mixins/input.js';
 import InputHidden from '../form/InputHidden.vue';
 export default {
   name: 'InputEvaluationGridRowControl',

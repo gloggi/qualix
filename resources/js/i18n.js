@@ -1,12 +1,13 @@
-import Vue from 'vue'
-import VueI18n from 'vue-i18n'
-import LaravelTranslationFormatter from './laravelTranslationFormatter'
+import { createI18n } from 'vue-i18n'
+import laravelTranslationCompiler from './laravelTranslationCompiler.js'
 
-Vue.use(VueI18n)
-
-export default new VueI18n({
+const i18n = createI18n({
+  legacy: false,
+  global: true,
   locale: document?.documentElement.lang || 'de',
   fallbackLocale: 'de',
   messages: import.meta.env.VITE_LARAVEL_TRANSLATIONS,
-  formatter: new LaravelTranslationFormatter({ locale: document.documentElement.lang })
+  messageCompiler: laravelTranslationCompiler,
 })
+
+export default i18n

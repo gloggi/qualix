@@ -41,7 +41,7 @@ class DeleteFeedbackTest extends TestCaseWithBasicData {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/feedbacks');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Die Rückmeldung "Zwischenquali" wurde erfolgreich gelöscht.');
+        $response->assertSee("Die Rückmeldung 'Zwischenquali' wurde erfolgreich gelöscht.");
 
         $response = $this->get('/course/' . $this->courseId . '/admin/feedbacks');
         $response->assertDontSee('Zwischenquali');
@@ -59,7 +59,7 @@ class DeleteFeedbackTest extends TestCaseWithBasicData {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/feedbacks');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Die Rückmeldung "Zwischenquali" wurde erfolgreich gelöscht.');
+        $response->assertSee("Die Rückmeldung 'Zwischenquali' wurde erfolgreich gelöscht.");
 
         $response = $this->get('/course/' . $this->courseId . '/admin/feedbacks');
         $response->assertDontSee('Zwischenquali');

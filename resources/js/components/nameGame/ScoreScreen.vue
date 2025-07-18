@@ -13,13 +13,13 @@
     <button
       v-if="wronglyGuessed.length && wronglyGuessed.length < participants.length"
       type="submit"
-      class="btn btn-outline-primary mr-3 mb-1 w-100 h-25"
+      class="btn btn-outline-primary me-3 mb-1 w-100 h-25"
       @click="$emit('finish', wronglyGuessed.map(p => p.id))">
       {{ $t('t.views.name_game.practice_wrong_names') }}
     </button>
     <button
       type="submit"
-      class="btn btn-outline-primary mr-3 mb-1 w-100 h-25"
+      class="btn btn-outline-primary me-3 mb-1 w-100 h-25"
       @click="$emit('finish')">
       {{ $t('t.views.name_game.play_again') }}
     </button>
@@ -33,6 +33,7 @@ export default {
   props: {
     participants: { type: Array, default: [] },
   },
+  emits: ['finish'],
   computed: {
     wronglyGuessed() {
       return this.participants.filter(participant => participant.correct === false)

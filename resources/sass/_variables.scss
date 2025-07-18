@@ -1,3 +1,4 @@
+@use "sass:color";
 
 // Body
 $body-bg: #f8fafc;
@@ -18,16 +19,16 @@ $yellow: #ffed4a;
 $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
-$blue-light: lighten(#3490dc, 20%);
-$indigo-light: lighten(#6574cd, 20%);
-$purple-light: lighten(#9561e2, 20%);
-$pink-light: lighten(#f66D9b, 20%);
-$red-light: lighten(#e3342f, 20%);
-$orange-light: lighten(#f6993f, 20%);
-$yellow-light: lighten(#ffed4a, 20%);
-$green-light: lighten(#38c172, 20%);
-$teal-light: lighten(#4dc0b5, 20%);
-$cyan-light: lighten(#6cb2eb, 20%);
+$blue-light: color.adjust(#3490dc, $lightness: 20%);
+$indigo-light: color.adjust(#6574cd, $lightness: 20%);
+$purple-light: color.adjust(#9561e2, $lightness: 20%);
+$pink-light: color.adjust(#f66D9b, $lightness: 20%);
+$red-light: color.adjust(#e3342f, $lightness: 20%);
+$orange-light: color.adjust(#f6993f, $lightness: 20%);
+$yellow-light: color.adjust(#ffed4a, $lightness: 20%);
+$green-light: color.adjust(#38c172, $lightness: 20%);
+$teal-light: color.adjust(#4dc0b5, $lightness: 20%);
+$cyan-light: color.adjust(#6cb2eb, $lightness: 20%);
 $white: #fff;
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;

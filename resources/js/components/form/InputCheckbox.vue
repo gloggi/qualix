@@ -1,11 +1,11 @@
 <template>
   <div class="form-group row">
-    <label :for="name | kebabCase" class="col-form-label py-0" :class="labelClass">{{ label }}</label>
+    <label :for="kebabCase(name)" class="col-form-label py-0" :class="labelClass">{{ label }}</label>
     <div :class="inputColumnClass">
-      <input-hidden :id="name + '-unchecked-value' | kebabCase" :name="name" value="0"></input-hidden>
+      <input-hidden :id="kebabCase(name) + '-unchecked-value'" :name="name" model-value="0"></input-hidden>
       <b-form-checkbox
         type="checkbox"
-        :id="name | kebabCase"
+        :id="kebabCase(name)"
         :name="name"
         :class="{ 'is-invalid': errorMessage }"
         value="1"
@@ -38,7 +38,7 @@ export default {
     return {
       isSwitch: this.switch
     }
-  }
+  },
 }
 </script>
 

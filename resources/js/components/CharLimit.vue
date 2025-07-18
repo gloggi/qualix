@@ -1,6 +1,6 @@
 <template>
   <b-progress class="position-relative" :max="limit" >
-    <span class="justify-content-center align-self-center d-flex position-absolute w-100"><strong class="ml-1"> {{ this.currentValue.length.toFixed(0) }} / {{ limit }}</strong></span>
+    <span class="justify-content-center align-self-center d-flex position-absolute w-100"><strong class="ms-1"> {{ this.currentValue.length.toFixed(0) }} / {{ limit }}</strong></span>
     <b-progress-bar :value="this.currentValue.length" :style="progressBarStyles"></b-progress-bar>
   </b-progress>
 </template>

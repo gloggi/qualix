@@ -4,7 +4,7 @@
     :title="$t('t.views.feedback_content.select_observation')"
     size="xl"
     scrollable
-    hide-footer
+    no-footer
     :return-focus="returnFocus">
 
     <observation-list
@@ -43,6 +43,7 @@ export default {
     showCategories: {type: Boolean, default: false},
     showImpression: {type: Boolean, default: false},
   },
+  emits: ['update:modelValue'],
   inject: ['courseId', 'requirements', 'categories', 'authors', 'blocks'],
   computed: {
     addingObservation: {
@@ -51,7 +52,7 @@ export default {
       },
       set(newValue) {
         if (newValue === false) {
-          this.$emit('input', null)
+          this.$emit('update:modelValue', null)
         }
       }
     }

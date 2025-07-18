@@ -1,30 +1,55 @@
-import Vue from 'vue'
-import i18n from './i18n'
-import './kebabCaseFilter'
-import './svg.js'
-import * as Sentry from '@sentry/vue'
-import './bootstrap.js'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-import 'remote-web-worker'
+import { createApp, defineAsyncComponent } from 'vue';
+import i18n from './i18n.js';
+import './svg.js';
+import * as Sentry from '@sentry/vue';
+import './bootstrap.js';
+import {
+  BAlert,
+  BBadge,
+  BButton,
+  BCard,
+  BCardHeader,
+  BCollapse,
+  BContainer,
+  BDropdownForm,
+  BDropdownItem,
+  BFormSelect,
+  BFormSelectOption,
+  BInputGroupText,
+  BLink,
+  BListGroup,
+  BListGroupItem,
+  BModal,
+  BNavbar,
+  BNavbarBrand,
+  BNavbarNav,
+  BNavbarToggle,
+  BNavForm,
+  BNavItem,
+  BNavItemDropdown,
+  createBootstrap,
+  vBModal,
+  vBToggle,
+  vBTooltip
+} from 'bootstrap-vue-next';
 
 import.meta.glob([
   '../images/**',
   '../fonts/**',
 ], { eager: true });
 
-window.Vue = Vue
+const app = createApp({})
 
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
+app.use(createBootstrap())
 
 const element = document.getElementById('laravel-data')
 window.Laravel = JSON.parse(element.getAttribute('data-laravel'))
 element.remove()
 if (window.onEnvLoaded) window.onEnvLoaded()
 
-Vue.prototype.$window = window
+app.config.globalProperties.$window = window
 
-Vue.prototype.routeUri = function (name, parameters) {
+app.config.globalProperties.routeUri = function (name, parameters) {
   if (window.Laravel.routes[name] === undefined) {
     console.error('Route not found ', name)
   } else {
@@ -47,7 +72,7 @@ Vue.prototype.routeUri = function (name, parameters) {
     return uri.toString()
   }
 }
-Vue.prototype.routeMethod = function (name, parameters) {
+app.config.globalProperties.routeMethod = function (name, parameters) {
   if (window.Laravel.routes[name] === undefined) {
     console.error('Route not found ', name)
   } else {
@@ -58,14 +83,45 @@ Vue.prototype.routeMethod = function (name, parameters) {
 const allComponents = import.meta.glob('./components/**/*.vue')
 for (const path in allComponents) {
   const fileName = path.split('/').slice(-1)[0]
-  Vue.component(fileName.split('.')[0], allComponents[path])
+  app.component(fileName.split('.')[0], defineAsyncComponent(allComponents[path]))
 }
+const bootstrapComponentsUsedInBlade = {
+  BAlert,
+  BBadge,
+  BButton,
+  BCard,
+  BCardHeader,
+  BCollapse,
+  BContainer,
+  BDropdownForm,
+  BDropdownItem,
+  BFormSelect,
+  BFormSelectOption,
+  BInputGroupText,
+  BLink,
+  BListGroup,
+  BListGroupItem,
+  BModal,
+  BNavbar,
+  BNavbarBrand,
+  BNavbarNav,
+  BNavbarToggle,
+  BNavForm,
+  BNavItem,
+  BNavItemDropdown,
+}
+Object.entries(bootstrapComponentsUsedInBlade).forEach(([name, component]) => {
+  app.component(name, component);
+});
+app.directive('b-toggle', vBToggle);
+app.directive('b-tooltip', vBTooltip);
+app.directive('b-modal', vBModal);
 
 /**
  * Fix autofocus on form elements inside the Vue.js area of the page by adding v-focus additionally to autofocus:
  * <input type="text" autofocus v-focus>
  */
-Vue.directive('focus', {
+app.directive('focus', {
   inserted: function (el) {
     if (el.value !== undefined) {
       el.focus()
@@ -92,15 +148,14 @@ Vue.directive('focus', {
   }
 })
 
-const app = new Vue({
-  el: '#app',
-  i18n
-})
+app.use(i18n)
 
 if (import.meta.env.VITE_SENTRY_VUE_DSN && import.meta.env.VITE_SENTRY_VUE_DSN !== 'null') {
   Sentry.init({
-    Vue: Vue,
+    app: app,
     dsn: import.meta.env.VITE_SENTRY_VUE_DSN,
     logErrors: true,
   })
 }
+
+app.mount('#app')

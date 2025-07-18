@@ -35,7 +35,7 @@
                 :actions="{
                     edit: category => routeUri('admin.categories.edit', {course: {{ $course->id }}, category: category.id}),
                     delete: category => ({
-                        text: $t('t.views.admin.categories.really_delete', category) @if(!$course->archived) + ' ' + $tc('t.views.admin.categories.observations_on_category', category.num_observations)@endif,
+                        text: $t('t.views.admin.categories.really_delete', category) @if(!$course->archived) + ' ' + $t('t.views.admin.categories.observations_on_category', category.num_observations)@endif,
                         route: ['admin.categories.delete', {course: {{ $course->id }}, category: category.id}]
                     })
                 }"></responsive-table>

@@ -10,8 +10,9 @@
 @import 'colors';
 
 // Bootstrap
-@import 'bootstrap/scss/bootstrap';
-@import 'bootstrap-vue/src/index.scss';
+@import 'bootstrap/scss/bootstrap.scss';
+@import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
+@import 'bootstrap-vue-next-backwards-compatibility';
 @import 'multiselect-bootstrap';
 
 // Font Awesome

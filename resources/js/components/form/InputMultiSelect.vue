@@ -1,10 +1,10 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-form-label" :class="labelClass">{{ label }}</label>
+    <label :for="kebabCase(name)" class="col-form-label" :class="labelClass">{{ label }}</label>
 
     <div :class="inputColumnClass">
       <multi-select
-        :id="name | kebabCase"
+        :id="kebabCase(name)"
         class="form-control-multiselect" :class="{ 'is-invalid': errorMessage }"
         :name="name"
         :required="required"
@@ -12,8 +12,7 @@
         :v-focus="autofocus"
         v-model="currentValue"
         :aria-label="label"
-        v-bind="$attrs"
-        v-on="$listeners">
+        v-bind="$attrs">
         <template #option="props">
           <slot name="option" v-bind="props"></slot>
         </template>
@@ -36,6 +35,7 @@ import Input from '../../mixins/input.js'
 import MultiSelect from '../MultiSelect.vue'
 export default {
   name: 'InputMultiSelect',
+  inheritAttrs: false,
   components: {MultiSelect},
   mixins: [ Input ],
   props: {

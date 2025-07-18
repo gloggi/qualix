@@ -1,5 +1,5 @@
 <template>
-  <span class="mr-2" :class="iconColor"><i :class="iconClass" :title="status.name"></i></span>
+  <span class="me-2" :class="iconColor"><i :class="iconClass" :title="status.name"></i></span>
 </template>
 
 <script>

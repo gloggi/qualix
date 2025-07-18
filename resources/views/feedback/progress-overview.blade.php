@@ -24,7 +24,7 @@
 
         @if($anyResponsibilities)
             <div class="d-flex justify-content-end mb-2">
-                <label for="user" class="col-form-label text-md-right mr-2">{{ __('t.views.feedback.progress_overview.view_as') }}</label>
+                <label for="user" class="col-form-label text-md-end me-2">{{ __('t.views.feedback.progress_overview.view_as') }}</label>
                 <multi-select
                     name="user"
                     :value="{{ json_encode("$userId") }}"
@@ -57,7 +57,7 @@
                             <div class="d-flex align-items-baseline">
                                 <a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $feedback->participant_id]) }}"><img src="{{ $feedback->participant->image_url != null ? asset(Storage::url($feedback->participant->image_url)) : '/was-gaffsch.svg' }}" class="avatar-small" alt="{{ $feedback->participant->scout_name }}"/></a>
                                 <div class="d-flex flex-column flex-grow-1">
-                                    <div class="d-flex flex-wrap ml-2">
+                                    <div class="d-flex flex-wrap ms-2">
                                         <a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $feedback->participant_id]) }}"><strong>{{ $feedback->participant->scout_name }}</strong></a>
                                         <a href="{{ route('feedbackContent.edit', ['course' => $course->id, 'participant' => $feedback->participant_id, 'feedback' => $feedback->id]) }}" target="_blank" title="{{__('t.views.feedback.progress_overview.edit_feedback')}}"><i class="fas fa-pen-to-square px-2"></i></a>
                                         <button-print-feedback :course-id="{{ json_encode($course->id) }}" :participant-id="{{ json_encode($feedback->participant_id) }}" :feedback-id="{{ json_encode($feedback->id) }}">
@@ -65,7 +65,7 @@
                                         </button-print-feedback>
                                     </div>
                                     @if(count($feedback->users))
-                                        <div class="mw-80 ml-2">{{__('t.models.feedback.users')}}: {{ $feedback->users->map->name->join(', ') }}</div>
+                                        <div class="mw-80 ms-2">{{__('t.models.feedback.users')}}: {{ $feedback->users->map->name->join(', ') }}</div>
                                     @endif
                                 </div>
                             </div>

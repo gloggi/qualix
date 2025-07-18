@@ -39,7 +39,7 @@ class DeleteEvaluationGridTemplateTest extends TestCaseWithBasicData {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/evaluation_grids');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Das Beurteilungsraster "Unternehmungsplanung" wurde erfolgreich gelöscht.');
+        $response->assertSee("Das Beurteilungsraster 'Unternehmungsplanung' wurde erfolgreich gelöscht.");
 
         $response = $this->get('/course/' . $this->courseId . '/admin/evaluation_grids');
         $response->assertDontSee('Unternehmungsplanung');
@@ -57,7 +57,7 @@ class DeleteEvaluationGridTemplateTest extends TestCaseWithBasicData {
         $response->assertRedirect('/course/' . $this->courseId . '/admin/evaluation_grids');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $response->assertSee('Das Beurteilungsraster "Unternehmungsplanung" wurde erfolgreich gelöscht.');
+        $response->assertSee("Das Beurteilungsraster 'Unternehmungsplanung' wurde erfolgreich gelöscht.");
 
         $response = $this->get('/course/' . $this->courseId . '/admin/evaluation_grids');
         $response->assertDontSee('Unternehmungsplanung');

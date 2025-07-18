@@ -1,10 +1,10 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-form-label" :class="labelClass">{{ label }}</label>
+    <label :for="kebabCase(name)" class="col-form-label" :class="labelClass">{{ label }}</label>
 
     <div :class="inputColumnClass">
         <textarea
-          :id="name | kebabCase"
+          :id="kebabCase(name)"
           :name="name"
           class="form-control" :class="{ 'is-invalid': errorMessage }"
           :placeholder="placeholder"

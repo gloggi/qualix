@@ -63,7 +63,7 @@ describe('evaluation grids', () => {
 
     cy.contains('Erstellen').click()
 
-    cy.contains('Das Beurteilungsraster "End-to-end test evaluation grid" wurde erfolgreich erstellt.')
+    cy.contains("Das Beurteilungsraster 'End-to-end test evaluation grid' wurde erfolgreich erstellt.")
 
     cy.get('td').contains('End-to-end test evaluation grid').parent().within(() => {
       cy.get('[title="Drucken"]').click()

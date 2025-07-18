@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column">
     <textarea
-      :id="name | kebabCase"
+      :id="kebabCase(name)"
       :name="name"
       class="form-control" :class="{ 'is-invalid': errorMessage }"
       :placeholder="placeholder"

@@ -1,7 +1,7 @@
 <template>
   <div class="participant-group-generator">
     <form @submit.prevent="generate">
-      <b-alert v-if="error" variant="danger" show dismissible fade>
+      <b-alert v-if="error" variant="danger" :model-value="true" dismissible fade>
         {{ error }}
       </b-alert>
 
@@ -10,7 +10,7 @@
         :label="$t('t.views.admin.participant_group_generator.group_splits')"
         :participants="selectedParticipants"
         v-model="groupSplits"
-        :valid.sync="groupSplitsValid"
+        v-model:valid="groupSplitsValid"
         :any-duplicate-membership-groups="anyDuplicateMembershipGroups"
         required
         @add-group-split="addGroupSplit"
@@ -243,7 +243,7 @@ export default {
           participants: group.map(participant => this.indexToParticipant(participant).id).join(','),
         }))
       ))
-    }
+    },
   }
 }
 </script>

@@ -42,7 +42,7 @@
                 :actions="{
                     edit: participant => routeUri('admin.participants.edit', {course: {{ $course->id }}, participant: participant.id}),
                     delete: participant => ({
-                        text: $t('t.views.admin.participants.really_remove', participant) @if(!$course->archived) + ' ' + $tc('t.views.admin.participants.observations_on_participant', participant.num_observations)@endif,
+                        text: $t('t.views.admin.participants.really_remove', participant) @if(!$course->archived) + ' ' + $t('t.views.admin.participants.observations_on_participant', participant.num_observations)@endif,
                         route: ['admin.participants.delete', {course: {{ $course->id }}, participant: participant.id}]
                     })
                 }"

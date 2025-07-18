@@ -17,7 +17,7 @@ describe('feedback editor', () => {
 
     cy.get('[autofocus]').type('End-to-end test feedback{enter}')
 
-    cy.contains('Die Rückmeldung "End-to-end test feedback" wurde erfolgreich erstellt.')
+    cy.contains("Die Rückmeldung 'End-to-end test feedback' wurde erfolgreich erstellt.")
   })
 
   it('edits and prints a feedback', function () {

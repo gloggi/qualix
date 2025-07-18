@@ -11,9 +11,9 @@
 
             <input-text name="name" label="{{__('t.models.block.name')}}" required autofocus></input-text>
 
-            <input-date name="blocks_startdate" value="{{ Auth::user()->getLastUsedBlockDate($course)->format('Y-m-d') }}" label="{{__('t.models.block.blocks_startdate')}}" required></input-date>
+            <input-date name="blocks_startdate" model-value="{{ Auth::user()->getLastUsedBlockDate($course)->format('Y-m-d') }}" label="{{__('t.models.block.blocks_startdate')}}" required></input-date>
 
-            <input-date name="blocks_enddate" value="{{ Auth::user()->getLastUsedBlockDate($course)->format('Y-m-d') }}" label="{{__('t.models.block.blocks_enddate')}}" required></input-date>
+            <input-date name="blocks_enddate" model-value="{{ Auth::user()->getLastUsedBlockDate($course)->format('Y-m-d') }}" label="{{__('t.models.block.blocks_enddate')}}" required></input-date>
 
             <input-multi-select
                 name="requirements"

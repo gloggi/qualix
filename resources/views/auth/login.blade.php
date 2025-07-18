@@ -26,7 +26,7 @@
             @csrf
 
             <div class="form-group row required">
-                <label for="email" class="col-md-3 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                <label for="email" class="col-md-3 col-form-label text-md-end">{{ __('E-Mail Address') }}</label>
 
                 <div class="col-md-6">
                     <input id="email" type="email"
@@ -42,7 +42,7 @@
             </div>
 
             <div class="form-group row required">
-                <label for="password" class="col-md-3 col-form-label text-md-right">{{ __('Password') }}</label>
+                <label for="password" class="col-md-3 col-form-label text-md-end">{{ __('Password') }}</label>
 
                 <div class="col-md-6">
                     <input id="password" type="password"

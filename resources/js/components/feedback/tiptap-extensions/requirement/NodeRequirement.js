@@ -1,5 +1,5 @@
 import {mergeAttributes, Node} from '@tiptap/core'
-import {VueNodeViewRenderer} from '@tiptap/vue-2'
+import {VueNodeViewRenderer} from '@tiptap/vue-3'
 import {Plugin} from 'prosemirror-state'
 import isEqual from 'lodash/isEqual'
 import ElementRequirement from './ElementRequirement.vue'

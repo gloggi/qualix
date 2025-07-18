@@ -27,6 +27,7 @@ export default {
     value: { type: Object },
     markInvalid: { type: Boolean, default: false },
   },
+  emits: ['update:modelValue', 'localinput'],
   data() {
     return {
       currentValue: JSON.parse(get(window.Laravel.oldInput, this.name, 'null')) ?? this.value

@@ -19,7 +19,7 @@
       </div>
     </div>
     <b-progress class="position-relative mb-3 mt-1" :max="participants.length" >
-      <span class="justify-content-center align-self-center d-flex position-absolute w-100"><strong class="ml-1"> {{ $t('t.views.name_game.num_correct_and_incorrect', { correct: numCorrect, incorrect: numIncorrect, total: participants.length }) }}</strong></span>
+      <span class="justify-content-center align-self-center d-flex position-absolute w-100"><strong class="ms-1"> {{ $t('t.views.name_game.num_correct_and_incorrect', { correct: numCorrect, incorrect: numIncorrect, total: participants.length }) }}</strong></span>
       <b-progress-bar :value="numCorrect" variant="info"></b-progress-bar>
       <b-progress-bar :value="numIncorrect" variant="danger"></b-progress-bar>
     </b-progress>
@@ -43,7 +43,6 @@ import '@formatjs/intl-durationformat/polyfill'
 import ButtonSubmit from '../form/ButtonSubmit.vue'
 import NameGameGuess from './NameGameGuess.vue'
 import ScoreScreen from './ScoreScreen.vue'
-import Vue from 'vue';
 
 export default {
   name: 'NameGameRound',
@@ -52,6 +51,7 @@ export default {
     participants: { type: Array, required: true },
     gameMode: { type: String, required: true }
   },
+  emits: ['finish'],
   data () {
     return {
       shuffledParticipants: shuffle(this.participants),
@@ -91,11 +91,12 @@ export default {
       if (!this.finished) requestAnimationFrame(this.updateTimer)
     },
     correct() {
-      Vue.set(this.shuffledParticipants[this.step], 'correct', true)
+      // TODO make sure this still works
+      this.shuffledParticipants[this.step].correct = true
       this.score += 10
     },
     incorrect() {
-      Vue.set(this.shuffledParticipants[this.step], 'correct', false)
+      this.shuffledParticipants[this.step].correct = false
     },
     start() {
       this.shuffledParticipants = shuffle(this.participants.map(cloneDeep))

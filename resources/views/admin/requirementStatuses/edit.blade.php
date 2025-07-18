@@ -9,11 +9,11 @@
 
         <form-basic :action="['admin.requirement_statuses.update', { course: {{ $course->id }}, requirement_status: {{ $requirementStatus->id }} }]">
 
-            <input-text name="name" value="{{ $requirementStatus->name }}" label="{{__('t.models.requirement_status.name')}}" required autofocus></input-text>
+            <input-text name="name" model-value="{{ $requirementStatus->name }}" label="{{__('t.models.requirement_status.name')}}" required autofocus></input-text>
 
             <input-multi-select
                 name="color"
-                value="{{ $requirementStatus->color }}"
+                model-value="{{ $requirementStatus->color }}"
                 label="{{__('t.models.requirement_status.color')}}"
                 :options="{{ json_encode(array_map(function($color) { return ['id' => $color]; }, \App\Models\RequirementStatus::COLORS)) }}"
                 display-field="id"
@@ -29,7 +29,7 @@
 
             <input-multi-select
                 name="icon"
-                value="{{ $requirementStatus->icon }}"
+                model-value="{{ $requirementStatus->icon }}"
                 label="{{__('t.models.requirement_status.icon')}}"
                 :options="{{ json_encode(array_map(function($icon) { return ['id' => $icon]; }, \App\Models\RequirementStatus::ICONS)) }}"
                 display-field="id"

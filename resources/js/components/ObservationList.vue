@@ -6,10 +6,10 @@
           <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
         </b-button>
       </b-col>
-      <b-col v-if="anyFilterActive" class="text-right">
+      <b-col v-if="anyFilterActive" class="text-end">
         <p class="mb-0">
-          {{$tc('t.views.participant_details.shown_observations', 0, {filtered: filteredObservations.length, total: totalObservations})}} -
-          <b-button variant="link" class="mb-2 px-0 align-baseline" :visible="anyFilterActive" @click="clearAllFilters">
+          {{$t('t.views.participant_details.shown_observations', 0, {filtered: filteredObservations.length, total: totalObservations})}} -
+          <b-button variant="link" class="mb-2 px-0 align-baseline" @click="clearAllFilters">
             {{$t('t.views.participant_details.show_all')}}
           </b-button>
         </p>
@@ -24,7 +24,7 @@
             id="filter-requirements"
             name="filter-requirements"
             :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedRequirements.length>0}"
-            :selected.sync="selectedRequirements"
+            v-model:selected="selectedRequirements"
             :allow-empty="true"
             :placeholder="$t('t.views.participant_details.filter_by_requirement')"
             :options="requirementOptions"
@@ -40,7 +40,7 @@
             id="filter-categories"
             name="filter-categories"
             :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedCategories.length>0}"
-            :selected.sync="selectedCategories"
+            v-model:selected="selectedCategories"
             :allow-empty="true"
             :placeholder="$t('t.views.participant_details.filter_by_category')"
             :options="categoryOptions"
@@ -56,7 +56,7 @@
             id="filter-authors"
             name="filter-authors"
             :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedAuthor!==null}"
-            :selected.sync="selectedAuthor"
+            v-model:selected="selectedAuthor"
             :allow-empty="true"
             :placeholder="$t('t.views.participant_details.filter_by_author')"
             :options="authors"
@@ -72,7 +72,7 @@
             id="filter-blocks"
             name="filter-blocks"
             :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedBlock!==null}"
-            :selected.sync="selectedBlock"
+            v-model:selected="selectedBlock"
             :allow-empty="true"
             :placeholder="$t('t.views.participant_details.filter_by_block')"
             :options="blocks"
@@ -168,6 +168,7 @@ export default {
     showUser: { type: Boolean, default: false },
     pointerCursor: { type: Boolean, default: false },
   },
+  emits: ['clickObservation'],
   data() {
     return {
       selectedRequirements: [],

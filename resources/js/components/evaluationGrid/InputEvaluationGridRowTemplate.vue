@@ -8,7 +8,7 @@
       :aria-label="$t('t.global.remove')">
       <i class="fas fa-circle-minus"></i>
     </b-button>
-    <input-hidden v-if="currentValue.id" :name="`${name}[id]`" :value="String(currentValue.id)" />
+    <input-hidden v-if="currentValue.id" :name="`${name}[id]`" :model-value="String(currentValue.id)" />
     <input-textarea
       :name="`${name}[criterion]`"
       :label="$t('t.models.evaluation_grid_row_template.criterion')"
@@ -46,10 +46,11 @@ export default {
   components: { InputTextarea, InputMultiSelect, InputHidden, MultiSelect },
   mixins: [ Input ],
   props: {
-    value: { type: Object, default: () => {} },
+    modelValue: { type: Object, default: () => {} },
     index: { type: Number, required: true },
     controlTypes: { type: Array, default: () => [] },
   },
+  emits: ['update:modelValue', 'remove'],
   computed: {
     errorMessage() {
       return this.errors && this.errors.length ? this.errors[0] : undefined

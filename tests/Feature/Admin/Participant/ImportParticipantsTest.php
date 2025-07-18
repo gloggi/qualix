@@ -244,7 +244,7 @@ class ImportParticipantsTest extends TestCaseWithCourse {
         $this->assertInstanceOf(ValidationException::class, $response->exception);
         /** @var ValidationException $exception */
         $exception = $response->exception;
-        $this->assertEquals('Die TN-Liste konnte nicht korrekt gelesen werden - hat deine Datei mindestens eine Spalte mit der Überschrift "Pfadiname", "Vorname" oder "Nachname"?', $exception->validator->errors()->first('file'));
+        $this->assertEquals("Die TN-Liste konnte nicht korrekt gelesen werden - hat deine Datei mindestens eine Spalte mit der Überschrift 'Pfadiname', 'Vorname' oder 'Nachname'?", $exception->validator->errors()->first('file'));
     }
 
     public function test_shouldIgnoreMissingGroupColumn() {

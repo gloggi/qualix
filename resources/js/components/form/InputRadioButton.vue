@@ -1,11 +1,11 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-form-label py-0" :class="labelClass">{{ label }}</label>
+    <label :for="kebabCase(name)" class="col-form-label py-0" :class="labelClass">{{ label }}</label>
     <div :class="inputColumnClass">
       <div class="my-auto d-flex" :class="{ 'is-invalid': errorMessage }">
         <b-form-radio v-for="(option, optionValue) in options"
                       :key="name + '-' + optionValue"
-                      :id="name + '-' + optionValue | kebabCase"
+                      :id="kebabCase(name + '-' + optionValue)"
                       :name="name"
                       class="horizontal-radio"
                       :value="optionValue"

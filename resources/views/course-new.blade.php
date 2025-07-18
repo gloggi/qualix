@@ -23,9 +23,9 @@
 
                 <input-checkbox name="uses_impressions" label="{{__('t.models.course.uses_impressions')}}" value="1" switch size="lg"></input-checkbox>
 
-                <input-hidden name="observation_count_red_threshold" value="5"></input-hidden>
+                <input-hidden name="observation_count_red_threshold" model-value="5"></input-hidden>
 
-                <input-hidden name="observation_count_green_threshold" value="10"></input-hidden>
+                <input-hidden name="observation_count_green_threshold" model-value="10"></input-hidden>
 
             </b-collapse>
 

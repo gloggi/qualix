@@ -4,7 +4,7 @@
       class="form-control-multiselect d-flex mb-1"
       :class="{ 'is-invalid': errorMessage }">
       <multi-select
-        :id="name | kebabCase"
+        :id="kebabCase(name)"
         class="form-control-multiselect flex-grow-1" :class="{ 'is-invalid': errorMessage }"
         :name="name"
         :aria-label="label"
@@ -35,8 +35,9 @@
 </template>
 
 <script>
-import Input from '../../../mixins/input.js'
-import MultiSelect from '../../MultiSelect.vue'
+import Input from '../../../mixins/input.js';
+import MultiSelect from '../../MultiSelect.vue';
+
 export default {
   name: 'InputMultiMultiSelectEntry',
   components: {MultiSelect},
@@ -44,7 +45,9 @@ export default {
   props: {
     label: { type: String, required: true },
     requireMultiple: { type: String, default: '' },
+    modelValue: { type: String, default: '' },
   },
+  emits: ['update:modelValue', 'remove'],
   computed: {
     errorMessage() {
       if (this.localErrorMessage) return this.localErrorMessage

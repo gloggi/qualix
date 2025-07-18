@@ -1,11 +1,12 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-form-label" :class="labelClass">{{ label }}</label>
+    <label :for="kebabCase(name)" class="col-form-label" :class="labelClass">{{ label }}</label>
 
     <div :class="inputColumnClass">
-      <b-form-datepicker
-        :id="name | kebabCase"
+      <b-form-input
+        :id="kebabCase(name)"
         :name="name"
+        type="date"
         class="form-control" :class="{ 'is-invalid': errorMessage }"
         v-model="currentValue"
         :required="required"
@@ -13,8 +14,8 @@
         :v-focus="autofocus"
         :locale="$i18n.locale"
         :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
-        hide-header
-        label-help=""></b-form-datepicker>
+        no-header
+        label-help=""></b-form-input>
 
       <span v-if="errorMessage" class="invalid-feedback" role="alert">
         <strong>{{ errorMessage }}</strong>
