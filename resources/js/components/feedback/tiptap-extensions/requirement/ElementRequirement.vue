@@ -1,17 +1,17 @@
 <template>
   <node-view-wrapper>
     <div  class="requirement d-flex" :class="selected ? 'selected' : ''" data-drag-handle>
-      <requirement-status :value="node.attrs.status_id" @input="onChange" :statuses="requirementStatuses" class="mr-2 my-auto"></requirement-status>
+      <requirement-status :value="node.attrs.status_id" @input="onChange" :statuses="requirementStatuses" class="me-2 my-auto"></requirement-status>
       <h5 class="flex-grow-1 my-auto">{{ requirement.content | ucfirst }}</h5>
       <b-button v-if="editor.options.editable" v-b-toggle="`requirement-comment-${node.attrs.id}`" variant="link"><i class="fas fa-comment" :class="node.attrs.comment.length ? 'text-primary' : 'text-secondary'"></i></b-button>
-      <b-dropdown v-if="editor.options.editable" dropleft class="mr-2 requirement-menu" no-caret variant="link">
+      <b-dropdown v-if="editor.options.editable" placement="left" class="me-2 requirement-menu" no-caret variant="link">
         <template v-slot:button-content>
           <i class="fas fa-ellipsis-vertical"></i>
-        </template><b-dropdown-item-button v-for="status in requirementStatuses" :key="status.id" @click="onChange(status.id)"><i :class="[`text-${status.color}`, `fa-${status.icon}`]" class="fas mr-3"></i> {{ status.name }}</b-dropdown-item-button><b-dropdown-item-button v-if="observations.length" @click="selectObservation"><i class="text-primary fas fa-plus mr-3"></i> {{$t('t.models.observation.one')}}</b-dropdown-item-button><b-dropdown-group v-if="matchingEvaluationGrids.length" :header="$t('t.views.evaluation_grids.matching_evaluation_grids')"><b-dropdown-item v-for="evaluationGrid in matchingEvaluationGrids" :key="evaluationGrid.id" :href="routeUri('evaluationGrid.edit', {course: courseId, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id})"><i class="fas fa-list-check mr-3"></i> {{evaluationGrid.evaluation_grid_template.name}}</b-dropdown-item></b-dropdown-group></b-dropdown>
+        </template><b-dropdown-item-button v-for="status in requirementStatuses" :key="status.id" @click="onChange(status.id)"><i :class="[`text-${status.color}`, `fa-${status.icon}`]" class="fas me-3"></i> {{ status.name }}</b-dropdown-item-button><b-dropdown-item-button v-if="observations.length" @click="selectObservation"><i class="text-primary fas fa-plus me-3"></i> {{$t('t.models.observation.one')}}</b-dropdown-item-button><b-dropdown-group v-if="matchingEvaluationGrids.length" :header="$t('t.views.evaluation_grids.matching_evaluation_grids')"><b-dropdown-item v-for="evaluationGrid in matchingEvaluationGrids" :key="evaluationGrid.id" :href="routeUri('evaluationGrid.edit', {course: courseId, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id})"><i class="fas fa-list-check me-3"></i> {{evaluationGrid.evaluation_grid_template.name}}</b-dropdown-item></b-dropdown-group></b-dropdown>
     </div>
     <b-collapse v-if="editor.options.editable" :id="`requirement-comment-${node.attrs.id}`">
       <div class="feedback-requirement-comment">
-        <a :href="routeUri('feedback.progressOverview', {course: courseId, feedback_data: feedbackDataId})" class="float-right mr-2"><i class="fas fa-pen-to-square" /></a>
+        <a :href="routeUri('feedback.progressOverview', {course: courseId, feedback_data: feedbackDataId})" class="float-end me-2"><i class="fas fa-pen-to-square" /></a>
         <div class="mh-1em multiline" :class="{ 'text-muted': node.attrs.comment.length === 0 }">{{ node.attrs.comment || $t('t.views.feedback_content.comments_are_internal_and_will_not_be_printed') }}</div>
       </div>
     </b-collapse>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {nodeViewProps, NodeViewWrapper} from '@tiptap/vue-2'
+import {nodeViewProps, NodeViewWrapper} from '@tiptap/vue-3'
 import RequirementStatus from './RequirementStatus.vue'
 
 export default {

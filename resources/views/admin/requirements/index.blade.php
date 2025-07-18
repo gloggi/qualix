@@ -49,7 +49,7 @@
                 :actions="{
                     edit: requirement => routeUri('admin.requirements.edit', {course: {{ $course->id }}, requirement: requirement.id}),
                     delete: requirement => ({
-                        text: $t('t.views.admin.requirements.really_delete', requirement) @if(!$course->archived) + ' ' + $tc('t.views.admin.requirements.observations_on_requirement', requirement.num_observations) + ' ' + $tc('t.views.admin.requirements.feedbacks_using_requirement', requirement.num_feedback_datas)@endif,
+                        text: $t('t.views.admin.requirements.really_delete', requirement) @if(!$course->archived) + ' ' + $t('t.views.admin.requirements.observations_on_requirement', requirement.num_observations) + ' ' + $t('t.views.admin.requirements.feedbacks_using_requirement', requirement.num_feedback_datas)@endif,
                         route: ['admin.requirements.delete', {course: {{ $course->id }}, requirement: requirement.id}]
                     })
                 }"></responsive-table>

@@ -106,35 +106,36 @@ export default {
   mixins: [ Input ],
   components: { InputMultiSelect, InputCheckbox, RowText, InputText, InputMultiMultiSelect },
   props: {
-    value: { type: Object, default: () => ({}) },
+    modelValue: { type: Object, default: () => ({}) },
     participants: { type: Array, required: true },
     anyDuplicateMembershipGroups: { type: Boolean, default: false },
     deletable: { type: Boolean, default: true },
   },
+  emits: ['update:modelValue', 'remove'],
   computed: {
     numParticipants() {
       return this.participants.length
     },
     largeGroupSize() {
-      if (!validSplitGroups(this.currentValue, this.numParticipants)) {
+      if (!validSplitGroups(this.currentValue.groups, this.numParticipants)) {
         return 0
       }
       return Math.ceil(this.numParticipants / parseInt(this.currentValue.groups))
     },
     smallGroupSize() {
-      if (!validSplitGroups(this.currentValue, this.numParticipants)) {
+      if (!validSplitGroups(this.currentValue.groups, this.numParticipants)) {
         return 0
       }
       return Math.floor(this.numParticipants / parseInt(this.currentValue.groups))
     },
     unevenSplit() {
-      if (!validSplitGroups(this.currentValue, this.numParticipants)) {
+      if (!validSplitGroups(this.currentValue.groups, this.numParticipants)) {
         return false
       }
       return this.largeGroupSize !== this.smallGroupSize
     },
     groupSizeText() {
-      if (!validSplitGroups(this.currentValue, this.numParticipants)) {
+      if (!validSplitGroups(this.currentValue.groups, this.numParticipants)) {
         return this.$t('t.views.admin.participant_group_generator.split.enter_number_of_groups')
       }
       if (this.smallGroupSize === this.largeGroupSize) {

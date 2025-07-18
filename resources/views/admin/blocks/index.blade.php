@@ -13,7 +13,7 @@
 
             <input-text name="name" label="{{__('t.models.block.name')}}" required autofocus></input-text>
 
-            <input-date name="block_date" value="{{ Auth::user()->getLastUsedBlockDate($course)->format('Y-m-d') }}" label="{{__('t.models.block.block_date')}}" required></input-date>
+            <input-date name="block_date" model-value="{{ Auth::user()->getLastUsedBlockDate($course)->format('Y-m-d') }}" label="{{__('t.models.block.block_date')}}" required></input-date>
 
             <input-multi-select
                 name="requirements"
@@ -70,7 +70,7 @@
                 :actions="{
                     edit: block => routeUri('admin.block.edit', {course: {{ $course->id }}, block: block.id}),
                     delete: block => ({
-                        text: $t('t.views.admin.blocks.really_delete', block) @if(!$course->archived) + ' ' + $tc('t.views.admin.blocks.observations_on_block', block.num_observations)@endif,
+                        text: $t('t.views.admin.blocks.really_delete', block) @if(!$course->archived) + ' ' + $t('t.views.admin.blocks.observations_on_block', block.num_observations)@endif,
                         route: ['admin.block.delete', {course: {{ $course->id }}, block: block.id}]
                     })
                 }"></responsive-table>

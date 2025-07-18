@@ -256,6 +256,6 @@ class CreateBlockTest extends TestCaseWithCourse {
         // then
         $response->assertOk();
         $response->assertDontSee('value="' . Carbon::today()->format('Y-m-d') . '"');
-        $this->assertMatchesRegularExpression('/<input-date.*value="2019-01-01"/s', $response->content());
+        $this->assertMatchesRegularExpression('/<input-date.*model-value="2019-01-01"/s', $response->content());
     }
 }

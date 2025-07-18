@@ -394,9 +394,9 @@ describe('single select', () => {
     const multiSelect = render({
         template: `
           <multi-select :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
-                        @input="onInput" value="2"></multi-select>`,
+                        @update:modelValue="onInput" value="2"></multi-select>`,
         components: { MultiSelect },
-        methods: { onInput }
+        methods: { onUpdateModelValue: onInput }
       },
     )
 
@@ -413,7 +413,7 @@ describe('single select', () => {
           <multi-select :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
                         @input="onInput" value="2"></multi-select>`,
         components: { MultiSelect },
-        methods: { onInput }
+        methods: { onUpdateModelValue: onInput }
       },
     )
 
@@ -1037,7 +1037,7 @@ describe('multiple select', () => {
           <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
                         @input="onInput" value="2"></multi-select>`,
         components: { MultiSelect },
-        methods: { onInput }
+        methods: { onUpdateModelValue: onInput }
       },
     )
 
@@ -1054,7 +1054,7 @@ describe('multiple select', () => {
           <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
                         @input="onInput"></multi-select>`,
         components: { MultiSelect },
-        methods: { onInput }
+        methods: { onUpdateModelValue: onInput }
       },
     )
 

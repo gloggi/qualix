@@ -8,8 +8,8 @@
     <b-card body-class="container-fluid">
         <template #header>{{__('t.views.participant_details.title')}}</template>
 
-        @if($previousParticipant !== false) <div class="float-left"><a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $previousParticipant['id']] ) }}"><i class="fas fa-arrow-left"></i> {{ $previousParticipant['scout_name'] }}</a></div> @endif
-        @if($nextParticipant !== false) <div class="float-right"><a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $nextParticipant['id']] ) }}">{{ $nextParticipant['scout_name'] }} <i class="fas fa-arrow-right"></i></a></div> @endif
+        @if($previousParticipant !== false) <div class="float-start"><a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $previousParticipant['id']] ) }}"><i class="fas fa-arrow-left"></i> {{ $previousParticipant['scout_name'] }}</a></div> @endif
+        @if($nextParticipant !== false) <div class="float-end"><a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $nextParticipant['id']] ) }}">{{ $nextParticipant['scout_name'] }} <i class="fas fa-arrow-right"></i></a></div> @endif
 
         <div class="row my-3 clear-both">
 

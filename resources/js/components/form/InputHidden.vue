@@ -1,19 +1,21 @@
 <template>
   <input
     type="hidden"
-    :id="(id != null ? id : name) | kebabCase"
+    :id="kebabCase(id != null ? id : name)"
     :name="name"
-    :value="value" />
+    :value="modelValue" />
 </template>
 
 <script>
+import kebabCase from 'lodash/kebabCase';
 export default {
   name: 'InputHidden',
   props: {
     id: { type: String, required: false },
     name: { type: String, required: true },
-    value: { type: String, default: '' },
+    modelValue: { type: String, default: '' },
   },
+  methods: { kebabCase },
 }
 </script>
 

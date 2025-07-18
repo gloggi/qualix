@@ -1,14 +1,16 @@
 import get from 'lodash/get'
+import kebabCase from 'lodash/kebabCase';
 
 export default {
   props: {
     name: { type: String, required: true },
-    value: { type: String, default: '' },
+    modelValue: { type: String, default: '' },
     narrowForm: { type: Boolean, default: false },
   },
+  emits: ['update:modelValue'],
   data() {
     return {
-      currentValue: get(window.Laravel.oldInput, this.name, this.value)
+      currentValue: get(window.Laravel.oldInput, this.name, this.modelValue)
     }
   },
   computed: {
@@ -19,7 +21,7 @@ export default {
       return window.Laravel.errors[this.htmlFormName]
     },
     labelClass() {
-      return this.narrowForm ? 'col-12' : 'col-md-3 text-md-right'
+      return this.narrowForm ? 'col-12' : 'col-md-3 text-md-end'
     },
     inputColumnClass() {
       return this.narrowForm ? 'col-12' : 'col-md-6'
@@ -28,12 +30,15 @@ export default {
       return this.name.replace(/\[/g, '.').replace(/]/g, '')
     },
   },
+  methods: { kebabCase },
   watch: {
-    value() {
-      this.currentValue = this.value
+    modelValue() {
+      this.currentValue = this.modelValue
     },
     currentValue: {
-      handler() { this.$emit('input', this.currentValue) },
+      handler() {
+        this.$emit('update:modelValue', this.currentValue, this.id)
+      },
       deep: true
     }
   },

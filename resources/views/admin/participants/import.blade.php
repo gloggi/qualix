@@ -11,7 +11,7 @@
 
             <input-file name="file" label="{{__('t.views.admin.participant_import.MiData.participant_list')}}" required accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"></input-file>
 
-            <input-hidden name="source" value="MiDataParticipantList"></input-hidden>
+            <input-hidden name="source" model-value="MiDataParticipantList"></input-hidden>
 
             <button-submit label="{{__('t.views.admin.participant_import.import')}}">
 

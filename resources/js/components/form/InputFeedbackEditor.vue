@@ -1,15 +1,15 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-form-label" :class="labelClass">{{ label }}</label>
+    <label :for="kebabCase(name)" class="col-form-label" :class="labelClass">{{ label }}</label>
 
     <div :class="inputColumnClass">
       <feedback-editor
-        :id="name | kebabCase"
+        :id="kebabCase(name)"
         :name="name"
         ref="feedbackEditor"
         :class="{ 'form-control': !readonly, 'is-invalid': errorMessage }"
         v-model="currentValue"
-        @input="$emit('input', currentValue)"
+        @input="$emit('update:modelValue', currentValue)"
         :requirements="requirements"
         :feedback-requirements="feedbackRequirements"
         :readonly="readonly"
@@ -35,13 +35,13 @@ export default {
     label: { type: String, required: true },
     required: { type: Boolean, default: false },
     readonly: { type: Boolean, default: false },
-    value: { type: Object, default: () => {} },
+    modelValue: { type: Object, default: () => {} },
     requirements: { type: Array, required: true },
     selectedRequirements: { type: String, default: '' }
   },
   data() {
     return {
-      currentValue: JSON.parse(get(window.Laravel.oldInput, this.name, 'false')) || this.value
+      currentValue: JSON.parse(get(window.Laravel.oldInput, this.name, 'false')) || this.modelValue
     }
   },
   computed: {

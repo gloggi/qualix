@@ -18,7 +18,7 @@
 
             @if($showObservationAssignments)
                 <div class="d-flex justify-content-end mb-2">
-                    <label for="user" class="col-form-label text-md-right mr-2">{{ __('t.views.crib.view_as') }}</label>
+                    <label for="user" class="col-form-label text-md-end me-2">{{ __('t.views.crib.view_as') }}</label>
                     <multi-select
                         name="user"
                         :value="{{ json_encode("$userId") }}"
@@ -76,8 +76,8 @@
                                                                 <div class="mb-0 position-relative">
                                                                     <img class="card-img-top rounded-circle img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : '/was-gaffsch.svg' }}" alt="{{ $participant->scout_name }}">
                                                                     <div class="card-img-overlay w-100 p-0 d-flex flex-column ">
-                                                                        <b-badge v-if="{{ $participant->observation_count }}" variant="primary" class="ml-auto mb-auto font-size-larger" pill>{{ $participant->observation_count }}</b-badge>
-                                                                        <b-badge v-else variant="danger" class="ml-auto mb-auto font-size-larger" pill>{{ $participant->observation_count }}</b-badge>
+                                                                        <b-badge v-if="{{ $participant->observation_count }}" variant="primary" class="ms-auto mb-auto font-size-larger" pill>{{ $participant->observation_count }}</b-badge>
+                                                                        <b-badge v-else variant="danger" class="ms-auto mb-auto font-size-larger" pill>{{ $participant->observation_count }}</b-badge>
                                                                     </div>
                                                                     <p class="text-overflow-ellipsis">{{ $participant->scout_name }}</p>
                                                                 </div>

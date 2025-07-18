@@ -10,7 +10,7 @@
                 @csrf
 
                 <div class="form-group row required">
-                    <label for="email" class="col-md-3 col-form-label text-md-right">{{ __('t.models.user.email') }}</label>
+                    <label for="email" class="col-md-3 col-form-label text-md-end">{{ __('t.models.user.email') }}</label>
 
                     <div class="col-md-6">
                         <input id="email" type="email"

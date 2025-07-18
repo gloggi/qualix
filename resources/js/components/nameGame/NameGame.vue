@@ -80,7 +80,7 @@ export default {
         return {
           ...candidate,
           id: '' + candidate.id,
-          scout_name: candidate.scout_name + ' (' + this.$tc('t.views.name_game.no_image') + ')',
+          scout_name: candidate.scout_name + ' (' + this.$t('t.views.name_game.no_image') + ')',
         }
       })
     },

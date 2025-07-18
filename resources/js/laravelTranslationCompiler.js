@@ -2,7 +2,7 @@ import isEmpty from 'lodash/isEmpty'
 import upperCase from 'lodash/upperCase'
 import upperFirst from 'lodash/upperFirst'
 
-export default class LaravelTranslationFormatter {
+class LaravelTranslationFormatter {
   constructor (options = {}) {
     this._locale = options.locale || 'de'
     this._caches = Object.create(null)
@@ -14,7 +14,7 @@ export default class LaravelTranslationFormatter {
       fn = this.compile(message)
       this._caches[message] = fn
     }
-    return [fn(values)]
+    return fn(values)
   }
 
   /**
@@ -478,3 +478,30 @@ export default class LaravelTranslationFormatter {
   }
 
 }
+
+const formatters = {}
+
+const messageCompiler = (
+  message,
+  { locale, key, onError }
+) => {
+  if (typeof message === 'string') {
+    /**
+     * You can tune your message compiler performance more with your cache strategy or also memoization at here
+     */
+    const formatter = locale in formatters ? formatters[locale] : new LaravelTranslationFormatter({ locale });
+    return (ctx) => {
+      return formatter.interpolate(message, ctx.values)
+    }
+  } else {
+    /**
+     * for AST.
+     * If you would like to support it,
+     * You need to transform locale messages such as `json`, `yaml`, etc. with the bundle plugin.
+     */
+    onError && onError(new Error('not support for AST'))
+    return () => key
+  }
+}
+
+export default messageCompiler;

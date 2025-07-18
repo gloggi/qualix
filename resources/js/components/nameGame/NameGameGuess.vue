@@ -28,7 +28,7 @@
       </div>
       <button
         type="submit"
-        class="btn btn-outline-primary mr-3 mb-1 w-100 h-25"
+        class="btn btn-outline-primary me-3 mb-1 w-100 h-25"
         ref="nextButton">
         {{ $t('t.views.name_game.next') }}
       </button>
@@ -48,6 +48,7 @@ export default {
     participants: { type: Array, required: true },
     gameMode: { type: String, required: true },
   },
+  emits: ['correct', 'incorrect', 'advance'],
   data() {
     return {
       guessing: true,

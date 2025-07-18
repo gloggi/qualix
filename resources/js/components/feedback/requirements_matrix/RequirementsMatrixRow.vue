@@ -4,7 +4,7 @@
       <div class="d-flex align-items-baseline">
         <a :href="participantUrl"><img :src="participant.image_path" class="avatar-small" :alt="participant.scout_name"/></a>
         <div class="d-flex flex-column flex-grow-1">
-          <div class="d-flex flex-wrap ml-2">
+          <div class="d-flex flex-wrap ms-2">
             <a :href="participantUrl"><strong>{{ participant.scout_name }}</strong></a>
             <span class="flex-grow-1"></span>
             <a :href="feedbackEditUrl" target="_blank" :title="$t(`t.views.feedback.progress_overview.edit_feedback`)"><i class="fas fa-pen-to-square px-2"></i></a>
@@ -12,7 +12,7 @@
               <i class="fas fa-print pl-2"></i>
             </button-print-feedback>
           </div>
-          <div v-if="feedback.users.length > 0" class="mw-80 ml-2">{{ $t('t.models.feedback.users') }}: {{ feedback.users.map(u => u.name).join(', ') }}</div>
+          <div v-if="feedback.users.length > 0" class="mw-80 ms-2">{{ $t('t.models.feedback.users') }}: {{ feedback.users.map(u => u.name).join(', ') }}</div>
         </div>
       </div>
     </td>
@@ -30,7 +30,7 @@
   </b-tr>
 </template>
 <script>
-import {Editor} from '@tiptap/vue-2'
+import {Editor} from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'

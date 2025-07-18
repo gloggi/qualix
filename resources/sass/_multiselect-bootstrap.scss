@@ -17,9 +17,9 @@ $vue-multiselect-disabled-color : $custom-select-disabled-color !default;
 $vue-multiselect-option-selected-bg : #f3f3f3 !default;
 $vue-multiselect-option-selected-color : $body-color !default;
 $vue-multiselect-option-highlight-color : #fff !default;
-$vue-multiselect-option-highlight-bg : theme-color("primary") !default;
+$vue-multiselect-option-highlight-bg : var(--bs-primary) !default;
 $vue-multiselect-option-selected-highlight-color : #fff !default;
-$vue-multiselect-option-selected-highlight-bg : theme-color("secondary") !default;
+$vue-multiselect-option-selected-highlight-bg : var(--bs-secondary) !default;
 
 $vue-multiselect-tag-color : $dark !default;
 $vue-multiselect-tag-bg : $light !default;

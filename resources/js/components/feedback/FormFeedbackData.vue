@@ -24,7 +24,7 @@
 
     <template v-if="feedbackContentsTemplate">
       <row-text>
-        <b-button variant="link" class="px-0 mr-2" v-b-toggle.collapse-feedback-contents-template @click="focusFeedbackContentsTemplate">
+        <b-button variant="link" class="px-0 me-2" v-b-toggle.collapse-feedback-contents-template @click="focusFeedbackContentsTemplate">
           {{ $t('t.models.feedback.feedback_contents_template') }} <i class="fas fa-caret-down"></i>
         </b-button>
       </row-text>
@@ -51,7 +51,7 @@
       </b-button>
     </row-text>
 
-    <b-collapse id="collapse-trainer-assignments" :visible="highlightTrainerAssignments" :appear="true" @shown="doHighlightTrainerAssignments">
+    <b-collapse id="collapse-trainer-assignments" :visible="highlightTrainerAssignments" :toggle="highlightTrainerAssignments" @shown="doHighlightTrainerAssignments">
       <input-multi-select
         v-for="assignment in trainerAssignments"
         :key="assignment.participantId"

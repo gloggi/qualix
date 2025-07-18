@@ -1,13 +1,13 @@
 <template>
   <div class="form-group row" :class="{ required }">
-    <label :for="name | kebabCase" class="col-form-label" :class="labelClass">{{ label }}</label>
+    <label :for="kebabCase(name)" class="col-form-label" :class="labelClass">{{ label }}</label>
 
     <div :class="inputColumnClass">
       <b-input-group v-if="$slots.append" :class="{ 'is-invalid': errorMessage }">
 
         <b-form-input
           :type="type"
-          :id="name | kebabCase"
+          :id="kebabCase(name)"
           :name="name"
           :class="{ 'is-invalid': errorMessage }"
           v-model="currentValue"
@@ -24,7 +24,7 @@
       <input
         v-else
         :type="type"
-        :id="name | kebabCase"
+        :id="kebabCase(name)"
         :name="name"
         class="form-control" :class="{ 'is-invalid': errorMessage }"
         v-model="currentValue"

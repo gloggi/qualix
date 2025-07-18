@@ -25,10 +25,10 @@
         <strong>{{ errorMessage }}</strong>
       </span>
 
-      <b-btn
+      <b-button
         class="px-0"
         variant="link"
-        @click="currentValue.push('')"><i class="fas fa-plus mr-1"></i> {{ addMoreLabel }}</b-btn>
+        @click="currentValue.push('')"><i class="fas fa-plus me-1"></i> {{ addMoreLabel || $t('t.global.add_more') }}</b-button>
     </div>
   </div>
 </template>
@@ -42,12 +42,13 @@ export default {
   mixins: [ Input ],
   props: {
     label: { type: String, required: true },
-    value: { type: Array, default: () => [[]] },
+    modelValue: { type: Array, default: () => [[]] },
     required: { type: Boolean, default: false },
     autofocus: { type: Boolean, default: false },
-    addMoreLabel: { type: String, default: function() { return this.$t('t.global.add_more') } },
+    addMoreLabel: { type: String, default: null },
     requireMultiple: { type: String, default: '' },
   },
+  emits: ['update:modelValue'],
 }
 </script>
 

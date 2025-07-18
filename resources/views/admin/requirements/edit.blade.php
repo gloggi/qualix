@@ -9,13 +9,13 @@
 
         <form-basic :action="['admin.requirements.update', { course: {{ $course->id }}, requirement: {{ $requirement->id }} }]">
 
-            <input-text name="content" value="{{ $requirement->content }}" label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
+            <input-text name="content" model-value="{{ $requirement->content }}" label="{{__('t.models.requirement.content')}}" required autofocus></input-text>
 
             <input-checkbox name="mandatory" value="{{ $requirement->mandatory }}" label="{{__('t.models.requirement.mandatory')}}"></input-checkbox>
 
             <input-multi-select
                 name="blocks"
-                value="{{ $requirement->blocks->pluck('id')->join(',') }}"
+                model-value="{{ $requirement->blocks->pluck('id')->join(',') }}"
                 label="{{__('t.models.requirement.blocks')}}"
                 :options="{{ json_encode($course->blocks->map->only('id', 'blockname_and_number')) }}"
                 display-field="blockname_and_number"

@@ -1,5 +1,5 @@
 import {mergeAttributes, Node} from '@tiptap/core'
-import {VueNodeViewRenderer} from '@tiptap/vue-2'
+import {VueNodeViewRenderer} from '@tiptap/vue-3'
 import ElementObservation from './ElementObservation.vue'
 
 const NodeObservation = ({ readonly }) => Node.create({

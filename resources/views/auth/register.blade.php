@@ -24,7 +24,7 @@
             @csrf
 
             <div class="form-group row required">
-                <label for="name" class="col-md-3 col-form-label text-md-right">{{ __('Name') }}</label>
+                <label for="name" class="col-md-3 col-form-label text-md-end">{{ __('Name') }}</label>
 
                 <div class="col-md-6">
                     <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
@@ -39,7 +39,7 @@
             </div>
 
             <div class="form-group row required">
-                <label for="email" class="col-md-3 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                <label for="email" class="col-md-3 col-form-label text-md-end">{{ __('E-Mail Address') }}</label>
 
                 <div class="col-md-6">
                     <input id="email" type="email"
@@ -55,7 +55,7 @@
             </div>
 
             <div class="form-group row required">
-                <label for="password" class="col-md-3 col-form-label text-md-right">{{ __('Password') }}</label>
+                <label for="password" class="col-md-3 col-form-label text-md-end">{{ __('Password') }}</label>
 
                 <div class="col-md-6">
                     <input id="password" type="password"
@@ -72,7 +72,7 @@
 
             <div class="form-group row required">
                 <label for="password-confirm"
-                       class="col-md-3 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                       class="col-md-3 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
 
                 <div class="col-md-6">
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation"

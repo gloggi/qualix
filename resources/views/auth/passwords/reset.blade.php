@@ -11,7 +11,7 @@
                 <input type="hidden" name="token" value="{{ $token }}">
 
                 <div class="form-group row required">
-                    <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('t.models.user.email') }}</label>
+                    <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('t.models.user.email') }}</label>
 
                     <div class="col-md-6">
                         <input id="email" type="email"
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="form-group row required">
-                    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('t.models.user.password') }}</label>
+                    <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('t.models.user.password') }}</label>
 
                     <div class="col-md-6">
                         <input id="password" type="password"
@@ -44,7 +44,7 @@
 
                 <div class="form-group row required">
                     <label for="password-confirm"
-                           class="col-md-4 col-form-label text-md-right">{{ __('t.models.user.password_confirmation') }}</label>
+                           class="col-md-4 col-form-label text-md-end">{{ __('t.models.user.password_confirmation') }}</label>
 
                     <div class="col-md-6">
                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation"

@@ -3,9 +3,9 @@
     <vue-multiselect
       ref="multiselect"
       v-bind="$attrs"
-      @input="onInput"
+      @update:modelValue="onUpdateModelValue"
       @select="onSelect"
-      v-model="localValue"
+      :model-value="localValue"
       :label="displayField"
       :track-by="valueField"
       :multiple="multiple"
@@ -16,13 +16,13 @@
       role="combobox"
       :aria-label="ariaLabel">
 
-      <template slot="clear">
+      <template #clear>
         <div v-if="showClearButton" @mousedown.prevent.stop="clear" class="multiselect__clear"></div>
       </template>
-      <template slot="noOptions">
+      <template #noOptions>
         <div class="text-secondary">{{ noOptions || $t('t.global.no_options') }}</div>
       </template>
-      <template slot="noResult">
+      <template #noResult>
         <div class="text-secondary">{{ noResult || $t('t.global.no_result') }}</div>
       </template>
       <template #option="props">
@@ -50,7 +50,7 @@ export default {
     multiple: { type: Boolean, default: false },
     noOptions: { type: String, required: false },
     noResult: { type: String, required: false },
-    value: { type: String, default: '' },
+    modelValue: { type: String, default: '' },
     selected: { type: [Array,Object], default: null },
     valueField: { type: String, default: 'id' },
     displayField: { type: String, default: 'label' },
@@ -62,9 +62,10 @@ export default {
     autofocus: { type: Boolean, default: false },
     ariaLabel: { type: String, required: false },
   },
+  emits: ['update:modelValue', 'update:selected'],
   data() {
     return {
-      localValue: this.selected !== null ? this.selected : this.parse(this.value)
+      localValue: this.selected !== null ? this.selected : this.parse(this.modelValue)
     }
   },
   computed: {
@@ -100,12 +101,14 @@ export default {
         // We wait for one tick until that input event has gone, and then overwrite the value of the multiselect.
         this.$nextTick(() => {
           this.localValue = this.parse(option[this.valueField])
-          this.onInput(this.localValue, id)
+          this.onUpdateModelValue(this.localValue, id)
         })
       }
     },
-    onInput(val, id) {
-      this.$emit('input', this.formValue, id)
+    onUpdateModelValue(val, id) {
+      this.localValue = val
+
+      this.$emit('update:modelValue', this.formValue, id)
       this.$emit('update:selected', this.localValue, id)
 
       // Work around :close-on-select=false not working correctly
@@ -124,19 +127,19 @@ export default {
     },
     clear() {
       this.localValue = this.multiple ? [] : null
-      this.onInput(this.localValue, this.$attrs['id'])
+      this.onUpdateModelValue(this.localValue, this.$attrs['id'])
     }
   },
   watch: {
-    value () {
-      this.localValue = this.selected !== null ? this.selected : this.parse(this.value)
+    modelValue () {
+      this.localValue = this.selected !== null ? this.selected : this.parse(this.modelValue)
     },
     selected () {
-      this.localValue = this.selected !== null ? this.selected : this.parse(this.value)
+      this.localValue = this.selected !== null ? this.selected : this.parse(this.modelValue)
     },
   },
   mounted () {
-    this.$emit('input', this.formValue, this.$attrs['id'])
+    this.$emit('update:modelValue', this.formValue, this.$attrs['id'])
 
     if (this.autofocus) {
       this.$refs.multiselect.activate()

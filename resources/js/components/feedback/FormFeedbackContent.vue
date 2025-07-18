@@ -7,7 +7,7 @@
 
     <div class="d-flex justify-content-between mb-2">
       <slot></slot>
-      <auto-save ref="autosave" trans="t.views.feedback_content" :form="form" text-class="text-right w-50" @error="error=true" />
+      <auto-save ref="autosave" trans="t.views.feedback_content" :form="form" text-class="text-end w-50" @error="error=true" />
     </div>
 
     <input-feedback-editor-large

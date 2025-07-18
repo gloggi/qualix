@@ -4,7 +4,7 @@
       v-for="option in multipleChoiceOptions"
       :key="option.id"
       type="submit"
-      class="btn btn-primary mr-3 mb-1 w-100 h-25"
+      class="btn btn-primary me-3 mb-1 w-100 h-25"
       :value="option.id">
       {{ option.scout_name }}
     </button>
@@ -13,7 +13,7 @@
     <input-text v-model="manualInput" :label="$t('t.views.name_game.scout_name')" name="scout_name" ref="scoutName"></input-text>
     <button
       type="submit"
-      class="btn btn-primary mr-3 mb-1 w-100 h-25">
+      class="btn btn-primary me-3 mb-1 w-100 h-25">
       {{ buttonLabel }}
     </button>
   </div>

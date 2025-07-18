@@ -12,10 +12,10 @@
           @remove="removeRow"></input-evaluation-grid-row-template>
       </template>
 
-      <b-btn
+      <b-button
         class="px-0"
         variant="link"
-        @click="currentValue.push({ order: currentValue.length + 1 })"><i class="fas fa-plus mr-1"></i> {{ $t('t.models.evaluation_grid_template.add_row') }}</b-btn>
+        @click="currentValue.push({ order: currentValue.length + 1 })"><i class="fas fa-plus me-1"></i> {{ $t('t.models.evaluation_grid_template.add_row') }}</b-button>
 
       <span v-if="errorMessage" class="invalid-feedback" role="alert" style="display: block">
         <strong>{{ errorMessage }}</strong>
@@ -33,7 +33,7 @@ export default {
   mixins: [ Input ],
   props: {
     label: { type: String, required: true },
-    value: { type: Array, default: () => ([]) },
+    modelValue: { type: Array, default: () => ([]) },
     controlTypes: { type: Array, default: () => [] },
   },
   methods: {

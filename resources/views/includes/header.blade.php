@@ -11,10 +11,10 @@
                         <b-form-select
                             id="global-course-select"
                             ref="global-course-select"
-                            @change="$window.location = $refs['global-course-select']._data.localValue"
-                            value="{{ route('index', ['course' => $course->id]) }}">
+                            @change="({ target }) => $window.location = target.value"
+                            model-value="{{ route('index', ['course' => $course->id]) }}">
                             @foreach(Auth::user()->nonArchivedCourses as $c)
-                                <b-form-select-option value="{{ route('index', ['course' => $c->id]) }}">{{ $c->name }}</b-form-select-option>
+                                <b-form-select-option value="{{ route('index', ['course' => $c->id]) }}" {{ $course->id == $c->id ? 'selected' : '' }}>{{ $c->name }}</b-form-select-option>
                             @endforeach
                             @if(Auth::user()->archivedCourses()->count())
                                 <b-form-select-option-group label="{{__('t.header.archived')}}">

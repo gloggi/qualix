@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Waiting for frontend container to start up..."
-while [ ! -f ./public/js/app.js ]
+while [ ! -f ./node_modules/.vite/deps/_metadata.json ]
 do
   sleep 2
 done

@@ -1,9 +1,9 @@
 <template>
   <help-text v-if="offline" id="feedback-editor-offline-help" :class="textClass" :trans="`${trans}.offline_help`">
-    <template #question><i class="fas fa-triangle-exclamation mr-2 text-danger"></i></template>
+    <template #question><i class="fas fa-triangle-exclamation me-2 text-danger"></i></template>
   </help-text>
   <help-text v-else-if="loggedOut" id="feedback-editor-logged-out-help" :class="textClass" :trans="`${trans}.logged_out_help`">
-    <template #question><i class="fas fa-triangle-exclamation mr-2 text-danger"></i></template>
+    <template #question><i class="fas fa-triangle-exclamation me-2 text-danger"></i></template>
     {{ $t(`${trans}.logged_out_help.answer`) }} <a href="#" @click.prevent="refreshCsrf">{{ $t(`${trans}.logged_out_help.click_here_to_log_back_in`) }}</a>
   </help-text>
   <span v-else class="btn px-0 text-secondary" :class="textClass">{{ autosaveText }} <i class="fas" :class="autosaveIcon"></i></span>
@@ -20,6 +20,7 @@ export default {
     form: { type: Function, required: true },
     textClass: { type: String, default: '' },
   },
+  emits: ['error'],
   data: function() {
     return {
       saving: false,

@@ -11,7 +11,7 @@
 
             <input-file name="file" label="{{__('t.views.admin.block_import.ecamp3.block_overview')}}" required accept="application/pdf"></input-file>
 
-            <input-hidden name="source" value="eCamp3BlockOverview"></input-hidden>
+            <input-hidden name="source" model-value="eCamp3BlockOverview"></input-hidden>
 
             <button-submit label="{{__('t.views.admin.block_import.import')}}">
 

@@ -1,5 +1,5 @@
 <template>
-  <b-button variant="outline-primary" size="sm" v-on="$listeners"><i class="fas fa-plus mr-1"></i><slot></slot></b-button>
+  <b-button variant="outline-primary" size="sm"><i class="fas fa-plus me-1"></i><slot></slot></b-button>
 </template>
 
 <script>

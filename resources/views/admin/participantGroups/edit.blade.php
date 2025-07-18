@@ -9,11 +9,11 @@
 
         <form-basic :action="['admin.participantGroups.update', { course: {{ $course->id }}, participantGroup: {{ $participantGroup->id }} }]">
 
-            <input-text name="group_name" value="{{ $participantGroup->group_name }}" label="{{__('t.models.participant_group.group_name')}}" required autofocus></input-text>
+            <input-text name="group_name" model-value="{{ $participantGroup->group_name }}" label="{{__('t.models.participant_group.group_name')}}" required autofocus></input-text>
 
             <input-multi-select
                 name="participants"
-                value="{{ $participantGroup->participants->pluck('id')->join(',') }}"
+                model-value="{{ $participantGroup->participants->pluck('id')->join(',') }}"
                 label="{{__('t.models.participant_group.participants')}}"
                 required
                 :options="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"

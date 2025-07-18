@@ -27,7 +27,7 @@
             :collaboration-key="{{ json_encode(config('app.collaboration.enabled') ? $feedback->collaborationKey : null) }}">
 
             <div>
-                <b-button variant="link" class="px-0 mr-3" href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}">
+                <b-button variant="link" class="px-0 me-3" href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $participant->id]) }}">
                     <i class="fas fa-arrow-left"></i> {{__('t.views.feedback_content.back_to_participant', ['name' => $participant->scout_name])}}
                 </b-button>
 

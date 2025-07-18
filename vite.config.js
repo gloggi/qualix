@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-vue2';
+import vue from '@vitejs/plugin-vue';
 import laravelTranslations from 'vite-plugin-laravel-translations';
+import Components from 'unplugin-vue-components/vite';
+import { BootstrapVueNextResolver } from 'bootstrap-vue-next';
 
 export default defineConfig({
   server: {
@@ -16,11 +18,6 @@ export default defineConfig({
         'http://localhost:5173',
         'http://localhost',
       ],
-    },
-  },
-  resolve: {
-    alias: {
-      vue: 'vue/dist/vue.esm.browser.js',
     },
   },
   build: {
@@ -39,7 +36,7 @@ export default defineConfig({
         transformAssetUrls: {
           base: null,
           includeAbsolute: false,
-        }
+        },
       }
     }),
     laravelTranslations({
@@ -48,5 +45,15 @@ export default defineConfig({
       includeJson: true,
       assertJsonImport: true,
     }),
-  ]
+    Components({
+      resolvers: [
+        BootstrapVueNextResolver(),
+      ],
+    })
+  ],
+  resolve: {
+    alias: {
+      'vue': 'vue/dist/vue.esm-bundler',
+    },
+  },
 });

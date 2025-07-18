@@ -9,7 +9,7 @@
           v-model="proposedGroup.group_name"
           required="required"
           narrow-form />
-        <input-hidden :name="`${name}[${roundIndex}][${groupIndex}][participants]`" :value="proposedGroup.participants"></input-hidden>
+        <input-hidden :name="`${name}[${roundIndex}][${groupIndex}][participants]`" :model-value="proposedGroup.participants"></input-hidden>
         <template v-for="participantId in proposedGroup.participants.split(',')">
           <participant-avatar
             v-if="participantFor(participantId)"
@@ -32,12 +32,12 @@ export default {
   components: {InputText, InputHidden, ParticipantAvatar},
   mixins: [ Input ],
   props: {
-    value: { type: Array, default: () => [] },
+    modelValue: { type: Array, default: () => [] },
     participants: { type: Array, required: true },
     showGroup: { type: Boolean, default: false },
   },
   mounted() {
-    this.$emit('input', this.currentValue)
+    this.$emit('update:modelValue', this.currentValue)
   },
   methods: {
     participantFor(id) {

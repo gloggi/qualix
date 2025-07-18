@@ -17,7 +17,8 @@ export default {
   props: {
     observations: { type: Array, default: [] },
     editor: { type: Object, required: true },
-  }
+  },
+  emits: ['addObservation'],
 }
 </script>
 
