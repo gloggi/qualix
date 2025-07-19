@@ -75,20 +75,21 @@ ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   APP_CONTACT_LINK=$APP_CONTACT_LINK php artisan down --render=updating
 EOF
 
-echo "Uploading files to the server..."
-lftp <<EOF
-  set sftp:auto-confirm true
-  set dns:order "inet"
-  open -u $SSH_USERNAME, sftp://$SSH_HOST
-  cd $SSH_DIRECTORY
-  mirror -enRv -x '^node_modules' -x '^cypress' -x '^\.' -x '^tests' -x '^storage/logs/.*' -x '^storage/app/.*' -x '^storage/framework/maintenance.php$' -x '^storage/framework/down$' -x '^resources/fonts/.*' -x '^resources/images/.*' -x '^resources/js/.*' -x '^resources/sass/.*' -x '^resources/twemoji'
-  mirror -Rv -f .env
-EOF
+echo "Creating deployment package..."
+DEPLOY_FILE="deploy_package.zip"
+rm -f $DEPLOY_FILE
+zip -r $DEPLOY_FILE . -x "node_modules/*" "tests/*" "cypress/*" ".git/*" ".github/*" "storage/app/*" "storage/logs/*" "storage/framework/maintenance.php" "storage/framework/down" "resources/fonts/*" "resources/images/*" "resources/js/*" "resources/sass/*" "resources/twemoji/*"
 
-echo "All files uploaded to the server."
+echo "Uploading zip and .env to server..."
+scp $DEPLOY_FILE $SSH_USERNAME@$SSH_HOST:$SSH_DIRECTORY/
+scp .env $SSH_USERNAME@$SSH_HOST:$SSH_DIRECTORY/
 
+
+echo "Final server side setup..."
 ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   cd $SSH_DIRECTORY
+  unzip -o $DEPLOY_FILE
+  rm -f $DEPLOY_FILE
   php artisan storage:link
   php artisan migrate --force
 
