@@ -1,0 +1,52 @@
+name: Fast Deployment (zip & ship)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Package for deployment
+    runs-on: ubuntu-latest
+
+    env:
+      ZIP_FILE: deploy.zip
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build deployment zip
+        run: |
+          echo "Zipping files, excluding dev/test stuff..."
+          zip -r $ZIP_FILE . \
+            -x ".env*" \
+               ".docker/*" \
+               "tests/*" \
+               "cypress/*" \
+               "node_modules/*" \
+               "resources/js/*" \
+               "storage/logs/*" \
+               "storage/framework/cache/*" \
+               "storage/framework/sessions/*" \
+               "storage/framework/views/*" \
+               "public/hot" \
+               "public/storage" \
+               "*.log" \
+               "*.lock" \
+               "docker-compose.yml" \
+               "jest.config.js" \
+               "cypress.config.js"
+
+      - name: Upload zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-artifact
+          path: ${{ env.ZIP_FILE }}
+
+      # --- server deployment is disabled for now ---
+      - name: Upload to production server (disabled)
+        if: false
+        run: |
+          echo "TODO: scp $ZIP_FILE to server and extract via SSH"
