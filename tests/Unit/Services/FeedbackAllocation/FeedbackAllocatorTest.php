@@ -69,8 +69,8 @@ class FeedbackAllocatorTest extends TestCase
     {
         $trainerCapacities = [['Alice', 1], ['Bob', 1]];
         $participantWishes = [
-            ['John', 'x', 'x'], // John has no preferences
-            ['Jane', 'Bob', 'x']  // Jane has no preferences
+            ['John', null, null], // John has no preferences
+            ['Jane', 'Bob', null]  // Jane has no preferences
         ];
         $numberOfWishes = 2;
         $forbiddenWishes = [];
@@ -195,19 +195,19 @@ class FeedbackAllocatorTest extends TestCase
             ['Heisenberg', 'Gingersnap', 'Bubblegum', 'Bello'],
             ['Guy', 'Champ', 'Bello', 'Bubblegum'],
             ['Chickie', 'Ash', 'Skunk', 'Champ'],
-            ['Twiggy', 'Gingersnap', 'Champ', 'x'],
+            ['Twiggy', 'Gingersnap', 'Champ', null],
             ['Kirby', 'Ash', 'Bello', 'Champ'],
             ['Doc', 'Ash', 'Bubblegum', 'Skunk'],
             ['Scratchy', 'Skunk', 'Bubblegum', 'Champ'],
             ['Turkey', 'Pecan', 'Champ', 'Skunk'],
             ['Dawg', 'Champ', 'Bello', 'Skunk'],
-            ['Chance', 'Champ', 'Bello', 'x'],
+            ['Chance', 'Champ', 'Bello', null],
             ['Pearl', 'Gingersnap', 'Pecan', 'Bello'],
             ['Chamuya', 'Pecan', 'Bello', 'Champ'],
             ['Vale', 'Gingersnap', 'Bubblegum', 'Champ'],
             ['Pixel', 'Skunk', 'Champ', 'Bello'],
-            ['Goose', 'x', 'x', 'x'],
-            ['Belch', 'x', 'x', 'x'],
+            ['Goose', null, null, null],
+            ['Belch', null, null, null],
             ['Toodler', 'Skunk', 'Bello', 'Champ'],
             ['Taco', 'Champ', 'Bello', 'Gingersnap']
         ];
@@ -449,7 +449,7 @@ class FeedbackAllocatorTest extends TestCase
                     ['Zucker', 'Salz', 'Chips', 'Paprika'],
                     ['Sugus', 'Paprika', 'Salz', 'Käse'],
                     ['Ricola', 'Käse', 'Paprika', 'Salzstange'],
-                    ['Rivella', 'Salzstange', 'Chips', 'x'],
+                    ['Rivella', 'Salzstange', 'Chips', null],
                     ['Ovi', 'Salzstange', 'Chips', 'Salz'],
                     ['Sweet', 'Käse', 'Salzstange', 'Chips']
                 ],
@@ -602,7 +602,7 @@ class FeedbackAllocatorTest extends TestCase
                     ['Haribo', 'Salz', 'Paprika', 'Käse', 'Senf'],
                     ['Schoggi', 'Salzstange', 'Käse', 'Zwiback', 'Chili'],
                     ['Fanta', 'Salz', 'Käse', 'Bouillon', 'Pfeffer'],
-                    ['Coke', 'Käse', 'x', 'x', 'x'],
+                    ['Coke', 'Käse', null, null, null],
                     ['Gummibär', 'Senf', 'Paprika', 'Chili', 'Käse']
                 ],
                 4,

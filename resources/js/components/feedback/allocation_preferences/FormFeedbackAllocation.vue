@@ -276,7 +276,9 @@ export default {
     },
     submitForm() {
       const trainerCapacities = this.trainerPreferences.map(trainer => [trainer.id, parseInt(trainer.maxCapacity)]);
-      const participantWishes = this.participantPreferences.map(participant => [participant.id, ...participant.preferences.map(pref => pref || "x")]);
+      const participantWishes = this.participantPreferences.map(participant => [participant.id, ...participant.preferences.map(pref => {
+        return pref ? parseInt(pref) : null;
+      })]);
       const forbiddenWishes = [];
       this.trainerPreferences.forEach(trainer => {
         if (trainer.nogos && trainer.nogos.length) trainer.nogos.split(',').forEach(pid => forbiddenWishes.push([parseInt(pid), trainer.id]));

@@ -21,9 +21,9 @@ class FeedbackAllocationRequest extends FormRequest
             'trainerCapacities.*.1' => 'required|integer|min:1', // Capacity als Integer > 0
 
             'participantPreferences' => 'required|array',
-            'participantPreferences.*' => 'required|array',
-            'participantPreferences.*.0' => 'required|integer',
-            'participantPreferences.*.1:*' => 'required|string',
+            'participantPreferences.*' => 'required|array|min:2',
+            'participantPreferences.*.0' => 'required|integer', // participantId
+            'participantPreferences.*.*' => 'nullable|integer', // no preference is represented as null
 
             'numberOfWishes' => 'required|integer|min:0',
 

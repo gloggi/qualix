@@ -7,6 +7,8 @@ use Graphp\Algorithms\MinimumCostFlow\SuccessiveShortestPath;
 use Graphp\Graph\Exception\UnderflowException;
 use Graphp\Graph\Graph;
 use Graphp\Graph\Vertex;
+use Illuminate\Support\Facades\Log;
+
 
 class DefaultFeedbackAllocator implements FeedbackAllocator
 {
@@ -73,7 +75,7 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
 
             for ($priority = 1; $priority <= $numberOfWishes && $priority < count($participantPreference); $priority++) {
                 $preferredTrainerName = $participantPreference[$priority];
-                if ($preferredTrainerName !== 'x' && isset($this->trainerNameToVertexId[$preferredTrainerName])) {
+                if ($preferredTrainerName !== null && isset($this->trainerNameToVertexId[$preferredTrainerName])) {
                     $trainerIndex = $this->trainerNameToVertexId[$preferredTrainerName] - 2 - $participantCount;
                     $preferenceMatrix[$index][$trainerIndex] = min($priority, $preferenceMatrix[$index][$trainerIndex]);
                 }
