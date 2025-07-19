@@ -194,11 +194,13 @@ class FeedbackController extends Controller {
      */
     public function allocate(FeedbackAllocationRequest $request, FeedbackAllocator $allocator): Response
     {
-        $trainerCapacities = $request->input('trainerCapacities');
-        $participantPreferences = $request->input('participantPreferences');
-        $numberOfWishes = $request->input('numberOfWishes');
-        $forbiddenWishes = $request->input('forbiddenWishes');
-        $defaultPriority = $request->input('defaultPriority', 100); // Fallback Default
+        $data = $request->validated();
+
+        $trainerCapacities = $data['trainerCapacities'];
+        $participantPreferences = $data['participantPreferences'];
+        $numberOfWishes = $data['numberOfWishes'];
+        $forbiddenWishes = $data['forbiddenWishes'];
+        $defaultPriority = $data['defaultPriority'];
 
         $result = $allocator->tryToAllocateFeedbacks(
             $trainerCapacities,

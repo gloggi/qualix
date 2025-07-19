@@ -7,7 +7,6 @@ use Graphp\Algorithms\MinimumCostFlow\SuccessiveShortestPath;
 use Graphp\Graph\Exception\UnderflowException;
 use Graphp\Graph\Graph;
 use Graphp\Graph\Vertex;
-use Illuminate\Support\Facades\Log;
 
 class DefaultFeedbackAllocator implements FeedbackAllocator
 {
@@ -92,7 +91,7 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
         // Create edges from participants to trainers if not forbidden
         foreach ($preferenceMatrix as $participantIndex => $trainerPriorities) {
             $participantVertexId = $participantIndex + 2;
-            $participantVertex = $this->graph->getVertex($participantVertexId); // this->nameToVertex[$this->indexToParticipantName[$participantIndex]];
+            $participantVertex = $this->graph->getVertex($participantVertexId);
             foreach ($trainerPriorities as $trainerIndex => $priority) {
                 if ($priority !== PHP_INT_MAX) {
                     $trainerVertexId = $trainerIndex + $participantCount + 2;

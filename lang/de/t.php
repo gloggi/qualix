@@ -503,20 +503,27 @@ return array(
 					"general_settings" => "Allgemeine Einstellungen",
 					"nogo_header" => "Vermeide Zuteilung",
 					"nogo" => "Vermeide",
-					"number_of_feedbacks_per_trainer" => "Max Rückmeldungen",
+					"number_of_feedbacks_per_trainer" => "Max. Rückmeldungen",
 					"number_of_preferences_per_participant" => "Anzahl Wünsche",
 					"participant" => "TN",
 					"participant_preferences" => "TN-Präferenzen",
 					"prio" => "Priorität",
 					"prio_with_index" => "Priorität :index",
+					"prioritization_weight" => "Gewichtung der Priorisierung",
+					"prioritization_weights" => array(
+						"low" => "Gering",
+						"middle" => "Mittel",
+						"heavy" => "Stark",
+					),
 					"trainer" => "Equipenmitglied",
 					"trainer_settings" => "Equipen Präferenzen",
 					"unknown_trainer" => "Equipenmitglied unbekannt (:name)",
 					"unknown_participant" => "TN unbekannt (:name)",
 					"generation_explanation_help" => array(
-						"answer" => "Am besten fragst du die TN und die Equipe nach ihren Präferenzen. Danach kannst du die Gespräche von Hand zuteilen oder die Gespräche von Qualix automatisch zuteilen lassenZuteilung automatisch generieren. Diese Funktion findest du nach dem Speichern auf der Übersichtsliste der Rückmeldungen.",
+						"answer" => "Am besten fragst du die TN und die Equipe nach ihren Präferenzen. Danach kannst du die Gespräche von Hand zuteilen oder die Gespräche von Qualix automatisch zuteilen lassen. Diese Funktion findest du nach dem Speichern auf der Übersichtsliste der Rückmeldungen.",
 						"question" => "Wie gehe ich vor um Gespräche zuzuteilen?",
 					),
+
 				)
 			),
 			"requirements" => array(

@@ -17,7 +17,7 @@ class FeedbackAllocationRequest extends FormRequest
         return [
             'trainerCapacities' => 'required|array',
             'trainerCapacities.*' => 'required|array|size:2', // [trainerId, capacity]
-            'trainerCapacities.*.0' => 'required|integer',      // Trainer-ID als String
+            'trainerCapacities.*.0' => 'required|integer',
             'trainerCapacities.*.1' => 'required|integer|min:1', // Capacity als Integer > 0
 
             'participantPreferences' => 'required|array',
@@ -34,5 +34,17 @@ class FeedbackAllocationRequest extends FormRequest
 
             'defaultPriority' => 'sometimes|integer|min:1'
         ];
+    }
+
+    /**
+     * Handle a passed validation attempt.
+     *
+     * @return void
+     */
+    public function prepareForValidation(): void
+    {
+        $this->merge([
+            'defaultPriority' => $this->input('defaultPriority', 100),
+        ]);
     }
 }

@@ -9,7 +9,7 @@
           <b-col cols="12" md="6">
             <input-text
               id="defaultCapacity"
-              v-model="maxCapacity"
+              v-model="defaultCapacity"
               :label="$t('t.views.admin.feedbacks.allocation.number_of_feedbacks_per_trainer')"
               :max="participants.length"
               :min="1"
@@ -34,7 +34,7 @@
                   <b-form-input
                     :id="`trainerCapacity-${trainer.id}`"
                     v-model="trainer.maxCapacity"
-                    :max="parseInt(maxCapacity)"
+                    :max="parseInt(defaultCapacity)"
                     :min="1"
                     :name="`trainerCapacity[${trainer.id}]`"
                     type="number"
@@ -121,7 +121,8 @@
 
       <b-row class="align-items-center mb-4">
         <b-col md="8">
-          <label class="form-label mb-1" for="priority-slider">Gewichtung der Priorisierung</label>
+          <label class="form-label mb-1" for="priority-slider">
+            {{ $t('t.views.admin.feedbacks.allocation.prioritization_weight') }}</label>
           <b-form-input
             id="priority-slider"
             v-model="defaultPriorityIndex"
@@ -131,9 +132,9 @@
             type="range"
           />
           <div class="d-flex justify-content-between">
-            <small>Gering</small>
-            <small>Mittel</small>
-            <small>Stark</small>
+            <small> {{ $t('t.views.admin.feedbacks.allocation.prioritization_weights.low') }} </small>
+            <small> {{ $t('t.views.admin.feedbacks.allocation.prioritization_weights.middle') }} </small>
+            <small> {{ $t('t.views.admin.feedbacks.allocation.prioritization_weights.heavy') }} </small>
           </div>
         </b-col>
         <b-col md="4">
@@ -210,7 +211,7 @@ export default {
   data() {
     return {
       maxPreferences: "3",
-      maxCapacity: "10",
+      defaultCapacity: "10",
       trainerPreferences: this.trainers.map(trainer => ({
         id: trainer.id,
         name: trainer.name,
@@ -229,7 +230,7 @@ export default {
     };
   },
   watch: {
-    maxCapacity(newVal) {
+    defaultCapacity(newVal) {
       this.trainerPreferences.forEach(trainer => {
         trainer.maxCapacity = newVal;
       });
