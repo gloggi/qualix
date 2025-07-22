@@ -78,8 +78,23 @@ EOF
 echo "Creating deployment package..."
 DEPLOY_FILE="deploy_package.zip"
 rm -f $DEPLOY_FILE
-zip -r $DEPLOY_FILE . -x "node_modules/*" "tests/*" "cypress/*" ".git/*" ".github/*" "storage/app/*" "storage/logs/*" "storage/framework/maintenance.php" "storage/framework/down" "resources/fonts/*" "resources/images/*" "resources/js/*" "resources/sass/*" "resources/twemoji/*"
-
+zip -r $DEPLOY_FILE . \
+  -x ".*" \
+  -x "node_modules/*" \
+  -x "tests/*" \
+  -x "cypress/*" \
+  -x ".git/*" \
+  -x ".github/*" \
+  -x "storage/app/*" \
+  -x "storage/logs/*" \
+  -x "storage/framework/maintenance.php" \
+  -x "storage/framework/down" \
+  -x "resources/fonts/*" \
+  -x "resources/images/*" \
+  -x "resources/js/*" \
+  -x "resources/sass/*" \
+  -x "resources/twemoji/*"
+ 
 echo "Uploading zip and .env to server..."
 scp $DEPLOY_FILE $SSH_USERNAME@$SSH_HOST:$SSH_DIRECTORY/
 scp .env $SSH_USERNAME@$SSH_HOST:$SSH_DIRECTORY/
@@ -87,9 +102,24 @@ scp .env $SSH_USERNAME@$SSH_HOST:$SSH_DIRECTORY/
 
 echo "Final server side setup..."
 ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
+  set -e
   cd $SSH_DIRECTORY
-  unzip -o $DEPLOY_FILE
-  rm -f $DEPLOY_FILE
+
+  echo "Removing old files here, but keeping user uploads and maintenance mode files..."
+  find . -mindepth 1 -maxdepth 1 \
+  ! -path './storage' \
+  ! -path './storage/app' \
+  ! -path './storage/app/*' \
+  ! -path './storage/framework/maintenance.php' \
+  ! -path './storage/framework/down' \
+  ! -name '.env' \
+  ! -name 'deploy_package.zip' \
+  -exec rm -rf {} +
+
+  echo "Unzipping deployment package..."
+  unzip -o deploy_package.zip
+  rm -f deploy_package.zip
+ 
   php artisan storage:link
   php artisan migrate --force
 
