@@ -520,7 +520,7 @@ return array(
 					"unknown_trainer" => "Equipenmitglied unbekannt (:name)",
 					"unknown_participant" => "TN unbekannt (:name)",
 					"generation_explanation_help" => array(
-						"answer" => "Am besten fragst du die TN und die Equipe nach ihren Präferenzen. Danach kannst du die Gespräche von Hand zuteilen oder die Gespräche von Qualix automatisch zuteilen lassen. Diese Funktion findest du nach dem Speichern auf der Übersichtsliste der Rückmeldungen.",
+						"answer" => "Am besten fragst du die TN und die Equipe nach ihren Präferenzen. Danach kannst du die Gespräche von Hand zuteilen oder von Qualix automatisch zuteilen lassen. Diese Funktion findest du nach dem Speichern auf der Übersichtsliste der Rückmeldungen.",
 						"question" => "Wie gehe ich vor um Gespräche zuzuteilen?",
 					),
 
