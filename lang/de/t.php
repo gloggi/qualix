@@ -508,7 +508,7 @@ return array(
 					"participant" => "TN",
 					"participant_preferences" => "TN-Präferenzen",
 					"prio" => "Priorität",
-					"prio_with_index" => "Priorität :index",
+					"wishes" => "Zuteilungswünsche (wichtigste zuerst)",
 					"prioritization_weight" => "Gewichtung der Priorisierung",
 					"prioritization_weights" => array(
 						"low" => "Gering",

@@ -18,7 +18,7 @@
             />
           </b-col>
         </b-row>
-        <div class="overflow-auto">
+        <div>
           <b-table-simple responsive small striped>
             <b-thead>
               <b-tr>
@@ -60,28 +60,15 @@
 
       <b-card class="mb-4">
         <b-row>
-          <b-col cols="12" md="6">
-            <h2 class="h5 mb-2">{{ $t('t.views.admin.feedbacks.allocation.participant_preferences') }}</h2>
-          </b-col>
-          <b-col cols="12" md="6">
-            <input-text
-              id="maxPreferences"
-              v-model="maxPreferences"
-              :label="$t('t.views.admin.feedbacks.allocation.number_of_preferences_per_participant')"
-              :max="trainers.length"
-              :min="1"
-              name="maxPreferences"
-              type="number"
-            />
-          </b-col>
+          <h2 class="h5 mb-2">{{ $t('t.views.admin.feedbacks.allocation.participant_preferences') }}</h2>
         </b-row>
 
         <b-table-simple responsive small striped>
           <b-thead>
             <b-tr>
               <b-th>{{ $t('t.views.admin.feedbacks.allocation.participant') }}</b-th>
-              <b-th v-for="i in parseInt(maxPreferences || 0)" :key="`header-preference-${i}`">
-                {{ $t('t.views.admin.feedbacks.allocation.prio_with_index', {index: i}) }}
+              <b-th>
+                {{ $t('t.views.admin.feedbacks.allocation.wishes') }}
               </b-th>
               <b-th>{{ $t('t.views.admin.feedbacks.allocation.nogo_header') }}</b-th>
             </b-tr>
@@ -90,12 +77,12 @@
             <b-tr v-for="participant in participantPreferences" :key="`participant-${participant.id}`">
               <b-td>{{ participant.name }}</b-td>
 
-              <b-td v-for="i in parseInt(maxPreferences || 0)" :key="`preference-${participant.id}-${i}`">
+              <b-td>
                 <multi-select
-                  :id="`participantPreference-${participant.id}-${i}`"
-                  v-model="participant.preferences[i - 1]"
-                  :disabled="!isEnabled(participant, i - 1)"
-                  :options="availableTrainers(participant, i - 1)"
+                  :id="`participantPreference-${participant.id}`"
+                  v-model="participant.preferences"
+                  multiple
+                  :options="trainers"
                   :placeholder="$t('t.views.admin.feedbacks.allocation.trainer')"
                   :show-clear="true"
                   display-field="name"
@@ -210,7 +197,6 @@ export default {
   },
   data() {
     return {
-      maxPreferences: "3",
       defaultCapacity: "10",
       trainerPreferences: this.trainers.map(trainer => ({
         id: trainer.id,
@@ -221,7 +207,7 @@ export default {
       participantPreferences: this.participants.map(participant => ({
         id: participant.id,
         name: participant.scout_name,
-        preferences: Array.from({length: 3}, () => null),
+        preferences: "",
         forbidden: ""
       })),
       mappedAllocations: [],
@@ -235,14 +221,6 @@ export default {
         trainer.maxCapacity = newVal;
       });
     },
-    maxPreferences(newVal) {
-      const numericVal = parseInt(newVal) || 0;
-      this.priorityValues = [
-        numericVal + 1,
-        Math.max(5, numericVal * 2),
-        100
-      ];
-    }
   },
   methods: {
     mapAllocationResults(allocationResult) {
@@ -264,21 +242,12 @@ export default {
 
       return participantToTrainer;
     },
-    isEnabled(participant, index) {
-      if (index === 0) return true;
-      return !!participant.preferences[index - 1];
-    },
-    availableTrainers(participant, index) {
-      const selected = participant.preferences.slice(0, index).filter(Boolean).map(idAsString => parseInt(idAsString));
-      const forbidden = participant.forbidden.split(',').map(idAsString => parseInt(idAsString)) || [];
-      const excludeIds = [...selected, ...forbidden];
-      return this.trainers.filter(trainer => !excludeIds.includes(trainer.id));
-    },
     submitForm() {
       const trainerCapacities = this.trainerPreferences.map(trainer => [trainer.id, parseInt(trainer.maxCapacity)]);
-      const participantWishes = this.participantPreferences.map(participant => [participant.id, ...participant.preferences.map(pref => {
+      const numberOfWishes = Math.max(...this.participantPreferences.map((participant) => participant.preferences.length))
+      const participantWishes = this.participantPreferences.map(participant => [participant.id, ...participant.preferences.split(',').map(pref => {
         return pref ? parseInt(pref) : null;
-      })]);
+      }).concat(Array(numberOfWishes).fill(null)).slice(0, numberOfWishes)]);
       const forbiddenWishes = [];
       this.trainerPreferences.forEach(trainer => {
         if (trainer.nogos && trainer.nogos.length) trainer.nogos.split(',').forEach(pid => forbiddenWishes.push([parseInt(pid), trainer.id]));
@@ -290,7 +259,7 @@ export default {
       const payload = {
         trainerCapacities,
         participantPreferences: participantWishes,
-        numberOfWishes: parseInt(this.maxPreferences),
+        numberOfWishes,
         forbiddenWishes,
         defaultPriority: this.priorityValues[this.defaultPriorityIndex],
       };
@@ -308,8 +277,4 @@ export default {
 </script>
 
 <style scoped>
-.overflow-auto {
-  overflow-x: auto;
-}
-
 </style>
