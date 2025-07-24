@@ -82,7 +82,7 @@
                   :id="`participantPreference-${participant.id}`"
                   v-model="participant.preferences"
                   multiple
-                  :options="trainers"
+                  :options="trainersWithPrio[participant.id]"
                   :placeholder="$t('t.views.admin.feedbacks.allocation.trainer')"
                   :show-clear="true"
                   display-field="name"
@@ -213,6 +213,16 @@ export default {
       priorityValues: [4, 6, 100],
     };
   },
+  computed: {
+    trainersWithPrio() {
+      return Object.fromEntries(this.participants.map(participant => {
+        return [participant.id, this.trainers.map(trainer => ({
+          ...trainer,
+          name: this.prioPrefix(participant, trainer) + trainer.name
+        }))]
+      }))
+    },
+  },
   watch: {
     defaultCapacity(newVal) {
       this.trainerPreferences.forEach(trainer => {
@@ -239,6 +249,11 @@ export default {
       });
 
       return participantToTrainer;
+    },
+    prioPrefix(participant, trainer) {
+      const preferences = this.participantPreferences.find(p => p.id===participant.id).preferences
+      const prio = preferences.split(',').findIndex(id => id === '' + trainer.id)
+      return prio === -1 ? '' : `${prio+1}. `
     },
     submitForm() {
       const trainerCapacities = this.trainerPreferences.map(trainer => [trainer.id, parseInt(trainer.maxCapacity)]);
