@@ -7,13 +7,10 @@ use Graphp\Algorithms\MinimumCostFlow\SuccessiveShortestPath;
 use Graphp\Graph\Exception\UnderflowException;
 use Graphp\Graph\Graph;
 use Graphp\Graph\Vertex;
-use Illuminate\Support\Facades\Log;
 
 
-class DefaultFeedbackAllocator implements FeedbackAllocator
-{
+class DefaultFeedbackAllocator implements FeedbackAllocator {
     private Graph $graph;
-    private EdgeAdder $edgeAdder;
     private Vertex $source;
     private Vertex $sink;
     private array $trainerNameToVertexId;
@@ -21,10 +18,8 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
     private array $vertexIdToName;
     private int $participantCount;
 
-    function __construct()
-    {
+    function __construct() {
         $this->graph = new Graph();
-        $this->edgeAdder = new EdgeAdder($this->graph);
         $this->source = $this->graph->createVertex(0);
         $this->sink = $this->graph->createVertex(1);
         $this->trainerNameToVertexId = [];
@@ -32,15 +27,13 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
         $this->vertexIdToName = [];
     }
 
-    public function tryToAllocateFeedbacks(array $trainerCapacities, array $participantPreferences, int $numberOfWishes, array $forbiddenWishes, int $defaultPriority = 100): array
-    {
+    public function tryToAllocateFeedbacks(array $trainerCapacities, array $participantPreferences, int $numberOfWishes, array $forbiddenWishes, int $defaultPriority = 100): array {
         $this->createGraphFromInput($trainerCapacities, $participantPreferences, $numberOfWishes, $forbiddenWishes, $defaultPriority);
         return $this->calculateMaxFlowMinCost($this->participantCount);
 
     }
 
-    function createGraphFromInput(array $trainerCapacities, array $participantPreferences, int $numberOfWishes, array $forbiddenWishes, int $defaultPriority = 100)
-    {
+    function createGraphFromInput(array $trainerCapacities, array $participantPreferences, int $numberOfWishes, array $forbiddenWishes, int $defaultPriority = 100) {
         $trainerCount = count($trainerCapacities);
         $participantCount = count($participantPreferences);
         $this->participantCount = $participantCount;
@@ -59,7 +52,7 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
             $this->trainerNameToVertexId[$name] = $trainerVertexId;
             $this->vertexIdToName[$trainerVertexId] = $name;
 
-            $this->edgeAdder->addEdge($trainerVertex, $this->sink, $capacity, 0);
+            $this->addEdge($trainerVertex, $this->sink, $capacity, 0);
         }
 
         // Add source to participants and handle preferences
@@ -71,7 +64,7 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
             $this->particpantNameToVertexId[$participantName] = $participantVertexId;
             $this->vertexIdToName[$participantVertexId] = $participantName;
 
-            $this->edgeAdder->addEdge($this->source, $participantVertex, 1, 0);
+            $this->addEdge($this->source, $participantVertex, 1, 0);
 
             for ($priority = 1; $priority <= $numberOfWishes && $priority < count($participantPreference); $priority++) {
                 $preferredTrainerName = $participantPreference[$priority];
@@ -98,14 +91,19 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
                 if ($priority !== PHP_INT_MAX) {
                     $trainerVertexId = $trainerIndex + $participantCount + 2;
                     $trainerVertex = $this->graph->getVertex($trainerVertexId);
-                    $this->edgeAdder->addEdge($participantVertex, $trainerVertex, 1, $priority);
+                    $this->addEdge($participantVertex, $trainerVertex, 1, $priority);
                 }
             }
         }
     }
 
-    private function calculateMaxFlowMinCost(int $numberOfFeedbacks): array
-    {
+    private function addEdge(Vertex $from, Vertex $to, int $capacity, int $cost) {
+        $edge = $this->graph->createEdgeDirected($from, $to);
+        $edge->setWeight($cost);
+        $edge->setCapacity($capacity);
+    }
+
+    private function calculateMaxFlowMinCost(int $numberOfFeedbacks): array {
         try {
             $successiveShortestPath = new SuccessiveShortestPath($this->graph);
             $resultGraph = $successiveShortestPath->createGraph();
@@ -118,13 +116,12 @@ class DefaultFeedbackAllocator implements FeedbackAllocator
         } catch (UnderflowException $e) {
             echo "Configuration Error: No feasible path from any participant to the sink. Check the setup.\n";
         } catch (\Exception $e) {
-            echo "An error occurred: " . $e->getMessage() . "\n";
+            echo "An error occurred: ".$e->getMessage()."\n";
         }
         return [];
     }
 
-    private function getAssignments(Graph $resultGraph): array
-    {
+    private function getAssignments(Graph $resultGraph): array {
         $assignments = [];
         $trainerParticipants = [];
 
