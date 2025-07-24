@@ -11,7 +11,7 @@
             :update-assignment-action="['admin.feedbacks.assignments.update', { course: {{ $course->id }}, feedback_data: {{ $feedback_data->id }} }]"
             course-id="{{ $course->id }}"
 
-            :participants="{{ json_encode($course->participants->map->only('id', 'scout_name')) }}"
+            :participants="{{ json_encode($feedback_data->participants->map->only('id', 'scout_name')) }}"
 
             :trainers="{{ json_encode($course->users->map->only('id', 'name')) }}"
         >

@@ -182,8 +182,6 @@ import InputText from "../../form/InputText";
 import InputMultiSelect from "../../form/InputMultiSelect.vue";
 import FormBasic from "../../FormBasic.vue";
 
-const {parseInt} = require("lodash");
-
 export default {
   name: "FormFeedbackAllocation",
   components: {FormBasic, InputMultiSelect, InputText, MultiSelect},
