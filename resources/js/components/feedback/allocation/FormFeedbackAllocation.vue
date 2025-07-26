@@ -2,23 +2,7 @@
   <div>
     <form-basic :action="action">
 
-      <b-card class="mb-4">
-        <h2 class="h5 mb-2">
-          {{ $t('t.views.admin.feedbacks.allocation.trainer_settings') }}
-        </h2>
-
-        <b-row class="font-weight-bold border-bottom py-2">
-          <b-col cols="12" md="4">
-            {{ $t('t.views.admin.feedbacks.allocation.trainer') }}
-          </b-col>
-          <b-col cols="12" md="4">
-            {{ $t('t.views.admin.feedbacks.allocation.number_of_feedbacks_per_trainer') }}
-          </b-col>
-          <b-col cols="12" md="4">
-            {{ $t('t.views.admin.feedbacks.allocation.nogo_header') }}
-          </b-col>
-        </b-row>
-
+      <b-card :header="$t('t.views.admin.feedbacks.allocation.trainer_settings')" class="mb-4">
         <b-row
           v-for="trainer in trainerPreferences"
           :key="trainer.id"
@@ -28,15 +12,24 @@
             {{ trainer.name }}
           </b-col>
           <b-col cols="12" md="4">
-            <b-form-input
-              :id="`trainerCapacity-${trainer.id}`"
-              v-model="trainer.maxCapacity"
-              :max="participantCount"
-              :min="0"
-              :name="`trainerCapacity[${trainer.id}]`"
-              type="number"
-            />
+            <div class="d-flex align-items-center">
+              <span class="text-muted small pr-2">
+                {{ $t('t.views.admin.feedbacks.allocation.number_of_feedbacks_per_trainer') }}
+              </span>
+              <b-form-input
+                :id="`trainerCapacity-${trainer.id}`"
+                v-model="trainer.maxCapacity"
+                :max="participantCount"
+                :min="0"
+                :name="`trainerCapacity[${trainer.id}]`"
+                class="w-auto"
+                style="max-width: 5rem"
+                type="number"
+              />
+
+            </div>
           </b-col>
+
           <b-col cols="12" md="4">
             <multi-select
               :id="`trainerNogos-${trainer.id}`"
@@ -52,35 +45,24 @@
         </b-row>
       </b-card>
 
-      <b-card class="mb-4">
-        <h2 class="h5 mb-2">{{ $t('t.views.admin.feedbacks.allocation.participant_preferences') }}</h2>
 
-        <b-row class="font-weight-bold border-bottom py-2">
-          <b-col cols="12" md="4">
-            {{ $t('t.views.admin.feedbacks.allocation.participant') }}
-          </b-col>
-          <b-col cols="12" md="4">
-            {{ $t('t.views.admin.feedbacks.allocation.wishes') }}
-          </b-col>
-          <b-col cols="12" md="4">
-            {{ $t('t.views.admin.feedbacks.allocation.nogo_header') }}
-          </b-col>
-        </b-row>
+      <b-card :header="$t('t.views.admin.feedbacks.allocation.participant_preferences')"
+              class="mb-4">
 
         <b-row
           v-for="participant in participantPreferences"
           :key="`participant-${participant.id}`"
           class="align-items-center py-2 border-bottom"
         >
-          <b-col cols="12" md="4">
+          <b-col cols="12" md="2">
             {{ participant.name }}
           </b-col>
-          <b-col cols="12" md="4">
+          <b-col cols="12" md="6">
             <multi-select
               :id="`participantPreference-${participant.id}`"
               v-model="participant.preferences"
               :options="trainersWithPrio[participant.id]"
-              :placeholder="$t('t.views.admin.feedbacks.allocation.trainer')"
+              :placeholder="$t('t.views.admin.feedbacks.allocation.wishes')"
               :show-clear="true"
               display-field="name"
               multiple
@@ -143,19 +125,9 @@
         </b-col>
       </b-row>
     </form-basic>
-    <b-card v-if="mappedAllocations.length">
+    <b-card v-if="mappedAllocations.length"
+            :header="$t('t.views.admin.feedbacks.allocation.allocations')">
       <form-basic :action="updateAssignmentAction">
-        <h2 class="h5 mb-3">{{ $t('t.views.admin.feedbacks.allocation.allocations') }}</h2>
-
-        <b-row class="font-weight-bold border-bottom py-2">
-          <b-col cols="12" md="6">
-            {{ $t('t.views.admin.feedbacks.allocation.participant') }}
-          </b-col>
-          <b-col cols="12" md="6">
-            {{ $t('t.views.admin.feedbacks.allocation.trainer') }}
-          </b-col>
-        </b-row>
-
         <b-row
           v-for="(assignment, index) in mappedAllocations"
           :key="index"
