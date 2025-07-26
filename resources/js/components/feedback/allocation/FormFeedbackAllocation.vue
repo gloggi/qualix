@@ -6,17 +6,6 @@
           <b-col cols="12" md="6">
             <h2 class="h5 mb-2">{{ $t('t.views.admin.feedbacks.allocation.trainer_settings') }}</h2>
           </b-col>
-          <b-col cols="12" md="6">
-            <input-text
-              id="defaultCapacity"
-              v-model="defaultCapacity"
-              :label="$t('t.views.admin.feedbacks.allocation.number_of_feedbacks_per_trainer')"
-              :max="participants.length"
-              :min="1"
-              name="defaultCapacity"
-              type="number"
-            />
-          </b-col>
         </b-row>
         <div>
           <b-table-simple responsive small striped>
@@ -34,8 +23,8 @@
                   <b-form-input
                     :id="`trainerCapacity-${trainer.id}`"
                     v-model="trainer.maxCapacity"
-                    :max="parseInt(defaultCapacity)"
-                    :min="1"
+                    :max="participantCount"
+                    :min="0"
                     :name="`trainerCapacity[${trainer.id}]`"
                     type="number"
                   />
@@ -60,7 +49,9 @@
 
       <b-card class="mb-4">
         <b-row>
-          <h2 class="h5 mb-2">{{ $t('t.views.admin.feedbacks.allocation.participant_preferences') }}</h2>
+          <b-col cols="12" md="6">
+            <h2 class="h5 mb-2">{{ $t('t.views.admin.feedbacks.allocation.participant_preferences') }}</h2>
+          </b-col>
         </b-row>
 
         <b-table-simple responsive small striped>
@@ -194,12 +185,15 @@ export default {
     trainers: {type: Array, required: true},
   },
   data() {
+    const participantCount = this.participants.length;
+    const trainerCount = this.trainers.length;
+    const fairCapacity = trainerCount ? Math.ceil((participantCount || 1) / trainerCount) : 0;
+
     return {
-      defaultCapacity: "10",
       trainerPreferences: this.trainers.map(trainer => ({
         id: trainer.id,
         name: trainer.name,
-        maxCapacity: "10",
+        maxCapacity: fairCapacity,
         nogos: ""
       })),
       participantPreferences: this.participants.map(participant => ({
@@ -211,6 +205,8 @@ export default {
       mappedAllocations: [],
       defaultPriorityIndex: 2, // 0 = gering, 1 = mittel, 2 = stark
       priorityValues: [4, 6, 100],
+      participantCount: participantCount,
+
     };
   },
   computed: {
@@ -223,13 +219,7 @@ export default {
       }))
     },
   },
-  watch: {
-    defaultCapacity(newVal) {
-      this.trainerPreferences.forEach(trainer => {
-        trainer.maxCapacity = newVal;
-      });
-    },
-  },
+  watch: {},
   methods: {
     mapAllocationResults(allocationResult) {
       const participantMap = Object.fromEntries(this.participants.map(p => [p.id, p.scout_name]));

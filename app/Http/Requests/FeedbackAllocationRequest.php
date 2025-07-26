@@ -18,10 +18,10 @@ class FeedbackAllocationRequest extends FormRequest
             'trainerCapacities' => 'required|array',
             'trainerCapacities.*' => 'required|array|size:2', // [trainerId, capacity]
             'trainerCapacities.*.0' => 'required|integer',
-            'trainerCapacities.*.1' => 'required|integer|min:1', // Capacity als Integer > 0
+            'trainerCapacities.*.1' => 'required|integer|min:0', // Capacity >= 0 (to allow no allocations)
 
             'participantPreferences' => 'required|array',
-            'participantPreferences.*' => 'required|array|min:2',
+            'participantPreferences.*' => 'required|array|min:1',
             'participantPreferences.*.0' => 'required|integer', // participantId
             'participantPreferences.*.*' => 'nullable|integer', // no preference is represented as null
 
