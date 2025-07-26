@@ -124,6 +124,9 @@
           </b-button>
         </b-col>
       </b-row>
+      <b-alert v-if="errorMessage" show variant="danger">
+        {{ errorMessage }}
+      </b-alert>
     </form-basic>
     <b-card v-if="mappedAllocations.length"
             :header="$t('t.views.admin.feedbacks.allocation.allocations')">
@@ -186,6 +189,7 @@ export default {
     const fairCapacity = trainerCount ? Math.ceil((participantCount || 1) / trainerCount) : 0;
 
     return {
+      errorMessage: null,
       trainerPreferences: this.trainers.map(trainer => ({
         id: trainer.id,
         name: trainer.name,
@@ -290,10 +294,12 @@ export default {
 
       window.axios.post(this.routeUri(...this.action), payload)
         .then(response => {
+          this.errorMessage = null
           this.mappedAllocations = this.mapAllocationResults(response.data);
         })
         .catch(error => {
           console.error('Error', error.response);
+          this.errorMessage = error.response.data.message
         });
     }
 
