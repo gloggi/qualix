@@ -2,11 +2,13 @@
 
 namespace App\Services\FeedbackAllocation;
 
+use App\Exceptions\FeedbackAllocationException;
 use Graphp\Algorithms\Flow;
 use Graphp\Algorithms\MinimumCostFlow\SuccessiveShortestPath;
-use Graphp\Graph\Exception\UnderflowException;
 use Graphp\Graph\Graph;
 use Graphp\Graph\Vertex;
+use Illuminate\Support\Facades\Log;
+use UnexpectedValueException;
 
 
 class DefaultFeedbackAllocator implements FeedbackAllocator {
@@ -103,22 +105,45 @@ class DefaultFeedbackAllocator implements FeedbackAllocator {
         $edge->setCapacity($capacity);
     }
 
-    private function calculateMaxFlowMinCost(int $numberOfFeedbacks): array {
+    /**
+     * @throws FeedbackAllocationException
+     */
+    private function calculateMaxFlowMinCost(int $numberOfFeedbacks): array
+    {
         try {
             $successiveShortestPath = new SuccessiveShortestPath($this->graph);
             $resultGraph = $successiveShortestPath->createGraph();
+
             $source = $resultGraph->getVertex($this->source->getId());
             $flowGraph = new Flow($resultGraph);
             $maxFlow = $flowGraph->getFlowVertex($source);
+
             if ($maxFlow === $numberOfFeedbacks) {
                 return $this->getAssignments($resultGraph);
             }
-        } catch (UnderflowException $e) {
-            echo "Configuration Error: No feasible path from any participant to the sink. Check the setup.\n";
-        } catch (\Exception $e) {
-            echo "An error occurred: ".$e->getMessage()."\n";
+
+            throw new UnexpectedValueException('Unlösbare Zuteilung – unvollständiger Flow');
+        } catch (UnexpectedValueException $e) {
+            if (str_contains($e->getMessage(), 'not enough capacity') ||
+                str_contains($e->getMessage(), 'Unlösbare Zuteilung')) {
+                throw new FeedbackAllocationException('t.views.admin.feedbacks.allocation.errors.allocation_failed');
+            }
+
+            Log::error('Graph-Fehler bei der Zuteilung', [
+                'type' => get_class($e),
+                'message' => $e->getMessage(),
+            ]);
+
+            throw new FeedbackAllocationException('t.views.admin.feedbacks.allocation.errors.unexpected');
+
+        } catch (\Throwable $e) {
+            Log::error('Allgemeiner Fehler in der Feedback-Zuteilung', [
+                'type' => get_class($e),
+                'message' => $e->getMessage(),
+            ]);
+            throw new FeedbackAllocationException('t.views.admin.feedbacks.allocation.errors.unexpected');
+
         }
-        return [];
     }
 
     private function getAssignments(Graph $resultGraph): array {

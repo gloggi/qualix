@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services\FeedbackAllocation;
 
+use App\Exceptions\FeedbackAllocationException;
 use App\Services\FeedbackAllocation\DefaultFeedbackAllocator;
 use App\Services\FeedbackAllocation\FeedbackAllocator;
 use PHPUnit\Framework\TestCase;
@@ -54,15 +55,16 @@ class FeedbackAllocatorTest extends TestCase
         $forbiddenWishes = [];
         $defaultPriority = 10;
 
-        $result = $this->allocator->tryToAllocateFeedbacks(
+        $this->expectException(FeedbackAllocationException::class);
+        $this->expectExceptionMessage('t.views.admin.feedbacks.allocation.errors.allocation_failed');
+
+        $this->allocator->tryToAllocateFeedbacks(
             $trainerCapacities,
             $participantWishes,
             $numberOfWishes,
             $forbiddenWishes,
             $defaultPriority
         );
-
-        $this->assertEmpty($result); // Expecting no solution
     }
 
     public function test_noParticipantPreferences()
@@ -109,15 +111,16 @@ class FeedbackAllocatorTest extends TestCase
         $forbiddenWishes = [];
         $defaultPriority = 10;
 
-        $result = $this->allocator->tryToAllocateFeedbacks(
+        $this->expectException(FeedbackAllocationException::class);
+        $this->expectExceptionMessage('t.views.admin.feedbacks.allocation.errors.allocation_failed');
+
+        $this->allocator->tryToAllocateFeedbacks(
             $trainerCapacities,
             $participantWishes,
             $numberOfWishes,
             $forbiddenWishes,
             $defaultPriority
         );
-
-        $this->assertEmpty($result); // Expecting no solution
     }
 
     public function test_noPreferencesFeedbackAllocationConsiderForbiddenWishes()
@@ -260,6 +263,44 @@ class FeedbackAllocatorTest extends TestCase
 
         $this->assertEquals($expected, $result);
         $this->assertNoForbiddenAllocation($result, $forbiddenWishes);
+    }
+
+    public function test_shouldThrowExceptionBecauseOfTooManyForbiddenWishesAndThereforeToLowCapacity()
+    {
+        //given
+        $trainerCapacities = [['Chips', 4], ['Salz', 3]];
+        $participantWishes =
+            [
+                ['Haribo', 'Chips', 'Salz'],
+                ['Schoggi', 'Chips', 'Salz'],
+                ['Fanta', 'Chips', 'Salz'],
+                ['Coke', 'Chips', 'Salz'],
+                ['Gummibär', 'Salz', 'Chips'],
+                ['Zucker', 'Salz', 'Chips']
+            ];
+        $numberOfWishes = 2;
+        $forbiddenWishes =
+            [
+                ['Haribo', 'Chips'],
+                ['Schoggi', 'Chips'],
+                ['Fanta', 'Chips'],
+                ['Gummibär', 'Chips'],
+                ['Coke', 'Salz'],
+                ['Zucker', 'Salz']
+            ];
+        $defaultPriority = 6;
+
+        // when & then
+        $this->expectException(FeedbackAllocationException::class);
+        $this->expectExceptionMessage('t.views.admin.feedbacks.allocation.errors.allocation_failed');
+
+        $this->allocator->tryToAllocateFeedbacks(
+            $trainerCapacities,
+            $participantWishes,
+            $numberOfWishes,
+            $forbiddenWishes,
+            $defaultPriority
+        );
     }
 
     /**
@@ -524,29 +565,6 @@ class FeedbackAllocatorTest extends TestCase
                     ],
                 ] // Expected Results
             ],
-            [
-                [['Chips', 4], ['Salz', 3]],
-                [
-                    ['Haribo', 'Chips', 'Salz'],
-                    ['Schoggi', 'Chips', 'Salz'],
-                    ['Fanta', 'Chips', 'Salz'],
-                    ['Coke', 'Chips', 'Salz'],
-                    ['Gummibär', 'Salz', 'Chips'],
-                    ['Zucker', 'Salz', 'Chips']
-                ],
-                2,
-                [
-                    ['Haribo', 'Chips'],
-                    ['Schoggi', 'Chips'],
-                    ['Fanta', 'Chips'],
-                    ['Gummibär', 'Chips'],
-                    ['Coke', 'Salz'],
-                    ['Zucker', 'Salz']
-                ],
-                6,
-                [] // NO SOLUTION
-            ],
-
             [
                 [['Chips', 3], ['Salz', 3], ['Paprika', 3], ['Käse', 2], ['Salzstange', 2]],
                 [

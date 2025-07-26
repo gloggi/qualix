@@ -499,8 +499,16 @@ return array(
 				"allocation" => array(
 					"allocations" => "Generierte Zuteilung",
 					"confirm_allocation" => "Zuteilung speichern",
+					'errors' => [
+						'allocation_failed' => 'Mit den aktuellen Wünschen, Nogos und Rückmeldekapazitäten konnte keine gültige Zuteilung gefunden werden. Bitte überprüfe deine Eingaben und versuche es erneut.',
+						'unexpected' => 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut. Wenn das Problem bestehen bleibt, kontaktiere das Qualix-Team.',
+					],
 					"general_settings" => "Allgemeine Einstellungen",
 					"generate_allocation" => "Zuteilung generieren",
+					"generation_explanation_help" => array(
+						"answer" => "Am besten fragst du die TN und die Equipe nach ihren Präferenzen. Danach kannst du die Gespräche von Hand zuteilen oder von Qualix automatisch zuteilen lassen. Diese Funktion findest du nach dem Speichern auf der Übersichtsliste der Rückmeldungen. Suche nach diesem Icon: ",
+						"question" => "Wie gehe ich vor um Gespräche zuzuteilen?",
+					),
 					"nogo_header" => "Vermeide Zuteilung",
 					"nogo" => "Vermeide",
 					"number_of_feedbacks_per_trainer" => "Max. Rückmeldungen",
@@ -508,7 +516,6 @@ return array(
 					"participant" => "TN",
 					"participant_preferences" => "TN-Präferenzen",
 					"prio" => "Priorität",
-					"wishes" => "Zuteilungswünsche (wichtigste zuerst)",
 					"prioritization_weight" => "Gewichtung der Priorisierung",
 					"prioritization_weight_help" => array(
 						"question" => "Was bedeutet die Gewichtung der Priorisierung?",
@@ -524,11 +531,7 @@ return array(
 					"trainer_settings" => "Equipen Präferenzen",
 					"unknown_trainer" => "Equipenmitglied unbekannt (:name)",
 					"unknown_participant" => "TN unbekannt (:name)",
-					"generation_explanation_help" => array(
-						"answer" => "Am besten fragst du die TN und die Equipe nach ihren Präferenzen. Danach kannst du die Gespräche von Hand zuteilen oder von Qualix automatisch zuteilen lassen. Diese Funktion findest du nach dem Speichern auf der Übersichtsliste der Rückmeldungen. Suche nach diesem Icon: ",
-						"question" => "Wie gehe ich vor um Gespräche zuzuteilen?",
-					),
-
+					"wishes" => "Zuteilungswünsche (wichtigste zuerst)",
 				)
 			),
 			"requirements" => array(

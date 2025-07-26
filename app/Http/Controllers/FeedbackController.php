@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\FeedbackAllocationException;
 use App\Exceptions\RequirementsMismatchException;
 use App\Http\Requests\FeedbackAllocationRequest;
 use App\Http\Requests\FeedbackCreateRequest;
@@ -191,25 +192,26 @@ class FeedbackController extends Controller {
      * @param FeedbackAllocationRequest $request
      * @param FeedbackAllocator $allocator
      * @return Response
+     * @throws ValidationException
      */
     public function allocate(FeedbackAllocationRequest $request, FeedbackAllocator $allocator): Response
     {
         $data = $request->validated();
 
-        $trainerCapacities = $data['trainerCapacities'];
-        $participantPreferences = $data['participantPreferences'];
-        $numberOfWishes = $data['numberOfWishes'];
-        $forbiddenWishes = $data['forbiddenWishes'];
-        $defaultPriority = $data['defaultPriority'];
+        try {
+            $result = $allocator->tryToAllocateFeedbacks(
+                $data['trainerCapacities'],
+                $data['participantPreferences'],
+                $data['numberOfWishes'],
+                $data['forbiddenWishes'],
+                $data['defaultPriority']
+            );
 
-        $result = $allocator->tryToAllocateFeedbacks(
-            $trainerCapacities,
-            $participantPreferences,
-            $numberOfWishes,
-            $forbiddenWishes,
-            $defaultPriority
-        );
-
-        return response($result);
+            return response($result);
+        } catch (FeedbackAllocationException $e) {
+            throw ValidationException::withMessages([
+                'allocation' => trans($e->translationKey(), $e->context()),
+            ]);
+        }
     }
 }
