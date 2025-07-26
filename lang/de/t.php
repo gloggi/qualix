@@ -512,7 +512,6 @@ return array(
 					"prioritization_weight" => "Gewichtung der Priorisierung",
 					"prioritization_weights" => array(
 						"low" => "Gering",
-						"middle" => "Mittel",
 						"heavy" => "Stark",
 					),
 					"trainer" => "Equipenmitglied",

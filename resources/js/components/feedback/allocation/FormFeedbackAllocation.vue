@@ -104,14 +104,13 @@
           <b-form-input
             id="priority-slider"
             v-model="defaultPriorityIndex"
-            max="2"
+            max="1"
             min="0"
             step="1"
             type="range"
           />
           <div class="d-flex justify-content-between">
             <small> {{ $t('t.views.admin.feedbacks.allocation.prioritization_weights.low') }} </small>
-            <small> {{ $t('t.views.admin.feedbacks.allocation.prioritization_weights.middle') }} </small>
             <small> {{ $t('t.views.admin.feedbacks.allocation.prioritization_weights.heavy') }} </small>
           </div>
         </b-col>
@@ -203,8 +202,8 @@ export default {
         forbidden: ""
       })),
       mappedAllocations: [],
-      defaultPriorityIndex: 2, // 0 = gering, 1 = mittel, 2 = stark
-      priorityValues: [4, 6, 100],
+      defaultPriorityIndex: 1, // 0 = gering, 1 = stark
+      priorityValues: [4, 100],
       participantCount: participantCount,
 
     };
@@ -218,8 +217,18 @@ export default {
         }))]
       }))
     },
+    numberOfWishes() {
+      return Math.max(...this.participantPreferences.map((participant) => participant.preferences === "" ? 0 : participant.preferences.split(',').length))
+    }
   },
-  watch: {},
+  watch: {
+    numberOfWishes(newVal) {
+      this.priorityValues = [
+        newVal + 1,
+        100
+      ];
+    }
+  },
   methods: {
     mapAllocationResults(allocationResult) {
       const participantMap = Object.fromEntries(this.participants.map(p => [p.id, p.scout_name]));
@@ -247,7 +256,7 @@ export default {
     },
     submitForm() {
       const trainerCapacities = this.trainerPreferences.map(trainer => [trainer.id, parseInt(trainer.maxCapacity)]);
-      const numberOfWishes = Math.max(...this.participantPreferences.map((participant) => participant.preferences.length))
+      const numberOfWishes = this.numberOfWishes
       const participantWishes = this.participantPreferences.map(participant => [participant.id, ...participant.preferences.split(',').map(pref => {
         return pref ? parseInt(pref) : null;
       }).concat(Array(numberOfWishes).fill(null)).slice(0, numberOfWishes)]);
