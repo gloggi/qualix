@@ -55,7 +55,9 @@
                 @shown="doHighlightTrainerAssignments">
       <row-text>
         <help-text id="trainerAssignmentExplanation"
-                   trans="t.views.admin.feedbacks.allocation.generation_explanation_help"></help-text>
+                   trans="t.views.admin.feedbacks.allocation.generation_explanation_help"
+        >{{ $t('t.views.admin.feedbacks.allocation.generation_explanation_help.answer') }}
+          <i class="fas fa-people-arrows"></i></help-text>
       </row-text>
       <input-multi-select
         v-for="assignment in trainerAssignments"
