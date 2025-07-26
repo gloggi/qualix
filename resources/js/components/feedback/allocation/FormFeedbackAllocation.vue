@@ -166,7 +166,7 @@
                   :id="`allocation-${index}`"
                   :key="assignment.participantId"
                   v-model="assignment.trainerId"
-                  :multiple="false"
+                  :multiple="true"
                   :name="`feedbacks[${assignment.participantId}][users]`"
                   :options="trainers"
                   :show-clear="true"
