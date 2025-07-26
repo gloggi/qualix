@@ -5,7 +5,7 @@
 @section('content')
 
     <b-card>
-        <template #header>{{__('t.views.admin.feedbacks.generate_allocation')}}</template>
+        <template #header>{{__('t.views.admin.feedbacks.allocation.generate_allocation')}}</template>
         <form-feedback-allocation
             :action="['admin.feedbacks.allocate', { course: {{ $course->id }}, feedback_data: {{ $feedback_data->id }} }]"
             :update-assignment-action="['admin.feedbacks.assignments.update', { course: {{ $course->id }}, feedback_data: {{ $feedback_data->id }} }]"

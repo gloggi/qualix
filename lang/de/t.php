@@ -479,7 +479,6 @@ return array(
 				"edit_success" => "Die Rückmeldung \":name\" wurde erfolgreich gespeichert.",
 				"error_requirements_dont_match" => "Die Anforderungen in der Vorlage stimmten nicht mit den relevanten Anforderungen überein. Wir haben das automatisch korrigiert. Kontrolliere ob jetzt alles stimmt und speichere erneut.",
 				"existing" => "Rückmeldungen :courseName",
-				"generate_allocation" => "Zuteilung generieren",
 				"trainer_assignment" => "Zuordnung der TN zu den Equipenmitgliedern",
 				"menu_name" => "Rückmeldungen",
 				"new" => "Neue Rückmeldung",
@@ -501,6 +500,7 @@ return array(
 					"allocations" => "Generierte Zuteilung",
 					"confirm_allocation" => "Zuteilung speichern",
 					"general_settings" => "Allgemeine Einstellungen",
+					"generate_allocation" => "Zuteilung generieren",
 					"nogo_header" => "Vermeide Zuteilung",
 					"nogo" => "Vermeide",
 					"number_of_feedbacks_per_trainer" => "Max. Rückmeldungen",
@@ -510,10 +510,16 @@ return array(
 					"prio" => "Priorität",
 					"wishes" => "Zuteilungswünsche (wichtigste zuerst)",
 					"prioritization_weight" => "Gewichtung der Priorisierung",
+					"prioritization_weight_help" => array(
+						"question" => "Was bedeutet die Gewichtung der Priorisierung?",
+						"answer" => "Die Gewichtung beeinflusst, wie stark die Wünsche der TN berücksichtigt werden. Bei ':heavy' wird der Algorithmus prioritär versuchen, die Wunschprioritäten zu erfüllen. Bei ':low' wird eine gleichmässigere Verteilung bevorzugt, auch wenn dabei nicht alle Wünsche erfüllt werden. Für die meisten Fälle ist ':heavy_two' die passende Einstellung.",
+					),
+
 					"prioritization_weights" => array(
 						"low" => "Gering",
 						"heavy" => "Stark",
 					),
+					"regenerate_allocation" => "Zuteilung erneut generieren",
 					"trainer" => "Equipenmitglied",
 					"trainer_settings" => "Equipen Präferenzen",
 					"unknown_trainer" => "Equipenmitglied unbekannt (:name)",

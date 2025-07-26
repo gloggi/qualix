@@ -98,7 +98,7 @@
       </b-card>
 
       <b-row class="align-items-center mb-4">
-        <b-col md="8">
+        <b-col md="6">
           <label class="form-label mb-1" for="priority-slider">
             {{ $t('t.views.admin.feedbacks.allocation.prioritization_weight') }}</label>
           <b-form-input
@@ -113,12 +113,37 @@
             <small> {{ $t('t.views.admin.feedbacks.allocation.prioritization_weights.low') }} </small>
             <small> {{ $t('t.views.admin.feedbacks.allocation.prioritization_weights.heavy') }} </small>
           </div>
+
+          <help-text
+            id="prioritizationWeightExplanation"
+            :params="{
+            heavy: $t('t.views.admin.feedbacks.allocation.prioritization_weights.heavy'),
+            low: $t('t.views.admin.feedbacks.allocation.prioritization_weights.low'),
+            heavy_two: $t('t.views.admin.feedbacks.allocation.prioritization_weights.heavy')
+          }"
+            trans="t.views.admin.feedbacks.allocation.prioritization_weight_help"
+          />
         </b-col>
-        <b-col md="4">
-          <b-button class="float-right" type="submit" variant="primary" @click.prevent="submitForm">
-            {{ $t('t.views.admin.feedbacks.generate_allocation') }}
+        <b-col class="text-right" md="6">
+          <b-button
+            class="mr-2"
+            variant="primary"
+            @click.prevent="submitForm(false)"
+          >
+            <i class="fas fa-magic mr-1"></i>
+            {{ $t('t.views.admin.feedbacks.allocation.generate_allocation') }}
+          </b-button>
+
+          <b-button
+            v-if="mappedAllocations.length"
+            variant="outline-secondary"
+            @click.prevent="submitForm(true)"
+          >
+            <i class="fas fa-random mr-1"></i>
+            {{ $t('t.views.admin.feedbacks.allocation.regenerate_allocation') }}
           </b-button>
         </b-col>
+
       </b-row>
     </form-basic>
     <b-card v-if="mappedAllocations.length">
@@ -254,12 +279,22 @@ export default {
       const prio = preferences.split(',').findIndex(id => id === '' + trainer.id)
       return prio === -1 ? '' : `${prio+1}. `
     },
-    submitForm() {
-      const trainerCapacities = this.trainerPreferences.map(trainer => [trainer.id, parseInt(trainer.maxCapacity)]);
-      const numberOfWishes = this.numberOfWishes
-      const participantWishes = this.participantPreferences.map(participant => [participant.id, ...participant.preferences.split(',').map(pref => {
-        return pref ? parseInt(pref) : null;
-      }).concat(Array(numberOfWishes).fill(null)).slice(0, numberOfWishes)]);
+    shuffleArray(array) {
+      return array
+        .map(value => ({value, sortKey: Math.random()}))
+        .sort((a, b) => a.sortKey - b.sortKey)
+        .map(({value}) => value);
+    },
+    submitForm(shuffle = false) {
+      let trainerCapacities = this.trainerPreferences.map(trainer => [trainer.id, parseInt(trainer.maxCapacity)]);
+      const numberOfWishes = this.numberOfWishes;
+      let participantWishes = this.participantPreferences.map(participant => [
+        participant.id,
+        ...participant.preferences.split(',').map(pref => pref ? parseInt(pref) : null)
+          .concat(Array(numberOfWishes).fill(null))
+          .slice(0, numberOfWishes)
+      ]);
+
       const forbiddenWishes = [];
       this.trainerPreferences.forEach(trainer => {
         if (trainer.nogos && trainer.nogos.length) trainer.nogos.split(',').forEach(pid => forbiddenWishes.push([parseInt(pid), trainer.id]));
@@ -267,6 +302,11 @@ export default {
       this.participantPreferences.forEach(participant => {
         if (participant.forbidden && participant.forbidden.length) participant.forbidden.split(',').forEach(tid => forbiddenWishes.push([participant.id, parseInt(tid)]));
       });
+
+      if (shuffle) {
+        trainerCapacities = this.shuffleArray(trainerCapacities);
+        participantWishes = this.shuffleArray(participantWishes);
+      }
 
       const payload = {
         trainerCapacities,
@@ -284,6 +324,7 @@ export default {
           console.error('Error', error.response);
         });
     }
+
   }
 };
 </script>
