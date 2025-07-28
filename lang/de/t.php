@@ -44,6 +44,7 @@ return array(
 		"no_result" => "Keine Resultate gefunden",
 		"or" => "oder",
 		"page_title" => "Qualix",
+		"people-arrows" => "Zuteilung generieren",
 		"positive" => "Positiv",
 		"print" => "Drucken",
 		"really_delete" => "Wirklich löschen?",
@@ -495,6 +496,41 @@ return array(
 					"answer" => "Eine Rückmeldung steht für ein TN-Gespräch, Zwischengespräch das mit allen Teilnehmenden separat gehalten wird, oder für eine Qualifikation die alle Teilnehmenden separat bestehen können. Auf der Detailansicht der ausgewählten TN kannst du später einen Rückmeldungs-Text zusammenstellen um dein Gespräch zu planen oder zu protokollieren. Eine Rückmeldung kann sich auf alle Anforderungen des Kurses oder auch nur auf einen Teil davon beziehen.",
 					"question" => "Was sind Rückmeldungen?",
 				),
+				"allocation" => array(
+					"allocations" => "Generierte Zuteilung",
+					"confirm_allocation" => "Zuteilung speichern",
+					'errors' => [
+						'allocation_failed' => 'Mit den aktuell eingestellten Wünschen und Kapazitäten der Equipe und der TN konnte keine gültige Zuteilung gefunden werden.',
+						'unexpected' => 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut. Wenn das Problem bestehen bleibt, kontaktiere das Qualix-Team.',
+					],
+					"general_settings" => "Allgemeine Einstellungen",
+					"generate_allocation" => "Zuteilung generieren",
+					"generation_explanation_help" => array(
+						"answer" => "Am besten fragst du die TN und die Equipe nach ihren Präferenzen. Danach kannst du die Gespräche von Hand zuteilen oder von Qualix automatisch zuteilen lassen. Diese Funktion findest du nach dem Speichern auf der Übersichtsliste der Rückmeldungen. Suche nach diesem Icon: ",
+						"question" => "Wie gehe ich vor um die Gespräche zuzuteilen?",
+					),
+					"nogo" => "Vermeide",
+					"number_of_feedbacks_per_trainer" => "Max. Rückmeldungen",
+					"participant" => "TN",
+					"participant_preferences" => "TN-Präferenzen",
+					"prio" => "Priorität",
+					"prioritization_weight" => "Gewichtung der Priorisierung",
+					"prioritization_weight_help" => array(
+						"question" => "Was bedeutet die Gewichtung der Priorisierung?",
+						"answer" => "Die Gewichtung beeinflusst, wie stark die Wünsche der TN berücksichtigt werden. Bei ':heavy' wird der Algorithmus prioritär versuchen, die Wunschprioritäten zu erfüllen. Bei ':low' wird eine gleichmässigere Verteilung bevorzugt, auch wenn dabei nicht alle Wünsche erfüllt werden. Für die meisten Fälle ist ':heavy_two' die passende Einstellung.",
+					),
+
+					"prioritization_weights" => array(
+						"low" => "Gering",
+						"heavy" => "Stark",
+					),
+					"regenerate_allocation" => "Andere Zuteilung generieren",
+					"trainer" => "Equipenmitglied",
+					"trainer_settings" => "Equipen-Präferenzen",
+					"unknown_trainer" => "Equipenmitglied unbekannt (:name)",
+					"unknown_participant" => "TN unbekannt (:name)",
+					"wishes" => "Zuteilungswünsche (wichtigste zuerst)",
+				)
 			),
 			"requirements" => array(
 				"are_requirements_required" => array(

@@ -1142,7 +1142,7 @@ describe('multiple select', () => {
         expect(screen.getByText('Foo', { selector: '.multiselect__tag span' })).toBeInTheDocument()
       })
 
-      expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Foo Bar Foo Bar Baz Group1')
+      expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Bar Foo Foo Bar Baz Group1')
 
       userEvent.click(screen.getByText('', { selector: '.multiselect__select' }))
 
@@ -1183,7 +1183,7 @@ describe('multiple select', () => {
       userEvent.click(screen.getByText('Group1'))
 
       await waitFor(() => {
-        expect(formSubmitted).toHaveBeenCalledWith('1,2')
+        expect(formSubmitted).toHaveBeenCalledWith('2,1')
       })
     })
   })

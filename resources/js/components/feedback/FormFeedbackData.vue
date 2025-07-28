@@ -51,7 +51,14 @@
       </b-button>
     </row-text>
 
-    <b-collapse id="collapse-trainer-assignments" :visible="highlightTrainerAssignments" :appear="true" @shown="doHighlightTrainerAssignments">
+    <b-collapse id="collapse-trainer-assignments" :appear="true" :visible="highlightTrainerAssignments"
+                @shown="doHighlightTrainerAssignments">
+      <row-text>
+        <help-text id="trainerAssignmentExplanation"
+                   trans="t.views.admin.feedbacks.allocation.generation_explanation_help"
+        >{{ $t('t.views.admin.feedbacks.allocation.generation_explanation_help.answer') }}
+          <i class="fas fa-people-arrows"></i></help-text>
+      </row-text>
       <input-multi-select
         v-for="assignment in trainerAssignments"
         :key="assignment.participantId"
@@ -83,16 +90,16 @@ export default {
   components: {InputFeedbackEditor, RowText, InputMultiSelect, InputText, FormBasic, HelpText},
   props: {
     action: {},
-    courseId: { type: String, required: true },
-    name: { type: String, required: false },
-    feedbacks: { type: Array, default: undefined },
-    participants: { type: Array, required: true },
-    participantGroups: { type: Object, default: () => ({}) },
-    requirements: { type: Array, default: () => [] },
-    requirementStatuses: { type: Array, default: () => [] },
-    trainers: { type: Array, required: true },
-    highlightTrainerAssignments: { type: Boolean, default: false },
-    feedbackContentsTemplate: { type: Boolean, default: false },
+    courseId: {type: String, required: true},
+    name: {type: String, required: false},
+    feedbacks: {type: Array, default: undefined},
+    participants: {type: Array, required: true},
+    participantGroups: {type: Object, default: () => ({})},
+    requirements: {type: Array, default: () => []},
+    requirementStatuses: {type: Array, default: () => []},
+    trainers: {type: Array, required: true},
+    highlightTrainerAssignments: {type: Boolean, default: false},
+    feedbackContentsTemplate: {type: Boolean, default: false},
   },
   data() {
     const noMandatoryRequirements = !this.requirements.some(r => r.mandatory)
@@ -106,7 +113,10 @@ export default {
         .sort((a, b) => a.scout_name.localeCompare(b.scout_name))
         .map(p => {
           const feedback = this.feedbacks ? this.feedbacks.find(q => q.participant.id === p.id) : undefined
-          return { participantId: p.id, trainerIds: '' + (feedback && feedback.users ? feedback.users.map(u => u.id).join(',') : '') }
+          return {
+            participantId: p.id,
+            trainerIds: '' + (feedback && feedback.users ? feedback.users.map(u => u.id).join(',') : '')
+          }
         }),
       feedbackContentsTemplateVisible: false,
       shouldHighlightTrainerAssignments: this.highlightTrainerAssignments,
@@ -145,10 +155,10 @@ export default {
         this.shouldHighlightTrainerAssignments = false
         this.$nextTick(() => {
           this.$refs.trainerAssignments.focus()
-          this.$refs.trainerAssignments.scrollIntoView({ behavior: 'smooth' })
+          this.$refs.trainerAssignments.scrollIntoView({behavior: 'smooth'})
         })
       }
-    }
+    },
   }
 }
 </script>

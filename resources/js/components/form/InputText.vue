@@ -13,7 +13,10 @@
           v-model="currentValue"
           :required="required"
           :autofocus="autofocus"
-          :v-focus="autofocus" />
+          :max="type === 'number' ? max : null"
+          :min="type === 'number' ? min : null"
+          :v-focus="autofocus"
+        />
 
         <template #append>
           <slot name="append"></slot>
@@ -31,7 +34,10 @@
         :required="required"
         :autofocus="autofocus"
         :v-focus="autofocus"
-        ref="input">
+        ref="input"
+        :max="type === 'number' ? max : null"
+        :min="type === 'number' ? min : null"
+      >
 
       <span v-if="errorMessage" class="invalid-feedback" role="alert">
         <strong>{{ errorMessage }}</strong>
@@ -47,10 +53,12 @@ export default {
   name: 'InputText',
   mixins: [ Input ],
   props: {
-    required: { type: Boolean, default: false },
-    label: { type: String, required: true },
-    type: { type: String, default: 'text' },
-    autofocus: { type: Boolean, default: false },
+    required: {type: Boolean, default: false},
+    label: {type: String, required: true},
+    type: {type: String, default: 'text'},
+    autofocus: {type: Boolean, default: false},
+    min: {type: Number, required: false, default: null},
+    max: {type: Number, required: false, default: null},
   },
   methods: {
     focus() {

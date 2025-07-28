@@ -89,7 +89,7 @@ export default {
   methods: {
     parse(value) {
       if (this.multiple) {
-        return value ? this.options.filter(el => value.split(',').includes('' + el[this.valueField])) : []
+        return value ? value.split(',').flatMap(val => this.options.filter(el => val === ('' + el[this.valueField]))) : []
       } else {
         return value ? (this.options.find(el => '' + el[this.valueField] === value)) : null
       }
