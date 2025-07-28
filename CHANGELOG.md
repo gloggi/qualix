@@ -1,5 +1,8 @@
 # Changelog
 
+##### Juli 2025
+- In Rückmeldungen kann die Zuteilung der TN zu den Equipenmitgliedern jetzt basierend auf Wünschen und Kapazitäten von Equipe und TN automatisch generiert werden. Dazu kann man unter Kursadmin -> Rückmeldungen auf einer bereits erstellten Rückmeldung auf das neue Icon "Zuteilung generieren" klicken [#260](https://github.com/gloggi/qualix/issues/260)
+
 ##### Mai 2025
 - Beim Einladen von Leuten in den Kurs wird die eingegebene E-Mail-Adresse strenger auf Fehler überprüft [#141](https://github.com/gloggi/qualix/issues/141)
 - Im Rückmeldungs-Editor wird jetzt noch deutlicher und immer sichtbar klargestellt, wenn man offline ist und darum die Änderungen noch nicht gespeichert werden konnten [#342](https://github.com/gloggi/qualix/issues/342)
