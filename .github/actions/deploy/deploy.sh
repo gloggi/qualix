@@ -75,20 +75,51 @@ ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   APP_CONTACT_LINK=$APP_CONTACT_LINK php artisan down --render=updating
 EOF
 
-echo "Uploading files to the server..."
-lftp <<EOF
-  set sftp:auto-confirm true
-  set dns:order "inet"
-  open -u $SSH_USERNAME, sftp://$SSH_HOST
-  cd $SSH_DIRECTORY
-  mirror -enRv -x '^node_modules' -x '^cypress' -x '^\.' -x '^tests' -x '^storage/logs/.*' -x '^storage/app/.*' -x '^storage/framework/maintenance.php$' -x '^storage/framework/down$' -x '^resources/fonts/.*' -x '^resources/images/.*' -x '^resources/js/.*' -x '^resources/sass/.*' -x '^resources/twemoji'
-  mirror -Rv -f .env
-EOF
+echo "Creating deployment package..."
+DEPLOY_FILE="deploy_package.zip"
+rm -f $DEPLOY_FILE
+zip -r $DEPLOY_FILE . \
+  -x ".*" \
+  -x "node_modules/*" \
+  -x "tests/*" \
+  -x "cypress/*" \
+  -x ".git/*" \
+  -x ".github/*" \
+  -x "storage/app/*" \
+  -x "storage/logs/*" \
+  -x "storage/framework/maintenance.php" \
+  -x "storage/framework/down" \
+  -x "resources/fonts/*" \
+  -x "resources/images/*" \
+  -x "resources/js/*" \
+  -x "resources/sass/*" \
+  -x "resources/twemoji/*"
+ 
+echo "Uploading zip and .env to server..."
+scp $DEPLOY_FILE $SSH_USERNAME@$SSH_HOST:$SSH_DIRECTORY/
+scp .env $SSH_USERNAME@$SSH_HOST:$SSH_DIRECTORY/
 
-echo "All files uploaded to the server."
 
+echo "Final server side setup..."
 ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
+  set -e
   cd $SSH_DIRECTORY
+
+  echo "Removing old files here, but keeping user uploads and maintenance mode files..."
+  find . -mindepth 1 -maxdepth 1 \
+  ! -path './storage' \
+  ! -path './storage/app' \
+  ! -path './storage/app/*' \
+  ! -path './storage/framework/maintenance.php' \
+  ! -path './storage/framework/down' \
+  ! -name '.env' \
+  ! -name 'deploy_package.zip' \
+  -exec rm -rf {} +
+
+  echo "Unzipping deployment package..."
+  unzip -o deploy_package.zip
+  rm -f deploy_package.zip
+ 
   php artisan storage:link
   php artisan migrate --force
 
