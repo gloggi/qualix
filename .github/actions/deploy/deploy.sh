@@ -58,6 +58,7 @@ sed -ri "s~^MIX_SENTRY_VUE_DSN=.*$~MIX_SENTRY_VUE_DSN=$SENTRY_VUE_DSN~" .env
 docker compose run --no-deps --entrypoint "/bin/sh -c 'npm install && scripts/install-twemoji.sh && npm run prod --no-unsafe-inline'" node
 docker compose run --no-deps --entrypoint "composer install --no-dev" qualix
 PHP_MIN_VERSION_ID=$(grep -Po '(?<=\(PHP_VERSION_ID >= )[0-9]+(?=\))' vendor/composer/platform_check.php)
+PHP_MIN_VERSION_ID=${PHP_MIN_VERSION_ID:-80200}
 
 echo "Scanning ssh host keys of \"$SSH_HOST\" (showing hashed output only):"
 ssh-keyscan -H $SSH_HOST
@@ -68,10 +69,18 @@ cat ~/.ssh/known_hosts
 echo "Checking PHP version:"
 ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   set -e
-  php -v
   cd $SSH_DIRECTORY
-  php -r "if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80200}){echo \"Your PHP version is too old\\nYou might be able to use these instructions on your hosting as well: https://www.cyon.ch/support/a/php-standardversion-fur-die-kommandozeile-festlegen\n\";exit(1);}"
-
+  echo "<?php echo PHP_VERSION_ID;" > public/version.php
+  PHP_VERSION_ID="\$(curl -s $APP_URL/version.php)"
+  rm public/version.php
+  echo ""
+  echo "Detected server PHP version \$PHP_VERSION_ID, required PHP version is at least $PHP_MIN_VERSION_ID."
+  if [ "\$PHP_VERSION_ID" -lt "$PHP_MIN_VERSION_ID" ]; then
+    echo "Your PHP version is too old."
+    echo "Make sure your hosting is configured to use an up-to-date PHP version in this directory."
+    exit 1
+  fi
+  php -r "echo \"\nDetected CLI PHP version: \".PHP_VERSION_ID.\"\n\";if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80200}){echo \"Warning: Your command line PHP version is too old.\nThe php artisan commands required for the deployment may or may not work.\nYou might be able to use these instructions on your hosting as well: https://www.cyon.ch/support/a/php-standardversion-fur-die-kommandozeile-festlegen\nDeployment will attempt to continue for now.\n\";}"
   APP_CONTACT_LINK=$APP_CONTACT_LINK php artisan down --render=updating
 EOF
 
