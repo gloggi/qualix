@@ -247,7 +247,7 @@ export default {
           });
         });
       });
-
+      participantToTrainer.sort((a, b) => a.participantName.localeCompare(b.participantName))
       return participantToTrainer;
     },
     prioPrefix(participant, trainer) {
