@@ -69,10 +69,15 @@ cat ~/.ssh/known_hosts
 echo "Checking PHP version:"
 ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
   set -e
+  if [ -f .bash_profile ]
+  then
+    source .bash_profile || true
+  fi
   cd $SSH_DIRECTORY
-  echo "<?php echo PHP_VERSION_ID;" > public/version.php
-  PHP_VERSION_ID="\$(curl -s $APP_URL/version.php)"
-  rm public/version.php
+  TMPFILE="version-$(mktemp -u XXXXXXXXXX).php"
+  echo "<?php echo PHP_VERSION_ID;" > "public/\$TMPFILE"
+  PHP_VERSION_ID="\$(curl -s $APP_URL/\$TMPFILE)"
+  rm "public/\$TMPFILE"
   echo ""
   echo "Detected server PHP version \$PHP_VERSION_ID, required PHP version is at least $PHP_MIN_VERSION_ID."
   if [ "\$PHP_VERSION_ID" -lt "$PHP_MIN_VERSION_ID" ]; then
@@ -80,7 +85,7 @@ ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
     echo "Make sure your hosting is configured to use an up-to-date PHP version in this directory."
     exit 1
   fi
-  php -r "echo \"\nDetected CLI PHP version: \".PHP_VERSION_ID.\"\n\";if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80200}){echo \"Warning: Your command line PHP version is too old.\nThe php artisan commands required for the deployment may or may not work.\nYou might be able to use these instructions on your hosting as well: https://www.cyon.ch/support/a/php-standardversion-fur-die-kommandozeile-festlegen\nDeployment will attempt to continue for now.\n\";}"
+  php -r "echo \"\nDetected CLI PHP version: \".PHP_VERSION_ID.\"\n\";if(PHP_VERSION_ID<${PHP_MIN_VERSION_ID:-80200}){echo \"Warning: Your command line PHP version is too old.\nYou might be able to use these instructions on your hosting as well: https://www.cyon.ch/support/a/php-standardversion-fur-die-kommandozeile-festlegen\nNote: We load the .bash_profile file during deployment, which may or may not include the .bashrc file in your setup. Consider configuring the correct PATH in .bash_profile.\";exit(1);}"
   APP_CONTACT_LINK=$APP_CONTACT_LINK php artisan down --render=updating
 EOF
 
