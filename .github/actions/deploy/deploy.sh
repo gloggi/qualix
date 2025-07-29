@@ -102,6 +102,10 @@ EOF
 echo "All files uploaded to the server."
 
 ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
+  if [ -f .bash_profile ]
+  then
+    source .bash_profile || true
+  fi
   cd $SSH_DIRECTORY
   php artisan storage:link
   php artisan migrate --force
