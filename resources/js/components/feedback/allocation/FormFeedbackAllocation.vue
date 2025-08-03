@@ -59,6 +59,20 @@
           </b-col>
           <b-col cols="12" md="6">
             <multi-select
+              v-if="defaultPriorityIndex === '0'"
+              :key="`participantPreference-${participant.id}-unweighted`"
+              :id="`participantPreference-${participant.id}`"
+              v-model="participant.preferences"
+              :options="trainers"
+              :placeholder="$t('t.views.admin.feedbacks.allocation.wishes')"
+              :show-clear="true"
+              display-field="name"
+              multiple
+              track-by="id"
+            />
+            <multi-select
+              v-else
+              :key="`participantPreference-${participant.id}-weighted`"
               :id="`participantPreference-${participant.id}`"
               v-model="participant.preferences"
               :options="trainersWithPrio[participant.id]"
@@ -91,12 +105,13 @@
           <b-form-input
             id="priority-slider"
             v-model="defaultPriorityIndex"
-            max="1"
+            max="2"
             min="0"
             step="1"
             type="range"
           />
           <div class="d-flex justify-content-between">
+            <small> {{ $t('t.views.admin.feedbacks.allocation.prioritization_weights.unweighted') }} </small>
             <small> {{ $t('t.views.admin.feedbacks.allocation.prioritization_weights.low') }} </small>
             <small> {{ $t('t.views.admin.feedbacks.allocation.prioritization_weights.heavy') }} </small>
           </div>
@@ -106,7 +121,9 @@
             :params="{
               heavy: $t('t.views.admin.feedbacks.allocation.prioritization_weights.heavy'),
               low: $t('t.views.admin.feedbacks.allocation.prioritization_weights.low'),
-              heavy_two: $t('t.views.admin.feedbacks.allocation.prioritization_weights.heavy')
+              unweighted: $t('t.views.admin.feedbacks.allocation.prioritization_weights.unweighted'),
+              heavy_two: $t('t.views.admin.feedbacks.allocation.prioritization_weights.heavy'),
+              unweighted_two: $t('t.views.admin.feedbacks.allocation.prioritization_weights.unweighted'),
             }"
             trans="t.views.admin.feedbacks.allocation.prioritization_weight_help"
           />
@@ -203,10 +220,9 @@ export default {
         forbidden: ""
       })),
       mappedAllocations: [],
-      defaultPriorityIndex: 1, // 0 = gering, 1 = stark
-      priorityValues: [4, 100],
+      defaultPriorityIndex: 2, // 0 = keine Gewichtung, 1 = gering, 2 = stark
+      priorityValues: [100, 4, 100],
       participantCount: participantCount,
-
     };
   },
   computed: {
@@ -225,6 +241,7 @@ export default {
   watch: {
     numberOfWishes(newVal) {
       this.priorityValues = [
+        100,
         newVal + 1,
         100
       ];
@@ -290,6 +307,7 @@ export default {
         numberOfWishes,
         forbiddenWishes,
         defaultPriority: this.priorityValues[this.defaultPriorityIndex],
+        unweighted: this.defaultPriorityIndex === '0',
       };
 
       window.axios.post(this.routeUri(...this.action), payload)

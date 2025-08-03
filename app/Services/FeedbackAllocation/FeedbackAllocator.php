@@ -15,5 +15,5 @@ interface FeedbackAllocator
      * @param int $defaultPriority default priority for wishes
      * @return array list of allocated feedbacks
      */
-    public function tryToAllocateFeedbacks(array $trainerCapacities, array $participantPreferences, int $numberOfWishes, array $forbiddenWishes, int $defaultPriority = 100): array;
+    public function tryToAllocateFeedbacks(array $trainerCapacities, array $participantPreferences, int $numberOfWishes, array $forbiddenWishes, int $defaultPriority = 100, bool $unweighted = false): array;
 }

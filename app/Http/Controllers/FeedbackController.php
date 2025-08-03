@@ -204,7 +204,8 @@ class FeedbackController extends Controller {
                 $data['participantPreferences'],
                 $data['numberOfWishes'],
                 $data['forbiddenWishes'],
-                $data['defaultPriority']
+                $data['defaultPriority'],
+                $data['unweighted'],
             );
 
             return response($result);

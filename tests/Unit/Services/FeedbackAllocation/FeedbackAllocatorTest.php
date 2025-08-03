@@ -44,6 +44,42 @@ class FeedbackAllocatorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
+    public function test_UnweightedFeedbackAllocation()
+    {
+        $trainerCapacities = [['Alice', 2], ['Bob', 2]];
+        $participantWishes = [
+            ['John', 'Alice', 'Bob'], // John prefers Alice or Bob
+            ['Jane', 'Bob', 'Alice']  // Jane prefers Bob or Alice
+        ];
+        $numberOfWishes = 2;
+        $forbiddenWishes = [];
+        $defaultPriority = 100;
+
+        $result = $this->allocator->tryToAllocateFeedbacks(
+            $trainerCapacities,
+            $participantWishes,
+            $numberOfWishes,
+            $forbiddenWishes,
+            $defaultPriority,
+            true
+        );
+
+        $expected = [
+            // In the unweighted case, the wishes [Alice, Bob] and [Bob, Alice] are considered the same.
+            // So by default, the algorithm assigns as many participants as it can to the first trainer.
+            [
+                'trainerIdent' => 'Alice',
+                'participantIdents' => ['John', 'Jane']
+            ],/*
+            [
+                'trainerIdent' => 'Bob',
+                'participantIdents' => []
+            ]*/
+        ];
+
+        $this->assertEquals($expected, $result);
+    }
+
     public function test_noTrainerAssignmentPossible()
     {
         $trainerCapacities = [['Alice', 0]]; // Alice cannot handle any participant

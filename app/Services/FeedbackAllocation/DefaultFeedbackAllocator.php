@@ -29,13 +29,12 @@ class DefaultFeedbackAllocator implements FeedbackAllocator {
         $this->vertexIdToName = [];
     }
 
-    public function tryToAllocateFeedbacks(array $trainerCapacities, array $participantPreferences, int $numberOfWishes, array $forbiddenWishes, int $defaultPriority = 100): array {
-        $this->createGraphFromInput($trainerCapacities, $participantPreferences, $numberOfWishes, $forbiddenWishes, $defaultPriority);
+    public function tryToAllocateFeedbacks(array $trainerCapacities, array $participantPreferences, int $numberOfWishes, array $forbiddenWishes, int $defaultPriority = 100, bool $unweighted = false): array {
+        $this->createGraphFromInput($trainerCapacities, $participantPreferences, $numberOfWishes, $forbiddenWishes, $defaultPriority, $unweighted);
         return $this->calculateMaxFlowMinCost($this->participantCount);
-
     }
 
-    function createGraphFromInput(array $trainerCapacities, array $participantPreferences, int $numberOfWishes, array $forbiddenWishes, int $defaultPriority = 100) {
+    function createGraphFromInput(array $trainerCapacities, array $participantPreferences, int $numberOfWishes, array $forbiddenWishes, int $defaultPriority = 100, bool $unweighted = false) {
         $trainerCount = count($trainerCapacities);
         $participantCount = count($participantPreferences);
         $this->participantCount = $participantCount;
@@ -72,7 +71,8 @@ class DefaultFeedbackAllocator implements FeedbackAllocator {
                 $preferredTrainerName = $participantPreference[$priority];
                 if ($preferredTrainerName !== null && isset($this->trainerNameToVertexId[$preferredTrainerName])) {
                     $trainerIndex = $this->trainerNameToVertexId[$preferredTrainerName] - 2 - $participantCount;
-                    $preferenceMatrix[$index][$trainerIndex] = min($priority, $preferenceMatrix[$index][$trainerIndex]);
+                    $weight = $unweighted ? 1 : $priority;
+                    $preferenceMatrix[$index][$trainerIndex] = min($weight, $preferenceMatrix[$index][$trainerIndex]);
                 }
             }
         }

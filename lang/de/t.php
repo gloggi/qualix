@@ -517,12 +517,13 @@ return array(
 					"prioritization_weight" => "Gewichtung der Priorisierung",
 					"prioritization_weight_help" => array(
 						"question" => "Was bedeutet die Gewichtung der Priorisierung?",
-						"answer" => "Die Gewichtung beeinflusst, wie stark die Wünsche der TN berücksichtigt werden. Bei ':heavy' wird der Algorithmus prioritär versuchen, die Wunschprioritäten zu erfüllen. Bei ':low' wird eine gleichmässigere Verteilung bevorzugt, auch wenn dabei nicht alle Wünsche erfüllt werden. Für die meisten Fälle ist ':heavy_two' die passende Einstellung.",
+						"answer" => "Die Gewichtung beeinflusst, wie stark die Wünsche der TN berücksichtigt werden. Bei ':heavy' wird der Algorithmus prioritär versuchen, die Wunschprioritäten zu erfüllen. Bei ':low' wird eine gleichmässigere Verteilung bevorzugt, auch wenn dabei nicht alle Wünsche erfüllt werden. Bei ':unweighted' sind alle Wünsche der TN gleich wichtig, es gibt keine erste oder zweite Priorität, nur mehrere denkbare Optionen. Für die meisten Fälle ist ':heavy_two' oder ':unweighted_two' die passende Einstellung.",
 					),
 
 					"prioritization_weights" => array(
 						"low" => "Gering",
 						"heavy" => "Stark",
+						"unweighted" => "Keine",
 					),
 					"regenerate_allocation" => "Andere Zuteilung generieren",
 					"trainer" => "Equipenmitglied",

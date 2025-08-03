@@ -32,7 +32,8 @@ class FeedbackAllocationRequest extends FormRequest
             'forbiddenWishes.*.0' => 'required|integer',
             'forbiddenWishes.*.1' => 'required|integer',
 
-            'defaultPriority' => 'sometimes|integer|min:1'
+            'defaultPriority' => 'sometimes|integer|min:1',
+            'unweighted' => 'boolean',
         ];
     }
 
