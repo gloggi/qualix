@@ -11,7 +11,6 @@
   "require": {
     "php": "^8.2",
     "ext-json": "*",
-    "calebporzio/parental": "^1.2.0",
     "graphp/algorithms": "^0.9@dev",
     "graphp/graph": "1.x-dev#fb198e4 as 1.0.0",
     "laravel/framework": "^11.0",
@@ -21,6 +20,7 @@
     "phpoffice/phpspreadsheet": "^2.2",
     "sentry/sentry-laravel": "^4.5.1",
     "smalot/pdfparser": "^2.11",
+    "tightenco/parental": "^1.2.0",
     "troelskn/laravel-fillable-relations": "master"
   },
   "require-dev": {
