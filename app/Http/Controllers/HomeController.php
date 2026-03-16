@@ -76,8 +76,9 @@ class HomeController extends Controller
      */
     private function changeLogLink(): HtmlString
     {
+        $languageSuffix = App::getLocale() == 'de' ? 'de' : '_'.App::getLocale();
         return (new HtmlString)
-            ->s('<a target="_blank" href="https://github.com/gloggi/qualix/blob/master/CHANGELOG.md#changelog">')
+            ->s('<a target="_blank" href="https://github.com/gloggi/qualix/blob/master/CHANGELOG'.$languageSuffix.'.md#changelog">')
             ->__('t.views.welcome.here')
             ->s('</a>');
     }
