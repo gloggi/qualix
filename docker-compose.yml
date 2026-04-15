@@ -12,6 +12,7 @@ services:
     volumes:
       - .:/var/www
       - ./public/.htaccess.docker:/var/www/public/.htaccess
+      - participant_images:/var/www/storage/app/participant-images
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -76,3 +77,6 @@ services:
   docker-host:
     image: qoomon/docker-host
     cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
+
+volumes:
+  participant_images:

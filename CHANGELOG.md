@@ -1,5 +1,15 @@
 # Changelog
 
+##### April 2026
+- Sicherheitsverbesserung bei TN-Bildern: TN-Bilder werden jetzt nur noch geschützt ausgeliefert. Zugriff haben nur eingeloggte Equipenmitglieder des jeweiligen Kurses, und nicht mehr über einen direkten Link.
+
+  ⚠️ Für bestehende Qualix-Instanzen:
+  Bereits hochgeladene Bilder liegen weiterhin im öffentlichen Storage und sollten einmalig migriert werden. Dafür kann folgender Artisan-Command ausgeführt werden:
+
+  ```bash
+  php artisan qualix:migrate-participant-images
+  ```
+
 ##### Juli 2025
 - In Rückmeldungen kann die Zuteilung der TN zu den Equipenmitgliedern jetzt basierend auf Wünschen und Kapazitäten von Equipe und TN automatisch generiert werden. Dazu kann man unter Kursadmin -> Rückmeldungen auf einer bereits erstellten Rückmeldung auf das neue Icon "Zuteilung generieren" klicken [#260](https://github.com/gloggi/qualix/issues/260)
 
