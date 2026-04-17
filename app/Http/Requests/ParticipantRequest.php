@@ -30,7 +30,8 @@ class ParticipantRequest extends FormRequest {
     public function validated($key = null, $default = null) {
         $validated = parent::validated($key, $default);
         if (isset($validated['image'])) {
-            $validated['image_url'] = $validated['image']->store('public/images');
+            // do not store images in public folder anymore
+            $validated['image_url'] = $validated['image']->store('participant-images');
             unset($validated['image']);
         }
         return $validated;

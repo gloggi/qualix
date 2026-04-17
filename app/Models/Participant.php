@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Storage;
-
 /**
  * @property int $id
  * @property int $course_id
@@ -136,9 +134,17 @@ class Participant extends Model {
     /**
      * Get the linkable relative URL to the participant image.
      *
-     * @return integer
+     * @return string
      */
-    public function getImagePathAttribute() {
-        return $this->image_url ? asset(Storage::url($this->image_url)) : asset('images/was-gaffsch.svg');
+    public function getImagePathAttribute()
+    {
+        if (!$this->image_url) {
+            return asset('images/was-gaffsch.svg');
+        }
+
+        return route('participants.image', [
+            'course' => $this->course_id,
+            'participant' => $this->id,
+        ]);
     }
 }

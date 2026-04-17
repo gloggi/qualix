@@ -20,6 +20,7 @@ use App\Http\Controllers\ObservationController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\ParticipantDetailController;
 use App\Http\Controllers\ParticipantGroupController;
+use App\Http\Controllers\ParticipantImageController;
 use App\Http\Controllers\ParticipantListController;
 use App\Http\Controllers\RequirementController;
 use App\Http\Controllers\RequirementStatusController;
@@ -45,6 +46,10 @@ Route::middleware(['auth', 'verified', 'restoreFormData'])->scopeBindings()->gro
         Route::post('/course/{course}/feedbacks/{feedback_data}/{participant}/{requirement}', [FeedbackListController::class, 'updateRequirementStatus'])->name('feedback.updateRequirementStatus');
         Route::get('/course/{course}/participants', [ParticipantListController::class, 'index'])->name('participants');
         Route::get('/course/{course}/participants/{participant}', [ParticipantDetailController::class, 'index'])->name('participants.detail');
+        Route::get(
+            '/course/{course}/participants/{participant}/image',
+            [ParticipantImageController::class, 'show']
+        )->name('participants.image');
 
         Route::get('/course/{course}/participants/{participant}/feedbacks/{feedback}/print', [FeedbackContentController::class, 'print'])->name('feedbackContent.print');
         Route::get('/course/{course}/participants/{participant}/feedbacks/{feedback}/edit', [FeedbackContentController::class, 'edit'])->name('feedbackContent.edit');
