@@ -179,9 +179,9 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $response->assertOk();
         $response->assertSee('Rückmeldung anzeigen:');
         $response->assertSee('keine');
-        $response->assertSee(':value="&quot;0&quot;"', false);
+        $response->assertSee(':model-value="&quot;0&quot;"', false);
         $response->assertSee('Zwischenquali');
-        $response->assertDontSee(':value="&quot;'. $feedbackDataId .'&quot;"', false);
+        $response->assertDontSee(':model-value="&quot;'. $feedbackDataId .'&quot;"', false);
     }
 
     public function test_shouldNotPassFeedbackToOverviewTable_whenNoFeedbackIsSelected() {
@@ -208,9 +208,9 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $response->assertOk();
         $response->assertSee('Rückmeldung anzeigen:');
         $response->assertSee('keine');
-        $response->assertDontSee(':value="&quot;0&quot;"', false);
+        $response->assertDontSee(':model-value="&quot;0&quot;"', false);
         $response->assertSee('Zwischenquali');
-        $response->assertSee(':value="&quot;'. $feedbackDataId .'&quot;"', false);
+        $response->assertSee(':model-value="&quot;'. $feedbackDataId .'&quot;"', false);
     }
 
     public function test_shouldUseWideLayout_whenFeedbackIsSelected() {
@@ -262,9 +262,9 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $response->assertOk();
         $response->assertSee('Beurteilungsraster anzeigen:');
         $response->assertSee('keines');
-        $response->assertSee(':value="&quot;0&quot;"', false);
+        $response->assertSee(':model-value="&quot;0&quot;"', false);
         $response->assertSee('Test Beurteilungsraster');
-        $response->assertDontSee(':value="&quot;'. $evaluationGridTemplateId .'&quot;"', false);
+        $response->assertDontSee(':model-value="&quot;'. $evaluationGridTemplateId .'&quot;"', false);
     }
 
     public function test_shouldNotPassEvaluationGridTemplateToOverviewTable_whenNoEvaluationGridTemplateIsSelected() {
@@ -290,9 +290,9 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $response->assertOk();
         $response->assertSee('Beurteilungsraster anzeigen:');
         $response->assertSee('keines');
-        $response->assertDontSee(':value="&quot;0&quot;"', false);
+        $response->assertDontSee(':model-value="&quot;0&quot;"', false);
         $response->assertSee('Test Beurteilungsraster');
-        $response->assertSee(':value="&quot;'. $evaluationGridTemplateId .'&quot;"', false);
+        $response->assertSee(':model-value="&quot;'. $evaluationGridTemplateId .'&quot;"', false);
     }
 
     public function test_shouldUseWideLayout_whenEvaluationGridTemplateIsSelected() {

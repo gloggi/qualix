@@ -8,8 +8,10 @@ const NodeObservation = ({ readonly }) => Node.create({
   selectable: !readonly,
   draggable: !readonly,
 
-  defaultOptions: {
-    readonly: readonly,
+  addOptions() {
+    return {
+      readonly: readonly,
+    }
   },
 
   addAttributes() {

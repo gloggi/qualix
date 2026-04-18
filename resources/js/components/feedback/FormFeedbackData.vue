@@ -59,17 +59,17 @@
         >{{ $t('t.views.admin.feedbacks.allocation.generation_explanation_help.answer') }}
           <i class="fas fa-people-arrows"></i></help-text>
       </row-text>
-      <input-multi-select
-        v-for="assignment in trainerAssignments"
-        :key="assignment.participantId"
-        v-if="displayTrainerAssignment(assignment.participantId)"
-        :name="`feedbacks[${assignment.participantId}][users]`"
-        v-model="assignment.trainerIds"
-        :label="scoutName(assignment.participantId)"
-        :options="trainers"
-        display-field="name"
-        multiple
-        :show-clear="true"></input-multi-select>
+      <template v-for="assignment in trainerAssignments" :key="assignment.participantId">
+        <input-multi-select
+          v-if="displayTrainerAssignment(assignment.participantId)"
+          :name="`feedbacks[${assignment.participantId}][users]`"
+          v-model="assignment.trainerIds"
+          :label="scoutName(assignment.participantId)"
+          :options="trainers"
+          display-field="name"
+          multiple
+          :show-clear="true"></input-multi-select>
+      </template>
     </b-collapse>
 
     <slot name="submit"></slot>

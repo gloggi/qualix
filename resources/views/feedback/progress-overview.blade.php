@@ -27,8 +27,7 @@
                 <label for="user" class="col-form-label text-md-end me-2">{{ __('t.views.feedback.progress_overview.view_as') }}</label>
                 <multi-select
                     name="user"
-                    :value="{{ json_encode("$userId") }}"
-                    class=""
+                    :model-value="{{ json_encode("$userId") }}"
                     required
                     :options="{{ json_encode($course->users->map->only('id', 'name')->prepend(['id' => 'all', 'name' => __('t.views.feedback.progress_overview.show_all')])) }}"
                     display-field="name"

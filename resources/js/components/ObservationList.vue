@@ -8,7 +8,7 @@
       </b-col>
       <b-col v-if="anyFilterActive" class="text-end">
         <p class="mb-0">
-          {{$t('t.views.participant_details.shown_observations', 0, {filtered: filteredObservations.length, total: totalObservations})}} -
+          {{$t('t.views.participant_details.shown_observations', {filtered: filteredObservations.length, total: totalObservations})}} -
           <b-button variant="link" class="mb-2 px-0 align-baseline" @click="clearAllFilters">
             {{$t('t.views.participant_details.show_all')}}
           </b-button>
@@ -111,26 +111,26 @@
       :cell-class="pointerCursor ? 'cursor-pointer' : ''"
       @clickCell="onClickObservation">
 
-      <template v-slot:observation-content="{ row: observation }">
+      <template #observation-content="{ row: observation }">
         <observation-content :observation="observation"></observation-content>
       </template>
 
-      <template v-slot:requirements="{ row: observation }">
+      <template #requirements="{ row: observation }">
         <template v-for="requirement in observation.requirements">
-          <span class="white-space-normal badge" :class="requirement.mandatory ? 'badge-warning' : 'badge-info'">{{ requirement.content }}</span>
+          <b-badge class="white-space-normal" :variant="requirement.mandatory ? 'warning' : 'info'">{{ requirement.content }}</b-badge>
         </template>
       </template>
 
-      <template v-slot:categories="{ row: observation }">
+      <template #categories="{ row: observation }">
         <template v-for="category in observation.categories">
-          <span class="white-space-normal badge badge-primary">{{ category.name }}</span>
+          <b-badge class="white-space-normal" variant="primary">{{ category.name }}</b-badge>
         </template>
       </template>
 
-      <template v-slot:impression="{ row: observation }">
-        <span v-if="observation.impression === 0" class="badge badge-danger">{{ $t('t.global.negative') }}</span>
-        <span v-else-if="observation.impression === 2" class="badge badge-success">{{ $t('t.global.positive') }}</span>
-        <span v-else class="badge badge-secondary">{{ $t('t.global.neutral') }}</span>
+      <template #impression="{ row: observation }">
+        <b-badge v-if="observation.impression === 0" variant="danger">{{ $t('t.global.negative') }}</b-badge>
+        <b-badge v-else-if="observation.impression === 2" variant="success">{{ $t('t.global.positive') }}</b-badge>
+        <b-badge v-else variant="secondary">{{ $t('t.global.neutral') }}</b-badge>
       </template>
 
     </responsive-table>

@@ -103,11 +103,11 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
 }
 
 .bg-success-light {
-    background-color: #d7f3e3;
+    background-color: #d7f3e3 !important;
 }
 
 .bg-danger-light {
-    background-color: #f9d6d5;
+    background-color: #f9d6d5 !important;
 }
 
 .hr-label {
@@ -188,6 +188,10 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
 
 .gap-1rem {
     gap: 1rem !important;
+}
+
+.aspect-ratio-1-1 {
+    aspect-ratio: 1/1;
 }
 
 .clear-both {

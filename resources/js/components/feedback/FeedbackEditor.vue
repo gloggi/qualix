@@ -45,7 +45,7 @@ export default {
     name: { type: String },
     courseId: { type: String, required: true },
     feedbackDataId: { type: String, required: false },
-    value: { type: Object, default: null },
+    modelValue: { type: Object, default: null },
     observations: { type: Array, default: () => [] },
     requirements: { type: Array, required: true },
     feedbackRequirements: { type: Array, default: null },
@@ -76,7 +76,7 @@ export default {
     ]
     const collaborationSupported = this.collaborationKey && window.crypto.subtle
     const editor = new Editor({
-      content: this.value ?? null,
+      content: this.modelValue ?? null,
       editable: !this.readonly,
       injectCSS: false,
       autofocus: this.autofocus,
@@ -111,7 +111,7 @@ export default {
 
     return {
       editor: editor,
-      currentValue: this.value ?? emptyDocument,
+      currentValue: this.modelValue ?? emptyDocument,
       emptyDocument,
       focused: false,
       addObservation: null,

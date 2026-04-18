@@ -7,7 +7,7 @@
     <b-thead>
       <b-tr>
         <th v-for="(col, idx) in fields" :class="calculateHeaderClass(col, idx)">
-          <slot :name="col.headerSlot" :label="col.label" :col="col" :idx="idx">{{ col.label }}</slot>
+          <slot name="header" :label="col.label" :col="col" :idx="idx">{{ col.label }}</slot>
         </th>
         <th v-if="showActions" class="actions"></th>
       </b-tr>
@@ -35,7 +35,7 @@
                 </modal-delete>
               </template>
               <template v-else-if="name === 'print'">
-                <a :is="call(action, row)[0]" v-bind="call(action, row)[1]"><i class="fas fa-print" /></a>
+                <component :is="call(action, row)[0]" v-bind="call(action, row)[1]"><i class="fas fa-print" /></component>
               </template>
               <template v-else-if="name === 'edit'">
                 <a :href="call(action, row)" :title="actionTitle(name)">

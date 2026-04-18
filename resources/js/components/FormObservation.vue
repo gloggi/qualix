@@ -30,7 +30,7 @@
       required
       :options="allBlocks"
       display-field="blockname_and_number"
-      @input="onBlockUpdate">
+      @update:modelValue="onBlockUpdate">
       <template #below="{ value }">
         <button-new-evaluation-grid
           :course-id="courseId"
@@ -123,6 +123,11 @@ export default {
       if (blockId != null && block !== undefined) {
         this.requirementsValue = block.requirement_ids.join()
       }
+    }
+  },
+  mounted() {
+    if (this.block) {
+      this.onBlockUpdate(this.block)
     }
   }
 }

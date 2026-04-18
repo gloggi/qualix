@@ -9,7 +9,7 @@
         ref="feedbackEditor"
         :class="{ 'form-control': !readonly, 'is-invalid': errorMessage }"
         v-model="currentValue"
-        @input="$emit('update:modelValue', currentValue)"
+        @update:modelValue="$emit('update:modelValue', currentValue)"
         :requirements="requirements"
         :feedback-requirements="feedbackRequirements"
         :readonly="readonly"

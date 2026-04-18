@@ -1,11 +1,11 @@
 <template>
   <node-view-wrapper>
     <div  class="requirement d-flex" :class="selected ? 'selected' : ''" data-drag-handle>
-      <requirement-status :value="node.attrs.status_id" @input="onChange" :statuses="requirementStatuses" class="me-2 my-auto"></requirement-status>
-      <h5 class="flex-grow-1 my-auto">{{ requirement.content | ucfirst }}</h5>
+      <requirement-status :model-value="node.attrs.status_id" :statuses="requirementStatuses" class="me-2 my-auto"></requirement-status>
+      <h5 class="flex-grow-1 my-auto">{{ ucfirst(requirement.content) }}</h5>
       <b-button v-if="editor.options.editable" v-b-toggle="`requirement-comment-${node.attrs.id}`" variant="link"><i class="fas fa-comment" :class="node.attrs.comment.length ? 'text-primary' : 'text-secondary'"></i></b-button>
       <b-dropdown v-if="editor.options.editable" placement="left" class="me-2 requirement-menu" no-caret variant="link">
-        <template v-slot:button-content>
+        <template #button-content>
           <i class="fas fa-ellipsis-vertical"></i>
         </template><b-dropdown-item-button v-for="status in requirementStatuses" :key="status.id" @click="onChange(status.id)"><i :class="[`text-${status.color}`, `fa-${status.icon}`]" class="fas me-3"></i> {{ status.name }}</b-dropdown-item-button><b-dropdown-item-button v-if="observations.length" @click="selectObservation"><i class="text-primary fas fa-plus me-3"></i> {{$t('t.models.observation.one')}}</b-dropdown-item-button><b-dropdown-group v-if="matchingEvaluationGrids.length" :header="$t('t.views.evaluation_grids.matching_evaluation_grids')"><b-dropdown-item v-for="evaluationGrid in matchingEvaluationGrids" :key="evaluationGrid.id" :href="routeUri('evaluationGrid.edit', {course: courseId, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id})"><i class="fas fa-list-check me-3"></i> {{evaluationGrid.evaluation_grid_template.name}}</b-dropdown-item></b-dropdown-group></b-dropdown>
     </div>
@@ -47,13 +47,11 @@ export default {
       return this.evaluationGrids.filter(grid => grid.evaluation_grid_template.requirements.map(r => r.id).includes(this.requirement.id))
     },
   },
-  filters: {
+  methods: {
     ucfirst(text) {
       if (!text || typeof text !== 'string') return text
       return text.charAt(0).toUpperCase() + text.slice(1)
-    }
-  },
-  methods: {
+    },
     onChange(status_id) {
       this.updateAttributes({ status_id: status_id })
     },

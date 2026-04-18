@@ -68,7 +68,7 @@
                     edit: feedback => routeUri('feedbackContent.edit', {course: {{ $course->id }}, participant: {{ $participant->id }}, feedback: feedback.id}),
                 }">
 
-                <template v-slot:requirement-progress="{ row: feedback }">
+                <template #requirement-progress="{ row: feedback }">
                     <requirement-progress v-if="feedback.requirements.length" :requirements="feedback.requirements" :statuses="{{ json_encode($course->requirement_statuses) }}"></requirement-progress>
                 </template>
 
@@ -97,9 +97,9 @@
                     delete: evaluationGrid => ({ text: this.$t('t.views.participant_details.really_delete_evaluation_grid'), route: ['evaluationGrid.delete', {course: {{ $course->id }}, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id}] }),
                 }">
 
-                <template v-slot:requirements="{ row: evaluationGrid }">
+                <template #requirements="{ row: evaluationGrid }">
                     <template v-for="requirement in evaluationGrid.evaluation_grid_template.requirements">
-                        <span class="white-space-normal badge" :class="requirement.mandatory ? 'badge-warning' : 'badge-info'">@{{ requirement.content }}</span>
+                        <b-badge class="white-space-normal" :variant="requirement.mandatory ? 'warning' : 'info'">@{{ requirement.content }}</b-badge>
                     </template>
                 </template>
             </responsive-table>

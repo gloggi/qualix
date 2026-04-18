@@ -24,13 +24,13 @@ export default {
   mixins: [Input],
   props: {
     readonly: { type: Boolean, default: false },
-    value: { type: Object },
+    modelValue: { type: Object },
     markInvalid: { type: Boolean, default: false },
   },
   emits: ['update:modelValue', 'localinput'],
   data() {
     return {
-      currentValue: JSON.parse(get(window.Laravel.oldInput, this.name, 'null')) ?? this.value
+      currentValue: JSON.parse(get(window.Laravel.oldInput, this.name, 'null')) ?? this.modelValue
     }
   },
   computed: {

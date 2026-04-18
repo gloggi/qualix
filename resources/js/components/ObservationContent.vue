@@ -1,5 +1,5 @@
 <template>
-  <p v-if="observation.participants.length > 1" class="observation-content multiline mb-0"><a v-for="participant in observation.participants" :key="participant.id" :href="routeUri('participants.detail', { course: participant.course_id, participant: participant.id })" class="badge badge-primary me-1">{{ participant.scout_name }}</a>{{ observation.content }}</p>
+  <p v-if="observation.participants.length > 1" class="observation-content multiline mb-0"><b-badge v-for="participant in observation.participants" :key="participant.id" :href="routeUri('participants.detail', { course: participant.course_id, participant: participant.id })" variant="primary" class="me-1">{{ participant.scout_name }}</b-badge>{{ observation.content }}</p>
   <p v-else class="observation-content multiline mb-0">{{ observation.content }}</p>
 </template>
 

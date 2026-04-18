@@ -35,7 +35,7 @@ export default {
   name: 'ModalAddObservation',
   components: {ObservationList, ObservationContent},
   props: {
-    value: {type: Function, required: false},
+    modelValue: {type: Function, required: false},
     observations: {type: Array, required: true},
     returnFocus: {type: Object, required: false},
     usedObservations: {type: Array, default: null},
@@ -48,7 +48,7 @@ export default {
   computed: {
     addingObservation: {
       get() {
-        return !!this.value
+        return !!this.modelValue
       },
       set(newValue) {
         if (newValue === false) {
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     select(id) {
-      this.value({id})
+      this.modelValue({id})
       this.addingObservation = false
     }
   }

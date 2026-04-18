@@ -21,12 +21,13 @@
       :key="feedbackRequirement.participant_id + ',' + feedbackRequirement.requirement_id"
       :class="cellClass(feedbackRequirement)"
       :data-label="cellLabel(feedbackRequirement)"
-      @click="cellClicked(feedbackRequirement)"><requirements-matrix-cell
+      v-b-modal="`requirement-matrix-cell-${feedbackRequirement.participant_id}-${feedbackRequirement.requirement_id}`"
+    ><requirements-matrix-cell
         :feedback="feedback"
         :feedback-requirement="feedbackRequirement"
         :requirement-statuses="requirementStatuses"
         :evaluation-grids="evaluationGrids.filter(grid => grid.evaluation_grid_template.requirements.map(r => r.id).includes(feedbackRequirement.requirement_id))"
-        @input="updateEditor" /></td>
+        @update:modelValue="updateEditor" /></td>
   </b-tr>
 </template>
 <script>

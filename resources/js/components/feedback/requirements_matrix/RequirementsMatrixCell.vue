@@ -17,7 +17,7 @@
           valueField="id"
           displayField="name"
           required
-          @update:selected="onStatusInput"
+          @update:modelValue="onStatusInput"
         >
           <template #option="props">
             <i :class="`text-${props.option.color} fas fa-${props.option.icon} me-2`"></i> {{ props.option.name }}
@@ -32,7 +32,7 @@
           name="comment"
           :label="$t('t.models.feedback_requirement.comment')"
           rows="5"
-          @input="onCommentInput"></input-textarea>
+          @update:modelValue="onCommentInput"></input-textarea>
 
         <row-text>
           <auto-save ref="autosave" trans="t.views.feedback.progress_overview" :form="form" />

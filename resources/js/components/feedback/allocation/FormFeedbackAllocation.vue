@@ -184,10 +184,10 @@
 </template>
 
 <script>
-import MultiSelect from "../../MultiSelect";
-import InputText from "../../form/InputText";
-import InputMultiSelect from "../../form/InputMultiSelect.vue";
-import FormBasic from "../../FormBasic.vue";
+import MultiSelect from '../../MultiSelect.vue';
+import InputText from '../../form/InputText.vue';
+import InputMultiSelect from '../../form/InputMultiSelect.vue';
+import FormBasic from '../../FormBasic.vue';
 
 export default {
   name: "FormFeedbackAllocation",
