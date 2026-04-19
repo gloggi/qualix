@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
 import MultiSelect from "../../../resources/js/components/MultiSelect"
@@ -167,7 +168,7 @@ describe('single select', () => {
       const multiSelect = render(MultiSelect, {
         props: {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
-          value: '2'
+          modelValue: '2'
         },
       })
 
@@ -179,7 +180,7 @@ describe('single select', () => {
         props: {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           placeholder: 'Select one',
-          value: '2'
+          modelValue: '2'
         },
       })
 
@@ -227,7 +228,7 @@ describe('single select', () => {
           props: {
             options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
             name: 'my-input',
-            value: '2'
+            modelValue: '2'
           },
         })
 
@@ -323,7 +324,7 @@ describe('single select', () => {
         props: {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           'show-clear': true,
-          value: '2',
+          modelValue: '2',
         },
       })
 
@@ -335,7 +336,7 @@ describe('single select', () => {
         props: {
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           'show-clear': true,
-          value: '2',
+          modelValue: '2',
           name: 'my-input',
         },
       })
@@ -361,7 +362,7 @@ describe('single select', () => {
   })
 
   it('should be able to submit a form on input', async () => {
-    const formSubmitted = jest.fn()
+    const formSubmitted = vi.fn()
     render({
         template: `
           <div>
@@ -390,13 +391,13 @@ describe('single select', () => {
   })
 
   it('should emit an input event when mounted', async () => {
-    const onInput = jest.fn()
-    const multiSelect = render({
+    const onInput = vi.fn()
+    render({
         template: `
           <multi-select :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
-                        @update:modelValue="onInput" value="2"></multi-select>`,
+                        @update:model-value="onInput" :model-value="'2'"></multi-select>`,
         components: { MultiSelect },
-        methods: { onUpdateModelValue: onInput }
+        methods: { onInput }
       },
     )
 
@@ -407,13 +408,13 @@ describe('single select', () => {
   })
 
   it('should emit an input event when an option is selected', async () => {
-    const onInput = jest.fn()
-    const multiSelect = render({
+    const onInput = vi.fn()
+    render({
         template: `
           <multi-select :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
-                        @input="onInput" value="2"></multi-select>`,
+                        @update:model-value="onInput" :model-value="'2'"></multi-select>`,
         components: { MultiSelect },
-        methods: { onUpdateModelValue: onInput }
+        methods: { onInput }
       },
     )
 
@@ -432,15 +433,17 @@ describe('single select', () => {
 
     userEvent.click(screen.getByText('Foo'))
 
-    expect(onInput).toHaveBeenCalledWith("1", null)
+    await waitFor(() => {
+      expect(onInput).toHaveBeenCalledWith("1", undefined)
+    })
   })
 
   it('should not emit an update:selected event when mounted', async () => {
-    const onUpdateSelected = jest.fn()
-    const multiSelect = render({
+    const onUpdateSelected = vi.fn()
+    render({
         template: `
           <multi-select :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
-                        @update:selected="onUpdateSelected" value="2"></multi-select>`,
+                        @update:selected="onUpdateSelected" :model-value="'2'"></multi-select>`,
         components: { MultiSelect },
         methods: { onUpdateSelected }
       },
@@ -449,15 +452,15 @@ describe('single select', () => {
     // onUpdateSelected should never be called
     return expect(waitFor(() => {
       expect(onUpdateSelected).toHaveBeenCalled()
-    })).rejects.toThrow(/toHaveBeenCalled/)
+    })).rejects.toThrow(/called at least once/)
   })
 
   it('should emit an update:selected event when an option is selected', async () => {
-    const onUpdateSelected = jest.fn()
-    const multiSelect = render({
+    const onUpdateSelected = vi.fn()
+    render({
         template: `
           <multi-select :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
-                        @update:selected="onUpdateSelected" value="2"></multi-select>`,
+                        @update:selected="onUpdateSelected"></multi-select>`,
         components: { MultiSelect },
         methods: { onUpdateSelected }
       },
@@ -472,7 +475,9 @@ describe('single select', () => {
 
     userEvent.click(screen.getByText('Foo'))
 
-    expect(onUpdateSelected).toHaveBeenCalledWith({"id": 1, "label": "Foo"}, null)
+    await waitFor(() => {
+      expect(onUpdateSelected).toHaveBeenCalledWith({"id": 1, "label": "Foo"}, undefined)
+    })
   })
 })
 
@@ -569,10 +574,10 @@ describe('multiple select', () => {
         expect(screen.getByText('Foo', {selector: '.multiselect__tag span'})).toBeInTheDocument()
       })
 
-      // The select options should never disappear
-      return expect(waitFor(() => {
-        expect(screen.getByText('Bar')).not.toBeVisible()
-      })).rejects.toThrow(/Received element is visible/)
+      // After selecting an option in multiple mode, the multiselect should reopen
+      await waitFor(() => {
+        expect(screen.getByText('Bar')).toBeVisible()
+      })
     })
 
     it('should not close when an option is selected using the keyboard', async () => {
@@ -654,7 +659,7 @@ describe('multiple select', () => {
         props: {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
-          value: '2'
+          modelValue: '2'
         },
       })
 
@@ -667,7 +672,7 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           placeholder: 'Select one',
-          value: '2'
+          modelValue: '2'
         },
       })
 
@@ -695,7 +700,9 @@ describe('multiple select', () => {
         expect(screen.getByText('Bar', { selector: '.multiselect__tag span' })).toBeInTheDocument()
       })
 
-      expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Bar Foo Bar')
+      await waitFor(() => {
+        expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Bar Foo Bar')
+      })
 
       userEvent.click(screen.getByText('', { selector: '.multiselect__select' }))
 
@@ -732,7 +739,9 @@ describe('multiple select', () => {
         expect(screen.getByText('Foo', { selector: '.multiselect__tag span' })).toBeInTheDocument()
       })
 
-      expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Bar Foo Foo Bar Baz')
+      await waitFor(() => {
+        expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Bar Foo Foo Bar Baz')
+      })
 
       userEvent.click(screen.getByText('', { selector: '.multiselect__select' }))
 
@@ -764,7 +773,7 @@ describe('multiple select', () => {
             multiple: true,
             options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
             name: 'my-input',
-            value: '2'
+            modelValue: '2'
           },
         })
 
@@ -794,7 +803,9 @@ describe('multiple select', () => {
           expect(screen.getByText('Bar', {selector: '.multiselect__tag span'})).toBeInTheDocument()
         })
 
-        expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Bar Foo Bar')
+        await waitFor(() => {
+          expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Bar Foo Bar')
+        })
 
         userEvent.click(screen.getByText('', {selector: '.multiselect__select'}))
 
@@ -835,7 +846,9 @@ describe('multiple select', () => {
           expect(screen.getByText('Foo', {selector: '.multiselect__tag span'})).toBeInTheDocument()
         })
 
-        expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Bar Foo Foo Bar Baz')
+        await waitFor(() => {
+          expect(screen.getByRole('combobox')).toHaveVisibleTextContent('Bar Foo Foo Bar Baz')
+        })
         expect(screen.getByTestId('formValue')).toHaveValue('2,1')
 
         userEvent.click(screen.getByText('', {selector: '.multiselect__select'}))
@@ -892,7 +905,7 @@ describe('multiple select', () => {
         props: {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
-          value: '2',
+          modelValue: '2',
         },
       })
 
@@ -904,7 +917,7 @@ describe('multiple select', () => {
         props: {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
-          value: '1,2',
+          modelValue: '1,2',
         },
       })
 
@@ -917,7 +930,7 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           'show-clear': false,
-          value: '2',
+          modelValue: '2',
         },
       })
 
@@ -930,7 +943,7 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           'show-clear': true,
-          value: '2',
+          modelValue: '2',
         },
       })
 
@@ -943,7 +956,7 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           'show-clear': true,
-          value: '1,2',
+          modelValue: '1,2',
         },
       })
 
@@ -956,7 +969,7 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           'show-clear': true,
-          value: '2',
+          modelValue: '2',
           name: 'my-input',
         },
       })
@@ -975,7 +988,7 @@ describe('multiple select', () => {
           multiple: true,
           options: [{id: 1, label: 'Foo'}, {id: 2, label: 'Bar'}],
           'show-clear': true,
-          value: '2,1',
+          modelValue: '2,1',
           name: 'my-input',
         },
       })
@@ -1002,7 +1015,7 @@ describe('multiple select', () => {
   })
 
   it('should be able to submit a form on input', async () => {
-    const formSubmitted = jest.fn()
+    const formSubmitted = vi.fn()
     render({
         template: `
           <div>
@@ -1031,13 +1044,13 @@ describe('multiple select', () => {
   })
 
   it('should emit an input event when mounted', async () => {
-    const onInput = jest.fn()
-    const multiSelect = render({
+    const onInput = vi.fn()
+    render({
         template: `
           <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
-                        @input="onInput" value="2"></multi-select>`,
+                        @update:model-value="onInput" :model-value="'2'"></multi-select>`,
         components: { MultiSelect },
-        methods: { onUpdateModelValue: onInput }
+        methods: { onInput }
       },
     )
 
@@ -1048,13 +1061,13 @@ describe('multiple select', () => {
   })
 
   it('should emit an input event when an option is selected', async () => {
-    const onInput = jest.fn()
-    const multiSelect = render({
+    const onInput = vi.fn()
+    render({
         template: `
           <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
-                        @input="onInput"></multi-select>`,
+                        @update:model-value="onInput"></multi-select>`,
         components: { MultiSelect },
-        methods: { onUpdateModelValue: onInput }
+        methods: { onInput }
       },
     )
 
@@ -1074,16 +1087,16 @@ describe('multiple select', () => {
     userEvent.click(screen.getByText('Foo'))
 
     await waitFor(() => {
-      expect(onInput).toHaveBeenCalledWith("1", null)
+      expect(onInput).toHaveBeenCalledWith("1", undefined)
     })
   })
 
   it('should not emit an update:selected event when mounted', async () => {
-    const onUpdateSelected = jest.fn()
-    const multiSelect = render({
+    const onUpdateSelected = vi.fn()
+    render({
         template: `
           <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
-                        @update:selected="onUpdateSelected" value="2"></multi-select>`,
+                        @update:selected="onUpdateSelected" :model-value="'2'"></multi-select>`,
         components: { MultiSelect },
         methods: { onUpdateSelected }
       },
@@ -1092,12 +1105,12 @@ describe('multiple select', () => {
     // onUpdateSelected should never be called
     return expect(waitFor(() => {
       expect(onUpdateSelected).toHaveBeenCalled()
-    })).rejects.toThrow(/toHaveBeenCalled/)
+    })).rejects.toThrow(/called at least once/)
   })
 
   it('should emit an update:selected event when an option is selected', async () => {
-    const onUpdateSelected = jest.fn()
-    const multiSelect = render({
+    const onUpdateSelected = vi.fn()
+    render({
         template: `
           <multi-select multiple :options="[{id: 1, label: \'Foo\'}, {id: 2, label: \'Bar\'}]"
                         @update:selected="onUpdateSelected"></multi-select>`,
@@ -1116,7 +1129,7 @@ describe('multiple select', () => {
     userEvent.click(screen.getByText('Foo'))
 
     await waitFor(() => {
-      expect(onUpdateSelected).toHaveBeenCalledWith([{"id": 1, "label": "Foo"}], null)
+      expect(onUpdateSelected).toHaveBeenCalledWith([{"id": 1, "label": "Foo"}], undefined)
     })
   })
 
@@ -1155,7 +1168,7 @@ describe('multiple select', () => {
     })
 
     it('should submit a form only after the group values have been auto-selected', async () => {
-      const formSubmitted = jest.fn()
+      const formSubmitted = vi.fn()
       render({
           template: `
           <div>

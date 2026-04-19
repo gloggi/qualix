@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import {render, within} from '@testing-library/vue'
 import ObservationList from '../../../resources/js/components/ObservationList'
 
