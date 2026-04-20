@@ -1,6 +1,6 @@
 <template>
   <slot name="activator" :openModal="() => setModalOpen(true)"></slot>
-  <b-modal :id="id" v-model="modalOpen" :title="$t('t.global.really_delete')">
+  <b-modal :id="id" v-model="modalOpen" :title="$t('t.global.really_delete')" :lazy="true" :unmount-lazy="true">
     {{ text }}
     <template #footer>
       <form-basic :action="route">

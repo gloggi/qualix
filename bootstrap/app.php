@@ -42,6 +42,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'guest' => RedirectIfAuthenticated::class,
             'restoreFormData' => RestoreFormDataFromExpiredSession::class,
         ]);
+        $middleware->validateCsrfTokens(except: [
+            '/__e2e__/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
 

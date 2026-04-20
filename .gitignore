@@ -19,3 +19,4 @@ yarn-error.log
 !/public/robots.txt
 !/public/*.svg
 resources/twemoji
+tests/e2e/test-results/

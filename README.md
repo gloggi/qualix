@@ -65,21 +65,16 @@ docker compose exec vite npm run test -- ObservationList
 
 #### End-to-end Tests
 
-Du kannst die E2E-Tests mit Cypress headless (ohne sichtbares Browserfenster) laufen lassen:
+Du kannst die E2E-Tests mit Playwright headless (ohne sichtbares Browserfenster) laufen lassen:
 ```
 docker compose run e2e run
 ```
 
-Oder du kannst das grafische Tool von Cypress vom Container aus auf deinem Mac- oder Linux-Computer öffnen:
+Oder du kannst das grafische Tool von Playwright im Browser öffnen:
 ```
-# Nur auf Mac OS: xhost installieren, danach den Computer neu starten
-brew cask install xquartz
-
-# Dem Container erlauben, auf dem Host Fenster zu öffnen (nur einmal pro Computer-Neustart nötig)
-xhost local:root
-
-# Cypress öffnen
 docker compose run e2e open
+
+# Navigiere im Browser auf http://localhost:1100
 ```
 
 ## Produktive Installation
@@ -138,7 +133,7 @@ VITE_SENTRY_VUE_DSN=<snip>
 4. **Frontend-Code builden**: `docker compose run --entrypoint "/bin/sh -c 'npm install && npm run build && npm run workers:build'" vite`
 5. **Optimierung (optional)**: `docker compose run --entrypoint "composer install --optimize-autoloader --no-dev" qualix`
     Siehe [hier](https://laravel.com/docs/9.x/deployment#optimization) für weitere Erklärungen.
-6. **Auf den Webhost hochladen**: Z.B. mit FTP alles (Ordner und Dateien) ausser .git, cypress, node_modules und tests hochladen
+6. **Auf den Webhost hochladen**: Z.B. mit FTP alles (Ordner und Dateien) ausser .git, node_modules und tests hochladen
 7. **Mit SSH auf den Server einloggen**, da die folgenden Befehle in der finalen Umgebung ausgeführt werden müssen
 8. **Optimierung (optional)**: `php artisan config:cache && php artisan route:cache && php artisan view:cache`  
     Siehe [hier](https://laravel.com/docs/9.x/deployment#optimization) für weitere Erklärungen.

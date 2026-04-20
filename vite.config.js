@@ -9,9 +9,11 @@ export default defineConfig({
   server: {
     host: true,
     origin: 'http://localhost:5173',
+    watch: {
+      ignored: ['**/.env*'],
+    },
     allowedHosts: [
-      'http://localhost',
-      'http://localhost:5173',
+      'localhost',
     ],
     cors: {
       origin: [

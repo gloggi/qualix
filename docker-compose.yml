@@ -14,7 +14,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   db:
-    image: mariadb:10.3
+    image: mariadb:10.6
     ports:
       - '3306:3306'
     environment:
@@ -53,15 +53,15 @@ services:
       - '8081:80'
 
   e2e:
-    image: cypress/included:10.8.0
+    image: mcr.microsoft.com/playwright:v1.58.2-noble
+    network_mode: host
     working_dir: /e2e
     environment:
       - DISPLAY
-      - APP_BASE_URL=http://qualix
-      - CYPRESS_PROJECT=.
+      - APP_BASE_URL=http://localhost
     volumes:
       - .:/e2e
-      - ./.docker/cypress-entrypoint.sh:/bin/entrypoint.sh
+      - ./.docker/e2e-entrypoint.sh:/bin/entrypoint.sh
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
     depends_on:
       - qualix
@@ -69,6 +69,8 @@ services:
     entrypoint:
       - /bin/entrypoint.sh
     command: []
+    ports:
+      - '1100:1100'
 
   e2e-mocks:
     image: mockserver/mockserver
