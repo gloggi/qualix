@@ -89,9 +89,9 @@ jobs:
     name: "Deploy"
     if: ${{ github.event_name == 'push' && needs.get-environment-name.outputs.environment }}
     needs:
-      #- unit-tests
-      #- frontend-tests
-      #- e2e-tests
+      - unit-tests
+      - frontend-tests
+      - e2e-tests
       - get-environment-name
     environment: ${{ needs.get-environment-name.outputs.environment }}
     runs-on: ubuntu-latest
