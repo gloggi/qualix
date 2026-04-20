@@ -34,7 +34,7 @@ services:
     working_dir: '/app'
     volumes:
       - .:/app
-    command: bash -c "npm install && scripts/install-twemoji.sh && npm run dev"
+    command: bash -c "npm install && scripts/install-twemoji.sh && exec node_modules/.bin/vite"
     ports:
       - '5173:5173'
 
@@ -43,14 +43,7 @@ services:
     working_dir: '/app'
     volumes:
       - .:/app
-    command: bash -c "npm run worker:watch"
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    depends_on:
-      - db
-    ports:
-      - '8081:80'
+    command: bash -c "exec env WATCH_WORKER=true node_modules/.bin/vite build --config vite-workers.config.js"
 
   e2e:
     image: mcr.microsoft.com/playwright:v1.58.2-noble
