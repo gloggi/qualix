@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -12,7 +11,7 @@ class E2ETestingController
 {
     public function __construct()
     {
-        abort_if(app()->environment('production'), 404);
+        abort_unless(app()->environment('testing'), 404);
     }
 
     public function csrfToken()

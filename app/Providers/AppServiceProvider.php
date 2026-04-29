@@ -25,7 +25,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        if ($this->app->environment(['testing'])) {
+            $this->app->register(E2EServiceProvider::class);
+        }
     }
 
     /**
