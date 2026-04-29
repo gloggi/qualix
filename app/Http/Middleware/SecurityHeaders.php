@@ -80,8 +80,8 @@ class SecurityHeaders {
 
     protected function getCSPConnectSrc() {
         $sentryUrl = '';
-        if (config('app.sentry.mix.vue_dsn')) {
-            $parsed = parse_url(config('app.sentry.mix.vue_dsn'));
+        if (config('app.sentry.frontend.vue_dsn')) {
+            $parsed = parse_url(config('app.sentry.frontend.vue_dsn'));
             $sentryUrl = $parsed['scheme'] . '://' . $parsed['host'] . (isset($parsed['port']) ? ':' . $parsed['port'] : '');
         }
 

@@ -143,7 +143,7 @@ return [
     ],
 
     'sentry' => [
-        'mix' => [
+        'frontend' => [
             'vue_dsn' => env('VITE_SENTRY_VUE_DSN'),
         ],
         'csp_report_uri' => env('sentry.csp_report_uri'),
