@@ -54,6 +54,7 @@ sed -ri "s~^SENTRY_RELEASE=.*$~SENTRY_RELEASE=$(git rev-parse HEAD)~" .env
 sed -ri "s~^SENTRY_LARAVEL_DSN=.*$~SENTRY_LARAVEL_DSN=$SENTRY_LARAVEL_DSN~" .env
 sed -ri "s~^SENTRY_CSP_REPORT_URI=.*$~SENTRY_CSP_REPORT_URI=$SENTRY_CSP_REPORT_URI~" .env
 sed -ri "s~^VITE_SENTRY_VUE_DSN=.*$~VITE_SENTRY_VUE_DSN=$SENTRY_VUE_DSN~" .env
+sed -ri "s~^VITE_SENTRY_RELEASE=.*$~VITE_SENTRY_RELEASE=$(git rev-parse HEAD)~" .env
 
 docker compose run --no-deps --entrypoint "/bin/sh -c 'npm install && scripts/install-twemoji.sh && npm run build && npm run worker:build'" vite
 docker compose run --no-deps --entrypoint "composer install --no-dev" qualix
