@@ -12,9 +12,6 @@
         :required="required"
         :autofocus="autofocus"
         :v-focus="autofocus"
-        :locale="$i18n.locale"
-        :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
-        no-header
         label-help=""></b-form-input>
 
       <span v-if="errorMessage" class="invalid-feedback" role="alert">
