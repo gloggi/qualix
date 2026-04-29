@@ -9,7 +9,6 @@ Route::middleware('web')->group(function () {
     Route::post('/__e2e__/logout',                       [E2ETestingController::class, 'logout']);
     Route::post('/__e2e__/create',                       [E2ETestingController::class, 'create']);
     Route::post('/__e2e__/generate',                     [E2ETestingController::class, 'generate']);
-    Route::get('/__e2e__/routes',                        [E2ETestingController::class, 'routes']);
     Route::post('/__e2e__/artisan',                      [E2ETestingController::class, 'artisan']);
     Route::post('/__e2e__/run-php',                      [E2ETestingController::class, 'runPhp']);
     Route::get('/__e2e__/create-snapshot/{name?}',       [E2ETestingController::class, 'createSnapshot']);

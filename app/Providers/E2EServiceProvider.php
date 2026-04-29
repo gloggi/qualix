@@ -9,11 +9,9 @@ class E2EServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        if ($this->app->environment('production')) {
-            return;
+        if ($this->app->environment('testing', 'local')) {
+            Route::middleware('web')
+                ->group(base_path('routes/e2e.php'));
         }
-
-        Route::middleware('web')
-            ->group(base_path('routes/e2e.php'));
     }
 }
