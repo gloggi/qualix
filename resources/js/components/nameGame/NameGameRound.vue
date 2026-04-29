@@ -91,7 +91,6 @@ export default {
       if (!this.finished) requestAnimationFrame(this.updateTimer)
     },
     correct() {
-      // TODO make sure this still works
       this.shuffledParticipants[this.step].correct = true
       this.score += 10
     },

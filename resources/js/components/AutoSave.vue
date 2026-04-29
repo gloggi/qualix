@@ -71,7 +71,6 @@ export default {
           this.$emit('error')
         } else {
           console.log(err)
-          //window.location.reload()
         }
       })
     }
