@@ -156,6 +156,7 @@ if (import.meta.env.VITE_SENTRY_VUE_DSN && import.meta.env.VITE_SENTRY_VUE_DSN !
   Sentry.init({
     app: app,
     dsn: import.meta.env.VITE_SENTRY_VUE_DSN,
+    release: import.meta.env.VITE_SENTRY_RELEASE || "dev",
     logErrors: true,
   })
 }
