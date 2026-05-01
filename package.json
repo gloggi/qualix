@@ -1,4 +1,5 @@
 {
+  "name": "qualix",
   "private": true,
   "type": "module",
   "scripts": {

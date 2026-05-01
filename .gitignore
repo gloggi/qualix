@@ -2,6 +2,7 @@
 /storage/*.key
 /vendor
 .env
+.env.backup
 .ready
 .phpactor.json
 .phpunit.result.cache

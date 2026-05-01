@@ -4,7 +4,7 @@ import { request } from '@playwright/test';
 export default async function globalSetup() {
   if (fs.existsSync('.env.e2e')) {
     fs.renameSync('.env', '.env.backup');
-    fs.renameSync('.env.e2e', '.env');
+    fs.copyFileSync('.env.e2e', '.env');
   }
 
   const context = await request.newContext({ baseURL: 'http://localhost' });
