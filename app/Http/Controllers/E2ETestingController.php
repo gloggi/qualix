@@ -11,7 +11,7 @@ class E2ETestingController
 {
     public function __construct()
     {
-        abort_unless(app()->environment('testing', 'local'), 404);
+        abort_unless(app()->environment('testing'), 404);
     }
 
     public function csrfToken()
