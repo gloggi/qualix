@@ -53,9 +53,10 @@ sed -ri "s~^COLLABORATION_SIGNALING_SERVERS=.*$~COLLABORATION_SIGNALING_SERVERS=
 sed -ri "s~^SENTRY_RELEASE=.*$~SENTRY_RELEASE=$(git rev-parse HEAD)~" .env
 sed -ri "s~^SENTRY_LARAVEL_DSN=.*$~SENTRY_LARAVEL_DSN=$SENTRY_LARAVEL_DSN~" .env
 sed -ri "s~^SENTRY_CSP_REPORT_URI=.*$~SENTRY_CSP_REPORT_URI=$SENTRY_CSP_REPORT_URI~" .env
-sed -ri "s~^MIX_SENTRY_VUE_DSN=.*$~MIX_SENTRY_VUE_DSN=$SENTRY_VUE_DSN~" .env
+sed -ri "s~^VITE_SENTRY_VUE_DSN=.*$~VITE_SENTRY_VUE_DSN=$SENTRY_VUE_DSN~" .env
+sed -ri "s~^VITE_SENTRY_RELEASE=.*$~VITE_SENTRY_RELEASE=$(git rev-parse HEAD)~" .env
 
-docker compose run --no-deps --entrypoint "/bin/sh -c 'npm install && scripts/install-twemoji.sh && npm run prod --no-unsafe-inline'" node
+docker compose run --no-deps --entrypoint "/bin/sh -c 'npm install && scripts/install-twemoji.sh && npm run build && npm run worker:build'" vite
 docker compose run --no-deps --entrypoint "composer install --no-dev" qualix
 PHP_MIN_VERSION_ID=$(grep -Po '(?<=\(PHP_VERSION_ID >= )[0-9]+(?=\))' vendor/composer/platform_check.php)
 
@@ -81,7 +82,7 @@ lftp <<EOF
   set dns:order "inet"
   open -u $SSH_USERNAME, sftp://$SSH_HOST
   cd $SSH_DIRECTORY
-  mirror -enRv -x '^node_modules' -x '^cypress' -x '^\.' -x '^tests' -x '^storage/logs/.*' -x '^storage/app/.*' -x '^storage/framework/maintenance.php$' -x '^storage/framework/down$' -x '^resources/fonts/.*' -x '^resources/images/.*' -x '^resources/js/.*' -x '^resources/sass/.*' -x '^resources/twemoji'
+  mirror -enRv -x '^node_modules' -x '^\.' -x '^tests' -x '^storage/logs/.*' -x '^storage/app/.*' -x '^storage/framework/maintenance.php$' -x '^storage/framework/down$' -x '^resources/fonts/.*' -x '^resources/images/.*' -x '^resources/js/.*' -x '^resources/sass/.*' -x '^resources/twemoji'
   mirror -Rv -f .env
 EOF
 

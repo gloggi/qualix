@@ -4,7 +4,7 @@
       :id="`requirement-matrix-cell-${feedbackRequirement.participant_id}-${feedbackRequirement.requirement_id}`"
       :title="modalTitle"
       size="lg"
-      hide-footer
+      no-footer
       @hide="save">
 
       <form-basic :action="['feedback.updateRequirementStatus', {course: courseId, feedback_data: feedbackDataId, participant: feedbackRequirement.participant_id, requirement: feedbackRequirement.requirement_id, noFormRestoring: 1}]" ref="form">
@@ -17,13 +17,13 @@
           valueField="id"
           displayField="name"
           required
-          @update:selected="onStatusInput"
+          @update:modelValue="onStatusInput"
         >
           <template #option="props">
-            <i :class="`text-${props.option.color} fas fa-${props.option.icon} mr-2`"></i> {{ props.option.name }}
+            <i :class="`text-${props.option.color} fas fa-${props.option.icon} me-2`"></i> {{ props.option.name }}
           </template>
           <template #single-label="props">
-            <i :class="`text-${props.option.color} fas fa-${props.option.icon} mr-2`"></i> {{ props.option.name }}
+            <i :class="`text-${props.option.color} fas fa-${props.option.icon} me-2`"></i> {{ props.option.name }}
           </template>
         </input-multi-select>
 
@@ -32,7 +32,7 @@
           name="comment"
           :label="$t('t.models.feedback_requirement.comment')"
           rows="5"
-          @input="onCommentInput"></input-textarea>
+          @update:modelValue="onCommentInput"></input-textarea>
 
         <row-text>
           <auto-save ref="autosave" trans="t.views.feedback.progress_overview" :form="form" />
@@ -62,11 +62,11 @@
 </template>
 
 <script>
-import FormBasic from '../../FormBasic'
-import InputMultiSelect from '../../form/InputMultiSelect'
-import AutoSave from '../../AutoSave'
-import InputTextarea from '../../form/InputTextarea'
-import RowText from '../../form/RowText'
+import FormBasic from '../../FormBasic.vue'
+import InputMultiSelect from '../../form/InputMultiSelect.vue'
+import AutoSave from '../../AutoSave.vue'
+import InputTextarea from '../../form/InputTextarea.vue'
+import RowText from '../../form/RowText.vue'
 
 const ellipsis = function(text, max) {
   if (text.length <= max) {
@@ -95,6 +95,7 @@ export default {
     requirementStatuses: {type: Array, required: true},
     evaluationGrids: {type: Array, default: () => []},
   },
+  emits: ['update:modelValue'],
   data: function() {
     return {
       statusId: String(this.feedbackRequirement.requirement_status_id),
@@ -128,7 +129,7 @@ export default {
       this.emitUpdate()
     },
     emitUpdate() {
-      this.$emit('input', {
+      this.$emit('update:modelValue', {
         requirementId: this.feedbackRequirement.requirement_id,
         requirementStatusId: this.statusId,
         comment: this.comment,

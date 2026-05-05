@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0791747032fbe0418e181906120ca676",
+    "content-hash": "b3cfff33ebff1ab0b96556af3c11ba8e",
     "packages": [
         {
             "name": "brick/math",
@@ -65,68 +65,6 @@
                 }
             ],
             "time": "2025-02-28T13:11:00+00:00"
-        },
-        {
-            "name": "calebporzio/parental",
-            "version": "v1.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tighten/parental.git",
-                "reference": "90e80a93409aac080e74ee441a462875006f0e00"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tighten/parental/zipball/90e80a93409aac080e74ee441a462875006f0e00",
-                "reference": "90e80a93409aac080e74ee441a462875006f0e00",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/database": "^9.0||^10.0||^11.0",
-                "illuminate/events": "^9.0||^10.0||^11.0",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^7.0||^8.0||^9.0",
-                "phpunit/phpunit": "^9.5.10||^10.5",
-                "tightenco/duster": "^2.7"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Parental\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Caleb Porzio",
-                    "email": "calebporzio@gmail.com",
-                    "homepage": "https://calebporzio.com/",
-                    "role": "author"
-                },
-                {
-                    "name": "Steve McDougall",
-                    "email": "juststevemcd@gmail.com",
-                    "homepage": "https://www.juststeveking.uk/",
-                    "role": "developer"
-                }
-            ],
-            "description": "A simple eloquent trait that allows relationships to be accessed through child models.",
-            "support": {
-                "issues": "https://github.com/tighten/parental/issues",
-                "source": "https://github.com/tighten/parental/tree/v1.4.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/calebporzio",
-                    "type": "github"
-                }
-            ],
-            "abandoned": "tightenco/parental",
-            "time": "2024-03-12T13:04:57+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -7078,6 +7016,67 @@
             "time": "2025-04-27T18:39:23+00:00"
         },
         {
+            "name": "tightenco/parental",
+            "version": "1.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tighten/parental.git",
+                "reference": "fd7dfc9513bbfececa609aa7fae2a66b49bd4238"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tighten/parental/zipball/fd7dfc9513bbfececa609aa7fae2a66b49bd4238",
+                "reference": "fd7dfc9513bbfececa609aa7fae2a66b49bd4238",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^9.0||^10.0||^11.0||^12.0",
+                "illuminate/events": "^9.0||^10.0||^11.0||^12.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.0||^8.0||^9.0||^10.0",
+                "phpunit/phpunit": "^9.5.10||^10.5||^11.5.3",
+                "tightenco/duster": "^3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Parental\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Caleb Porzio",
+                    "email": "calebporzio@gmail.com",
+                    "homepage": "https://calebporzio.com/",
+                    "role": "author"
+                },
+                {
+                    "name": "Steve McDougall",
+                    "email": "juststevemcd@gmail.com",
+                    "homepage": "https://www.juststeveking.uk/",
+                    "role": "developer"
+                }
+            ],
+            "description": "A simple eloquent trait that allows relationships to be accessed through child models.",
+            "support": {
+                "issues": "https://github.com/tighten/parental/issues",
+                "source": "https://github.com/tighten/parental/tree/1.4.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/calebporzio",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-04-15T16:45:01+00:00"
+        },
+        {
             "name": "tijsverkoyen/css-to-inline-styles",
             "version": "v2.3.0",
             "source": {
@@ -7581,65 +7580,6 @@
                 "source": "https://github.com/hamcrest/hamcrest-php/tree/v2.0.1"
             },
             "time": "2020-07-09T08:09:16+00:00"
-        },
-        {
-            "name": "laracasts/cypress",
-            "version": "3.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laracasts/cypress.git",
-                "reference": "449f9d69da75091c77327093e5727a5c739a4cf8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laracasts/cypress/zipball/449f9d69da75091c77327093e5727a5c739a4cf8",
-                "reference": "449f9d69da75091c77327093e5727a5c739a4cf8",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
-                "phpunit/phpunit": "^8.0|^9.5.10|^10.5",
-                "spatie/laravel-ray": "^1.29"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Laracasts\\Cypress\\CypressServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Laracasts\\Cypress\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jeffrey Way",
-                    "email": "jeffrey@laracasts.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Laravel Cypress Boilerplate",
-            "homepage": "https://github.com/laracasts/cypress",
-            "keywords": [
-                "cypress",
-                "laracasts"
-            ],
-            "support": {
-                "issues": "https://github.com/laracasts/cypress/issues",
-                "source": "https://github.com/laracasts/cypress/tree/3.0.2"
-            },
-            "time": "2024-03-19T14:07:37+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -9743,5 +9683,5 @@
         "ext-dom": "*",
         "ext-libxml": "*"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

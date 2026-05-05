@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Admin\Block;
+namespace Tests\Feature\Admin\Block;
 
 use App\Models\Block;
 use Carbon\Carbon;

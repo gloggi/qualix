@@ -2,6 +2,7 @@
 /storage/*.key
 /vendor
 .env
+.env.backup
 .ready
 .phpactor.json
 .phpunit.result.cache
@@ -17,4 +18,6 @@ yarn-error.log
 !/public/favicon.png
 !/public/index.php
 !/public/robots.txt
+!/public/*.svg
 resources/twemoji
+tests/e2e/test-results/

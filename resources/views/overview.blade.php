@@ -15,11 +15,10 @@
                 <div class="d-flex flex-wrap gap-1rem justify-content-end">
                     @if($showEvaluationGridTemplates)
                         <div class="d-flex flex-wrap gap-1rem mb-2">
-                            <label for="evaluation_grid_template" class="col-form-label text-md-right ml-2">{{ __('t.views.overview.show_evaluation_grids') }}</label>
+                            <label for="evaluation_grid_template" class="col-form-label text-md-end ms-2">{{ __('t.views.overview.show_evaluation_grids') }}</label>
                             <multi-select
                                 name="evaluation_grid_template"
-                                :value="{{ $evaluationGridTemplates->count() ? json_encode("{$evaluationGridTemplates->map->id->join(',')}") : json_encode("0") }}"
-                                class=""
+                                :model-value="{{ $evaluationGridTemplates->count() ? json_encode("{$evaluationGridTemplates->map->id->join(',')}") : json_encode("0") }}"
                                 multiple
                                 placeholder="{{__('t.views.overview.no_evaluation_grid')}}"
                                 :options="{{ json_encode($evaluationGridTemplateOptions) }}"
@@ -30,11 +29,10 @@
                     @endif
                     @if($showFeedbacks)
                         <div class="d-flex flex-wrap gap-1rem mb-2">
-                            <label for="feedback_data" class="col-form-label text-md-right ml-2">{{ __('t.views.overview.show_feedbacks') }}</label>
+                            <label for="feedback_data" class="col-form-label text-md-end ms-2">{{ __('t.views.overview.show_feedbacks') }}</label>
                             <multi-select
                                 name="feedback_data"
-                                :value="{{ $feedbackData ? json_encode("{$feedbackData->id}") : json_encode("0") }}"
-                                class=""
+                                :model-value="{{ $feedbackData ? json_encode("{$feedbackData->id}") : json_encode("0") }}"
                                 :options="{{ json_encode($feedbackOptions) }}"
                                 display-field="name"
                                 @update:selected="selected => $window.location = routeUri('overview', {course: {{ $course->id }}, feedback_data: selected.id || '', {{ $evaluationGridTemplates->count() ? "evaluation_grid_templates: '{$evaluationGridTemplates->map->id->join(',')}'," : '' }} })"></multi-select>

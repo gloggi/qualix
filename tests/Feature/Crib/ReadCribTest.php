@@ -73,7 +73,7 @@ class ReadCribTest extends TestCaseWithBasicData {
         // then
         $response->assertOk();
         $response->assertSee('Block 1');
-        $this->assertSeeAllInOrder('span.badge.badge-warning', ['Sicherheitsüberlegungen']);
+        $this->assertSeeAllInOrder('b-badge[variant=warning]', ['Sicherheitsüberlegungen']);
         $response->assertDontSee('Beziehungen und Methoden');
         $response->assertDontSee('Nett sein');
     }
@@ -88,8 +88,8 @@ class ReadCribTest extends TestCaseWithBasicData {
         // then
         $response->assertOk();
         $response->assertSee('Block 1');
-        $this->assertSeeAllInOrder('span.badge.badge-warning', ['Sicherheitsüberlegungen', 'Beziehungen und Methoden']);
-        $this->assertSeeAllInOrder('span.badge.badge-info', ['Nett sein']);
+        $this->assertSeeAllInOrder('b-badge[variant=warning]', ['Sicherheitsüberlegungen', 'Beziehungen und Methoden']);
+        $this->assertSeeAllInOrder('b-badge[variant=info]', ['Nett sein']);
     }
 
     public function test_shouldDisplayMessage_whenBlocksAndRequirementsInCourse() {

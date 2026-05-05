@@ -18,11 +18,10 @@
 
             @if($showObservationAssignments)
                 <div class="d-flex justify-content-end mb-2">
-                    <label for="user" class="col-form-label text-md-right mr-2">{{ __('t.views.crib.view_as') }}</label>
+                    <label for="user" class="col-form-label text-md-end me-2">{{ __('t.views.crib.view_as') }}</label>
                     <multi-select
                         name="user"
-                        :value="{{ json_encode("$userId") }}"
-                        class=""
+                        :model-value="{{ json_encode("$userId") }}"
                         required
                         :options="{{ json_encode($course->users->map->only('id', 'name')) }}"
                         display-field="name"
@@ -48,14 +47,14 @@
                                         @if(count($block->mandatory_requirements))
                                             {{__('t.views.crib.mandatory_requirements')}}:
                                             @foreach($block->mandatory_requirements as $requirement)
-                                                <span class="white-space-normal badge badge-warning"> {{$requirement->content}} </span>
+                                                <b-badge class="white-space-normal" variant="warning"> {{$requirement->content}} </b-badge>
                                             @endforeach
                                         @endif
                                         @if(count($block->non_mandatory_requirements))
                                             <br>
                                             {{__('t.views.crib.non_mandatory_requirements')}}:
                                             @foreach($block->non_mandatory_requirements as $requirement)
-                                                <span class="white-space-normal badge badge-info"> {{$requirement->content}} </span>
+                                                <b-badge class="white-space-normal" variant="info"> {{$requirement->content}} </b-badge>
                                             @endforeach
                                         @endif
                                     </b-list-group-item>
@@ -71,13 +70,13 @@
                                         <b-list-group-item class="border-0 mb-0 col-sm-12 col-md-6">
                                                 <div class="row">
                                                     @foreach($trainerObservationAssignments[$block->id] as $participant)
-                                                        <div class="col-4 col-sm-3 col-md-4 col-lg-3 mb-1 text-center" v-b-tooltip.hover title="{{$participant->observation_assignment_names}}">
-                                                            <a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id, 'block' => $block->id]) }}">
+                                                        <div class="col-4 col-sm-3 col-md-4 col-lg-3 mb-1 text-center">
+                                                            <a href="{{ route('observation.new', ['course' => $course->id, 'participant' => $participant->id, 'block' => $block->id]) }}" v-b-tooltip.hover title="{{$participant->observation_assignment_names}}">
                                                                 <div class="mb-0 position-relative">
-                                                                    <img class="card-img-top rounded-circle img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
+                                                                    <img class="card-img-top rounded-circle img full-width aspect-ratio-1-1 object-fit-cover" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : '/was-gaffsch.svg' }}" alt="{{ $participant->scout_name }}">
                                                                     <div class="card-img-overlay w-100 p-0 d-flex flex-column ">
-                                                                        <b-badge v-if="{{ $participant->observation_count }}" variant="primary" class="ml-auto mb-auto font-size-larger" pill>{{ $participant->observation_count }}</b-badge>
-                                                                        <b-badge v-else variant="danger" class="ml-auto mb-auto font-size-larger" pill>{{ $participant->observation_count }}</b-badge>
+                                                                        <b-badge v-if="{{ $participant->observation_count }}" variant="primary" class="ms-auto mb-auto font-size-larger" pill>{{ $participant->observation_count }}</b-badge>
+                                                                        <b-badge v-else variant="danger" class="ms-auto mb-auto font-size-larger" pill>{{ $participant->observation_count }}</b-badge>
                                                                     </div>
                                                                     <p class="text-overflow-ellipsis">{{ $participant->scout_name }}</p>
                                                                 </div>

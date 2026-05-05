@@ -1,8 +1,8 @@
 import {mergeAttributes, Node} from '@tiptap/core'
-import {VueNodeViewRenderer} from '@tiptap/vue-2'
+import {VueNodeViewRenderer} from '@tiptap/vue-3'
 import {Plugin} from 'prosemirror-state'
-import {isEqual} from 'lodash'
-import ElementRequirement from './ElementRequirement'
+import isEqual from 'lodash/isEqual'
+import ElementRequirement from './ElementRequirement.vue'
 
 const NodeRequirement = ({ readonly }) => Node.create({
   name: 'requirement',
@@ -10,8 +10,10 @@ const NodeRequirement = ({ readonly }) => Node.create({
   selectable: !readonly,
   draggable: !readonly,
 
-  defaultOptions: {
-    readonly: readonly,
+  addOptions() {
+    return {
+      readonly: readonly,
+    }
   },
 
   addAttributes() {

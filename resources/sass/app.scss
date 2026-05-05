@@ -10,13 +10,15 @@
 @import 'colors';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
-@import '~bootstrap-vue/src/index.scss';
+@import 'bootstrap/scss/bootstrap.scss';
+@import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
+@import 'bootstrap-vue-next-backwards-compatibility';
 @import 'multiselect-bootstrap';
 
 // Font Awesome
-@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
-@import '~@fortawesome/fontawesome-free/scss/solid.scss';
+$fa-font-path: '@fortawesome/fontawesome-free/webfonts';
+@import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '@fortawesome/fontawesome-free/scss/solid.scss';
 
 @import 'forms';
 @import 'responsive-table';
@@ -101,11 +103,11 @@
 }
 
 .bg-success-light {
-    background-color: #d7f3e3;
+    background-color: #d7f3e3 !important;
 }
 
 .bg-danger-light {
-    background-color: #f9d6d5;
+    background-color: #f9d6d5 !important;
 }
 
 .hr-label {
@@ -186,6 +188,10 @@
 
 .gap-1rem {
     gap: 1rem !important;
+}
+
+.aspect-ratio-1-1 {
+    aspect-ratio: 1/1;
 }
 
 .clear-both {

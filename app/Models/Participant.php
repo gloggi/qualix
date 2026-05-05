@@ -139,6 +139,6 @@ class Participant extends Model {
      * @return integer
      */
     public function getImagePathAttribute() {
-        return $this->image_url ? asset(Storage::url($this->image_url)) : asset('images/was-gaffsch.svg');
+        return $this->image_url ? asset(Storage::url($this->image_url)) : '/was-gaffsch.svg';
     }
 }

@@ -1,13 +1,13 @@
 <template>
   <div class="editor" :class="{ 'focus': focused }">
     <modal-add-observation v-if="observations.length" :observations="observations" v-model="addObservation" :return-focus="{ $el: { focus: () => editor.commands.focus() } }" :used-observations="usedObservationIds" :show-requirements="showRequirements" :show-categories="showCategories" :show-impression="showImpression"></modal-add-observation>
-    <input-hidden v-if="name" :value="formValue" :name="name"></input-hidden>
+    <input-hidden v-if="name" :model-value="formValue" :name="name"></input-hidden>
     <editor-floating-menu v-if="!readonly && editor" :editor="editor" :tippy-options="{ zIndex: 1 }">
       <floating-menu :observations="observations" :editor="editor" @addObservation="showObservationSelectionModal(true)"/>
     </editor-floating-menu>
-    <b-alert v-if="offline" class="offline-warning-banner" variant="danger" show fade>
+    <b-alert v-if="offline" class="offline-warning-banner" variant="danger" :model-value="true" fade>
       <help-text v-if="offline" id="feedback-editor-offline-help" trans="t.views.feedback_content.offline_help_banner">
-        <template #question><i class="fas fa-triangle-exclamation mr-2 text-danger"></i></template>
+        <template #question><i class="fas fa-triangle-exclamation me-2 text-danger"></i></template>
       </help-text>
     </b-alert>
     <editor-content class="editor-content" :class="{ readonly }" :editor="editor" />
@@ -15,8 +15,10 @@
 </template>
 
 <script>
-import {cloneDeep, isEqual, sortBy} from 'lodash'
-import {Editor, EditorContent, FloatingMenu as EditorFloatingMenu} from '@tiptap/vue-2'
+import cloneDeep from 'lodash/cloneDeep'
+import isEqual from 'lodash/isEqual'
+import sortBy from 'lodash/sortBy'
+import {Editor, EditorContent, FloatingMenu as EditorFloatingMenu} from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
@@ -30,10 +32,10 @@ import * as Y from 'yjs'
 import {WebrtcProvider} from 'y-webrtc'
 import NodeObservation from './tiptap-extensions/observation/NodeObservation.js'
 import NodeRequirement from './tiptap-extensions/requirement/NodeRequirement.js'
-import GapCursorFocus from './tiptap-extensions/GapCursorFocus'
-import InputHidden from '../form/InputHidden'
-import FloatingMenu from './FloatingMenu'
-import ModalAddObservation from './tiptap-extensions/observation/ModalAddObservation'
+import GapCursorFocus from './tiptap-extensions/GapCursorFocus.js'
+import InputHidden from '../form/InputHidden.vue'
+import FloatingMenu from './FloatingMenu.vue'
+import ModalAddObservation from './tiptap-extensions/observation/ModalAddObservation.vue'
 import HelpText from '../HelpText.vue';
 
 export default {
@@ -43,7 +45,7 @@ export default {
     name: { type: String },
     courseId: { type: String, required: true },
     feedbackDataId: { type: String, required: false },
-    value: { type: Object, default: null },
+    modelValue: { type: Object, default: null },
     observations: { type: Array, default: () => [] },
     requirements: { type: Array, required: true },
     feedbackRequirements: { type: Array, default: null },
@@ -59,6 +61,7 @@ export default {
     username: { type: String, default: null },
     collaborationKey: { type: String, default: null },
   },
+  emits: ['update:modelValue', 'localinput', 'content-ready'],
   data() {
     const extensions = [
       Document,
@@ -73,7 +76,7 @@ export default {
     ]
     const collaborationSupported = this.collaborationKey && window.crypto.subtle
     const editor = new Editor({
-      content: this.value ?? null,
+      content: this.modelValue ?? null,
       editable: !this.readonly,
       injectCSS: false,
       autofocus: this.autofocus,
@@ -96,7 +99,7 @@ export default {
         });
         editor.on('update', ({editor, transaction}) => {
           this.currentValue = editor.getJSON()
-          this.$emit('input', this.currentValue)
+          this.$emit('update:modelValue', this.currentValue)
           // onUpdate is also called while creating the editor, so filter that call out
           if (!this.isRemoteChange(transaction) && !creating) {
             this.$emit('localinput', this.currentValue)
@@ -108,7 +111,7 @@ export default {
 
     return {
       editor: editor,
-      currentValue: this.value ?? emptyDocument,
+      currentValue: this.modelValue ?? emptyDocument,
       emptyDocument,
       focused: false,
       addObservation: null,
@@ -193,7 +196,7 @@ export default {
             .concat(missingIds.flatMap(id => [{ type: 'requirement', attrs: { id: id, status_id: this.defaultRequirementStatusId, comment: '' } }, this.getEmptyParagraph()]))
         }
         this.setEditorContent(this.currentValue)
-        this.$emit('input', this.currentValue)
+        this.$emit('update:modelValue', this.currentValue)
         this.$emit('localinput', this.currentValue)
       }
     },

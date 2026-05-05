@@ -7,7 +7,7 @@
 
     <div class="d-flex justify-content-between mb-2">
       <slot></slot>
-      <auto-save ref="autosave" trans="t.views.feedback_content" :form="form" text-class="text-right w-50" @error="error=true" />
+      <auto-save ref="autosave" trans="t.views.feedback_content" :form="form" text-class="text-end w-50" @error="error=true" />
     </div>
 
     <input-feedback-editor-large
@@ -32,10 +32,10 @@
 </template>
 
 <script>
-import AutoSave from '../AutoSave'
-import FormBasic from '../FormBasic'
-import RequirementProgress from './RequirementProgress'
-import InputFeedbackEditorLarge from './InputFeedbackEditorLarge'
+import AutoSave from '../AutoSave.vue'
+import FormBasic from '../FormBasic.vue'
+import RequirementProgress from './RequirementProgress.vue'
+import InputFeedbackEditorLarge from './InputFeedbackEditorLarge.vue'
 
 export default {
   name: 'FormFeedbackContent',

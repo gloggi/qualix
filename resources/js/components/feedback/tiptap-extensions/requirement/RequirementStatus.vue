@@ -1,5 +1,5 @@
 <template>
-  <span class="mr-2" :class="iconColor"><i :class="iconClass" :title="status.name"></i></span>
+  <span class="me-2" :class="iconColor"><i :class="iconClass" :title="status.name"></i></span>
 </template>
 
 <script>
@@ -7,12 +7,12 @@
 export default {
   name: 'RequirementStatus',
   props: {
-    value: { type: [Number,String], required: true },
+    modelValue: { type: [Number,String], required: true },
     statuses: { type: Array, required: true },
   },
   computed: {
     status() {
-      return this.statuses.find(status => String(status.id) === String(this.value))
+      return this.statuses.find(status => String(status.id) === String(this.modelValue))
     },
     iconClass() {
       return `fas fa-${this.status.icon}`

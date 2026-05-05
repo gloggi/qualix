@@ -4,7 +4,7 @@
       <div class="d-flex align-items-baseline">
         <a :href="participantUrl"><img :src="participant.image_path" class="avatar-small" :alt="participant.scout_name"/></a>
         <div class="d-flex flex-column flex-grow-1">
-          <div class="d-flex flex-wrap ml-2">
+          <div class="d-flex flex-wrap ms-2">
             <a :href="participantUrl"><strong>{{ participant.scout_name }}</strong></a>
             <span class="flex-grow-1"></span>
             <a :href="feedbackEditUrl" target="_blank" :title="$t(`t.views.feedback.progress_overview.edit_feedback`)"><i class="fas fa-pen-to-square px-2"></i></a>
@@ -12,7 +12,7 @@
               <i class="fas fa-print pl-2"></i>
             </button-print-feedback>
           </div>
-          <div v-if="feedback.users.length > 0" class="mw-80 ml-2">{{ $t('t.models.feedback.users') }}: {{ feedback.users.map(u => u.name).join(', ') }}</div>
+          <div v-if="feedback.users.length > 0" class="mw-80 ms-2">{{ $t('t.models.feedback.users') }}: {{ feedback.users.map(u => u.name).join(', ') }}</div>
         </div>
       </div>
     </td>
@@ -21,28 +21,29 @@
       :key="feedbackRequirement.participant_id + ',' + feedbackRequirement.requirement_id"
       :class="cellClass(feedbackRequirement)"
       :data-label="cellLabel(feedbackRequirement)"
-      @click="cellClicked(feedbackRequirement)"><requirements-matrix-cell
+      v-b-modal="`requirement-matrix-cell-${feedbackRequirement.participant_id}-${feedbackRequirement.requirement_id}`"
+    ><requirements-matrix-cell
         :feedback="feedback"
         :feedback-requirement="feedbackRequirement"
         :requirement-statuses="requirementStatuses"
         :evaluation-grids="evaluationGrids.filter(grid => grid.evaluation_grid_template.requirements.map(r => r.id).includes(feedbackRequirement.requirement_id))"
-        @input="updateEditor" /></td>
+        @update:modelValue="updateEditor" /></td>
   </b-tr>
 </template>
 <script>
-import {Editor} from '@tiptap/vue-2'
+import {Editor} from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import Heading from '@tiptap/extension-heading'
-import NodeObservation from '../tiptap-extensions/observation/NodeObservation'
-import NodeRequirement from '../tiptap-extensions/requirement/NodeRequirement'
-import RequirementsMatrixCell from './RequirementsMatrixCell'
-import ButtonPrintFeedback from '../../print/ButtonPrintFeedback'
+import NodeObservation from '../tiptap-extensions/observation/NodeObservation.js'
+import NodeRequirement from '../tiptap-extensions/requirement/NodeRequirement.js'
+import RequirementsMatrixCell from './RequirementsMatrixCell.vue'
+import ButtonPrintFeedback from '../../print/ButtonPrintFeedback.vue'
 import Collaboration from '@tiptap/extension-collaboration'
 import * as Y from 'yjs'
 import {WebrtcProvider} from 'y-webrtc'
-import {sortBy} from 'lodash'
+import sortBy from 'lodash/sortBy'
 
 export default {
   name: 'RequirementsMatrixRow',
@@ -125,7 +126,7 @@ export default {
     createCollaborationExtension() {
       if (!window.crypto.subtle || !this.feedback.collaborationKey || !this.collaborationEnabled) {
         // We are in an environment where crypto and thus syncing is not available
-        // This currently happens only in the Cypress E2E tests
+        // This currently happens only in the Playwright E2E tests
         return []
       }
       const ydoc = new Y.Doc()

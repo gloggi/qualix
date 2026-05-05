@@ -23,9 +23,9 @@
                             <div class="card">
                                 <div class="imagebox">
                                     <div class="square-container">
-                                        <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
+                                        <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : '/was-gaffsch.svg' }}" alt="{{ $participant->scout_name }}">
                                     </div>
-                                    <span class="font-size-larger imagebox-label badge badge-primary my-2">{{ count($participant->observations) }} <i class="fas fa-binoculars"></i></span>
+                                    <b-badge class="font-size-larger imagebox-label my-2 text-white" variant="primary">{{ count($participant->observations) }} <i class="fas fa-binoculars"></i></b-badge>
                                 </div>
 
                                 <div class="card-body d-flex justify-content-between align-items-center flex-wrap">

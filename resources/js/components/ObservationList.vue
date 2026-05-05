@@ -6,10 +6,10 @@
           <i class="fas fa-filter"></i> {{ $t('t.views.participant_details.filter') }} <i class="fas fa-caret-down"></i>
         </b-button>
       </b-col>
-      <b-col v-if="anyFilterActive" class="text-right">
+      <b-col v-if="anyFilterActive" class="text-end">
         <p class="mb-0">
-          {{$tc('t.views.participant_details.shown_observations', 0, {filtered: filteredObservations.length, total: totalObservations})}} -
-          <b-button variant="link" class="mb-2 px-0 align-baseline" :visible="anyFilterActive" @click="clearAllFilters">
+          {{$t('t.views.participant_details.shown_observations', {filtered: filteredObservations.length, total: totalObservations})}} -
+          <b-button variant="link" class="mb-2 px-0 align-baseline" @click="clearAllFilters">
             {{$t('t.views.participant_details.show_all')}}
           </b-button>
         </p>
@@ -24,7 +24,7 @@
             id="filter-requirements"
             name="filter-requirements"
             :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedRequirements.length>0}"
-            :selected.sync="selectedRequirements"
+            v-model:selected="selectedRequirements"
             :allow-empty="true"
             :placeholder="$t('t.views.participant_details.filter_by_requirement')"
             :options="requirementOptions"
@@ -40,7 +40,7 @@
             id="filter-categories"
             name="filter-categories"
             :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedCategories.length>0}"
-            :selected.sync="selectedCategories"
+            v-model:selected="selectedCategories"
             :allow-empty="true"
             :placeholder="$t('t.views.participant_details.filter_by_category')"
             :options="categoryOptions"
@@ -56,7 +56,7 @@
             id="filter-authors"
             name="filter-authors"
             :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedAuthor!==null}"
-            :selected.sync="selectedAuthor"
+            v-model:selected="selectedAuthor"
             :allow-empty="true"
             :placeholder="$t('t.views.participant_details.filter_by_author')"
             :options="authors"
@@ -72,7 +72,7 @@
             id="filter-blocks"
             name="filter-blocks"
             :class="{'form-control-multiselect':true, 'background-color-on-selection':selectedBlock!==null}"
-            :selected.sync="selectedBlock"
+            v-model:selected="selectedBlock"
             :allow-empty="true"
             :placeholder="$t('t.views.participant_details.filter_by_block')"
             :options="blocks"
@@ -111,26 +111,26 @@
       :cell-class="pointerCursor ? 'cursor-pointer' : ''"
       @clickCell="onClickObservation">
 
-      <template v-slot:observation-content="{ row: observation }">
+      <template #observation-content="{ row: observation }">
         <observation-content :observation="observation"></observation-content>
       </template>
 
-      <template v-slot:requirements="{ row: observation }">
+      <template #requirements="{ row: observation }">
         <template v-for="requirement in observation.requirements">
-          <span class="white-space-normal badge" :class="requirement.mandatory ? 'badge-warning' : 'badge-info'">{{ requirement.content }}</span>
+          <b-badge class="white-space-normal" :variant="requirement.mandatory ? 'warning' : 'info'">{{ requirement.content }}</b-badge>
         </template>
       </template>
 
-      <template v-slot:categories="{ row: observation }">
+      <template #categories="{ row: observation }">
         <template v-for="category in observation.categories">
-          <span class="white-space-normal badge badge-primary">{{ category.name }}</span>
+          <b-badge class="white-space-normal" variant="primary">{{ category.name }}</b-badge>
         </template>
       </template>
 
-      <template v-slot:impression="{ row: observation }">
-        <span v-if="observation.impression === 0" class="badge badge-danger">{{ $t('t.global.negative') }}</span>
-        <span v-else-if="observation.impression === 2" class="badge badge-success">{{ $t('t.global.positive') }}</span>
-        <span v-else class="badge badge-secondary">{{ $t('t.global.neutral') }}</span>
+      <template #impression="{ row: observation }">
+        <b-badge v-if="observation.impression === 0" variant="danger">{{ $t('t.global.negative') }}</b-badge>
+        <b-badge v-else-if="observation.impression === 2" variant="success">{{ $t('t.global.positive') }}</b-badge>
+        <b-badge v-else variant="secondary">{{ $t('t.global.neutral') }}</b-badge>
       </template>
 
     </responsive-table>
@@ -142,11 +142,11 @@
 
 <script>
 
-import { isEmpty } from 'lodash'
-import ResponsiveTable from "./ResponsiveTable"
-import ObservationContent from "./ObservationContent"
-import MultiSelect from './MultiSelect'
-import HelpText from './HelpText'
+import isEmpty from 'lodash/isEmpty'
+import ResponsiveTable from './ResponsiveTable.vue'
+import ObservationContent from './ObservationContent.vue'
+import MultiSelect from './MultiSelect.vue'
+import HelpText from './HelpText.vue'
 
 export default {
   name: 'ObservationList',
@@ -168,6 +168,7 @@ export default {
     showUser: { type: Boolean, default: false },
     pointerCursor: { type: Boolean, default: false },
   },
+  emits: ['clickObservation'],
   data() {
     return {
       selectedRequirements: [],

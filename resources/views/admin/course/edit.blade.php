@@ -10,9 +10,9 @@
 
         <form-basic :action="['admin.course.update', {course: {{ $course->id }} }]">
 
-            <input-text name="name" value="{{ $course->name }}" label="{{__('t.models.course.name')}}" required autofocus></input-text>
+            <input-text name="name" model-value="{{ $course->name }}" label="{{__('t.models.course.name')}}" required autofocus></input-text>
 
-            <input-text name="course_number" value="{{ $course->course_number }}" label="{{__('t.models.course.course_number')}}"></input-text>
+            <input-text name="course_number" model-value="{{ $course->course_number }}" label="{{__('t.models.course.course_number')}}"></input-text>
 
             <row-text>
                 <b-button variant="link" class="px-0" v-b-toggle.collapse-course-settings>
@@ -22,15 +22,15 @@
 
             <b-collapse id="collapse-course-settings" :visible="false">
 
-                <input-checkbox name="uses_impressions" label="{{__('t.models.course.uses_impressions')}}" value="{{ $course->uses_impressions }}" switch size="lg"></input-checkbox>
+                <input-checkbox name="uses_impressions" label="{{__('t.models.course.uses_impressions')}}" model-value="{{ $course->uses_impressions }}" switch size="lg"></input-checkbox>
 
-                <input-text name="observation_count_red_threshold" value="{{ $course->observation_count_red_threshold }}" label="{{__('t.models.course.observation_count_red_threshold')}}" required>
+                <input-text name="observation_count_red_threshold" model-value="{{ $course->observation_count_red_threshold }}" label="{{__('t.models.course.observation_count_red_threshold')}}" required>
                     <template #append>
                         <b-input-group-text>{{ __('t.views.admin.course_settings.per_equipe_and_tn') }}</b-input-group-text>
                     </template>
                 </input-text>
 
-                <input-text name="observation_count_green_threshold" value="{{ $course->observation_count_green_threshold }}" label="{{__('t.models.course.observation_count_green_threshold')}}" required>
+                <input-text name="observation_count_green_threshold" model-value="{{ $course->observation_count_green_threshold }}" label="{{__('t.models.course.observation_count_green_threshold')}}" required>
                     <template #append>
                         <b-input-group-text>{{ __('t.views.admin.course_settings.per_equipe_and_tn') }}</b-input-group-text>
                     </template>
@@ -54,13 +54,13 @@
         @if($course->archived)
             <p>{{__('t.views.admin.course_settings.is_archived', ['name' => $course->name])}}</p>
         @else
-            <b-button class="btn btn-danger" v-b-modal.course-archive-modal>
+            <b-button class="btn btn-danger me-1" v-b-modal.course-archive-modal>
                 {{__('t.views.admin.course_settings.archive')}}
             </b-button>
             <b-modal id="course-archive-modal" title="{{ __('t.views.admin.course_settings.really_archive', ['name' => $course->name]) }}">
                 {{__('t.views.admin.course_settings.archive_description')}}
 
-                <template #modal-footer>
+                <template #footer>
                     <form-basic :action="['admin.course.archive', {course: {{ $course->id }} }]">
                         <b-button type="submit" variant="danger">{{ __('t.views.admin.course_settings.archive_confirm') }}</b-button>
                     </form-basic>
@@ -74,7 +74,7 @@
         <b-modal id="course-delete-modal" title="{{ __('t.views.admin.course_settings.really_delete', ['name' => $course->name]) }}">
             {{__('t.views.admin.course_settings.delete_description')}}
 
-            <template #modal-footer>
+            <template #footer>
                 <form-basic :action="['admin.course.delete', {course: {{ $course->id }} }]">
                     <button type="submit" class="btn btn-danger">{{ __('t.views.admin.course_settings.delete_confirm') }}</button>
                 </form-basic>

@@ -1,3 +1,4 @@
+import { it, expect } from 'vitest'
 import { render } from '@testing-library/vue'
 import TableObservationOverview from "../../../resources/js/components/TableObservationOverview"
 
@@ -39,7 +40,7 @@ it('should not display the feedback column when feedbackData is null', () => {
       redThreshold: 7,
       greenThreshold: 20,
     },
-    mocks: { 'routeUri': () => {} },
+    global: { mocks: { routeUri: () => {} } },
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr' ],
   })
 
@@ -59,7 +60,7 @@ it('should display the feedback column when feedbackData is passed', () => {
       redThreshold: 7,
       greenThreshold: 20,
     },
-    mocks: { 'routeUri': () => {} },
+    global: { mocks: { routeUri: () => {} } },
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr' ],
   })
 
@@ -85,9 +86,9 @@ it('should generate the correct link to the feedback of a participant', () => {
       redThreshold: 7,
       greenThreshold: 20,
     },
-    mocks: { 'routeUri': (...params) => {
+    global: { mocks: { routeUri: (...params) => {
         if (params[0] === 'feedbackContent.edit') passedRouteParams = params
-      } },
+      } } },
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-progress', 'b-progress-bar' ],
   })
 
@@ -123,9 +124,9 @@ it('should display the requirements progress bar of a participant', () => {
       redThreshold: 7,
       greenThreshold: 20,
     },
-    mocks: { 'routeUri': (...params) => {
+    global: { mocks: { routeUri: (...params) => {
         if (params[0] === 'feedbackContent.edit') passedRouteParams = params
-      } },
+      } } },
     stubs: [ 'b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-progress', 'b-progress-bar' ],
   })
 

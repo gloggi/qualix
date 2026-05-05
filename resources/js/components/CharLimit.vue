@@ -1,7 +1,7 @@
 <template>
   <b-progress class="position-relative" :max="limit" >
-    <span class="justify-content-center align-self-center d-flex position-absolute w-100"><strong class="ml-1"> {{ this.currentValue.length.toFixed(0) }} / {{ limit }}</strong></span>
-    <b-progress-bar :value="this.currentValue.length" :style="progressBarStyles"></b-progress-bar>
+    <span class="justify-content-center align-self-center d-flex position-absolute w-100"><strong class="ms-1"> {{ this.currentValue.length.toFixed(0) }} / {{ limit }}</strong></span>
+    <b-progress-bar :value="this.currentValue.length" :class="progressBarClass"></b-progress-bar>
   </b-progress>
 </template>
 
@@ -16,23 +16,17 @@ export default {
     percentage: function (){
       return 100 * this.currentValue.length / this.limit;
     },
-    progressBarColor() {
+    progressBarClass() {
       let color = 'lightgreen';
       if(this.percentage >= 100){
         color = 'red';
       } else if(this.percentage > 90){
-        color = 'salmon';
+        color = 'orange';
       } else if(this.percentage > 75){
-        color = 'lemonchiffon';
+        color = 'yellow';
       }
-      return color;
+      return `bg-${color}`;
     },
-    progressBarStyles() {
-      return {
-        'background-color': this.progressBarColor,
-      }
-    },
-
   }
 }
 </script>

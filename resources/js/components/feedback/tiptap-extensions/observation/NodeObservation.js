@@ -1,6 +1,6 @@
 import {mergeAttributes, Node} from '@tiptap/core'
-import {VueNodeViewRenderer} from '@tiptap/vue-2'
-import ElementObservation from './ElementObservation'
+import {VueNodeViewRenderer} from '@tiptap/vue-3'
+import ElementObservation from './ElementObservation.vue'
 
 const NodeObservation = ({ readonly }) => Node.create({
   name: 'observation',
@@ -8,8 +8,10 @@ const NodeObservation = ({ readonly }) => Node.create({
   selectable: !readonly,
   draggable: !readonly,
 
-  defaultOptions: {
-    readonly: readonly,
+  addOptions() {
+    return {
+      readonly: readonly,
+    }
   },
 
   addAttributes() {

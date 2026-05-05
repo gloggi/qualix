@@ -1,7 +1,7 @@
 <template>
   <div class="participant-group-generator">
     <form @submit.prevent="generate">
-      <b-alert v-if="error" variant="danger" show dismissible fade>
+      <b-alert v-if="error" variant="danger" :model-value="true" dismissible fade>
         {{ error }}
       </b-alert>
 
@@ -10,7 +10,7 @@
         :label="$t('t.views.admin.participant_group_generator.group_splits')"
         :participants="selectedParticipants"
         v-model="groupSplits"
-        :valid.sync="groupSplitsValid"
+        v-model:valid="groupSplitsValid"
         :any-duplicate-membership-groups="anyDuplicateMembershipGroups"
         required
         @add-group-split="addGroupSplit"
@@ -85,18 +85,19 @@
 </template>
 
 <script>
-import { groupBy, countBy } from 'lodash'
-import ParticipantAvatar from './ParticipantAvatar'
-import InputMultiSelect from '../form/InputMultiSelect'
-import InputMultiMultiSelect from '../form/InputMultiMultiSelect'
-import InputHidden from '../form/InputHidden'
-import RowText from '../form/RowText'
-import ButtonSubmit from '../form/ButtonSubmit'
-import InputCheckbox from '../form/InputCheckbox'
-import InputGroupSplits from './InputGroupSplits'
-import HelpText from '../HelpText'
-import InputGeneratedParticipantGroups from './InputGeneratedParticipantGroups'
-import createWorker from './createWorker'
+import groupBy from 'lodash/groupBy'
+import countBy from 'lodash/countBy'
+import ParticipantAvatar from './ParticipantAvatar.vue'
+import InputMultiSelect from '../form/InputMultiSelect.vue'
+import InputMultiMultiSelect from '../form/InputMultiMultiSelect.vue'
+import InputHidden from '../form/InputHidden.vue'
+import RowText from '../form/RowText.vue'
+import ButtonSubmit from '../form/ButtonSubmit.vue'
+import InputCheckbox from '../form/InputCheckbox.vue'
+import InputGroupSplits from './InputGroupSplits.vue'
+import HelpText from '../HelpText.vue'
+import InputGeneratedParticipantGroups from './InputGeneratedParticipantGroups.vue'
+import createWorker from './createWorker.js';
 
 export default {
   name: 'ParticipantGroupGenerator',
@@ -242,7 +243,7 @@ export default {
           participants: group.map(participant => this.indexToParticipant(participant).id).join(','),
         }))
       ))
-    }
+    },
   }
 }
 </script>

@@ -1,14 +1,12 @@
-version: "3"
-
 services:
   qualix:
     build: .docker
-    container_name: 'qualix-app'
     ports:
       - '80:80'
     depends_on:
       - db
-      - node
+      - vite
+      - worker-build
     volumes:
       - .:/var/www
       - ./public/.htaccess.docker:/var/www/public/.htaccess
@@ -16,8 +14,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   db:
-    image: mariadb:10.3
-    container_name: 'qualix-db'
+    image: mariadb:10.6
     ports:
       - '3306:3306'
     environment:
@@ -29,36 +26,35 @@ services:
 
   mail:
     image: schickling/mailcatcher@sha256:994aba62ace1a4442e796041b6c6c96aed5eca9de4a6584f3d5d716f1d7549ed
-    container_name: 'qualix-mail'
     ports:
       - '1080:1080'
 
-  node:
+  vite:
     image: node:22
-    container_name: 'qualix-npm'
     working_dir: '/app'
     volumes:
       - .:/app
-    command: bash -c "npm install && scripts/install-twemoji.sh && npm run watch"
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: 'qualix-phpmyadmin'
-    depends_on:
-      - db
+    command: bash -c "npm install && scripts/install-twemoji.sh && exec node_modules/.bin/vite"
     ports:
-      - '8081:80'
+      - '5173:5173'
+
+  worker-build:
+    image: node:22
+    working_dir: '/app'
+    volumes:
+      - .:/app
+    command: bash -c "exec env WATCH_WORKER=true node_modules/.bin/vite build --config vite-workers.config.js"
 
   e2e:
-    image: cypress/included:10.8.0
+    image: mcr.microsoft.com/playwright:v1.58.2-noble
+    network_mode: host
     working_dir: /e2e
     environment:
       - DISPLAY
-      - APP_BASE_URL=http://qualix
-      - CYPRESS_PROJECT=.
+      - APP_BASE_URL=http://localhost
     volumes:
       - .:/e2e
-      - ./.docker/cypress-entrypoint.sh:/bin/entrypoint.sh
+      - ./.docker/e2e-entrypoint.sh:/bin/entrypoint.sh
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
     depends_on:
       - qualix
@@ -66,6 +62,8 @@ services:
     entrypoint:
       - /bin/entrypoint.sh
     command: []
+    ports:
+      - '1100:1100'
 
   e2e-mocks:
     image: mockserver/mockserver

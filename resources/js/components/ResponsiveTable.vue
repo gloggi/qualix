@@ -7,7 +7,7 @@
     <b-thead>
       <b-tr>
         <th v-for="(col, idx) in fields" :class="calculateHeaderClass(col, idx)">
-          <slot :name="col.headerSlot" :label="col.label" :col="col" :idx="idx">{{ col.label }}</slot>
+          <slot name="header" :label="col.label" :col="col" :idx="idx">{{ col.label }}</slot>
         </th>
         <th v-if="showActions" class="actions"></th>
       </b-tr>
@@ -26,13 +26,16 @@
           <td v-if="showActions" class="actions">
             <template v-for="(action, name) in actions">
               <template v-if="name === 'delete'">
-                <a class="text-danger" @click="$bvModal.show(modalId(row))" :title="$t('t.global.delete')">
-                  <i class="fas fa-circle-minus"></i>
-                </a>
-                <modal-delete :id="modalId(row)" v-bind="call(action, row)"></modal-delete>
+                <modal-delete :id="modalId(row)" v-bind="call(action, row)">
+                  <template #activator="{ openModal }">
+                    <a class="text-danger" @click="openModal" :title="$t('t.global.delete')">
+                      <i class="fas fa-circle-minus"></i>
+                    </a>
+                  </template>
+                </modal-delete>
               </template>
               <template v-else-if="name === 'print'">
-                <a :is="call(action, row)[0]" v-bind="call(action, row)[1]"><i class="fas fa-print" /></a>
+                <component :is="call(action, row)[0]" v-bind="call(action, row)[1]"><i class="fas fa-print" /></component>
               </template>
               <template v-else-if="name === 'edit'">
                 <a :href="call(action, row)" :title="actionTitle(name)">
@@ -53,8 +56,9 @@
 </template>
 
 <script>
-import { isEmpty } from 'lodash'
-import ModalDelete from './ModalDelete'
+import isEmpty from 'lodash/isEmpty'
+import ModalDelete from './ModalDelete.vue'
+import kebabCase from 'lodash/kebabCase';
 
 export default {
   name: 'ResponsiveTable',
@@ -68,6 +72,7 @@ export default {
     headerClass: { type: [String, Function], default: '' },
     imageCellClass: { type: [String, Function], default: '' },
   },
+  emits: ['clickCell'],
   computed: {
     showActions() {
       return !isEmpty(this.actions)
@@ -78,7 +83,7 @@ export default {
   },
   methods: {
     modalId(row) {
-      return this.$options.filters.kebabCase('delete-' + row.id)
+      return kebabCase('delete-' + row.id)
     },
     isHeaderRow(row) {
       return row.type === 'header'

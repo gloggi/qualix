@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Input from '../../mixins/input';
+import Input from '../../mixins/input.js';
 import InputEvaluationGridRow from './InputEvaluationGridRow.vue';
 import RowText from '../form/RowText.vue';
 
@@ -24,7 +24,7 @@ export default {
   components: { RowText, InputEvaluationGridRow },
   mixins: [ Input ],
   props: {
-    value: { type: Object, required: true },
+    modelValue: { type: Object, required: true },
     rowTemplates: { type: Array, required: true },
     notesLengthLimit: { type: Number, required: false },
   },

@@ -1,14 +1,14 @@
 <template>
   <form :method="formMethod" :action="routeUri(...arrayAction)" :enctype="enctype" ref="form">
-    <input-hidden v-if="methodIsNotGet" name="_method" :value="method"></input-hidden>
-    <input-hidden v-if="methodIsNotGet" name="_token" :value="csrfToken"></input-hidden>
+    <input-hidden v-if="methodIsNotGet" name="_method" :model-value="method"></input-hidden>
+    <input-hidden v-if="methodIsNotGet" name="_token" :model-value="csrfToken"></input-hidden>
     <slot></slot>
   </form>
 </template>
 
 <script>
-import { isArray } from 'lodash'
-import InputHidden from "./form/InputHidden"
+import isArray from 'lodash/isArray'
+import InputHidden from './form/InputHidden.vue'
 
 export default {
   name: 'FormBasic',

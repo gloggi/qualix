@@ -9,7 +9,7 @@
 
         <form-basic action="invitation.claim">
 
-            <input-hidden name="token" value="{{ $invitation->token }}"></input-hidden>
+            <input-hidden name="token" model-value="{{ $invitation->token }}"></input-hidden>
 
             <row-text class="mb-0">
                 <p>{{__('t.views.invitation.is_email_yours', ['email' => $invitation->email])}}</p>

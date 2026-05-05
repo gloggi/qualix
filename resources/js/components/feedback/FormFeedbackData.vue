@@ -24,7 +24,7 @@
 
     <template v-if="feedbackContentsTemplate">
       <row-text>
-        <b-button variant="link" class="px-0 mr-2" v-b-toggle.collapse-feedback-contents-template @click="focusFeedbackContentsTemplate">
+        <b-button variant="link" class="px-0 me-2" v-b-toggle.collapse-feedback-contents-template @click="focusFeedbackContentsTemplate">
           {{ $t('t.models.feedback.feedback_contents_template') }} <i class="fas fa-caret-down"></i>
         </b-button>
       </row-text>
@@ -51,7 +51,7 @@
       </b-button>
     </row-text>
 
-    <b-collapse id="collapse-trainer-assignments" :appear="true" :visible="highlightTrainerAssignments"
+    <b-collapse id="collapse-trainer-assignments" :visible="highlightTrainerAssignments" :toggle="highlightTrainerAssignments"
                 @shown="doHighlightTrainerAssignments">
       <row-text>
         <help-text id="trainerAssignmentExplanation"
@@ -59,17 +59,17 @@
         >{{ $t('t.views.admin.feedbacks.allocation.generation_explanation_help.answer') }}
           <i class="fas fa-people-arrows"></i></help-text>
       </row-text>
-      <input-multi-select
-        v-for="assignment in trainerAssignments"
-        :key="assignment.participantId"
-        v-if="displayTrainerAssignment(assignment.participantId)"
-        :name="`feedbacks[${assignment.participantId}][users]`"
-        v-model="assignment.trainerIds"
-        :label="scoutName(assignment.participantId)"
-        :options="trainers"
-        display-field="name"
-        multiple
-        :show-clear="true"></input-multi-select>
+      <template v-for="assignment in trainerAssignments" :key="assignment.participantId">
+        <input-multi-select
+          v-if="displayTrainerAssignment(assignment.participantId)"
+          :name="`feedbacks[${assignment.participantId}][users]`"
+          v-model="assignment.trainerIds"
+          :label="scoutName(assignment.participantId)"
+          :options="trainers"
+          display-field="name"
+          multiple
+          :show-clear="true"></input-multi-select>
+      </template>
     </b-collapse>
 
     <slot name="submit"></slot>
@@ -78,12 +78,12 @@
 </template>
 
 <script>
-import HelpText from '../HelpText'
-import FormBasic from '../FormBasic'
-import InputText from '../form/InputText'
-import InputMultiSelect from '../form/InputMultiSelect'
-import RowText from '../form/RowText'
-import InputFeedbackEditor from '../form/InputFeedbackEditor'
+import HelpText from '../HelpText.vue'
+import FormBasic from '../FormBasic.vue'
+import InputText from '../form/InputText.vue'
+import InputMultiSelect from '../form/InputMultiSelect.vue'
+import RowText from '../form/RowText.vue'
+import InputFeedbackEditor from '../form/InputFeedbackEditor.vue'
 
 export default {
   name: 'FormFeedbackData',

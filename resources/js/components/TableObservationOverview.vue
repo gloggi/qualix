@@ -5,8 +5,8 @@
     :fields="fields"
     :header-class="headerClass"
     :cell-class="cellClass">
-    <template v-if="anyUserImages" v-for="user in users" v-slot:[headerSlotName(user)]="{ col: { user } }">
-      <div class="d-flex flex-column align-items-center"><img :src="user.image_path" class="avatar-small" :alt="user.name"/>{{ user.name }}</div>
+    <template v-if="anyUserImages" #header="{ col: { user } }">
+      <div v-if="user" class="d-flex flex-column align-items-center"><img :src="user.image_path" class="avatar-small" :alt="user.name"/>{{ user.name }}</div>
     </template>
     <template #evaluation-grid="{ row, col }">
       <div v-for="evaluationGrid in evaluationGridsFor(row, col)">
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import ResponsiveTable from "./ResponsiveTable"
-import RequirementProgress from './feedback/RequirementProgress'
+import ResponsiveTable from './ResponsiveTable.vue'
+import RequirementProgress from './feedback/RequirementProgress.vue'
 import ButtonPrintEvaluationGrid from './print/ButtonPrintEvaluationGrid.vue';
 
 export default {
@@ -57,7 +57,7 @@ export default {
     },
     fields() {
       const totalColumn = [{ label: this.$t('t.global.total'), value: participant => this.totalObservations(participant) }]
-      const observationColumns = this.users.map(user => ({ label: user.name, headerSlot: this.headerSlotName(user), user: user, value: participant => participant.observation_counts_by_user[user.id] || 0}))
+      const observationColumns = this.users.map(user => ({ label: user.name, user: user, value: participant => participant.observation_counts_by_user[user.id] || 0}))
       if (!this.multiple) {
         return totalColumn.concat(observationColumns)
       }
@@ -108,9 +108,6 @@ export default {
     },
     feedbackFor({ id }) {
       return this.feedbackData?.feedbacks?.find(feedback => feedback.participant_id === id)
-    },
-    headerSlotName(user) {
-      return 'user-' + user.id
     },
   },
 }

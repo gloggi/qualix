@@ -40,7 +40,7 @@ class CreateCourseTest extends TestCase {
         $response->assertRedirect('/');
         /** @var TestResponse $response */
         $response = $response->followRedirects();
-        $this->assertMatchesRegularExpression("%<b-form-select[^>]*id=\"global-course-select\"[^>]*value=\"([^\"]*)\"((?!</b-form-select>).)*<b-form-select-option value=\"\\1\">" . $this->payload['name'] . "</b-form-select-option>%s", $response->content());
+        $this->assertMatchesRegularExpression("%<b-form-select-option value=\"[^\"]+\" selected>" . $this->payload['name'] . "</b-form-select-option>%s", $response->content());
     }
 
     public function test_shouldCreateDefaultRequirementStatuses() {

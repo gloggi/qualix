@@ -7,7 +7,7 @@ import SourceSansProBold from '../../../../fonts/SourceSansPro-Bold.ttf'
 import SourceSansProBoldItalic from '../../../../fonts/SourceSansPro-BoldItalic.ttf'
 import FontAwesomeSolid from '@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf'
 import wasGaffsch from '../../../../images/was-gaffsch.png'
-import FeedbackContents from './FeedbackContents'
+import FeedbackContents from './FeedbackContents.jsx'
 import styles from './styles.js'
 
 function FeedbackDocument({ course, feedback, feedbackContents, participant, observations, statuses, t }) {

@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import ModalAddObservation from './tiptap-extensions/observation/ModalAddObservation'
-import ButtonAdd from './ButtonAdd'
+import ModalAddObservation from './tiptap-extensions/observation/ModalAddObservation.vue'
+import ButtonAdd from './ButtonAdd.vue'
 
 export default {
   name: 'FloatingMenu',
@@ -17,7 +17,8 @@ export default {
   props: {
     observations: { type: Array, default: [] },
     editor: { type: Object, required: true },
-  }
+  },
+  emits: ['addObservation'],
 }
 </script>
 

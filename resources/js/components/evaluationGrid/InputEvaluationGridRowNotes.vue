@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column">
     <textarea
-      :id="name | kebabCase"
+      :id="kebabCase(name)"
       :name="name"
       class="form-control" :class="{ 'is-invalid': errorMessage }"
       :placeholder="placeholder"
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
+import Input from '../../mixins/input.js'
 export default {
   name: 'InputEvaluationGridRowNotes',
   mixins: [ Input ],

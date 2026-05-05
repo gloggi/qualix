@@ -4,7 +4,7 @@
     :title="$t('t.views.feedback_content.select_observation')"
     size="xl"
     scrollable
-    hide-footer
+    no-footer
     :return-focus="returnFocus">
 
     <observation-list
@@ -28,14 +28,14 @@
 </template>
 
 <script>
-import ObservationContent from '../../../ObservationContent'
-import ObservationList from '../../../ObservationList'
+import ObservationContent from '../../../ObservationContent.vue'
+import ObservationList from '../../../ObservationList.vue'
 
 export default {
   name: 'ModalAddObservation',
   components: {ObservationList, ObservationContent},
   props: {
-    value: {type: Function, required: false},
+    modelValue: {type: Function, required: false},
     observations: {type: Array, required: true},
     returnFocus: {type: Object, required: false},
     usedObservations: {type: Array, default: null},
@@ -43,22 +43,23 @@ export default {
     showCategories: {type: Boolean, default: false},
     showImpression: {type: Boolean, default: false},
   },
+  emits: ['update:modelValue'],
   inject: ['courseId', 'requirements', 'categories', 'authors', 'blocks'],
   computed: {
     addingObservation: {
       get() {
-        return !!this.value
+        return !!this.modelValue
       },
       set(newValue) {
         if (newValue === false) {
-          this.$emit('input', null)
+          this.$emit('update:modelValue', null)
         }
       }
     }
   },
   methods: {
     select(id) {
-      this.value({id})
+      this.modelValue({id})
       this.addingObservation = false
     }
   }

@@ -1,13 +1,13 @@
 <template>
   <b-progress :max="100">
-    <b-progress-bar v-for="(requirements, status_id) in groupedRequirements" :key="status_id" :variant="status(status_id).color" :value="100. * (requirements.length) / total">
+    <b-progress-bar v-for="(requirements, status_id) in groupedRequirements" :key="status_id" :class="`bg-${status(status_id).color} text-${status(status_id).contrastColor}`" :value="100. * (requirements.length) / total">
       {{ requirements.length }} {{ status(status_id).name }}
     </b-progress-bar>
   </b-progress>
 </template>
 
 <script>
-import {groupBy} from 'lodash'
+import groupBy from 'lodash/groupBy'
 
 export default {
   name: 'RequirementProgress',

@@ -11,13 +11,13 @@
 
             <input-file name="file" label="{{__('t.views.admin.participant_import.MiData.participant_list')}}" required accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"></input-file>
 
-            <input-hidden name="source" value="MiDataParticipantList"></input-hidden>
+            <input-hidden name="source" model-value="MiDataParticipantList"></input-hidden>
 
             <button-submit label="{{__('t.views.admin.participant_import.import')}}">
 
                 @component('components.help-text', ['key' => 't.views.admin.participant_import.MiData.how_to_get_the_participant_list', 'id' => 'MiDataParticipantListHelp', 'params' => ['MiData' => $MiDataLink]])
 
-                    <img src="{{ asset('images/MiData-participant-list.png') }}" class="img-fluid w-100 mt-2 border">
+                    <img src="{{ Vite::asset('resources/images/MiData-participant-list.png') }}" class="img-fluid w-100 mt-2 border">
 
                 @endcomponent
 

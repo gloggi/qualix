@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import { get } from 'lodash'
-import ObservationList from "./ObservationList"
+import get from 'lodash/get'
+import ObservationList from './ObservationList.vue'
 
 export default {
   name: 'ParticipantDetailObservationList',
@@ -39,7 +39,7 @@ export default {
     },
     feedbackMessage(observation) {
       if (!this.feedbacksUsing(observation).length) return ''
-      return ' ' + this.$tc('t.views.participant_details.feedbacks_using_observation', this.feedbacksUsing(observation).length, { feedbacks: this.feedbacksUsing(observation).join(', ') })
+      return ' ' + this.$t('t.views.participant_details.feedbacks_using_observation', this.feedbacksUsing(observation).length, { feedbacks: this.feedbacksUsing(observation).join(', ') })
     }
   },
 }

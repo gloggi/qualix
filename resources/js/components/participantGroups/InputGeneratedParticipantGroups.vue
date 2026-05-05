@@ -9,7 +9,7 @@
           v-model="proposedGroup.group_name"
           required="required"
           narrow-form />
-        <input-hidden :name="`${name}[${roundIndex}][${groupIndex}][participants]`" :value="proposedGroup.participants"></input-hidden>
+        <input-hidden :name="`${name}[${roundIndex}][${groupIndex}][participants]`" :model-value="proposedGroup.participants"></input-hidden>
         <template v-for="participantId in proposedGroup.participants.split(',')">
           <participant-avatar
             v-if="participantFor(participantId)"
@@ -22,22 +22,22 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
-import ParticipantAvatar from './ParticipantAvatar'
-import InputHidden from '../form/InputHidden'
-import InputText from '../form/InputText'
+import Input from '../../mixins/input.js'
+import ParticipantAvatar from './ParticipantAvatar.vue'
+import InputHidden from '../form/InputHidden.vue'
+import InputText from '../form/InputText.vue'
 
 export default {
   name: 'InputGeneratedParticipantGroups',
   components: {InputText, InputHidden, ParticipantAvatar},
   mixins: [ Input ],
   props: {
-    value: { type: Array, default: () => [] },
+    modelValue: { type: Array, default: () => [] },
     participants: { type: Array, required: true },
     showGroup: { type: Boolean, default: false },
   },
   mounted() {
-    this.$emit('input', this.currentValue)
+    this.$emit('update:modelValue', this.currentValue)
   },
   methods: {
     participantFor(id) {

@@ -10,13 +10,11 @@ use App\Models\User;
 use App\Observers\DeleteOrphanObservationsOnParticipantDelete;
 use App\Services\Hashing\NullableBcryptHasher;
 use App\Services\Translator;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -43,9 +41,7 @@ class AppServiceProvider extends ServiceProvider
             return new NullableBcryptHasher(config('hashing.bcrypt') ?? []);
         });
 
-        $this->app->singleton('csp-nonce', function () {
-            return Str::random(32);
-        });
+        Vite::useCspNonce();
 
         Route::bind('course', function($id) {
             /** @var User $user */

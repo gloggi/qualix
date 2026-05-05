@@ -8,14 +8,14 @@
     <b-card body-class="container-fluid">
         <template #header>{{__('t.views.participant_details.title')}}</template>
 
-        @if($previousParticipant !== false) <div class="float-left"><a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $previousParticipant['id']] ) }}"><i class="fas fa-arrow-left"></i> {{ $previousParticipant['scout_name'] }}</a></div> @endif
-        @if($nextParticipant !== false) <div class="float-right"><a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $nextParticipant['id']] ) }}">{{ $nextParticipant['scout_name'] }} <i class="fas fa-arrow-right"></i></a></div> @endif
+        @if($previousParticipant !== false) <div class="float-start"><a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $previousParticipant['id']] ) }}"><i class="fas fa-arrow-left"></i> {{ $previousParticipant['scout_name'] }}</a></div> @endif
+        @if($nextParticipant !== false) <div class="float-end"><a href="{{ route('participants.detail', ['course' => $course->id, 'participant' => $nextParticipant['id']] ) }}">{{ $nextParticipant['scout_name'] }} <i class="fas fa-arrow-right"></i></a></div> @endif
 
         <div class="row my-3 clear-both">
 
             <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                 <div class="square-container">
-                    <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : asset('images/was-gaffsch.svg') }}" alt="{{ $participant->scout_name }}">
+                    <img class="card-img-top img img-responsive full-width" src="{{ $participant->image_url != null ? asset(Storage::url($participant->image_url)) : '/was-gaffsch.svg' }}" alt="{{ $participant->scout_name }}">
                 </div>
             </div>
 
@@ -68,7 +68,7 @@
                     edit: feedback => routeUri('feedbackContent.edit', {course: {{ $course->id }}, participant: {{ $participant->id }}, feedback: feedback.id}),
                 }">
 
-                <template v-slot:requirement-progress="{ row: feedback }">
+                <template #requirement-progress="{ row: feedback }">
                     <requirement-progress v-if="feedback.requirements.length" :requirements="feedback.requirements" :statuses="{{ json_encode($course->requirement_statuses) }}"></requirement-progress>
                 </template>
 
@@ -97,9 +97,9 @@
                     delete: evaluationGrid => ({ text: this.$t('t.views.participant_details.really_delete_evaluation_grid'), route: ['evaluationGrid.delete', {course: {{ $course->id }}, evaluation_grid_template: evaluationGrid.evaluation_grid_template_id, evaluation_grid: evaluationGrid.id}] }),
                 }">
 
-                <template v-slot:requirements="{ row: evaluationGrid }">
+                <template #requirements="{ row: evaluationGrid }">
                     <template v-for="requirement in evaluationGrid.evaluation_grid_template.requirements">
-                        <span class="white-space-normal badge" :class="requirement.mandatory ? 'badge-warning' : 'badge-info'">@{{ requirement.content }}</span>
+                        <b-badge class="white-space-normal" :variant="requirement.mandatory ? 'warning' : 'info'">@{{ requirement.content }}</b-badge>
                     </template>
                 </template>
             </responsive-table>

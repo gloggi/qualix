@@ -92,13 +92,13 @@
 </template>
 
 <script>
-import Input from '../../mixins/input'
-import InputMultiMultiSelect from '../form/InputMultiMultiSelect'
-import { validSplitGroups } from './validSplit'
-import {kebabCase} from 'lodash'
-import InputText from '../form/InputText'
-import RowText from '../form/RowText'
-import InputCheckbox from '../form/InputCheckbox'
+import Input from '../../mixins/input.js'
+import InputMultiMultiSelect from '../form/InputMultiMultiSelect.vue'
+import { validSplitGroups } from './validSplit.js'
+import kebabCase from 'lodash/kebabCase'
+import InputText from '../form/InputText.vue'
+import RowText from '../form/RowText.vue'
+import InputCheckbox from '../form/InputCheckbox.vue'
 import InputMultiSelect from '../form/InputMultiSelect.vue';
 
 export default {
@@ -106,35 +106,36 @@ export default {
   mixins: [ Input ],
   components: { InputMultiSelect, InputCheckbox, RowText, InputText, InputMultiMultiSelect },
   props: {
-    value: { type: Object, default: () => ({}) },
+    modelValue: { type: Object, default: () => ({}) },
     participants: { type: Array, required: true },
     anyDuplicateMembershipGroups: { type: Boolean, default: false },
     deletable: { type: Boolean, default: true },
   },
+  emits: ['update:modelValue', 'remove'],
   computed: {
     numParticipants() {
       return this.participants.length
     },
     largeGroupSize() {
-      if (!validSplitGroups(this.currentValue, this.numParticipants)) {
+      if (!validSplitGroups(this.currentValue.groups, this.numParticipants)) {
         return 0
       }
       return Math.ceil(this.numParticipants / parseInt(this.currentValue.groups))
     },
     smallGroupSize() {
-      if (!validSplitGroups(this.currentValue, this.numParticipants)) {
+      if (!validSplitGroups(this.currentValue.groups, this.numParticipants)) {
         return 0
       }
       return Math.floor(this.numParticipants / parseInt(this.currentValue.groups))
     },
     unevenSplit() {
-      if (!validSplitGroups(this.currentValue, this.numParticipants)) {
+      if (!validSplitGroups(this.currentValue.groups, this.numParticipants)) {
         return false
       }
       return this.largeGroupSize !== this.smallGroupSize
     },
     groupSizeText() {
-      if (!validSplitGroups(this.currentValue, this.numParticipants)) {
+      if (!validSplitGroups(this.currentValue.groups, this.numParticipants)) {
         return this.$t('t.views.admin.participant_group_generator.split.enter_number_of_groups')
       }
       if (this.smallGroupSize === this.largeGroupSize) {

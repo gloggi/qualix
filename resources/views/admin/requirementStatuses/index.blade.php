@@ -66,13 +66,13 @@
                 edit: requirement_status => routeUri('admin.requirement_statuses.edit', {course: {{ $course->id }}, requirement_status: requirement_status.id}),
                 @if($course->requirement_statuses()->count() > 1)
                     delete: requirement_status => ({
-                        text: (requirement_status.num_feedback_requirements === 0 ? ($t('t.views.admin.requirement_statuses.really_delete', requirement_status) + ' ') : '') + $tc('t.views.admin.requirement_statuses.feedback_requirements_using_requirement_status', requirement_status.num_feedback_requirements),
+                        text: (requirement_status.num_feedback_requirements === 0 ? ($t('t.views.admin.requirement_statuses.really_delete', requirement_status) + ' ') : '') + $t('t.views.admin.requirement_statuses.feedback_requirements_using_requirement_status', requirement_status.num_feedback_requirements),
                         route: ['admin.requirement_statuses.delete', {course: {{ $course->id }}, requirement_status: requirement_status.id}],
                         disabled: requirement_status.num_feedback_requirements !== 0,
                     })
                 @endif
             }">
-            <template #status="{ row }"><span :class="['text-' + row.color, 'fa-' + row.icon]" class="fas mr-2"></span>@{{ row.name }}</template>
+            <template #status="{ row }"><span :class="['text-' + row.color, 'fa-' + row.icon]" class="fas me-2"></span>@{{ row.name }}</template>
         </responsive-table>
 
     </b-card>

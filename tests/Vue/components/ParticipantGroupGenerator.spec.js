@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen, waitFor, within } from '@testing-library/vue'
 import i18n from '../../../resources/js/i18n'
 import userEvent from '@testing-library/user-event'
@@ -8,20 +9,35 @@ import mockGeneticGolferSolver from '../../../resources/js/components/participan
 // a random generation which fits our test expectations.
 const NUM_RETRIES = 100
 
-jest.mock('../../../resources/js/components/participantGroups/createWorker.js', () => {
-  return () => ({
-    addEventListener(message, listener) {
-      this.listener = listener
-    },
-    postMessage({ numParticipants, rounds }) {
-      mockGeneticGolferSolver(numParticipants, rounds, (results) => {
-        if (!this.listener) {
-          throw new Error('No listener registered for geneticGolferSolver')
-        }
-        this.listener({ data: results })
-      })
-    }
-  })
+vi.mock('../../../resources/js/components/participantGroups/createWorker.js', () => {
+  return {
+    default: () => ({
+      addEventListener(message, listener) {
+        this.listener = listener
+      },
+      postMessage({ numParticipants, rounds }) {
+        mockGeneticGolferSolver(numParticipants, rounds, (results) => {
+          if (!this.listener) {
+            throw new Error('No listener registered for geneticGolferSolver')
+          }
+          this.listener({ data: results })
+        })
+      }
+    })
+  }
+})
+
+// The vBTooltip directive from bootstrap-vue-next uses FloatingUI which requires a real
+// browser environment. Replace it with a noop for jsdom-based tests.
+// unplugin-vue-components auto-imports vBTooltip from the sub-path below.
+vi.mock('bootstrap-vue-next', async (importOriginal) => {
+  const actual = await importOriginal()
+  const noop = { beforeMount() {}, mounted() {}, updated() {}, beforeUnmount() {}, unmounted() {} }
+  return { ...actual, vBTooltip: noop }
+})
+vi.mock('bootstrap-vue-next/directives/BTooltip', () => {
+  const noop = { beforeMount() {}, mounted() {}, updated() {}, beforeUnmount() {}, unmounted() {} }
+  return { vBTooltip: noop }
 })
 
 const participants = [
@@ -577,7 +593,7 @@ describe('participant group generator', () => {
       })
 
       // when
-      toggleCollapse(collapseLink)
+      await toggleCollapse(collapseLink)
       await waitFor(async () => {
         expect(participantSelection).toBeVisible()
       })
@@ -608,7 +624,7 @@ describe('participant group generator', () => {
       })
 
       // when
-      toggleCollapse(collapseLink)
+      await toggleCollapse(collapseLink)
       await waitFor(async () => {
         expect(participantSelection).toBeVisible()
       })
@@ -631,7 +647,7 @@ describe('participant group generator', () => {
       const collapseLink = screen.getByText('Erweiterte Bedingungen für alle Gruppenaufteilungen')
       const participantSelection = screen.getByLabelText('Zu gruppierende TN')
 
-      toggleCollapse(collapseLink)
+      await toggleCollapse(collapseLink)
       await waitFor(async () => {
         expect(participantSelection).toBeVisible()
       })
@@ -639,6 +655,10 @@ describe('participant group generator', () => {
       const firstParticipant = within(participantSelection).getAllByText('Alpha (Kreta)')[1]
       await userEvent.click(firstParticipant) // deselect the first participant
       await userEvent.click(participantSelection) // close the multiselect
+      // Wait for the reactive selection change to propagate before generating
+      await waitFor(() => {
+        expect(screen.getByText('Gruppen mit je 3-4 TN')).toBeVisible()
+      })
 
       // when
       await userEvent.click(generateButton)
@@ -686,7 +706,7 @@ describe('participant group generator', () => {
       await userEvent.clear(numberOfGroups)
       await userEvent.type(numberOfGroups, '3')
 
-      toggleCollapse(collapseLink)
+      await toggleCollapse(collapseLink)
       await waitFor(async () => {
         expect(participantGroupSelection).toBeVisible()
       })
@@ -968,22 +988,8 @@ describe('participant group generator', () => {
   })
 })
 
-function toggleCollapse(collapseLink) {
-  // Clicking collapse triggers with the v-b-toggle directive doesn't work in tests for some reason
-  //await userEvent.click(collapseLink)
-
-  // Search upwards for a true vue component, not just a DOM element
-  let vm = null
-  let element = collapseLink
-  while(vm === null && element.parentElement?.parentElement) {
-    if (element.__vue__) {
-      vm = element.__vue__
-      break
-    }
-    element = element.parentElement
-  }
-
-  vm.$root.$emit('bv::toggle::collapse', collapseLink.__BV_toggle_TARGETS__[0])
+async function toggleCollapse(collapseLink) {
+  await userEvent.click(collapseLink)
 }
 
 async function waitForGeneratedGroups(groupName = 'Arbeitsgruppe') {
