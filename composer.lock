@@ -9597,16 +9597,16 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v5.4.39",
+            "version": "v5.4.52",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "1dffb111b038412b028caba029240e379fda85b2"
+                "reference": "b4cf17ff405a77341ad86e81e06ff09298f5aa8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/1dffb111b038412b028caba029240e379fda85b2",
-                "reference": "1dffb111b038412b028caba029240e379fda85b2",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/b4cf17ff405a77341ad86e81e06ff09298f5aa8f",
+                "reference": "b4cf17ff405a77341ad86e81e06ff09298f5aa8f",
                 "shasum": ""
             },
             "require": {
@@ -9652,7 +9652,7 @@
             "description": "Eases DOM navigation for HTML and XML documents",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dom-crawler/tree/v5.4.39"
+                "source": "https://github.com/symfony/dom-crawler/tree/v5.4.52"
             },
             "funding": [
                 {
@@ -9664,11 +9664,15 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T08:26:06+00:00"
+            "time": "2026-04-17T07:30:55+00:00"
         },
         {
             "name": "theseer/tokenizer",
