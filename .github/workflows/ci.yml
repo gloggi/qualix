@@ -99,14 +99,12 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - run: sudo apt-get update -y && sudo apt-get install -y lftp
+      - run: sudo apt-get update -y && sudo apt-get install -y rsync
 
       - uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-
-      - run: sudo apt-get update -y && sudo apt-get install -y lftp
 
       - uses: ./.github/actions/deploy
         with:
