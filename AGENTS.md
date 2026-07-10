@@ -35,6 +35,7 @@ docker compose exec vite npm run test
 
 - Always add tests for new features, changes and bugfixes
 - We have many unit tests and write e2e tests only for the most essential user flows
+- For the frontend tests, if at all possible, we prefer the testing-library approach: Full mount without mocked subcomponents, and simulate real user events using the user-event library.
 - For every user-facing feature, write a CHANGELOG.md entry in German and CHANGELOG_fr.md in French
 - Follow the code style of the repo, and follow best-practices of Laravel and Vue.js (exception: NEVER use the Vue 3 Composition API, ALWAYS use the Options API.)
 
