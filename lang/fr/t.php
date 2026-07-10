@@ -319,7 +319,7 @@ return array(
 			"edit_success" => "Les détails personnels ont été sauvegardés avec succès.",
 		),
 		"welcome" => array(
-			"changelog" => "Tu peux trouver une liste (en allemand) des derniers changements :here. S.t.p. aide-nous à traduire les nouvelles fonctionnalités en français ! Contacte l'équipe Qualix si tu veux aider.",
+			"changelog" => "Tu peux trouver les derniers changements de Qualix :here.",
 			"here" => "ici",
 			"no_courses" => "Actuellement, tu n'es inscrit-e à aucun cours. Fais-toi inviter dans un cours ou crées-en un nouveau toi-même.",
 			"text" => "Qualix a pour objectif de t'aider à reduire la paperasse et à garder une vision d'ensemble des observations. Bien du plaisir à observer!",

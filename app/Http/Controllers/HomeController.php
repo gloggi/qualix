@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Util\HtmlString;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -76,8 +77,12 @@ class HomeController extends Controller
      */
     private function changeLogLink(): HtmlString
     {
+        $isFrench = App::getLocale() === 'fr';
+        $file = $isFrench ? 'CHANGELOG_fr.md' : 'CHANGELOG.md';
+        $anchor = $isFrench ? 'journal-des-modifications' : 'changelog';
+
         return (new HtmlString)
-            ->s('<a target="_blank" href="https://github.com/gloggi/qualix/blob/master/CHANGELOG.md#changelog">')
+            ->s('<a target="_blank" href="https://github.com/gloggi/qualix/blob/master/' . $file . '#' . $anchor . '">')
             ->__('t.views.welcome.here')
             ->s('</a>');
     }
