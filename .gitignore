@@ -21,3 +21,5 @@ yarn-error.log
 !/public/*.svg
 resources/twemoji
 tests/e2e/test-results/
+/.claude/settings.local.json
+/.claude/plans

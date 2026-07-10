@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(.env)",
+      "Write(.env)"
+    ]
+  },
+  "plansDirectory": "./.claude/plans"
+}
