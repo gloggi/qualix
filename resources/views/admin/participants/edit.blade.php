@@ -15,6 +15,15 @@
 
             <input-file name="image" label="{{__('t.models.participant.image')}}" accept="image/*"></input-file>
 
+            @if($participant->image_url)
+                <div class="form-group row">
+                    <div class="offset-md-3 col-md-6 d-flex align-items-center gap-3">
+                        <img src="{{ $participant->image_path }}" alt="{{ $participant->scout_name }}" class="rounded-circle" width="80" height="80" style="object-fit: cover;">
+                        <input-checkbox name="remove_image" label="{{__('t.global.remove')}}" inline></input-checkbox>
+                    </div>
+                </div>
+            @endif
+
             <input-textarea name="freetext" model-value="{{ $participant->freetext }}" label="{{__('t.models.participant.freetext')}}"></input-textarea>
 
             <button-submit></button-submit>

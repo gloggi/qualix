@@ -3,6 +3,9 @@
 namespace Tests\Feature\Admin\Participant;
 
 use App\Models\Course;
+use App\Models\Participant;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCaseWithCourse;
@@ -139,6 +142,21 @@ class UpdateParticipantTest extends TestCaseWithCourse {
         /** @var ValidationException $exception */
         $exception = $response->exception;
         $this->assertEquals('Freitext darf maximal 65535 Zeichen haben.', $exception->validator->errors()->first('freetext'));
+    }
+
+    public function test_shouldRemoveImage() {
+        // given
+        Storage::fake();
+        $imagePath = UploadedFile::fake()->create('avatar.jpg', 10, 'image/jpeg')->store('public/images');
+        Participant::find($this->participantId)->update(['image_url' => $imagePath]);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/admin/participants/' . $this->participantId, $this->payload + ['remove_image' => '1']);
+
+        // then
+        $response->assertStatus(302);
+        $this->assertNull(Participant::find($this->participantId)->image_url);
+        Storage::assertMissing($imagePath);
     }
 
     public function test_shouldValidateNewParticipantData_wrongId() {

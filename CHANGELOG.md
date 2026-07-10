@@ -1,5 +1,8 @@
 # Changelog
 
+##### Juli 2026
+- Das Profilbild von TN und des eigenen Accounts kann neu entfernt werden [#336](https://github.com/gloggi/qualix/issues/336)
+
 ##### Juli 2025
 - In Rückmeldungen kann die Zuteilung der TN zu den Equipenmitgliedern jetzt basierend auf Wünschen und Kapazitäten von Equipe und TN automatisch generiert werden. Dazu kann man unter Kursadmin -> Rückmeldungen auf einer bereits erstellten Rückmeldung auf das neue Icon "Zuteilung generieren" klicken [#260](https://github.com/gloggi/qualix/issues/260)
 

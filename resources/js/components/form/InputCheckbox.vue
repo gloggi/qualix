@@ -1,5 +1,19 @@
 <template>
-  <div class="form-group row">
+  <div v-if="inline" class="d-flex align-items-center gap-2">
+    <input-hidden :id="kebabCase(name) + '-unchecked-value'" :name="name" model-value="0"></input-hidden>
+    <b-form-checkbox
+      type="checkbox"
+      :id="kebabCase(name)"
+      :name="name"
+      :class="{ 'is-invalid': errorMessage }"
+      value="1"
+      unchecked-value="0"
+      :state="errorMessage ? false : null"
+      v-model="currentValue"
+      :switch="isSwitch"
+      :size="size">{{ label }}</b-form-checkbox>
+  </div>
+  <div v-else class="form-group row">
     <label :for="kebabCase(name)" class="col-form-label py-0" :class="labelClass">{{ label }}</label>
     <div :class="inputColumnClass">
       <input-hidden :id="kebabCase(name) + '-unchecked-value'" :name="name" model-value="0"></input-hidden>
@@ -33,6 +47,7 @@ export default {
     label: { type: String, required: true },
     switch: { type: Boolean, default: false },
     size: { type: String },
+    inline: { type: Boolean, default: false },
   },
   data() {
     return {

@@ -18,9 +18,10 @@ class SentryTest extends TestCase {
         SentrySdk::setCurrentHub($sentryHubMock);
 
         // Force an exception
-        $requestMock = $this->createPartialMock(UserRequest::class, [ 'validated', 'file' ]);
+        $requestMock = $this->createPartialMock(UserRequest::class, [ 'validated', 'file', 'boolean' ]);
         $requestMock->expects(self::once())->method('validated')->willThrowException(new \Exception('exception thrown by test'));
         $requestMock->expects(self::any())->method('file');
+        $requestMock->expects(self::any())->method('boolean')->willReturn(false);
         $this->instance(UserRequest::class, $requestMock);
 
         // when
@@ -39,9 +40,10 @@ class SentryTest extends TestCase {
         SentrySdk::setCurrentHub($sentryHubMock);
 
         // Force an exception
-        $requestMock = $this->createPartialMock(UserRequest::class, [ 'validated', 'file' ]);
+        $requestMock = $this->createPartialMock(UserRequest::class, [ 'validated', 'file', 'boolean' ]);
         $requestMock->expects(self::once())->method('validated')->willThrowException(ValidationException::withMessages(['file' => 'exception thrown by test']));
         $requestMock->expects(self::any())->method('file');
+        $requestMock->expects(self::any())->method('boolean')->willReturn(false);
         $this->instance(UserRequest::class, $requestMock);
 
         // when

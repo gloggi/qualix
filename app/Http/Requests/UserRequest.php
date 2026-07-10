@@ -16,6 +16,7 @@ class UserRequest extends FormRequest {
             'name' => 'required|max:30',
             'group' => 'max:255',
             'image' => 'nullable|image|max:2000',
+            'remove_image' => 'nullable|boolean',
         ];
     }
 
@@ -31,7 +32,10 @@ class UserRequest extends FormRequest {
         if (isset($validated['image'])) {
             $validated['image_url'] = $validated['image']->store('public/images');
             unset($validated['image']);
+        } elseif ($this->boolean('remove_image')) {
+            $validated['image_url'] = null;
         }
+        unset($validated['remove_image']);
         return $validated;
     }
 
