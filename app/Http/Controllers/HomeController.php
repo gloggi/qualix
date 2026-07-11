@@ -49,7 +49,7 @@ class HomeController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        if ($request->file('image') && $user->image_url) {
+        if (($request->file('image') || $request->boolean('remove_image')) && $user->image_url) {
             Storage::delete($user->image_url);
         }
 

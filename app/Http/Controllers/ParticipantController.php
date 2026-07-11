@@ -157,7 +157,7 @@ class ParticipantController extends Controller
      */
     public function update(ParticipantRequest $request, Course $course, Participant $participant)
     {
-        if ($request->file('image') && $participant->image_url) {
+        if (($request->file('image') || $request->boolean('remove_image')) && $participant->image_url) {
             Storage::delete($participant->image_url);
         }
 

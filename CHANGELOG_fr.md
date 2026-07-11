@@ -1,5 +1,8 @@
 # Journal des modifications
 
+##### Juillet 2026
+- Il est désormais possible de supprimer la photo de profil d'un-e TN ou de sa propre personne [#336](https://github.com/gloggi/qualix/issues/336)
+
 ##### Juillet 2025
 - Dans les évaluations, l'attribution des participant-e-s aux membres de l'équipe peut désormais être générée automatiquement en fonction des souhaits et des capacités de l'équipe et des participant-e-s. Pour cela, il suffit de cliquer sur la nouvelle icône "Générer l'attribution" sur une évaluation déjà créée, sous Administration -> Évaluations [#260](https://github.com/gloggi/qualix/issues/260)
 
