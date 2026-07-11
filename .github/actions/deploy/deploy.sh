@@ -77,14 +77,21 @@ ssh -l $SSH_USERNAME -T $SSH_HOST <<EOF
 EOF
 
 echo "Uploading files to the server..."
-lftp <<EOF
-  set sftp:auto-confirm true
-  set dns:order "inet"
-  open -u $SSH_USERNAME, sftp://$SSH_HOST
-  cd $SSH_DIRECTORY
-  mirror -enRv -x '^node_modules' -x '^\.' -x '^tests' -x '^storage/logs/.*' -x '^storage/app/.*' -x '^storage/framework/maintenance.php$' -x '^storage/framework/down$' -x '^resources/fonts/.*' -x '^resources/images/.*' -x '^resources/js/.*' -x '^resources/sass/.*' -x '^resources/twemoji'
-  mirror -Rv -f .env
-EOF
+rsync -az --delete \
+  --exclude=node_modules \
+  --exclude=tests \
+  --exclude=storage/logs \
+  --exclude=storage/app \
+  --exclude=storage/framework/maintenance.php \
+  --exclude=storage/framework/down \
+  --exclude=resources/fonts \
+  --exclude=resources/images \
+  --exclude=resources/js \
+  --exclude=resources/sass \
+  --exclude=resources/twemoji \
+  --include=/.env \
+  --exclude=/.* \
+  ./ "$SSH_USERNAME@$SSH_HOST:$SSH_DIRECTORY/"
 
 echo "All files uploaded to the server."
 
