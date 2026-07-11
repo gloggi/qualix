@@ -2,6 +2,7 @@
 
 ##### Juli 2026
 - Das Profilbild von TN und des eigenen Accounts kann neu entfernt werden [#336](https://github.com/gloggi/qualix/issues/336)
+- Bugfix: Im Namenslernspiel wird beim Modus "Einfach (multiple choice)" nun auch dann ein Punkt vergeben, wenn mehrere TN im Kurs gleich heissen und man auf die andere gleichnamige Option klickt. Im Modus "Schwierig (Namen eintippen)" zählt neu auch ein ohne Umlaut/Akzent eingetippter Name (z.B. "Muller" statt "Müller") als richtig [#382](https://github.com/gloggi/qualix/issues/382)
 
 ##### Juli 2025
 - In Rückmeldungen kann die Zuteilung der TN zu den Equipenmitgliedern jetzt basierend auf Wünschen und Kapazitäten von Equipe und TN automatisch generiert werden. Dazu kann man unter Kursadmin -> Rückmeldungen auf einer bereits erstellten Rückmeldung auf das neue Icon "Zuteilung generieren" klicken [#260](https://github.com/gloggi/qualix/issues/260)

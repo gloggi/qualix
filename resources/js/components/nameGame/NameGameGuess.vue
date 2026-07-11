@@ -62,13 +62,7 @@ export default {
       this.gameMode === 'multipleChoice' ?
         this.getSelectedParticipant(event) :
         this.getGuessedParticipant(event)
-      if (this.submittedGuess?.id === this.participant.id) {
-        this.correct = true
-        this.$emit('correct')
-      } else {
-        this.correct = false
-        this.$emit('incorrect')
-      }
+      this.correct ? this.$emit('correct') : this.$emit('incorrect')
       this.guessing = false
       this.$nextTick(() => this.$refs.nextButton.focus())
     },
@@ -80,6 +74,7 @@ export default {
       const selectedId = event.submitter.getAttribute('value')
       this.submittedGuess = this.participants.find(p => selectedId === `${p.id}`)
       this.submittedScoutName = this.submittedGuess?.scout_name
+      this.correct = this.submittedScoutName === this.participant.scout_name
     },
     getGuessedParticipant(event) {
       const input = (new FormData(event.target)).get('scout_name')
@@ -87,9 +82,12 @@ export default {
         return this.normalize(participant.scout_name) === this.normalize(input)
       })
       this.submittedScoutName = this.submittedGuess ? this.submittedGuess.scout_name : input
+      this.correct = this.normalize(input) === this.normalize(this.participant.scout_name)
     },
     normalize(name) {
-      return name.toLocaleLowerCase().replaceAll(/[^a-zA-Z]/g, '')
+      return name
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLocaleLowerCase().replaceAll(/[^a-z]/g, '')
     }
   }
 }
