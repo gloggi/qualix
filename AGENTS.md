@@ -6,6 +6,18 @@ This file provides guidance to AI agents when working with code in this reposito
 
 Qualix is a Laravel 11 (PHP >= 8.2) web app, server-rendered with Blade views that embed Vue 3 components (via Vite), used by Swiss Pfadi/Scouting J+S course leaders to track participant observations, feedbacks, and qualifications. German is the primary language; UI strings are translated to French via Phrase (`.phraseapp.yml`, `lang/`).
 
+## Documentation
+
+Detailed technical documentation (architecture, domain model, features, testing, deployment) lives under [`docs/`](./docs/01%20Technical%20Documentation%20TOC.md) — start at the table of contents. The feature guides are especially useful when touching a specific area:
+
+- [Observations & Participant Tracking](./docs/Features/21%20Observations%20and%20Participant%20Tracking.md)
+- [Evaluation Grids](./docs/Features/22%20Evaluation%20Grids.md)
+- [Requirements & Qualifications](./docs/Features/23%20Requirements%20and%20Qualifications.md)
+- [Feedback System & Collaborative Editing](./docs/Features/24%20Feedback%20System%20and%20Collaborative%20Editing.md) (incl. the requirements matrix overview)
+- [Feedback Allocation Algorithm](./docs/Features/25%20Feedback%20Allocation%20Algorithm.md)
+- [Course Setup & Teardown](./docs/Features/26%20Course%20Setup%20and%20Teardown.md) (imports, block/group generators, archiving vs. deleting)
+- [PDF Rendering](./docs/Features/27%20PDF%20Rendering.md)
+
 ## Local development
 
 Everything runs in Docker; there is no local PHP/Node/Playwright install expected.
@@ -92,7 +104,7 @@ Pages are Blade views (`resources/views`) that mount a single global Vue 3 app o
 
 ### Domain services
 
-- `app/Services/Import/` — parsing/importing external data: block schedules (`Blocks/ECamp2`, `Blocks/ECamp3` — two different eCamp export formats) and participant lists (`Participants/MiData` — Swiss scouting membership DB export).
+- `app/Services/Import/` — parsing/importing external data: block schedules (`Blocks/ECamp3`, the eCamp v3 PDF export) and participant lists (`Participants/MiData` — Swiss scouting membership DB export). See [Course Setup & Teardown](./docs/Features/26%20Course%20Setup%20and%20Teardown.md).
 - `app/Services/FeedbackAllocation/` — algorithm assigning participants to trainers for feedback sessions based on preferences/capacity (`FeedbackAllocator` interface, `DefaultFeedbackAllocator` implementation).
 - `app/Services/Validation/` — custom Laravel validation rules scoped to a course (e.g. `ExistsInCourse`, `AllExistInCourse`) — reuse these instead of writing ad-hoc `exists:` rules when validating that a submitted ID belongs to the current course.
 - Feedback content (free-text qualification writeups) is edited with Tiptap and supports real-time multi-user collaboration via Yjs/y-webrtc (`COLLABORATION_*` env vars) — see `FeedbackContentController` and `TiptapFormatter`.

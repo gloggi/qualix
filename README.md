@@ -7,6 +7,8 @@ Eine Live-Version ist unter <https://qualix.flamberg.ch> verfügbar.
 
 Wir benützen [Phrase](https://phrase.com), um Qualix auch in anderen Sprachen anzubieten.
 
+Eine ausführliche technische Dokumentation (Architektur, Domänenmodell, Testing, Deployment usw.) findest du unter [docs/](./docs/01%20Technical%20Documentation%20TOC.md). Wie du beitragen kannst, steht in [CONTRIBUTING.md](./CONTRIBUTING.md).
+
 ## Lokale Installation
 
 Qualix ist ein PHP-Projekt basierend auf dem Framework Laravel. Wir verwenden [docker compose](https://docs.docker.com/compose/install/) um es lokal zur Entwicklung laufen zu lassen. Wenn du auf Linux arbeitest, musst du zuerst noch separat [Docker für Linux](https://docs.docker.com/install/#server) installieren.
@@ -130,10 +132,10 @@ VITE_SENTRY_VUE_DSN=<snip>
 ```
 > Für die `HITOBITO_*` Einstellungen, siehe weiter unten.
 3. **Backend-Dependencies installieren und `APP_KEY` generieren**: `docker compose run --entrypoint "/bin/sh -c 'composer install --no-dev && php artisan key:generate'" qualix`
-4. **Frontend-Code builden**: `docker compose run --entrypoint "/bin/sh -c 'npm install && npm run build && npm run workers:build'" vite`
+4. **Frontend-Code builden**: `docker compose run --entrypoint "/bin/sh -c 'npm install && npm run build && npm run worker:build'" vite`
 5. **Optimierung (optional)**: `docker compose run --entrypoint "composer install --optimize-autoloader --no-dev" qualix`
     Siehe [hier](https://laravel.com/docs/9.x/deployment#optimization) für weitere Erklärungen.
-6. **Auf den Webhost hochladen**: Z.B. mit FTP alles (Ordner und Dateien) ausser .git, node_modules und tests hochladen
+6. **Auf den Webhost hochladen**: Z.B. mit rsync alles (Ordner und Dateien) ausser .git, node_modules und tests hochladen
 7. **Mit SSH auf den Server einloggen**, da die folgenden Befehle in der finalen Umgebung ausgeführt werden müssen
 8. **Optimierung (optional)**: `php artisan config:cache && php artisan route:cache && php artisan view:cache`  
     Siehe [hier](https://laravel.com/docs/9.x/deployment#optimization) für weitere Erklärungen.
