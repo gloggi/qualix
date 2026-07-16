@@ -71,7 +71,7 @@ const registerFonts = async () => {
         ],
     })
     Font.registerEmojiSource({
-        formag: 'png',
+        format: 'png',
         url: '/twemoji/assets/72x72/',
     })
 
