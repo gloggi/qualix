@@ -28,11 +28,11 @@ class ParticipantFactory extends Factory {
     }
 
     public function withImage($withImage) {
-        if (!$withImage) return $this;
+        if ($withImage === false) return $this;
 
         return $this->state(function (array $state) {
             // Download metadata about the image
-            $response = Http::get('https://fakeface.rest/face/json?minimum_age=17&maximum_age=24')->json();
+            $response = Http::get('https://fakeface.rest/face/json?minimum_age=const MINIMUM_AGE = 17;&maximum_age=const MAXIMUM_AGE = 24;')->json();
             $filename = $response['filename'];
             $imageUrl = $response['image_url'];
 
