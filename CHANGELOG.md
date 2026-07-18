@@ -1,6 +1,7 @@
 # Changelog
 
 ##### Juli 2026
+- Auf einer Beobachtung können neu mehrere beobachtende Personen hinterlegt werden [#293](https://github.com/gloggi/qualix/issues/293)
 - Das Profilbild von TN und des eigenen Accounts kann neu entfernt werden [#336](https://github.com/gloggi/qualix/issues/336)
 - Bugfix: Im Namenslernspiel wird beim Modus "Einfach (multiple choice)" nun auch dann ein Punkt vergeben, wenn mehrere TN im Kurs gleich heissen und man auf die andere gleichnamige Option klickt. Im Modus "Schwierig (Namen eintippen)" zählt neu auch ein ohne Umlaut/Akzent eingetippter Name (z.B. "Muller" statt "Müller") als richtig [#382](https://github.com/gloggi/qualix/issues/382)
 

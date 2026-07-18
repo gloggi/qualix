@@ -11,7 +11,7 @@
     </div>
     <div class="mb-0 mt-1 d-flex justify-content-between">
       <small class="text-muted">{{ observation.block.name }}, {{ date }}</small>
-      <small class="text-muted observation-author">{{ $t('t.views.feedback_content.observed_by', observation.user) }}</small>
+      <small class="text-muted observation-author">{{ $t('t.views.feedback_content.observed_by', { name: observation.users.map(user => user.name).join(', ') }) }}</small>
     </div>
   </node-view-wrapper>
 </template>
@@ -39,7 +39,7 @@ export default {
       if (!observation) {
         this.deleteNode()
       }
-      return observation || {block: {}, participants: []}
+      return observation || {block: {}, participants: [], users: []}
     },
     date() {
       return new Date(this.observation.block.block_date).toLocaleDateString(this.$i18n.locale)

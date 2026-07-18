@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\RouteCollectionInterface;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +32,7 @@ class ObservationController extends Controller {
         return view('observation.new', [
             'participants' => $request->input('participant'),
             'block' => $request->input('block'),
+            'users' => $request->input('users'),
             'blocks' => $this->prioritize($course->blocks, function(Block $block) { return $block->block_date->gt(Carbon::now()->subDays(2)); })
         ]);
     }
@@ -40,6 +40,18 @@ class ObservationController extends Controller {
     private function prioritize(Collection $collection, callable $callable): Collection {
         $nonPrioritized = $collection->reject($callable);
         return $collection->filter($callable)->union($nonPrioritized)->values();
+    }
+
+    /**
+     * Turns a list of ids into pivot attach/sync data that preserves the ids' order via a `order` pivot column.
+     *
+     * @param array $ids
+     * @return array
+     */
+    private function withOrder(array $ids): array {
+        return collect($ids)->filter()->values()->mapWithKeys(function ($id, $index) {
+            return [$id => ['order' => $index]];
+        })->all();
     }
 
     /**
@@ -53,10 +65,11 @@ class ObservationController extends Controller {
         $data = $request->validated();
         DB::transaction(function() use ($request, $course, $data) {
 
-            $observation = Observation::create(array_merge($data, ['course_id' => $course->id, 'user_id' => Auth::user()->getAuthIdentifier()]));
+            $observation = Observation::create(array_merge($data, ['course_id' => $course->id]));
 
             $participantIds = array_filter(explode(',', $data['participants']));
             $observation->participants()->attach($participantIds);
+            $observation->users()->attach($this->withOrder(explode(',', $data['users'])));
             $observation->requirements()->attach(array_filter(explode(',', $data['requirements'])));
             $observation->categories()->attach(array_filter(explode(',', $data['categories'])));
 
@@ -72,7 +85,7 @@ class ObservationController extends Controller {
             $request->session()->flash('alert-success', $flash);
         });
 
-        return $this->redirectToPreviouslyActiveView($request, $course, collect([]), route('observation.new', ['course' => $course->id, 'participant' => $data['participants'], 'block' => $data['block']]));
+        return $this->redirectToPreviouslyActiveView($request, $course, collect([]), route('observation.new', ['course' => $course->id, 'participant' => $data['participants'], 'block' => $data['block'], 'users' => $data['users']]));
     }
 
     /**
@@ -146,6 +159,7 @@ class ObservationController extends Controller {
             $observation->update($data);
 
             $observation->participants()->sync(array_filter(explode(',', $data['participants'])));
+            $observation->users()->sync($this->withOrder(explode(',', $data['users'])));
             $observation->requirements()->sync(array_filter(explode(',', $data['requirements'])));
             $observation->categories()->sync(array_filter(explode(',', $data['categories'])));
         });

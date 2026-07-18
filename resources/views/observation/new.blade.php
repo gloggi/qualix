@@ -26,6 +26,8 @@
             :all-requirements="{{ json_encode($course->requirements->map->only('id', 'content')) }}"
             :use-impressions="{{ $course->uses_impressions ? 'true' : 'false' }}"
             :all-categories="{{ json_encode($course->categories->map->only('id', 'name')) }}"
+            users="{{ $users ?? Auth::id() }}"
+            :all-users="{{ json_encode($course->users->map->only('id', 'name')) }}"
         ></form-observation>
 
     </b-card>

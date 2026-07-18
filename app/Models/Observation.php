@@ -6,12 +6,11 @@ namespace App\Models;
  * @property int $id
  * @property int participant_id
  * @property int $block_id
- * @property int $user_id
  * @property int $impression
  * @property string $content
  * @property Block $block
  * @property Participant $participant
- * @property User $user
+ * @property User[] $users
  * @property Requirement[] $requirements
  * @property Category[] $categories
  */
@@ -29,12 +28,12 @@ class Observation extends Model
      *
      * @var array
      */
-    protected $with = ['block', 'user', 'participants', 'requirements', 'categories'];
+    protected $with = ['block', 'users', 'participants', 'requirements', 'categories'];
 
     /**
      * @var array
      */
-    protected $fillable = ['user_id', 'impression', 'content'];
+    protected $fillable = ['impression', 'content'];
     protected $fillable_relations = ['block'];
 
     /**
@@ -59,11 +58,11 @@ class Observation extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function user()
+    public function users()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsToMany('App\Models\User', 'observations_users')->withPivot('order')->orderBy('observations_users.order');
     }
 
     /**

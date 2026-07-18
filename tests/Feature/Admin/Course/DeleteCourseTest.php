@@ -70,6 +70,7 @@ class DeleteCourseTest extends TestCaseWithBasicData {
         $numBlocksRequirements = DB::table('blocks_requirements')->count();
         $numObservationsCategories = DB::table('observations_categories')->count();
         $numObservationsRequirements = DB::table('observations_requirements')->count();
+        $numObservationsUsers = DB::table('observations_users')->count();
 
         // when
         $this->delete('/course/' . $this->courseId . '/admin');
@@ -87,6 +88,7 @@ class DeleteCourseTest extends TestCaseWithBasicData {
         $this->assertEquals($numBlocksRequirements - 1, DB::table('blocks_requirements')->count(), 'All blocks_requirements entries of course should have been removed from DB');
         $this->assertEquals($numObservationsCategories - 1, DB::table('observations_categories')->count(), 'All observations_categories entries of course should have been removed from DB');
         $this->assertEquals($numObservationsRequirements - 1, DB::table('observations_requirements')->count(), 'All observations_requirements entries of course should have been removed from DB');
+        $this->assertEquals($numObservationsUsers - 1, DB::table('observations_users')->count(), 'All observations_users entries of course should have been removed from DB');
     }
 
     public function test_shouldDeleteImagesOfParticipantsFromStorage() {

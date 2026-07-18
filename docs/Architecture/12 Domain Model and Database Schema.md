@@ -18,7 +18,7 @@ graph TD
     Requirement --> RequirementDetail
 
     Block --> Observation
-    User --> Observation
+    User -.->|observations_users| Observation
     Observation --> ParticipantObservation
     Participant --> ParticipantObservation
     Observation -.-> Requirement
@@ -85,10 +85,11 @@ Booleans `uses_requirements` / `uses_categories` are *computed* accessors (`->ex
 
 An **[Observation](../../app/Models/Observation.php)** is a note a trainer records about one or more participants during a block:
 
-- `belongsTo` **Block** and **User** (the author); columns `impression` (0/1/2 → negative/neutral/positive, see the accessors on `Participant`) and `content` (max 1023 chars).
+- `belongsTo` **Block**; columns `impression` (0/1/2 → negative/neutral/positive, see the accessors on `Participant`) and `content` (max 1023 chars).
+- `belongsToMany` **User** via `observations_users` (the authors) — several course team members can be recorded as having made the same observation.
 - `belongsToMany` **Participant** via `observations_participants`. That join row is itself modelled as **[ParticipantObservation](../../app/Models/ParticipantObservation.php)** because feedbacks reference individual participant-observation pairs.
 - `belongsToMany` **Requirement** (`observations_requirements`) and **Category** (`observations_categories`).
-- Eager-loads `block, user, participants, requirements, categories` on every query (`$with`).
+- Eager-loads `block, users, participants, requirements, categories` on every query (`$with`).
 
 An **[ObservationAssignment](../../app/Models/ObservationAssignment.php)** is a *task* ("this user should observe these participants in these blocks"): `belongsToMany` **Block**, **Participant**, and **User**. It does not own observations directly; `Course::observationAssignmentsPerUserAndPerBlock()` joins assignments against actual observations to show progress.
 

@@ -28,6 +28,12 @@ test.describe('observation form', () => {
     await page.locator('.card-body').click({ position: { x: 900, y: 5 } });
 
     await page.getByText('Positiv').click();
+
+    await expect(page.getByRole('combobox', { name: 'Beobachtet von' })).toBeVisible();
+    await page.getByRole('combobox', { name: 'Beobachtet von' }).click();
+    await page.locator('#users .multiselect__option:not(.multiselect__option--selected)').first().click();
+    await page.locator('.card-body').click({ position: { x: 900, y: 5 } });
+
     await page.getByText('Speichern').click();
 
     await expect(page.getByText('Beobachtung erfasst.')).toBeVisible();

@@ -10,7 +10,7 @@ Observations are the core data unit of Qualix: a course leader records a short n
 [`app/Models/Observation.php`](../../app/Models/Observation.php) — one recorded note.
 
 - `belongsTo` [`Block`](../../app/Models/Block.php) — when/where it was made.
-- `belongsTo` [`User`](../../app/Models/User.php) — who made it (`user_id`, set to the authenticated user on create).
+- `belongsToMany` [`User`](../../app/Models/User.php) via the `observations_users` pivot — who made it (defaults to the authenticated user on create, but several course team members can be recorded as authors on one observation).
 - `belongsToMany` [`Participant`](../../app/Models/Participant.php) via the `observations_participants` pivot — an observation can cover several participants at once.
 - `belongsToMany` [`Requirement`](../../app/Models/Requirement.php) via `observations_requirements` — which qualification criteria this note is evidence for.
 - `belongsToMany` `Category` via `observations_categories` — free grouping tags.
@@ -47,7 +47,7 @@ See the full relation graph in [Domain Model & Database Schema](../Architecture/
 | `DELETE` | `observation.delete` | Delete |
 | `GET` | `overview` | Cross-participant overview table |
 
-`store` and `update` both run in a `DB::transaction`. The participant/requirement/category IDs arrive as comma-separated strings in the form (`"3,7,9"`), are exploded and `array_filter`ed, then `attach`ed (create) or `sync`ed (update). On create, `course_id` and `user_id` (the current user) are merged in.
+`store` and `update` both run in a `DB::transaction`. The participant/author/requirement/category IDs arrive as comma-separated strings in the form (`"3,7,9"`), are exploded and `array_filter`ed, then `attach`ed (create) or `sync`ed (update). On create, `course_id` is merged in; the authors (`users`) field defaults to the logged-in user in the form and, like the other fields (except the observation text itself), retains its previously submitted value for the next observation via the same query-param mechanism used for `participant`/`block`.
 
 Validation lives in [`ObservationRequest`](../../app/Http/Requests/ObservationRequest.php):
 
@@ -56,6 +56,7 @@ Validation lives in [`ObservationRequest`](../../app/Http/Requests/ObservationRe
 'content'       => 'required|max:'.Observation::CHAR_LIMIT,
 'impression'    => 'in:0,1,2',
 'block'         => 'required|regex:/^\d+$/|existsInCourse',
+'users'         => 'required|regex:/^\d+(,\d+)*$/|allExistInCourse:'.Trainer::class.',user_id',
 'requirements'  => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
 'categories'    => 'nullable|regex:/^\d+(,\d+)*$/|allExistInCourse',
 ```

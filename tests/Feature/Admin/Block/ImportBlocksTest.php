@@ -108,7 +108,7 @@ class ImportBlocksTest extends TestCaseWithCourse {
         // given
         $blockId = $this->createBlock('Existierender Block', '1.1', '09.09.2009');
         $participantId = $this->createParticipant('Pflock');
-        $existingObservationId = Observation::create(['user_id' => $this->user()->id, 'block' => $blockId, 'content' => 'something', 'impression' => 0, 'participants' => [$participantId]])->id;
+        $existingObservationId = Observation::create(['block' => $blockId, 'content' => 'something', 'impression' => 0, 'participants' => [$participantId]])->id;
         $uploadedFile = $this->setUpInputFile('Blockuebersicht.xls');
         $this->payload = ['file' => $uploadedFile, 'source' => 'eCamp2BlockOverview'];
 

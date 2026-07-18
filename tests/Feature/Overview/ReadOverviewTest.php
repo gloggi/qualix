@@ -99,6 +99,26 @@ class ReadOverviewTest extends TestCaseWithBasicData {
         $response->assertSeeInOrder([ 'Pflock', '11', '2', 'Pfn\u00f6rch', '2', /*'0'*/ ]); // a value of 0 isn't present in the JSON at all
     }
 
+    public function test_shouldCountObservationForAllAuthors_whenObservationHasMultipleAuthors() {
+        // given
+        $name = $this->user()->name;
+
+        // create another trainer in the course
+        $user2 = $this->createUser(['name' => 'Lindo']);
+        $user2->courses()->attach($this->courseId);
+
+        // one observation with two authors is attributed to both of them
+        $this->createObservation('von zwei Personen beobachtet', 1, [], [], $this->blockIds[0], $this->participantId, [$this->user()->id, $user2->id]);
+
+        // when
+        $response = $this->get('/course/' . $this->courseId . '/overview');
+
+        // then
+        $response->assertOk();
+        $response->assertSeeInOrder([ 'TN', $name, 'Lindo' ]);
+        $response->assertSeeInOrder([ 'Pflock', '12', '1' ]);
+    }
+
     public function test_shouldDisplayMessage_whenNoParticipantsInKurs() {
         // given
         Participant::find($this->participantId)->delete();

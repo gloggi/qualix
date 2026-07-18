@@ -1,6 +1,7 @@
 # Journal des modifications
 
 ##### Juillet 2026
+- Il est désormais possible d'indiquer plusieurs personnes ayant observé pour une même observation [#293](https://github.com/gloggi/qualix/issues/293)
 - Il est désormais possible de supprimer la photo de profil d'un-e TN ou de sa propre personne [#336](https://github.com/gloggi/qualix/issues/336)
 - Correction de bug : Dans le jeu des noms, en mode "Facile (choix multiple)", un point est désormais attribué même si plusieurs participant·e·s du cours portent le même nom et que l'on clique sur l'autre option portant ce nom. En mode "Difficile (saisir le nom)", un nom saisi sans accent (par ex. "Muller" au lieu de "Müller") est désormais aussi compté comme correct [#382](https://github.com/gloggi/qualix/issues/382)
 
