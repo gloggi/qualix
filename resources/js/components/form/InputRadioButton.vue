@@ -2,7 +2,7 @@
   <div class="form-group row" :class="{ required }">
     <label :for="kebabCase(name)" class="col-form-label py-0" :class="labelClass">{{ label }}</label>
     <div :class="inputColumnClass">
-      <div class="my-auto d-flex" :class="{ 'is-invalid': errorMessage }">
+      <div class="my-auto d-flex gap-3 flex-wrap" :class="{ 'is-invalid': errorMessage }">
         <b-form-radio v-for="(option, optionValue) in options"
                       :key="name + '-' + optionValue"
                       :id="kebabCase(name + '-' + optionValue)"
