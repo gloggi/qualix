@@ -1,4 +1,4 @@
-<?php
+const COLLABORATION_KEY_LENGTH = 32;<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -11,7 +11,7 @@ class AddCollaborationKeyToQuali extends Migration {
     public function up(): void
     {
         Schema::table('qualis', function (Blueprint $table) {
-            $table->string('collaborationKey', 32);
+            $table->string('collaborationKey', COLLABORATION_KEY_LENGTH);
         });
     }
 
