@@ -100,6 +100,7 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $numBlocksRequirements = DB::table('blocks_requirements')->count();
         $numObservationsCategories = DB::table('observations_categories')->count();
         $numObservationsRequirements = DB::table('observations_requirements')->count();
+        $numObservationsUsers = DB::table('observations_users')->count();
         $numObservationAssignmentBlocks = DB::table('observation_assignment_blocks')->count();
         $numObservationAssignmentParticipants = DB::table('observation_assignment_participants')->count();
         $numObservationAssignmentUsers = DB::table('observation_assignment_users')->count();
@@ -129,6 +130,7 @@ class ArchiveCourseTest extends TestCaseWithBasicData {
         $this->assertEquals($numBlocksRequirements, DB::table('blocks_requirements')->count(), 'All blocks_requirements should have remained in course');
         $this->assertEquals($numObservationsCategories - 1, DB::table('observations_categories')->count(), 'All observations_categories entries of course should have been removed from DB');
         $this->assertEquals($numObservationsRequirements - 1, DB::table('observations_requirements')->count(), 'All observations_requirements entries of course should have been removed from DB');
+        $this->assertEquals($numObservationsUsers - 1, DB::table('observations_users')->count(), 'All observations_users entries of course should have been removed from DB');
         $this->assertEquals($numObservationAssignmentBlocks - 1, DB::table('observation_assignment_blocks')->count(), 'All observation_assignment_blocks entries of course should have been removed from DB');
         $this->assertEquals($numObservationAssignmentParticipants - 1, DB::table('observation_assignment_participants')->count(), 'All observation_assignment_participants entries of course should have been removed from DB');
         $this->assertEquals($numObservationAssignmentUsers - 1, DB::table('observation_assignment_users')->count(), 'All observation_assignment_users entries of course should have been removed from DB');

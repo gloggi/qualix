@@ -487,7 +487,7 @@ class TiptapFormatterTest extends TestCase {
                 ->count(10)
                 ->has(Observation::factory()
                     ->count(5)
-                    ->fromRandomUser()
+                    ->fromRandomUsers()
                     ->withRequirements()
                     ->maybeMultiParticipant()
                 )
@@ -508,7 +508,8 @@ class TiptapFormatterTest extends TestCase {
      */
     public function createParticipantObservation(Course $course, Feedback $feedback) {
         /** @var Observation $observation */
-        $observation = Observation::create(['content' => 'hat gut aufgepasst', 'impression' => 1, 'block' => $course->blocks()->first(), 'user_id' => $course->users()->first()->id]);
+        $observation = Observation::create(['content' => 'hat gut aufgepasst', 'impression' => 1, 'block' => $course->blocks()->first()]);
+        $observation->users()->attach($course->users()->first()->id);
         $feedback->participant->observations()->attach($observation);
         /** @var ParticipantObservation $participantObservation */
         $participantObservation = $feedback->participant->participant_observations()->first();

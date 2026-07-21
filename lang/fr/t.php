@@ -73,7 +73,7 @@ return array(
 			"participant" => "Participant-e",
 			"participants" => "Participant-e-s",
 			"requirements" => "Exigences minimales",
-			"user" => "Observateur-trice",
+			"users" => "Observateur-trice",
 		),
 		"participant" => array(
 			"group" => "Groupe",

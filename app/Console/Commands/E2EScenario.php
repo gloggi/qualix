@@ -72,7 +72,7 @@ class E2EScenario extends Command
                 ->count(10)
                 ->has(Observation::factory()
                     ->count(5)
-                    ->fromRandomUser()
+                    ->fromRandomUsers()
                     ->withRequirements()
                     ->maybeMultiParticipant()
                 )

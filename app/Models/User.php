@@ -71,11 +71,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function observations()
     {
-        return $this->hasMany('App\Models\Observation');
+        return $this->belongsToMany('App\Models\Observation', 'observations_users');
     }
 
     /**

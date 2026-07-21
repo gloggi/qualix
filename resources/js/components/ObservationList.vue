@@ -186,7 +186,7 @@ export default {
       if (this.showRequirements) fields.push({ label: this.$t('t.models.observation.requirements'), slot: 'requirements' })
       if (this.showCategories) fields.push({ label: this.$t('t.models.observation.categories'), slot: 'categories' })
       if (this.showImpression) fields.push({ label: this.$t('t.models.observation.impression'), slot: 'impression' })
-      if (this.showUser) fields.push({ label: this.$t('t.models.observation.user'), value: observation => observation.user.name })
+      if (this.showUser) fields.push({ label: this.$t('t.models.observation.users'), value: observation => observation.users.map(user => user.name).join(', ') })
       return fields
     },
     filtersVisibleInitially() {
@@ -219,7 +219,7 @@ export default {
           observation.categories.map(category => category.id).some(category => this.selectedCategories.map(selectedCategory => selectedCategory.id).includes(category)))
         .filter(observation =>
           this.selectedAuthor === null ||
-          observation.user.id ===  this.selectedAuthor.id)
+          observation.users.some(user => user.id === this.selectedAuthor.id))
         .filter(observation =>
           this.selectedBlock === null ||
           observation.block.id === this.selectedBlock.id)

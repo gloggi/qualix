@@ -117,11 +117,19 @@ class ObservationFactory extends Factory {
         ];
     }
 
-    public function fromRandomUser() {
-        return $this->state(function (array $state, Block $block) {
-            return [
-                'user_id' => $this->faker->randomElement($block->course->users->map->id),
-            ];
+    public function fromRandomUsers($percentage = 10) {
+        return $this->afterCreating(function (Observation $observation) use ($percentage) {
+            if (!($block = $observation->block)) return;
+            if (!($course = $block->course)) return;
+            $numCourseUsers = $course->users()->count();
+
+            $numUsers = 1;
+            // Only a fraction of observations have multiple authors
+            if ($numCourseUsers > 1 && $this->faker->randomNumber(2) < $percentage) $numUsers = $this->faker->biasedNumberBetween(2, min($numCourseUsers, 4));
+
+            $observation->users()->attach(
+                $this->faker->randomElements($course->users->map->id->all(), $numUsers)
+            );
         });
     }
 

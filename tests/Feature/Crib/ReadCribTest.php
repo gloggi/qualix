@@ -135,10 +135,12 @@ class ReadCribTest extends TestCaseWithBasicData {
         $block2 = $this->createBlock('Block 2', '1.2', '01.01.2019');
         $participant1 = $this->createParticipant('One');
         $participant2 = $this->createParticipant('Two');
-        $observation = Observation::create(['content' => 'test', 'block' => $block1, 'user_id' => Auth::id()]);
+        $observation = Observation::create(['content' => 'test', 'block' => $block1]);
         $observation->participants()->attach($participant1);
-        $multiObservation = Observation::create(['content' => 'haben die ganze Zeit nur geschnädert', 'block' => $block1, 'user_id' => Auth::id()]);
+        $observation->users()->attach(Auth::id());
+        $multiObservation = Observation::create(['content' => 'haben die ganze Zeit nur geschnädert', 'block' => $block1]);
         $multiObservation->participants()->attach([$participant1, $participant2]);
+        $multiObservation->users()->attach(Auth::id());
 
         $observationAssignment1 = ObservationAssignment::create(['name' => 'Assignment 1', 'course_id' => $this->courseId]);
         $observationAssignment1->blocks()->attach([$block1, $block2]);
@@ -226,13 +228,14 @@ class ReadCribTest extends TestCaseWithBasicData {
             'content' => 'hat gut mitgemacht',
             'impression' => '1',
             'block' => '' . $block1,
+            'users' => '' . Auth::id(),
             'requirements' => '',
             'categories' => ''
         ]);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/observation/new?participant=' . $participant1 . '&block=' . $block1);
+        $response->assertRedirect('/course/' . $this->courseId . '/observation/new?participant=' . $participant1 . '&block=' . $block1 . '&users=' . Auth::id());
     }
 
     public function test_shouldReturnToObservationForm_afterAddingObservationInBlock() {
@@ -249,12 +252,13 @@ class ReadCribTest extends TestCaseWithBasicData {
             'content' => 'hat gut mitgemacht',
             'impression' => '1',
             'block' => '' . $block1,
+            'users' => '' . Auth::id(),
             'requirements' => '',
             'categories' => ''
         ]);
 
         // then
         $response->assertStatus(302);
-        $response->assertRedirect('/course/' . $this->courseId . '/observation/new?participant=' . $participant1 . '&block=' . $block1);
+        $response->assertRedirect('/course/' . $this->courseId . '/observation/new?participant=' . $participant1 . '&block=' . $block1 . '&users=' . Auth::id());
     }
 }

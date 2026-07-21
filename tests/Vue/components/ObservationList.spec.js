@@ -15,9 +15,9 @@ const observations = [{
   requirements: [{
     content: 'some requirement'
   }],
-  user: {
+  users: [{
     name: 'Bari'
-  }
+  }]
 }]
 
 describe('visible columns', () => {
@@ -339,7 +339,7 @@ describe('filters', () => {
       impression: 2,
       participants: [{id: '1', scout_name: 'Pflock'}],
       requirements: [{ id: 10, content: 'some requirement' }],
-      user: { id: 1000, name: 'Bari' }
+      users: [{ id: 1000, name: 'Bari' }]
     }, {
       block: { id: 10001, blockname_and_number: '1.4 second block' },
       categories: [],
@@ -347,7 +347,7 @@ describe('filters', () => {
       impression: 2,
       participants: [{id: '1', scout_name: 'Pflock'}],
       requirements: [],
-      user: { id: 1001, name: 'Lindo' }
+      users: [{ id: 1001, name: 'Lindo' }]
     }]
 
     it('should show all observations by default', () => {
@@ -565,6 +565,43 @@ describe('filters', () => {
           }
         }
       })
+
+      expect(await list.findByText(/1 von 2 Beobachtungen angezeigt/)).toBeInTheDocument()
+      expect(list.queryByText('Alle anzeigen')).toBeInTheDocument()
+      expect(list.queryByText('war gut drauf')).toBeInTheDocument()
+      expect(list.queryByText('war schlecht drauf')).toBeNull()
+    })
+
+    it('should filter by user, matching an observation with multiple authors', async() => {
+      mockLocalStorage({
+        selectedAuthor: 1001
+      })
+      const observationsWithMultipleAuthors = [
+        observations[0],
+        { ...observations[1], users: [{ id: 1000, name: 'Bari' }, { id: 1001, name: 'Lindo' }] },
+      ]
+      const list = render(ObservationList, {
+        props: {
+          courseId: '1',
+          showContent: true,
+          showUser: true,
+          observations: observationsWithMultipleAuthors,
+          requirements: [{id: 10}],
+          categories: [{id: 100}],
+          authors: [{id: 1000}, {id: 1001}],
+          blocks: [{id: 10000}],
+          usedObservations: [],
+        },
+        stubs: ['b-table-simple', 'b-thead', 'b-tbody', 'b-tr', 'b-button', 'b-collapse', 'b-row', 'b-col', 'multi-select'],
+        directives: {
+          bToggle: () => {
+          }
+        }
+      })
+
+      expect(await list.findByText(/1 von 2 Beobachtungen angezeigt/)).toBeInTheDocument()
+      expect(list.queryByText('war gut drauf')).toBeNull()
+      expect(list.queryByText('war schlecht drauf')).toBeInTheDocument()
     })
 
     it('should filter by block', async () => {

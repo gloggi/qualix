@@ -68,6 +68,15 @@
       display-field="name"
       multiple></input-multi-select>
 
+    <input-multi-select
+      name="users"
+      v-model="usersValue"
+      :label="$t('t.models.observation.users')"
+      required
+      :options="allUsers"
+      display-field="name"
+      multiple></input-multi-select>
+
     <button-submit></button-submit>
 
   </form-basic>
@@ -96,6 +105,8 @@ export default {
     impression: { type: String, default: '1' },
     categories: { type: String, default: '' },
     allCategories: { type: Array, default: () => ([]) },
+    users: { type: String, default: '' },
+    allUsers: { type: Array, required: true },
   },
   data: function () {
     return {
@@ -105,6 +116,7 @@ export default {
       requirementsValue: this.requirements,
       impressionValue: this.impression,
       categoriesValue: this.categories,
+      usersValue: this.users,
       ignoreNextBlockUpdateEvent: !!this.requirementsValue,
     }
   },

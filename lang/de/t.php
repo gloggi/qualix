@@ -144,7 +144,7 @@ return array(
 			"participant" => "TN",
 			"participants" => "TN",
 			"requirements" => "Anforderungen",
-			"user" => "Beobachtet von",
+			"users" => "Beobachtet von",
 		),
 		"observation_assignment" => array(
 			"blocks" => "Blöcke",

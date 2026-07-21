@@ -26,7 +26,7 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         $this->categoryId = $this->createCategory('Kategorie 1');
 
         $this->payload = ['participants' => '' . $this->participantId, 'content' => 'kein Wort gesagt', 'impression' => '0',
-            'block' => '' . $blockId2, 'requirements' => '' . $this->requirementId, 'categories' => '' . $this->categoryId];
+            'block' => '' . $blockId2, 'users' => '' . $this->user()->id, 'requirements' => '' . $this->requirementId, 'categories' => '' . $this->categoryId];
     }
 
     public function test_shouldRequireLogin() {
@@ -228,6 +228,138 @@ class UpdateObservationTest extends TestCaseWithBasicData {
         /** @var ValidationException $exception */
         $exception = $response->exception;
         $this->assertEquals('TN Format ist ungültig.', $exception->validator->errors()->first('participants'));
+    }
+
+    public function test_shouldValidateNewObservationData_noUserIds() {
+        // given
+        $payload = $this->payload;
+        unset($payload['users']);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Beobachtet von muss ausgefüllt sein.', $exception->validator->errors()->first('users'));
+    }
+
+    public function test_shouldValidateNewObservationData_invalidUserIds() {
+        // given
+        $payload = $this->payload;
+        $payload['users'] = 'a';
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Beobachtet von Format ist ungültig.', $exception->validator->errors()->first('users'));
+    }
+
+    public function test_shouldValidateNewObservationData_oneValidUserId() {
+        // given
+        $payload = $this->payload;
+        $userId = $this->createUser()->id;
+        Course::find($this->courseId)->users()->attach($userId);
+        $payload['users'] = $userId;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $this->assertEquals([$userId], Observation::find($this->observationId)->users->pluck('id')->all());
+    }
+
+    public function test_shouldValidateNewObservationData_multipleValidUserIds() {
+        // given
+        $payload = $this->payload;
+        $userIds = [$this->createUser()->id, $this->createUser()->id];
+        Course::find($this->courseId)->users()->attach($userIds);
+        $payload['users'] = implode(',', $userIds);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $response->assertStatus(302);
+        $this->assertEquals($userIds, Observation::find($this->observationId)->users->pluck('id')->all());
+    }
+
+    public function test_shouldPersistTheOrderInWhichAuthorsWereSelected() {
+        // given
+        $payload = $this->payload;
+        $userIds = [$this->createUser()->id, $this->createUser()->id];
+        Course::find($this->courseId)->users()->attach($userIds);
+        $payload['users'] = implode(',', $userIds);
+        $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+        $this->assertEquals($userIds, Observation::find($this->observationId)->users->pluck('id')->all());
+
+        // when
+        // the author order is reversed
+        $reorderedPayload = $payload;
+        $reorderedPayload['users'] = implode(',', array_reverse($userIds));
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $reorderedPayload);
+
+        // then
+        $response->assertStatus(302);
+        $this->assertEquals(array_reverse($userIds), Observation::find($this->observationId)->users->pluck('id')->all());
+    }
+
+    public function test_shouldValidateNewObservationData_someNonexistentUserIds() {
+        // given
+        $payload = $this->payload;
+        $userIds = [$this->createUser()->id, '999999', $this->createUser()->id];
+        Course::find($this->courseId)->users()->attach([$userIds[0], $userIds[2]]);
+        $payload['users'] = implode(',', $userIds);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Beobachtet von ist ungültig.', $exception->validator->errors()->first('users'));
+    }
+
+    public function test_shouldValidateNewObservationData_someInvalidUserIds() {
+        // given
+        $payload = $this->payload;
+        $userIds = [$this->createUser()->id, 'abc', $this->createUser()->id];
+        Course::find($this->courseId)->users()->attach([$userIds[0], $userIds[2]]);
+        $payload['users'] = implode(',', $userIds);
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Beobachtet von Format ist ungültig.', $exception->validator->errors()->first('users'));
+    }
+
+    public function test_shouldNotAllowChangingAuthorToSomeoneFromADifferentCourse() {
+        // given
+        $differentCourse = $this->createCourse('Other course', '', false);
+        $userFromDifferentCourse = $this->createUser(['name' => 'Foreign'])->id;
+        Course::find($differentCourse)->users()->attach($userFromDifferentCourse);
+        $payload = $this->payload;
+        $payload['users'] = $this->payload['users'] . ',' . $userFromDifferentCourse;
+
+        // when
+        $response = $this->post('/course/' . $this->courseId . '/observation/' . $this->observationId, $payload);
+
+        // then
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+        /** @var ValidationException $exception */
+        $exception = $response->exception;
+        $this->assertEquals('Der gewählte Wert für Beobachtet von ist ungültig.', $exception->validator->errors()->first('users'));
     }
 
     public function test_shouldValidateNewObservationData_noComment() {

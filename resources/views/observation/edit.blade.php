@@ -26,6 +26,8 @@
             impression="{{ $observation->impression }}"
             categories="{{ $observation->categories->pluck('id')->join(',') }}"
             :all-categories="{{ json_encode($course->categories->map->only('id', 'name')) }}"
+            users="{{ $observation->users->pluck('id')->join(',') }}"
+            :all-users="{{ json_encode($course->users->map->only('id', 'name')) }}"
         ></form-observation>
 
     </b-card>

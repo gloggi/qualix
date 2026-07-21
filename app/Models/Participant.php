@@ -117,10 +117,11 @@ class Participant extends Model {
             'scout_name' => $this->scout_name,
             'course_id' => $this->course_id,
             'observation_counts_by_user' => $this->observations()->reorder()
-                ->select('user_id')
+                ->join('observations_users', 'observations.id', 'observations_users.observation_id')
+                ->select('observations_users.user_id')
                 ->selectRaw('count(*) as total')
-                ->groupBy('user_id')
-                ->pluck('total', 'user_id'),
+                ->groupBy('observations_users.user_id')
+                ->pluck('total', 'observations_users.user_id'),
         ];
     }
 
