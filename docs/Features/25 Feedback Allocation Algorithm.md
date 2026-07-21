@@ -42,20 +42,25 @@ flowchart LR
     P3 -->|"cost=1"| T1
     P3 -->|"cost=100"| T2
 
-    T1 -->|"cap=2, cost=0"| K
-    T2 -->|"cap=1, cost=0"| K
+    T1 -->|"cap=1, cost=0"| U1["unit 1/2"]
+    T1 -->|"cap=1, cost=0"| U2["unit 2/2"]
+    T2 -->|"cap=1, cost=0"| U3["unit 1/1"]
+
+    U1 -->|"cost=0"| K
+    U2 -->|"cost=0.5"| K
+    U3 -->|"cost=0"| K
 ```
 
-The middle layer is bipartite: in principle every participant connects to every trainer (`cap=1`, `cost` = that pairing's priority). Here participant 1 has **no** edge to trainer B — that pairing is forbidden, so no edge is created and the assignment can never route through it. The min-cost flow picks one outgoing edge per participant so that trainer capacities (`trainer A` ≤ 2, `trainer B` ≤ 1) hold and the total cost — i.e. the sum of granted-wish priorities — is minimal.
+In principle, every participant connects to every trainer (`cap=1`, `cost` = that pairing's priority). Here participant 1 has **no** edge to trainer B — that pairing is forbidden, so no edge is created and the assignment can never route through it. The min-cost flow picks one outgoing edge per participant so that trainer capacities (`trainer A` ≤ 2, `trainer B` ≤ 1) hold and the total cost — i.e. the sum of granted-wish priorities — is minimal.
 
 - **Source** (vertex `0`, balance `+N`) and **sink** (vertex `1`, balance `−N`), where `N` = participant count. This forces a flow of exactly `N` units — one per participant.
 - **Source → participant**: capacity `1`, cost `0`. Each participant sends exactly one unit of flow (gets exactly one trainer).
-- **Trainer → sink**: capacity = the trainer's `capacity`, cost `0`. Caps how many feedbacks a trainer receives.
 - **Participant → trainer**: capacity `1`, cost = the pairing's priority. Costs are held in a `preferenceMatrix` initialized to `defaultPriority` for every pair, then:
   - each of a participant's ranked wishes lowers the cost for that trainer to `min(currentCost, weight)`, where `weight` is the wish rank (`priority`, 1 = top wish) — or `1` when `unweighted`. Lower cost = more preferred.
   - forbidden pairings are set to `PHP_INT_MAX` and **no edge** is created for them, making the assignment impossible.
+- **Trainer → unit → sink**: each trainer's `capacity` is split into `capacity` unit vertices (`trainer → unit`: `cap=1, cost=0`; `unit → sink`: `cap=1`, cost = `unitIndex / capacity`, 0-indexed). This makes the *marginal* cost of the trainer's `k`-th assignment grow with how busy the trainer already is (proportionally, not in absolute terms — a trainer with capacity 4 and one already assigned is *less* busy, and thus cheaper to assign to next, than a trainer with capacity 2 and one already assigned). Since these per-unit costs are always `< 1` and real preference costs are integers that differ by at least `1`, this can only break ties between otherwise equally-good trainers — it never overrides a genuine wish/default priority difference. It's implemented with per-unit intermediate vertices rather than parallel `trainer → sink` edges because `graphp`'s min-cost-flow solver doesn't support parallel edges between the same vertex pair.
 
-Vertex IDs are laid out deterministically: participants at `index + 2`, trainers at `participantCount + index + 2`, with lookup maps between vertex IDs and the original trainer/participant identifiers.
+Vertex IDs are laid out deterministically: participants at `index + 2`, trainers at `participantCount + index + 2`, and the per-trainer unit vertices following after all trainers, with lookup maps between vertex IDs and the original trainer/participant identifiers (unit vertices are purely internal — assignments are read back directly off each trainer vertex's incoming edges, see `getAssignments`, so they never need a name lookup).
 
 ### Solving (`calculateMaxFlowMinCost`)
 

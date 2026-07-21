@@ -45,6 +45,14 @@ class DefaultFeedbackAllocator implements FeedbackAllocator {
         $preferenceMatrix = array_fill(0, $participantCount, array_fill(0, $trainerCount, $defaultPriority));
 
         // Add trainers to the sink with capacity
+        // graphp's min-cost-flow solver doesn't support parallel edges between the same
+        // vertex pair, so each capacity unit gets its own intermediate vertex: trainer -> unit
+        // -> sink. The unit -> sink edges have cost increasing proportionally to how busy the
+        // trainer already is (i / capacity), so otherwise-tied assignments prefer the
+        // least-full trainer, balancing the load instead of filling earlier trainers first.
+        // The fractional cost is always < 1, so it can never override a real preference-cost
+        // difference (which always differs by at least 1).
+        $nextUnitVertexId = $participantCount + $trainerCount + 2;
         foreach ($trainerCapacities as $index => $trainer) {
             [$name, $capacity] = $trainer;
             $trainerVertexId = $participantCount + $index + 2;
@@ -53,7 +61,11 @@ class DefaultFeedbackAllocator implements FeedbackAllocator {
             $this->trainerNameToVertexId[$name] = $trainerVertexId;
             $this->vertexIdToName[$trainerVertexId] = $name;
 
-            $this->addEdge($trainerVertex, $this->sink, $capacity, 0);
+            for ($unit = 0; $unit < $capacity; $unit++) {
+                $unitVertex = $this->graph->createVertex($nextUnitVertexId++);
+                $this->addEdge($trainerVertex, $unitVertex, 1, 0);
+                $this->addEdge($unitVertex, $this->sink, 1, $unit / $capacity);
+            }
         }
 
         // Add source to participants and handle preferences
@@ -99,7 +111,7 @@ class DefaultFeedbackAllocator implements FeedbackAllocator {
         }
     }
 
-    private function addEdge(Vertex $from, Vertex $to, int $capacity, int $cost) {
+    private function addEdge(Vertex $from, Vertex $to, int $capacity, int|float $cost) {
         $edge = $this->graph->createEdgeDirected($from, $to);
         $edge->setWeight($cost);
         $edge->setCapacity($capacity);
@@ -148,29 +160,23 @@ class DefaultFeedbackAllocator implements FeedbackAllocator {
 
     private function getAssignments(Graph $resultGraph): array {
         $assignments = [];
-        $trainerParticipants = [];
 
-        $sinkId = $this->sink->getId();
-        $edgesToSink = $resultGraph->getVertex($sinkId)->getEdgesIn();
-        foreach ($edgesToSink as $edge) {
-            $trainerVertex = $edge->getVertexStart();
-            $trainerName = $this->vertexIdToName[$trainerVertex->getId()];
+        foreach ($this->trainerNameToVertexId as $trainerName => $trainerVertexId) {
+            $trainerVertex = $resultGraph->getVertex($trainerVertexId);
+            $participants = [];
             foreach ($trainerVertex->getEdgesIn() as $edgeIn) {
-                $vertexIn = $edgeIn->getVertexStart();
-                if ($vertexIn->getId() !== $sinkId && $edgeIn->getFlow() > 0) {
-                    $participantName = $this->vertexIdToName[$vertexIn->getId()];
-                    $trainerParticipants[$trainerName][] = $participantName;
+                if ($edgeIn->getFlow() > 0) {
+                    $participants[] = $this->vertexIdToName[$edgeIn->getVertexStart()->getId()];
                 }
             }
-
+            if ($participants) {
+                $assignments[] = [
+                    'trainerIdent' => $trainerName,
+                    'participantIdents' => $participants
+                ];
+            }
         }
 
-        foreach ($trainerParticipants as $trainerName => $participants) {
-            $assignments[] = [
-                'trainerIdent' => $trainerName,
-                'participantIdents' => $participants
-            ];
-        }
         return $assignments;
     }
 }
