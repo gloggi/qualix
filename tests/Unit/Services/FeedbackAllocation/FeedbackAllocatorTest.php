@@ -46,10 +46,12 @@ class FeedbackAllocatorTest extends TestCase
 
     public function test_UnweightedFeedbackAllocation()
     {
-        $trainerCapacities = [['Alice', 2], ['Bob', 2]];
+        $trainerCapacities = [['Alice', 4], ['Bob', 4]];
         $participantWishes = [
             ['John', 'Alice', 'Bob'], // John prefers Alice or Bob
-            ['Jane', 'Bob', 'Alice']  // Jane prefers Bob or Alice
+            ['Jane', 'Bob', 'Alice'], // Jane prefers Bob or Alice
+            ['Jake', 'Alice', 'Bob'], // Jake prefers Alice or Bob
+            ['Jack', 'Alice', 'Bob']  // Jack prefers Alice or Bob
         ];
         $numberOfWishes = 2;
         $forbiddenWishes = [];
@@ -65,19 +67,51 @@ class FeedbackAllocatorTest extends TestCase
         );
 
         $expected = [
-            // In the unweighted case, the wishes [Alice, Bob] and [Bob, Alice] are considered the same.
-            // So by default, the algorithm assigns as many participants as it can to the first trainer.
+            // In the unweighted case, the wishes [Alice, Bob] and [Bob, Alice] are considered the same,
+            // so both trainers are equally good for all 3 participants. The allocator balances the load
+            // in this case instead of filling up the first trainer before assigning to the second.
             [
                 'trainerIdent' => 'Alice',
-                'participantIdents' => ['John', 'Jane']
-            ],/*
+                'participantIdents' => ['John', 'Jake']
+            ],
             [
                 'trainerIdent' => 'Bob',
-                'participantIdents' => []
-            ]*/
+                'participantIdents' => ['Jane', 'Jack']
+            ]
         ];
 
         $this->assertEquals($expected, $result);
+    }
+
+    public function test_proportionalAllocationWhenTrainerCapacitiesDiffer()
+    {
+        // given: 3 participants with no preferences, one trainer with capacity 4 and one
+        // with capacity 2 - both equally good for every participant
+        $trainerCapacities = [['SmallTeam', 2], ['BigTeam', 4]];
+        $participantWishes = [
+            ['John'], ['Jane'], ['Jack']
+        ];
+        $numberOfWishes = 0;
+        $forbiddenWishes = [];
+        $defaultPriority = 10;
+
+        // when
+        $result = $this->allocator->tryToAllocateFeedbacks(
+            $trainerCapacities,
+            $participantWishes,
+            $numberOfWishes,
+            $forbiddenWishes,
+            $defaultPriority
+        );
+
+        // then: both trainers end up equally busy proportionally (50%: 2 of 4, 1 of 2)
+        // rather than equally busy in absolute terms (which would leave SmallTeam booked
+        // out and BigTeam at only 25%, e.g. 1/4 vs 2/2)
+        $countsByTrainer = array_combine(
+            array_column($result, 'trainerIdent'),
+            array_map(fn($assignment) => count($assignment['participantIdents']), $result)
+        );
+        $this->assertEquals(['SmallTeam' => 1, 'BigTeam' => 2], $countsByTrainer);
     }
 
     public function test_noTrainerAssignmentPossible()
@@ -634,11 +668,11 @@ class FeedbackAllocatorTest extends TestCase
                     ],
                     [
                         'trainerIdent' => 'Salz',
-                        'participantIdents' => ['Fanta', 'Zucker', 'Honig']
+                        'participantIdents' => ['Haribo', 'Zucker', 'Honig']
                     ],
                     [
                         'trainerIdent' => 'Paprika',
-                        'participantIdents' => ['Haribo', 'Schoggi', 'Gummibär']
+                        'participantIdents' => ['Schoggi', 'Gummibär']
                     ],
                     [
                         'trainerIdent' => 'Käse',
@@ -646,7 +680,7 @@ class FeedbackAllocatorTest extends TestCase
                     ],
                     [
                         'trainerIdent' => 'Salzstange',
-                        'participantIdents' => ['Coke']
+                        'participantIdents' => ['Fanta', 'Coke']
                     ]
                 ]
             ],
