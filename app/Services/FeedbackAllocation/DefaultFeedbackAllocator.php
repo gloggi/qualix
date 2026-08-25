@@ -61,7 +61,7 @@ class DefaultFeedbackAllocator implements FeedbackAllocator {
             $this->trainerNameToVertexId[$name] = $trainerVertexId;
             $this->vertexIdToName[$trainerVertexId] = $name;
 
-            for ($unit = 0; $unit < $capacity; $unit++) {
+            for ($unit = 0; $unit < min($capacity, $participantCount); $unit++) {
                 $unitVertex = $this->graph->createVertex($nextUnitVertexId++);
                 $this->addEdge($trainerVertex, $unitVertex, 1, 0);
                 $this->addEdge($unitVertex, $this->sink, 1, $unit / $capacity);

@@ -373,6 +373,26 @@ class FeedbackAllocatorTest extends TestCase
         );
     }
 
+    public function test_capacityLargerThanParticipantCountDoesNotGrowGraphUnnecessarily()
+    {
+        // Only one capacity unit can ever be used when there is one participant. Building
+        // a unit vertex for the remaining capacity would make unchecked request values able
+        // to consume arbitrary amounts of memory before the allocation is calculated.
+        $allocator = new DefaultFeedbackAllocator();
+        $allocator->createGraphFromInput(
+            [['Alice', 1_000]],
+            [['John']],
+            0,
+            []
+        );
+
+        $graphProperty = new \ReflectionProperty($allocator, 'graph');
+        $graph = $graphProperty->getValue($allocator);
+
+        // source + sink + participant + trainer + one usable capacity-unit vertex
+        $this->assertCount(5, $graph->getVertices());
+    }
+
     /**
      * @dataProvider allocationDataProvider
      */
@@ -393,7 +413,6 @@ class FeedbackAllocatorTest extends TestCase
     }
 
     public static function allocationDataProvider(): array
-
     {
 
         $defaultPriority = 10;
