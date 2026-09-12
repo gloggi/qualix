@@ -68,12 +68,7 @@ class ECamp3BlockOverviewParser implements BlockListParser
             $month = (int)$match[6];  // e.g., "4"
             $year = (int)$match[7]; //e.g., 2025
 
-            if (in_array($weekday, array('Mon','Tue','Wed','Thu','Fri','Sat','Sun'))) {
-                // english date format... makes no sense...
-                $day = (int)$match[6];  // e.g., "18"
-                $month = (int)$match[5];  // e.g., "4"
-            }
-            // Format block_date as DD.MM.YYYY or DD/MM/YYYY (or MM/DD/YYYY)
+            // Format block_date as DD.MM.YYYY instead of DD/MM/YYYY
             $block_date = sprintf('%02d.%02d.%d', $day, $month, $year);
 
             $blocks->push([
