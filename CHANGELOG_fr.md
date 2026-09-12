@@ -1,5 +1,10 @@
 # Journal des modifications
 
+##### Non publié
+
+###### Corrigé
+- Correction de l'import des listes d'activités eCamp v3 pour les cours en langue anglaise. L'analyse de date utilise désormais correctement le format JJ.MM.AAAA pour toutes les langues [#411](https://github.com/gloggi/qualix/issues/411)
+
 ##### Juillet 2026
 - Il est désormais possible d'indiquer plusieurs personnes ayant observé pour une même observation [#293](https://github.com/gloggi/qualix/issues/293)
 - Il est désormais possible de supprimer la photo de profil d'un-e TN ou de sa propre personne [#336](https://github.com/gloggi/qualix/issues/336)
