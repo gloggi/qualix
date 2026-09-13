@@ -8,7 +8,7 @@
     <div class="canvas-container">
       <canvas ref="gameCanvas" width="1600" height="800"></canvas>
       <div class="moon-glow">
-        <img class="moon-mascot" :src="gameOver ? '/images/was-gaffsch.svg' : '/images/was_gaffsch.svg'" alt="Moon Mascot">
+        <img class="moon-mascot" :src="gameOver ? '/was-gaffsch.svg' : '/was_gaffsch.svg'" alt="Moon Mascot">
       </div>
 
       <div v-if="gameOver" class="game-over">
@@ -328,7 +328,6 @@ canvas {
   align-items: center;
 }
 .moon-mascot {
-  width: 293%;
   height: 293%;
   object-fit: contain;
   opacity: 0.4;
