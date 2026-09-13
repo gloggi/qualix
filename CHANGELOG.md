@@ -1,7 +1,6 @@
 # Changelog
 
-##### Unreleased
-###### September 2026
+##### September 2026
 - Bugfix: eCamp v3 Blockplan-Import für englischsprachige Kurse [#411](https://github.com/gloggi/qualix/issues/411)
 
 ##### Juli 2026
