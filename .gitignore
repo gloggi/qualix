@@ -19,6 +19,8 @@ yarn-error.log
 !/public/index.php
 !/public/robots.txt
 !/public/*.svg
+!/public/sprites/
+!/public/sounds/
 resources/twemoji
 tests/e2e/test-results/
 /.claude/settings.local.json
