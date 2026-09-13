@@ -69,7 +69,7 @@ export default {
 .campfire-container {
   position: relative;
   z-index: 1001;
-  transform: scale(3); /* Make the fire much bigger */
+  transform: scale(3);
   transform-origin: bottom center;
   cursor: pointer;
   transition: transform 0.2s;

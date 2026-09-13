@@ -72,12 +72,9 @@ export default {
     trackHover(id) {
       const now = Date.now();
       this.hoverTracking.push({id, time: now});
-      // Keep only last 500 milliseconds
       this.hoverTracking = this.hoverTracking.filter(h => now - h.time < 500);
 
       const uniqueIds = new Set(this.hoverTracking.map(h => h.id));
-      // Requires moving back and forth across at least 8 rows very rapidly
-      // 30 events in 500ms ensures they are shaking the mouse back and forth over the rows.
       if (uniqueIds.size >= 8 && this.hoverTracking.length >= 20) {
         this.hoverTracking = [];
         this.isAdvancedRenderingActive = true;
@@ -88,7 +85,6 @@ export default {
 </script>
 
 <style>
-/* Advanced Matrix Rendering (obfuscated easter egg CSS) */
 .advanced-matrix-rendering {
   background-color: #1a1a1a !important;
   color: #fff;

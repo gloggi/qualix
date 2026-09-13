@@ -53,8 +53,6 @@ export default {
   },
   mounted() {
     this.highScore = parseInt(localStorage.getItem('matrix_optimization_level') || '0', 10);
-
-    // Play background music
     this.bgMusic = new Audio('/sounds/md.webm');
     this.bgMusic.loop = true;
     this.bgMusic.volume = 0.5;
@@ -80,7 +78,7 @@ export default {
         return new Promise(resolve => {
           const img = new Image();
           img.onload = () => resolve(img);
-          img.onerror = () => resolve(null); // fallback if missing
+          img.onerror = () => resolve(null);
           img.src = atob(b64Path);
         });
       };
@@ -136,7 +134,6 @@ export default {
     update() {
       this.frame++;
 
-      // Player physics
       this.player.y += this.player.dy;
       if (this.player.y + this.player.height < 340) {
         this.player.dy += this.player.gravity;
@@ -147,7 +144,6 @@ export default {
         this.player.y = 340 - this.player.height;
       }
 
-      // Spawn obstacles (fire) at random intervals
       if (this.frame >= this.nextSpawnFrame) {
         let obsWidth = 30 + Math.random() * 10;
         let obsHeight = 40 + Math.random() * 20;
@@ -159,16 +155,13 @@ export default {
           speed: 6 + Math.floor(this.score / 5)
         });
 
-        // Calculate next spawn (between 60 and 130 frames)
         this.nextSpawnFrame = this.frame + 60 + Math.floor(Math.random() * 70);
       }
 
-      // Move and check collisions
       for (let i = 0; i < this.obstacles.length; i++) {
         let obs = this.obstacles[i];
         obs.x -= obs.speed;
 
-        // Collision with some leeway (hitbox slightly smaller than sprite)
         let hitBoxX = this.player.x + 15;
         let hitBoxW = this.player.width - 30;
         let hitBoxY = this.player.y + 10;
@@ -191,7 +184,6 @@ export default {
         }
       }
 
-      // Cleanup and score
       if (this.obstacles.length > 0 && this.obstacles[0].x < -50) {
         this.obstacles.shift();
         this.score++;
@@ -234,36 +226,30 @@ export default {
         this.ctx.fill();
       };
 
-      // Draw a small log base
       this.ctx.fillStyle = '#5C4033';
       this.ctx.fillRect(x + width*0.1, y + height - 5, width*0.8, 5);
 
-      drawLayer('#ff4500', 1.0, 0);       // Red-orange outer
-      drawLayer('#ffa500', 0.7, 2);       // Orange middle
-      drawLayer('#ffff00', 0.4, 4);       // Yellow inner
+      drawLayer('#ff4500', 1.0, 0);
+      drawLayer('#ffa500', 0.7, 2);
+      drawLayer('#ffff00', 0.4, 4);
     },
     draw() {
       this.ctx.clearRect(0, 0, 800, 400);
 
-      // Sky
       let grad = this.ctx.createLinearGradient(0,0,0,340);
       grad.addColorStop(0, '#0f172a');
       grad.addColorStop(1, '#332940');
       this.ctx.fillStyle = grad;
       this.ctx.fillRect(0,0,800,400);
 
-      // (Moon and Mascot are now rendered via HTML/CSS over the canvas)
 
-      // Parallax Mountain Layers
-      this.drawMountainLayer(0.5, '#1e1b4b', 220, 50); // Far
-      this.drawMountainLayer(1.5, '#312e81', 280, 40); // Mid
-      this.drawMountainLayer(3.0, '#4338ca', 330, 20); // Near
+      this.drawMountainLayer(0.5, '#1e1b4b', 220, 50);
+      this.drawMountainLayer(1.5, '#312e81', 280, 40);
+      this.drawMountainLayer(3.0, '#4338ca', 330, 20);
 
-      // Ground
       this.ctx.fillStyle = '#171717';
       this.ctx.fillRect(0, 340, 800, 60);
 
-      // Draw player
       let currentImg = this.player.images.run1;
       if (!this.player.grounded) {
         currentImg = this.player.images.jump;
@@ -278,7 +264,6 @@ export default {
         this.ctx.fillRect(this.player.x, this.player.y, this.player.width, this.player.height);
       }
 
-      // Draw obstacles (animated fire)
       for (let obs of this.obstacles) {
         this.drawFlame(obs.x, obs.y, obs.width, obs.height);
       }
