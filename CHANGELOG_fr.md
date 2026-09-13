@@ -1,8 +1,6 @@
 # Journal des modifications
 
-##### Non publié
-
-###### Corrigé
+##### Septembre 2026
 - Correction de l'import des listes d'activités eCamp v3 pour les cours en langue anglaise. L'analyse de date utilise désormais correctement le format JJ.MM.AAAA pour toutes les langues [#411](https://github.com/gloggi/qualix/issues/411)
 
 ##### Juillet 2026
