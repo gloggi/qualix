@@ -1,5 +1,9 @@
 # Changelog
 
+##### Unreleased
+###### Fixed
+- Bugfix: eCamp v3 Blockplan-Import für englischsprachige Kurse [#411](https://github.com/gloggi/qualix/issues/411)
+
 ##### Juli 2026
 - Auf einer Beobachtung können neu mehrere beobachtende Personen hinterlegt werden [#293](https://github.com/gloggi/qualix/issues/293)
 - Das Profilbild von TN und des eigenen Accounts kann neu entfernt werden [#336](https://github.com/gloggi/qualix/issues/336)
