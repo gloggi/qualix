@@ -15,7 +15,7 @@ const injectTranslationsPlugin = {
   name: 'inject-laravel-translations',
   enforce: 'pre',
   transform(code, id) {
-    if (!id.includes('resources/js/i18n.js')) return
+    if (!id.includes('resources/js/i18n.js') && !id.includes('resources/js/components/print/i18n.js')) return
     return code.replace(
       /import\.meta\.env\.VITE_LARAVEL_TRANSLATIONS/g,
       `(${JSON.stringify(translations)})`

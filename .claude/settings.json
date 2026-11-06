@@ -2,7 +2,7 @@
   "permissions": {
     "deny": [
       "Read(.env)",
-      "Write(.env)"
+      "Edit(.env)"
     ]
   },
   "plansDirectory": "./.claude/plans"
